@@ -1,0 +1,846 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Annotating EMDB-SFF Segmentations &mdash; sfftk 0.1.0.dev0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sfftk 0.1.0.dev0 documentation" href="index.html" />
+    <link rel="next" title="Miscellaneous Operations Using sfftk" href="misc.html" />
+    <link rel="prev" title="Converting Files To EMDB-SFF" href="converting.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="annotating-emdb-sff-segmentations">
+<h1>Annotating EMDB-SFF Segmentations<a class="headerlink" href="#annotating-emdb-sff-segmentations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Annotation of EMDB-SFF segmentations is the second core function of
+sfftk. Here we outline how to use the terminal to annotate and EMDB-SFF
+file.</p>
+<p>Annotation is performed using the notes utility that is accessed with
+the notes subcommand.</p>
+<p>$ sff notes</p>
+<div class="section" id="operations-find-view-modify">
+<h3>Operations: find, view, modify<a class="headerlink" href="#operations-find-view-modify" title="Permalink to this headline">¶</a></h3>
+<p>There are three main operations that a user can perform using the notes
+subcommand.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Finding notes from an ontology principally the Ontology Lookup</dt>
+<dd><p class="first last">Service (OLS) hosted at EMBL-EBI;</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Viewing notes present in an EMDB-SFF file;</p>
+</li>
+<li><p class="first">Modifying notes in an EMDB-SFF file.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="states-find-view-modify">
+<h3>States: FIND, VIEW, MODIFY<a class="headerlink" href="#states-find-view-modify" title="Permalink to this headline">¶</a></h3>
+<p>Correspondingly, using the notes subcommand puts the user in one of
+three states: the FIND state, the VIEW state and the MODIFY state. These
+will be indicated by the colour of the text on the screen.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>White indicates the VIEW STATE i.e. that no modifications have been</dt>
+<dd><p class="first last">done on any EMDB-SFF file</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Yellow indicates the FIND STATE i.e. search results, and</p>
+</li>
+<li><dl class="first docutils">
+<dt>Green indicates the MODIFY STATE i.e. that a file is currently being</dt>
+<dd><p class="first last">edited. Note, viewing the contents of an EMDB-SFF file in the
+MODIFY STATE will also appear in green even if it a view action.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The full listing of sub-subcommands organised by operation are:</p>
+<ul class="simple">
+<li>Finding<ul>
+<li>search</li>
+</ul>
+</li>
+<li>Viewing<ul>
+<li>list</li>
+<li>show</li>
+</ul>
+</li>
+<li>Modifying<ul>
+<li>add</li>
+<li>edit</li>
+<li>del</li>
+<li>merge</li>
+<li>save</li>
+<li>trash</li>
+</ul>
+</li>
+</ul>
+<p>We will look at each of these in turn.</p>
+</div>
+<div class="section" id="quick-start">
+<h3>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="finding-notes">
+<h2>Finding Notes<a class="headerlink" href="#finding-notes" title="Permalink to this headline">¶</a></h2>
+<p>The search sub-subcommand displays results from searching EMBL-EBI’s
+OLS. As described in <a class="reference external" href="#states-find-view-modify">*States*</a>, the
+terminal text is coloured yellow.</p>
+<p>$ sff notes search</p>
+<p>$ sff notes search -h</p>
+<p>$ sff notes search &#8211;help</p>
+<p>display available options.</p>
+<div class="section" id="specifying-search-terms">
+<h3>Specifying Search Terms<a class="headerlink" href="#specifying-search-terms" title="Permalink to this headline">¶</a></h3>
+<p>For single worded searches enter the term with or without quotes.
+Multi-word terms must be quoted to prevent splitting them.</p>
+<p># single word term</p>
+<p>$ sff notes search mitochondria</p>
+<p>$ sff notes search ‘mitochondria’</p>
+<p>$ sff notes search “mitochondria”</p>
+<p># multi-word term</p>
+<p>$ sff notes search ‘fragment mitochondria’</p>
+<p>The search results are displayed as a table with the following columns:</p>
+<ul>
+<li><p class="first"><em>index</em></p>
+</li>
+<li><p class="first"><em>label</em> of the result term</p>
+</li>
+<li><p class="first"><em>obo_id</em> <a class="footnote-reference" href="#id4" id="id1">[1]</a> of the result term</p>
+</li>
+<li><p class="first"><em>ontology_name</em></p>
+</li>
+<li><p class="first"><em>description</em> is free text describing the term</p>
+</li>
+<li><dl class="first docutils">
+<dt><em>type</em> can have one of the following values: <a href="#id2"><span class="problematic" id="id3">*</span></a>class, property,</dt>
+<dd><p class="first last">individual, ontology*</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="specifying-the-ontology-to-search">
+<h4>Specifying The Ontology To Search<a class="headerlink" href="#specifying-the-ontology-to-search" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes search -O &lt;ontology_name&gt; “&lt;term&gt;”</p>
+<p>$ sff notes search &#8211;ontology &lt;ontology_name&gt; “&lt;term&gt;”</p>
+<p>See <a class="reference external" href="#listing-available-ontologies">*Listing Available Ontologies*</a>
+on how to get an ontology to search.</p>
+</div>
+<div class="section" id="performing-exact-searches">
+<h4>Performing Exact Searches<a class="headerlink" href="#performing-exact-searches" title="Permalink to this headline">¶</a></h4>
+<p>Exact searches only return results matching the search term <em>exactly.</em></p>
+<p>$ sff notes search -x “&lt;term&gt;”</p>
+<p>$ sff notes search &#8211;exact “&lt;term&gt;”</p>
+</div>
+<div class="section" id="including-obsolete-terms">
+<h4>Including Obsolete Terms<a class="headerlink" href="#including-obsolete-terms" title="Permalink to this headline">¶</a></h4>
+<p>Some terms are retired and are excluded by default. They can be included
+using the -o/&#8211;obsoletes flag.</p>
+<p>$ sff notes search -o “&lt;term&gt;”</p>
+<p>$ sff notes search &#8211;obsoletes “&lt;term&gt;”</p>
+</div>
+</div>
+<div class="section" id="listing-available-ontologies">
+<h3>Listing Available Ontologies<a class="headerlink" href="#listing-available-ontologies" title="Permalink to this headline">¶</a></h3>
+<p>$ sff notes search -L “term”</p>
+<p>$ sff notes search &#8211;list-ontologies “term”</p>
+<p>By default this provides a multi-line result for each ontology
+consisting of the <em>namespace</em> (also called <em>ID space), preferred prefix,
+title, description, homepage, the ontology ID,</em> and <em>version</em> of the
+ontology.</p>
+<div class="section" id="short-listing-of-ontologies">
+<h4>Short Listing Of Ontologies<a class="headerlink" href="#short-listing-of-ontologies" title="Permalink to this headline">¶</a></h4>
+<p>Alternatively, a simple table result can be displayed using the
+-l/&#8211;short-list-ontologies flag which displays only two columns:
+<em>namespace</em> and <em>description.</em></p>
+<p>$ sff notes search -l “term”</p>
+<p>$ sff notes search &#8211;short-list-ontologies “term”</p>
+</div>
+</div>
+<div class="section" id="traversing-searching-results">
+<h3>Traversing Searching Results<a class="headerlink" href="#traversing-searching-results" title="Permalink to this headline">¶</a></h3>
+<p>By default, sff notes search only shows the first page of results. Quite
+often, there will be more than one page of results. This will be evident
+from the last line of the results:</p>
+<p>Showing: 1 to 10 of 139 results found</p>
+<div class="section" id="specifying-the-start-result">
+<h4>Specifying The Start Result<a class="headerlink" href="#specifying-the-start-result" title="Permalink to this headline">¶</a></h4>
+<p>The user can specify the result index at which results should be
+displayed using the -s/&#8211;start flag.</p>
+<p>$ sff notes search -s 1 “&lt;term&gt;”</p>
+<p>$ sff notes search &#8211;start 1 “&lt;term&gt;”</p>
+</div>
+<div class="section" id="specifying-the-number-of-rows-to-display">
+<h4>Specifying The Number Of Rows To Display<a class="headerlink" href="#specifying-the-number-of-rows-to-display" title="Permalink to this headline">¶</a></h4>
+<p>More results can be display using the -r/&#8211;rows flag.</p>
+<p>$ sff notes search -r 11 “&lt;term&gt;”</p>
+<p>$ sff notes search &#8211;row 11 “&lt;term&gt;”</p>
+<p>Entering invalid values for -s/&#8211;start and -r/&#8211;rows raise ValueError
+exceptions.</p>
+</div>
+</div>
+</div>
+<div class="section" id="viewing-notes">
+<h2>Viewing Notes<a class="headerlink" href="#viewing-notes" title="Permalink to this headline">¶</a></h2>
+<p>sfftk includes utilities to view annotations (notes) included in
+EMDB-SFF files. There are two main functionalities:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Listing all notes present using the sff notes list sub-subcommand,</dt>
+<dd><p class="first last">and</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Showing notes in a single segmentation using the sff notes show</dt>
+<dd><p class="first last">sub-command.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>As describe in <a class="reference external" href="#states-find-view-modify">*States*</a>, the teminal text
+colour when viewing is white.</p>
+<div class="section" id="listing-all-notes">
+<h3>Listing All Notes<a class="headerlink" href="#listing-all-notes" title="Permalink to this headline">¶</a></h3>
+<p>Notes are listed using the following command:</p>
+<p>$ sff notes list file.sff</p>
+<p>$ sff notes list file.hff</p>
+<p>$ sff notes list file.json</p>
+<p>The output is structured as follows:</p>
+<p>Status information</p>
+<hr class="docutils" />
+<p>EMDB-SFF metadata</p>
+<p>******************</p>
+<p>Segment metatdata</p>
+<p>Here is an example:</p>
+<p>Wed Sep 13 10:18:40 2017 Reading directly from ArcherElf.json</p>
+<hr class="docutils" />
+<p>EMDB-SFF v.0.6.0a4</p>
+<hr class="docutils" />
+<p>Segmentation name:</p>
+<p>STL Segmentation</p>
+<p>Segmentation software:</p>
+<p>Software: Unknown</p>
+<p>Version: Unknown</p>
+<p>Processing details:</p>
+<ul class="simple">
+<li></li>
+</ul>
+<hr class="docutils" />
+<p>Primary descriptor:</p>
+<p>meshList</p>
+<hr class="docutils" />
+<p>Segmentation details:</p>
+<p>-*- NOT DEFINED -*-</p>
+<p>**************************************************************************************************************</p>
+<p>id parId description #inst #exRf #cplx #macr colour</p>
+<hr class="docutils" />
+<p>1 0 stlexp object01 1 0 0 0 (0.973, 0.649, 0.219, 1.0)</p>
+<p>where the first line provides some status information about the current
+listing. Status messages will become much more important when we look at
+<a class="reference external" href="#_c0sybxydflf7">**modifying notes in EMDB-SFF files**</a>. Status
+messages begin with a timestamp. Following status messages is the
+EMDB-SFF header information which specifies the schema version
+(0.6.0a4), the name of the segmentation (‘STL Segmentation’), software
+information including processing details, the primary descriptor
+(<em>meshList</em> in this case) and additional details on this segmentation. A
+row asterisks then divides the metadata from the segment data where one
+row per segment provides the <em>segment_id, parentID, description, number
+of instances, number of external references, number of complexes, number
+of macromolecules,</em> and <em>RGBA colour</em> of the segment. When modifying
+notes these values change.</p>
+<p>Long Format</p>
+<p>To view the list of notes by segment in long format (much more detail)
+use the -l/&#8211;long-format flag.</p>
+<p>$ sff notes list -l file.sff</p>
+<p>$ sff notes list &#8211;long-format file.sff</p>
+<p>having the same</p>
+<p>Status information</p>
+<hr class="docutils" />
+<p>EMDB-SFF metadata</p>
+<p>******************</p>
+<p>Segment metatdata</p>
+<p>structure except now that the Segment metadata section has much more
+detail.</p>
+<p>Wed Sep 13 10:35:25 2017 Reading directly from ArcherElf.json</p>
+<hr class="docutils" />
+<p>EMDB-SFF v.0.6.0a4</p>
+<hr class="docutils" />
+<p>Segmentation name:</p>
+<p>STL Segmentation</p>
+<p>Segmentation software:</p>
+<p>Software: Unknown</p>
+<p>Version: Unknown</p>
+<p>Processing details:</p>
+<ul class="simple">
+<li></li>
+</ul>
+<hr class="docutils" />
+<p>Primary descriptor:</p>
+<p>meshList</p>
+<hr class="docutils" />
+<p>Segmentation details:</p>
+<p>-*- NOT DEFINED -*-</p>
+<p>**************************************************************************************************************</p>
+<p>id parId description #inst #exRf #cplx #macr colour</p>
+<hr class="docutils" />
+<p>**************************************************************************************************************</p>
+<p>ID: 1</p>
+<p>PARENT ID: 0</p>
+<p>Segment Type: None</p>
+<hr class="docutils" />
+<p>Description:</p>
+<p>stlexp object01</p>
+<p>Number of instances:</p>
+<p>1</p>
+<hr class="docutils" />
+<p>External References:</p>
+<p># ontology type term</p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p>Complexes:</p>
+<p>-*- NOT DEFINED -*-</p>
+<p>Macromolecules:</p>
+<p>-*- NOT DEFINED -*-</p>
+<hr class="docutils" />
+<p>Colour:</p>
+<p>(0.9730647136101622, 0.6492013817107163, 0.21907374882651331, 1.0)</p>
+<div class="section" id="sorting-notes-by-description">
+<h4>Sorting Notes By Description<a class="headerlink" href="#sorting-notes-by-description" title="Permalink to this headline">¶</a></h4>
+<p>Notes are sorted by the index (first column) by default. However, the
+user can sort notes by description (third column) using the
+-D/&#8211;sort-by-description flag.</p>
+<p>$ sff notes list -D file.json</p>
+<p>$ sff ntoes list &#8211;sort-by-description file.json</p>
+<p>Wed Sep 13 10:41:12 2017 Reading directly from emd_1832.json</p>
+<hr class="docutils" />
+<p>EMDB-SFF v.0.6.0a4</p>
+<hr class="docutils" />
+<p>Segmentation name:</p>
+<p>Segger</p>
+<p>Segmentation software:</p>
+<p>Software: segger</p>
+<p>Version: 2</p>
+<p>Processing details:</p>
+<p>None</p>
+<hr class="docutils" />
+<p>Primary descriptor:</p>
+<p>threeDVolume</p>
+<hr class="docutils" />
+<p>Segmentation details:</p>
+<p>-*- NOT DEFINED -*-</p>
+<p>**************************************************************************************************************</p>
+<p>id parId description #inst #exRf #cplx #macr colour</p>
+<hr class="docutils" />
+<p>85 0 GINS + Cdc45 1 0 0 0 (0.522, 0.89, 0.848, 1.0)</p>
+<p>93 0 DNA replication licensing factor MCM4 1 0 0 0 (0.504, 0.644, 0.786,
+1.0)</p>
+<p>97 0 DNA replication licensing factor MCM2 1 0 0 0 (0.67, 0.861, 0.948,
+1.0)</p>
+<p>101 0 DNA replication licensing factor MCM7 1 0 0 0 (0.862, 0.965,
+0.698, 1.0)</p>
+<p>103 0 DNA replication licensing factor MCM6 1 0 0 0 (0.707, 0.627,
+0.604, 1.0)</p>
+<p>104 0 DNA replication licensing factor MCM3... 1 0 0 0 (0.788, 0.925,
+0.951, 1.0)</p>
+<p>becomes</p>
+<p>Wed Sep 13 10:42:54 2017 Reading directly from emd_1832.json</p>
+<hr class="docutils" />
+<p>EMDB-SFF v.0.6.0a4</p>
+<hr class="docutils" />
+<p>Segmentation name:</p>
+<p>Segger</p>
+<p>Segmentation software:</p>
+<p>Software: segger</p>
+<p>Version: 2</p>
+<p>Processing details:</p>
+<p>None</p>
+<hr class="docutils" />
+<p>Primary descriptor:</p>
+<p>threeDVolume</p>
+<hr class="docutils" />
+<p>Segmentation details:</p>
+<p>-*- NOT DEFINED -*-</p>
+<p>**************************************************************************************************************</p>
+<p>id parId description #inst #exRf #cplx #macr colour</p>
+<hr class="docutils" />
+<p>97 0 DNA replication licensing factor MCM2 1 0 0 0 (0.67, 0.861, 0.948,
+1.0)</p>
+<p>104 0 DNA replication licensing factor MCM3... 1 0 0 0 (0.788, 0.925,
+0.951, 1.0)</p>
+<p>93 0 DNA replication licensing factor MCM4 1 0 0 0 (0.504, 0.644, 0.786,
+1.0)</p>
+<p>103 0 DNA replication licensing factor MCM6 1 0 0 0 (0.707, 0.627,
+0.604, 1.0)</p>
+<p>101 0 DNA replication licensing factor MCM7 1 0 0 0 (0.862, 0.965,
+0.698, 1.0)</p>
+<p>85 0 GINS + Cdc45 1 0 0 0 (0.522, 0.89, 0.848, 1.0)</p>
+<p>Note that descriptions longer than 40 characters are truncated and
+terminated with an ellipsis (...) but the full description is visible in
+long format.</p>
+</div>
+<div class="section" id="reverse-sorting">
+<h4>Reverse Sorting<a class="headerlink" href="#reverse-sorting" title="Permalink to this headline">¶</a></h4>
+<p>Alternative, sorting can be reversed using the -r/&#8211;reverse flag. This
+applies to both sorting by index or by description.</p>
+<p>Reverse sorting by index:</p>
+<p>$ sff notes list -r file.json</p>
+<p>$ sff notes list &#8211;reverse file.json</p>
+<p>Reverse sorting by description</p>
+<p>$ sff notes list -r -D file.json</p>
+<p>$ sff notes list &#8211;reverse &#8211;sort-by-description file.json</p>
+</div>
+</div>
+<div class="section" id="listing-notes-in-a-single-segment">
+<h3>Listing Notes In A Single Segment<a class="headerlink" href="#listing-notes-in-a-single-segment" title="Permalink to this headline">¶</a></h3>
+<p>Listing notes from EMDB-SFF files with many segments would clutter the
+screen. The user can oscillate between listing all segments to find
+segment IDs of interest then display one or more segment of interest
+using the sff notes show sub-subcommand. Therefore, this takes an extra
+parameter -i/&#8211;segment-id which takes either one ID or a sequence of IDs
+separated only by commas (,).</p>
+<p>Show one segment:</p>
+<p>$ sff notes show -i &lt;int&gt; file.json</p>
+<p>$ sff notes show &#8211;segment-id &lt;int&gt; file.json</p>
+<p>For more than one:</p>
+<p>$ sff notes show -i &lt;int&gt;,&lt;int&gt;,&lt;int&gt; file.json</p>
+<p>$ sff notes show &#8211;segment-id &lt;int&gt;,&lt;int&gt;,&lt;int&gt; file.json</p>
+<p>Note that there are NO SPACES between the sequence of segment IDs. As
+with listing notes, the user can show notes in long format using the
+-l/&#8211;long-format flag.</p>
+<p>$ sff notes show -i &lt;int&gt; -l file.json</p>
+<p>$ sff notes &#8211;segment-id &lt;int&gt; &#8211;long-format file.json</p>
+</div>
+</div>
+<div class="section" id="modifying-notes">
+<h2>Modifying Notes<a class="headerlink" href="#modifying-notes" title="Permalink to this headline">¶</a></h2>
+<p>Modifying notes is slightly more complicated that the read-only
+activities of finding and viewing described above. It involves making
+changes to the annotation sections (<em>biologicalAnnotation: description,
+numberOfInstances, externalReferences</em> and <em>complexesAndMacromolecules:
+complexes</em> and <em>macromolecules</em>) of the segments of interest.</p>
+<div class="section" id="temporary-file">
+<h3>Temporary File<a class="headerlink" href="#temporary-file" title="Permalink to this headline">¶</a></h3>
+<p>In order to avoid destroying the EMDB-SFF file to be modified, sfftk
+makes a temporary copy to be used throughout the modification process.
+Once the user is satisfied with the annotation the temporary file should
+be saved. Alternatively, the user can discard all changes by trashing
+the annotation then starting again.</p>
+<div class="section" id="a-note-about-emdb-sff-formats">
+<h4>A Note About EMDB-SFF Formats<a class="headerlink" href="#a-note-about-emdb-sff-formats" title="Permalink to this headline">¶</a></h4>
+<p>Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary
+file. However, JSON is preferred because of the absence of geometrical
+data. XML (particularly) and HDF5 can have voluminous geometrical data
+which can make the process of modifying an EMDB-SFF very slow. The
+default format used is JSON.</p>
+</div>
+</div>
+<div class="section" id="temporary-file-shorthand">
+<h3>Temporary File Shorthand<a class="headerlink" href="#temporary-file-shorthand" title="Permalink to this headline">¶</a></h3>
+<p>Once the user has entered the MODIFY state (by either running sff notes
+add or sff notes edit or or sff notes del) the user can refer to the
+temporary file using a shorthand specified in the configs. The default
+shorthand is the ‘at’ symbol (&#64;).</p>
+<p>$ sff notes add -i 1 -D ‘some description’ file.sff # add a description
+(assuming none exists)</p>
+<p># user is now in MODIFY state</p>
+<p>$ sff notes edit -i 1 -D ‘another description’ &#64;</p>
+<p>This is useful if the file has a long name or is at a distant path.</p>
+<p>$ sff notes add -i 1 -D ‘some description’
+tomo_5_diff_change_3.3_pi_77_27_paul_publishes.json</p>
+<p>$ sff notes edit -i 1 -D ‘another description’ &#64;</p>
+<p>or</p>
+<p>$ sff notes add -i 1 -D ‘some description’
+~/experiments/files/tomograms/zebra_fish_20170312/masks_repeat_19_3.3_relion_2.0.json</p>
+<p>$ sff notes edit -i 1 -D ‘some description’ &#64;</p>
+</div>
+<div class="section" id="modify-sequence">
+<h3>Modify Sequence<a class="headerlink" href="#modify-sequence" title="Permalink to this headline">¶</a></h3>
+<p>The following diagram illustrates the sequence of steps to be carried
+out with the names of the sub-subcommand next to arrows showing the
+modification that occurs.</p>
+<p>There are four types of annotations that can be made:</p>
+<ul>
+<li><p class="first">the segment description</p>
+</li>
+<li><p class="first">the number of instances of the segment</p>
+</li>
+<li><p class="first">external references using public accessions</p>
+<ul>
+<li><dl class="first docutils">
+<dt>global external references apply to the segmentation as a whole</dt>
+<dd><p class="first last">such as specimen type, scientific name</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>external references for a single segment apply only to a single</dt>
+<dd><p class="first last">segment</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p class="first">complexes and macromolecules</p>
+</li>
+</ul>
+</div>
+<div class="section" id="adding-notes">
+<h3>Adding Notes<a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
+<p>Notes are added using the sff notes add sub-subcommand.</p>
+<p>$ sff notes add -i &lt;segment_id&gt; [options] file.json</p>
+<div class="section" id="adding-a-description">
+<h4>Adding A Description<a class="headerlink" href="#adding-a-description" title="Permalink to this headline">¶</a></h4>
+<p>Use the -D/&#8211;description flag to add a description. Multi-word
+descriptions will need to be quoted.</p>
+<p>$ sff notes add -D ‘a very good description’ file.sff</p>
+<p>$ sff notes add &#8211;description ‘a very good description’ file.sff</p>
+</div>
+<div class="section" id="adding-the-number-of-instances">
+<h4>Adding The Number of Instances<a class="headerlink" href="#adding-the-number-of-instances" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes add -i &lt;segment_id&gt; -n &lt;int&gt; file.json</p>
+<p>$ sff notes add -i &lt;segment_id&gt; &#8211;number-of-instances &lt;int&gt; file.json</p>
+</div>
+<div class="section" id="adding-an-external-reference">
+<h4>Adding An External Reference<a class="headerlink" href="#adding-an-external-reference" title="Permalink to this headline">¶</a></h4>
+<p>External references consist of two parts:</p>
+<ul class="simple">
+<li>the name of the ontology, and</li>
+<li>the obo_id or accession</li>
+</ul>
+<p>Both of these may be obtained either from the OLS website of using the
+output of <a class="reference external" href="#finding-notes">*sff notes search ‘&lt;term&gt;’*</a>.</p>
+<p>For example, suppose we obtain the following result in a search:</p>
+<p><a href="#id5"><span class="problematic" id="id6">|search\_results.png|</span></a></p>
+<p>and are interested in adding the second result as an external reference
+to a segment. We note down the ontology name (go) and the obo_id
+(<a class="reference external" href="GO:0005739">GO:0005739</a>) then use the following command:</p>
+<p>$ sff notes add -i &lt;segment_id&gt; -E &lt;ontology&gt; &lt;obo_id&gt; file.json</p>
+<p>$ sff notes add -i &lt;segment_id&gt; &#8211;external-ref &lt;ontology&gt; &lt;obo_id&gt;
+file.json</p>
+</div>
+<div class="section" id="adding-a-complex-internal-use">
+<h4>Adding A Complex (Internal Use)<a class="headerlink" href="#adding-a-complex-internal-use" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes add -i &lt;segment_id&gt; -C &lt;comp1&gt;,&lt;comp2&gt;,...,&lt;compN&gt;
+file.json</p>
+<p>$ sff notes add -i &lt;segment_id&gt; &#8211;complexes &lt;comp1&gt;,&lt;comp2&gt;,...,&lt;compN&gt;
+file.json</p>
+</div>
+<div class="section" id="adding-a-macromolecule-internal-use">
+<h4>Adding A Macromolecule (Internal Use&gt;<a class="headerlink" href="#adding-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes add -i &lt;segment_id&gt; -M &lt;macr1&gt;,&lt;macr2&gt;,...,&lt;macrN&gt;
+file.json</p>
+<p>$ sff notes add -i &lt;segment_id&gt; &#8211;macromolecules
+&lt;macr1&gt;,&lt;macr2&gt;,...,&lt;macrN&gt; file.json</p>
+</div>
+</div>
+<div class="section" id="editing-notes">
+<h3>Editing Notes<a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
+<p>If a segment in an EMDB-SFF file already contains notes then we can only
+edit the notes using the sff notes edit sub-subcommand. Because some
+edit options will need to refer to specific entries (e.g. the third
+external reference) extra arguments are required to specify which entry
+is being edited.</p>
+<div class="section" id="editing-a-description">
+<h4>Editing A Description<a class="headerlink" href="#editing-a-description" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ file.json</p>
+<p>$ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ &#64; # if editing a
+just-added description</p>
+</div>
+<div class="section" id="editing-the-number-of-instances">
+<h4>Editing The Number of Instances<a class="headerlink" href="#editing-the-number-of-instances" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes edit -i &lt;segment_id&gt; -n &lt;int&gt; file.json</p>
+<p>$ sff notes edit -i &lt;segment_id&gt; -n &lt;int&gt; &#64; # if editing a just-added
+value</p>
+</div>
+<div class="section" id="editing-an-external-reference">
+<h4>Editing An External Reference<a class="headerlink" href="#editing-an-external-reference" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes edit -i &lt;segment_id&gt; -e &lt;extref_id&gt; -E &lt;ontology&gt;
+&lt;obo_id&gt; file.json</p>
+<p>$ sff notes edit -i &lt;segment_id&gt; &#8211;external-ref-id &lt;extref_id&gt; -E
+&lt;ontology&gt; &lt;obo_id&gt; file.json</p>
+<p># if editing a just-added description</p>
+<p>$ sff notes edit -i &lt;segment_id&gt; -e &lt;extref_id&gt; -E &lt;ontology&gt;
+&lt;obo_id&gt; &#64;</p>
+</div>
+<div class="section" id="editing-a-complex-internal-use">
+<h4>Editing A Complex (Internal Use)<a class="headerlink" href="#editing-a-complex-internal-use" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes edit -i &lt;segment_id&gt; -c &lt;comp_id&gt; -C
+&lt;comp1&gt;,&lt;comp2&gt;,...,&lt;compN&gt; file.json</p>
+<p>$ sff notes edit -i &lt;segment_id&gt; &#8211;complex-id &lt;comp_id&gt; -C
+&lt;comp1&gt;,&lt;comp2&gt;,...,&lt;compN&gt; file.json</p>
+<p>If only one complex is specified then the complex at complex_id will be
+replaced. However, if more than one is specified then complex_id will
+be replaced and the new complexes will bump down all present complexes.</p>
+</div>
+<div class="section" id="editing-a-macromolecule-internal-use">
+<h4>Editing A Macromolecule (Internal Use)<a class="headerlink" href="#editing-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes edit -i &lt;segment_id&gt; -m &lt;macr_id&gt; -M
+&lt;macr1&gt;,&lt;macr2&gt;,...,&lt;macrN&gt; file.json</p>
+<p>$ sff notes edit -i &lt;segment_id&gt; &#8211;macromolecule-id &lt;macr_id&gt; -M
+&lt;macr1&gt;,&lt;macr2&gt;,...,&lt;macrN&gt; file.json</p>
+</div>
+</div>
+<div class="section" id="deleting-notes">
+<h3>Deleting Notes<a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
+<p>Notes may be deleted using the sff notes del sub-subcommand. Because
+deleting is a destructive process the user only needs to specify which
+notes is being deleted.</p>
+<div class="section" id="deleting-a-description">
+<h4>Deleting A Description<a class="headerlink" href="#deleting-a-description" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes del -i &lt;segment_id&gt; -D file.json</p>
+</div>
+<div class="section" id="deleting-the-number-of-instances">
+<h4>Deleting The Number Of Instances<a class="headerlink" href="#deleting-the-number-of-instances" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes del -i &lt;segment_id&gt; -n file.json</p>
+</div>
+<div class="section" id="deleting-an-external-reference">
+<h4>Deleting An External Reference<a class="headerlink" href="#deleting-an-external-reference" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes del -i &lt;segment_id&gt; -e &lt;extref_id&gt; file.json</p>
+</div>
+<div class="section" id="deleting-a-complex-internal-use">
+<h4>Deleting A Complex (Internal Use)<a class="headerlink" href="#deleting-a-complex-internal-use" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes del -i &lt;segment_id&gt; -c &lt;comp_id&gt; file.json</p>
+</div>
+<div class="section" id="deleting-a-macromolecule-internal-use">
+<h4>Deleting A Macromolecule (Internal Use)<a class="headerlink" href="#deleting-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h4>
+<p>$ sff notes del -i &lt;segment_id&gt; -m &lt;macr_id&gt; file.json</p>
+</div>
+</div>
+<div class="section" id="saving-notes">
+<h3>Saving Notes<a class="headerlink" href="#saving-notes" title="Permalink to this headline">¶</a></h3>
+<p>It is important to periodically save notes. Running sff notes save
+save_to_file.json merges all notes from the temporary file into the
+destination file.</p>
+<p>$ sff notes save save_to_file.json</p>
+<p>$ sff notes save save_to_file.sff</p>
+<p>$ sff notes save save_to_file.hff</p>
+<p>Note that the file specified must exist and correspond to the annotated
+EMDB-SFF file.</p>
+</div>
+<div class="section" id="trashing-notes">
+<h3>Trashing Notes<a class="headerlink" href="#trashing-notes" title="Permalink to this headline">¶</a></h3>
+<p>Only one EMDB-SFF file per directory may have its notes modified at a
+time. This is because only one temporary file is created and an attempt
+to modify another file will raise a warning.</p>
+<p>Wed Sep 13 12:55:42 2017 Temporary file shorthand to use: &#64;</p>
+<p>Wed Sep 13 12:55:42 2017 Found temp file ./temp-annotated.json. Either
+run &#8216;save&#8217; or &#8216;trash&#8217; to discard changes before working on another file.</p>
+<p>The user can trash using the sff notes trash &#64; to reset the current
+directory to a VIEW state.</p>
+<p>$ sff notes trash &#64;</p>
+<p>Wed Sep 13 12:56:18 2017 Discarding all changes made in temp file
+./temp-annotated.json... Done</p>
+</div>
+<div class="section" id="merging-notes">
+<h3>Merging Notes<a class="headerlink" href="#merging-notes" title="Permalink to this headline">¶</a></h3>
+<p>Notes can be manually merged from two EMDB-SFF files. Obviously both
+files must refer to the exact same segmentation i.e. the number and IDs
+of segments must be identical. The user must specify an output file with
+the extension determining the output format.</p>
+<p>$ sff notes merge file1.sff file2.json -o merged_file.hff</p>
+</div>
+</div>
+<div class="section" id="configuration-settings">
+<h2>Configuration Settings<a class="headerlink" href="#configuration-settings" title="Permalink to this headline">¶</a></h2>
+<p>There are two main parameters that control the annotation process:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>__TEMP_FILE sets the path and name of the file to be used as a</dt>
+<dd><p class="first last">temporary store of annotations while in the MODIFY STATE. The
+temporary file holds all modifications until they are saved. All
+actions done in the MODIFY STATE occur on this file so that any
+crashes will leave the original file unchanged. Depending on the
+format used it can significantly speed up viewing and
+modification of notes. By default it is a JSON file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>__TEMP_FILE_REF serves as a shorthand reference to the</dt>
+<dd><p class="first last">segmentation file. It can only be used in the MODIFY STATE. The
+default value is ‘&#64;’. The use can use it to refer to the
+segmentation file instead of typing the full file path and name.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>A unique identifier for a term under the Open Biology Ontologies
+consortium’s OBO Foundry (see
+<a class="reference external" href="http://www.obofoundry.org/id-policy.html">*http://www.obofoundry.org/id-policy.html*</a>
+to learn more about obo_id). For example, in the Gene Ontology (GO)
+the term <em>positive regulation of release of cytochrome c from
+mitochondria</em> has the OBO ID <em>GO:0090200.</em></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Annotating EMDB-SFF Segmentations</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#operations-find-view-modify">Operations: find, view, modify</a></li>
+<li><a class="reference internal" href="#states-find-view-modify">States: FIND, VIEW, MODIFY</a></li>
+<li><a class="reference internal" href="#quick-start">Quick Start</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#finding-notes">Finding Notes</a><ul>
+<li><a class="reference internal" href="#specifying-search-terms">Specifying Search Terms</a><ul>
+<li><a class="reference internal" href="#specifying-the-ontology-to-search">Specifying The Ontology To Search</a></li>
+<li><a class="reference internal" href="#performing-exact-searches">Performing Exact Searches</a></li>
+<li><a class="reference internal" href="#including-obsolete-terms">Including Obsolete Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#listing-available-ontologies">Listing Available Ontologies</a><ul>
+<li><a class="reference internal" href="#short-listing-of-ontologies">Short Listing Of Ontologies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#traversing-searching-results">Traversing Searching Results</a><ul>
+<li><a class="reference internal" href="#specifying-the-start-result">Specifying The Start Result</a></li>
+<li><a class="reference internal" href="#specifying-the-number-of-rows-to-display">Specifying The Number Of Rows To Display</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#viewing-notes">Viewing Notes</a><ul>
+<li><a class="reference internal" href="#listing-all-notes">Listing All Notes</a><ul>
+<li><a class="reference internal" href="#sorting-notes-by-description">Sorting Notes By Description</a></li>
+<li><a class="reference internal" href="#reverse-sorting">Reverse Sorting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#listing-notes-in-a-single-segment">Listing Notes In A Single Segment</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modifying-notes">Modifying Notes</a><ul>
+<li><a class="reference internal" href="#temporary-file">Temporary File</a><ul>
+<li><a class="reference internal" href="#a-note-about-emdb-sff-formats">A Note About EMDB-SFF Formats</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#temporary-file-shorthand">Temporary File Shorthand</a></li>
+<li><a class="reference internal" href="#modify-sequence">Modify Sequence</a></li>
+<li><a class="reference internal" href="#adding-notes">Adding Notes</a><ul>
+<li><a class="reference internal" href="#adding-a-description">Adding A Description</a></li>
+<li><a class="reference internal" href="#adding-the-number-of-instances">Adding The Number of Instances</a></li>
+<li><a class="reference internal" href="#adding-an-external-reference">Adding An External Reference</a></li>
+<li><a class="reference internal" href="#adding-a-complex-internal-use">Adding A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#adding-a-macromolecule-internal-use">Adding A Macromolecule (Internal Use&gt;</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#editing-notes">Editing Notes</a><ul>
+<li><a class="reference internal" href="#editing-a-description">Editing A Description</a></li>
+<li><a class="reference internal" href="#editing-the-number-of-instances">Editing The Number of Instances</a></li>
+<li><a class="reference internal" href="#editing-an-external-reference">Editing An External Reference</a></li>
+<li><a class="reference internal" href="#editing-a-complex-internal-use">Editing A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#editing-a-macromolecule-internal-use">Editing A Macromolecule (Internal Use)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deleting-notes">Deleting Notes</a><ul>
+<li><a class="reference internal" href="#deleting-a-description">Deleting A Description</a></li>
+<li><a class="reference internal" href="#deleting-the-number-of-instances">Deleting The Number Of Instances</a></li>
+<li><a class="reference internal" href="#deleting-an-external-reference">Deleting An External Reference</a></li>
+<li><a class="reference internal" href="#deleting-a-complex-internal-use">Deleting A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#deleting-a-macromolecule-internal-use">Deleting A Macromolecule (Internal Use)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#saving-notes">Saving Notes</a></li>
+<li><a class="reference internal" href="#trashing-notes">Trashing Notes</a></li>
+<li><a class="reference internal" href="#merging-notes">Merging Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-settings">Configuration Settings</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="converting.html" title="previous chapter">Converting Files To EMDB-SFF</a></li>
+      <li>Next: <a href="misc.html" title="next chapter">Miscellaneous Operations Using sfftk</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/annotating.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, EMBL-EBI.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/annotating.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

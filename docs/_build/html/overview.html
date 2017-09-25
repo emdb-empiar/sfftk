@@ -1,0 +1,595 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>sfftk: EMDB-SFF Toolkit &mdash; sfftk 0.1.0.dev0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sfftk 0.1.0.dev0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sfftk-emdb-sff-toolkit">
+<h1><a class="toc-backref" href="#id3">sfftk: EMDB-SFF Toolkit</a><a class="headerlink" href="#sfftk-emdb-sff-toolkit" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sfftk-emdb-sff-toolkit" id="id3">sfftk: EMDB-SFF Toolkit</a><ul>
+<li><a class="reference internal" href="#about" id="id4">About</a><ul>
+<li><a class="reference internal" href="#sfftk" id="id5">sfftk</a></li>
+<li><a class="reference internal" href="#emdb-sff" id="id6">EMDB-SFF</a></li>
+<li><a class="reference internal" href="#funding" id="id7">Funding</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#obtaining-sfftk" id="id8">Obtaining sfftk</a></li>
+<li><a class="reference internal" href="#installing-sfftk" id="id9">Installing sfftk</a></li>
+<li><a class="reference internal" href="#purpose" id="id10">Purpose</a></li>
+<li><a class="reference internal" href="#audience" id="id11">Audience</a></li>
+<li><a class="reference internal" href="#input-data" id="id12">Input Data</a></li>
+<li><a class="reference internal" href="#supported-formats" id="id13">Supported Formats</a></li>
+<li><a class="reference internal" href="#dependencies" id="id14">Dependencies</a></li>
+<li><a class="reference internal" href="#features" id="id15">Features</a><ul>
+<li><a class="reference internal" href="#generic-options" id="id16">Generic Options</a></li>
+<li><a class="reference internal" href="#converting-files-to-emdb-sff" id="id17">Converting Files to EMDB-SFF</a></li>
+<li><a class="reference internal" href="#viewing-segmentations" id="id18">Viewing Segmentations</a><ul>
+<li><a class="reference internal" href="#viewing-raw-data" id="id19">Viewing raw data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configurations-tbd" id="id20">Configurations (TBD)</a></li>
+<li><a class="reference internal" href="#listing-supported-as-sffs" id="id21">Listing Supported AS-SFFs</a></li>
+<li><a class="reference internal" href="#annotating-segmentations" id="id22">Annotating Segmentations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-the-sfftk-api" id="id23">Using the sfftk API</a></li>
+<li><a class="reference internal" href="#extending-sfftk" id="id24">Extending sfftk</a></li>
+<li><a class="reference internal" href="#developers" id="id25">Developers</a></li>
+<li><a class="reference internal" href="#contact" id="id26">Contact</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Handling Annotations With <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span></code></p>
+<p>sff notes
+usage: sff notes [-h] EMDB-SFF annotation tools ...</p>
+<p>The EMDB-SFF Annotation Toolkit</p>
+<dl class="docutils">
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
+</dd>
+<dt>Annotation tools:</dt>
+<dd><p class="first">The EMDB-SFF Annotation Toolkit provides the following tools:</p>
+<dl class="last docutils">
+<dt>EMDB-SFF annotation tools</dt>
+<dd><p class="first">search              search for terms by labels
+list                list available annotations
+show                show an annotation by ID
+add                 add new annotations
+edit                edit existing annotations
+del                 delete existing annotations
+merge               merge notes from two EMDB-SFF files
+save                write all changes made until the last &#8216;save&#8217; action
+trash               discard all changes made since the last the edit</p>
+<blockquote class="last">
+<div>action (add, edit, del)</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Converting To And From Application-Specific File Formats</p>
+<p>sff convert
+usage: sff convert [-h] [-x] [-t] [-M] [-d DETAILS] [-P PRIMARY_DESCRIPTOR]</p>
+<blockquote>
+<div>[-v] [-o OUTPUT | -f FORMAT]
+from_file</div></blockquote>
+<p>Perform conversions to EMDB-SFF</p>
+<dl class="docutils">
+<dt>positional arguments:</dt>
+<dd>from_file             file to convert from</dd>
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x</span>, <span class="option">--exclude-unannotated-regions</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>(only for Segger) exclude regions with no annotation
+[default: False]</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-t</span>, <span class="option">--top-level-only</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>convert only the top-level segments [default: False]</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-M</span>, <span class="option">--contours-to-mesh</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>convert an &#8216;contourList&#8217; EMDB-SFF to a &#8216;meshList&#8217;
+EMDB-SFF</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DETAILS</var></span>, <span class="option">--details <var>DETAILS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>populates &lt;details&gt;...&lt;/details&gt; in the XML file
+[default: &#8216;&#8217;]</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-P <var>PRIMARY_DESCRIPTOR</var></span>, <span class="option">--primary-descriptor <var>PRIMARY_DESCRIPTOR</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>populates the
+&lt;primaryDescriptor&gt;...&lt;/primaryDescriptor&gt; to this
+value [valid values: threeDVolume, contourList,
+meshList, shapePrimitiveList]</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td>verbose output</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o <var>OUTPUT</var></span>, <span class="option">--output <var>OUTPUT</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file to convert to; the extension (.sff, .hff, .json)
+determines the output format [default: None]</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-f <var>FORMAT</var></span>, <span class="option">--format <var>FORMAT</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output file format; valid options are: sff (XML), hff
+(HDF5), json (JSON) [default: sff]</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>Handling <code class="docutils literal"><span class="pre">sfftk</span></code> Configurations</p>
+<p>sff config
+usage: sff config [-h] config_name config_value</p>
+<p>Write configs used by updateschema and OMERO-server connection</p>
+<dl class="docutils">
+<dt>positional arguments:</dt>
+<dd>config_name   name of config to write
+config_value  value of config to write</dd>
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>Viewing Segmentation File Summaries</p>
+<p>sff view
+usage: sff view [-h] [-V] [-v] from_file</p>
+<p>View a summary of an SFF file</p>
+<dl class="docutils">
+<dt>positional arguments:</dt>
+<dd>from_file      any SFF file</dd>
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-V</span>, <span class="option">--version</span></kbd></td>
+<td>show SFF format version</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-v</span>, <span class="option">--verbose</span></kbd></td>
+<td>verbose output</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>Developers: Running Unit Tests</p>
+<p>sff tests
+usage: sff tests [-h] [-v VERBOSITY] [tool [tool ...]]</p>
+<p>Run unit tests</p>
+<dl class="docutils">
+<dt>positional arguments:</dt>
+<dd><dl class="first last docutils">
+<dt>tool                  one or none of the following: notes, convert, config,</dt>
+<dd>view, parser, sffreader, meshreader, surfreader,
+modreader, omero_wrapper, meshtools, stlreader,
+mapreader</dd>
+</dl>
+</dd>
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-v <var>VERBOSITY</var></span>, <span class="option">--verbosity <var>VERBOSITY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>set verbosity; valid values: 0, 1, 2, 3 [default: 0]</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<div class="section" id="about">
+<h2><a class="toc-backref" href="#id4">About</a><a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sfftk">
+<h3><a class="toc-backref" href="#id5">sfftk</a><a class="headerlink" href="#sfftk" title="Permalink to this headline">¶</a></h3>
+<p>The EMDB-SFF Toolkit (sfftk) is a set of utilities to generate, edit and
+display segmentation data contained in EMDB Segmentation File Format (SFF)
+files. EMDB-SFF is the result of a community effort to unify representation
+of segmentations derived from various segmentation tools. The toolkit is
+designed as a set of subcommands that perform the various functions:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>pkorir@pkorir-tarakimu:trunk $ python sff -h
+usage: sff [-h] EMDB-SFF tools ...
+
+The EMDB-SFF Toolkit (sfftk)
+
+optional arguments:
+  -h, --help      show this help message and exit
+
+Tools:
+  The EMDB-SFF Toolkit (sfftk) provides the following tools:
+
+  EMDB-SFF tools
+    convert       converts from/to EMDB-SFF
+    updateschema  update schemas (emdb_sff.py or roi.py) using generateDS.py
+    list          list various entities
+    createroi     create ROIs and write to file
+    attachroi     attach ROIs to image
+    deleteroi     delete ROIs associated with image
+    config        manage configs
+    view          view file summary
+    view3d        render 3D model
+    tests         run unit tests
+</pre></div>
+</div>
+<p>The various utilities are designed as packages for reusability.</p>
+</div>
+<div class="section" id="emdb-sff">
+<h3><a class="toc-backref" href="#id6">EMDB-SFF</a><a class="headerlink" href="#emdb-sff" title="Permalink to this headline">¶</a></h3>
+<p>The EMDB-SFF has two principal roles:</p>
+<ol class="arabic simple">
+<li>An open and flexible format for storing segmentations</li>
+<li>A means to capture annotation of segmentations</li>
+</ol>
+<p>The current version of the file format is 0.5.8 pending discussion and feedback from the EM community.</p>
+<p>As a unifying representation, EMDB-SFF will facilitate display of segmentations alongside associated reconstructed volumes.
+EMDB-SFF incorporates four generic segmentation representations:</p>
+<ul class="simple">
+<li>3D volumes</li>
+<li>contours</li>
+<li>meshes (surfaces)</li>
+<li>shape primitives (ellipsoid, cuboid, cylinder, cone)</li>
+</ul>
+</div>
+<div class="section" id="funding">
+<h3><a class="toc-backref" href="#id7">Funding</a><a class="headerlink" href="#funding" title="Permalink to this headline">¶</a></h3>
+<p>TBD</p>
+</div>
+</div>
+<div class="section" id="obtaining-sfftk">
+<h2><a class="toc-backref" href="#id8">Obtaining sfftk</a><a class="headerlink" href="#obtaining-sfftk" title="Permalink to this headline">¶</a></h2>
+<p>TBD</p>
+</div>
+<div class="section" id="installing-sfftk">
+<h2><a class="toc-backref" href="#id9">Installing sfftk</a><a class="headerlink" href="#installing-sfftk" title="Permalink to this headline">¶</a></h2>
+<p>TBD</p>
+</div>
+<div class="section" id="purpose">
+<h2><a class="toc-backref" href="#id10">Purpose</a><a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>sfftk is designed to:</p>
+<ul class="simple">
+<li>convert application specific segmentation file formats (AS-SFF) into EMDB-SFF;</li>
+<li>convert EMDB-SFF files into AS-SFF (where possible);</li>
+<li>display segmentations contained in EMDB-SFF files for inspection;</li>
+<li>prepare OMERO ROIs from segmentations;</li>
+<li>attach generated OMERO ROIs to corresponding images hosted in OMERO;</li>
+<li>annotate segmentations using biological ontologies;</li>
+<li>view segmentation metadata;</li>
+</ul>
+</div>
+<div class="section" id="audience">
+<h2><a class="toc-backref" href="#id11">Audience</a><a class="headerlink" href="#audience" title="Permalink to this headline">¶</a></h2>
+<p>sfftk is aimed at 3D electron microscopy (3DEM) practitioners.</p>
+</div>
+<div class="section" id="input-data">
+<h2><a class="toc-backref" href="#id12">Input Data</a><a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h2>
+<p>sfftk accepts the following data types:</p>
+<ul class="simple">
+<li>several AS-SFFs (see Supported Formats below for the up-to-date listing)</li>
+<li>ROI files: XML files formatted with the ROI schema (link);</li>
+<li>EMDB-SFF files: XML files formatted with the EMDB_SFF schema;</li>
+</ul>
+</div>
+<div class="section" id="supported-formats">
+<h2><a class="toc-backref" href="#id13">Supported Formats</a><a class="headerlink" href="#supported-formats" title="Permalink to this headline">¶</a></h2>
+<p>(extension in alphabetic order)</p>
+<ul class="simple">
+<li>Amira Mesh (.am)</li>
+<li>EMDB Map masks (.map)</li>
+<li>IMOD (.mod)</li>
+<li>ROI (.roi)*</li>
+<li>Segger (.seg)</li>
+<li>EMDB-SFF (.sff)</li>
+<li>Amira HxSurface (.surf)</li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>internal file</p>
+</div>
+<div class="section" id="dependencies">
+<h2><a class="toc-backref" href="#id14">Dependencies</a><a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>(alphabetic order of Python import name)</p>
+<p>sfftk has the following dependencies:</p>
+<ul class="simple">
+<li>generateDS</li>
+<li>h5py</li>
+<li>matplotlib</li>
+<li>numpy</li>
+<li>omero</li>
+<li>scipy</li>
+<li>simpleparser</li>
+<li>skimage</li>
+<li>bitarray (?)</li>
+</ul>
+</div>
+<div class="section" id="features">
+<h2><a class="toc-backref" href="#id15">Features</a><a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generic-options">
+<h3><a class="toc-backref" href="#id16">Generic Options</a><a class="headerlink" href="#generic-options" title="Permalink to this headline">¶</a></h3>
+<p>Some options work on most subcommands. Run <cite>sff &lt;subcommand&gt; -h</cite> to verify available options.</p>
+<p>-v/&#8211;verbose
+-h/&#8211;help</p>
+</div>
+<div class="section" id="converting-files-to-emdb-sff">
+<h3><a class="toc-backref" href="#id17">Converting Files to EMDB-SFF</a><a class="headerlink" href="#converting-files-to-emdb-sff" title="Permalink to this headline">¶</a></h3>
+<p>Supported AS-SFF files are converted to EMDB-SFF files using the <cite>convert</cite> subcommand:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ sff convert &lt;file.ext&gt;
+</pre></div>
+</div>
+<p>where <cite>ext</cite> is a supported extension.</p>
+<p>Example:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre># verbosely convert an IMOD file into EMDB-SFF and write the output to file.sff
+$ python sff convert -v sff/test_data/test_data.mod -o file.sff
+Thu Jul 14 16:43:04 2016        Created XMLData object from schema &lt;schema.emdb_sff.segmentation object at 0x102a4f610&gt;
+Thu Jul 14 16:43:04 2016        Reading in IMOD file from sff/test_data/test_data.mod file
+Thu Jul 14 16:43:04 2016        Writing out XML to file file.sff
+</pre></div>
+</div>
+</div>
+<div class="section" id="viewing-segmentations">
+<h3><a class="toc-backref" href="#id18">Viewing Segmentations</a><a class="headerlink" href="#viewing-segmentations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="viewing-raw-data">
+<h4><a class="toc-backref" href="#id19">Viewing raw data</a><a class="headerlink" href="#viewing-raw-data" title="Permalink to this headline">¶</a></h4>
+<p>The raw data can be viewed through the <cite>view</cite> subcommand:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ sff view &lt;file.ext&gt;
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre># view metadata from an Amira Mesh file
+$ sff view sff/test_data/test_data.am
+
+*******************************************************************************
+Amira Mesh file
+Version:              2.1
+Format:               BINARY-LITTLE-ENDIAN
+*******************************************************************************
+Materials:
+
+Mitochondria_
+Id                    4
+Color                 [1.0, 1.0, 0.0]
+
+Inside
+Id                    2
+Color                 [0.64, 0.0, 0.8]
+
+Mitochondria
+Id                    3
+Color                 [0.0, 1.0, 0.0]
+
+NE
+Id                    6
+Color                 [1.0, 0.0, 0.0]
+
+mitochondria__
+Id                    5
+Color                 [0.0, 0.125, 1.0]
+
+Exterior
+Id                    1
+
+
+Mesh                  200 images each of 971 X 862 pixels (3 colors)
+
+*******************************************************************************
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configurations-tbd">
+<h3><a class="toc-backref" href="#id20">Configurations (TBD)</a><a class="headerlink" href="#configurations-tbd" title="Permalink to this headline">¶</a></h3>
+<p>Most subcommands act transiently. However, subcommands which require persistent data must save configurations.
+For example, subcommands that require connections to an OMERO instance must at least store the host, port and username (not advisable to store passwords).
+Also, updating the schema needs a persistent record of the location and destination of the schema and schema API, respectively.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ sff config &lt;config.name&gt;=&lt;config.value&gt;
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ sff config omero.host=localhost omero.port=4064 omero.user=test
+</pre></div>
+</div>
+</div>
+<div class="section" id="listing-supported-as-sffs">
+<h3><a class="toc-backref" href="#id21">Listing Supported AS-SFFs</a><a class="headerlink" href="#listing-supported-as-sffs" title="Permalink to this headline">¶</a></h3>
+<p>TBD</p>
+</div>
+<div class="section" id="annotating-segmentations">
+<h3><a class="toc-backref" href="#id22">Annotating Segmentations</a><a class="headerlink" href="#annotating-segmentations" title="Permalink to this headline">¶</a></h3>
+<p>TBD</p>
+</div>
+</div>
+<div class="section" id="using-the-sfftk-api">
+<h2><a class="toc-backref" href="#id23">Using the sfftk API</a><a class="headerlink" href="#using-the-sfftk-api" title="Permalink to this headline">¶</a></h2>
+<p>sfftk provides an API to its functionality for reusability.</p>
+<ol class="arabic simple">
+<li>Read EMDB-SFF files</li>
+</ol>
+<pre class="code python literal-block">
+<span class="ln"> 1 </span><span class="keyword namespace">from</span> <span class="name namespace">sfftk.readers.sffreader</span> <span class="keyword namespace">import</span> <span class="name">get_data</span>
+<span class="ln"> 2 </span>
+<span class="ln"> 3 </span><span class="comment single"># get_data takes an EMDB-SFF file name</span>
+<span class="ln"> 4 </span><span class="name">descriptor</span><span class="punctuation">,</span> <span class="name">segments</span><span class="punctuation">,</span> <span class="name">colours</span><span class="punctuation">,</span> <span class="name">alphas</span> <span class="operator">=</span> <span class="name">get_data</span><span class="punctuation">(</span><span class="name">sff_fn</span><span class="punctuation">)</span>
+<span class="ln"> 5 </span>
+<span class="ln"> 6 </span><span class="comment single"># descriptor is one of 'threeDVolume', 'contourList', 'meshList', 'shapePrimitive'</span>
+<span class="ln"> 7 </span><span class="comment single"># segments is a dictionary of contours/meshes</span>
+<span class="ln"> 8 </span><span class="comment single"># colours is a list with as many RGB float-triples as segments</span>
+<span class="ln"> 9 </span><span class="comment single"># alphas is a list with as many floats (in the range 0-1 inclusive) as segments</span>
+</pre>
+<ol class="arabic simple" start="2">
+<li>Convert supported AS-SFF files to EMDB-SFF</li>
+</ol>
+<p>TBA</p>
+<ol class="arabic simple" start="3">
+<li>Convert EMDB-SFF to supported AS-SFF files</li>
+</ol>
+<p>TBD</p>
+</div>
+<div class="section" id="extending-sfftk">
+<h2><a class="toc-backref" href="#id24">Extending sfftk</a><a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h2>
+<p>TBD</p>
+</div>
+<div class="section" id="developers">
+<h2><a class="toc-backref" href="#id25">Developers</a><a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h2>
+<p>Paul K. Korir, PhD</p>
+</div>
+<div class="section" id="contact">
+<h2><a class="toc-backref" href="#id26">Contact</a><a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>For questions, comments and/or bug reports, please write to:</p>
+<p>pkorir [THE &#64; SIGN] ebi [FIRST DOT] ac [ANOTHER DOT] uk
+paul.korir [THE &#64; SIGN] gmail [ONLY ONE DOT] com</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">sfftk: EMDB-SFF Toolkit</a><ul>
+<li><a class="reference internal" href="#about">About</a><ul>
+<li><a class="reference internal" href="#sfftk">sfftk</a></li>
+<li><a class="reference internal" href="#emdb-sff">EMDB-SFF</a></li>
+<li><a class="reference internal" href="#funding">Funding</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#obtaining-sfftk">Obtaining sfftk</a></li>
+<li><a class="reference internal" href="#installing-sfftk">Installing sfftk</a></li>
+<li><a class="reference internal" href="#purpose">Purpose</a></li>
+<li><a class="reference internal" href="#audience">Audience</a></li>
+<li><a class="reference internal" href="#input-data">Input Data</a></li>
+<li><a class="reference internal" href="#supported-formats">Supported Formats</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#generic-options">Generic Options</a></li>
+<li><a class="reference internal" href="#converting-files-to-emdb-sff">Converting Files to EMDB-SFF</a></li>
+<li><a class="reference internal" href="#viewing-segmentations">Viewing Segmentations</a><ul>
+<li><a class="reference internal" href="#viewing-raw-data">Viewing raw data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configurations-tbd">Configurations (TBD)</a></li>
+<li><a class="reference internal" href="#listing-supported-as-sffs">Listing Supported AS-SFFs</a></li>
+<li><a class="reference internal" href="#annotating-segmentations">Annotating Segmentations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-the-sfftk-api">Using the sfftk API</a></li>
+<li><a class="reference internal" href="#extending-sfftk">Extending sfftk</a></li>
+<li><a class="reference internal" href="#developers">Developers</a></li>
+<li><a class="reference internal" href="#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/overview.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, EMBL-EBI.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/overview.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

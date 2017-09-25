@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending sfftk &mdash; sfftk 0.1.0.dev0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sfftk 0.1.0.dev0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="extending-sfftk">
+<h1>Extending sfftk<a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="adding-a-segmentation-file-format">
+<h2>Adding A Segmentation File Format<a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this headline">¶</a></h2>
+<p>There are four (4) steps involved.</p>
+<ul class="simple">
+<li>Create a reader</li>
+<li>Create a format adapter</li>
+<li>Add test data</li>
+<li>Write unit tests</li>
+</ul>
+<div class="section" id="step-i-create-a-reader">
+<h3>Step I: Create a reader<a class="headerlink" href="#step-i-create-a-reader" title="Permalink to this headline">¶</a></h3>
+<p>Write a reader module and place it in sfftk.readers package. The reader
+module may implement a single class that provides a simple API to
+segmentation files. There is not predefined structure on how to handle
+reading the file. However, the reader module must implement a
+get_data(fn, *args, **kwargs) function that takes the name of a file
+as a string. The name of the module should be the extension followed by
+the word ‘reader’ e.g. for Segger files it is segreader.py.</p>
+</div>
+<div class="section" id="step-ii-create-a-format-adapter">
+<h3>Step II: Create a format adapter<a class="headerlink" href="#step-ii-create-a-format-adapter" title="Permalink to this headline">¶</a></h3>
+<p>Write a format module and place it in the sfftk.formats package. This
+module adapts the reader in Step II to the schema (EMDB-SFF data model)
+API. The name of the module must be simply the extension of the file
+format e.g. for Segger files it is seg.py. The module uses the inherits
+segmentation parts from the classes defined in sfftk.formats.base module
+and have names indicating the segmentation format e.g. for Segger seg.py
+has a SeggerSegmentation class that inherits from the generic
+Segmentation class which provides a way to hook functionality required
+of all custom segmentation representations. This module will then tie
+the segmentation file format API defined in readers with the schema
+(EMDB-SFF data model) API.</p>
+</div>
+<div class="section" id="step-iii-add-test-data">
+<h3>Step III: Add test data<a class="headerlink" href="#step-iii-add-test-data" title="Permalink to this headline">¶</a></h3>
+<p>Provide an example segmentation in the sfftk.test_data package.</p>
+</div>
+<div class="section" id="step-iv-write-tests">
+<h3>Step IV: Write tests<a class="headerlink" href="#step-iv-write-tests" title="Permalink to this headline">¶</a></h3>
+<p>Write unit tests and add them to the sfftk.unittests.test_formats
+module. Each format that you add should implement a read and convert
+test method (respectively called test_&lt;format&gt;_read and
+test_&lt;format&gt;_convert. See the sfftk.unittests.test_formats module
+for examples.</p>
+<p>Once all this components are in place conversion to XML, HDF5 and JSON
+should be automatic.</p>
+<p>$ sff convert file.&lt;format&gt; -f sff</p>
+<p>$ sff convert file.&lt;format&gt; -f hff</p>
+<p>$ sff convert file.&lt;format&gt; -f json</p>
+<p>Also, tests can be run as follows:</p>
+<p>$ sff tests format</p>
+<p>$ sff test formats</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending sfftk</a><ul>
+<li><a class="reference internal" href="#adding-a-segmentation-file-format">Adding A Segmentation File Format</a><ul>
+<li><a class="reference internal" href="#step-i-create-a-reader">Step I: Create a reader</a></li>
+<li><a class="reference internal" href="#step-ii-create-a-format-adapter">Step II: Create a format adapter</a></li>
+<li><a class="reference internal" href="#step-iii-add-test-data">Step III: Add test data</a></li>
+<li><a class="reference internal" href="#step-iv-write-tests">Step IV: Write tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/extending.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, EMBL-EBI.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/extending.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

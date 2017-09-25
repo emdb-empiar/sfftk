@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developing with sfftk &mdash; sfftk 0.1.0.dev0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sfftk 0.1.0.dev0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="developing-with-sfftk">
+<h1>Developing with sfftk<a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>sfftk has been designed to be relatively straightforward to integrate
+into other Python applications having several decoupled packages with
+decoupled modules. At the heart of the package is an extensible schema
+API that handles all aspects of representation and export as the various
+file formats transparently. Developers can thus read and write EMDB-SFF
+files by only knowing about the top-level classes. Additionally,
+developers can also read in supported application-specific segmentation
+files and converting to EMDB-SFF easily.</p>
+</div>
+<div class="section" id="reading-emdb-sff-files">
+<h2>Reading EMDB-SFF Files<a class="headerlink" href="#reading-emdb-sff-files" title="Permalink to this headline">¶</a></h2>
+<p>All aspects of the structure of an EMDB-SFF file are handled by
+sfftk.schema package which which defines the SFFSegmentation class to
+handle reading, creation and writing of EMDB-SFF files.</p>
+<p>from sfftk.unittests import TEST_DATA_PATH</p>
+<p>import os</p>
+<p># XML file</p>
+<p>seg_fn = os.path.join(TEST_DATA_PATH, &#8216;sff&#8217;, &#8216;emd_1014.sff&#8217;)</p>
+<p>seg = SFFSegmentation(seg_fn)</p>
+<p># HDF5 file</p>
+<p>seg_fn = os.path.join(TEST_DATA_PATH, &#8216;sff&#8217;, &#8216;emd_1014.hff&#8217;)</p>
+<p>seg = SFFSegmentation(seg_fn)</p>
+<p># JSON file</p>
+<p>seg_fn = os.path.join(TEST_DATA_PATH, &#8216;sff&#8217;, &#8216;emd_1014.json&#8217;)</p>
+<p>seg = SFFSegmentation(seg_fn)</p>
+<div class="section" id="viewing-segmentation-metadata">
+<h3>Viewing Segmentation Metadata<a class="headerlink" href="#viewing-segmentation-metadata" title="Permalink to this headline">¶</a></h3>
+<p># name</p>
+<p>print seg.name</p>
+<p># schema version</p>
+<p>print seg.version</p>
+<p># software details</p>
+<p>print seg.software</p>
+<p># segmentation file path</p>
+<p>print seg.filePath</p>
+<p># primary descriptor</p>
+<p>print seg.primaryDescriptor</p>
+<p># transforms</p>
+<p>print seg.transforms</p>
+<p>print len(seg.transforms)</p>
+<p>print seg.transforms[0]</p>
+<p># bounding box</p>
+<p>print seg.boundingBox</p>
+<p># details</p>
+<p>print seg.details</p>
+</div>
+<div class="section" id="viewing-segments">
+<h3>Viewing Segments<a class="headerlink" href="#viewing-segments" title="Permalink to this headline">¶</a></h3>
+<p>print seg.segments</p>
+<div class="section" id="getting-the-list-of-segment-ids">
+<h4>Getting The List of Segment IDs<a class="headerlink" href="#getting-the-list-of-segment-ids" title="Permalink to this headline">¶</a></h4>
+<p># segment IDs</p>
+<p>print seg.segments.get_ids()</p>
+</div>
+<div class="section" id="getting-a-segment-by-id">
+<h4>Getting A Segment By ID<a class="headerlink" href="#getting-a-segment-by-id" title="Permalink to this headline">¶</a></h4>
+<p>segment = seg.segments.get_by_id(&lt;segment_id&gt;)</p>
+<p>print segment</p>
+</div>
+</div>
+<div class="section" id="viewing-segment-metadata">
+<h3>Viewing Segment Metadata<a class="headerlink" href="#viewing-segment-metadata" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id-and-parent-id">
+<h4>ID and Parent ID<a class="headerlink" href="#id-and-parent-id" title="Permalink to this headline">¶</a></h4>
+<p>print segment.id</p>
+<p>print segment.parentID</p>
+</div>
+<div class="section" id="biological-annotation">
+<h4>Biological Annotation<a class="headerlink" href="#biological-annotation" title="Permalink to this headline">¶</a></h4>
+<p>print segment.biologicalAnnotation</p>
+<p>print segment.biologicalAnnotation.description</p>
+<p>print segment.biologicalAnnotation.numberOfInstances</p>
+<p>print segment.biologicalAnnotation.externalReferences</p>
+<p>print segment.biologicalAnnotation.externalReferences[0] #&nbsp;first
+reference</p>
+</div>
+<div class="section" id="complexes-and-macromolecules">
+<h4>Complexes and Macromolecules<a class="headerlink" href="#complexes-and-macromolecules" title="Permalink to this headline">¶</a></h4>
+<p>print segment.complexesAndMacromolecules</p>
+<p>print segment.complexesAndMacromolecules.complexes</p>
+<p>print segment.complexesAndMacromolecules.macromolecules</p>
+</div>
+</div>
+</div>
+<div class="section" id="creating-emdb-sff-objects">
+<h2>Creating EMDB-SFF Objects<a class="headerlink" href="#creating-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
+<p>Users can create EMDB-SFF objects from scratch then export them to a
+file format of your choice.</p>
+<p>from sfftk import schema</p>
+<p># an empty EMDB-SFF segmentation</p>
+<p>seg = schema.SFFSegmentation()</p>
+<div class="section" id="setting-segmentation-metadata">
+<h3>Setting Segmentation Metadata<a class="headerlink" href="#setting-segmentation-metadata" title="Permalink to this headline">¶</a></h3>
+<p># view the schema version</p>
+<p>print seg.version</p>
+<p># segmentation name</p>
+<p>seg.name = ‘A New Segmentation’</p>
+<p># segmentation software used</p>
+<p>seg.software = schema.SFFSoftware(</p>
+<p>name=’Some Software’,</p>
+<p>version=’v0.1.3.dev3’,</p>
+<p>processingDetails=’Lorem ipsum dolor…’</p>
+<p>)</p>
+<p># filePath</p>
+<p>seg.filePath = ‘/path/to/original/file’</p>
+<p># bounding box</p>
+<p>seg.boundingBox = schema.SFFBoundingBox(</p>
+<p>xmin=&lt;xmin&gt;,</p>
+<p>xmax=&lt;xmax&gt;,</p>
+<p>ymin=&lt;ymin&gt;,</p>
+<p>ymax=&lt;ymax&gt;,</p>
+<p>zmin=&lt;zmin&gt;,</p>
+<p>zmax=&lt;zmax&gt;</p>
+<p>)</p>
+<p># the list of transforms</p>
+<p>seg.transforms = schema.SFFTransformationMatrix()</p>
+<p>#&nbsp;an identity matrix with no transformation</p>
+<p>transform = schema.SFFTransformationMatrix(</p>
+<p>rows=3,</p>
+<p>cols=4,</p>
+<p>data=’1 0 0 0 0 1 0 0 0 0 1 0’</p>
+<p>)</p>
+<p># add it to the list of transforms</p>
+<p>seg.transforms.add_transform(transform)</p>
+<div class="section" id="setting-segments">
+<h4>Setting Segments<a class="headerlink" href="#setting-segments" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="setting-segment-metadata">
+<h5>Setting Segment Metadata<a class="headerlink" href="#setting-segment-metadata" title="Permalink to this headline">¶</a></h5>
+<p>segment = schema.SFFSegment()</p>
+<div class="section" id="id1">
+<h6>Biological Annotation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h6>
+<p># define the biological annotation object</p>
+<p>bioAnn = schema.SFFBiologicalAnnotation()</p>
+<p>bioAnn.description = “Some description”</p>
+<p>bioAnn.numberOfInstances = 7</p>
+<p># define the external references</p>
+<p>extRefs = schema.SFFExternalReferences()</p>
+<p>extRefs.add_externalReference(</p>
+<p>schema.SFFExternalReference(</p>
+<p>type=”ontology1”,</p>
+<p>value=”obo_id1”</p>
+<p>)</p>
+<p>)</p>
+<p>extRefs.add_externalReference(</p>
+<p>schema.SFFExternalReference(</p>
+<p>type=”ontology2”,</p>
+<p>value=”obo_id2”</p>
+<p>)</p>
+<p>)</p>
+<p># add the external references to the biological annotation</p>
+<p>bioAnn.externalReferences = extRefs</p>
+<p># add the biological annotation to the segment</p>
+<p>segment.biologicalAnnotation = bioAnn</p>
+</div>
+<div class="section" id="id2">
+<h6>Complexes and Macromolecules<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h6>
+<p>compMacr = schema.SFFComplexesAndMacromolecules()</p>
+<p>#&nbsp;complexes</p>
+<p>comp = schema.SFFComplexes()</p>
+<p>comp.add_complex(“comp1”)</p>
+<p>comp.add_complex(“comp2”)</p>
+<p># macromolecules</p>
+<p>macr = schema.SFFMacromolecules()</p>
+<p>macr.add_macromolecule(“macr1”)</p>
+<p>macr.add_macromolecule(“macr2”)</p>
+<p># add the complexes and macromolecules</p>
+<p>compMacr.complexes = comp</p>
+<p>compMacr.macromolecules = macr</p>
+<p># add them to the segment</p>
+<p>segment.complexesAndMacromolecules = compMacr</p>
+</div>
+<div class="section" id="colour">
+<h6>Colour<a class="headerlink" href="#colour" title="Permalink to this headline">¶</a></h6>
+<p>Colours can either be described by name or by normalised RGBA values
+(each channel has a value in the interval (0,1)).</p>
+<p># colour by name; see: <a class="reference external" href="https://en.wikipedia.org/wiki/Web_colors">https://en.wikipedia.org/wiki/Web_colors</a></p>
+<p>segment.colour = schema.SFFColour()</p>
+<p>LightSeaGreen: (32, 178, 170)</p>
+<p>segment.colour.name = “LightSeaGreen”</p>
+<p># colour as RGBA</p>
+<p>rgba = schema.SFFRGBA(</p>
+<p>red=0.1,</p>
+<p>green=0.2,</p>
+<p>blue=0.8,</p>
+<p>alpha=0.5</p>
+<p>)</p>
+<p>segment.colour = schema.SFFColour()</p>
+<p>segment.colour.rgba = rgba</p>
+</div>
+</div>
+<div class="section" id="setting-contour-segments">
+<h5>Setting Contour Segments<a class="headerlink" href="#setting-contour-segments" title="Permalink to this headline">¶</a></h5>
+<p>from random import random, randint</p>
+<p>contours = schema.SFFContourList()</p>
+<p>i = 0</p>
+<p>while i &lt; 10:</p>
+<p>contour = schema.SFFContour()</p>
+<p>j = 0</p>
+<p>J = randint(10, 20)</p>
+<p>while j &lt; J:</p>
+<blockquote>
+<div><p>contour.add_point(</p>
+<p>schema.SFFContourPoint(</p>
+<p>x=random()*10,</p>
+<p>y=random()*10,</p>
+<p>z=random()*10,</p>
+<p>)</p>
+<p>)</p>
+<p>j += 1</p>
+</div></blockquote>
+<p>contours.add_contour(contour)</p>
+<p>i += 1</p>
+<p># add the contours to the segment</p>
+<p>segment.contours = contours</p>
+</div>
+<div class="section" id="setting-mesh-segments">
+<h5>Setting Mesh Segments<a class="headerlink" href="#setting-mesh-segments" title="Permalink to this headline">¶</a></h5>
+<p>from random import random, randint</p>
+<p># the list of meshes</p>
+<p>meshes = schema.SFFMeshList()</p>
+<p># a mesh</p>
+<p>mesh = schema.SFFMesh()</p>
+<p># a list of vertices</p>
+<p>vertices = schema.SFFVertexList()</p>
+<p>no_vertices = randint(stop=100)</p>
+<p># add vertices from the list of vertices</p>
+<p>for i in xrange(no_vertices):</p>
+<p>vertex = schema.SFFVertex()</p>
+<p>vertex.point = tuple(</p>
+<blockquote>
+<div><p>map(float, (randint(1, 1000), randint(1, 1000), randint(1, 1000)))</p>
+<p>)</p>
+</div></blockquote>
+<p>vertices.add_vertex(vertex)</p>
+<p># a list of polygons</p>
+<p>polygons = schema.SFFPolygonList()</p>
+<p>no_polygons = randint(stop=100)</p>
+<p># add polygons to the list of polygons</p>
+<p>for i in xrange(no_polygons):</p>
+<p>polygon = schema.SFFPolygon()</p>
+<p>polygon.add_vertex(random.choice(range(randint())))</p>
+<p>polygon.add_vertex(random.choice(range(randint())))</p>
+<p>polygon.add_vertex(random.choice(range(randint())))</p>
+<p>polygons.add_polygon(polygon)</p>
+<p># set the vertices and polygons on the mesh</p>
+<p>mesh.vertices = vertices</p>
+<p>mesh.polygons = polygons</p>
+<p># add the mesh to the list of meshes</p>
+<p>meshes.add_mesh(mesh)</p>
+<p># add the mesh to the segment</p>
+<p>segment.meshes = meshes</p>
+</div>
+<div class="section" id="setting-shape-segments">
+<h5>Setting Shape Segments<a class="headerlink" href="#setting-shape-segments" title="Permalink to this headline">¶</a></h5>
+<p>from random import random, randint</p>
+<p># a list of shape</p>
+<p>shapes = schema.SFFShapePrimitiveList()</p>
+<p># a cone</p>
+<p>#&nbsp;first we define the transform that locates it in place</p>
+<p>transform = schema.SFFTransformationMatrix(</p>
+<p>rows=3,</p>
+<p>cols=4,</p>
+<p>data=’1 0 0 0 0 1 0 0 0 0 1 0’</p>
+<p>)</p>
+<p>#&nbsp;second we define its dimension</p>
+<p>shapes.add_shape(</p>
+<p>schema.SFFCone(</p>
+<blockquote>
+<div><p>height=random()*100,</p>
+<p>bottomRadius=random()*100,</p>
+<p>transformId=transform.id,</p>
+<p>)</p>
+</div></blockquote>
+<p>)</p>
+<p># add the transform to the list of transforms</p>
+<p>seg.transforms.add_transform(transform)</p>
+<p># a cuboid</p>
+<p>transform = schema.SFFTransformationMatrix(</p>
+<p>rows=3,</p>
+<p>cols=4,</p>
+<p>data=’2 0 0 0 5 3 0 0 27 0 0 1 9’</p>
+<p>)</p>
+<p>shapes.add_shape(</p>
+<p>schema.SFFCuboid(</p>
+<blockquote>
+<div><p>x=random()*100,</p>
+<p>y=random()*100,</p>
+<p>z=random()*100,</p>
+<p>transformId=transform.id,</p>
+<p>)</p>
+</div></blockquote>
+<p>)</p>
+<p># add the transform to the list of transforms</p>
+<p>seg.transforms.add_transform(transform)</p>
+<p># a cylinder</p>
+<p>transform = schema.SFFTransformationMatrix(</p>
+<p>rows=3,</p>
+<p>cols=4,</p>
+<p>data=’2 0 0 0 15 3 0 0 17 0 0 1 16’</p>
+<p>)</p>
+<p>shapes.add_shape(</p>
+<blockquote>
+<div><p>schema.SFFCylinder(</p>
+<p>height=random()*100,</p>
+<p>diameter=random()*100,</p>
+<p>transformId=transform.id,</p>
+<p>)</p>
+</div></blockquote>
+<p>)</p>
+<p># add the transform to the list of transforms</p>
+<p>seg.transforms.add_transform(transform)</p>
+<p># an ellipsoid</p>
+<p>transform = schema.SFFTransformationMatrix(</p>
+<p>rows=3,</p>
+<p>cols=4,</p>
+<p>data=’1 0 0 0 15 1 0 0 17 0 0 1 16’</p>
+<p>)</p>
+<p>shapes.add_shape(</p>
+<blockquote>
+<div><p>schema.SFFEllipsoid(</p>
+<p>x=random()*100,</p>
+<p>y=random()*100,</p>
+<p>z=random()*100,</p>
+<p>transformId=transform.id,</p>
+<p>)</p>
+</div></blockquote>
+<p>)</p>
+<p># add the transform to the list of transforms</p>
+<p>seg.transforms.add_transform(transform)</p>
+</div>
+<div class="section" id="setting-volume-segments">
+<h5>Setting Volume Segments<a class="headerlink" href="#setting-volume-segments" title="Permalink to this headline">¶</a></h5>
+<p>segment.volume = schema.SFFThreeDVolume(</p>
+<p>file=”file”, # works with seg.filePath to get the actual file</p>
+<p>objectPath=&lt;segment_id&gt;,</p>
+<p>contourLevel=77.0,</p>
+<p>transformId=0,</p>
+<p>format=”MRC” # alternatives: Segger, EMAN2, CCP4</p>
+<p>)</p>
+</div>
+<div class="section" id="adding-a-segment-to-the-segmentation">
+<h5>Adding A Segment To The Segmentation<a class="headerlink" href="#adding-a-segment-to-the-segmentation" title="Permalink to this headline">¶</a></h5>
+<p># create the list of segments</p>
+<p>seg.segments = schema.SFFSegmentList()</p>
+<p># add the segment</p>
+<p>seg.segments.add_segment(segment)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="exporting-emdb-sff-objects">
+<h2>Exporting EMDB-SFF Objects<a class="headerlink" href="#exporting-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
+<p>Exporting an EMDB-SFF object infers the output format from the file
+extension.</p>
+<p># XML</p>
+<p>seg.export(‘file.sff’)</p>
+<p># HDF5</p>
+<p>seg.export(‘file.hff’)</p>
+<p># JSON</p>
+<p>seg.export(‘file.json’)</p>
+</div>
+<div class="section" id="navigating-your-way-through-a-segmentation">
+<h2>Navigating Your Way Through A Segmentation<a class="headerlink" href="#navigating-your-way-through-a-segmentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="iterating">
+<h3>Iterating<a class="headerlink" href="#iterating" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="segments">
+<h4>Segments<a class="headerlink" href="#segments" title="Permalink to this headline">¶</a></h4>
+<p>for segment in seg.segments:</p>
+<p>#&nbsp;do something with segment</p>
+</div>
+<div class="section" id="contours">
+<h4>Contours<a class="headerlink" href="#contours" title="Permalink to this headline">¶</a></h4>
+<p>for contour in segment.contours:</p>
+<p>for point in contour.points:</p>
+<p>x, y, z = point.x, point.y, point.z</p>
+</div>
+<div class="section" id="meshes">
+<h4>Meshes<a class="headerlink" href="#meshes" title="Permalink to this headline">¶</a></h4>
+<p>for mesh in segment.meshes:</p>
+<p>for vertex in mesh.vertices:</p>
+<p>vertex.vID</p>
+<p>vertex.designation # ‘vertex’ or ‘normal’</p>
+<p>x, y, z = vertex.x, vertex.y, vertex.z</p>
+<p>for polygon in mesh.polygons:</p>
+<p>polygon.PID</p>
+<p>polygon.vertex_ids</p>
+</div>
+<div class="section" id="external-references">
+<h4>External References<a class="headerlink" href="#external-references" title="Permalink to this headline">¶</a></h4>
+<p>for extRef in segment.biologicalAnnotation.externalReferences:</p>
+<p>extRef.type</p>
+<p>extRef.otherType</p>
+<p>extRef.value</p>
+</div>
+</div>
+</div>
+<div class="section" id="directly-accessing-a-segment">
+<h2>Directly Accessing A Segment<a class="headerlink" href="#directly-accessing-a-segment" title="Permalink to this headline">¶</a></h2>
+<p>#&nbsp;view the list of segment IDs</p>
+<p>seg.segment.get_ids()</p>
+<p># get a segment by ID</p>
+<p>segment = seg.segment.get_by_id(&lt;segment_id&gt;)</p>
+</div>
+<div class="section" id="annotating-emdb-sff-objects">
+<h2>Annotating EMDB-SFF Objects<a class="headerlink" href="#annotating-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
+<p>Use the sfftk.notes.modify module to perform annotations</p>
+<div class="section" id="note-objects">
+<h3>Note Objects<a class="headerlink" href="#note-objects" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.notes.modify import SimpleNote, ExternalReference</p>
+<p>N = SimpleNote()</p>
+<p>N.description = ‘some description’</p>
+<p>N.numberOfInstances = 5</p>
+<p>Es = [</p>
+<p>ExternalReference(type=’ontology1’, otherType=None, value=’obo_id1’),</p>
+<p>ExternalReference(type=’ontology2’, otherType=None, value=’obo_id2’),</p>
+<p>]</p>
+<p>N.externalReferences = Es</p>
+<p>N.complexes = [‘comp1’, ‘comp2’]</p>
+<p>N.macromolecules = [‘macr1’, ‘macr2’]</p>
+<p>from sfftk.schema import SFFSegment</p>
+<p>segment = SFFSegment()</p>
+</div>
+<div class="section" id="adding-notes">
+<h3>Adding Notes<a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
+<p># add the notes</p>
+<p>segment = N.add_to_segment(segment)</p>
+</div>
+<div class="section" id="editing-notes">
+<h3>Editing Notes<a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
+<p>First make an note containing the edits</p>
+<p>E = SimpleNote(</p>
+<p>description=’new description’,</p>
+<p>numberOfInstances=14,</p>
+<p>externalReferenceId=0, #&nbsp;the external reference ID to change</p>
+<p>externalReferences=[</p>
+<p>ExternalReference(type=’x’, otherType=’y’, value=’z’)</p>
+<p>],</p>
+<p>complexId=3,</p>
+<p>complexes=[‘comp1’, ‘comp2’],</p>
+<p>macromoleculeId=0,</p>
+<p>macromolecules=[‘macr1’, ‘macr2’],</p>
+<p>)</p>
+<p>Then call the edit method</p>
+<p>segment = N.edit_in_segment(segment)</p>
+</div>
+<div class="section" id="deleting-notes">
+<h3>Deleting Notes<a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
+<p>Similary, create a note indicating which attribute (description,
+numberOfInstances) and/or IDs to be deleted.</p>
+<p>D = SimpleNote(</p>
+<p>description=True,</p>
+<p>numberOfInstances=True,</p>
+<p>externalReferenceId=2,</p>
+<p>complexId=3,</p>
+<p>macromoleculeId=0</p>
+<p>)</p>
+<p>Now call the delete method.</p>
+<p>segment = D.delete_from_segment(segment)</p>
+</div>
+</div>
+<div class="section" id="reading-application-specific-segmentation-files">
+<h2>Reading Application-Specific Segmentation Files<a class="headerlink" href="#reading-application-specific-segmentation-files" title="Permalink to this headline">¶</a></h2>
+<p>Application-specific file format readers and converters are defined in
+the sfftk.formats package with each module defined by the file
+extension. For example, AmiraMesh files have an ‘am’ extension hence we
+would read them using the sfftk.formats.am module which defines an
+AmiraMeshSegmentation class.</p>
+<div class="section" id="amiramesh-am">
+<h3>AmiraMesh (.am)<a class="headerlink" href="#amiramesh-am" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.formats.am import AmiraMeshSegmentation</p>
+<p>am_seg = AmiraMeshSegmentation(‘file.am’)</p>
+</div>
+<div class="section" id="ccp4-map">
+<h3>CCP4 (.map)<a class="headerlink" href="#ccp4-map" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.formats.map import MAPSegmentation</p>
+<p>map_seg = MAPSegmentation(‘file.map’)</p>
+</div>
+<div class="section" id="imod-mod">
+<h3>IMOD (.mod)<a class="headerlink" href="#imod-mod" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.formats.mod import IMODSegmentation</p>
+<p>mod_seg = IMODSegmentation(‘file.mod’)</p>
+</div>
+<div class="section" id="segger-seg">
+<h3>Segger (.seg)<a class="headerlink" href="#segger-seg" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.formats.seg import SeggerSegmentation</p>
+<p>seg_seg = SeggerSegmentation(‘file.seg’)</p>
+</div>
+<div class="section" id="stl-stl">
+<h3>STL (.stl)<a class="headerlink" href="#stl-stl" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.formats.stl import STLSegmentation</p>
+<p>stl_seg = STLSegmentation(‘file.stl’)</p>
+</div>
+<div class="section" id="amira-hypersurface-surf">
+<h3>Amira HyperSurface (.surf)<a class="headerlink" href="#amira-hypersurface-surf" title="Permalink to this headline">¶</a></h3>
+<p>from sfftk.formats.surf import AmiraHyperSurfaceSegmentation</p>
+<p>surf_seg = AmiraHyperSurfaceSegmentation(‘file.surf’)</p>
+</div>
+<div class="section" id="converting-application-specific-segmentations-to-emdb-sff">
+<h3>Converting Application-Specific Segmentations to EMDB-SFF<a class="headerlink" href="#converting-application-specific-segmentations-to-emdb-sff" title="Permalink to this headline">¶</a></h3>
+<p>sff_seg = as_seg.convert()</p>
+<p>Note that the segmentation is now only an EMDB-SFF object but is not of
+a particular file format. The file format is chosen by the extension
+when <a class="reference external" href="#exporting-emdb-sff-objects">*using the export method*</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Developing with sfftk</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#reading-emdb-sff-files">Reading EMDB-SFF Files</a><ul>
+<li><a class="reference internal" href="#viewing-segmentation-metadata">Viewing Segmentation Metadata</a></li>
+<li><a class="reference internal" href="#viewing-segments">Viewing Segments</a><ul>
+<li><a class="reference internal" href="#getting-the-list-of-segment-ids">Getting The List of Segment IDs</a></li>
+<li><a class="reference internal" href="#getting-a-segment-by-id">Getting A Segment By ID</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#viewing-segment-metadata">Viewing Segment Metadata</a><ul>
+<li><a class="reference internal" href="#id-and-parent-id">ID and Parent ID</a></li>
+<li><a class="reference internal" href="#biological-annotation">Biological Annotation</a></li>
+<li><a class="reference internal" href="#complexes-and-macromolecules">Complexes and Macromolecules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-emdb-sff-objects">Creating EMDB-SFF Objects</a><ul>
+<li><a class="reference internal" href="#setting-segmentation-metadata">Setting Segmentation Metadata</a><ul>
+<li><a class="reference internal" href="#setting-segments">Setting Segments</a><ul>
+<li><a class="reference internal" href="#setting-segment-metadata">Setting Segment Metadata</a><ul>
+<li><a class="reference internal" href="#id1">Biological Annotation</a></li>
+<li><a class="reference internal" href="#id2">Complexes and Macromolecules</a></li>
+<li><a class="reference internal" href="#colour">Colour</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setting-contour-segments">Setting Contour Segments</a></li>
+<li><a class="reference internal" href="#setting-mesh-segments">Setting Mesh Segments</a></li>
+<li><a class="reference internal" href="#setting-shape-segments">Setting Shape Segments</a></li>
+<li><a class="reference internal" href="#setting-volume-segments">Setting Volume Segments</a></li>
+<li><a class="reference internal" href="#adding-a-segment-to-the-segmentation">Adding A Segment To The Segmentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exporting-emdb-sff-objects">Exporting EMDB-SFF Objects</a></li>
+<li><a class="reference internal" href="#navigating-your-way-through-a-segmentation">Navigating Your Way Through A Segmentation</a><ul>
+<li><a class="reference internal" href="#iterating">Iterating</a><ul>
+<li><a class="reference internal" href="#segments">Segments</a></li>
+<li><a class="reference internal" href="#contours">Contours</a></li>
+<li><a class="reference internal" href="#meshes">Meshes</a></li>
+<li><a class="reference internal" href="#external-references">External References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#directly-accessing-a-segment">Directly Accessing A Segment</a></li>
+<li><a class="reference internal" href="#annotating-emdb-sff-objects">Annotating EMDB-SFF Objects</a><ul>
+<li><a class="reference internal" href="#note-objects">Note Objects</a></li>
+<li><a class="reference internal" href="#adding-notes">Adding Notes</a></li>
+<li><a class="reference internal" href="#editing-notes">Editing Notes</a></li>
+<li><a class="reference internal" href="#deleting-notes">Deleting Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reading-application-specific-segmentation-files">Reading Application-Specific Segmentation Files</a><ul>
+<li><a class="reference internal" href="#amiramesh-am">AmiraMesh (.am)</a></li>
+<li><a class="reference internal" href="#ccp4-map">CCP4 (.map)</a></li>
+<li><a class="reference internal" href="#imod-mod">IMOD (.mod)</a></li>
+<li><a class="reference internal" href="#segger-seg">Segger (.seg)</a></li>
+<li><a class="reference internal" href="#stl-stl">STL (.stl)</a></li>
+<li><a class="reference internal" href="#amira-hypersurface-surf">Amira HyperSurface (.surf)</a></li>
+<li><a class="reference internal" href="#converting-application-specific-segmentations-to-emdb-sff">Converting Application-Specific Segmentations to EMDB-SFF</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/developing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, EMBL-EBI.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/developing.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

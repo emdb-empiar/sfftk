@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The EMDB-SFF Toolkit (sfftk) &mdash; sfftk 0.1.0.dev0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sfftk 0.1.0.dev0 documentation" href="index.html" />
+    <link rel="next" title="sfftk packages" href="sfftk.html" />
+    <link rel="prev" title="Welcome to sfftk’s documentation!" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-emdb-sff-toolkit-sfftk">
+<h1>The EMDB-SFF Toolkit (sfftk)<a class="headerlink" href="#the-emdb-sff-toolkit-sfftk" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>sfftk is a set of utilities that facilitate creation, conversion and
+modification of EMDB-SFF files. EMDB-SFF is an open, community-driven
+file format to handle annotated segmentations and subtomogram averages
+that facilitates segmentation file interchange. It is predominantly
+written in Python with some functionality implemented as C-extensions
+for performance. It provides both a command-line suite of commands and a
+Python API.</p>
+<div class="section" id="audience">
+<h3>Audience<a class="headerlink" href="#audience" title="Permalink to this headline">¶</a></h3>
+<p>sfftk is primarily targeted but not restricted to biological electron
+microscopists.</p>
+</div>
+<div class="section" id="versions">
+<h3>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h3>
+<p>sfftk is currently in development and is available as a development
+release v0.1.0.dev0. Expected date of release is end of September 2017.</p>
+</div>
+<div class="section" id="license">
+<h3>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h3>
+<p>sfftk is released under an Apache License, Version 2.0 and is copyright
+of EMBL-European Bioinformatics Institute 2017.</p>
+</div>
+<div class="section" id="data-model">
+<h3>Data Model<a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h3>
+<p>sfftk is built to handle EMDB-SFF files. The corresponding schema
+(v0.6.0a4) may be obtained at
+<a class="reference external" href="http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html">*http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html*</a>.
+Changes to the schema are welcome for discussion at the Segmentation
+Working Group at
+<a class="reference external" href="https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg">*https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg*</a>.</p>
+</div>
+<div class="section" id="supported-formats">
+<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Permalink to this headline">¶</a></h3>
+<p>The following file formats are currently supported (in alphabetical
+order of extensions):</p>
+<ul class="simple">
+<li>Amira Mesh (.am)</li>
+<li>CCP4 Masks (.map)</li>
+<li>IMOD (.mod)</li>
+<li>Segger (.seg)</li>
+<li>Stereolithography (.stl)</li>
+<li>Amira HyperSurface (.surf)</li>
+</ul>
+</div>
+<div class="section" id="contact">
+<h3>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h3>
+<p>Any questions or comments should be addressed to
+<a class="reference external" href="mailto:ardan&#37;&#52;&#48;ebi&#46;ac&#46;uk">*ardan<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk*</a> or
+<a class="reference external" href="mailto:pkorir&#37;&#52;&#48;ebi&#46;ac&#46;uk">*pkorir<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk*</a>.</p>
+</div>
+<div class="section" id="publications">
+<h3>Publications<a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h3>
+<p>The following articles should be cited whenever sfftk is used in a
+publication:</p>
+<ul class="simple">
+<li>[TBA]</li>
+</ul>
+<p>The EMDB-SFF data model is the result of various community consultations
+which are published in the following articles:</p>
+<ul>
+<li><dl class="first docutils">
+<dt><a href="#id1"><span class="problematic" id="id2">*</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>Patwardhan, Ardan, Robert Brandt, Sarah J. Butcher, Lucy Collinson,</dt>
+<dd><p class="first last">David Gault, Kay Grünewald, Corey Hecksel et al. <em>Building
+bridges between cellular and molecular structural
+biology.</em> &lt;<a class="reference external" href="http://europepmc.org/abstract/MED/28682240">http://europepmc.org/abstract/MED/28682240</a>&gt;`__ eLife 6
+(2017).*</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a href="#id5"><span class="problematic" id="id6">*</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a>Patwardhan, Ardan, Alun Ashton, Robert Brandt, Sarah Butcher,</dt>
+<dd><p class="first last">Raffaella Carzaniga, Wah Chiu, Lucy Collinson et al. <em>A 3D
+cellular context for the macromolecular
+world.</em> &lt;<a class="reference external" href="http://europepmc.org/abstract/MED/25289590">http://europepmc.org/abstract/MED/25289590</a>&gt;`__ Nature
+structural &amp; molecular biology 21, no. 10 (2014): 841-845.*</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a href="#id9"><span class="problematic" id="id10">`</span></a><a href="#id11"><span class="problematic" id="id12">*</span></a>Patwardhan, Ardan, José-Maria Carazo, Bridget Carragher, Richard</dt>
+<dd><p class="first last">Henderson, J. Bernard Heymann, Emma Hill, Grant J. Jensen et al.
+<em>Data management challenges in three-dimensional EM.*</em> <em>Nature
+structural &amp; molecular biology 19, no. 12 (2012):
+1203-1207.</em> &lt;<a class="reference external" href="http://europepmc.org/abstract/MED/23211764">http://europepmc.org/abstract/MED/23211764</a>&gt;`__</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="obtaining-and-installing-sfftk">
+<h3>Obtaining and Installing sfftk<a class="headerlink" href="#obtaining-and-installing-sfftk" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="dependencies">
+<h4>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h4>
+<p>We highly recommend installing sfftk in an anaconda environment because
+this makes it easy to obtain some of the dependencies. You can find out
+more about installing anaconda at
+<a class="reference external" href="https://www.anaconda.com/download/">*https://www.anaconda.com/download/*</a>.</p>
+<p>The following dependencies are required and will be automatically
+installed when <a class="reference external" href="#pypi">*using PyPI*</a>:</p>
+<ul class="simple">
+<li>ahds (v.0.1.6 or greater)</li>
+<li>lxml</li>
+<li>h5py</li>
+<li>requests</li>
+<li>scikit-image</li>
+<li>bitarray</li>
+<li>numpy</li>
+<li>scipy</li>
+</ul>
+</div>
+<div class="section" id="pypi">
+<h4>PyPI<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h4>
+<p>sfftk is available on PyPI meaning that all that one needs to do is run:</p>
+<p>$ pip install sfftk</p>
+</div>
+<div class="section" id="source">
+<h4>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h4>
+<p>The sfftk source is available from CCP-EM SVN repository
+<a class="reference external" href="https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&amp;path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F">*https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&amp;path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F*</a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>The main function of sfftk is to handle conversion to and from
+application-specific segmentation file formats and annotation of
+EMDB-SFF files.</p>
+<div class="section" id="conversion">
+<h3>Conversion<a class="headerlink" href="#conversion" title="Permalink to this headline">¶</a></h3>
+<p>The primary functionality in sfftk is conversion of application-specific
+segmentation file formats to the open EMDB-SFF. For a full description
+of how to perform conversion, please see the <a class="reference external" href="https://docs.google.com/document/d/1Vu6IUTi9riuzEQamHuyeQJSOvJk_w8Gc_a_4SZWVAWU/edit#heading=h.75xs6j27on47">*guide to format
+conversion*</a>.</p>
+</div>
+<div class="section" id="annotation">
+<h3>Annotation<a class="headerlink" href="#annotation" title="Permalink to this headline">¶</a></h3>
+<p>sfftk provides a simple set of tools to allow viewing, searching and
+modifying annotations (notes) associated with the segmentation and
+individual segments. Annotations added should be either from a
+[published] ontology or be an accession from a [published] database. See
+the <a class="reference external" href="https://docs.google.com/document/d/1usLjJzvv-NrxvXjBi_dRIcnYO-fGwMDGSCKp3BZgUZA/edit">*guide to annotating
+segmentations*</a>
+for a full treatment.</p>
+</div>
+<div class="section" id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<p>sfftk may also be used for several miscellaneous operations such as:</p>
+<ul class="simple">
+<li>Viewing metadata</li>
+<li>Setting configurations</li>
+<li>Running unit tests</li>
+</ul>
+<p>More information on this can be found in the <a class="reference external" href="https://docs.google.com/a/ebi.ac.uk/document/d/1k0JHTZG3XURZb25I4zyrPKcUqmxiD3WiOAf3jV_EW7k/edit?usp=sharing">*guide to miscellaneous
+operations*</a>.</p>
+</div>
+</div>
+<div class="section" id="developing-with-sfftk">
+<h2>Developing with sfftk<a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h2>
+<p>sfftk has be developed to be modular with functionality decoupled
+between sub-packages. The main classes involved are found in the
+sfftk.schema package. The full API is available at [link]. See the
+<a class="reference external" href="https://docs.google.com/a/ebi.ac.uk/document/d/1ouWRVgqeh-vppxsOls3oAlBYSIhMWwhK-BG1N_ye0fU/edit?usp=sharing">*guide to developing with
+sfftk*</a>
+for a complete description.</p>
+</div>
+<div class="section" id="extending-sfftk">
+<h2>Extending sfftk<a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h2>
+<p>sfftk has built with extensibility in mind. It is anticipated that most
+extension will take the form of supporting additional file formats.
+Please read the <a class="reference external" href="https://docs.google.com/a/ebi.ac.uk/document/d/1VxvJ6LVsB2OMmYicaLV3vrKhpwMehBdwavLsQnhK-sM/edit?usp=sharing">*guide to extending
+sfftk*</a>
+to learn how to do this.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The EMDB-SFF Toolkit (sfftk)</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#audience">Audience</a></li>
+<li><a class="reference internal" href="#versions">Versions</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#data-model">Data Model</a></li>
+<li><a class="reference internal" href="#supported-formats">Supported Formats</a></li>
+<li><a class="reference internal" href="#contact">Contact</a></li>
+<li><a class="reference internal" href="#publications">Publications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li><a class="reference internal" href="#obtaining-and-installing-sfftk">Obtaining and Installing sfftk</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#pypi">PyPI</a></li>
+<li><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#conversion">Conversion</a></li>
+<li><a class="reference internal" href="#annotation">Annotation</a></li>
+<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#developing-with-sfftk">Developing with sfftk</a></li>
+<li><a class="reference internal" href="#extending-sfftk">Extending sfftk</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to sfftk&#8217;s documentation!</a></li>
+      <li>Next: <a href="sfftk.html" title="next chapter">sfftk packages</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/toolkit.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, EMBL-EBI.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/toolkit.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
