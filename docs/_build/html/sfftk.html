@@ -550,12 +550,34 @@ and limitations under the License.</p>
 <div class="section" id="module-sfftk.formats.am">
 <span id="sfftk-formats-package"></span><h2>sfftk.formats package<a class="headerlink" href="#module-sfftk.formats.am" title="Permalink to this headline">¶</a></h2>
 <p>User-facing reader classes</p>
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshSegmentation">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segmentation</span></code></p>
+<p>Class representing an AmiraMesh segmentation</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sfftk.formats.am</span> <span class="kn">import</span> <span class="n">AmiraMeshSegmentation</span>
+<span class="n">am_seg</span> <span class="o">=</span> <span class="n">AmiraMeshSegmentation</span><span class="p">(</span><span class="s1">&#39;file.am&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshSegmentation.header">
+<code class="descname">header</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation.header" title="Permalink to this definition">¶</a></dt>
+<dd><p>The AmiraMesh header obtained using the <code class="docutils literal"><span class="pre">ahds</span></code> package</p>
+<p>The header is wrapped with a generic AmiraMeshHeader class</p>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-sfftk.formats.map"></span><p>User-facing reader classes</p>
 <dl class="class">
 <dt id="sfftk.formats.map.MapSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segmentation</span></code></p>
-<p><code class="docutils literal"><span class="pre">MapSegmentation</span></code> reader</p>
+<p>Class representing an CCP4/MAP mask segmentation</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sfftk.formats.map</span> <span class="kn">import</span> <span class="n">MapSegmentation</span>
+<span class="n">map_seg</span> <span class="o">=</span> <span class="n">MapSegmentation</span><span class="p">(</span><span class="s1">&#39;file.map&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <span class="target" id="module-sfftk.formats.mod"></span><p>User-facing reader classes</p>
@@ -563,7 +585,11 @@ and limitations under the License.</p>
 <dt id="sfftk.formats.mod.IMODSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODSegmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segmentation</span></code></p>
-<p><code class="docutils literal"><span class="pre">IMODSegmentation</span></code></p>
+<p>Class representing an IMOD segmentation</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sfftk.formats.mod</span> <span class="kn">import</span> <span class="n">IMODSegmentation</span>
+<span class="n">mod_seg</span> <span class="o">=</span> <span class="n">IMODSegmentation</span><span class="p">(</span><span class="s1">&#39;file.mod&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>args</em>, <em>*args_</em>, <em>**kwargs_</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODSegmentation.convert" title="Permalink to this definition">¶</a></dt>
@@ -577,7 +603,11 @@ and limitations under the License.</p>
 <dt id="sfftk.formats.seg.SeggerSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.formats.seg.</code><code class="descname">SeggerSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>top_level=False</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.seg.SeggerSegmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segmentation</span></code></p>
-<p>SeggerReader</p>
+<p>Class representing an Segger segmentation</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sfftk.formats.seg</span> <span class="kn">import</span> <span class="n">SeggerSegmentation</span>
+<span class="n">seg_seg</span> <span class="o">=</span> <span class="n">SeggerSegmentation</span><span class="p">(</span><span class="s1">&#39;file.seg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="sfftk.formats.seg.SeggerSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.seg.SeggerSegmentation.convert" title="Permalink to this definition">¶</a></dt>
@@ -587,23 +617,69 @@ and limitations under the License.</p>
 </dd></dl>
 
 <span class="target" id="module-sfftk.formats.stl"></span><p>User-facing reader classes</p>
-<span class="target" id="module-sfftk.formats.surf"></span><p>User-facing reader classes</p>
-</div>
-<div class="section" id="sfftk-notes-package">
-<h2>sfftk.notes package<a class="headerlink" href="#sfftk-notes-package" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-sfftk.notes.view"></span><p>sfftk.notes.view</p>
-<p>Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at</p>
-<p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-&#8220;AS IS&#8221; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied.</p>
-<p>See the License for the specific language governing permissions 
-and limitations under the License.</p>
 <dl class="class">
+<dt id="sfftk.formats.stl.STLSegmentation">
+<em class="property">class </em><code class="descclassname">sfftk.formats.stl.</code><code class="descname">STLSegmentation</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLSegmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segmentation</span></code></p>
+<p>Class representing an STL segmentation</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sfftk.formats.stl</span> <span class="kn">import</span> <span class="n">STLSegmentation</span>
+<span class="n">stl_seg</span> <span class="o">=</span> <span class="n">STLSegmentation</span><span class="p">(</span><span class="s1">&#39;file.stl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<span class="target" id="module-sfftk.formats.surf"></span><p>User-facing reader classes</p>
+<dl class="class">
+<dt id="sfftk.formats.surf.AmiraHyperSurfaceSegmentation">
+<em class="property">class </em><code class="descclassname">sfftk.formats.surf.</code><code class="descname">AmiraHyperSurfaceSegmentation</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceSegmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segmentation</span></code></p>
+<p>Class representing an AmiraHyperSurface segmentation</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sfftk.formats.surf</span> <span class="kn">import</span> <span class="n">AmiraHyperSurfaceSegmentation</span>
+<span class="n">surf_seg</span> <span class="o">=</span> <span class="n">AmiraHyperSurfaceSegmentation</span><span class="p">(</span><span class="s1">&#39;file.surf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sfftk.notes.find">
+<span id="sfftk-notes-package"></span><h2>sfftk.notes package<a class="headerlink" href="#module-sfftk.notes.find" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sfftk.notes.find.SearchQuery">
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchQuery</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>SearchQuery class</p>
+<dl class="attribute">
+<dt id="sfftk.notes.find.SearchQuery.results">
+<code class="descname">results</code><a class="headerlink" href="#sfftk.notes.find.SearchQuery.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>JSON of response from HTTP API</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.notes.find.SearchQuery.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchQuery.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the search</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return result:</th><td class="field-body">search results</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Rtype result:</th><td class="field-body"><code class="docutils literal"><span class="pre">SearchResults</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.notes.find.SearchResults">
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResults</code><span class="sig-paren">(</span><em>json_result</em>, <em>search_args</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>SearchResults class</p>
+</dd></dl>
+
+<span class="target" id="module-sfftk.notes.view"></span><dl class="class">
 <dt id="sfftk.notes.view.HeaderView">
 <em class="property">class </em><code class="descclassname">sfftk.notes.view.</code><code class="descname">HeaderView</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.HeaderView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.view.View</span></code></p>
@@ -637,12 +713,6 @@ and limitations under the License.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="sfftk.notes.view.main">
-<code class="descclassname">sfftk.notes.view.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="sfftk.notes.view.show_notes">
 <code class="descclassname">sfftk.notes.view.</code><code class="descname">show_notes</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.show_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show notes in an EMDB-SFF file for the specified segment IDs</p>
@@ -659,22 +729,77 @@ and limitations under the License.</p>
 </table>
 </dd></dl>
 
-<span class="target" id="module-sfftk.notes.modify"></span><p>sfftk.notes.edit</p>
-<p>Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at</p>
-<p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-&#8220;AS IS&#8221; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied.</p>
-<p>See the License for the specific language governing permissions 
-and limitations under the License.</p>
+<span class="target" id="module-sfftk.notes.modify"></span><dl class="class">
+<dt id="sfftk.notes.modify.AbstractGlobalNote">
+<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">AbstractGlobalNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.BaseNote" title="sfftk.notes.modify.BaseNote"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.modify.BaseNote</span></code></a></p>
+<p>GlobalNote &#8216;abstract&#8217; class that defines private attributes and methods</p>
+<dl class="method">
+<dt id="sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation">
+<code class="descname">add_to_segmentation</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add attributes to a segmentation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segmentation</strong> (<code class="docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code>) &#8211; an EMDB-SFF segmentation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return segmentation:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">an EMDB-SFF segmentation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Rtype segmentation:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation">
+<code class="descname">del_from_segmentation</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete attributes from a segmentation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segmentation</strong> (<code class="docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code>) &#8211; an EMDB-SFF segmentation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return segmentation:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">an EMDB-SFF segmentation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Rtype segmentation:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation">
+<code class="descname">edit_in_segmentation</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit attributes in a segmentation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segmentation</strong> (<code class="docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code>) &#8211; an EMDB-SFF segmentation</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return segmentation:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">an EMDB-SFF segmentation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Rtype segmentation:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="sfftk.notes.modify.AbstractNote">
 <em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">AbstractNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractNote" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.BaseNote" title="sfftk.notes.modify.BaseNote"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.modify.BaseNote</span></code></a></p>
 <p>Note &#8216;abstact&#8217; class that defines private attributes and main methods</p>
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractNote.add_to_segment">
@@ -721,38 +846,10 @@ and limitations under the License.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="sfftk.notes.modify.ExternalReference">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">ExternalReference</code><span class="sig-paren">(</span><em>type</em>, <em>otherType</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.ExternalReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
-<dl class="method">
-<dt id="sfftk.notes.modify.ExternalReference.count">
-<code class="descname">count</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span> &rarr; integer -- return number of occurrences of value<a class="headerlink" href="#sfftk.notes.modify.ExternalReference.count" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="sfftk.notes.modify.ExternalReference.index">
-<code class="descname">index</code><span class="sig-paren">(</span><em>value</em><span class="optional">[</span>, <em>start</em><span class="optional">[</span>, <em>stop</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span> &rarr; integer -- return first index of value.<a class="headerlink" href="#sfftk.notes.modify.ExternalReference.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="sfftk.notes.modify.ExternalReference.otherType">
-<code class="descname">otherType</code><a class="headerlink" href="#sfftk.notes.modify.ExternalReference.otherType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="sfftk.notes.modify.ExternalReference.type">
-<code class="descname">type</code><a class="headerlink" href="#sfftk.notes.modify.ExternalReference.type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="sfftk.notes.modify.ExternalReference.value">
-<code class="descname">value</code><a class="headerlink" href="#sfftk.notes.modify.ExternalReference.value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 2</p>
-</dd></dl>
-
+<dt id="sfftk.notes.modify.BaseNote">
+<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">BaseNote</code><a class="headerlink" href="#sfftk.notes.modify.BaseNote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Note base class</p>
 </dd></dl>
 
 <dl class="function">
@@ -795,12 +892,6 @@ and limitations under the License.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="sfftk.notes.modify.main">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function</p>
 </dd></dl>
 
 <dl class="function">
@@ -870,6 +961,36 @@ and limitations under the License.</p>
 
 </div>
 <span class="target" id="module-sfftk.core.parser"></span><p>Parses command-line options</p>
+<dl class="function">
+<dt id="sfftk.core.parser.add_args">
+<code class="descclassname">sfftk.core.parser.</code><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em>, <em>the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to return the argument definition to the given parser</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">my_arg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-x&#39;</span><span class="p">],</span> <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">this_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_args</span><span class="p">(</span><span class="n">this_parser</span><span class="p">,</span> <span class="n">my_arg</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parser</strong> (<code class="docutils literal"><span class="pre">argparse.Parser</span></code>) &#8211; a parser</li>
+<li><strong>the_arg</strong> (<em>dict</em>) &#8211; the argument specified as a dict with keys &#8216;args&#8217; and &#8216;kwargs&#8217;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return parser:</th><td class="field-body"><p class="first">a parser</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Rtype parser:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">argparse.Parser</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
 <dt id="sfftk.core.parser.parse_args">
 <code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
@@ -975,7 +1096,7 @@ and limitations under the License.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-sfftk.formats.am">sfftk.formats package</a></li>
-<li><a class="reference internal" href="#sfftk-notes-package">sfftk.notes package</a></li>
+<li><a class="reference internal" href="#module-sfftk.notes.find">sfftk.notes package</a></li>
 <li><a class="reference internal" href="#module-sfftk.core.configs">sfftk.core package</a><ul>
 <li><a class="reference internal" href="#configs-py">configs.py</a></li>
 <li><a class="reference internal" href="#print-tools-py">print_tools.py</a></li>
