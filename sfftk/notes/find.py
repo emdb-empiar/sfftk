@@ -43,11 +43,11 @@ Restrict a search to an particular set of slims by name
 
 fieldList
 
-Specifcy the fields to return, the defaults are {iri,label,short_form,obo_id,ontology_name,ontology_prefix,description,type}
+Specifcy the fields to return, the defaults are {iri,label,short_form,short_form,ontology_name,ontology_prefix,description,type}
 
 queryFields
 
-Specifcy the fields to query, the defaults are {label, synonym, description, short_form, obo_id, annotations, logical_description, iri}
+Specifcy the fields to query, the defaults are {label, synonym, description, short_form, short_form, annotations, logical_description, iri}
 
 exact
 
@@ -139,7 +139,7 @@ class SearchResults(object):
     TTY_WIDTH = 180 # unreasonable default
     INDEX_WIDTH = 6
     LABEL_WIDTH = 20
-    OBO_ID_WIDTH = 20
+    SHORT_FORM_WIDTH = 20
     ONTOLOGY_NAME_WIDTH = 15
     DESCRIPTION_WIDTH = 80
     TYPE_WIDTH = 18
@@ -189,9 +189,9 @@ class SearchResults(object):
             header = [
                 "index".ljust(self.INDEX_WIDTH),
                 "label".ljust(self.LABEL_WIDTH),
-                "obo_id".ljust(self.OBO_ID_WIDTH),
+                "short_form".ljust(self.SHORT_FORM_WIDTH),
                 "ontology_name".ljust(self.ONTOLOGY_NAME_WIDTH),
-                "description".ljust(self.DESCRIPTION_WIDTH),
+                "description/IRI".ljust(self.DESCRIPTION_WIDTH),
                 "type".ljust(self.TYPE_WIDTH),
                 ]
             string += "\t".join(header) + "\n"
@@ -201,12 +201,12 @@ class SearchResults(object):
             
             for e in self.result['response']['docs']:
                 if e.has_key('description'):        
-                    wrapped_description = textwrap.wrap(e['description'][0], self.DESCRIPTION_WIDTH)
+                    wrapped_description = textwrap.wrap(e['description'][0] + " /{}".format(e['iri']), self.DESCRIPTION_WIDTH)
                     if len(wrapped_description) == 1:
                         row = [
                             str(start).ljust(self.INDEX_WIDTH),
                             e['label'].ljust(self.LABEL_WIDTH),
-                            e['obo_id'].ljust(self.OBO_ID_WIDTH) if e.has_key('obo_id') else '-'.ljust(self.OBO_ID_WIDTH),
+                            e['short_form'].ljust(self.SHORT_FORM_WIDTH) if e.has_key('short_form') else '-'.ljust(self.SHORT_FORM_WIDTH),
                             e['ontology_name'].ljust(self.ONTOLOGY_NAME_WIDTH),
                             wrapped_description[0].ljust(self.DESCRIPTION_WIDTH),
                             e['type'].ljust(self.TYPE_WIDTH),
@@ -216,7 +216,7 @@ class SearchResults(object):
                         row = [
                             str(start).ljust(self.INDEX_WIDTH),
                             e['label'].ljust(self.LABEL_WIDTH),
-                            e['obo_id'].ljust(self.OBO_ID_WIDTH) if e.has_key('obo_id') else '-'.ljust(self.OBO_ID_WIDTH),
+                            e['short_form'].ljust(self.SHORT_FORM_WIDTH) if e.has_key('short_form') else '-'.ljust(self.SHORT_FORM_WIDTH),
                             e['ontology_name'].ljust(self.ONTOLOGY_NAME_WIDTH),
                             wrapped_description[0].ljust(self.DESCRIPTION_WIDTH),
                             e['type'].ljust(self.TYPE_WIDTH),
@@ -226,7 +226,7 @@ class SearchResults(object):
                             row = [
                                 ''.ljust(self.INDEX_WIDTH),
                                 ''.ljust(self.LABEL_WIDTH),
-                                ''.ljust(self.OBO_ID_WIDTH),
+                                ''.ljust(self.SHORT_FORM_WIDTH),
                                 ''.ljust(self.ONTOLOGY_NAME_WIDTH),
                                 wrapped_description[i].ljust(self.DESCRIPTION_WIDTH),
                                 ''.ljust(self.TYPE_WIDTH),
@@ -236,9 +236,9 @@ class SearchResults(object):
                     row = [
                         str(start).ljust(self.INDEX_WIDTH),
                         e['label'].ljust(self.LABEL_WIDTH),
-                        e['obo_id'].ljust(self.OBO_ID_WIDTH) if e.has_key('obo_id') else '-'.ljust(self.OBO_ID_WIDTH),
+                        e['short_form'].ljust(self.SHORT_FORM_WIDTH) if e.has_key('short_form') else '-'.ljust(self.SHORT_FORM_WIDTH),
                         e['ontology_name'].ljust(self.ONTOLOGY_NAME_WIDTH),
-                        ''.ljust(self.DESCRIPTION_WIDTH),
+                        "{}".format(e['iri']).ljust(self.DESCRIPTION_WIDTH),
                         e['type'].ljust(self.TYPE_WIDTH),
                         ]
                     string += "\t".join(row) + "\n"

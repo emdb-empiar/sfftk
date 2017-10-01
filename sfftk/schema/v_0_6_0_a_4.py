@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Sep 20 12:52:52 2017 by generateDS.py version 2.22a.
+# Generated Tue Sep 26 13:12:54 2017 by generateDS.py version 2.22a.
 #
 # Command line options:
-#   ('-o', 'schema/v_0_6_0_a_4.py')
+#   ('-o', 'sfftk/sfftk/schema/v_0_6_0_a_4.py')
 #
 # Command line arguments:
-#   /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
+#   /Users/pkorir/documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
 #
 # Command line:
-#   /usr/local/bin/generateDS.py -o "schema/v_0_6_0_a_4.py" /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
+#   /usr/local/bin/generateDS.py -o "sfftk/sfftk/schema/v_0_6_0_a_4.py" /Users/pkorir/documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
 #
 # Current working directory (os.getcwd()):
-#   sfftk
+#   trunk
 #
 
 import sys
@@ -720,7 +720,12 @@ class segmentation(GeneratedsSuper):
     xmax, ymin, ymax, zmin, zmax; minimums default to 0 0.6.0a4,
     2017/07/31, Paul Korir: 1) Added global (optional) external
     references 0.6.0a4, 2017/09/20, Paul Korir: 2) Renamed global
-    external references to globalExternalReferences"""
+    external references to globalExternalReferences 0.6.0a4,
+    2017/09/25, Paul Korir: 3) Restructured global external
+    references to have the form <ref [attrs]/> 4) Now
+    externalReferenceType has attributes: type (required), otherType
+    (required), value (required), label (new, optional), description
+    (new, optional)"""
     subclass = None
     superclass = None
     def __init__(self, schemaVersion='0.6.0a4', version=None, name=None, software=None, transformList=None, filePath=None, primaryDescriptor=None, boundingBox=None, globalExternalReferences=None, segmentList=None, details=None):
@@ -899,7 +904,7 @@ class segmentation(GeneratedsSuper):
             self.boundingBox = obj_
             obj_.original_tagname_ = 'boundingBox'
         elif nodeName_ == 'globalExternalReferences':
-            obj_ = externalReferenceType.factory()
+            obj_ = globalExternalReferencesType.factory()
             obj_.build(child_)
             self.globalExternalReferences = obj_
             obj_.original_tagname_ = 'globalExternalReferences'
@@ -2880,12 +2885,14 @@ class floatVectorType(GeneratedsSuper):
 class externalReferenceType(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, id=None, type_=None, otherType=None, value=None):
+    def __init__(self, id=None, type_=None, otherType=None, value=None, label=None, description=None):
         self.original_tagname_ = None
         self.id = _cast(int, id)
         self.type_ = _cast(None, type_)
         self.otherType = _cast(None, otherType)
         self.value = _cast(None, value)
+        self.label = _cast(None, label)
+        self.description = _cast(None, description)
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -2905,6 +2912,10 @@ class externalReferenceType(GeneratedsSuper):
     def set_otherType(self, otherType): self.otherType = otherType
     def get_value(self): return self.value
     def set_value(self, value): self.value = value
+    def get_label(self): return self.label
+    def set_label(self, label): self.label = label
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
     def hasContent_(self):
         if (
 
@@ -2942,6 +2953,12 @@ class externalReferenceType(GeneratedsSuper):
         if self.value is not None and 'value' not in already_processed:
             already_processed.add('value')
             outfile.write(' value=%s' % (self.gds_encode(self.gds_format_string(quote_attrib(self.value), input_name='value')), ))
+        if self.label is not None and 'label' not in already_processed:
+            already_processed.add('label')
+            outfile.write(' label=%s' % (self.gds_encode(self.gds_format_string(quote_attrib(self.label), input_name='label')), ))
+        if self.description is not None and 'description' not in already_processed:
+            already_processed.add('description')
+            outfile.write(' description=%s' % (self.gds_encode(self.gds_format_string(quote_attrib(self.description), input_name='description')), ))
     def exportChildren(self, outfile, level, namespace_='', name_='externalReferenceType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -2976,6 +2993,14 @@ class externalReferenceType(GeneratedsSuper):
             already_processed.add('value')
             self.value = value
             self.value = ' '.join(self.value.split())
+        value = find_attr_value_('label', node)
+        if value is not None and 'label' not in already_processed:
+            already_processed.add('label')
+            self.label = value
+        value = find_attr_value_('description', node)
+        if value is not None and 'description' not in already_processed:
+            already_processed.add('description')
+            self.description = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class externalReferenceType
@@ -4340,6 +4365,83 @@ class transformListType(GeneratedsSuper):
 # end class transformListType
 
 
+class globalExternalReferencesType(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, ref=None):
+        self.original_tagname_ = None
+        if ref is None:
+            self.ref = []
+        else:
+            self.ref = ref
+    def factory(*args_, **kwargs_):
+        if CurrentSubclassModule_ is not None:
+            subclass = getSubclassFromModule_(
+                CurrentSubclassModule_, globalExternalReferencesType)
+            if subclass is not None:
+                return subclass(*args_, **kwargs_)
+        if globalExternalReferencesType.subclass:
+            return globalExternalReferencesType.subclass(*args_, **kwargs_)
+        else:
+            return globalExternalReferencesType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_ref(self): return self.ref
+    def set_ref(self, ref): self.ref = ref
+    def add_ref(self, value): self.ref.append(value)
+    def insert_ref_at(self, index, value): self.ref.insert(index, value)
+    def replace_ref_at(self, index, value): self.ref[index] = value
+    def hasContent_(self):
+        if (
+            self.ref
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='globalExternalReferencesType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.original_tagname_ is not None:
+            name_ = self.original_tagname_
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='globalExternalReferencesType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_='', name_='globalExternalReferencesType', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='globalExternalReferencesType'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='globalExternalReferencesType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for ref_ in self.ref:
+            ref_.export(outfile, level, namespace_, name_='ref', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'ref':
+            obj_ = externalReferenceType.factory()
+            obj_.build(child_)
+            self.ref.append(obj_)
+            obj_.original_tagname_ = 'ref'
+# end class globalExternalReferencesType
+
+
 class segmentListType(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -5032,7 +5134,7 @@ GDSClassesMapping = {
     'contour': contourType,
     'contourList': contourListType,
     'externalReferences': externalReferencesType,
-    'globalExternalReferences': externalReferenceType,
+    'globalExternalReferences': globalExternalReferencesType,
     'macromolecule': macromoleculeType,
     'mesh': meshType,
     'meshList': meshListType,
@@ -5189,6 +5291,7 @@ __all__ = [
     "externalReferenceType",
     "externalReferencesType",
     "floatVectorType",
+    "globalExternalReferencesType",
     "hsvType",
     "integerVectorType",
     "macromoleculeType",

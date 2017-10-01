@@ -91,21 +91,25 @@ class NoteView(View):
         if self._segment.biologicalAnnotation:
             string_list = list()
             string_list.append(
-                "\t{:<20}\t{:<20}\t{:<20}".format(
-                    "#  ontology",
-                    "type",
-                    "term",
+                "\t{:<19} {:<56} {:<20} {:1} {:1}".format(
+                    "#  ontology_name",
+                    "iri",
+                    "short_form",
+                    "L",
+                    "D",
                     )
                 )
             string_list.append("\t" + "-" * (self.DISPLAY_WIDTH - len("\t".expandtabs())))
             i = 0
             for extRef in self._segment.biologicalAnnotation.externalReferences:
                 string_list.append(
-                    "\t{}: {:<20}\t{:<20}\t{:<20}".format(
+                    "\t{}: {:<16} {:<56} {:<20} {:1} {:1}".format(
                         i,
                         extRef.type,
                         extRef.otherType if extRef.otherType else '-',
                         extRef.value,
+                        "Y" if extRef.label else "N",
+                        "Y" if extRef.description else "N"
                         )
                     )
                 i += 1
@@ -260,21 +264,25 @@ class HeaderView(View):
         if self._segmentation.globalExternalReferences:
             string_list = list()
             string_list.append(
-                "{:<20}\t{:<20}\t{:<20}".format(
-                    "#  ontology",
-                    "type",
-                    "term",
+                "{:<19} {:<56} {:<20} {:1} {:1}".format(
+                    "#  ontology_name",
+                    "iri",
+                    "short_form",
+                    "L",
+                    "D",
                     )
                 )
             string_list.append("\t" + "-" * (self.DISPLAY_WIDTH - len("\t".expandtabs())))
             i = 0
             for gExtRef in self._segmentation.globalExternalReferences:
                 string_list.append(
-                    "\t{}: {:<20}\t{:<20}\t{:<20}".format(
+                    "\t{}: {:<16} {:<56} {:<20} {:1} {:1}".format(
                         i,
                         gExtRef.type,
                         gExtRef.otherType if gExtRef.otherType else '-',
                         gExtRef.value,
+                        "Y" if gExtRef.label else "N",
+                        "Y" if gExtRef.description else "N"
                         )
                     )
                 i += 1

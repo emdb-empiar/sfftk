@@ -30,7 +30,7 @@ def add_args(parser, the_arg):
     :return parser: a parser
     :rtype parser: ``argparse.Parser``
     """
-    return parser.add_argument(*the_arg['args'], **the_arg['kwargs']) 
+    return parser.add_argument(*the_arg['args'], **the_arg['kwargs'])
 
 Parser = argparse.ArgumentParser(prog='sff', description="The EMDB-SFF Toolkit (sfftk)")
 
@@ -183,7 +183,7 @@ number_of_instances = {
 external_ref = {
     'args': ['-E', '--external-ref'],
     'kwargs': {
-        'nargs': 2,
+        'nargs': 3,
         'help': "the type of external reference (a valid ontology short name \
 e.g. 'omit') followed by the reference accession e.g. 'OMIT:0033410'; you can\
  also specify multiple external reference arguments e.g. sff notes add -i \

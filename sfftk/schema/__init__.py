@@ -501,6 +501,8 @@ class SFFExternalReference(SFFType):
     type = SFFAttribute('type_')
     otherType = SFFAttribute('otherType')
     value = SFFAttribute('value')
+    label = SFFAttribute('label')
+    description = SFFAttribute('description')
     # methods
     def __init__(self, *args, **kwargs):
         # remap kwargs
@@ -1958,7 +1960,7 @@ class SFFBoundingBox(SFFType):
 
 class SFFGlobalExternalReferences(SFFType):
     """Container for global external references"""
-    gds_type = sff.externalReferencesType
+    gds_type = sff.globalExternalReferencesType
     ref = "globalExternalReference"
     repr_string = "Global external reference list with {} reference(s)"
     repr_args = ('len()',)
@@ -2118,7 +2120,9 @@ class SFFSegmentation(SFFType):
             globalExternalReferences.append({
                 'type': gextref.type,
                 'otherType': gextref.otherType,
-                'value': gextref.value
+                'value': gextref.value,
+                'label': gextref.label,
+                'description': gextref.description
                 })
         sff_data['globalExternalReferences'] = globalExternalReferences
         sff_data['segments'] = list()
@@ -2137,7 +2141,9 @@ class SFFSegmentation(SFFType):
                         {
                             'type': extref.type, 
                             'otherType': extref.otherType, 
-                            'value': extref.value
+                            'value': extref.value,
+                            'label': extref.label,
+                            'description': extref.description,
                         }
                     )
              
@@ -2295,6 +2301,12 @@ class SFFSegmentation(SFFType):
         except AssertionError:
             print_date("Invalid type for other_seg: {}".format(type(other_seg)))
             sys.exit(1)
+        # global data
+        self.name = other_seg.name
+        self.filePath = other_seg.filePath
+        self.software = other_seg.software
+        self.globalExternalReferences = other_seg.globalExternalReferences
+        self.details = other_seg.details
         # loop through segments
         for segment in self.segments:
             other_segment = other_seg.segments.get_by_id(segment.id)

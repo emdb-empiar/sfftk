@@ -50,7 +50,37 @@ __date__ = "2017-04-07"
 
 
 # externalReference
-ExternalReference = namedtuple('ExternalReference', ['type', 'otherType', 'value'], verbose=False)
+# ExternalReference = namedtuple('ExternalReference', ['type', 'otherType', 'value'], verbose=False)
+
+class ExternalReference(object):
+    def __init__(self, type_=None, otherType=None, value=None):
+        self.type = type_
+        self.otherType = otherType
+        self.value = value
+        self.label, self.description = self._get_text()
+    @property
+    def iri(self):
+        """The IRI value should be *double url-encoded"""
+        from urllib import urlencode
+        urlenc = urlencode({'iri': self.value.encode('idna')})
+        urlenc2 = urlencode({'iri': urlenc.split('=')[1]})
+        return urlenc2.split('=')[1]
+    def _get_text(self):
+        """Get the label and description if they exist"""
+        label = None
+        description = None
+        url = "http://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
+            ontology=self.type,
+            iri=self.iri
+            )
+        import requests
+        R = requests.get(url)
+        import json
+        self._result = json.loads(R.text)
+        print self._result
+        label = self._result['label']
+        description = self._result['description'][0] if self._result['description'] else None
+        return label, description
 
 
 class NoteAttr(object):
@@ -127,6 +157,8 @@ class AbstractGlobalNote(BaseNote):
                         type=gExtRef.type,
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
+                        label=gExtRef.label,
+                        description=gExtRef.description 
                         )
                     )
         return segmentation
@@ -172,6 +204,8 @@ class AbstractGlobalNote(BaseNote):
                         type=gExtRef.type,
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
+                        label=gExtRef.label,
+                        description=gExtRef.description 
                         ),
                     start_index,
                     )
@@ -183,6 +217,8 @@ class AbstractGlobalNote(BaseNote):
                         type=gExtRef.type,
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
+                        label=gExtRef.label,
+                        description=gExtRef.description 
                         ),
                     start_index,
                     )
@@ -240,14 +276,15 @@ class GlobalArgsNote(AbstractGlobalNote):
             self.externalReferenceId = args.external_ref_id
         if hasattr(args, 'external_ref'):
             if args.external_ref:
-                for _type, _value in args.external_ref:
+                for _type, _otherType, _value in args.external_ref:
                     self._extRefList.append(
                         ExternalReference(
-                            type=_type,
-                            otherType='-',
+                            type_=_type,
+                            otherType=_otherType,
                             value=_value
                             )
                         )
+                    
 
 class AbstractNote(BaseNote):
     """Note 'abstact' class that defines private attributes and main methods"""
@@ -276,11 +313,14 @@ class AbstractNote(BaseNote):
                 if not bA.externalReferences:
                     bA.externalReferences = schema.SFFExternalReferences()
                 for extRef in self.externalReferences:
+                    extRef._get_text()
                     bA.externalReferences.add_externalReference(
                         schema.SFFExternalReference(
-                            type=extRef.type,
+                            type_=extRef.type,
                             otherType=extRef.otherType,
                             value=extRef.value,
+                            label=extRef.label,
+                            description=extRef.description 
                             )
                         )
             segment.biologicalAnnotation = bA
@@ -329,10 +369,12 @@ class AbstractNote(BaseNote):
                     if not replaced and bA.externalReferences:
                         bA.externalReferences.replace_externalReference(
                             schema.SFFExternalReference(
-                                type=extRef.type, 
+                                type_=extRef.type, 
                                 otherType=extRef.otherType,
                                 value=extRef.value,
-                                ),
+                                label=extRef.label,
+                                description=extRef.description 
+                                ),  
                             start_index,              
                             )
                         replaced = True
@@ -340,9 +382,11 @@ class AbstractNote(BaseNote):
                     else:
                         bA.externalReferences.insert_externalReference(
                             schema.SFFExternalReference(
-                                type=extRef.type, 
+                                type_=extRef.type, 
                                 otherType=extRef.otherType,
                                 value=extRef.value,
+                                label=extRef.label,
+                                description=extRef.description 
                                 ),
                             start_index,              
                             )
@@ -455,11 +499,11 @@ class ArgsNote(AbstractNote):
         # externalReferences
         if hasattr(args, 'external_ref'): # sff notes del has no -E arg
             if args.external_ref:
-                for _type, _value in args.external_ref:
+                for _type, _otherType, _value in args.external_ref:
                     self._extRefList.append(
                         ExternalReference(
-                            type=_type,
-                            otherType='-',
+                            type_=_type,
+                            otherType=_otherType,
                             value=_value
                             )
                         )
@@ -485,11 +529,11 @@ class SimpleNote(AbstractNote):
         self.externalReferenceId = externalReferenceId
         # externalReferences
         if externalReferences:
-            for _type, _value in externalReferences:
+            for _type, _otherType, _value in externalReferences:
                 self._extRefList.append(
                     ExternalReference(
-                        type=_type,
-                        otherType='-',
+                        type_=_type,
+                        otherType=_otherType,
                         value=_value
                         )
                     )
