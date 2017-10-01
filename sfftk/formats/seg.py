@@ -124,7 +124,14 @@ class SeggerHeader(Header):
 
 
 class SeggerSegmentation(Segmentation):
-    """SeggerReader"""
+    """Class representing an Segger segmentation
+    
+    .. code:: python
+    
+        from sfftk.formats.seg import SeggerSegmentation
+        seg_seg = SeggerSegmentation('file.seg')
+        
+    """
     def __init__(self, fn, top_level=False, *args, **kwargs):
         """Initialise the reader"""
         self._fn = fn

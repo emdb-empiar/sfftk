@@ -124,6 +124,14 @@ class AmiraHyperSurfaceHeader(Header):
 
 
 class AmiraHyperSurfaceSegmentation(Segmentation):
+    """Class representing an AmiraHyperSurface segmentation
+    
+    .. code:: python
+    
+        from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
+        surf_seg = AmiraHyperSurfaceSegmentation('file.surf')
+        
+    """
     def __init__(self, fn):
         self._fn = fn
         header, segments = surfreader.get_data(self._fn)

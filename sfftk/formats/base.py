@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import division
 """
 sfftk.formats.base
 
@@ -10,28 +9,19 @@ Keep it as simple as possible. Assignment to attributes is done directly. Uses
 basic data structures (lists, dicts, tuples). Defines global attributes and methods.
 
 We define a single segmentation container consisting of two top-level containers:
+
 - a header container that holds all top-level non-segment data
+
 - a list of segment containers
 
 Each segment container has two main parts:
+
 - an annotation container that lists all non-geometric descriptions i.e. textual, logical descriptions
+
 - the actual geometric container that can either be meshes, contours, a volume or shapes
 
-Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at 
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied. 
-
-See the License for the specific language governing permissions 
-and limitations under the License.
 """
+from __future__ import division
 
 __author__  = "Paul K. Korir, PhD"
 __email__   = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -39,6 +29,7 @@ __date__    = "2017-03-28"
 
 
 class SegmentationType(object):
+    """Base class for all segmentation classes"""
     def convert(self, *args, **kwargs):
         """Method to implement conversion to EMDB-SFF using the intermediary API.
         
@@ -60,6 +51,7 @@ class SegmentationType(object):
 
   
 class SegmentFormat(SegmentationType):
+    """Base class for all segmentation geometrical representation formats"""
     format = None
     def __init__(self, *args, **kwargs):
         super(SegmentFormat, self).__init__(*args, **kwargs)
@@ -94,7 +86,7 @@ class Volume(SegmentFormat):
 
 
 class Segment(SegmentationType):
-    """Single segment"""
+    """Base class for segment classes"""
     annotation = None
     meshes = None
     contours = None
@@ -111,16 +103,16 @@ class Segment(SegmentationType):
 
 
 class Annotation(SegmentationType):
-    """Biological annotation"""
+    """Base class for all biological annotation classes"""
     pass
 
 
 class Header(SegmentationType):
-    """Header from segmentation file"""        
+    """Base class for all header classes (for metadata)"""        
     pass
         
 
 class Segmentation(SegmentationType):
-    """Segmentation class"""
+    """Base class for a segmentation"""
     header = None
     segments = list()

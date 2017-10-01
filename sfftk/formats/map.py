@@ -96,7 +96,14 @@ class MapHeader(Header):
 
 
 class MapSegmentation(Segmentation):
-    """``MapSegmentation`` reader"""
+    """Class representing an CCP4/MAP mask segmentation
+    
+    .. code:: python
+    
+        from sfftk.formats.map import MapSegmentation
+        map_seg = MapSegmentation('file.map')
+        
+    """
     def __init__(self, fn, *args, **kwargs):
         """Initialise the MapSegmentation reader"""
         self._fn = fn   

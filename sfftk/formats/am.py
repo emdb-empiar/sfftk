@@ -148,6 +148,14 @@ class AmiraMeshHeader(Header):
 
 
 class AmiraMeshSegmentation(Segmentation):
+    """Class representing an AmiraMesh segmentation
+    
+    .. code:: python
+    
+        from sfftk.formats.am import AmiraMeshSegmentation
+        am_seg = AmiraMeshSegmentation('file.am')
+        
+    """
     def __init__(self, fn, *args, **kwargs):
         self._fn = fn   
         self._header, self._segmentation = amreader.get_data(self._fn, *args, **kwargs)
@@ -156,6 +164,10 @@ class AmiraMeshSegmentation(Segmentation):
     """
     @property
     def header(self):
+        """The AmiraMesh header obtained using the ``ahds`` package
+        
+        The header is wrapped with a generic AmiraMeshHeader class 
+        """
         return AmiraMeshHeader(self._header)
     @property
     def segments(self):

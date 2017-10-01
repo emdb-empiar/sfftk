@@ -375,7 +375,14 @@ class IMODSegment(Segment):
 
 
 class IMODSegmentation(Segmentation):
-    """``IMODSegmentation``"""
+    """Class representing an IMOD segmentation
+    
+    .. code:: python
+    
+        from sfftk.formats.mod import IMODSegmentation
+        mod_seg = IMODSegmentation('file.mod')
+        
+    """
     def __init__(self, fn, *args, **kwargs):
         """Initialise the IMODReader"""
         self._fn = fn   

@@ -112,6 +112,14 @@ class STLHeader(Header):
 
 
 class STLSegmentation(Segmentation):
+    """Class representing an STL segmentation
+    
+    .. code:: python
+    
+        from sfftk.formats.stl import STLSegmentation
+        stl_seg = STLSegmentation('file.stl')
+        
+    """
     def __init__(self, fn):
         self._fn = fn
         self._segmentation = stlreader.get_data(self._fn)
