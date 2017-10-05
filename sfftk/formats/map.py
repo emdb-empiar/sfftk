@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # map.py
 """
-User-facing reader classes
+sfftk.formats.map
+=================
+
+User-facing reader classes for CCP4 masks
 """
 from __future__ import division
 
@@ -18,11 +21,13 @@ from ..readers import mapreader
 
 
 class MapVolume(Volume):
+    """Volume class"""
     def __init__(self, segmentation, *args, **kwargs):
         self._segmentation = segmentation
         self.voxels = segmentation._segmentation.voxels
         
     def convert(self, *args, **kwargs):
+        """Convert to an EMDB-SFF volume object"""
         volume = schema.SFFThreeDVolume()
 
         # make file
@@ -42,13 +47,17 @@ class MapVolume(Volume):
 
 
 class MapAnnotation(Annotation):
+    """Annotation class"""
     @property
     def description(self):
+        """Segment description"""
         return None
     @property
     def colour(self):
+        """Segment colour"""
         return None
     def convert(self):
+        """Convert to EMDB-SFF biological annotation object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -67,15 +76,19 @@ class MapAnnotation(Annotation):
 
 
 class MapSegment(Segment):
+    """Segment class"""
     def __init__(self, segmentation):
         self._segmentation = segmentation
     @property
     def annotation(self):
+        """Segment annotation"""
         return MapAnnotation()
     @property
     def volume(self):
+        """Three-D volume data in this segment"""
         return MapVolume(self._segmentation)
     def convert(self):
+        """Convert to EMDB-SFF segment object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         segment.volume = self.volume.convert()
@@ -83,6 +96,7 @@ class MapSegment(Segment):
     
     
 class MapHeader(Header):
+    """Header class"""
     def __init__(self, segmentation):
         self._segmentation = segmentation._segmentation
         for attr in dir(self._segmentation):
@@ -93,6 +107,9 @@ class MapHeader(Header):
             if attr == "voxels": # leave the voxels for the volume
                 continue
             setattr(self, attr, getattr(self._segmentation, attr))
+    
+    def convert(self, *args, **kwargs):
+        pass
 
 
 class MapSegmentation(Segmentation):
@@ -115,11 +132,14 @@ class MapSegmentation(Segmentation):
     """
     @property
     def header(self):
+        """Segmentation metadata"""
         return MapHeader(self)
     @property
     def segments(self): # only one segment 
+        """The segments in this segmentation"""
         return [MapSegment(self)]
     def convert(self, *args, **kwargs):
+        """Convert to EMDB-SFF segmentation object"""
         segmentation = schema.SFFSegmentation()
         
         segmentation.name = self.header.name

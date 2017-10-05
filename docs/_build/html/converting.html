@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html" />
     <link rel="next" title="Annotating EMDB-SFF Segmentations" href="annotating.html" />
-    <link rel="prev" title="The EMDB-SFF Toolkit (sfftk)" href="toolkit.html" />
+    <link rel="prev" title="EMDB-SFF Toolkit (sfftk)" href="toolkit.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -42,95 +42,89 @@
 <h1>Converting Files To EMDB-SFF<a class="headerlink" href="#converting-files-to-emdb-sff" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>Converting files to use the EMDB-SFF data model is one of the core
-functions of sfftk. This guide describes in detail how to accomplish
-conversions.</p>
+<p>Converting files to use the EMDB-SFF data model is one of the core functions of sfftk. This guide describes in detail how to accomplish conversions.</p>
 <div class="section" id="quick-start">
 <h3>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="getting-help">
 <h4>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert</p>
-<p>$ sff convert &#8211;help</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert
+sff convert --help
+</pre></div>
+</div>
 </div>
 <div class="section" id="output-to-xml-default">
 <h4>Output to XML (Default)<a class="headerlink" href="#output-to-xml-default" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert file.seg</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg
+</pre></div>
+</div>
 </div>
 <div class="section" id="specify-output-file">
 <h4>Specify Output File<a class="headerlink" href="#specify-output-file" title="Permalink to this headline">¶</a></h4>
-<div class="line-block">
-<div class="line">$ sff convert file.seg -o file.sff</div>
-<div class="line">$ sff convert file.seg &#8211;output /path/to/output/file.sff</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -o file.sff
+sff convert file.seg --output /path/to/output/file.sff
+sff convert file.seg -o file.hff
+</pre></div>
 </div>
-<p>$ sff convert file.seg -o file.hff</p>
 </div>
 <div class="section" id="specify-output-format">
 <h4>Specify Output Format<a class="headerlink" href="#specify-output-format" title="Permalink to this headline">¶</a></h4>
-<div class="line-block">
-<div class="line">$ sff convert file.seg -f hff</div>
-<div class="line">$ sff convert file.seg &#8211;format hff</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -f hff
+sff convert file.seg --format hff
+</pre></div>
 </div>
 </div>
 <div class="section" id="emdb-sff-format-interconversion">
 <h4>EMDB-SFF Format Interconversion<a class="headerlink" href="#emdb-sff-format-interconversion" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert file.sff &#8211;output /path/to/output/file.hff</p>
-<p>$ sff convert file.hff &#8211;format json</p>
-<p>$ sff convert file.sff &#8211;format sff</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.sff --output /path/to/output/file.hff
+sff convert file.hff --format json
+sff convert file.sff --format sff
+</pre></div>
+</div>
 </div>
 <div class="section" id="verbose-operation">
 <h4>Verbose Operation<a class="headerlink" href="#verbose-operation" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert &#8211;verbose file.hff</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --verbose file.hff
+</pre></div>
+</div>
 </div>
 <div class="section" id="truncate-segments-segger-only">
 <h4>Truncate Segments (Segger Only)<a class="headerlink" href="#truncate-segments-segger-only" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert &#8211;top-level-only file.seg</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --top-level-only file.seg
+</pre></div>
+</div>
 </div>
 <div class="section" id="set-details">
 <h4>Set Details<a class="headerlink" href="#set-details" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert &#8211;details “Lorem ipsum dolor…” file.seg</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --details “Lorem ipsum dolor…” file.seg
+</pre></div>
+</div>
 </div>
 <div class="section" id="change-primary-descriptor">
 <h4>Change Primary Descriptor<a class="headerlink" href="#change-primary-descriptor" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert &#8211;primary-descriptor contourList file.surf #
-AmiraHxSurface file</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --primary-descriptor contourList file.surf # AmiraHxSurface file
+</pre></div>
+</div>
 </div>
 <div class="section" id="contours-to-mesh-experimental">
 <h4>Contours To Mesh (Experimental)<a class="headerlink" href="#contours-to-mesh-experimental" title="Permalink to this headline">¶</a></h4>
-<p>$ sff convert -M file.sff</p>
-<p>$ sff convert &#8211;contour-to-mesh file.sff &#8211;output file_mesh.sff</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert -M file.sff
+sff convert --contour-to-mesh file.sff --output file_mesh.sff
+</pre></div>
+</div>
 </div>
 </div>
 </div>
 <div class="section" id="input-formats">
 <h2>Input Formats<a class="headerlink" href="#input-formats" title="Permalink to this headline">¶</a></h2>
-<p>sfftk can convert <a class="reference external" href="https://docs.google.com/document/d/1ljX7mlo5Vj4dTSf7jSzbwRoqPfab2r5tjFijqEi3hGM/edit#heading=h.6rhhnuaqaszp">*several segmentation file
-formats*</a>
-into EMDB-SFF files.</p>
+<p>sfftk can convert <a class="reference external" href="https://docs.google.com/document/d/1ljX7mlo5Vj4dTSf7jSzbwRoqPfab2r5tjFijqEi3hGM/edit#heading=h.6rhhnuaqaszp">*several segmentation file formats*</a> into EMDB-SFF files.</p>
 </div>
 <div class="section" id="output-formats">
 <h2>Output Formats<a class="headerlink" href="#output-formats" title="Permalink to this headline">¶</a></h2>
 <p>EMDB-SFF files can be output as XML (.sff), HDF5 (.hff) or JSON (.json).</p>
-<ul>
-<li><dl class="first docutils">
-<dt>XML EMDB-SFF files are typically relatively large compared to HDF5</dt>
-<dd><p class="first last">and JSON equivalents. The compression applied in HDF5 files makes
-them ideal for large datasets.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>JSON EMDB-SFF files do not contain geometric descriptors and are</dt>
-<dd><p class="first last">primarily used as a temporary files during annotation.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Interconversion of the three formats is lossless (with the exception</dt>
-<dd><p class="first last">of geometrical data when converting to JSON - all geometrical
-data is excluded).</p>
-</dd>
-</dl>
-</li>
+<ul class="simple">
+<li>XML EMDB-SFF files are typically relatively large compared to HDF5 and JSON equivalents. The compression applied in HDF5 files makes them ideal for large datasets.</li>
+<li>JSON EMDB-SFF files do not contain geometric descriptors and are primarily used as temporary files during annotation.</li>
+<li>Interconversion of the three formats is lossless (with the exception of geometrical data when converting to JSON - all geometrical data is excluded).</li>
 </ul>
 <p>There are two ways to perform conversion:</p>
 <ul class="simple">
@@ -140,132 +134,98 @@ data is excluded).</p>
 <div class="section" id="specifying-the-output-path-with-o-output-flag">
 <h3>Specifying the output path with -o/&#8211;output flag<a class="headerlink" href="#specifying-the-output-path-with-o-output-flag" title="Permalink to this headline">¶</a></h3>
 <p>Conversion is performed as follows:</p>
-<div class="line-block">
-<div class="line">$ sff convert file.seg -o file.sff</div>
-<div class="line">$ sff convert file.seg &#8211;output /path/to/output/file.sff</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -o file.sff
+sff convert file.seg --output /path/to/output/file.sff
+</pre></div>
 </div>
 <p>The output file extension determines the output format i.e.</p>
-<p>$ sff convert file.seg -o file.hff</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -o file.hff
+</pre></div>
+</div>
 <p>will result in an HDF5 file while</p>
-<p>$ sff convert file.seg &#8211;output file.json</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg --output file.json
+</pre></div>
+</div>
 <p>will be a JSON file.</p>
 </div>
 <div class="section" id="specifying-the-output-format-with-f-format-flag">
 <h3>Specifying the output format with -f/&#8211;format flag<a class="headerlink" href="#specifying-the-output-format-with-f-format-flag" title="Permalink to this headline">¶</a></h3>
-<p>The -f/&#8211;format options ensures that the output file will be in the same
-directory as the original segmentation file. The -f flag takes one of
-three values:</p>
+<p>The -f/&#8211;format options ensures that the output file will be in the same directory as the original segmentation file. The -f flag takes one of three values:</p>
 <ul class="simple">
 <li>‘sff’ for XML files</li>
 <li>‘hff’ for HDF5 files</li>
 <li>‘json’ for JSON files.</li>
 </ul>
 <p>Any other value raises an error.</p>
-<div class="line-block">
-<div class="line">$ sff convert file.seg -f hff</div>
-<div class="line">$ sff convert file.seg &#8211;format hff</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -f hff
+sff convert file.seg --format hff
+</pre></div>
 </div>
 <p>The default format (if none is specified) is ‘sff’ (XML).</p>
-<p>$ sff convert file.seg</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg
+</pre></div>
+</div>
 <p>results in file.sff as output.</p>
 <p>Running sff convert with no options or with -h/&#8211;help displays help.</p>
-<p>$ sff convert</p>
-<p>usage: sff convert [-h] [-t] [-M] [-d DETAILS] [-P PRIMARY_DESCRIPTOR]
-[-v]</p>
-<p>[-s SUB_TOMOGRAM_AVERAGE SUB_TOMOGRAM_AVERAGE]</p>
-<p>[-o OUTPUT | -f FORMAT]</p>
-<p>from_file</p>
-<p>Perform conversions to EMDB-SFF</p>
-<p>positional arguments:</p>
-<p>from_file file to convert from</p>
-<p>optional arguments:</p>
-<p>-h, &#8211;help show this help message and exit</p>
-<p>-t, &#8211;top-level-only convert only the top-level segments [default:
-False]</p>
-<p>-M, &#8211;contours-to-mesh</p>
-<p>convert an &#8216;contourList&#8217; EMDB-SFF to a &#8216;meshList&#8217;</p>
-<p>EMDB-SFF</p>
-<p>-d DETAILS, &#8211;details DETAILS</p>
-<p>populates &lt;details&gt;...&lt;/details&gt; in the XML file</p>
-<p>[default: &#8216;&#8217;]</p>
-<p>-P PRIMARY_DESCRIPTOR, &#8211;primary-descriptor PRIMARY_DESCRIPTOR</p>
-<p>populates the</p>
-<p>&lt;primaryDescriptor&gt;...&lt;/primaryDescriptor&gt; to this</p>
-<p>value [valid values: threeDVolume, contourList,</p>
-<p>meshList, shapePrimitiveList]</p>
-<p>-v, &#8211;verbose verbose output</p>
-<p>-s SUB_TOMOGRAM_AVERAGE SUB_TOMOGRAM_AVERAGE, &#8211;sub-tomogram-average
-SUB_TOMOGRAM_AVERAGE SUB_TOMOGRAM_AVERAGE</p>
-<p>convert a subtomogram average into an EMDB-SFF file;</p>
-<p>two arguments are required: the table file and volume</p>
-<p>file (in that order)</p>
-<p>-o OUTPUT, &#8211;output OUTPUT</p>
-<p>file to convert to; the extension (.sff, .hff, .json)</p>
-<p>determines the output format [default: None]</p>
-<p>-f FORMAT, &#8211;format FORMAT</p>
-<p>output file format; valid options are: sff (XML), hff</p>
-<p>(HDF5), json (JSON) [default: sff]</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert
+INSERT OUTPUT
+</pre></div>
+</div>
 </div>
 <div class="section" id="id1">
 <h3>EMDB-SFF Format Interconversion<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>It is also possible to perform interconversions from XML, HDF5 and JSON
-EMDB-SFF files.</p>
-<p>$ sff convert file.sff &#8211;output /path/to/output/file.hff</p>
+<p>It is also possible to perform interconversions from XML, HDF5 and JSON EMDB-SFF files.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.sff --output /path/to/output/file.hff
+</pre></div>
+</div>
 <p>or using &#8211;format</p>
-<p>$ sff convert file.hff &#8211;format json</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.hff --format json
+</pre></div>
+</div>
 <p>Even null conversions are possible:</p>
-<p>$ sff convert file.sff &#8211;format sff</p>
-<p>As stated previously, conversion to JSON drop all geometrical
-descriptions. Similarly, conversions from JSON EMDB-SFF</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.sff --format sff
+</pre></div>
+</div>
+<p>As stated previously, conversion to JSON drops all geometrical descriptions. Similarly, conversions from JSON to EMDB-SFF will not reinstate the geometric description information.</p>
 </div>
 </div>
 <div class="section" id="id2">
 <h2>Verbose Operation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>As with many Linux shell programs the -v/&#8211;verbose option prints status
-information on the terminal.</p>
-<p>$ sff convert &#8211;verbose file.hff</p>
-<p>Tue Sep 12 15:29:18 2017 Seting output file to file.sff</p>
-<p>Tue Sep 12 15:29:18 2017 Converting from EMDB-SFF (HDF5) file file.hff</p>
-<p>Tue Sep 12 15:30:03 2017 Created SFFSegmentation object</p>
-<p>Tue Sep 12 15:30:03 2017 Exporting to file.sff</p>
-<p>Tue Sep 12 15:30:07 2017 Done</p>
+<p>As with many Linux shell programs the -v/&#8211;verbose option prints status information on the terminal.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --verbose file.hff
+Tue Sep 12 15:29:18 2017 Seting output file to file.sff
+Tue Sep 12 15:29:18 2017 Converting from EMDB-SFF (HDF5) file file.hff
+Tue Sep 12 15:30:03 2017 Created SFFSegmentation object
+Tue Sep 12 15:30:03 2017 Exporting to file.sff
+Tue Sep 12 15:30:07 2017 Done
+</pre></div>
+</div>
 </div>
 <div class="section" id="truncating-segments-segger-only">
 <h2>Truncating Segments (Segger Only)<a class="headerlink" href="#truncating-segments-segger-only" title="Permalink to this headline">¶</a></h2>
-<p>Segger segmentations include hundreds to thousands of sub-segmentations
-due to how the algorithm it uses (watershed algorithm) identifies
-segmentations. The segmentations thus form a tree with the root having a
-value of zero. Mostly, we are only interested in the children of the
-root which are in themselves roots of another tree. This option only
-transfers the children of the global root into the EMDB-SFF file.</p>
+<p>Segger segmentations include hundreds to thousands of sub-segmentations due to how the algorithm it uses (watershed algorithm) identifies segmentations. The segmentations thus form a tree with the root having a value of zero. Mostly, we are only interested in the children of the root which are in themselves roots of another tree. This option only transfers the children of the global root into the EMDB-SFF file.</p>
 <p>Consider the following tree of segments:</p>
-<p>The segmentation contains different levels commencing from the root down
-with children segments <em>contained within</em> parent segments. Specifying
--t/&#8211;top-level-only treats only children of the <em>root</em> as segments and
-excludes all others. Therefore, running</p>
-<p>$ sff convert &#8211;top-level-only file.seg</p>
-<p>on the above will produce an EMDB-SFF file with only three segments.
-Excluding this option means that the resulting EMDB-SFF file will be
-relatively large.</p>
+<img alt="_images/converting-01.png" src="_images/converting-01.png" />
+<p>The segmentation contains different levels commencing from the root down, with children segments <em>contained within</em> parent segments. Specifying -t/&#8211;top-level-only treats only children of the <em>root</em> as segments and excludes all others. Therefore, running</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --top-level-only file.seg
+</pre></div>
+</div>
+<p>on the above will produce an EMDB-SFF file with only three segments. Excluding this option means that the resulting EMDB-SFF file will be relatively large.</p>
 </div>
 <div class="section" id="specify-details">
 <h2>Specify Details<a class="headerlink" href="#specify-details" title="Permalink to this headline">¶</a></h2>
-<p>The EMDB-SFF data model provides for an optional &lt;details/&gt; tag. The
-contents of this option will be put into &lt;details/&gt;.</p>
-<p>$ sff convert &#8211;details “Lorem ipsum dolor…” file.seg</p>
-<p>TODO: ALLOW A USER TO PASS A FILE WHOSE CONTENTS WILL BE INSERTED INTO
-&lt;details/&gt;.</p>
+<p>The EMDB-SFF data model provides for an optional &lt;details/&gt; tag for auxilliary information. The contents of this option will be put into &lt;details/&gt;.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --details “Lorem ipsum dolor…” file.seg
+</pre></div>
+</div>
+<p>TODO: ALLOW A USER TO PASS A FILE WHOSE CONTENTS WILL BE INSERTED INTO &lt;details/&gt;.</p>
 </div>
 <div class="section" id="changing-the-primary-descriptor">
 <h2>Changing The Primary Descriptor<a class="headerlink" href="#changing-the-primary-descriptor" title="Permalink to this headline">¶</a></h2>
-<p>The EMDB-SFF data model provides for four possible geometrical
-descriptors: contours (contourList), meshes (meshList), shape primitives
-(shapePrimitiveList) and 3D volumes (threeDVolume). The mandatory
-&lt;primaryDescriptor/&gt; field specifies the main geometrical descriptor to
-be used when performing conversions and other processing tasks. Only
-valid values are allowed; otherwise a ValueError is raised.</p>
-<p>$ sff convert &#8211;primary-descriptor contourList file.surf #
-AmiraHxSurface file</p>
+<p>The EMDB-SFF data model provides for four possible geometrical descriptors: contours (contourList), meshes (meshList), shape primitives (shapePrimitiveList) and 3D volumes (threeDVolume). In some cases, e.g., IMOD segmentations, more than one geometrical descriptor may have been specified for the same segmentations. The mandatory &lt;primaryDescriptor/&gt; field specifies the main geometrical descriptor to be used when performing conversions and other processing tasks. Only valid values are allowed; otherwise a ValueError is raised.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --primary-descriptor contourList file.surf # AmiraHxSurface file
+</pre></div>
+</div>
 <p>The table below shows valid primary descriptors by file type.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -298,24 +258,17 @@ AmiraHxSurface file</p>
 </tr>
 </tbody>
 </table>
-<p>Note that the primary descriptor should only be changed to a value of a
-geometrical descriptor that is <em>actually</em> present in the EMDB-SFF file.</p>
-<p>For IMOD files, sfftk tries to intelligently determine which primary
-descriptor to use. Also, it also tries to ensure that a change
-corresponds to the actual file contents.</p>
+<p>Note that the primary descriptor should only be changed to a value of a geometrical descriptor that is <em>actually</em> present in the EMDB-SFF file.</p>
+<p>For IMOD files, sfftk tries to intelligently determine which primary descriptor to use. Also, it also tries to ensure that a change corresponds to the actual file contents.</p>
 </div>
 <div class="section" id="experimental-convert-contour-segmentation-to-mesh-surface">
 <h2><em>Experimental</em>: Convert Contour Segmentation to Mesh Surface<a class="headerlink" href="#experimental-convert-contour-segmentation-to-mesh-surface" title="Permalink to this headline">¶</a></h2>
-<p>Mesh surfaces are more efficient to work with than contours. However,
-converting contours to a mesh is not straightforward. This option relies
-on IMOD imodmesh command to convert an (note!) EMDB-SFF file with
-contours into one with a mesh. It is experimental and may fail on some
-files.</p>
-<p>$ sff convert -M file.sff</p>
-<p>$ sff convert &#8211;contour-to-mesh file.sff &#8211;output file_mesh.sff</p>
-<p>Here file.sff has a <em>contourList</em> primary descriptor. If successful, the
-converted file will have meshes and primary descriptor set to
-<em>meshList</em>. The output file will be XML (by default).</p>
+<p>Mesh surfaces are more efficient to work with than contours. However, converting contours to a mesh is not straightforward. This option relies on IMOD imodmesh command to convert an (note!) EMDB-SFF file with contours into one with meshes. It is experimental and may fail on some files.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sff convert -M file.sff
+sff convert --contour-to-mesh file.sff --output file_mesh.sff
+</pre></div>
+</div>
+<p>Here file.sff has a <em>contourList</em> primary descriptor. If successful, the converted file will have meshes and primary descriptor set to <em>meshList</em>. The output file will be XML (by default).</p>
 </div>
 </div>
 
@@ -363,7 +316,7 @@ converted file will have meshes and primary descriptor set to
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="toolkit.html" title="previous chapter">The EMDB-SFF Toolkit (sfftk)</a></li>
+      <li>Previous: <a href="toolkit.html" title="previous chapter">EMDB-SFF Toolkit (sfftk)</a></li>
       <li>Next: <a href="annotating.html" title="next chapter">Annotating EMDB-SFF Segmentations</a></li>
   </ul></li>
 </ul>

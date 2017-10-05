@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-modreader.py
-============
+sfftk.readers.modreader
+=======================
 
-Read IMOD model (`.mod`) files.
+Ad hoc reader for IMOD (`.mod`) files.
 
 `.mod` files are chunk files and loosely follow the Interchange File 
 Format (IFF). In summary, IFF files consist of a four-byte header
@@ -27,31 +27,19 @@ in the design of these classes:
 
 - Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as add_<chunk> e.g. OBJT objects are containers of CONT objects and therefore have a add_cont() method which takes a CONT object as argument. Internally, container objects use dictionaries to store contained objects.
 
-- All chunk classes inherit from 'object' class and have the __repr__()
-    method implemented to print objects of that class.
-
-In addition, there are several useful dictionary constants and 
-functions and classes (flags) that interpret several fields within 
-chunks.
+- All chunk classes inherit from 'object' class and have the __repr__() method implemented to print objects of that class.
 
 
-todo
------
+In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.
+
+:TODO:
+------
+
 - unravel VIEW chunk (email from 3dmod authors unclear)
+
 - list fiels in MESH chunk with -24 markers
-- argument parsing DONE
-- implementation of MOST, OBST, COST, and MEST...DONE
+
 - empty (no field) implementation of OGRP, SKLI and SLAN (class exists but unclear how to nest it) 
-
-
-Version history
----------------
-- 0.1.0, 2015-10-12, first working version
-- 0.1.1, 2015-10-16, clean-up
-- 0.1.2, 2015-10-20, implemented commandline arguments (and associated tests)
-- 0.1.3, 2015-10-21, implemented MOST, OBST, COST, and MEST (partially) together with a generic STORE class
-- 0.1.4, 2015-10-23, added conditions for OGRP, SKLI, and SLAN chunks but unable to test due to lack of data
-- 0.1.6, 2016-02-26, documentation with Sphinx
 
 """
 from __future__ import division
@@ -122,7 +110,10 @@ def find_chunk_length(f):
     Assumes that current position in the file is immediately after the chunk header.
     
     Arguments:
-    @param f:            file handle
+    :param file f: file handle
+    :return int chunk_length: the length of the chunk
+    :return str next_chunk: the chunk that follows (four uppercase letters)
+    :return file f: the original file handle advanced further after finding the next chunk
     """
     chunk_length = 0
     next_chunk = struct.unpack('>4s', f.read(4))[0]
@@ -134,51 +125,33 @@ def find_chunk_length(f):
     return chunk_length, next_chunk, f
 
 
-# moved to sff.utils.print_tools.py
-# def get_printable_ascii_string(s):
-#     """
-#     Given a string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.
-#     
-#     Argument:
-#     @param s:            a string
-#     """
-#     # get the list of ordinals
-#     s_ord = map(ord, s)
-#     # ASCII have ordinals on 0-127
-#     # get the first non-printable ASCII i.e. 32 < ord > 127
-#     non_ascii = filter(lambda x: x < 32 or x > 127, s_ord)[0]
-#     # get the index along the string where this character exists
-#     non_ascii_index = s_ord.index(non_ascii)
-#     # return the prefix upto and excluding the first non-ASCII
-#     ascii_s = s[:non_ascii_index]
-#     return ascii_s
-
-
-#--------------------------------------------------------------------------------
-# FLAG OBJECTS
 class FLAGS(object):
-    """Class of bit flags.
+    """Base class of bit flags"""
     
-    :param int int_value: the value in base 10
-    :param int bytes: the number of bytes to store
-    :param str endian: one of `little` or `big`
-    
-    Example usage:
-    
-    >>> from readers.modreader import FLAGS
-    >>> flag = FLAGS(10, 2)
-    >>> flag
-    0000000000001010
-    >>> flag[0]
-    False
-    >>> flag[1]
-    False
-    >>> flag[-1]
-    False
-    >>> flag[-2]
-    True
-    """
     def __init__(self, int_value, num_bytes, endian='little'):
+        """Initialiser of ``FLAG`` class
+        
+        :param int int_value: the value in base 10
+        :param int bytes: the number of bytes to store
+        :param str endian: one of `little` or `big`
+        
+        Example usage:
+        
+        .. code:: python
+        
+            >>> from readers.modreader import FLAGS
+            >>> flag = FLAGS(10, 2)
+            >>> flag
+            0000000000001010
+            >>> flag[0]
+            False
+            >>> flag[1]
+            False
+            >>> flag[-1]
+            False
+            >>> flag[-2]
+            True
+        """
         try:
             assert endian in ['little', 'big']
         except AssertionError:
@@ -211,57 +184,43 @@ class FLAGS(object):
 
 
 class MODEL_FLAGS(FLAGS):
-    """
-    Flags in the MODEL chunk.
-    """
+    """Flags in the MODEL chunk"""
     def __init__(self, *args, **kwargs):
         super(MODEL_FLAGS, self).__init__(*args, **kwargs)
 
 
 class OBJECT_FLAGS(FLAGS):
-    """
-    Flags in the OBJT chunk.
-    """
+    """Flags in the OBJT chunk"""
     def __init__(self, *args, **kwargs):
         super(OBJECT_FLAGS, self).__init__(*args, **kwargs)
 
 
 class OBJECT_SYM_FLAGS(FLAGS):
-    """
-    Additional flags in the OBJT chunk.
-    """
+    """Additional flags in the OBJT chunk"""
     def __init__(self, *args, **kwargs):
         super(OBJECT_SYM_FLAGS, self).__init__(*args, **kwargs)
 
 
 class CONTOUR_FLAGS(FLAGS):
-    """
-    Flags in the CONT chunk.
-    """
+    """Flags in the CONT chunk"""
     def __init__(self, *args, **kwargs):
         super(CONTOUR_FLAGS, self).__init__(*args, **kwargs)
 
 
 class COST_FLAGS(FLAGS):
-    """
-    Flags in the COST chunk
-    """
+    """Flags in the COST chunk"""
     def __init__(self, *args, **kwargs):
         super(COST_FLAGS, self).__init__(*args, **kwargs)
 
 
 class MESH_FLAGS(FLAGS):
-    """
-    Flags in the MESH chunk.
-    """
+    """Flags in the MESH chunk"""
     def __init__(self, *args, **kwargs):
         super(MESH_FLAGS, self).__init__(*args, **kwargs)
 
 
 class CLIP_FLAGS(FLAGS):
-    """
-    Flags in the CLIP chunk.
-    """
+    """Flags in the CLIP chunk"""
     def __init__(self, *args, **kwargs):
         super(CLIP_FLAGS, self).__init__(*args, **kwargs)
 
@@ -275,27 +234,19 @@ class IMAT_FLAGS(FLAGS):
 
 
 class VIEW_FLAGS(FLAGS):
-    """
-    Flags in the VIEW chunk.
-    """
+    """Flags in the VIEW chunk"""
     def __init__(self, *args, **kwargs):
         super(VIEW_FLAGS, self).__init__(*args, **kwargs)
 
 
 class MEPA_FLAGS(FLAGS):
-    """
-    Flags in the MEPA chunk.
-    """
+    """Flags in the MEPA chunk"""
     def __init__(self, *args, **kwargs):
         super(MEPA_FLAGS, self).__init__(*args, **kwargs)
         
-#--------------------------------------------------------------------------------
-
 
 class STORE(object):
-    """
-    Generic storage class for models (MOST), objects (OBST), contours (COST), and meshes (MEST)
-    """
+    """Generic storage class for models (MOST), objects (OBST), contours (COST), and meshes (MEST)"""
     def __init__(self, f):
         self.f = f
     
@@ -328,13 +279,10 @@ class STORE(object):
         return "type: %s; flags: %s; index: %s; value: %s\n" % (self.type, self.flags, str(self.index), str(self.value))
 
 
-# CHUNK OBJECTS
-
-
 class IMOD(object):
-    """
-    Class encapsulating the data in an IMOD file. The top-level of an IMOD
-    file is an IMOD chunk specifying various data members.
+    """Class encapsulating the data in an IMOD file
+    
+    The top-level of an IMOD file is an IMOD chunk specifying various data members.
     """
     def __init__(self, f):
         self.f = f
@@ -348,7 +296,8 @@ class IMOD(object):
         self.most = None
     
     def read(self):
-        """
+        """Read the IMOD file into an IMOD object
+        
         :FIXME: use zscale to fix sizes
         """
         f = self.f
@@ -369,11 +318,13 @@ class IMOD(object):
         return f
     
     def add_objt(self, objt):
+        """Add an OBJT chunk object to this IMOD object"""
         self.objts[self.objt_count] = objt
         self.objt_count += 1
         self.current_objt = self.objts[self.objt_count - 1]
     
     def add_view(self, view):
+        """Add a VIEW chunk object to this IMOD object"""
         self.views[self.view_count] = view
         self.view_count += 1
     
@@ -418,7 +369,10 @@ stored data:
     
     
 class MOST(object):
-    """Class encapsulating storage parameters for the top-level :attr:`IMOM` chunk."""
+    """MOST chunk class
+    
+    Class encapsulating storage parameters for the top-level :py:class:`sfftk.readers.modreader.IMOD` chunk.
+    """
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -442,9 +396,11 @@ class MOST(object):
     
 
 class OBJT(object):
-    """An IMOD file has several :attr:`OBJT` chunks, each of which contain the data 
-    either as contours (:attr:`CONT`) or meshes (:attr:`MESH`). OBJT chunks also 
-    contain :attr:`CLIP`, :attr:`IMAT`, :attr:`MEPA` and a :attr:`OBST` storage chunk. 
+    """OBJT chunk class
+    
+    An IMOD file has several :py:class:`sfftk.readers.modreader.OBJT` chunks, each of which contain the data 
+    either as contours (:py:class:`sfftk.readers.modreader.CONT`) or meshes (:py:class:`sfftk.readers.modreader.MESH`). OBJT chunks also 
+    contain :py:class:`sfftk.readers.modreader.CLIP`, :py:class:`sfftk.readers.modreader.IMAT`, :py:class:`sfftk.readers.modreader.MEPA` and a :py:class:`sfftk.readers.modreader.OBST` storage chunk. 
     """
     def __init__(self, f):
         self.f = f
@@ -461,6 +417,7 @@ class OBJT(object):
         self.obst = None
     
     def read(self):
+        """Read data from the file to the chunk"""
         f = self.f
         self.name = get_printable_ascii_string(struct.unpack('>64s', f.read(64))[0])
         self.extra = struct.unpack('>16I', f.read(64))[0] # keep an eye on this
@@ -478,11 +435,13 @@ class OBJT(object):
         return f
     
     def add_cont(self, cont):
+        """Add a CONT chunk object to this OBJT object"""
         self.conts[self.cont_count] = cont
         self.cont_count += 1
         self.current_cont = self.conts[self.cont_count - 1]
     
     def add_mesh(self, mesh):
+        """Add a MESH chunk object to this OBJT object"""
         self.meshes[self.mesh_count] = mesh
         self.mesh_count += 1
         self.current_mesh = self.meshes[self.mesh_count - 1]
@@ -517,11 +476,13 @@ stored data:
 
 
 class OBST(object):
+    """OBST chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
     
     def read(self):
+        """Read data from file to this object"""
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
         self.store = dict()
@@ -540,6 +501,7 @@ class OBST(object):
     
 
 class CONT(object):
+    """CONT chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -547,6 +509,7 @@ class CONT(object):
         self.cost = None
     
     def read(self):
+        """Read data from the file to this object"""
         f = self.f
         self.psize = struct.unpack('>i', f.read(4))[0]
         self.flags = CONTOUR_FLAGS(struct.unpack('>I', f.read(4))[0], 4)
@@ -580,6 +543,7 @@ stored data:
         
         
 class COST(object):
+    """COST chunk class"""
     def __init__(self, f):
         self.f = f 
         self.isset = False
@@ -603,6 +567,7 @@ class COST(object):
        
 
 class MESH(object):
+    """MESH chunk class"""
     def __init__(self, f):
         self.f = f
         self.mest = None
@@ -642,6 +607,7 @@ stored data:
 
 
 class MEST(object):
+    """MEST chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -664,6 +630,7 @@ class MEST(object):
 
 
 class IMAT(object):
+    """IMAT chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -700,6 +667,7 @@ mat3b3:        %s""" % (self.bytes, self.ambient, self.diffuse, self.specular, s
         
 
 class SLAN(object):
+    """SLAN chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -715,6 +683,7 @@ class SLAN(object):
 
 
 class VIEW(object):
+    """VIEW chunk class"""
     def __init__(self, f, first_view=False):
         self.f = f
         self.isset = False
@@ -743,7 +712,8 @@ Objv:          %s""" % (self.objvsize, self.Objv)
 
 
 class MINX(object):
-    """
+    """MINX chunk class
+    
     Model to image transformation
     Documented as 72 bytes but works with 76 bytes
     """    
@@ -777,6 +747,7 @@ crot:          %s""" % (self.bytes, self.oscale, self.otrans, \
 
 
 class CLIP(object):
+    """CLIP chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -809,6 +780,7 @@ something:    %s""" % (self.count, self.flags, self.trans, self.plane, self.norm
 
 
 class MEPA(object):
+    """MEPA chunk class"""
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -854,7 +826,7 @@ def get_data(fn):
     """
     Extract chunks from IMOD model file pointed to by the handle f
     
-    :param f: file handle of IMOD model file at start of file
+    :param str fn: name of IMOD file
     :raises ValueError: if it doesn't start with an IMOD chunk
     :raises ValueError: if the file lacks an IEOF chunk
     """ 
@@ -966,7 +938,7 @@ def show_chunks(fn):
     """
     Show the sequence and number of chunks pointed to the by file handle f.
     
-    :param f: file handle to IMOD model file
+    :param str fn: name of IMOD file
     """
     marker_sequence = list()
     seen_view = False
@@ -1007,12 +979,12 @@ def show_chunks(fn):
 
 
 def print_model(mod, output):
-    """
-    Pretty print the IMOD model
+    """Pretty print the IMOD model
     
     Arguments:
-    @param mod:                an object of class IMOD containing all data
-    @param output:            the name of the output to which data should be sent
+    :param mod: an object of class IMOD containing all data
+    :type mod: :py:class:`sfftk.readers.modreader.IMOD`
+    :param file output: the name of the output to which data should be sent
     """
     if output is not sys.stdout:
         output_dest = open(output, 'w')

@@ -2,25 +2,10 @@
 # surfreader.py
 """
 sfftk.readers.surfreader
+=========================
 
-
-
-Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at 
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied. 
-
-See the License for the specific language governing permissions 
-and limitations under the License.
+Ad hoc reader for Amira HyperSurface files
 """
-
 from __future__ import division
 
 import sys
@@ -35,6 +20,10 @@ __date__ = "2017-04-06"
 
 
 class HxSurfSegment(object):
+    """Generic HxSurface segment class
+    
+    The `ahds <http://ahds.readthedocs.io/en/latest/>`_ package provides a better abstraction of this filetype
+    """
     def __init__(self, material, vertices, triangles):
         self._material = material
         # id
@@ -56,27 +45,32 @@ class HxSurfSegment(object):
         self._triangles = triangles
     @property
     def id(self):
+        """The segment ID"""
         return self._segment_id
     @property
     def name(self):
+        """The name of the segment"""
         return self._name
     @property
     def colour(self):
+        """The colour of the segment"""
         return self._colour
     @property
     def vertices(self):
+        """The set of vertices in this segment"""
         return self._vertices
     @property
     def triangles(self):
+        """The set of triangles in this segment"""
         return self._triangles
 
 
 def vertices_for_patches(vertices, patches):
     """Compiles the set of vertices for the list of patches only read from an Amira HyperSurface file
     
-    :param vertices: a sequence of vertices
+    :param vertices: a sequence of vertices (see `ahds <http://ahds.readthedocs.io/en/latest/>`_ package)
     :type vertices: ``ahds.data_stream.VerticesDataStream``
-    :param list patches: a list of patches each of class ``ahds.data_stream.PatchesDataStream`` 
+    :param list patches: a list of patches each of class ``ahds.data_stream.PatchesDataStream`` ((see `ahds <http://ahds.readthedocs.io/en/latest/>`_ package) 
     :return dict patches_vertices: the vertices only referenced from this patch 
     """
     # first we make a dictionary of vertices
@@ -100,6 +94,13 @@ def vertices_for_patches(vertices, patches):
     
 
 def get_data(fn, *args, **kwargs):
+    """Get segmentation data from the Amira HxSurface file
+    
+    :param str fn: file name
+    :return header: AmiraHxSurface header
+    :rtype header: ``ahds.header.AmiraHeader`` (see `ahds <http://ahds.readthedocs.io/en/latest/>`_ package)
+    :return dict segments: segments each of class :py:class:`sfftk.readers.surfreader.HxSurfSegment`
+    """
     header = ahds.header.AmiraHeader.from_file(fn, *args, **kwargs)
     data_streams = ahds.data_stream.DataStreams(fn, *args, **kwargs)
     segments = dict()

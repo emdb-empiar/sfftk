@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 # am.py
 """
-User-facing reader classes
+sfftk.formats.am
+================
+
+User-facing reader classes for AmiraMesh files
+
 """
 from __future__ import division
 
@@ -22,16 +26,20 @@ from ..readers import amreader
 """
 
 class AmiraMeshMesh(Mesh):
+    """Mesh class"""
     def __init__(self):
         self._vertices = None
         self._triangles = None
     @property
     def vertices(self):
+        """Vertices in mesh"""
         return self._vertices
     @property
     def triangles(self):
+        """Triangles in mesh"""
         return self._triangles
     def convert(self):
+        """Convert to EMDB-SFF mesh object"""
         mesh = schema.SFFMesh()
         vertices = schema.SFFVertexList()
         polygons = schema.SFFPolygonList()
@@ -41,17 +49,21 @@ class AmiraMeshMesh(Mesh):
 
 
 class AmiraMeshAnnotation(Annotation):
+    """Annotation class"""
     def __init__(self, material):
         self._material = material
     @property
     def description(self):
+        """Segment description"""
         try:
             return self._material.name
         except AttributeError:
             return None
     @property
     def colour(self):
-        """Colour may or may not exist. Return None if it doesn't and the caller will determine what to do"""
+        """Segment colour
+        
+        Colour may or may not exist. Return None if it doesn't and the caller will determine what to do"""
         try:
             colour = self._material.Color
         except AttributeError:
@@ -59,6 +71,7 @@ class AmiraMeshAnnotation(Annotation):
         return colour
 #         self.colour_to_material = colour_to_material
     def convert(self):
+        """Convert to EMDB-SFF biological annotation object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -80,11 +93,13 @@ class AmiraMeshAnnotation(Annotation):
 
 
 class AmiraMeshContours(Contours):
+    """Contour class"""
     def __init__(self, z_segment):
         self.z_segment = z_segment
     def __iter__(self):
         return iter(self.z_segment)
     def convert(self):
+        """Convert to EMDB-SFF contour object"""
         contours = schema.SFFContourList()
         for z, cs in self.z_segment.iteritems(): # for each contour_set at this value of z
             for c in cs: # for each contour in the contour set (at this value of z)
@@ -99,8 +114,9 @@ class AmiraMeshContours(Contours):
 
 
 class AmiraMeshSegment(Segment):
+    """Segment class"""
     def __init__(self, header, segment_id, segment):
-        """Initialisor of AmiraMeshSegment
+        """Initialiser of AmiraMeshSegment
         
         :param header: an ``AmiraMeshHeader`` object containing header metadata
         :type header: AmiraMeshHeader
@@ -120,14 +136,18 @@ class AmiraMeshSegment(Segment):
         return material
     @property
     def annotation(self):
+        """Segment annotation"""
         return AmiraMeshAnnotation(self.material)
     @property
     def contours(self):
+        """Contours in this segment"""
         return AmiraMeshContours(self._segment)
     @property
     def meshes(self):
+        """Meshes in this segment"""
         return None
     def convert(self):
+        """Convert to EMDB-SFF segment object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         segment.contours = self.contours.convert()
@@ -135,6 +155,7 @@ class AmiraMeshSegment(Segment):
 
 
 class AmiraMeshHeader(Header):
+    """Header class"""
     def __init__(self, header):
         self._header = header
     
@@ -145,6 +166,9 @@ class AmiraMeshHeader(Header):
                 continue
             else:
                 setattr(self, attr, getattr(self._header, attr))
+    
+    def convert(self, *args, **kwargs):
+        pass
 
 
 class AmiraMeshSegmentation(Segmentation):
@@ -171,12 +195,14 @@ class AmiraMeshSegmentation(Segmentation):
         return AmiraMeshHeader(self._header)
     @property
     def segments(self):
+        """Segments in this segmentation"""
         segments = list()
         for stream in self._segmentation.itervalues():
             for segment_id, segment in stream.iteritems():
                 segments.append(AmiraMeshSegment(self.header, segment_id, segment))
         return segments
     def convert(self, *args, **kwargs):
+        """Convert to EMDB-SFF segmentation object"""
         segmentation = schema.SFFSegmentation()
         
         if 'name' in kwargs:

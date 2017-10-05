@@ -1,30 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import division
 """
 sfftk.readers.segreader
+========================
 
-
-
-Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at 
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied. 
-
-See the License for the specific language governing permissions 
-and limitations under the License.
+Ad hoc reader for Segger files
 """
+from __future__ import division
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
-__date__ = 2017-03-01
+__date__ = "2017-03-01"
 
 import sys, os
 
@@ -32,13 +18,13 @@ def get_root(region_parent_zip, region_id):
     """
     Return the penultimate `parent_id` for any `region_id`.
     
-    :param region_parent_zip: a list of 2-tuples of `region_ids` and `parent_ids`
-    :param region_id: the `region_id` whose root parent_id is sought
-    :return: the corresponding penultimate `parent_id` (one step below the root - value of `0`)
-    
     The penultimate parent is one layer below the root (0).
     The set of penultimate parents are the distinct regions contained in the segmentation.
     They correspond to putative functional regions.
+
+    :param tuple region_parent_zip: a list of 2-tuples of `region_ids` and `parent_ids`
+    :param int region_id: the `region_id` whose root parent_id is sought
+    :return int parent_id: the corresponding penultimate `parent_id` (one step below the root - value of `0`)    
     """
     if region_id == 0:
         return 0
@@ -92,17 +78,19 @@ class SeggerSegmentation(object):
             }
     @property
     def file_path(self):
+        """File path"""
         return os.path.dirname(os.path.abspath(self._fn))
     @property
     def file_name(self):
+        """File name"""
         return os.path.basename(os.path.abspath(self._fn))
     @property
     def name(self):
-        """Name"""
+        """Name of the segmentation"""
         return self._seg_handler.attrs['name']
     @property
     def format(self):
-        """Format"""
+        """Format of the segmentation"""
         return self._seg_handler.attrs['format']
     @property
     def format_version(self):
@@ -140,6 +128,7 @@ class SeggerSegmentation(object):
         return self._parent_ids
     @property
     def root_parent_ids(self):
+        """The """
         _root_parent_ids = filter(lambda r: r[1] == 0, self._zipped_region_parent_ids)
         return map(lambda r: r[0], _root_parent_ids)
     @property

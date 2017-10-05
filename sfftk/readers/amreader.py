@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # amreader.py
 """
-amreader
-========
+sfftk.readers.amreader
+======================
+
 Ad hoc reader for AmiraMesh files
 """
 
@@ -15,7 +16,14 @@ import ahds.header
 
 
 def get_data(fn, *args, **kwargs):
-    """Gets data (metadata and segmentation) data from an Amira file"""
+    """Reads and returns structured data given the file name
+    
+    :param str fn: filename
+    :return header: AmiraMesh header
+    :rtype header: ``ahds.header.AmiraHeader``
+    :return segments_by_stream: segments organised by stream
+    :rtype segments_by_stream: ``ahds.data_streams.ImageSet``
+    """
     header = ahds.header.AmiraHeader.from_file(fn, *args, **kwargs)
     data_streams =  ahds.data_stream.DataStreams(fn, *args, **kwargs)
     

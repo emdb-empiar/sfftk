@@ -41,30 +41,151 @@
 <span id="sfftk-packages"></span><h1>sfftk packages<a class="headerlink" href="#module-sfftk.__init__" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-sfftk.readers.amreader">
 <span id="sfftk-readers-package"></span><h2>sfftk.readers package<a class="headerlink" href="#module-sfftk.readers.amreader" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="amreader">
-<h3>amreader<a class="headerlink" href="#amreader" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="sfftk-readers-amreader">
+<h3>sfftk.readers.amreader<a class="headerlink" href="#sfftk-readers-amreader" title="Permalink to this headline">¶</a></h3>
 <p>Ad hoc reader for AmiraMesh files</p>
 <dl class="function">
 <dt id="sfftk.readers.amreader.get_data">
 <code class="descclassname">sfftk.readers.amreader.</code><code class="descname">get_data</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.amreader.get_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets data (metadata and segmentation) data from an Amira file</p>
+<dd><p>Reads and returns structured data given the file name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>str</em>) &#8211; filename</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return header:</th><td class="field-body">AmiraMesh header</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Rtype header:</th><td class="field-body"><code class="docutils literal"><span class="pre">ahds.header.AmiraHeader</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return segments_by_stream:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">segments organised by stream</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Rtype segments_by_stream:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><code class="docutils literal"><span class="pre">ahds.data_streams.ImageSet</span></code></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
-<span class="target" id="module-sfftk.readers.mapreader"></span><p>Read EMDB Map (.map) files.</p>
+<span class="target" id="module-sfftk.readers.mapreader"></span><div class="section" id="sfftk-readers-mapreader">
+<h3>sfftk.readers.mapreader<a class="headerlink" href="#sfftk-readers-mapreader" title="Permalink to this headline">¶</a></h3>
+<p>Ad hoc reader for CCP4 masks</p>
 <div class="section" id="references">
-<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
-<p>The following article is useful as it exposes many internals of map files:
-- <a class="reference external" href="ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf">ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf</a></p>
-<div class="section" id="todo">
-<h4>todo:<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h4>
+<h4>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h4>
+<p>The following article is useful as it exposes many internals of map files:</p>
 <ul class="simple">
-<li></li>
+<li><a class="reference external" href="ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf">ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf</a></li>
 </ul>
-</div>
-<div class="section" id="version-history">
-<h4>Version history:<a class="headerlink" href="#version-history" title="Permalink to this headline">¶</a></h4>
-<p>0.0.1, 2016-07-05, First working version</p>
+<dl class="class">
+<dt id="sfftk.readers.mapreader.Map">
+<em class="property">class </em><code class="descclassname">sfftk.readers.mapreader.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.mapreader.Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to encapsulate a CCP4 mask</p>
+<dl class="method">
+<dt id="sfftk.readers.mapreader.Map.fix_mask">
+<code class="descname">fix_mask</code><span class="sig-paren">(</span><em>mask_value=1.0</em>, <em>voxel_values_threshold=3</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.mapreader.Map.fix_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to fix this mask</p>
+<p>A mask should have only two voxel values: some non-zero value (usualy 1) and zero (0) for masked-out regions.
+Sometimes the process of manipulating the mask (e.g. volume rotation) relies on interpolation, which
+converts a mask to have more than two voxel values. This function attempts to fix that provided that
+the number of voxel values is not greater than <cite>voxel_value_threshold</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mask_value</strong> (<em>float</em>) &#8211; the mask value</li>
+<li><strong>voxel_value_threshold</strong> (<em>int</em>) &#8211; the maxmimum number of voxel values permitted in fixing the mask</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.mapreader.Map.invert">
+<code class="descname">invert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.mapreader.Map.invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert the map file (mask or not)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.mapreader.Map.is_mask">
+<code class="descname">is_mask</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.is_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if this is a mask or not</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Return bool status:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">mask or not</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.mapreader.Map.labels">
+<code class="descname">labels</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string of labels found in the CCP4 mask file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.mapreader.Map.name">
+<code class="descname">name</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the map which corresponds to the MAP attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.mapreader.Map.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.mapreader.Map.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from an EMDB Map mask</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>f</strong> (<em>file</em>) &#8211; file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">0 on success; fail otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.mapreader.Map.skew_matrix_data">
+<code class="descname">skew_matrix_data</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.skew_matrix_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skew matrix data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.mapreader.Map.voxels">
+<code class="descname">voxels</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.voxels" title="Permalink to this definition">¶</a></dt>
+<dd><p>The voxel mask</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.mapreader.Map.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.mapreader.Map.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write data to an EMDB Map file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>f</strong> (<em>file</em>) &#8211; file object</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">0 on success; fail otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="sfftk.readers.mapreader.get_data">
 <code class="descclassname">sfftk.readers.mapreader.</code><code class="descname">get_data</code><span class="sig-paren">(</span><em>fn</em>, <em>inverted=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.mapreader.get_data" title="Permalink to this definition">¶</a></dt>
@@ -79,10 +200,10 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">map</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">map object</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><cite>mapreader.Map</cite></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#sfftk.readers.mapreader.Map" title="sfftk.readers.mapreader.Map"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.mapreader.Map</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -91,9 +212,9 @@
 
 </div>
 </div>
-<span class="target" id="module-sfftk.readers.modreader"></span><div class="section" id="modreader-py">
-<h3>modreader.py<a class="headerlink" href="#modreader-py" title="Permalink to this headline">¶</a></h3>
-<p>Read IMOD model (<cite>.mod</cite>) files.</p>
+<span class="target" id="module-sfftk.readers.modreader"></span><div class="section" id="sfftk-readers-modreader">
+<h3>sfftk.readers.modreader<a class="headerlink" href="#sfftk-readers-modreader" title="Permalink to this headline">¶</a></h3>
+<p>Ad hoc reader for IMOD (<cite>.mod</cite>) files.</p>
 <p><cite>.mod</cite> files are chunk files and loosely follow the Interchange File 
 Format (IFF). In summary, IFF files consist of a four-byte header
 (all caps chunk name e.g. &#8216;IMOD&#8217;) followed by an integer of
@@ -106,55 +227,66 @@ the following URL: <a class="reference external" href="http://bio3d.colorado.edu
 <p>This module consists of a set of classes each identified
 by the respective chunk names. The following patterns are observed
 in the design of these classes:</p>
-<ul>
-<li><p class="first">The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.</p>
-</li>
-<li><p class="first">All classes have one public method: read(f), which takes a file handle and returns a file handle at the current unread position.</p>
-</li>
-<li><p class="first">Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as add_&lt;chunk&gt; e.g. OBJT objects are containers of CONT objects and therefore have a add_cont() method which takes a CONT object as argument. Internally, container objects use dictionaries to store contained objects.</p>
-</li>
-<li><dl class="first docutils">
-<dt>All chunk classes inherit from &#8216;object&#8217; class and have the __repr__()</dt>
-<dd><p class="first last">method implemented to print objects of that class.</p>
-</dd>
-</dl>
-</li>
+<ul class="simple">
+<li>The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.</li>
+<li>All classes have one public method: read(f), which takes a file handle and returns a file handle at the current unread position.</li>
+<li>Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as add_&lt;chunk&gt; e.g. OBJT objects are containers of CONT objects and therefore have a add_cont() method which takes a CONT object as argument. Internally, container objects use dictionaries to store contained objects.</li>
+<li>All chunk classes inherit from &#8216;object&#8217; class and have the __repr__() method implemented to print objects of that class.</li>
 </ul>
-<p>In addition, there are several useful dictionary constants and 
-functions and classes (flags) that interpret several fields within 
-chunks.</p>
-<div class="section" id="id1">
-<h4>todo<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">TODO:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
 <ul class="simple">
 <li>unravel VIEW chunk (email from 3dmod authors unclear)</li>
 <li>list fiels in MESH chunk with -24 markers</li>
-<li>argument parsing DONE</li>
-<li>implementation of MOST, OBST, COST, and MEST...DONE</li>
 <li>empty (no field) implementation of OGRP, SKLI and SLAN (class exists but unclear how to nest it)</li>
 </ul>
-</div>
-<div class="section" id="id2">
-<h4>Version history<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li>0.1.0, 2015-10-12, first working version</li>
-<li>0.1.1, 2015-10-16, clean-up</li>
-<li>0.1.2, 2015-10-20, implemented commandline arguments (and associated tests)</li>
-<li>0.1.3, 2015-10-21, implemented MOST, OBST, COST, and MEST (partially) together with a generic STORE class</li>
-<li>0.1.4, 2015-10-23, added conditions for OGRP, SKLI, and SLAN chunks but unable to test due to lack of data</li>
-<li>0.1.6, 2016-02-26, documentation with Sphinx</li>
-</ul>
+<dl class="class">
+<dt id="sfftk.readers.modreader.CLIP">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">CLIP</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.CLIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>CLIP chunk class</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="sfftk.readers.modreader.CLIP_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">CLIP_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.CLIP_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the CLIP chunk.</p>
+<p>Flags in the CLIP chunk</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.CONT">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">CONT</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.CONT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>CONT chunk class</p>
+<dl class="method">
+<dt id="sfftk.readers.modreader.CONT.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.CONT.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the file to this object</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.CONTOUR_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">CONTOUR_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.CONTOUR_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the CONT chunk.</p>
+<p>Flags in the CONT chunk</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.COST">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">COST</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.COST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>COST chunk class</p>
 </dd></dl>
 
 <dl class="class">
@@ -168,35 +300,14 @@ chunks.</p>
 <dt id="sfftk.readers.modreader.FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">FLAGS</code><span class="sig-paren">(</span><em>int_value</em>, <em>num_bytes</em>, <em>endian='little'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Class of bit flags.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>int_value</strong> (<em>int</em>) &#8211; the value in base 10</li>
-<li><strong>bytes</strong> (<em>int</em>) &#8211; the number of bytes to store</li>
-<li><strong>endian</strong> (<em>str</em>) &#8211; one of <cite>little</cite> or <cite>big</cite></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Example usage:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">readers.modreader</span> <span class="kn">import</span> <span class="n">FLAGS</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span> <span class="o">=</span> <span class="n">FLAGS</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span>
-<span class="go">0000000000001010</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flag</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-<span class="go">True</span>
-</pre></div>
-</div>
+<p>Base class of bit flags</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.IMAT">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">IMAT</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.IMAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>IMAT chunk class</p>
 </dd></dl>
 
 <dl class="class">
@@ -210,12 +321,25 @@ chunks.</p>
 <dt id="sfftk.readers.modreader.IMOD">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">IMOD</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.IMOD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Class encapsulating the data in an IMOD file. The top-level of an IMOD
-file is an IMOD chunk specifying various data members.</p>
+<p>Class encapsulating the data in an IMOD file</p>
+<p>The top-level of an IMOD file is an IMOD chunk specifying various data members.</p>
+<dl class="method">
+<dt id="sfftk.readers.modreader.IMOD.add_objt">
+<code class="descname">add_objt</code><span class="sig-paren">(</span><em>objt</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.IMOD.add_objt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an OBJT chunk object to this IMOD object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.modreader.IMOD.add_view">
+<code class="descname">add_view</code><span class="sig-paren">(</span><em>view</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.IMOD.add_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a VIEW chunk object to this IMOD object</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="sfftk.readers.modreader.IMOD.read">
 <code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.IMOD.read" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Read the IMOD file into an IMOD object</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -228,23 +352,45 @@ file is an IMOD chunk specifying various data members.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="sfftk.readers.modreader.MEPA">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MEPA</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MEPA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>MEPA chunk class</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="sfftk.readers.modreader.MEPA_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MEPA_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MEPA_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the MEPA chunk.</p>
+<p>Flags in the MEPA chunk</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.MESH">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MESH</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MESH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>MESH chunk class</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.MESH_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MESH_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MESH_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the MESH chunk.</p>
+<p>Flags in the MESH chunk</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.MEST">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MEST</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MEST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>MEST chunk class</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.MINX">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MINX</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MINX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>MINX chunk class</p>
 <p>Model to image transformation
 Documented as 72 bytes but works with 76 bytes</p>
 </dd></dl>
@@ -253,37 +399,77 @@ Documented as 72 bytes but works with 76 bytes</p>
 <dt id="sfftk.readers.modreader.MODEL_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MODEL_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MODEL_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the MODEL chunk.</p>
+<p>Flags in the MODEL chunk</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.MOST">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">MOST</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.MOST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Class encapsulating storage parameters for the top-level <code class="xref py py-attr docutils literal"><span class="pre">IMOM</span></code> chunk.</p>
+<p>MOST chunk class</p>
+<p>Class encapsulating storage parameters for the top-level <a class="reference internal" href="#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.IMOD</span></code></a> chunk.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.OBJECT_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">OBJECT_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBJECT_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the OBJT chunk.</p>
+<p>Flags in the OBJT chunk</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.OBJECT_SYM_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">OBJECT_SYM_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBJECT_SYM_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Additional flags in the OBJT chunk.</p>
+<p>Additional flags in the OBJT chunk</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.readers.modreader.OBJT">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">OBJT</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBJT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>An IMOD file has several <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-attr docutils literal"><span class="pre">OBJT</span></code></a> chunks, each of which contain the data 
-either as contours (<code class="xref py py-attr docutils literal"><span class="pre">CONT</span></code>) or meshes (<code class="xref py py-attr docutils literal"><span class="pre">MESH</span></code>). OBJT chunks also 
-contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">IMAT</span></code>, <code class="xref py py-attr docutils literal"><span class="pre">MEPA</span></code> and a <code class="xref py py-attr docutils literal"><span class="pre">OBST</span></code> storage chunk.</p>
+<p>OBJT chunk class</p>
+<p>An IMOD file has several <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.OBJT</span></code></a> chunks, each of which contain the data 
+either as contours (<a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.CONT</span></code></a>) or meshes (<a class="reference internal" href="#sfftk.readers.modreader.MESH" title="sfftk.readers.modreader.MESH"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.MESH</span></code></a>). OBJT chunks also 
+contain <a class="reference internal" href="#sfftk.readers.modreader.CLIP" title="sfftk.readers.modreader.CLIP"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.CLIP</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.IMAT" title="sfftk.readers.modreader.IMAT"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.IMAT</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.MEPA" title="sfftk.readers.modreader.MEPA"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.MEPA</span></code></a> and a <a class="reference internal" href="#sfftk.readers.modreader.OBST" title="sfftk.readers.modreader.OBST"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.OBST</span></code></a> storage chunk.</p>
+<dl class="method">
+<dt id="sfftk.readers.modreader.OBJT.add_cont">
+<code class="descname">add_cont</code><span class="sig-paren">(</span><em>cont</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBJT.add_cont" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a CONT chunk object to this OBJT object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.modreader.OBJT.add_mesh">
+<code class="descname">add_mesh</code><span class="sig-paren">(</span><em>mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBJT.add_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a MESH chunk object to this OBJT object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.modreader.OBJT.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBJT.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from the file to the chunk</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.OBST">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">OBST</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>OBST chunk class</p>
+<dl class="method">
+<dt id="sfftk.readers.modreader.OBST.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.OBST.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read data from file to this object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.readers.modreader.SLAN">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">SLAN</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.SLAN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>SLAN chunk class</p>
 </dd></dl>
 
 <dl class="class">
@@ -294,10 +480,17 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 </dd></dl>
 
 <dl class="class">
+<dt id="sfftk.readers.modreader.VIEW">
+<em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">VIEW</code><span class="sig-paren">(</span><em>f</em>, <em>first_view=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.VIEW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>VIEW chunk class</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="sfftk.readers.modreader.VIEW_FLAGS">
 <em class="property">class </em><code class="descclassname">sfftk.readers.modreader.</code><code class="descname">VIEW_FLAGS</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.VIEW_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
-<p>Flags in the VIEW chunk.</p>
+<p>Flags in the VIEW chunk</p>
 </dd></dl>
 
 <dl class="function">
@@ -306,7 +499,10 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 <dd><p>Determine the size (in bytes) of the current chunk. Also, return the name of the next chunk.</p>
 <p>Assumes that current position in the file is immediately after the chunk header.</p>
 <p>Arguments:
-&#64;param f:            file handle</p>
+:param file f: file handle
+:return int chunk_length: the length of the chunk
+:return str next_chunk: the chunk that follows (four uppercase letters)
+:return file f: the original file handle advanced further after finding the next chunk</p>
 </dd></dl>
 
 <dl class="function">
@@ -317,7 +513,7 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>f</strong> &#8211; file handle of IMOD model file at start of file</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fn</strong> (<em>str</em>) &#8211; name of IMOD file</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
@@ -335,8 +531,9 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 <code class="descclassname">sfftk.readers.modreader.</code><code class="descname">print_model</code><span class="sig-paren">(</span><em>mod</em>, <em>output</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.print_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pretty print the IMOD model</p>
 <p>Arguments:
-&#64;param mod:                an object of class IMOD containing all data
-&#64;param output:            the name of the output to which data should be sent</p>
+:param mod: an object of class IMOD containing all data
+:type mod: <a class="reference internal" href="#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.modreader.IMOD</span></code></a>
+:param file output: the name of the output to which data should be sent</p>
 </dd></dl>
 
 <dl class="function">
@@ -347,15 +544,17 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>f</strong> &#8211; file handle to IMOD model file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>str</em>) &#8211; name of IMOD file</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 </div>
-</div>
-<span class="target" id="module-sfftk.readers.segreader"></span><dl class="class">
+<span class="target" id="module-sfftk.readers.segreader"></span><div class="section" id="sfftk-readers-segreader">
+<h3>sfftk.readers.segreader<a class="headerlink" href="#sfftk-readers-segreader" title="Permalink to this headline">¶</a></h3>
+<p>Ad hoc reader for Segger files</p>
+<dl class="class">
 <dt id="sfftk.readers.segreader.SeggerSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.readers.segreader.</code><code class="descname">SeggerSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
@@ -367,9 +566,21 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 </dd></dl>
 
 <dl class="attribute">
+<dt id="sfftk.readers.segreader.SeggerSegmentation.file_name">
+<code class="descname">file_name</code><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation.file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.segreader.SeggerSegmentation.file_path">
+<code class="descname">file_path</code><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation.file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>File path</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="sfftk.readers.segreader.SeggerSegmentation.format">
 <code class="descname">format</code><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation.format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Format</p>
+<dd><p>Format of the segmentation</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -429,7 +640,7 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 <dl class="attribute">
 <dt id="sfftk.readers.segreader.SeggerSegmentation.name">
 <code class="descname">name</code><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name</p>
+<dd><p>Name of the segmentation</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -457,6 +668,12 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 </dd></dl>
 
 <dl class="attribute">
+<dt id="sfftk.readers.segreader.SeggerSegmentation.root_parent_ids">
+<code class="descname">root_parent_ids</code><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation.root_parent_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>The</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="sfftk.readers.segreader.SeggerSegmentation.smoothing_levels">
 <code class="descname">smoothing_levels</code><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation.smoothing_levels" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of region_ids to smoothing_levels</p>
@@ -474,27 +691,36 @@ contain <code class="xref py py-attr docutils literal"><span class="pre">CLIP</s
 <dt id="sfftk.readers.segreader.get_root">
 <code class="descclassname">sfftk.readers.segreader.</code><code class="descname">get_root</code><span class="sig-paren">(</span><em>region_parent_zip</em>, <em>region_id</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.segreader.get_root" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the penultimate <cite>parent_id</cite> for any <cite>region_id</cite>.</p>
+<p>The penultimate parent is one layer below the root (0).
+The set of penultimate parents are the distinct regions contained in the segmentation.
+They correspond to putative functional regions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>region_parent_zip</strong> &#8211; a list of 2-tuples of <cite>region_ids</cite> and <cite>parent_ids</cite></li>
-<li><strong>region_id</strong> &#8211; the <cite>region_id</cite> whose root parent_id is sought</li>
+<li><strong>region_parent_zip</strong> (<em>tuple</em>) &#8211; a list of 2-tuples of <cite>region_ids</cite> and <cite>parent_ids</cite></li>
+<li><strong>region_id</strong> (<em>int</em>) &#8211; the <cite>region_id</cite> whose root parent_id is sought</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the corresponding penultimate <cite>parent_id</cite> (one step below the root - value of <cite>0</cite>)</p>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int parent_id:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">the corresponding penultimate <cite>parent_id</cite> (one step below the root - value of <cite>0</cite>)</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>The penultimate parent is one layer below the root (0).
-The set of penultimate parents are the distinct regions contained in the segmentation.
-They correspond to putative functional regions.</p>
 </dd></dl>
 
-<span class="target" id="module-sfftk.readers.stlreader"></span><dl class="function">
+</div>
+<span class="target" id="module-sfftk.readers.stlreader"></span><div class="section" id="sfftk-readers-stlreader">
+<h3>sfftk.readers.stlreader<a class="headerlink" href="#sfftk-readers-stlreader" title="Permalink to this headline">¶</a></h3>
+<p>Ad hoc reader for Stereolithography (STL) files</p>
+<ul class="simple">
+<li>Depends on the <cite>numpy-stl</cite> package</li>
+<li>Reads both ASCII and binary files</li>
+</ul>
+<dl class="function">
 <dt id="sfftk.readers.stlreader.get_data">
 <code class="descclassname">sfftk.readers.stlreader.</code><code class="descname">get_data</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.stlreader.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get data from an StL file</p>
@@ -512,18 +738,69 @@ They correspond to putative functional regions.</p>
 </table>
 </dd></dl>
 
-<span class="target" id="module-sfftk.readers.surfreader"></span><p>sfftk.readers.surfreader</p>
-<p>Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the &#8220;License&#8221;); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at</p>
-<p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-&#8220;AS IS&#8221; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied.</p>
-<p>See the License for the specific language governing permissions 
-and limitations under the License.</p>
+</div>
+<span class="target" id="module-sfftk.readers.surfreader"></span><div class="section" id="sfftk-readers-surfreader">
+<h3>sfftk.readers.surfreader<a class="headerlink" href="#sfftk-readers-surfreader" title="Permalink to this headline">¶</a></h3>
+<p>Ad hoc reader for Amira HyperSurface files</p>
+<dl class="class">
+<dt id="sfftk.readers.surfreader.HxSurfSegment">
+<em class="property">class </em><code class="descclassname">sfftk.readers.surfreader.</code><code class="descname">HxSurfSegment</code><span class="sig-paren">(</span><em>material</em>, <em>vertices</em>, <em>triangles</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Generic HxSurface segment class</p>
+<p>The <a class="reference external" href="http://ahds.readthedocs.io/en/latest/">ahds</a> package provides a better abstraction of this filetype</p>
+<dl class="attribute">
+<dt id="sfftk.readers.surfreader.HxSurfSegment.colour">
+<code class="descname">colour</code><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment.colour" title="Permalink to this definition">¶</a></dt>
+<dd><p>The colour of the segment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.surfreader.HxSurfSegment.id">
+<code class="descname">id</code><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The segment ID</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.surfreader.HxSurfSegment.name">
+<code class="descname">name</code><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the segment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.surfreader.HxSurfSegment.triangles">
+<code class="descname">triangles</code><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment.triangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>The set of triangles in this segment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.readers.surfreader.HxSurfSegment.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The set of vertices in this segment</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.readers.surfreader.get_data">
+<code class="descclassname">sfftk.readers.surfreader.</code><code class="descname">get_data</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.surfreader.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get segmentation data from the Amira HxSurface file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>str</em>) &#8211; file name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return header:</th><td class="field-body">AmiraHxSurface header</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Rtype header:</th><td class="field-body"><code class="docutils literal"><span class="pre">ahds.header.AmiraHeader</span></code> (see <a class="reference external" href="http://ahds.readthedocs.io/en/latest/">ahds</a> package)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return dict segments:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">segments each of class <a class="reference internal" href="#sfftk.readers.surfreader.HxSurfSegment" title="sfftk.readers.surfreader.HxSurfSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.readers.surfreader.HxSurfSegment</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
 <dt id="sfftk.readers.surfreader.vertices_for_patches">
 <code class="descclassname">sfftk.readers.surfreader.</code><code class="descname">vertices_for_patches</code><span class="sig-paren">(</span><em>vertices</em>, <em>patches</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.surfreader.vertices_for_patches" title="Permalink to this definition">¶</a></dt>
@@ -533,8 +810,10 @@ and limitations under the License.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>vertices</strong> (<code class="docutils literal"><span class="pre">ahds.data_stream.VerticesDataStream</span></code>) &#8211; a sequence of vertices</li>
-<li><strong>patches</strong> (<em>list</em>) &#8211; a list of patches each of class <code class="docutils literal"><span class="pre">ahds.data_stream.PatchesDataStream</span></code></li>
+<li><strong>vertices</strong> (<code class="docutils literal"><span class="pre">ahds.data_stream.VerticesDataStream</span></code>) &#8211; <p>a sequence of vertices (see <a class="reference external" href="http://ahds.readthedocs.io/en/latest/">ahds</a> package)</p>
+</li>
+<li><strong>patches</strong> (<em>list</em>) &#8211; <p>a list of patches each of class <code class="docutils literal"><span class="pre">ahds.data_stream.PatchesDataStream</span></code> ((see <a class="reference external" href="http://ahds.readthedocs.io/en/latest/">ahds</a> package)</p>
+</li>
 </ul>
 </td>
 </tr>
@@ -547,9 +826,120 @@ and limitations under the License.</p>
 </dd></dl>
 
 </div>
+</div>
 <div class="section" id="module-sfftk.formats.am">
 <span id="sfftk-formats-package"></span><h2>sfftk.formats package<a class="headerlink" href="#module-sfftk.formats.am" title="Permalink to this headline">¶</a></h2>
-<p>User-facing reader classes</p>
+<div class="section" id="sfftk-formats-am">
+<h3>sfftk.formats.am<a class="headerlink" href="#sfftk-formats-am" title="Permalink to this headline">¶</a></h3>
+<p>User-facing reader classes for AmiraMesh files</p>
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshAnnotation">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshAnnotation</code><span class="sig-paren">(</span><em>material</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Annotation</span></code></p>
+<p>Annotation class</p>
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshAnnotation.colour">
+<code class="descname">colour</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshAnnotation.colour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment colour</p>
+<p>Colour may or may not exist. Return None if it doesn&#8217;t and the caller will determine what to do</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshAnnotation.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshAnnotation.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF biological annotation object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshAnnotation.description">
+<code class="descname">description</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshAnnotation.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment description</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshContours">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshContours</code><span class="sig-paren">(</span><em>z_segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshContours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Contours</span></code></p>
+<p>Contour class</p>
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshContours.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshContours.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF contour object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshHeader">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshHeader</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
+<p>Header class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshMesh">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshMesh</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Mesh</span></code></p>
+<p>Mesh class</p>
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshMesh.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshMesh.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF mesh object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshMesh.triangles">
+<code class="descname">triangles</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshMesh.triangles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Triangles in mesh</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshMesh.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshMesh.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vertices in mesh</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshSegment">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshSegment</code><span class="sig-paren">(</span><em>header</em>, <em>segment_id</em>, <em>segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segment</span></code></p>
+<p>Segment class</p>
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshSegment.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment.annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment annotation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshSegment.contours">
+<code class="descname">contours</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment.contours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contours in this segment</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshSegment.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF segment object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshSegment.material">
+<code class="descname">material</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment.material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material may or may not exist. Return None if it doesn&#8217;t and the caller will determine what to do</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshSegment.meshes">
+<code class="descname">meshes</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment.meshes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Meshes in this segment</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="sfftk.formats.am.AmiraMeshSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation" title="Permalink to this definition">¶</a></dt>
@@ -559,6 +949,12 @@ and limitations under the License.</p>
 <span class="n">am_seg</span> <span class="o">=</span> <span class="n">AmiraMeshSegmentation</span><span class="p">(</span><span class="s1">&#39;file.am&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshSegmentation.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF segmentation object</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="sfftk.formats.am.AmiraMeshSegmentation.header">
 <code class="descname">header</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation.header" title="Permalink to this definition">¶</a></dt>
@@ -566,9 +962,75 @@ and limitations under the License.</p>
 <p>The header is wrapped with a generic AmiraMeshHeader class</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.formats.am.AmiraMeshSegmentation.segments">
+<code class="descname">segments</code><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation.segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segments in this segmentation</p>
 </dd></dl>
 
-<span class="target" id="module-sfftk.formats.map"></span><p>User-facing reader classes</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-sfftk.formats.map"></span><div class="section" id="sfftk-formats-map">
+<h3>sfftk.formats.map<a class="headerlink" href="#sfftk-formats-map" title="Permalink to this headline">¶</a></h3>
+<p>User-facing reader classes for CCP4 masks</p>
+<dl class="class">
+<dt id="sfftk.formats.map.MapAnnotation">
+<em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapAnnotation</code><a class="headerlink" href="#sfftk.formats.map.MapAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Annotation</span></code></p>
+<p>Annotation class</p>
+<dl class="attribute">
+<dt id="sfftk.formats.map.MapAnnotation.colour">
+<code class="descname">colour</code><a class="headerlink" href="#sfftk.formats.map.MapAnnotation.colour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment colour</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.formats.map.MapAnnotation.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapAnnotation.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF biological annotation object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.map.MapAnnotation.description">
+<code class="descname">description</code><a class="headerlink" href="#sfftk.formats.map.MapAnnotation.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment description</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.map.MapHeader">
+<em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapHeader</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
+<p>Header class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.map.MapSegment">
+<em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapSegment</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segment</span></code></p>
+<p>Segment class</p>
+<dl class="attribute">
+<dt id="sfftk.formats.map.MapSegment.annotation">
+<code class="descname">annotation</code><a class="headerlink" href="#sfftk.formats.map.MapSegment.annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segment annotation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.formats.map.MapSegment.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegment.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF segment object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.map.MapSegment.volume">
+<code class="descname">volume</code><a class="headerlink" href="#sfftk.formats.map.MapSegment.volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Three-D volume data in this segment</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="sfftk.formats.map.MapSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapSegmentation</code><span class="sig-paren">(</span><em>fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegmentation" title="Permalink to this definition">¶</a></dt>
@@ -578,8 +1040,40 @@ and limitations under the License.</p>
 <span class="n">map_seg</span> <span class="o">=</span> <span class="n">MapSegmentation</span><span class="p">(</span><span class="s1">&#39;file.map&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="method">
+<dt id="sfftk.formats.map.MapSegmentation.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegmentation.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to EMDB-SFF segmentation object</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.formats.map.MapSegmentation.header">
+<code class="descname">header</code><a class="headerlink" href="#sfftk.formats.map.MapSegmentation.header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segmentation metadata</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.map.MapSegmentation.segments">
+<code class="descname">segments</code><a class="headerlink" href="#sfftk.formats.map.MapSegmentation.segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>The segments in this segmentation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.formats.map.MapVolume">
+<em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapVolume</code><span class="sig-paren">(</span><em>segmentation</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapVolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Volume</span></code></p>
+<p>Volume class</p>
+<dl class="method">
+<dt id="sfftk.formats.map.MapVolume.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapVolume.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to an EMDB-SFF volume object</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <span class="target" id="module-sfftk.formats.mod"></span><p>User-facing reader classes</p>
 <dl class="class">
 <dt id="sfftk.formats.mod.IMODSegmentation">
@@ -1082,20 +1576,22 @@ and limitations under the License.</p>
   <ul>
 <li><a class="reference internal" href="#">sfftk packages</a><ul>
 <li><a class="reference internal" href="#module-sfftk.readers.amreader">sfftk.readers package</a><ul>
-<li><a class="reference internal" href="#amreader">amreader</a></li>
-<li><a class="reference internal" href="#references">References</a><ul>
-<li><a class="reference internal" href="#todo">todo:</a></li>
-<li><a class="reference internal" href="#version-history">Version history:</a></li>
+<li><a class="reference internal" href="#sfftk-readers-amreader">sfftk.readers.amreader</a></li>
+<li><a class="reference internal" href="#sfftk-readers-mapreader">sfftk.readers.mapreader</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#modreader-py">modreader.py</a><ul>
-<li><a class="reference internal" href="#id1">todo</a></li>
-<li><a class="reference internal" href="#id2">Version history</a></li>
+<li><a class="reference internal" href="#sfftk-readers-modreader">sfftk.readers.modreader</a></li>
+<li><a class="reference internal" href="#sfftk-readers-segreader">sfftk.readers.segreader</a></li>
+<li><a class="reference internal" href="#sfftk-readers-stlreader">sfftk.readers.stlreader</a></li>
+<li><a class="reference internal" href="#sfftk-readers-surfreader">sfftk.readers.surfreader</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-sfftk.formats.am">sfftk.formats package</a><ul>
+<li><a class="reference internal" href="#sfftk-formats-am">sfftk.formats.am</a></li>
+<li><a class="reference internal" href="#sfftk-formats-map">sfftk.formats.map</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-sfftk.formats.am">sfftk.formats package</a></li>
 <li><a class="reference internal" href="#module-sfftk.notes.find">sfftk.notes package</a></li>
 <li><a class="reference internal" href="#module-sfftk.core.configs">sfftk.core package</a><ul>
 <li><a class="reference internal" href="#configs-py">configs.py</a></li>

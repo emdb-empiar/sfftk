@@ -1,7 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# base.py
 """
 sfftk.formats.base
+==================
 
 Generic application-specific segmentation file format (GAS-SFF)
 

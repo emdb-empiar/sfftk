@@ -1,25 +1,20 @@
 # mapreader.py
 # -*- coding: utf-8 -*-
 """
-Read EMDB Map (.map) files.
+sfftk.readers.mapreader
+========================
+
+Ad hoc reader for CCP4 masks
 
 References
-==========
+----------
 The following article is useful as it exposes many internals of map files:
+
 - ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf
 
-todo:
------
-- 
-
-Version history:
-----------------
-0.0.1, 2016-07-05, First working version
 """
 
 from __future__ import division
-import sys
-
 
 __author__  = 'Paul K. Korir, PhD'
 __email__   = 'pkorir@ebi.ac.uk'
@@ -28,11 +23,11 @@ __date__    = '2016-07-05'
 
 
 class Map(object):
+    """Class to encapsulate a CCP4 mask"""
     def __init__(self, fn):
         """Initialise a Map object
         
         :param str fn: file name
-        :param bool mask: whether or not (default) it is a mask (voxels take on two values; correction by flooring is done)
         """ 
         self._inverted = False
         with open(fn) as f:
@@ -41,12 +36,14 @@ class Map(object):
         assert status == 0
     @property
     def name(self):
+        """Name of the map which corresponds to the MAP attribute"""
         return self._map
     
     def write(self, f):
         """Write data to an EMDB Map file
         
         :param file f: file object
+        :return int status: 0 on success; fail otherwise
         """  
         import struct
         
@@ -101,6 +98,7 @@ class Map(object):
         """Read data from an EMDB Map mask
         
         :param file f: file object
+        :return int status: 0 on success; fail otherwise
         """
         import struct
         
@@ -321,12 +319,14 @@ class Map(object):
         self._inverted = True
     @property
     def labels(self):
+        """A string of labels found in the CCP4 mask file"""
         label_list = list()
         for i in xrange(self._nlabl):
             label_list.append(getattr(self, "_label_{}".format(i)))
         return "\n".join(label_list)
     @property
     def skew_matrix_data(self):
+        """Skew matrix data"""
         return " ".join(map(str,
             [
             self._s11, self._s12, self._s13,
@@ -344,8 +344,8 @@ def get_data(fn, inverted=False):
     
     :param str fn: map filename
     :param bool inverted: should we invert the histogram or not (default)?
-    :return: map
-    :rtype: `mapreader.Map`
+    :return: map object
+    :rtype: :py:class:`sfftk.readers.mapreader.Map`
     """
     my_map = Map(fn)
     

@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import division
 """
-stlreader.py
+sfftk.readers.stlreader
 ========================
 
-Read 3D System StereoLithography (StL) files. 
+Ad hoc reader for Stereolithography (STL) files 
 
-Depends on the `numpy-stl` package
-Reads both ASCII and binary files
+- Depends on the `numpy-stl` package
 
-Version history:
-0.0.1, 2016-08-09, First working version
+- Reads both ASCII and binary files
 """
+from __future__ import division
 
 __author__  = 'Paul K. Korir, PhD'
 __email__   = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
