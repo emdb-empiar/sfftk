@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# surfreader.py
 """
 sfftk.readers.surfreader
 =========================

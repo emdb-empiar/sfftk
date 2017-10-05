@@ -1,4 +1,3 @@
-# mapreader.py
 # -*- coding: utf-8 -*-
 """
 sfftk.readers.mapreader

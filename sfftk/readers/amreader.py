@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# amreader.py
 """
 sfftk.readers.amreader
 ======================
