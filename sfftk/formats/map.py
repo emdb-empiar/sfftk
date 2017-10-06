@@ -27,7 +27,7 @@ class MapVolume(Volume):
         self.voxels = segmentation._segmentation.voxels
         
     def convert(self, *args, **kwargs):
-        """Convert to an EMDB-SFF volume object"""
+        """Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
 
         # make file
@@ -57,7 +57,7 @@ class MapAnnotation(Annotation):
         """Segment colour"""
         return None
     def convert(self):
-        """Convert to EMDB-SFF biological annotation object"""
+        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -88,7 +88,7 @@ class MapSegment(Segment):
         """Three-D volume data in this segment"""
         return MapVolume(self._segmentation)
     def convert(self):
-        """Convert to EMDB-SFF segment object"""
+        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         segment.volume = self.volume.convert()
@@ -139,7 +139,7 @@ class MapSegmentation(Segmentation):
         """The segments in this segmentation"""
         return [MapSegment(self)]
     def convert(self, *args, **kwargs):
-        """Convert to EMDB-SFF segmentation object"""
+        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         
         segmentation.name = self.header.name

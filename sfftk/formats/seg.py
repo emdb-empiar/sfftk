@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 sfftk.formats.seg
+=================
 
+User-facing reader classes for Segger files
 
 """
 
@@ -21,6 +23,7 @@ __date__ = "2017-02-02"
 
 
 class SeggerAnnotation(Annotation):
+    """Annotation class"""
     def __init__(self, segmentation, region_id):
         self._segmentation = segmentation
         self._region_id = region_id
@@ -32,6 +35,7 @@ class SeggerAnnotation(Annotation):
         r, g, b, a = self._segmentation.region_colours[self._region_id]
         return r, g, b, a
     def convert(self, *args, **kwargs):
+        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -47,6 +51,7 @@ class SeggerAnnotation(Annotation):
 
 
 class SeggerVolume(Volume):
+    """Volume class"""
     def __init__(self, segmentation):
         self._segmentation = segmentation
     @property
@@ -59,6 +64,7 @@ class SeggerVolume(Volume):
     def mask(self):
         return self._segmentation.mask
     def convert(self):
+        """Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
         volume.file = self.file
         volume.contourLevel = self.map_level
@@ -68,6 +74,7 @@ class SeggerVolume(Volume):
 
 
 class SeggerSegment(Segment):
+    """Segment class"""
     def __init__(self, segmentation, region_id):
         self._segmentation = segmentation
         self._region_id = region_id
@@ -84,6 +91,7 @@ class SeggerSegment(Segment):
     def volume(self):
         return SeggerVolume(self._segmentation)
     def convert(self, *args, **kwargs):
+        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.id = self.region_id
         segment.parentID = self.parent_id
@@ -95,31 +103,40 @@ class SeggerSegment(Segment):
 
 
 class SeggerHeader(Header):
+    """Header class"""
     def __init__(self, segmentation):
         self._segmentation = segmentation
     @property
     def name(self):
+        """The name of segmentation"""
         return self._segmentation.format
     @property
     def version(self):
+        """The version of Segger used"""
         return self._segmentation.format_version
     @property
     def map_path(self):
+        """The path to the original segmented map"""
         return self._segmentation.map_path
     @property
     def ijk_to_xyz_transform(self):
+        """The image-to-physical transform"""
         return self._segmentation.ijk_to_xyz_transform
     @property
     def file_path(self):
+        """The path to the .seg file"""
         return self._segmentation.file_path
     @property
     def root_parent_ids(self):
+        """Parent IDs for root segments"""
         return self._segmentation.root_parent_ids
     @property
     def region_ids(self):
+        """All region IDs"""
         return self._segmentation.region_ids
     @property
     def parent_ids(self):
+        """All parent IDs"""
         return self._segmentation.parent_ids
 
 
@@ -139,16 +156,18 @@ class SeggerSegmentation(Segmentation):
         self._top_level = top_level
     @property
     def header(self):
+        """The header for this segmentation"""
         return SeggerHeader(self._segmentation)
     @property
     def segments(self):
+        """The segments in this segmentation"""
         if self._top_level:
             segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.root_parent_ids]
         else:
             segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.region_ids if region_id != 0]
         return segments
     def convert(self, *args, **kwargs):
-        """Method to convert a Segger file to an EMDB-SFF file"""
+        """Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Segger Segmentation"
         segmentation.software = schema.SFFSoftware(

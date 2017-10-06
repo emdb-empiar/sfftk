@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # surf.py
 """
-User-facing reader classes
+sfftk.formats.stl
+==================
+User-facing reader classes for Stereolithography files
 """
 from __future__ import division
 
@@ -18,16 +20,20 @@ from ..readers import stlreader
 
 
 class STLMesh(Mesh):
+    """Mesh class"""
     def __init__(self, vertices, polygons):
         self._vertices = vertices
         self._polygons = polygons
     @property
     def vertices(self):
+        """Vertices in this mesh"""
         return self._vertices
     @property
     def polygons(self):
+        """Polygons in this mesh"""
         return self._polygons
     def convert(self):
+        """Convert to a :py:class:`sfftk.schema.SFFMesh` object"""
         schema.SFFMesh.reset_id()
         mesh = schema.SFFMesh()
         # polygon
@@ -55,11 +61,13 @@ class STLMesh(Mesh):
 
 
 class STLAnnotation(Annotation):
+    """Annotation class"""
     def __init__(self, name):
         self.name = name
         import random
         self.colour = tuple([random.random() for _ in xrange(3)])
     def convert(self):
+        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.name
         annotation.numberOfInstances = 1
@@ -75,20 +83,25 @@ class STLAnnotation(Annotation):
 
 
 class STLSegment(Segment):
+    """Segment class"""
     def __init__(self, name, vertices, polygons):
         self._name = name
         self._vertices = vertices
         self._polygons = polygons
     @property
     def name(self):
+        """Segment name"""
         return self._name
     @property
     def annotation(self):
+        """Segmentation annotation"""
         return STLAnnotation(self.name)
     @property
     def meshes(self):
+        """Segment meshes"""
         return [STLMesh(self._vertices, self._polygons)]
     def convert(self):
+        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
@@ -99,6 +112,7 @@ class STLSegment(Segment):
 
 
 class STLHeader(Header):
+    """Header class"""
     def __init__(self, segmentation):
         self._segmentation = segmentation
         
@@ -109,6 +123,9 @@ class STLHeader(Header):
                 continue
             else:
                 setattr(self, attr, getattr(self._segmentation, attr))
+    
+    def convert(self):
+        pass
 
 
 class STLSegmentation(Segmentation):
@@ -126,11 +143,14 @@ class STLSegmentation(Segmentation):
         self._segments = [STLSegment(name, vertices, polygons) for name, vertices, polygons in self._segmentation]
     @property
     def header(self):
+        """The header in the segmentation"""
         return STLHeader(self._segmentation)
     @property
     def segments(self):
+        """The segments in the segmentation"""
         return self._segments
     def convert(self, *args, **kwargs):
+        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         
         segmentation.name = "STL Segmentation"

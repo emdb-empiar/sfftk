@@ -39,7 +39,7 @@ class AmiraMeshMesh(Mesh):
         """Triangles in mesh"""
         return self._triangles
     def convert(self):
-        """Convert to EMDB-SFF mesh object"""
+        """Convert to :py:class:`sfftk.schema.SFFMesh` object"""
         mesh = schema.SFFMesh()
         vertices = schema.SFFVertexList()
         polygons = schema.SFFPolygonList()
@@ -71,7 +71,7 @@ class AmiraMeshAnnotation(Annotation):
         return colour
 #         self.colour_to_material = colour_to_material
     def convert(self):
-        """Convert to EMDB-SFF biological annotation object"""
+        """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -93,13 +93,13 @@ class AmiraMeshAnnotation(Annotation):
 
 
 class AmiraMeshContours(Contours):
-    """Contour class"""
+    """Contour container class"""
     def __init__(self, z_segment):
         self.z_segment = z_segment
     def __iter__(self):
         return iter(self.z_segment)
     def convert(self):
-        """Convert to EMDB-SFF contour object"""
+        """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
         contours = schema.SFFContourList()
         for z, cs in self.z_segment.iteritems(): # for each contour_set at this value of z
             for c in cs: # for each contour in the contour set (at this value of z)
@@ -147,7 +147,7 @@ class AmiraMeshSegment(Segment):
         """Meshes in this segment"""
         return None
     def convert(self):
-        """Convert to EMDB-SFF segment object"""
+        """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         segment.contours = self.contours.convert()
@@ -202,7 +202,7 @@ class AmiraMeshSegmentation(Segmentation):
                 segments.append(AmiraMeshSegment(self.header, segment_id, segment))
         return segments
     def convert(self, *args, **kwargs):
-        """Convert to EMDB-SFF segmentation object"""
+        """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         
         if 'name' in kwargs:

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # surf.py
 """
-User-facing reader classes
+sfftk.formats.surf
+===================
+
+User-facing reader classes for Amira HxSurface files
 """
 from __future__ import division
 
@@ -20,6 +23,7 @@ __date__    = "2016-11-11"
 
 
 class AmiraHyperSurfaceMesh(Mesh):
+    """Mesh class"""
     def __init__(self, segment):
         self._vertices = segment.vertices 
         self._triangles = segment.triangles
@@ -32,6 +36,7 @@ class AmiraHyperSurfaceMesh(Mesh):
         """List of (v1, v2, v3) (triangles)"""
         return self._triangles
     def convert(self):
+        """Convert to a :py:class:`sfftk.schema.SFFMesh` object"""
         # vertices
         vertices = schema.SFFVertexList()
         for vID, v in self.vertices.iteritems():
@@ -58,17 +63,21 @@ class AmiraHyperSurfaceMesh(Mesh):
 
 
 class AmiraHyperSurfaceAnnotation(Annotation):
+    """Annotation class"""
     def __init__(self, segment):
         self._segment = segment
         self._name = self._segment.name
         self._colour = self._segment.colour
     @property
     def name(self):
+        """Segment name"""
         return self._name
     @property
     def colour(self):
+        """Segment colour"""
         return self._colour
     def convert(self):
+        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         # annotation
         annotation = schema.SFFBiologicalAnnotation(
             description=self.name,
@@ -86,6 +95,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
 
 
 class AmiraHyperSurfaceSegment(Segment):
+    """Segment class"""
     def __init__(self, segment):
         self._segment = segment
         self._segment_id = self._segment.id
@@ -94,14 +104,18 @@ class AmiraHyperSurfaceSegment(Segment):
         self._meshes = [AmiraHyperSurfaceMesh(segment)]
     @property
     def id(self):
+        """Segment ID"""
         return self._segment_id
     @property
     def annotation(self):
+        """Segment annotation"""
         return self._annotation
     @property
     def meshes(self):
+        """Segment meshes"""
         return self._meshes
     def convert(self, *args, **kwargs):
+        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
@@ -112,6 +126,7 @@ class AmiraHyperSurfaceSegment(Segment):
 
 
 class AmiraHyperSurfaceHeader(Header):
+    """Header class"""
     def __init__(self, header):
         self._header = header
         for attr in dir(self._header):
@@ -121,6 +136,9 @@ class AmiraHyperSurfaceHeader(Header):
                 continue
             else:
                 setattr(self, attr, getattr(self._header, attr))
+    
+    def convert(self):
+        pass
 
 
 class AmiraHyperSurfaceSegmentation(Segmentation):
@@ -141,11 +159,14 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
             self._segments.append(AmiraHyperSurfaceSegment(segment))
     @property
     def header(self):
+        """The header in the segmentation"""
         return self._header
     @property
     def segments(self):
+        """The segments in the segmentation"""
         return self._segments
     def convert(self, *args, **kwargs):
+        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Amira HyperSurface Segmentation"
         segmentation.software = schema.SFFSoftware(
