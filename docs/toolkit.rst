@@ -136,11 +136,11 @@ sfftk may also be used for several miscellaneous operations such as:
 More information on this can be found in the :doc:`guide to miscellaneous operations <misc>`.
 
 Developing with sfftk
-=====================
+---------------------
 
 sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. The full API is available at [link]. See the :doc:`guide to developing with sfftk <developing>` for a complete description.
 
 Extending sfftk
-===============
+---------------
 
 sfftk has built with extensibility in mind. It is anticipated that most extension will take the form of supporting additional file formats. Please read the :doc:`guide to extending sfftk <extending>` to learn how to do this.

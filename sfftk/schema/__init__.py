@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # schema package
 """
+sfftk.schema
+============
+
 Adapter for emdb_sff.py
 """
 import re
