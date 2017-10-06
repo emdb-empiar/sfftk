@@ -2025,6 +2025,7 @@ class SFFSegmentation(SFFType):
             super(SFFSegmentation, self).__init__(var, *args, **kwargs)
     @property
     def numGlobalExternalReferences(self):
+        """The number of global external references"""
         return len(self.globalExternalReferences)
     def as_hff(self, parent_group, name=None):
         """Return the data of this object as an HDF5 group in the given parent group"""
@@ -2062,7 +2063,13 @@ class SFFSegmentation(SFFType):
         return parent_group
     @classmethod
     def from_hff(cls, hff_data):
-        """Return an SFFType object given an HDF5 object"""
+        """Create an :py:class:`sfftk.schema.SFFSegmentation` object from HDF5 formatted data
+        
+        :param hff_data: an HDF5 File object
+        :type hff_data: ``h5py.File``
+        :return sff_seg: an EMDB-SFF segmentation
+        :rtype sff_seg: :py:class:`sfftk.schema.SFFSegmentation`
+        """
         assert isinstance(hff_data, h5py.File)
         obj = cls()
         obj.name = hff_data['name'].value
@@ -2192,6 +2199,12 @@ class SFFSegmentation(SFFType):
             json.dump(sff_data, f, sort_keys=sort_keys, indent=indent_width)
     @classmethod
     def from_json(cls, json_file):
+        """Create an :py:class:`sfftk.schema.SFFSegmentation` object from JSON formatted data
+        
+        :param str json_file: name of a JSON-formatted file
+        :return sff_seg: an EMDB-SFF segmentation
+        :rtype sff_seg: :py:class:`sfftk.schema.SFFSegmentation`
+        """ 
         with open(json_file) as j:
             import json
             J = json.load(j, 'utf-8')

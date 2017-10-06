@@ -6,6 +6,15 @@ sfftk packages
 	:show-inheritance:
 
 
+sfftk.schema package
+--------------------
+
+.. automodule:: sfftk.schema
+	:members:
+	:show-inheritiance:
+	:inherited-members:
+	
+
 sfftk.readers package
 ---------------------
 
@@ -39,8 +48,14 @@ sfftk.readers package
 	:show-inheritance:
 	:inherited-members:
 
+
 sfftk.formats package
 ---------------------
+
+.. automodule:: sfftk.formats.am
+	:members:
+	:show-inheritance:
+	:inherited-members:
 
 .. automodule:: sfftk.formats.am
 	:members:
@@ -109,3 +124,4 @@ sfftk.core package
 	:members:
 	:show-inheritance:
 	:inherited-members:
+
