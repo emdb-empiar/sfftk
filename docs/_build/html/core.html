@@ -1,0 +1,253 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sfftk.core package &#8212; sfftk 0.1.1.dev0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.1.dev0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="sfftk.notes package" href="notes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sfftk-core-package">
+<h1>sfftk.core package<a class="headerlink" href="#sfftk-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-sfftk.core.configs">
+<span id="configuration-module"></span><h2>Configuration module<a class="headerlink" href="#module-sfftk.core.configs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configs-py">
+<h3>configs.py<a class="headerlink" href="#configs-py" title="Permalink to this headline">¶</a></h3>
+<p>SFFTK configs</p>
+<dl class="function">
+<dt id="sfftk.core.configs.get_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">get_configs</code><span class="sig-paren">(</span><em>fn='/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/sff.conf'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get SFFTK configs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>str</em>) – filename (default: <code class="docutils literal"><span class="pre">./sff.conf</span></code>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return dict configs:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">dictionary of configs</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-sfftk.core.parser">
+<span id="parser-module"></span><h2>Parser module<a class="headerlink" href="#module-sfftk.core.parser" title="Permalink to this headline">¶</a></h2>
+<p>Parses command-line options</p>
+<dl class="function">
+<dt id="sfftk.core.parser.add_args">
+<code class="descclassname">sfftk.core.parser.</code><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em>, <em>the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience function to return the argument definition to the given parser</p>
+<p>Usage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_arg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-x&#39;</span><span class="p">],</span> <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">this_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_args</span><span class="p">(</span><span class="n">this_parser</span><span class="p">,</span> <span class="n">my_arg</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parser</strong> (<code class="docutils literal"><span class="pre">argparse.Parser</span></code>) – a parser</li>
+<li><strong>the_arg</strong> (<em>dict</em>) – the argument specified as a dict with keys ‘args’ and ‘kwargs’</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return parser:</th><td class="field-body"><p class="first">a parser</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Rtype parser:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">argparse.Parser</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.parser.parse_args">
+<code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse and check command-line arguments</p>
+<p>Subcommand handlers defined in __main__.py (e.g. handle_conver(…)) should not have to check arguments for consistency</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>_args</strong> (<em>list</em>) – list of arguments</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed arguments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>argparse.Namespace</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-sfftk.core.print_tools">
+<span id="printing-utilities"></span><h2>Printing utilities<a class="headerlink" href="#module-sfftk.core.print_tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="print-tools-py">
+<h3>print_tools.py<a class="headerlink" href="#print-tools-py" title="Permalink to this headline">¶</a></h3>
+<p>Utilities for printing stuff to the screen.</p>
+<dl class="function">
+<dt id="sfftk.core.print_tools.get_printable_ascii_string">
+<code class="descclassname">sfftk.core.print_tools.</code><code class="descname">get_printable_ascii_string</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.get_printable_ascii_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<em>str</em>) – the string to search</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return str ascii_s:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">the minimal ASCII string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.print_tools.print_date">
+<code class="descclassname">sfftk.core.print_tools.</code><code class="descname">print_date</code><span class="sig-paren">(</span><em>print_string</em>, <em>stream=&lt;open file '&lt;stderr&gt;'</em>, <em>mode 'w'&gt;</em>, <em>newline=True</em>, <em>incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the given string with date on the given stream</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>print_string</strong> (<em>str</em>) – the string to be printed</li>
+<li><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</li>
+<li><strong>newline</strong> (<em>bool</em>) – whether (default) or not to add a newline at the end</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.print_tools.print_static">
+<code class="descclassname">sfftk.core.print_tools.</code><code class="descname">print_static</code><span class="sig-paren">(</span><em>print_string</em>, <em>stream=&lt;open file '&lt;stderr&gt;'</em>, <em>mode 'w'&gt;</em>, <em>incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_static" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the given string with date on the given stream</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>print_string</strong> (<em>str</em>) – the string to be printed</li>
+<li><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</li>
+<li><strong>newline</strong> (<em>bool</em>) – whether (default) or not to add a newline at the end</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">sfftk.core package</a><ul>
+<li><a class="reference internal" href="#module-sfftk.core.configs">Configuration module</a><ul>
+<li><a class="reference internal" href="#configs-py">configs.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-sfftk.core.parser">Parser module</a></li>
+<li><a class="reference internal" href="#module-sfftk.core.print_tools">Printing utilities</a><ul>
+<li><a class="reference internal" href="#print-tools-py">print_tools.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="sfftk.html">sfftk packages</a><ul>
+      <li>Previous: <a href="notes.html" title="previous chapter">sfftk.notes package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/core.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, EMBL-EBI.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/core.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
