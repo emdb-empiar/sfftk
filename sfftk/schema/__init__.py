@@ -469,23 +469,17 @@ class SFFComplexesAndMacromolecules(SFFType):
             return False
     def as_hff(self, parent_group, name="complexesAndMacromolecules"):
         """Return the data of this object as an HDF5 group in the given parent group"""
-          
         assert isinstance(parent_group, h5py.Group)
-         
         group = parent_group.create_group(name)
-         
         if self.complexes:
             group['complexes'] = self.complexes
         if self.macromolecules:
             group['macromolecules'] = self.macromolecules
-         
         return parent_group
     @classmethod
     def from_hff(cls, hff_data):
         """Return an SFFType object given an HDF5 object"""
-        
         assert isinstance(hff_data, h5py.Group)
-        
         obj = cls()
         obj.complexes = SFFComplexes.from_hff(hff_data['complexes'])
         obj.macromolecules = SFFMacromolecules.from_hff(hff_data['macromolecules'])
@@ -602,8 +596,9 @@ class SFFBiologicalAnnotation(SFFType):
                      ('ref', vl_str),
                      ]
                  )
+            # description and nubmerOfInstances as attributes
             group['description'] = self.description if self.description else ''
-            group['numberOfInstances'] = self.numberOfInstances
+            group['numberOfInstances'] = self.numberOfInstances if self.numberOfInstances > 0 else 0
             i = 0
             for extref in self.externalReferences:
                 h_ext[i] = (extref.type, extref.otherType, extref.value)
