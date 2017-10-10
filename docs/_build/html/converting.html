@@ -1,37 +1,39 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Converting Files To EMDB-SFF &mdash; sfftk 0.1.1.dev0 documentation</title>
-    
+    <title>Converting Files To EMDB-SFF &#8212; sfftk 0.1.1.dev0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
         VERSION:     '0.1.1.dev0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Annotating EMDB-SFF Segmentations" href="annotating.html" />
     <link rel="prev" title="EMDB-SFF Toolkit (sfftk)" href="toolkit.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -47,68 +49,68 @@
 <h3>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="getting-help">
 <h4>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert
-sff convert --help
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">help</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="output-to-xml-default">
 <h4>Output to XML (Default)<a class="headerlink" href="#output-to-xml-default" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="specify-output-file">
 <h4>Specify Output File<a class="headerlink" href="#specify-output-file" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -o file.sff
-sff convert file.seg --output /path/to/output/file.sff
-sff convert file.seg -o file.hff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="specify-output-format">
 <h4>Specify Output Format<a class="headerlink" href="#specify-output-format" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -f hff
-sff convert file.seg --format hff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">f</span> <span class="n">hff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="nb">format</span> <span class="n">hff</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="emdb-sff-format-interconversion">
 <h4>EMDB-SFF Format Interconversion<a class="headerlink" href="#emdb-sff-format-interconversion" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.sff --output /path/to/output/file.hff
-sff convert file.hff --format json
-sff convert file.sff --format sff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">hff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">json</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">sff</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="verbose-operation">
 <h4>Verbose Operation<a class="headerlink" href="#verbose-operation" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --verbose file.hff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">verbose</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="truncate-segments-segger-only">
 <h4>Truncate Segments (Segger Only)<a class="headerlink" href="#truncate-segments-segger-only" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --top-level-only file.seg
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="n">only</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="set-details">
 <h4>Set Details<a class="headerlink" href="#set-details" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --details “Lorem ipsum dolor…” file.seg
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff convert --details “Lorem ipsum dolor…” file.seg
 </pre></div>
 </div>
 </div>
 <div class="section" id="change-primary-descriptor">
 <h4>Change Primary Descriptor<a class="headerlink" href="#change-primary-descriptor" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --primary-descriptor contourList file.surf # AmiraHxSurface file
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">primary</span><span class="o">-</span><span class="n">descriptor</span> <span class="n">contourList</span> <span class="n">file</span><span class="o">.</span><span class="n">surf</span> <span class="c1"># AmiraHxSurface file</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="contours-to-mesh-experimental">
 <h4>Contours To Mesh (Experimental)<a class="headerlink" href="#contours-to-mesh-experimental" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert -M file.sff
-sff convert --contour-to-mesh file.sff --output file_mesh.sff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">M</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">contour</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">mesh</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="n">file_mesh</span><span class="o">.</span><span class="n">sff</span>
 </pre></div>
 </div>
 </div>
@@ -128,62 +130,62 @@ sff convert --contour-to-mesh file.sff --output file_mesh.sff
 </ul>
 <p>There are two ways to perform conversion:</p>
 <ul class="simple">
-<li>Specifying the output path with -o/&#8211;output flag</li>
-<li>Specifying the output format with -f/&#8211;format flag</li>
+<li>Specifying the output path with -o/–output flag</li>
+<li>Specifying the output format with -f/–format flag</li>
 </ul>
 <div class="section" id="specifying-the-output-path-with-o-output-flag">
-<h3>Specifying the output path with -o/&#8211;output flag<a class="headerlink" href="#specifying-the-output-path-with-o-output-flag" title="Permalink to this headline">¶</a></h3>
+<h3>Specifying the output path with -o/–output flag<a class="headerlink" href="#specifying-the-output-path-with-o-output-flag" title="Permalink to this headline">¶</a></h3>
 <p>Conversion is performed as follows:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -o file.sff
-sff convert file.seg --output /path/to/output/file.sff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 </pre></div>
 </div>
 <p>The output file extension determines the output format i.e.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -o file.hff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
 </pre></div>
 </div>
 <p>will result in an HDF5 file while</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg --output file.json
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">output</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 <p>will be a JSON file.</p>
 </div>
 <div class="section" id="specifying-the-output-format-with-f-format-flag">
-<h3>Specifying the output format with -f/&#8211;format flag<a class="headerlink" href="#specifying-the-output-format-with-f-format-flag" title="Permalink to this headline">¶</a></h3>
-<p>The -f/&#8211;format options ensures that the output file will be in the same directory as the original segmentation file. The -f flag takes one of three values:</p>
+<h3>Specifying the output format with -f/–format flag<a class="headerlink" href="#specifying-the-output-format-with-f-format-flag" title="Permalink to this headline">¶</a></h3>
+<p>The -f/–format options ensures that the output file will be in the same directory as the original segmentation file. The -f flag takes one of three values:</p>
 <ul class="simple">
 <li>‘sff’ for XML files</li>
 <li>‘hff’ for HDF5 files</li>
 <li>‘json’ for JSON files.</li>
 </ul>
 <p>Any other value raises an error.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg -f hff
-sff convert file.seg --format hff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">f</span> <span class="n">hff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="nb">format</span> <span class="n">hff</span>
 </pre></div>
 </div>
 <p>The default format (if none is specified) is ‘sff’ (XML).</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.seg
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
 </pre></div>
 </div>
 <p>results in file.sff as output.</p>
-<p>Running sff convert with no options or with -h/&#8211;help displays help.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert
-INSERT OUTPUT
+<p>Running sff convert with no options or with -h/–help displays help.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span>
+<span class="n">INSERT</span> <span class="n">OUTPUT</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="id1">
 <h3>EMDB-SFF Format Interconversion<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to perform interconversions from XML, HDF5 and JSON EMDB-SFF files.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.sff --output /path/to/output/file.hff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">hff</span>
 </pre></div>
 </div>
-<p>or using &#8211;format</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.hff --format json
+<p>or using –format</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">json</span>
 </pre></div>
 </div>
 <p>Even null conversions are possible:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert file.sff --format sff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">sff</span>
 </pre></div>
 </div>
 <p>As stated previously, conversion to JSON drops all geometrical descriptions. Similarly, conversions from JSON to EMDB-SFF will not reinstate the geometric description information.</p>
@@ -191,13 +193,13 @@ INSERT OUTPUT
 </div>
 <div class="section" id="id2">
 <h2>Verbose Operation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>As with many Linux shell programs the -v/&#8211;verbose option prints status information on the terminal.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --verbose file.hff
-Tue Sep 12 15:29:18 2017 Seting output file to file.sff
-Tue Sep 12 15:29:18 2017 Converting from EMDB-SFF (HDF5) file file.hff
-Tue Sep 12 15:30:03 2017 Created SFFSegmentation object
-Tue Sep 12 15:30:03 2017 Exporting to file.sff
-Tue Sep 12 15:30:07 2017 Done
+<p>As with many Linux shell programs the -v/–verbose option prints status information on the terminal.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">verbose</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
+<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">18</span> <span class="mi">2017</span> <span class="n">Seting</span> <span class="n">output</span> <span class="n">file</span> <span class="n">to</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">18</span> <span class="mi">2017</span> <span class="n">Converting</span> <span class="kn">from</span> <span class="nn">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="p">(</span><span class="n">HDF5</span><span class="p">)</span> <span class="n">file</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
+<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">03</span> <span class="mi">2017</span> <span class="n">Created</span> <span class="n">SFFSegmentation</span> <span class="nb">object</span>
+<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">03</span> <span class="mi">2017</span> <span class="n">Exporting</span> <span class="n">to</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">07</span> <span class="mi">2017</span> <span class="n">Done</span>
 </pre></div>
 </div>
 </div>
@@ -206,8 +208,8 @@ Tue Sep 12 15:30:07 2017 Done
 <p>Segger segmentations include hundreds to thousands of sub-segmentations due to how the algorithm it uses (watershed algorithm) identifies segmentations. The segmentations thus form a tree with the root having a value of zero. Mostly, we are only interested in the children of the root which are in themselves roots of another tree. This option only transfers the children of the global root into the EMDB-SFF file.</p>
 <p>Consider the following tree of segments:</p>
 <img alt="_images/converting-01.png" src="_images/converting-01.png" />
-<p>The segmentation contains different levels commencing from the root down, with children segments <em>contained within</em> parent segments. Specifying -t/&#8211;top-level-only treats only children of the <em>root</em> as segments and excludes all others. Therefore, running</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --top-level-only file.seg
+<p>The segmentation contains different levels commencing from the root down, with children segments <em>contained within</em> parent segments. Specifying -t/–top-level-only treats only children of the <em>root</em> as segments and excludes all others. Therefore, running</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="n">only</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
 </pre></div>
 </div>
 <p>on the above will produce an EMDB-SFF file with only three segments. Excluding this option means that the resulting EMDB-SFF file will be relatively large.</p>
@@ -215,7 +217,7 @@ Tue Sep 12 15:30:07 2017 Done
 <div class="section" id="specify-details">
 <h2>Specify Details<a class="headerlink" href="#specify-details" title="Permalink to this headline">¶</a></h2>
 <p>The EMDB-SFF data model provides for an optional &lt;details/&gt; tag for auxilliary information. The contents of this option will be put into &lt;details/&gt;.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --details “Lorem ipsum dolor…” file.seg
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff convert --details “Lorem ipsum dolor…” file.seg
 </pre></div>
 </div>
 <p>TODO: ALLOW A USER TO PASS A FILE WHOSE CONTENTS WILL BE INSERTED INTO &lt;details/&gt;.</p>
@@ -223,7 +225,7 @@ Tue Sep 12 15:30:07 2017 Done
 <div class="section" id="changing-the-primary-descriptor">
 <h2>Changing The Primary Descriptor<a class="headerlink" href="#changing-the-primary-descriptor" title="Permalink to this headline">¶</a></h2>
 <p>The EMDB-SFF data model provides for four possible geometrical descriptors: contours (contourList), meshes (meshList), shape primitives (shapePrimitiveList) and 3D volumes (threeDVolume). In some cases, e.g., IMOD segmentations, more than one geometrical descriptor may have been specified for the same segmentations. The mandatory &lt;primaryDescriptor/&gt; field specifies the main geometrical descriptor to be used when performing conversions and other processing tasks. Only valid values are allowed; otherwise a ValueError is raised.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert --primary-descriptor contourList file.surf # AmiraHxSurface file
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">primary</span><span class="o">-</span><span class="n">descriptor</span> <span class="n">contourList</span> <span class="n">file</span><span class="o">.</span><span class="n">surf</span> <span class="c1"># AmiraHxSurface file</span>
 </pre></div>
 </div>
 <p>The table below shows valid primary descriptors by file type.</p>
@@ -264,8 +266,8 @@ Tue Sep 12 15:30:07 2017 Done
 <div class="section" id="experimental-convert-contour-segmentation-to-mesh-surface">
 <h2><em>Experimental</em>: Convert Contour Segmentation to Mesh Surface<a class="headerlink" href="#experimental-convert-contour-segmentation-to-mesh-surface" title="Permalink to this headline">¶</a></h2>
 <p>Mesh surfaces are more efficient to work with than contours. However, converting contours to a mesh is not straightforward. This option relies on IMOD imodmesh command to convert an (note!) EMDB-SFF file with contours into one with meshes. It is experimental and may fail on some files.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>sff convert -M file.sff
-sff convert --contour-to-mesh file.sff --output file_mesh.sff
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">M</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">contour</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">mesh</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="n">file_mesh</span><span class="o">.</span><span class="n">sff</span>
 </pre></div>
 </div>
 <p>Here file.sff has a <em>contourList</em> primary descriptor. If successful, the converted file will have meshes and primary descriptor set to <em>meshList</em>. The output file will be XML (by default).</p>
@@ -299,8 +301,8 @@ sff convert --contour-to-mesh file.sff --output file_mesh.sff
 </li>
 <li><a class="reference internal" href="#input-formats">Input Formats</a></li>
 <li><a class="reference internal" href="#output-formats">Output Formats</a><ul>
-<li><a class="reference internal" href="#specifying-the-output-path-with-o-output-flag">Specifying the output path with -o/&#8211;output flag</a></li>
-<li><a class="reference internal" href="#specifying-the-output-format-with-f-format-flag">Specifying the output format with -f/&#8211;format flag</a></li>
+<li><a class="reference internal" href="#specifying-the-output-path-with-o-output-flag">Specifying the output path with -o/–output flag</a></li>
+<li><a class="reference internal" href="#specifying-the-output-format-with-f-format-flag">Specifying the output format with -f/–format flag</a></li>
 <li><a class="reference internal" href="#id1">EMDB-SFF Format Interconversion</a></li>
 </ul>
 </li>
@@ -324,21 +326,18 @@ sff convert --contour-to-mesh file.sff --output file_mesh.sff
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/converting.txt"
+      <li><a href="_sources/converting.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -349,11 +348,11 @@ sff convert --contour-to-mesh file.sff --output file_mesh.sff
       &copy;2017, EMBL-EBI.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/converting.txt"
+      <a href="_sources/converting.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

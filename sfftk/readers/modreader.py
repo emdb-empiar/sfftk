@@ -31,17 +31,8 @@ in the design of these classes:
 
 
 In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.
-
-:TODO:
-------
-
-- unravel VIEW chunk (email from 3dmod authors unclear)
-
-- list fiels in MESH chunk with -24 markers
-
-- empty (no field) implementation of OGRP, SKLI and SLAN (class exists but unclear how to nest it) 
-
 """
+
 from __future__ import division
 
 __author__ = 'Paul K. Korir, PhD'
@@ -55,6 +46,16 @@ import struct
 from bitarray import bitarray
 from ..core.print_tools import get_printable_ascii_string
 
+"""
+:TODO:
+------
+
+- unravel VIEW chunk (email from 3dmod authors unclear)
+
+- list fiels in MESH chunk with -24 markers
+
+- empty (no field) implementation of OGRP, SKLI and SLAN (class exists but unclear how to nest it) 
+"""
 
 KEY_WORDS = [
     'CLIP',

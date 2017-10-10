@@ -200,7 +200,7 @@ class IMODContours(Contours):
 """
 :TODO: *args, **kwargs???
 """
-class IMODShape(Shapes):
+class IMODShape(object):
     """Shape base class"""
     x = 0
     y = 0

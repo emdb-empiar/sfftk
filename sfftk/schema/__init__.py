@@ -2305,7 +2305,7 @@ class SFFSegmentation(SFFType):
         """Merge the annotation from another sff_seg to this one
         
         :param other_seg: segmentation to get annotations from
-        :type other_seg: ``SFFSegmentation``
+        :type other_seg: :py:class:`sfftk.schema.SFFSegmentation`
         """
         try:
             assert isinstance(other_seg, SFFSegmentation)
