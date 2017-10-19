@@ -62,9 +62,10 @@ class NoteView(View):
     
     Display annotation for a single segment
     """
-    def __init__(self, segment, _long=False):
+    def __init__(self, segment, _long=False, list_ids=False):
         self._segment = segment
         self._long = _long
+        self.list_ids = list_ids
     @property
     def id(self):
         return self._segment.id
@@ -162,26 +163,26 @@ class NoteView(View):
     def __str__(self):
         if self._long:
             string = """\
-            \r{}
-            \rID:\t\t{}
-            \rPARENT ID:\t{}
-            \rSegment Type:\t{}
-            \r{}
-            \rDescription:
-            \r\t{}
-            \rNumber of instances:
-            \r\t{}
-            \r{}
-            \rExternal references:
-            \r{}
-            \r{}
-            \rComplexes:
-            \r{}
-            \rMacromolecules:
-            \r{}
-            \r{}
-            \rColour:
-            \r\t{}\
+{}
+ID:\t\t{}
+PARENT ID:\t{}
+Segment Type:\t{}
+{}
+Description:
+\t{}
+Number of instances:
+\t{}
+{}
+External references:
+{}
+{}
+Complexes:
+{}
+Macromolecules:
+{}
+{}
+Colour:
+\t{}\
             """.format(
                 # ****
                 self.LINE3,
@@ -203,6 +204,9 @@ class NoteView(View):
                 self.LINE2,
                 self.colour,
                 )
+        elif self.list_ids:
+            string = "{}".format(self.id)
+            return string
         else:
             string = "{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
                 self.id,
@@ -236,9 +240,9 @@ class HeaderView(View):
     @property
     def software(self):
         return u"""\
-        \r\tSoftware: {}
-        \r\tVersion:  {}
-        \rSoftware processing details: \n{}\
+\tSoftware: {}
+\tVersion:  {}
+Software processing details: \n{}\
         """.format(
             self._segmentation.software.name if self._segmentation.software.name else self.NOT_DEFINED,
             self._segmentation.software.version if self._segmentation.software.version else self.NOT_DEFINED,
@@ -297,28 +301,28 @@ class HeaderView(View):
             return self.NOT_DEFINED
     def __str__(self):
         string = """\
-        \r{}
-        \rEMDB-SFF v.{}
-        \r{}
-        \rSegmentation name:
-        \r\t{}
-        \rSegmentation software:
-        \r{}
-        \r{}
-        \rPrimary descriptor:
-        \r\t{}
-        \r{}
-        \rFile path:
-        \r\t{}
-        \r{}
-        \rBounding box:
-        \r\t{}
-        \r{}
-        \rGlobal external references:
-        \r\t{}
-        \r{}
-        \rSegmentation details:
-        \r\t{}\
+{}
+EMDB-SFF v.{}
+{}
+Segmentation name:
+\t{}
+Segmentation software:
+{}
+{}
+Primary descriptor:
+\t{}
+{}
+File path:
+\t{}
+{}
+Bounding box:
+\t{}
+{}
+Global external references:
+\t{}
+{}
+Segmentation details:
+\t{}\
         """.format(
             # ===
             self.LINE1,
@@ -349,9 +353,9 @@ class HeaderView(View):
 class TableHeaderView(View):
     def __str__(self):
         string = """\
-        \r{}
-        \r{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
-        \r{}\
+{}
+{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
+{}\
         """.format(
             View.LINE3,
             "id", 
@@ -381,13 +385,14 @@ def list_notes(args):
     """
     if args.header:
         print HeaderView(sff_seg)
-    note_views = [NoteView(segment, _long=args.long_format) for segment in sff_seg.segments]
+    note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]
     if args.sort_by_description:
         sorted_note_views = sorted(note_views, key=lambda n: n.description, reverse=args.reverse)
     else:
         sorted_note_views = sorted(note_views, key=lambda n: n.id, reverse=args.reverse)
     # table header
-    print TableHeaderView()
+    if not args.list_ids:
+        print TableHeaderView()
     for note_view in sorted_note_views:
         print note_view
     return 0

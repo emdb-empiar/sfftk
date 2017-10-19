@@ -320,6 +320,8 @@ add_args(list_notes_parser, long_format)
 # list_notes_parser.add_argument('-l', '--long-format', default=False, action='store_true', help="only show segment ID and description (if present)")
 list_notes_parser.add_argument('-D', '--sort-by-description', default=False, action='store_true', help="sort listings by description [default: False (sorts by ID)]")
 list_notes_parser.add_argument('-r', '--reverse', default=False, action='store_true', help="reverse the sort order [default: False]")
+list_notes_parser.add_argument('-I', '--list-ids', default=False, action='store_true', help="only list the IDs for segments one per line [default: False]")
+add_args(list_notes_parser, verbose)
 
 #===============================================================================
 # notes: show
@@ -333,6 +335,7 @@ show_notes_parser = notes_subparsers.add_parser(
 add_args(show_notes_parser, sff_file)
 add_args(show_notes_parser, header)
 add_args(show_notes_parser, long_format)
+add_args(show_notes_parser, verbose)
 # show_notes_parser.add_argument('-l', '--long-format', default=False, action='store_true', help="only show segment ID and description (if present)")
 show_segment_id = deepcopy(segment_id)
 show_segment_id['kwargs']['help'] += "; pass more than one ID as a comma-separated list with no spaces e.g. 'id1,id2,...,idN'"
@@ -352,6 +355,7 @@ add_args(add_notes_parser, sff_file)
 # external references apply to both
 external_ref['kwargs']['action'] = 'append'
 add_args(add_notes_parser, external_ref)
+add_args(add_notes_parser, verbose)
 del external_ref['kwargs']['action']
 # global notes
 add_global_notes_parser = add_notes_parser.add_argument_group(
@@ -634,14 +638,16 @@ def parse_args(_args):
                 if args.sff_file == temp_file_ref:
                     if os.path.exists(temp_file):
                         args.sff_file = temp_file
-                        print_date("\033[0;92m", incl_date=False, newline=False)
-                        print_date("Working on temp file {}".format(temp_file), stream=sys.stdout)
+                        if args.verbose:
+                            print_date("\033[0;92m", incl_date=False, newline=False)
+                            print_date("Working on temp file {}".format(temp_file), stream=sys.stdout)
                     else:
                         print_date("Temporary file {} does not exist. \
 Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".format(temp_file), stream=sys.stdout)
                         return None
                 else:
-                    print_date("Reading directly from {}".format(args.sff_file), stream=sys.stdout)
+                    if args.verbose:
+                        print_date("Reading directly from {}".format(args.sff_file), stream=sys.stdout)
             # modify
             elif args.notes_subcommand in ['save']:
                 try:

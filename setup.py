@@ -12,7 +12,7 @@ setup(
     url = "https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F",
     license = "Apache License",
     keywords = "EMDB-SFF, SFF, segmentation",
-    install_requires= ["ahds", "lxml", "h5py", "requests", "scikit-image", "bitarray"],
+    install_requires= ["ahds", "lxml", "h5py", "requests", "scikit-image", "bitarray", "numpy-stl"],
     classifiers = [
         # maturity
         'Development Status :: 2 - Pre-Alpha',

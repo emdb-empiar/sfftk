@@ -593,7 +593,9 @@ class SFFBiologicalAnnotation(SFFType):
                  dtype=[
                      ('type', vl_str),
                      ('otherType', vl_str),
-                     ('ref', vl_str),
+                     ('value', vl_str),
+                     ('label', vl_str),
+                     ('description', vl_str),
                      ]
                  )
             # description and nubmerOfInstances as attributes
@@ -601,7 +603,7 @@ class SFFBiologicalAnnotation(SFFType):
             group['numberOfInstances'] = self.numberOfInstances if self.numberOfInstances > 0 else 0
             i = 0
             for extref in self.externalReferences:
-                h_ext[i] = (extref.type, extref.otherType, extref.value)
+                h_ext[i] = (extref.type, extref.otherType, extref.value, extref.label, extref.description)
                 i += 1
         return parent_group
     @classmethod
@@ -616,7 +618,7 @@ class SFFBiologicalAnnotation(SFFType):
             obj.externalReferences = SFFExternalReferences()
             for ref in hff_data['externalReferences']:
                 e = SFFExternalReference()
-                e.type, e.otherType, e.value = ref
+                e.type, e.otherType, e.value, e.label, e.description = ref
                 obj.externalReferences.add_externalReference(e)
         return obj  
 
@@ -655,7 +657,7 @@ class SFFThreeDVolume(SFFType):
         except ValueError:
             obj.transformId = None
         try:
-            obj.objectPath = int(hff_data['objectPath'][0])
+            obj.objectPath = str(hff_data['objectPath'][0])
         except ValueError:
             obj.objectPath = None
             
@@ -1521,7 +1523,7 @@ class SFFSegment(SFFType):
                 (1,),
                 dtype=[
                     ('file', vl_str),
-                    ('objectPath', 'u4'),
+                    ('objectPath', vl_str),
                     ('contourLevel', 'f4'),
                     ('transformId', 'u4'),
                     ('format', vl_str),
@@ -1529,7 +1531,7 @@ class SFFSegment(SFFType):
                 )
             h_vol[0] = (
                 self.volume.file,
-                self.volume.objectPath if self.volume.objectPath else 0,
+                self.volume.objectPath if self.volume.objectPath else '',
                 self.volume.contourLevel if self.volume.contourLevel else -1.0,
                 self.volume.transformId if self.volume.transformId else 0,
                 self.volume.format,
@@ -2049,12 +2051,14 @@ class SFFSegmentation(SFFType):
                 dtype=[
                     ('type', vl_str),
                     ('otherType', vl_str),
-                    ('ref', vl_str),
+                    ('value', vl_str),
+                    ('label', vl_str),
+                    ('description', vl_str),
                     ]
                 )
             i = 0
             for gExtRef in self.globalExternalReferences:
-                h_gext[i] = (gExtRef.type, gExtRef.otherType, gExtRef.value)
+                h_gext[i] = (gExtRef.type, gExtRef.otherType, gExtRef.value, gExtRef.label, gExtRef.description)
                 i += 1
         group = self.segments.as_hff(group)
         group['details'] = self.details if self.details else ''
@@ -2070,7 +2074,13 @@ class SFFSegmentation(SFFType):
         """
         assert isinstance(hff_data, h5py.File)
         obj = cls()
-        obj.name = hff_data['name'].value
+        try:
+            obj.name = hff_data['name'].value
+        except KeyError:
+            print_date('Segmentation name not found. Please check that {} is a valid EMDB-SFF file'.format(
+                hff_data.filename
+                ))
+            sys.exit(1)
         obj.version = hff_data['version'].value
         obj.software = SFFSoftware.from_hff(hff_data['software'])
         obj.transforms = SFFTransformList.from_hff(hff_data['transforms'])
@@ -2082,7 +2092,7 @@ class SFFSegmentation(SFFType):
             obj.globalExternalReferences = SFFGlobalExternalReferences()
             for gref in hff_data['globalExternalReferences']:
                 g = SFFExternalReference()
-                g.type, g.otherType, g.value = gref
+                g.type, g.otherType, g.value, g.label, g.description = gref
                 obj.globalExternalReferences.add_externalReference(g)
         obj.segments = SFFSegmentList.from_hff(hff_data['segments'])
         obj.details = hff_data['details'].value
@@ -2139,8 +2149,8 @@ class SFFSegmentation(SFFType):
             bioAnn['description'] = str(segment.biologicalAnnotation.description) if segment.biologicalAnnotation.description is not None else None
             bioAnn['numberOfInstances'] = segment.biologicalAnnotation.numberOfInstances if segment.biologicalAnnotation.numberOfInstances is not None else None
             
+            bioAnn['externalReferences'] = list()
             if segment.biologicalAnnotation.externalReferences:
-                bioAnn['externalReferences'] = list()
                 for extref in segment.biologicalAnnotation.externalReferences:
                     bioAnn['externalReferences'].append(
                         {
@@ -2233,7 +2243,9 @@ class SFFSegmentation(SFFType):
                     SFFExternalReference(
                         type=gextref['type'],
                         otherType=gextref['otherType'],
-                        value=gextref['value']
+                        value=gextref['value'],
+                        label=gextref['label'],
+                        description=gextref['description'],
                         )
                     )
         # segments
@@ -2253,7 +2265,9 @@ class SFFSegmentation(SFFType):
                         externalReference = SFFExternalReference(
                             type=extRef['type'],
                             otherType=extRef['otherType'],
-                            value=extRef['value']
+                            value=extRef['value'],
+                            label=extRef['label'],
+                            description=extRef['description'],
                             )
                         biologicalAnnotation.externalReferences.add_externalReference(externalReference)
                 segment.biologicalAnnotation = biologicalAnnotation
@@ -2289,7 +2303,7 @@ class SFFSegmentation(SFFType):
                 tDV = s['threeDVolume']
                 segment.volume.file = tDV['file']
                 segment.volume.format = tDV['format']
-                segment.volume.objectPath = tDV['objectPath'] if 'objectPath' in tDV else None
+                segment.volume.objectPath = tDV['objectPath']  if 'objectPath' in tDV else None
                 segment.volume.contourLevel = tDV['contourLevel'] if 'contourLevel' in tDV else None
                 segment.volume.transformId = tDV['transformId'] if 'transformId' in tDV else None
             if 'shapePrimitiveList' in s:

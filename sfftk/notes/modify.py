@@ -69,17 +69,18 @@ class ExternalReference(object):
         """Get the label and description if they exist"""
         label = None
         description = None
-        url = "http://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
-            ontology=self.type,
-            iri=self.iri
-            )
-        import requests
-        R = requests.get(url)
-        import json
-        self._result = json.loads(R.text)
-        print self._result
-        label = self._result['label']
-        description = self._result['description'][0] if self._result['description'] else None
+        # only search for label and description if from OLS
+        if self.type.lower() not in ['pdb', 'uniprot']:
+            url = "http://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
+                ontology=self.type,
+                iri=self.iri
+                )
+            import requests
+            R = requests.get(url)
+            import json
+            self._result = json.loads(R.text)
+            label = self._result['label']
+            description = self._result['description'][0] if self._result['description'] else None
         return label, description
 
 
@@ -303,43 +304,51 @@ class AbstractNote(BaseNote):
         :type segment: ``sfftk.schema.SFFSegment``
         """
         # biologicalAnnotation
-        if segment.biologicalAnnotation:
-            print_date("Note: A biological annotation exists. You can edit it using 'sff notes edit'.")
-        else:
-            bA = schema.SFFBiologicalAnnotation()
+        bA = segment.biologicalAnnotation
+        if self.description:
             bA.description = self.description
+        else:
+            bA.description = segment.biologicalAnnotation.description
+        if self.numberOfInstances:
             bA.numberOfInstances = self.numberOfInstances
-            if self.externalReferences:
-                if not bA.externalReferences:
-                    bA.externalReferences = schema.SFFExternalReferences()
-                for extRef in self.externalReferences:
-                    extRef._get_text()
-                    bA.externalReferences.add_externalReference(
-                        schema.SFFExternalReference(
-                            type_=extRef.type,
-                            otherType=extRef.otherType,
-                            value=extRef.value,
-                            label=extRef.label,
-                            description=extRef.description 
-                            )
+        else:
+            bA.numberOfInstances = segment.biologicalAnnotation.numberOfInstances
+        # copy current external references
+        bA.externalReferences = segment.biologicalAnnotation.externalReferences
+        if self.externalReferences:
+            if not bA.externalReferences:
+                bA.externalReferences = schema.SFFExternalReferences()
+            for extRef in self.externalReferences:
+                extRef._get_text()
+                bA.externalReferences.add_externalReference(
+                    schema.SFFExternalReference(
+                        type_=extRef.type,
+                        otherType=extRef.otherType,
+                        value=extRef.value,
+                        label=extRef.label,
+                        description=extRef.description 
                         )
+                    )
             segment.biologicalAnnotation = bA
         # complexesAndMacromolecules
-        if segment.complexesAndMacromolecules:
-            print_date("Note: Complexes and macromolecules exist. You can edit them using 'sff notes edit'.")
+        # copy current cAM
+        cAM = segment.complexesAndMacromolecules
+#         cAM = schema.SFFComplexesAndMacromolecules()
+        if self.complexes:
+            complexes = schema.SFFComplexes()
+            for c in self.complexes:
+                complexes.add_complex(c)
+            cAM.complexes = complexes
         else:
-            cAM = schema.SFFComplexesAndMacromolecules()
-            if self.complexes:
-                complexes = schema.SFFComplexes()
-                for c in self.complexes:
-                    complexes.add_complex(c)
-                cAM.complexes = complexes
-            if self.macromolecules:
-                macromolecules = schema.SFFMacromolecules()
-                for m in self.macromolecules:
-                    macromolecules.add_macromolecule(m)
-                cAM.macromolecules = macromolecules
-            segment.complexesAndMacromolecules = cAM
+            cAM.complexes = segment.complexesAndMacromolecules.complexes
+        if self.macromolecules:
+            macromolecules = schema.SFFMacromolecules()
+            for m in self.macromolecules:
+                macromolecules.add_macromolecule(m)
+            cAM.macromolecules = macromolecules
+        else:
+            cAM.macromolecules = segment.complexesAndMacromolecules.macromolecules
+        segment.complexesAndMacromolecules = cAM
         return segment
     
     def edit_in_segment(self, segment):

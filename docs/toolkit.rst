@@ -5,7 +5,7 @@ EMDB-SFF Toolkit (sfftk)
 Introduction
 ============
 
-sfftk is a set of utilities that facilitate creation, conversion and modification of Electron Microscopy Data Bank - Segmentation File Format (EMDB-SFF) files. EMDB-SFF is an open, community-driven file format to handle annotated segmentations and subtomogram averages that facilitates segmentation file interchange. It is predominantly written in Python with some functionality implemented as C-extensions for performance. It provides both a command-line suite of commands and a Python API.
+sfftk is a set of utilities that facilitate creation, conversion and modification of `Electron Microscopy Data Bank - Segmentation File Format (EMDB-SFF) files <https://github.com/emdb-empiar/sfftk/tree/master/sfftk/test_data/sff>`_. EMDB-SFF is an open, community-driven file format to handle annotated segmentations and subtomogram averages that facilitates segmentation file interchange. It is predominantly written in Python with some functionality implemented as C-extensions for performance. It provides both a command-line suite of commands and a Python API.
 
 Audience
 --------

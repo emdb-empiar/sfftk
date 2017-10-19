@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Sep 26 13:12:54 2017 by generateDS.py version 2.22a.
+# Generated Mon Oct 16 13:58:37 2017 by generateDS.py version 2.22a.
 #
 # Command line options:
-#   ('-o', 'sfftk/sfftk/schema/v_0_6_0_a_4.py')
+#   ('-o', 'schema/v_0_6_0_a_4.py')
 #
 # Command line arguments:
-#   /Users/pkorir/documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
+#   /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
 #
 # Command line:
-#   /usr/local/bin/generateDS.py -o "sfftk/sfftk/schema/v_0_6_0_a_4.py" /Users/pkorir/documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
+#   /usr/local/bin/generateDS.py -o "schema/v_0_6_0_a_4.py" /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
 #
 # Current working directory (os.getcwd()):
-#   trunk
+#   sfftk
 #
 
 import sys
@@ -1925,7 +1925,6 @@ class threeDVolumeType(GeneratedsSuper):
             self.file = file_
         elif nodeName_ == 'objectPath':
             objectPath_ = child_.text
-            objectPath_ = re_.sub(String_cleanup_pat_, " ", objectPath_).strip()
             objectPath_ = self.gds_validate_string(objectPath_, node, 'objectPath')
             self.objectPath = objectPath_
         elif nodeName_ == 'contourLevel':
