@@ -2,6 +2,8 @@
 Extending sfftk
 ===============
 
+.. contents::
+
 Adding A Segmentation File Format
 =================================
 

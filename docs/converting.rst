@@ -2,6 +2,8 @@
 Converting Files To EMDB-SFF
 ============================
 
+.. contents::
+
 Introduction
 ============
 
@@ -90,7 +92,7 @@ Contours To Mesh (Experimental)
 Input Formats
 =============
 
-sfftk can convert `*several segmentation file formats* <https://docs.google.com/document/d/1ljX7mlo5Vj4dTSf7jSzbwRoqPfab2r5tjFijqEi3hGM/edit#heading=h.6rhhnuaqaszp>`__ into EMDB-SFF files.
+sfftk can convert `several segmentation file formats <https://docs.google.com/document/d/1ljX7mlo5Vj4dTSf7jSzbwRoqPfab2r5tjFijqEi3hGM/edit#heading=h.6rhhnuaqaszp>`__ into EMDB-SFF files.
 
 Output Formats
 ==============

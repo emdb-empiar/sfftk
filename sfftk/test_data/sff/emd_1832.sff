@@ -22,19 +22,6 @@
     <primaryDescriptor>threeDVolume</primaryDescriptor>
     <segmentList>
         <segment id="85" parentID="0">
-            <biologicalAnnotation>
-                <description>GINS + Cdc45</description>
-                <externalReferences>
-                    <ref type="go" value="GO:0000811"/>
-                    <ref type="ogg" value="OGG:3000008318"/>
-                    <ref type="omit" value="OMIT:0036566"/>
-                    <ref type="cco" value="850793"/>
-                    <ref type="cco" value="779545"/>
-                    <ref type="ncbitaxon" value="NCBITaxon:7227"/>
-                </externalReferences>
-                <numberOfInstances>1</numberOfInstances>
-            </biologicalAnnotation>
-            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.521576881408691</red>
@@ -50,14 +37,6 @@
             </threeDVolume>
         </segment>
         <segment id="93" parentID="0">
-            <biologicalAnnotation>
-                <description>DNA replication licensing factor MCM4</description>
-                <externalReferences>
-                    <ref type="ncbitaxon" value="NCBITaxon:7227"/>
-                </externalReferences>
-                <numberOfInstances>1</numberOfInstances>
-            </biologicalAnnotation>
-            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.504164099693298</red>
@@ -73,17 +52,6 @@
             </threeDVolume>
         </segment>
         <segment id="97" parentID="0">
-            <biologicalAnnotation>
-                <description>DNA replication licensing factor MCM2</description>
-                <externalReferences>
-                    <ref type="ncbitaxon" value="NCBITaxon:7227"/>
-                    <ref type="ogg" value="OGG:3000004171"/>
-                    <ref type="omit" value="OMIT:0033409"/>
-                    <ref type="cco" value="4171"/>
-                </externalReferences>
-                <numberOfInstances>1</numberOfInstances>
-            </biologicalAnnotation>
-            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.669882595539093</red>
@@ -99,16 +67,6 @@
             </threeDVolume>
         </segment>
         <segment id="101" parentID="0">
-            <biologicalAnnotation>
-                <description>DNA replication licensing factor MCM7</description>
-                <externalReferences>
-                    <ref type="ncbitaxon" value="NCBITaxon:7227"/>
-                    <ref type="ogg" value="OGG:3000004176"/>
-                    <ref type="omit" value="OMIT:0033414"/>
-                </externalReferences>
-                <numberOfInstances>1</numberOfInstances>
-            </biologicalAnnotation>
-            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.862361133098602</red>
@@ -124,16 +82,6 @@
             </threeDVolume>
         </segment>
         <segment id="103" parentID="0">
-            <biologicalAnnotation>
-                <description>DNA replication licensing factor MCM6</description>
-                <externalReferences>
-                    <ref type="ncbitaxon" value="NCBITaxon:7227"/>
-                    <ref type="ogg" value="OGG:3000004175"/>
-                    <ref type="omit" value="OMIT:0033413"/>
-                </externalReferences>
-                <numberOfInstances>1</numberOfInstances>
-            </biologicalAnnotation>
-            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.706890761852264</red>
@@ -149,18 +97,6 @@
             </threeDVolume>
         </segment>
         <segment id="104" parentID="0">
-            <biologicalAnnotation>
-                <description>DNA replication licensing factor MCM3 and DNA replication licensing factor MCM5</description>
-                <externalReferences>
-                    <ref type="ncbitaxon" value="NCBITaxon:7227"/>
-                    <ref type="ogg" value="OGG:3000004172"/>
-                    <ref type="omit" value="OMIT:0033410"/>
-                    <ref type="ogg" value="OGG:3000004174"/>
-                    <ref type="omit" value="OMIT:0033412"/>
-                </externalReferences>
-                <numberOfInstances>1</numberOfInstances>
-            </biologicalAnnotation>
-            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.787909328937531</red>

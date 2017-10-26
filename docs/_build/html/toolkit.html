@@ -1,68 +1,253 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>EMDB-SFF Toolkit (sfftk) &#8212; sfftk 0.1.1.dev0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.1.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Converting Files To EMDB-SFF" href="converting.html" />
-    <link rel="prev" title="Welcome to sfftk’s documentation!" href="index.html" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>EMDB-SFF Toolkit (sfftk) &mdash; sfftk 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+        <link rel="next" title="Converting Files To EMDB-SFF" href="converting.html"/>
+        <link rel="prev" title="Welcome to sfftk’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> sfftk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">EMDB-SFF Toolkit (sfftk)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#audience">Audience</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#versions">Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-model">Data Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-formats">Supported Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contact">Contact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#publications">Publications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#obtaining-and-installing-sfftk">Obtaining and Installing sfftk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pypi">PyPI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conversion">Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#annotation">Annotation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developing-with-sfftk">Developing with sfftk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extending-sfftk">Extending sfftk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sfftk.html">sfftk packages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sfftk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>EMDB-SFF Toolkit (sfftk)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/toolkit.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="emdb-sff-toolkit-sfftk">
-<h1>EMDB-SFF Toolkit (sfftk)<a class="headerlink" href="#emdb-sff-toolkit-sfftk" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id1">EMDB-SFF Toolkit (sfftk)</a><a class="headerlink" href="#emdb-sff-toolkit-sfftk" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#emdb-sff-toolkit-sfftk" id="id1">EMDB-SFF Toolkit (sfftk)</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a><ul>
+<li><a class="reference internal" href="#audience" id="id3">Audience</a></li>
+<li><a class="reference internal" href="#versions" id="id4">Versions</a></li>
+<li><a class="reference internal" href="#license" id="id5">License</a></li>
+<li><a class="reference internal" href="#data-model" id="id6">Data Model</a></li>
+<li><a class="reference internal" href="#supported-formats" id="id7">Supported Formats</a></li>
+<li><a class="reference internal" href="#contact" id="id8">Contact</a></li>
+<li><a class="reference internal" href="#publications" id="id9">Publications</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-started" id="id10">Getting Started</a><ul>
+<li><a class="reference internal" href="#obtaining-and-installing-sfftk" id="id11">Obtaining and Installing sfftk</a><ul>
+<li><a class="reference internal" href="#dependencies" id="id12">Dependencies</a></li>
+<li><a class="reference internal" href="#pypi" id="id13">PyPI</a></li>
+<li><a class="reference internal" href="#source" id="id14">Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#features" id="id15">Features</a><ul>
+<li><a class="reference internal" href="#conversion" id="id16">Conversion</a></li>
+<li><a class="reference internal" href="#annotation" id="id17">Annotation</a></li>
+<li><a class="reference internal" href="#miscellaneous" id="id18">Miscellaneous</a></li>
+<li><a class="reference internal" href="#developing-with-sfftk" id="id19">Developing with sfftk</a></li>
+<li><a class="reference internal" href="#extending-sfftk" id="id20">Extending sfftk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>sfftk is a set of utilities that facilitate creation, conversion and modification of Electron Microscopy Data Bank - Segmentation File Format (EMDB-SFF) files. EMDB-SFF is an open, community-driven file format to handle annotated segmentations and subtomogram averages that facilitates segmentation file interchange. It is predominantly written in Python with some functionality implemented as C-extensions for performance. It provides both a command-line suite of commands and a Python API.</p>
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>sfftk is a set of utilities that facilitate creation, conversion and modification of <a class="reference external" href="https://github.com/emdb-empiar/sfftk/tree/master/sfftk/test_data/sff">Electron Microscopy Data Bank - Segmentation File Format (EMDB-SFF) files</a>. EMDB-SFF is an open, community-driven file format to handle annotated segmentations and subtomogram averages that facilitates segmentation file interchange. It is predominantly written in Python with some functionality implemented as C-extensions for performance. It provides both a command-line suite of commands and a Python API.</p>
 <div class="section" id="audience">
-<h3>Audience<a class="headerlink" href="#audience" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id3">Audience</a><a class="headerlink" href="#audience" title="Permalink to this headline">¶</a></h3>
 <p>sfftk is primarily targeted but not restricted to biological electron microscopists and developers of image segmentation software.</p>
 </div>
 <div class="section" id="versions">
-<h3>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id4">Versions</a><a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h3>
 <p>sfftk is currently in development and is available as a development release v0.1.1.dev0. Expected date of release is end of September 2017.</p>
 </div>
 <div class="section" id="license">
-<h3>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id5">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h3>
 <p>sfftk is released under an Apache License, Version 2.0 and is copyright of EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.</p>
 </div>
 <div class="section" id="data-model">
-<h3>Data Model<a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h3>
-<p>sfftk is built to handle EMDB-SFF files. The corresponding schema (v0.6.0a4) may be obtained at <a class="reference external" href="http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html">*http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html*</a>. Changes to the schema are welcome for discussion at the Segmentation Working Group at <a class="reference external" href="https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg">*https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg*</a>.</p>
+<h3><a class="toc-backref" href="#id6">Data Model</a><a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h3>
+<p>sfftk is built to handle EMDB-SFF files. The corresponding schema (v0.6.0a4) may be obtained at <a class="reference external" href="http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html">http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html</a>. Changes to the schema are welcome for discussion at the Segmentation Working Group at <a class="reference external" href="https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg">https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg</a>.</p>
 </div>
 <div class="section" id="supported-formats">
-<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Supported Formats</a><a class="headerlink" href="#supported-formats" title="Permalink to this headline">¶</a></h3>
 <p>The following file formats are currently supported (in alphabetical order of extensions):</p>
 <ul class="simple">
 <li>Amira Mesh (.am)</li>
@@ -74,31 +259,31 @@
 </ul>
 </div>
 <div class="section" id="contact">
-<h3>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h3>
-<p>Any questions or comments should be addressed to <a class="reference external" href="mailto:ardan&#37;&#52;&#48;ebi&#46;ac&#46;uk">*ardan<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk*</a> or <a class="reference external" href="mailto:pkorir&#37;&#52;&#48;ebi&#46;ac&#46;uk">*pkorir<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk*</a>.</p>
+<h3><a class="toc-backref" href="#id8">Contact</a><a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h3>
+<p>Any questions or comments should be addressed to <a class="reference external" href="mailto:ardan&#37;&#52;&#48;ebi&#46;ac&#46;uk">ardan<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk</a> or <a class="reference external" href="mailto:pkorir&#37;&#52;&#48;ebi&#46;ac&#46;uk">pkorir<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk</a>.</p>
 </div>
 <div class="section" id="publications">
-<h3>Publications<a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Publications</a><a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h3>
 <p>The following articles should be cited whenever sfftk is used in a publication:</p>
 <ul class="simple">
 <li>[TBA]</li>
 </ul>
 <p>The EMDB-SFF data model is the result of various community consultations which are published in the following articles:</p>
 <ul class="simple">
-<li><em>`Patwardhan, Ardan, Robert Brandt, Sarah J. Butcher, Lucy Collinson, David Gault, Kay Grünewald, Corey Hecksel et al. *Building bridges between cellular and molecular structural biology.</em> &lt;<a class="reference external" href="http://europepmc.org/abstract/MED/28682240">http://europepmc.org/abstract/MED/28682240</a>&gt;`__ eLife 6 (2017).*</li>
-<li><em>`Patwardhan, Ardan, Alun Ashton, Robert Brandt, Sarah Butcher, Raffaella Carzaniga, Wah Chiu, Lucy Collinson et al. *A 3D cellular context for the macromolecular world.</em> &lt;<a class="reference external" href="http://europepmc.org/abstract/MED/25289590">http://europepmc.org/abstract/MED/25289590</a>&gt;`__ Nature structural &amp; molecular biology 21, no. 10 (2014): 841-845.*</li>
-<li><a class="reference external" href="http://europepmc.org/abstract/MED/23211764">*Patwardhan, Ardan, José-Maria Carazo, Bridget Carragher, Richard Henderson, J. Bernard Heymann, Emma Hill, Grant J. Jensen et al. *Data management challenges in three-dimensional EM.** *Nature structural &amp; molecular biology 19, no. 12 (2012): 1203-1207.*</a></li>
+<li><a class="reference external" href="http://europepmc.org/abstract/MED/28682240">Patwardhan, Ardan, Robert Brandt, Sarah J. Butcher, Lucy Collinson, David Gault, Kay Grünewald, Corey Hecksel et al. Building bridges between cellular and molecular structural biology. eLife 6 (2017).</a></li>
+<li><a class="reference external" href="http://europepmc.org/abstract/MED/25289590">Patwardhan, Ardan, Alun Ashton, Robert Brandt, Sarah Butcher, Raffaella Carzaniga, Wah Chiu, Lucy Collinson et al. A 3D cellular context for the macromolecular world. Nature structural &amp; molecular biology 21, no. 10 (2014): 841-845.</a></li>
+<li><a class="reference external" href="http://europepmc.org/abstract/MED/23211764">Patwardhan, Ardan, José-Maria Carazo, Bridget Carragher, Richard Henderson, J. Bernard Heymann, Emma Hill, Grant J. Jensen et al. Data management challenges in three-dimensional EM. Nature structural &amp; molecular biology 19, no. 12 (2012): 1203-1207.</a></li>
 </ul>
 </div>
 </div>
 <div class="section" id="getting-started">
-<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">Getting Started</a><a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="obtaining-and-installing-sfftk">
-<h3>Obtaining and Installing sfftk<a class="headerlink" href="#obtaining-and-installing-sfftk" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Obtaining and Installing sfftk</a><a class="headerlink" href="#obtaining-and-installing-sfftk" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="dependencies">
-<h4>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h4>
-<p>We highly recommend installing sfftk in an anaconda environment because this makes it easy to obtain some of the dependencies. You can find out more about installing anaconda at <a class="reference external" href="https://www.anaconda.com/download/">*https://www.anaconda.com/download/*</a>.</p>
-<p>The following dependencies are required and will be automatically installed when <a class="reference external" href="#pypi">*using PyPI*</a>:</p>
+<h4><a class="toc-backref" href="#id12">Dependencies</a><a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h4>
+<p>We highly recommend installing sfftk in an anaconda environment because this makes it easy to obtain some of the dependencies. You can find out more about installing anaconda at <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>.</p>
+<p>The following dependencies are required and will be automatically installed when <a class="reference external" href="#pypi">using PyPI</a>:</p>
 <ul class="simple">
 <li>ahds (v.0.1.6 or greater)</li>
 <li>lxml</li>
@@ -111,31 +296,31 @@
 </ul>
 </div>
 <div class="section" id="pypi">
-<h4>PyPI<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id13">PyPI</a><a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h4>
 <p>sfftk is available on PyPI meaning that all that one needs to do is run:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sfftk</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="source">
-<h4>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h4>
-<p>The sfftk source is available from CCP-EM SVN repository <a class="reference external" href="https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&amp;path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F">*https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&amp;path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F*</a>.</p>
+<h4><a class="toc-backref" href="#id14">Source</a><a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h4>
+<p>The sfftk source is available from CCP-EM SVN repository <a class="reference external" href="https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&amp;path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F">https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&amp;path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F</a>.</p>
 </div>
 </div>
 </div>
 <div class="section" id="features">
-<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15">Features</a><a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <p>The main function of sfftk is to handle conversion to and from application-specific segmentation file formats and annotation of EMDB-SFF files.</p>
 <div class="section" id="conversion">
-<h3>Conversion<a class="headerlink" href="#conversion" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id16">Conversion</a><a class="headerlink" href="#conversion" title="Permalink to this headline">¶</a></h3>
 <p>The primary functionality in sfftk is conversion of application-specific segmentation file formats to the open EMDB-SFF. For a full description of how to perform conversion, please see the <a class="reference internal" href="converting.html"><span class="doc">guide to format conversion</span></a>.</p>
 </div>
 <div class="section" id="annotation">
-<h3>Annotation<a class="headerlink" href="#annotation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">Annotation</a><a class="headerlink" href="#annotation" title="Permalink to this headline">¶</a></h3>
 <p>sfftk provides a simple set of tools to allow viewing, searching and modifying annotations (notes) associated with the segmentation and individual segments. Annotations added should be either from a [published] ontology or be an accession from a [published] database. See the <a class="reference internal" href="annotating.html"><span class="doc">guide to annotating segmentations</span></a> for a full treatment.</p>
 </div>
 <div class="section" id="miscellaneous">
-<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id18">Miscellaneous</a><a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
 <p>sfftk may also be used for several miscellaneous operations such as:</p>
 <ul class="simple">
 <li>Viewing metadata</li>
@@ -145,99 +330,86 @@
 <p>More information on this can be found in the <a class="reference internal" href="misc.html"><span class="doc">guide to miscellaneous operations</span></a>.</p>
 </div>
 <div class="section" id="developing-with-sfftk">
-<h3>Developing with sfftk<a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id19">Developing with sfftk</a><a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h3>
 <p>sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. The full API is available at [link]. See the <a class="reference internal" href="developing.html"><span class="doc">guide to developing with sfftk</span></a> for a complete description.</p>
 </div>
 <div class="section" id="extending-sfftk">
-<h3>Extending sfftk<a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">Extending sfftk</a><a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h3>
 <p>sfftk has built with extensibility in mind. It is anticipated that most extension will take the form of supporting additional file formats. Please read the <a class="reference internal" href="extending.html"><span class="doc">guide to extending sfftk</span></a> to learn how to do this.</p>
 </div>
 </div>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="converting.html" class="btn btn-neutral float-right" title="Converting Files To EMDB-SFF" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to sfftk’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, EMBL-EBI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">EMDB-SFF Toolkit (sfftk)</a><ul>
-<li><a class="reference internal" href="#introduction">Introduction</a><ul>
-<li><a class="reference internal" href="#audience">Audience</a></li>
-<li><a class="reference internal" href="#versions">Versions</a></li>
-<li><a class="reference internal" href="#license">License</a></li>
-<li><a class="reference internal" href="#data-model">Data Model</a></li>
-<li><a class="reference internal" href="#supported-formats">Supported Formats</a></li>
-<li><a class="reference internal" href="#contact">Contact</a></li>
-<li><a class="reference internal" href="#publications">Publications</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#getting-started">Getting Started</a><ul>
-<li><a class="reference internal" href="#obtaining-and-installing-sfftk">Obtaining and Installing sfftk</a><ul>
-<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li><a class="reference internal" href="#pypi">PyPI</a></li>
-<li><a class="reference internal" href="#source">Source</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#features">Features</a><ul>
-<li><a class="reference internal" href="#conversion">Conversion</a></li>
-<li><a class="reference internal" href="#annotation">Annotation</a></li>
-<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
-<li><a class="reference internal" href="#developing-with-sfftk">Developing with sfftk</a></li>
-<li><a class="reference internal" href="#extending-sfftk">Extending sfftk</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to sfftk’s documentation!</a></li>
-      <li>Next: <a href="converting.html" title="next chapter">Converting Files To EMDB-SFF</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/toolkit.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, EMBL-EBI.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/toolkit.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

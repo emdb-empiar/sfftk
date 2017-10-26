@@ -281,7 +281,7 @@ class IMODShapes(Shapes):
         return self._shapes[index]
     def __iter__(self):
         return iter(self._shapes)
-    def __configure(self):
+    def _configure(self):
         shapes = list()
         if self._objt.pdrawsize > 0:
             radius = self._objt.pdrawsize
@@ -482,10 +482,16 @@ class IMODSegmentation(Segmentation):
         no_meshes = 0
         for s in self.segments:
             segment, _transforms = s.convert()
-            if len(s.contours) > 0:
-                no_contours += 1
-            elif len(s.meshes) > 0:
-                no_meshes += 1
+            if s.contours is not None:
+                if len(s.contours) > 0:
+                    no_contours += 1
+            elif s.meshes is not None:
+                if len(s.meshes) > 0:
+                    no_meshes += 1
+#             if len(s.contours) > 0:
+#                 no_contours += 1
+#             elif len(s.meshes) > 0:
+#                 no_meshes += 1
             transforms += _transforms
             segments.add_segment(segment)
         # if we have additional transforms from shapes

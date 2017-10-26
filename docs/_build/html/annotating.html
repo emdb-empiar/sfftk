@@ -1,65 +1,371 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Annotating EMDB-SFF Segmentations &#8212; sfftk 0.1.1.dev0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.1.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Miscellaneous Operations Using sfftk" href="misc.html" />
-    <link rel="prev" title="Converting Files To EMDB-SFF" href="converting.html" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Annotating EMDB-SFF Segmentations &mdash; sfftk 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+        <link rel="next" title="Miscellaneous Operations Using sfftk" href="misc.html"/>
+        <link rel="prev" title="Converting Files To EMDB-SFF" href="converting.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> sfftk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (sfftk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Annotating EMDB-SFF Segmentations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#annotation-levels-global-vs-local-notes">Annotation Levels: Global vs. Local Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operations-find-view-modify">Operations: Find, View, Modify</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#states-find-view-modify">States: FIND, VIEW, MODIFY</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#finding-notes">Finding Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#specifying-search-terms">Specifying Search Terms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#specifying-the-ontology-to-search">Specifying The Ontology To Search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performing-exact-searches">Performing Exact Searches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#including-obsolete-terms">Including Obsolete Terms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#listing-available-ontologies">Listing Available Ontologies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#short-listing-of-ontologies">Short Listing Of Ontologies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#traversing-searching-results">Traversing Searching Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#specifying-the-start-result">Specifying The Start Result</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specifying-the-number-of-rows-to-display">Specifying The Number Of Rows To Display</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#viewing-notes">Viewing Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#listing-all-notes">Listing All Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#long-format">Long Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#including-segmentation-metadata">Including Segmentation Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting-notes-by-description">Sorting Notes By Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reverse-sorting">Reverse Sorting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#listing-notes-in-a-single-segment">Listing Notes In A Single Segment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-segmentation-metadata-only">Viewing Segmentation Metadata Only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#modifying-notes">Modifying Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#temporary-file">Temporary File</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#a-note-about-emdb-sff-formats">A Note About EMDB-SFF Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#temporary-file-shorthand">Temporary File Shorthand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modify-sequence">Modify Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-notes">Adding Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-global-notes-segmentation">Adding Global Notes (Segmentation)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-local-notes-single-segment">Adding Local Notes (Single Segment)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#editing-notes">Editing Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#editing-global-notes-segmentation">Editing Global Notes (Segmentation)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing-local-notes-single-segment">Editing Local Notes (Single Segment)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-notes">Deleting Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-global-notes-segmentation">Deleting Global Notes (Segmentation)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-local-notes-single-segment">Deleting Local Notes (Single Segment)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-notes">Saving Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trashing-notes">Trashing Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merging-notes">Merging Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-settings">Configuration Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sfftk.html">sfftk packages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sfftk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Annotating EMDB-SFF Segmentations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/annotating.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="annotating-emdb-sff-segmentations">
-<h1>Annotating EMDB-SFF Segmentations<a class="headerlink" href="#annotating-emdb-sff-segmentations" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3">Annotating EMDB-SFF Segmentations</a><a class="headerlink" href="#annotating-emdb-sff-segmentations" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#annotating-emdb-sff-segmentations" id="id3">Annotating EMDB-SFF Segmentations</a><ul>
+<li><a class="reference internal" href="#introduction" id="id4">Introduction</a><ul>
+<li><a class="reference internal" href="#annotation-levels-global-vs-local-notes" id="id5">Annotation Levels: Global vs. Local Notes</a></li>
+<li><a class="reference internal" href="#operations-find-view-modify" id="id6">Operations: Find, View, Modify</a></li>
+<li><a class="reference internal" href="#states-find-view-modify" id="id7">States: FIND, VIEW, MODIFY</a></li>
+<li><a class="reference internal" href="#quick-start" id="id8">Quick Start</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#finding-notes" id="id9">Finding Notes</a><ul>
+<li><a class="reference internal" href="#specifying-search-terms" id="id10">Specifying Search Terms</a><ul>
+<li><a class="reference internal" href="#specifying-the-ontology-to-search" id="id11">Specifying The Ontology To Search</a></li>
+<li><a class="reference internal" href="#performing-exact-searches" id="id12">Performing Exact Searches</a></li>
+<li><a class="reference internal" href="#including-obsolete-terms" id="id13">Including Obsolete Terms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#listing-available-ontologies" id="id14">Listing Available Ontologies</a><ul>
+<li><a class="reference internal" href="#short-listing-of-ontologies" id="id15">Short Listing Of Ontologies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#traversing-searching-results" id="id16">Traversing Searching Results</a><ul>
+<li><a class="reference internal" href="#specifying-the-start-result" id="id17">Specifying The Start Result</a></li>
+<li><a class="reference internal" href="#specifying-the-number-of-rows-to-display" id="id18">Specifying The Number Of Rows To Display</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#viewing-notes" id="id19">Viewing Notes</a><ul>
+<li><a class="reference internal" href="#listing-all-notes" id="id20">Listing All Notes</a><ul>
+<li><a class="reference internal" href="#long-format" id="id21">Long Format</a></li>
+<li><a class="reference internal" href="#including-segmentation-metadata" id="id22">Including Segmentation Metadata</a></li>
+<li><a class="reference internal" href="#sorting-notes-by-description" id="id23">Sorting Notes By Description</a></li>
+<li><a class="reference internal" href="#reverse-sorting" id="id24">Reverse Sorting</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#listing-notes-in-a-single-segment" id="id25">Listing Notes In A Single Segment</a></li>
+<li><a class="reference internal" href="#viewing-segmentation-metadata-only" id="id26">Viewing Segmentation Metadata Only</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modifying-notes" id="id27">Modifying Notes</a><ul>
+<li><a class="reference internal" href="#temporary-file" id="id28">Temporary File</a><ul>
+<li><a class="reference internal" href="#a-note-about-emdb-sff-formats" id="id29">A Note About EMDB-SFF Formats</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#temporary-file-shorthand" id="id30">Temporary File Shorthand</a></li>
+<li><a class="reference internal" href="#modify-sequence" id="id31">Modify Sequence</a></li>
+<li><a class="reference internal" href="#adding-notes" id="id32">Adding Notes</a><ul>
+<li><a class="reference internal" href="#adding-global-notes-segmentation" id="id33">Adding Global Notes (Segmentation)</a><ul>
+<li><a class="reference internal" href="#adding-a-segmentation-name" id="id34">Adding A Segmentation Name</a></li>
+<li><a class="reference internal" href="#adding-the-software-name" id="id35">Adding The Software Name</a></li>
+<li><a class="reference internal" href="#adding-the-software-version" id="id36">Adding The Software Version</a></li>
+<li><a class="reference internal" href="#adding-software-processing-details" id="id37">Adding Software Processing Details</a></li>
+<li><a class="reference internal" href="#adding-a-file-path" id="id38">Adding A File Path</a></li>
+<li><a class="reference internal" href="#adding-segmentation-details" id="id39">Adding Segmentation Details</a></li>
+<li><a class="reference internal" href="#adding-global-external-references" id="id40">Adding Global External References</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-local-notes-single-segment" id="id41">Adding Local Notes (Single Segment)</a><ul>
+<li><a class="reference internal" href="#adding-a-description" id="id42">Adding A Description</a></li>
+<li><a class="reference internal" href="#adding-the-number-of-instances" id="id43">Adding The Number of Instances</a></li>
+<li><a class="reference internal" href="#adding-an-external-reference" id="id44">Adding An External Reference</a></li>
+<li><a class="reference internal" href="#adding-a-complex-internal-use" id="id45">Adding A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#adding-a-macromolecule-internal-use" id="id46">Adding A Macromolecule (Internal Use)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#editing-notes" id="id47">Editing Notes</a><ul>
+<li><a class="reference internal" href="#editing-global-notes-segmentation" id="id48">Editing Global Notes (Segmentation)</a></li>
+<li><a class="reference internal" href="#editing-local-notes-single-segment" id="id49">Editing Local Notes (Single Segment)</a><ul>
+<li><a class="reference internal" href="#editing-a-description" id="id50">Editing A Description</a></li>
+<li><a class="reference internal" href="#editing-the-number-of-instances" id="id51">Editing The Number of Instances</a></li>
+<li><a class="reference internal" href="#editing-an-external-reference" id="id52">Editing An External Reference</a></li>
+<li><a class="reference internal" href="#editing-a-complex-internal-use" id="id53">Editing A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#editing-a-macromolecule-internal-use" id="id54">Editing A Macromolecule (Internal Use)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deleting-notes" id="id55">Deleting Notes</a><ul>
+<li><a class="reference internal" href="#deleting-global-notes-segmentation" id="id56">Deleting Global Notes (Segmentation)</a></li>
+<li><a class="reference internal" href="#deleting-local-notes-single-segment" id="id57">Deleting Local Notes (Single Segment)</a><ul>
+<li><a class="reference internal" href="#deleting-a-description" id="id58">Deleting A Description</a></li>
+<li><a class="reference internal" href="#deleting-the-number-of-instances" id="id59">Deleting The Number Of Instances</a></li>
+<li><a class="reference internal" href="#deleting-an-external-reference" id="id60">Deleting An External Reference</a></li>
+<li><a class="reference internal" href="#deleting-a-complex-internal-use" id="id61">Deleting A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#deleting-a-macromolecule-internal-use" id="id62">Deleting A Macromolecule (Internal Use)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#saving-notes" id="id63">Saving Notes</a></li>
+<li><a class="reference internal" href="#trashing-notes" id="id64">Trashing Notes</a></li>
+<li><a class="reference internal" href="#merging-notes" id="id65">Merging Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-settings" id="id66">Configuration Settings</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>Annotation of EMDB-SFF segmentations is the second core function of sfftk. Here we outline how to perform annotations of EMDB-SFF segmentations via the command-line.</p>
-<p>Annotation is performed using the notes utility that is accessed with the notes subcommand.</p>
+<h2><a class="toc-backref" href="#id4">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Annotation of EMDB-SFF segmentations is the second core function of sfftk.
+Here we outline how to perform annotations of EMDB-SFF segmentations via the
+command-line.</p>
+<p>Annotation is performed using the <cite>notes</cite> utility that is accessed with the
+<strong>notes</strong> subcommand.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span>
 </pre></div>
 </div>
+<div class="section" id="annotation-levels-global-vs-local-notes">
+<h3><a class="toc-backref" href="#id5">Annotation Levels: Global vs. Local Notes</a><a class="headerlink" href="#annotation-levels-global-vs-local-notes" title="Permalink to this headline">¶</a></h3>
+<p>Annotations can be added at the segmentation (global) or individual segment
+(local) level. <cite>sfftk</cite> distinguishes between both levels of annotations.
+Global notes are
+useful for terms that describe the segmentation as a whole such as the
+species, the tissue type, disease state and such global references. Local
+notes refer to individual segments which may be constituted of multiple
+biological entities of interest. Given the segment relationship specified by
+<cite>parent_id</cite> to <cite>segment_id</cite>, a hierarchy of segments may also be annotated.
+Simply add notes to the segment whose ID you are targetting.</p>
+</div>
 <div class="section" id="operations-find-view-modify">
-<h3>Operations: find, view, modify<a class="headerlink" href="#operations-find-view-modify" title="Permalink to this headline">¶</a></h3>
-<p>There are three main operations that a user can perform using the notes subcommand.</p>
+<h3><a class="toc-backref" href="#id6">Operations: Find, View, Modify</a><a class="headerlink" href="#operations-find-view-modify" title="Permalink to this headline">¶</a></h3>
+<p>There are three main operations that a user can perform using the <strong>notes</strong> subcommand.</p>
 <ul class="simple">
-<li>Finding notes from an ontology principally the Ontology Lookup Service (OLS) hosted at EMBL-EBI;</li>
-<li>Viewing notes present in an EMDB-SFF file;</li>
-<li>Modifying notes in an EMDB-SFF file.</li>
+<li><em>Finding</em> notes from an ontology principally the Ontology Lookup Service (OLS) hosted at EMBL-EBI;</li>
+<li><em>Viewing</em> notes present in an EMDB-SFF file;</li>
+<li><em>Modifying</em> notes in an EMDB-SFF file.</li>
 </ul>
 </div>
 <div class="section" id="states-find-view-modify">
-<h3>States: FIND, VIEW, MODIFY<a class="headerlink" href="#states-find-view-modify" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">States: FIND, VIEW, MODIFY</a><a class="headerlink" href="#states-find-view-modify" title="Permalink to this headline">¶</a></h3>
 <p>Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and the MODIFY state. These will be indicated by the colour of the text on the screen.</p>
 <ul class="simple">
 <li>White indicates the VIEW STATE i.e. that no modifications have been done on any EMDB-SFF file</li>
@@ -69,33 +375,33 @@
 <p>The full listing of sub-subcommands organised by operation are:</p>
 <ul class="simple">
 <li>Finding<ul>
-<li>search</li>
+<li><strong>search</strong></li>
 </ul>
 </li>
 <li>Viewing<ul>
-<li>list</li>
-<li>show</li>
+<li><strong>list</strong></li>
+<li><strong>show</strong></li>
 </ul>
 </li>
 <li>Modifying<ul>
-<li>add</li>
-<li>edit</li>
-<li>del</li>
-<li>merge</li>
-<li>save</li>
-<li>trash</li>
+<li><strong>add</strong></li>
+<li><strong>edit</strong></li>
+<li><strong>del</strong></li>
+<li><strong>merge</strong></li>
+<li><strong>save</strong></li>
+<li><strong>trash</strong></li>
 </ul>
 </li>
 </ul>
 <p>We will look at each of these in turn.</p>
 </div>
 <div class="section" id="quick-start">
-<h3>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Quick Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="finding-notes">
-<h2>Finding Notes<a class="headerlink" href="#finding-notes" title="Permalink to this headline">¶</a></h2>
-<p>The search sub-subcommand displays results from searching EMBL-EBI’s OLS. As described in <a class="reference external" href="#states-find-view-modify">*States*</a>, the terminal text is coloured yellow.</p>
+<h2><a class="toc-backref" href="#id9">Finding Notes</a><a class="headerlink" href="#finding-notes" title="Permalink to this headline">¶</a></h2>
+<p>The search sub-subcommand displays results from searching EMBL-EBI’s OLS. As described in <a class="reference external" href="#states-find-view-modify">States</a>, the terminal text is coloured yellow.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">search</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">search</span> <span class="o">-</span><span class="n">h</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">search</span> <span class="o">--</span><span class="n">help</span>
@@ -103,7 +409,7 @@
 </div>
 <p>display available options.</p>
 <div class="section" id="specifying-search-terms">
-<h3>Specifying Search Terms<a class="headerlink" href="#specifying-search-terms" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Specifying Search Terms</a><a class="headerlink" href="#specifying-search-terms" title="Permalink to this headline">¶</a></h3>
 <p>For single worded searches enter the term with or without quotes. Multi-word terms must be quoted to prevent splitting them.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span># single word term
 sff notes search mitochondria
@@ -117,21 +423,21 @@ sff notes search ‘fragment mitochondria’
 <ul class="simple">
 <li><em>index</em></li>
 <li><em>label</em> of the result term</li>
-<li><em>obo_id</em>  <a class="footnote-reference" href="#id2" id="id1">[1]</a> of the result term</li>
+<li><em>short_form</em>  <a class="footnote-reference" href="#id2" id="id1">[1]</a> of the result term</li>
 <li><em>ontology_name</em></li>
-<li><em>description</em> is free text describing the term</li>
+<li><em>description/IRI</em> is free text describing the term and IRI refers to a link by which the term in the ontology may be accessed, and</li>
 <li><em>type</em> can have one of the following values: <em>class, property, individual, ontology</em></li>
 </ul>
 <div class="section" id="specifying-the-ontology-to-search">
-<h4>Specifying The Ontology To Search<a class="headerlink" href="#specifying-the-ontology-to-search" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id11">Specifying The Ontology To Search</a><a class="headerlink" href="#specifying-the-ontology-to-search" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -O &lt;ontology_name&gt; “&lt;term&gt;”
 sff notes search --ontology &lt;ontology_name&gt; “&lt;term&gt;”
 </pre></div>
 </div>
-<p>See <a class="reference external" href="#listing-available-ontologies">*Listing Available Ontologies*</a> on how to get an ontology to search.</p>
+<p>See <a class="reference external" href="#listing-available-ontologies">Listing Available Ontologies</a> on how to get an ontology to search.</p>
 </div>
 <div class="section" id="performing-exact-searches">
-<h4>Performing Exact Searches<a class="headerlink" href="#performing-exact-searches" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id12">Performing Exact Searches</a><a class="headerlink" href="#performing-exact-searches" title="Permalink to this headline">¶</a></h4>
 <p>Exact searches only return results matching the search term <em>exactly.</em></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -x “&lt;term&gt;”
 sff notes search --exact “&lt;term&gt;”
@@ -139,7 +445,7 @@ sff notes search --exact “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="including-obsolete-terms">
-<h4>Including Obsolete Terms<a class="headerlink" href="#including-obsolete-terms" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id13">Including Obsolete Terms</a><a class="headerlink" href="#including-obsolete-terms" title="Permalink to this headline">¶</a></h4>
 <p>Some terms are retired and are excluded by default. They can be included using the -o/–obsoletes flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -o “&lt;term&gt;”
 sff notes search --obsoletes “&lt;term&gt;”
@@ -148,14 +454,14 @@ sff notes search --obsoletes “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="listing-available-ontologies">
-<h3>Listing Available Ontologies<a class="headerlink" href="#listing-available-ontologies" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">Listing Available Ontologies</a><a class="headerlink" href="#listing-available-ontologies" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -L “term”
 sff notes search --list-ontologies “term”
 </pre></div>
 </div>
 <p>By default this provides a multi-line result for each ontology consisting of the <em>namespace</em> (also called <em>ID space), preferred prefix, title, description, homepage, the ontology ID,</em> and <em>version</em> of the ontology.</p>
 <div class="section" id="short-listing-of-ontologies">
-<h4>Short Listing Of Ontologies<a class="headerlink" href="#short-listing-of-ontologies" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id15">Short Listing Of Ontologies</a><a class="headerlink" href="#short-listing-of-ontologies" title="Permalink to this headline">¶</a></h4>
 <p>Alternatively, a simple table result can be displayed using the -l/–short-list-ontologies flag which displays only two columns: <em>namespace</em> and <em>description.</em></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -l “term”
 sff notes search --short-list-ontologies “term”
@@ -164,11 +470,11 @@ sff notes search --short-list-ontologies “term”
 </div>
 </div>
 <div class="section" id="traversing-searching-results">
-<h3>Traversing Searching Results<a class="headerlink" href="#traversing-searching-results" title="Permalink to this headline">¶</a></h3>
-<p>By default, sff notes search only shows the first page of results. Quite often, there will be more than one page of results. This will be evident from the last line of the results:</p>
+<h3><a class="toc-backref" href="#id16">Traversing Searching Results</a><a class="headerlink" href="#traversing-searching-results" title="Permalink to this headline">¶</a></h3>
+<p>By default, <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span></code> search only shows the first page of results. Quite often, there will be more than one page of results. This will be evident from the last line of the results:</p>
 <p>Showing: 1 to 10 of 139 results found</p>
 <div class="section" id="specifying-the-start-result">
-<h4>Specifying The Start Result<a class="headerlink" href="#specifying-the-start-result" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id17">Specifying The Start Result</a><a class="headerlink" href="#specifying-the-start-result" title="Permalink to this headline">¶</a></h4>
 <p>The user can specify the result index at which results should be displayed using the -s/–start flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -s 1 “&lt;term&gt;”
 sff notes search --start 1 “&lt;term&gt;”
@@ -176,48 +482,85 @@ sff notes search --start 1 “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="specifying-the-number-of-rows-to-display">
-<h4>Specifying The Number Of Rows To Display<a class="headerlink" href="#specifying-the-number-of-rows-to-display" title="Permalink to this headline">¶</a></h4>
-<p>More results can be display using the -r/–rows flag.</p>
+<h4><a class="toc-backref" href="#id18">Specifying The Number Of Rows To Display</a><a class="headerlink" href="#specifying-the-number-of-rows-to-display" title="Permalink to this headline">¶</a></h4>
+<p>More results can be display using the <code class="docutils literal"><span class="pre">-r/--rows</span></code> flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -r 11 “&lt;term&gt;”
 sff notes search --row 11 “&lt;term&gt;”
 </pre></div>
 </div>
-<p>Entering invalid values for -s/–start and -r/–rows raise ValueError exceptions.</p>
+<p>Entering invalid values for <code class="docutils literal"><span class="pre">-s/--start</span></code> and <code class="docutils literal"><span class="pre">-r/--rows</span></code> raise <code class="docutils literal"><span class="pre">ValueError</span></code> exceptions.</p>
 </div>
 </div>
 </div>
 <div class="section" id="viewing-notes">
-<h2>Viewing Notes<a class="headerlink" href="#viewing-notes" title="Permalink to this headline">¶</a></h2>
-<p>sfftk includes utilities to view annotations (notes) included in EMDB-SFF files. There are two main functionalities:</p>
+<h2><a class="toc-backref" href="#id19">Viewing Notes</a><a class="headerlink" href="#viewing-notes" title="Permalink to this headline">¶</a></h2>
+<p><cite>sfftk</cite> includes utilities to view annotations (notes) included in EMDB-SFF files. There are two main functionalities:</p>
 <ul class="simple">
-<li>Listing all notes present using the sff notes list sub-subcommand, and</li>
-<li>Showing notes in a single segmentation using the sff notes show sub-command.</li>
+<li><cite>Listing</cite> all notes present using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">list</span></code> sub-subcommand, and</li>
+<li><cite>Showing</cite> global notes or those in a single segment using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">show</span></code> sub-command.</li>
 </ul>
-<p>As describe in <a class="reference external" href="#states-find-view-modify">*States*</a>, the teminal text colour when viewing is white.</p>
+<p>As describe in <a class="reference external" href="#states-find-view-modify">States</a>, the teminal text colour when viewing is white.</p>
 <div class="section" id="listing-all-notes">
-<h3>Listing All Notes<a class="headerlink" href="#listing-all-notes" title="Permalink to this headline">¶</a></h3>
-<p>Notes are listed using the following command:</p>
+<h3><a class="toc-backref" href="#id20">Listing All Notes</a><a class="headerlink" href="#listing-all-notes" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>sff notes list</strong> sub-command only lists a summary table of notes
+available for each segment.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-<p>The output is structured as follows:</p>
+<p>The default output is structured as follows:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">Status</span> <span class="n">information</span>
-<span class="o">==================</span>
-<span class="n">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="n">metadata</span>
 <span class="o">******************</span>
 <span class="n">Segment</span> <span class="n">metatdata</span>
 </pre></div>
 </div>
 <p>Here is an example:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">OUTPUT</span> <span class="n">HERE</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9764</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9814</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9815</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9840</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9859</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9893</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9897</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9914</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9952</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9955</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9956</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>where the first line provides some status information about the current listing. Status messages will become much more important when we look at <a class="reference external" href="#_c0sybxydflf7">**modifying notes in EMDB-SFF files**</a>. Status messages begin with a timestamp. Following status messages is the EMDB-SFF header information which specifies the schema version (0.6.0a4), the name of the segmentation (‘STL Segmentation’), software information including processing details, the primary descriptor (<em>meshList</em> in this case) and additional details on this segmentation. A row asterisks then divides the metadata from the segment data where one row per segment provides the <em>segment_id, parentID, description, number of instances, number of external references, number of complexes, number of macromolecules,</em> and <em>RGBA colour</em> of the segment. When modifying notes these values change.</p>
+<p>It has the following columns:</p>
+<ul class="simple">
+<li><em>id</em>: segment ID</li>
+<li><em>parId</em>: segment ID for the parent ID;</li>
+<li><em>description</em>: a descriptive name for the segment, which provides a useful starting point when searching for annotation terms;</li>
+<li><em>#inst</em>: the number of instances of the segment;</li>
+<li><em>#exRf</em>: the number of external references present;</li>
+<li><em>#cplx</em>: the number of complexes associated with the segment;</li>
+<li><em>#macr</em>: the number of macromolecules associated with the segment; and</li>
+<li><em>colour</em>: the colour of the segment in normalised RGBA.</li>
+</ul>
+<p>where the first line provides some status information about the current
+listing. Status messages will become much more important when we look at
+<a class="reference external" href="#_c0sybxydflf7">modifying notes in EMDB-SFF files</a>. Status messages begin
+with a timestamp. Following status messages is the EMDB-SFF header
+information which specifies the schema version (0.6.0a4), the name of the
+segmentation (‘STL Segmentation’), software information including processing
+details, the primary descriptor (<em>meshList</em> in this case) and additional
+details on this segmentation. A row asterisks then divides the metadata from
+the segment data where one row per segment provides the <em>segment_id,
+parentID, description, number of instances, number of external references,
+number of complexes, number of macromolecules,</em> and <em>RGBA colour</em> of the
+segment. When modifying notes these values change.</p>
 <div class="section" id="long-format">
-<h4>Long Format<a class="headerlink" href="#long-format" title="Permalink to this headline">¶</a></h4>
-<p>To view the list of notes by segment in long format (much more detail) use the -l/–long-format flag.</p>
+<h4><a class="toc-backref" href="#id21">Long Format</a><a class="headerlink" href="#long-format" title="Permalink to this headline">¶</a></h4>
+<p>To view the list of notes by segment in long format (much more detail) use
+the <code class="docutils literal"><span class="pre">-l/--long-format</span></code> flag. This can be done with or without the header
+(<code class="docutils literal"><span class="pre">-H/--header</span></code> flag).</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">-</span><span class="n">l</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">long</span><span class="o">-</span><span class="nb">format</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 </pre></div>
@@ -225,38 +568,263 @@ sff notes search --row 11 “&lt;term&gt;”
 <p>having the same</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">Status</span> <span class="n">information</span>
 <span class="o">==================</span>
+<span class="n">Segment</span> <span class="n">metatdata</span>
+</pre></div>
+</div>
+<p>structure except now that the Segment metadata section has much more detail.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">==============================================================================================================</span>
+<span class="n">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="n">v</span><span class="o">.</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">0</span><span class="n">a4</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Segmentation</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">Segger</span> <span class="n">Segmentation</span>
+<span class="n">Segmentation</span> <span class="n">software</span><span class="p">:</span>
+        <span class="n">Software</span><span class="p">:</span> <span class="n">segger</span>
+        <span class="n">Version</span><span class="p">:</span>  <span class="mi">2</span>
+<span class="n">Software</span> <span class="n">processing</span> <span class="n">details</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Primary</span> <span class="n">descriptor</span><span class="p">:</span>
+        <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">File</span> <span class="n">path</span><span class="p">:</span>
+        <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">pkorir</span><span class="o">/</span><span class="n">Data</span><span class="o">/</span><span class="n">segmentations</span><span class="o">/</span><span class="n">seg</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Bounding</span> <span class="n">box</span><span class="p">:</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Global</span> <span class="n">external</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">ncit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCIT_C14206</span>               <span class="n">NCIT_C14206</span>          <span class="n">Y</span> <span class="n">Y</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">dron</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">DRON_00018778</span>             <span class="n">DRON_00018778</span>        <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">omit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OMIT_0006157</span>              <span class="n">OMIT_0006157</span>         <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="n">ncbitaxon</span>        <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_562</span>             <span class="n">NCBITaxon_562</span>        <span class="n">Y</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Segmentation</span> <span class="n">details</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">**************************************************************************************************************</span>
+<span class="n">ID</span><span class="p">:</span>             <span class="mi">9764</span>
+<span class="n">PARENT</span> <span class="n">ID</span><span class="p">:</span>      <span class="mi">0</span>
+<span class="n">Segment</span> <span class="n">Type</span><span class="p">:</span>   <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Description</span><span class="p">:</span>
+        <span class="n">GroEL</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">instances</span><span class="p">:</span>
+        <span class="mi">1</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">External</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">ogg</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OGG_3000881348</span>            <span class="n">OGG_3000881348</span>       <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">ogg</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OGG_3001198820</span>            <span class="n">OGG_3001198820</span>       <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">vo</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0010998</span>                <span class="n">VO_0010998</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="n">vo</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0011075</span>                <span class="n">VO_0011075</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="n">pdro</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0010998</span>                <span class="n">VO_0010998</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="n">pdro</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0011075</span>                <span class="n">VO_0011075</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">6</span><span class="p">:</span> <span class="n">omit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OMIT_0001676</span>              <span class="n">OMIT_0001676</span>         <span class="n">Y</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Complexes</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="n">Macromolecules</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Colour</span><span class="p">:</span>
+        <span class="p">(</span><span class="mf">0.800000011920929</span><span class="p">,</span> <span class="mf">0.9599999785423279</span><span class="p">,</span> <span class="mf">0.4000000059604645</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="o">**************************************************************************************************************</span>
+<span class="n">ID</span><span class="p">:</span>             <span class="mi">9814</span>
+<span class="n">PARENT</span> <span class="n">ID</span><span class="p">:</span>      <span class="mi">0</span>
+<span class="n">Segment</span> <span class="n">Type</span><span class="p">:</span>   <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Description</span><span class="p">:</span>
+        <span class="n">GroEL</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">instances</span><span class="p">:</span>
+        <span class="mi">1</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">External</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">ogg</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OGG_3000881348</span>            <span class="n">OGG_3000881348</span>       <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">ogg</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OGG_3001198820</span>            <span class="n">OGG_3001198820</span>       <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">vo</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0010998</span>                <span class="n">VO_0010998</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="n">vo</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0011075</span>                <span class="n">VO_0011075</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="n">pdro</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0010998</span>                <span class="n">VO_0010998</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="n">pdro</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0011075</span>                <span class="n">VO_0011075</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">6</span><span class="p">:</span> <span class="n">omit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OMIT_0001676</span>              <span class="n">OMIT_0001676</span>         <span class="n">Y</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Complexes</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="n">Macromolecules</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Colour</span><span class="p">:</span>
+        <span class="p">(</span><span class="mf">0.800000011920929</span><span class="p">,</span> <span class="mf">0.47999998927116394</span><span class="p">,</span> <span class="mf">0.8799999952316284</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="o">**************************************************************************************************************</span>
+<span class="o">...</span>
+<span class="c1"># other segments go here</span>
+<span class="o">...</span>
+<span class="o">**************************************************************************************************************</span>
+<span class="n">ID</span><span class="p">:</span>             <span class="mi">9956</span>
+<span class="n">PARENT</span> <span class="n">ID</span><span class="p">:</span>      <span class="mi">0</span>
+<span class="n">Segment</span> <span class="n">Type</span><span class="p">:</span>   <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Description</span><span class="p">:</span>
+        <span class="n">GroEL</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">instances</span><span class="p">:</span>
+        <span class="mi">1</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">External</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">ogg</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OGG_3000881348</span>            <span class="n">OGG_3000881348</span>       <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">ogg</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OGG_3001198820</span>            <span class="n">OGG_3001198820</span>       <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">vo</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0010998</span>                <span class="n">VO_0010998</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="n">vo</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0011075</span>                <span class="n">VO_0011075</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="n">pdro</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0010998</span>                <span class="n">VO_0010998</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="n">pdro</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">VO_0011075</span>                <span class="n">VO_0011075</span>           <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">6</span><span class="p">:</span> <span class="n">omit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OMIT_0001676</span>              <span class="n">OMIT_0001676</span>         <span class="n">Y</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Complexes</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="n">Macromolecules</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Colour</span><span class="p">:</span>
+        <span class="p">(</span><span class="mf">0.800000011920929</span><span class="p">,</span> <span class="mf">0.47999998927116394</span><span class="p">,</span> <span class="mf">0.8799999952316284</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="including-segmentation-metadata">
+<h4><a class="toc-backref" href="#id22">Including Segmentation Metadata</a><a class="headerlink" href="#including-segmentation-metadata" title="Permalink to this headline">¶</a></h4>
+<p>By default, segmentation metadata (name, software, global notes, file path, details) are not included when listing or showing notes. The <code class="docutils literal"><span class="pre">-H/--header</span></code> flag includes this.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">-</span><span class="n">H</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">header</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+</pre></div>
+</div>
+<p>The output has the following structure:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">Status</span> <span class="n">information</span>
+<span class="o">==================</span>
 <span class="n">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="n">metadata</span>
 <span class="o">******************</span>
 <span class="n">Segment</span> <span class="n">metatdata</span>
 </pre></div>
 </div>
-<p>structure except now that the Segment metadata section has much more detail.</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">OUTPUT</span> <span class="n">HERE</span>
+<p>And here’s an example:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">==============================================================================================================</span>
+<span class="n">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="n">v</span><span class="o">.</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">0</span><span class="n">a4</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Segmentation</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">Segger</span> <span class="n">Segmentation</span>
+<span class="n">Segmentation</span> <span class="n">software</span><span class="p">:</span>
+        <span class="n">Software</span><span class="p">:</span> <span class="n">segger</span>
+        <span class="n">Version</span><span class="p">:</span>  <span class="mi">2</span>
+<span class="n">Software</span> <span class="n">processing</span> <span class="n">details</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Primary</span> <span class="n">descriptor</span><span class="p">:</span>
+        <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">File</span> <span class="n">path</span><span class="p">:</span>
+        <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">pkorir</span><span class="o">/</span><span class="n">Data</span><span class="o">/</span><span class="n">segmentations</span><span class="o">/</span><span class="n">seg</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Bounding</span> <span class="n">box</span><span class="p">:</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Global</span> <span class="n">external</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">ncit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCIT_C14206</span>               <span class="n">NCIT_C14206</span>          <span class="n">Y</span> <span class="n">Y</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">dron</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">DRON_00018778</span>             <span class="n">DRON_00018778</span>        <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">omit</span>             <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">OMIT_0006157</span>              <span class="n">OMIT_0006157</span>         <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="n">ncbitaxon</span>        <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_562</span>             <span class="n">NCBITaxon_562</span>        <span class="n">Y</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Segmentation</span> <span class="n">details</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9764</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9814</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9815</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9840</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9859</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9893</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9897</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9914</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9952</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9955</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9956</span>    <span class="mi">0</span>       <span class="n">GroEL</span>                                        <span class="mi">1</span>     <span class="mi">7</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="sorting-notes-by-description">
-<h4>Sorting Notes By Description<a class="headerlink" href="#sorting-notes-by-description" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id23">Sorting Notes By Description</a><a class="headerlink" href="#sorting-notes-by-description" title="Permalink to this headline">¶</a></h4>
 <p>Notes are sorted by the index (first column) by default. However, the user can sort notes by description (third column) using the -D/–sort-by-description flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">-</span><span class="n">D</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">sort</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">description</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">OUTPUT</span> <span class="n">HERE</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9764</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9814</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9815</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9840</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9859</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9893</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9897</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9914</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9952</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9955</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9956</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>becomes</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">INSERT</span> <span class="n">OUTPUT</span> <span class="n">HERE</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9840</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9914</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9814</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9956</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9764</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9955</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9815</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9952</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9859</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9893</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9897</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that descriptions longer than 40 characters are truncated and terminated with an ellipsis (…) but the full description is visible in long format.</p>
 </div>
 <div class="section" id="reverse-sorting">
-<h4>Reverse Sorting<a class="headerlink" href="#reverse-sorting" title="Permalink to this headline">¶</a></h4>
-<p>Alternative, sorting can be reversed using the -r/–reverse flag. This applies to both sorting by index or by description.</p>
+<h4><a class="toc-backref" href="#id24">Reverse Sorting</a><a class="headerlink" href="#reverse-sorting" title="Permalink to this headline">¶</a></h4>
+<p>Alternative, sorting can be reversed using the <code class="docutils literal"><span class="pre">-r/--reverse</span></code> flag. This applies to both sorting by index or by description.</p>
 <p>Reverse sorting by index:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">-</span><span class="n">r</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">reverse</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>For the above, this becomes:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9956</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9955</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9952</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9914</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9897</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9893</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9859</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9840</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9815</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9814</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9764</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Reverse sorting by description</p>
@@ -264,11 +832,34 @@ sff notes search --row 11 “&lt;term&gt;”
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">reverse</span> <span class="o">--</span><span class="n">sort</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">description</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
+<p>leading to</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9893</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9897</span>    <span class="mi">0</span>       <span class="n">Minichromosome</span> <span class="n">maintenance</span> <span class="n">protein</span> <span class="mi">5</span>         <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9859</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9815</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9952</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM6</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.412</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9764</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9955</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM4</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9814</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9956</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM3</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9840</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="mi">9914</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM2</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="listing-notes-in-a-single-segment">
-<h3>Listing Notes In A Single Segment<a class="headerlink" href="#listing-notes-in-a-single-segment" title="Permalink to this headline">¶</a></h3>
-<p>Listing notes from EMDB-SFF files with many segments could clutter the screen. The user can switch between listing all segments to finding segment IDs of interest then displaying one or more segments of interest using the sff notes show sub-subcommand. Therefore, this takes an extra parameter -i/–segment-id which takes either one ID or a sequence of IDs separated only by commas (,).</p>
+<h3><a class="toc-backref" href="#id25">Listing Notes In A Single Segment</a><a class="headerlink" href="#listing-notes-in-a-single-segment" title="Permalink to this headline">¶</a></h3>
+<p>Listing notes from EMDB-SFF files with many segments could clutter the screen.
+The user can switch between listing all segments to finding segment IDs of
+interest then displaying one or more segments of interest using the sff
+notes show sub-subcommand. Therefore, this takes an extra parameter
+<code class="docutils literal"><span class="pre">-i/--segment-id</span></code> which takes either one ID or a sequence of IDs separated
+only by commas (,).</p>
 <p>Show one segment:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
@@ -279,27 +870,115 @@ sff notes search --row 11 “&lt;term&gt;”
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-<p>Note that there are NO SPACES between the sequence of segment IDs. As with listing notes, the user can show notes in long format using the -l/–long-format flag.</p>
+<p>Example:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="nb">id</span>      <span class="n">parId</span>   <span class="n">description</span>                              <span class="c1">#inst #exRf #cplx #macr           colour</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="mi">9911</span>    <span class="mi">0</span>       <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>        <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">0</span>     <span class="mi">0</span>    <span class="p">(</span><span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that there are NO SPACES between the sequence of segment IDs. As with listing notes, the user can show notes in long format using the <code class="docutils literal"><span class="pre">-l/--long-format</span></code> flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">long</span><span class="o">-</span><span class="nb">format</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">**************************************************************************************************************</span>
+<span class="n">ID</span><span class="p">:</span>             <span class="mi">9911</span>
+<span class="n">PARENT</span> <span class="n">ID</span><span class="p">:</span>      <span class="mi">0</span>
+<span class="n">Segment</span> <span class="n">Type</span><span class="p">:</span>   <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Description</span><span class="p">:</span>
+        <span class="n">DNA</span> <span class="n">replication</span> <span class="n">licensing</span> <span class="n">factor</span> <span class="n">MCM7</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">instances</span><span class="p">:</span>
+        <span class="mi">1</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">External</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">pr</span>               <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">PR_P38132</span>                 <span class="n">PR_P38132</span>            <span class="n">Y</span> <span class="n">Y</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">uniprot</span>          <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">uniprot</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">uniprot</span><span class="o">/</span><span class="n">P38132</span>                    <span class="n">P38132</span>               <span class="n">N</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Complexes</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="n">Macromolecules</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Colour</span><span class="p">:</span>
+        <span class="p">(</span><span class="mf">0.9200000166893005</span><span class="p">,</span> <span class="mf">0.8399999737739563</span><span class="p">,</span> <span class="mf">0.9599999785423279</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="viewing-segmentation-metadata-only">
+<h3><a class="toc-backref" href="#id26">Viewing Segmentation Metadata Only</a><a class="headerlink" href="#viewing-segmentation-metadata-only" title="Permalink to this headline">¶</a></h3>
+<p>As specified for <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">list</span></code>, using the <code class="docutils literal"><span class="pre">-H/--header</span></code> flag with
+<code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">show</span></code> will display the header (segmentation metadata) only.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">-</span><span class="n">H</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">--</span><span class="n">header</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="o">==============================================================================================================</span>
+<span class="n">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="n">v</span><span class="o">.</span><span class="mf">0.6</span><span class="o">.</span><span class="mi">0</span><span class="n">a4</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Segmentation</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">Segger</span> <span class="n">Segmentation</span>
+<span class="n">Segmentation</span> <span class="n">software</span><span class="p">:</span>
+        <span class="n">Software</span><span class="p">:</span> <span class="n">segger</span>
+        <span class="n">Version</span><span class="p">:</span>  <span class="mi">2</span>
+<span class="n">Software</span> <span class="n">processing</span> <span class="n">details</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Primary</span> <span class="n">descriptor</span><span class="p">:</span>
+        <span class="n">threeDVolume</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">File</span> <span class="n">path</span><span class="p">:</span>
+        <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">pkorir</span><span class="o">/</span><span class="n">Data</span><span class="o">/</span><span class="n">segmentations</span><span class="o">/</span><span class="n">seg</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Bounding</span> <span class="n">box</span><span class="p">:</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Global</span> <span class="n">external</span> <span class="n">references</span><span class="p">:</span>
+        <span class="c1">#  ontology_name    iri                                                      short_form           L D</span>
+        <span class="o">------------------------------------------------------------------------------------------------------</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="n">ncbitaxon</span>        <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span>          <span class="n">NCBITaxon_559292</span>     <span class="n">Y</span> <span class="n">N</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">pdb</span>              <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ebi</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">pdbe</span><span class="o">/</span><span class="n">entry</span><span class="o">/</span><span class="n">pdb</span><span class="o">/</span><span class="mi">3</span><span class="n">ja8</span>                 <span class="mi">3</span><span class="n">ja8</span>                 <span class="n">N</span> <span class="n">N</span>
+<span class="o">--------------------------------------------------------------------------------------------------------------</span>
+<span class="n">Segmentation</span> <span class="n">details</span><span class="p">:</span>
+        <span class="o">-*-</span> <span class="n">NOT</span> <span class="n">DEFINED</span> <span class="o">-*-</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="modifying-notes">
-<h2>Modifying Notes<a class="headerlink" href="#modifying-notes" title="Permalink to this headline">¶</a></h2>
-<p>Modifying notes is slightly more complicated than the read-only activities of finding and viewing described above. It involves making changes to the annotation sections (<em>biologicalAnnotation: description, numberOfInstances, externalReferences</em> and <em>complexesAndMacromolecules: complexes</em> and <em>macromolecules</em>) of the segments of interest.</p>
+<h2><a class="toc-backref" href="#id27">Modifying Notes</a><a class="headerlink" href="#modifying-notes" title="Permalink to this headline">¶</a></h2>
+<p>Modifying notes is slightly more complicated than the read-only activities
+of finding and viewing described above. It involves making changes to the
+annotation sections (<em>biologicalAnnotation: description, numberOfInstances,
+externalReferences</em> and <em>complexesAndMacromolecules: complexes</em> and
+<em>macromolecules</em>) of the segments of interest.</p>
 <div class="section" id="temporary-file">
-<h3>Temporary File<a class="headerlink" href="#temporary-file" title="Permalink to this headline">¶</a></h3>
-<p>In order to avoid destroying the EMDB-SFF file to be modified, sfftk makes a temporary copy to be used throughout the modification process. Once the user is satisfied with the annotation the temporary file should be saved. Alternatively, the user can discard all changes by trashing the annotation then starting again.</p>
+<h3><a class="toc-backref" href="#id28">Temporary File</a><a class="headerlink" href="#temporary-file" title="Permalink to this headline">¶</a></h3>
+<p>In order to avoid destroying the EMDB-SFF file to be modified, <code class="docutils literal"><span class="pre">sfftk</span></code> makes a
+temporary copy to be used throughout the modification process. Once the user
+is satisfied with the annotation the temporary file should be saved.
+Alternatively, the user can discard all changes by trashing the annotations
+then starting again.</p>
 <div class="section" id="a-note-about-emdb-sff-formats">
-<h4>A Note About EMDB-SFF Formats<a class="headerlink" href="#a-note-about-emdb-sff-formats" title="Permalink to this headline">¶</a></h4>
-<p>Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary file. However, JSON is preferred because of the absence of geometrical data. XML (particularly) and HDF5 can have voluminous geometrical data which can make the process of modifying an EMDB-SFF very slow. The default format used is JSON.</p>
+<h4><a class="toc-backref" href="#id29">A Note About EMDB-SFF Formats</a><a class="headerlink" href="#a-note-about-emdb-sff-formats" title="Permalink to this headline">¶</a></h4>
+<p>Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary file.
+However, JSON is preferred because of the absence of geometrical data. XML
+(particularly) and HDF5 can have voluminous geometrical data which can make
+the process of modifying an EMDB-SFF very slow. The default format used is
+JSON.</p>
 </div>
 </div>
 <div class="section" id="temporary-file-shorthand">
-<h3>Temporary File Shorthand<a class="headerlink" href="#temporary-file-shorthand" title="Permalink to this headline">¶</a></h3>
-<p>Once the user has entered the MODIFY state (by either running sff notes add or sff notes edit or or sff notes del) the user can refer to the temporary file using a shorthand specified in the configs. The default shorthand is the ‘at’ symbol (&#64;).</p>
+<h3><a class="toc-backref" href="#id30">Temporary File Shorthand</a><a class="headerlink" href="#temporary-file-shorthand" title="Permalink to this headline">¶</a></h3>
+<p>Once the user has entered the MODIFY state (by either running sff notes add
+or sff notes edit or or sff notes del) the user can refer to the temporary
+file using a shorthand specified in the configs. The default shorthand is
+the ‘at’ symbol (&#64;).</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span># add a description (assuming none exists)
 sff notes add -i 1 -D ‘some description’ file.sff
 # user is now in MODIFY state
@@ -308,7 +987,6 @@ sff notes edit -i 1 -D ‘another description’ @
 </div>
 <p>This is useful if the file has a long name or is at a distant path.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes add -i 1 -D ‘some description’ tomo_5_diff_change_3.3_pi_77_27_paul_publishes.json
-
 sff notes edit -i 1 -D ‘another description’ @
 </pre></div>
 </div>
@@ -319,7 +997,7 @@ sff notes edit -i 1 -D ‘some description’ @
 </div>
 </div>
 <div class="section" id="modify-sequence">
-<h3>Modify Sequence<a class="headerlink" href="#modify-sequence" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id31">Modify Sequence</a><a class="headerlink" href="#modify-sequence" title="Permalink to this headline">¶</a></h3>
 <p>The following diagram illustrates the sequence of steps to be carried out with the names of the sub-subcommand next to arrows showing the modification that occurs.</p>
 <img alt="_images/annotating-01.png" src="_images/annotating-01.png" />
 <p>There are four types of annotations that can be made:</p>
@@ -335,76 +1013,165 @@ sff notes edit -i 1 -D ‘some description’ @
 </ul>
 </div>
 <div class="section" id="adding-notes">
-<h3>Adding Notes<a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
-<p>Notes are added using the sff notes add sub-subcommand.</p>
+<h3><a class="toc-backref" href="#id32">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="adding-global-notes-segmentation">
+<h4><a class="toc-backref" href="#id33">Adding Global Notes (Segmentation)</a><a class="headerlink" href="#adding-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
+<p>Global notes are added using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">add</span></code> sub-command. The
+following flags modify segmentation metadata and global external
+references:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-N/--name</span></code>: the name of the segmentation as a whole;</li>
+<li><code class="docutils literal"><span class="pre">-S/--software-name</span></code>: the name of the program that produced the segmentation;</li>
+<li><code class="docutils literal"><span class="pre">-V/--software-version</span></code>: the software version;</li>
+<li><code class="docutils literal"><span class="pre">-P/--software-processing-details</span></code>: a quoted string outlining the processing details by which the segmentation was obtained;</li>
+<li><code class="docutils literal"><span class="pre">-F/--file-path</span></code>: the path to the segmentation file on the local machine;</li>
+<li><code class="docutils literal"><span class="pre">d/--details</span></code>: a quoted string of additional details pertaining to this segmentation;</li>
+<li><code class="docutils literal"><span class="pre">-E/--external-ref</span></code> - for global or segment external references;</li>
+</ul>
+<p>Each of the above will be demonstrated.</p>
+<div class="section" id="adding-a-segmentation-name">
+<h5><a class="toc-backref" href="#id34">Adding A Segmentation Name</a><a class="headerlink" href="#adding-a-segmentation-name" title="Permalink to this headline">¶</a></h5>
+<p>To be on the safe side use a quoted string to accommodate spaces.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">N</span> <span class="s2">&quot;My Best Segmentation&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>       <span class="c1"># not in MODIFY state yet</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">name</span> <span class="s2">&quot;My Worst Segmentation&quot;</span> <span class="o">@</span>          <span class="c1"># already in MODIFY state</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-the-software-name">
+<h5><a class="toc-backref" href="#id35">Adding The Software Name</a><a class="headerlink" href="#adding-the-software-name" title="Permalink to this headline">¶</a></h5>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">S</span> <span class="n">IMOD</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>                 <span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">software</span><span class="o">-</span><span class="n">name</span> <span class="n">Amira</span> <span class="o">@</span>   <span class="c1"># MODIFY state</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-the-software-version">
+<h5><a class="toc-backref" href="#id36">Adding The Software Version</a><a class="headerlink" href="#adding-the-software-version" title="Permalink to this headline">¶</a></h5>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">V</span> <span class="n">v5</span><span class="o">.</span><span class="mf">6.3</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>                       <span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">software</span><span class="o">-</span><span class="n">version</span> <span class="n">v0</span><span class="o">.</span><span class="mf">1.1</span> <span class="o">@</span>       <span class="c1"># MODIFY state</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-software-processing-details">
+<h5><a class="toc-backref" href="#id37">Adding Software Processing Details</a><a class="headerlink" href="#adding-software-processing-details" title="Permalink to this headline">¶</a></h5>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">P</span> <span class="s2">&quot;Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<span class="c1"># MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">software</span><span class="o">-</span><span class="n">processing</span><span class="o">-</span><span class="n">details</span> <span class="s2">&quot;Threshold of 1.08&quot;</span> <span class="o">@</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-a-file-path">
+<h5><a class="toc-backref" href="#id38">Adding A File Path</a><a class="headerlink" href="#adding-a-file-path" title="Permalink to this headline">¶</a></h5>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">F</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">seg</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>         <span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">file</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">seg</span> <span class="o">@</span>        <span class="c1"># MODIFY state</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-segmentation-details">
+<h5><a class="toc-backref" href="#id39">Adding Segmentation Details</a><a class="headerlink" href="#adding-segmentation-details" title="Permalink to this headline">¶</a></h5>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot;Specimen was irradiated with 5 lux of light then imaged vertically&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<span class="c1"># MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;All imaging was done at 17 K&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-global-external-references">
+<h5><a class="toc-backref" href="#id40">Adding Global External References</a><a class="headerlink" href="#adding-global-external-references" title="Permalink to this headline">¶</a></h5>
+<p>The external references flag (<code class="docutils literal"><span class="pre">-E/--external-ref</span></code>) takes three arguments:</p>
+<ul class="simple">
+<li>the <code class="docutils literal"><span class="pre">name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">source</span></code> at which the reference may be found;</li>
+<li>the <code class="docutils literal"><span class="pre">IRI</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">term</span></code> where more details may be found;</li>
+<li>the <code class="docutils literal"><span class="pre">accession</span> <span class="pre">code</span></code> for the reference.</li>
+</ul>
+<p>You can use multiple <code class="docutils literal"><span class="pre">-E/--external-ref</span></code> flags at once.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">E</span> <span class="n">ncbitaxon</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span> <span class="n">NCBITaxon_559292</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<span class="c1"># MODIFY state</span>
+<span class="c1"># more than one reference</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">E</span> <span class="n">ncbitaxon</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span> <span class="n">NCBITaxon_559292</span> <span class="o">-</span><span class="n">E</span> <span class="n">pdb</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ebi</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">pdbe</span><span class="o">/</span><span class="n">entry</span><span class="o">/</span><span class="n">pdb</span><span class="o">/</span><span class="mi">3</span><span class="n">ja8</span> <span class="mi">3</span><span class="n">ja8</span> <span class="o">@</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="adding-local-notes-single-segment">
+<h4><a class="toc-backref" href="#id41">Adding Local Notes (Single Segment)</a><a class="headerlink" href="#adding-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
+<p>Notes are added using the <strong>sff notes add</strong> sub-subcommand.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 <div class="section" id="adding-a-description">
-<h4>Adding A Description<a class="headerlink" href="#adding-a-description" title="Permalink to this headline">¶</a></h4>
-<p>Use the -D/–description flag to add a description. Multi-word descriptions will need to be quoted.</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes add -D ‘a very good description’ file.sff
-sff notes add --description ‘a very good description’ file.sff
+<h5><a class="toc-backref" href="#id42">Adding A Description</a><a class="headerlink" href="#adding-a-description" title="Permalink to this headline">¶</a></h5>
+<p>Use the <code class="docutils literal"><span class="pre">-D/--description</span></code> flag to add a description. Multi-word descriptions will need to be quoted.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">D</span> <span class="s1">&#39;a very good description&#39;</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">description</span> <span class="s1">&#39;a very good description&#39;</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-the-number-of-instances">
-<h4>Adding The Number of Instances<a class="headerlink" href="#adding-the-number-of-instances" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id43">Adding The Number of Instances</a><a class="headerlink" href="#adding-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">number</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">instances</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-an-external-reference">
-<h4>Adding An External Reference<a class="headerlink" href="#adding-an-external-reference" title="Permalink to this headline">¶</a></h4>
-<p>External references consist of two parts:</p>
+<h5><a class="toc-backref" href="#id44">Adding An External Reference</a><a class="headerlink" href="#adding-an-external-reference" title="Permalink to this headline">¶</a></h5>
+<p>The external references flag (<code class="docutils literal"><span class="pre">-E/--external-ref</span></code>) takes three arguments:</p>
 <ul class="simple">
-<li>the name of the ontology, and</li>
-<li>the obo_id or accession</li>
+<li>the <code class="docutils literal"><span class="pre">name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">source</span></code> at which the reference may be found;</li>
+<li>the <code class="docutils literal"><span class="pre">IRI</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">term</span></code> where more details may be found;</li>
+<li>the <code class="docutils literal"><span class="pre">accession</span> <span class="pre">code</span></code> for the reference.</li>
 </ul>
-<p>Both of these may be obtained either from the OLS website of using the output of <a class="reference external" href="#finding-notes">*sff notes search ‘&lt;term&gt;’*</a>.</p>
+<p>You can use multiple <code class="docutils literal"><span class="pre">-E/--external-ref</span></code> flags at once.</p>
+<p>All of these may be obtained either from the OLS website of using the output of <a class="reference external" href="#finding-notes">sff notes search ‘&lt;term&gt;’</a>.</p>
 <p>For example, suppose we obtain the following result in a search:</p>
-<p>INSERT NEW IMAGE</p>
 <p>and are interested in adding the second result as an external reference to a segment. We note down the ontology name (go) and the obo_id (<a class="reference external" href="GO:0005739">GO:0005739</a>) then use the following command:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">ontology</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">obo_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">source</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">iri</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">short_form</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">external</span><span class="o">-</span><span class="n">ref</span> <span class="o">&lt;</span><span class="n">ontology</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">obo_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-a-complex-internal-use">
-<h4>Adding A Complex (Internal Use)<a class="headerlink" href="#adding-a-complex-internal-use" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id45">Adding A Complex (Internal Use)</a><a class="headerlink" href="#adding-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">complexes</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-a-macromolecule-internal-use">
-<h4>Adding A Macromolecule (Internal Use&gt;<a class="headerlink" href="#adding-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id46">Adding A Macromolecule (Internal Use)</a><a class="headerlink" href="#adding-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">M</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">macromolecules</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="editing-notes">
-<h3>Editing Notes<a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id47">Editing Notes</a><a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="editing-global-notes-segmentation">
+<h4><a class="toc-backref" href="#id48">Editing Global Notes (Segmentation)</a><a class="headerlink" href="#editing-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="editing-local-notes-single-segment">
+<h4><a class="toc-backref" href="#id49">Editing Local Notes (Single Segment)</a><a class="headerlink" href="#editing-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
 <p>If a segment in an EMDB-SFF file already contains notes then we can only edit the notes using the sff notes edit sub-subcommand. Because some edit options will need to refer to specific entries (e.g. the third external reference) extra arguments are required to specify which entry is being edited.</p>
 <div class="section" id="editing-a-description">
-<h4>Editing A Description<a class="headerlink" href="#editing-a-description" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id50">Editing A Description</a><a class="headerlink" href="#editing-a-description" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ file.json
 sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing a just-added description
 </pre></div>
 </div>
 </div>
 <div class="section" id="editing-the-number-of-instances">
-<h4>Editing The Number of Instances<a class="headerlink" href="#editing-the-number-of-instances" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id51">Editing The Number of Instances</a><a class="headerlink" href="#editing-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">@</span> <span class="c1"># if editing a just-added value</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="editing-an-external-reference">
-<h4>Editing An External Reference<a class="headerlink" href="#editing-an-external-reference" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id52">Editing An External Reference</a><a class="headerlink" href="#editing-an-external-reference" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">ontology</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">obo_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">external</span><span class="o">-</span><span class="n">ref</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">ontology</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">obo_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="c1"># if editing a just-added description</span>
@@ -413,7 +1180,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 </div>
 </div>
 <div class="section" id="editing-a-complex-internal-use">
-<h4>Editing A Complex (Internal Use)<a class="headerlink" href="#editing-a-complex-internal-use" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id53">Editing A Complex (Internal Use)</a><a class="headerlink" href="#editing-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">comp_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="nb">complex</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">comp_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
@@ -421,49 +1188,56 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 <p>If only one complex is specified then the complex at complex_id will be replaced. However, if more than one is specified then complex_id will be replaced and the new complexes will bump down all present complexes.</p>
 </div>
 <div class="section" id="editing-a-macromolecule-internal-use">
-<h4>Editing A Macromolecule (Internal Use)<a class="headerlink" href="#editing-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id54">Editing A Macromolecule (Internal Use)</a><a class="headerlink" href="#editing-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">m</span> <span class="o">&lt;</span><span class="n">macr_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">M</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">macromolecule</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">macr_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">M</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="deleting-notes">
-<h3>Deleting Notes<a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id55">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="deleting-global-notes-segmentation">
+<h4><a class="toc-backref" href="#id56">Deleting Global Notes (Segmentation)</a><a class="headerlink" href="#deleting-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="deleting-local-notes-single-segment">
+<h4><a class="toc-backref" href="#id57">Deleting Local Notes (Single Segment)</a><a class="headerlink" href="#deleting-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
 <p>Notes may be deleted using the sff notes del sub-subcommand. Because deleting is a destructive process the user only needs to specify which notes is being deleted.</p>
 <div class="section" id="deleting-a-description">
-<h4>Deleting A Description<a class="headerlink" href="#deleting-a-description" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id58">Deleting A Description</a><a class="headerlink" href="#deleting-a-description" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">D</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-the-number-of-instances">
-<h4>Deleting The Number Of Instances<a class="headerlink" href="#deleting-the-number-of-instances" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id59">Deleting The Number Of Instances</a><a class="headerlink" href="#deleting-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-an-external-reference">
-<h4>Deleting An External Reference<a class="headerlink" href="#deleting-an-external-reference" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id60">Deleting An External Reference</a><a class="headerlink" href="#deleting-an-external-reference" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-a-complex-internal-use">
-<h4>Deleting A Complex (Internal Use)<a class="headerlink" href="#deleting-a-complex-internal-use" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id61">Deleting A Complex (Internal Use)</a><a class="headerlink" href="#deleting-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">comp_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-a-macromolecule-internal-use">
-<h4>Deleting A Macromolecule (Internal Use)<a class="headerlink" href="#deleting-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h4>
+<h5><a class="toc-backref" href="#id62">Deleting A Macromolecule (Internal Use)</a><a class="headerlink" href="#deleting-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">m</span> <span class="o">&lt;</span><span class="n">macr_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="saving-notes">
-<h3>Saving Notes<a class="headerlink" href="#saving-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id63">Saving Notes</a><a class="headerlink" href="#saving-notes" title="Permalink to this headline">¶</a></h3>
 <p>It is important to periodically save notes. Running sff notes save save_to_file.json merges all notes from the temporary file into the destination file.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">save</span> <span class="n">save_to_file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">save</span> <span class="n">save_to_file</span><span class="o">.</span><span class="n">sff</span>
@@ -473,7 +1247,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 <p>Note that the file specified must exist and correspond to the annotated EMDB-SFF file.</p>
 </div>
 <div class="section" id="trashing-notes">
-<h3>Trashing Notes<a class="headerlink" href="#trashing-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id64">Trashing Notes</a><a class="headerlink" href="#trashing-notes" title="Permalink to this headline">¶</a></h3>
 <p>Only one EMDB-SFF file per directory may have its notes modified at a time. This is because only one temporary file is created and an attempt to modify another file will raise a warning.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">Wed</span> <span class="n">Sep</span> <span class="mi">13</span> <span class="mi">12</span><span class="p">:</span><span class="mi">55</span><span class="p">:</span><span class="mi">42</span> <span class="mi">2017</span> <span class="n">Temporary</span> <span class="n">file</span> <span class="n">shorthand</span> <span class="n">to</span> <span class="n">use</span><span class="p">:</span> <span class="o">@</span>
 <span class="n">Wed</span> <span class="n">Sep</span> <span class="mi">13</span> <span class="mi">12</span><span class="p">:</span><span class="mi">55</span><span class="p">:</span><span class="mi">42</span> <span class="mi">2017</span> <span class="n">Found</span> <span class="n">temp</span> <span class="n">file</span> <span class="o">./</span><span class="n">temp</span><span class="o">-</span><span class="n">annotated</span><span class="o">.</span><span class="n">json</span><span class="o">.</span> <span class="n">Either</span> <span class="n">run</span> <span class="s1">&#39;save&#39;</span> <span class="ow">or</span> <span class="s1">&#39;trash&#39;</span> <span class="n">to</span> <span class="n">discard</span> <span class="n">changes</span> <span class="n">before</span> <span class="n">working</span> <span class="n">on</span> <span class="n">another</span> <span class="n">file</span><span class="o">.</span>
@@ -486,7 +1260,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 </div>
 </div>
 <div class="section" id="merging-notes">
-<h3>Merging Notes<a class="headerlink" href="#merging-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id65">Merging Notes</a><a class="headerlink" href="#merging-notes" title="Permalink to this headline">¶</a></h3>
 <p>Notes can be manually merged from two EMDB-SFF files. Obviously both files must refer to the exact same segmentation i.e. the number and IDs of segments must be identical. The user must specify an output file with the extension determining the output format.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">merge</span> <span class="n">file1</span><span class="o">.</span><span class="n">sff</span> <span class="n">file2</span><span class="o">.</span><span class="n">json</span> <span class="o">-</span><span class="n">o</span> <span class="n">merged_file</span><span class="o">.</span><span class="n">hff</span>
 </pre></div>
@@ -494,7 +1268,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 </div>
 </div>
 <div class="section" id="configuration-settings">
-<h2>Configuration Settings<a class="headerlink" href="#configuration-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id66">Configuration Settings</a><a class="headerlink" href="#configuration-settings" title="Permalink to this headline">¶</a></h2>
 <p>There are two main parameters that control the annotation process:</p>
 <ul class="simple">
 <li>__TEMP_FILE sets the path and name of the file to be used as a temporary store of annotations while in the MODIFY STATE. The temporary file holds all modifications until they are saved. All actions done in the MODIFY STATE occur on this file so that any crashes will leave the original file unchanged. Depending on the format used it can significantly speed up viewing and modification of notes. By default it is a JSON file.</li>
@@ -503,139 +1277,82 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 <table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>A unique identifier for a term under the Open Biology Ontologies consortium’s OBO Foundry (see <a class="reference external" href="http://www.obofoundry.org/id-policy.html">*http://www.obofoundry.org/id-policy.html*</a> to learn more about obo_id). For example, in the Gene Ontology (GO) the term <em>positive regulation of release of cytochrome c from mitochondria</em> has the OBO ID <em>GO:0090200.</em></td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>A unique identifier for a term under the Open Biology Ontologies consortium’s OBO Foundry (see <a class="reference external" href="http://www.obofoundry.org/id-policy.html">http://www.obofoundry.org/id-policy.html</a> to learn more about obo_id). For example, in the Gene Ontology (GO) the term <em>positive regulation of release of cytochrome c from mitochondria</em> has the OBO ID <em>GO:0090200.</em></td></tr>
 </tbody>
 </table>
 </div>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous Operations Using sfftk" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="converting.html" class="btn btn-neutral" title="Converting Files To EMDB-SFF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, EMBL-EBI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Annotating EMDB-SFF Segmentations</a><ul>
-<li><a class="reference internal" href="#introduction">Introduction</a><ul>
-<li><a class="reference internal" href="#operations-find-view-modify">Operations: find, view, modify</a></li>
-<li><a class="reference internal" href="#states-find-view-modify">States: FIND, VIEW, MODIFY</a></li>
-<li><a class="reference internal" href="#quick-start">Quick Start</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#finding-notes">Finding Notes</a><ul>
-<li><a class="reference internal" href="#specifying-search-terms">Specifying Search Terms</a><ul>
-<li><a class="reference internal" href="#specifying-the-ontology-to-search">Specifying The Ontology To Search</a></li>
-<li><a class="reference internal" href="#performing-exact-searches">Performing Exact Searches</a></li>
-<li><a class="reference internal" href="#including-obsolete-terms">Including Obsolete Terms</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#listing-available-ontologies">Listing Available Ontologies</a><ul>
-<li><a class="reference internal" href="#short-listing-of-ontologies">Short Listing Of Ontologies</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#traversing-searching-results">Traversing Searching Results</a><ul>
-<li><a class="reference internal" href="#specifying-the-start-result">Specifying The Start Result</a></li>
-<li><a class="reference internal" href="#specifying-the-number-of-rows-to-display">Specifying The Number Of Rows To Display</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#viewing-notes">Viewing Notes</a><ul>
-<li><a class="reference internal" href="#listing-all-notes">Listing All Notes</a><ul>
-<li><a class="reference internal" href="#long-format">Long Format</a></li>
-<li><a class="reference internal" href="#sorting-notes-by-description">Sorting Notes By Description</a></li>
-<li><a class="reference internal" href="#reverse-sorting">Reverse Sorting</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#listing-notes-in-a-single-segment">Listing Notes In A Single Segment</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#modifying-notes">Modifying Notes</a><ul>
-<li><a class="reference internal" href="#temporary-file">Temporary File</a><ul>
-<li><a class="reference internal" href="#a-note-about-emdb-sff-formats">A Note About EMDB-SFF Formats</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#temporary-file-shorthand">Temporary File Shorthand</a></li>
-<li><a class="reference internal" href="#modify-sequence">Modify Sequence</a></li>
-<li><a class="reference internal" href="#adding-notes">Adding Notes</a><ul>
-<li><a class="reference internal" href="#adding-a-description">Adding A Description</a></li>
-<li><a class="reference internal" href="#adding-the-number-of-instances">Adding The Number of Instances</a></li>
-<li><a class="reference internal" href="#adding-an-external-reference">Adding An External Reference</a></li>
-<li><a class="reference internal" href="#adding-a-complex-internal-use">Adding A Complex (Internal Use)</a></li>
-<li><a class="reference internal" href="#adding-a-macromolecule-internal-use">Adding A Macromolecule (Internal Use&gt;</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#editing-notes">Editing Notes</a><ul>
-<li><a class="reference internal" href="#editing-a-description">Editing A Description</a></li>
-<li><a class="reference internal" href="#editing-the-number-of-instances">Editing The Number of Instances</a></li>
-<li><a class="reference internal" href="#editing-an-external-reference">Editing An External Reference</a></li>
-<li><a class="reference internal" href="#editing-a-complex-internal-use">Editing A Complex (Internal Use)</a></li>
-<li><a class="reference internal" href="#editing-a-macromolecule-internal-use">Editing A Macromolecule (Internal Use)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#deleting-notes">Deleting Notes</a><ul>
-<li><a class="reference internal" href="#deleting-a-description">Deleting A Description</a></li>
-<li><a class="reference internal" href="#deleting-the-number-of-instances">Deleting The Number Of Instances</a></li>
-<li><a class="reference internal" href="#deleting-an-external-reference">Deleting An External Reference</a></li>
-<li><a class="reference internal" href="#deleting-a-complex-internal-use">Deleting A Complex (Internal Use)</a></li>
-<li><a class="reference internal" href="#deleting-a-macromolecule-internal-use">Deleting A Macromolecule (Internal Use)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#saving-notes">Saving Notes</a></li>
-<li><a class="reference internal" href="#trashing-notes">Trashing Notes</a></li>
-<li><a class="reference internal" href="#merging-notes">Merging Notes</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#configuration-settings">Configuration Settings</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="converting.html" title="previous chapter">Converting Files To EMDB-SFF</a></li>
-      <li>Next: <a href="misc.html" title="next chapter">Miscellaneous Operations Using sfftk</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/annotating.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, EMBL-EBI.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/annotating.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

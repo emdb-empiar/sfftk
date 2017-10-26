@@ -1,18 +1,28 @@
 {
+  "boundingBox": {
+    "xmax": null, 
+    "xmin": 0, 
+    "ymax": null, 
+    "ymin": 0, 
+    "zmax": null, 
+    "zmin": 0
+  }, 
   "details": null, 
-  "filePath": "/Users/pkorir/Data/segmentations/seg", 
+  "filePath": "/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/test_data/sff", 
+  "globalExternalReferences": [], 
   "name": "Segger Segmentation", 
   "primaryDescriptor": "threeDVolume", 
   "segments": [
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.921817600727081, 
+        0.9218176007270813, 
         0.931041955947876, 
-        0.71287328004837, 
+        0.7128732800483704, 
         1.0
       ], 
       "id": 15559, 
@@ -28,12 +38,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.5660200715065, 
-        0.790880382061005, 
-        0.671353757381439, 
+        0.5660200715065002, 
+        0.7908803820610046, 
+        0.6713537573814392, 
         1.0
       ], 
       "id": 15560, 
@@ -49,12 +60,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.786771178245544, 
-        0.566025853157043, 
-        0.6353360414505, 
+        0.7867711782455444, 
+        0.5660258531570435, 
+        0.6353360414505005, 
         1.0
       ], 
       "id": 15561, 
@@ -70,12 +82,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.795820534229279, 
-        0.603736102581024, 
-        0.695636034011841, 
+        0.7958205342292786, 
+        0.6037361025810242, 
+        0.6956360340118408, 
         1.0
       ], 
       "id": 15562, 
@@ -91,12 +104,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.945388078689575, 
-        0.960578083992004, 
-        0.895303726196289, 
+        0.9453880786895752, 
+        0.9605780839920044, 
+        0.8953037261962891, 
         1.0
       ], 
       "id": 15563, 
@@ -112,11 +126,12 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
         0.997010350227356, 
-        0.883732438087463, 
+        0.8837324380874634, 
         0.798247754573822, 
         1.0
       ], 
@@ -133,11 +148,12 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.810978293418884, 
-        0.710047245025635, 
+        0.8109782934188843, 
+        0.7100472450256348, 
         0.938420295715332, 
         1.0
       ], 
@@ -154,12 +170,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.506448566913605, 
-        0.636659622192383, 
-        0.950494408607483, 
+        0.5064485669136047, 
+        0.6366596221923828, 
+        0.9504944086074829, 
         1.0
       ], 
       "id": 15566, 
@@ -175,12 +192,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.795838892459869, 
-        0.848971366882324, 
-        0.898833751678467, 
+        0.7958388924598694, 
+        0.8489713668823242, 
+        0.8988337516784668, 
         1.0
       ], 
       "id": 15567, 
@@ -196,12 +214,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
         0.795708417892456, 
-        0.598218858242035, 
-        0.769633829593658, 
+        0.5982188582420349, 
+        0.7696338295936584, 
         1.0
       ], 
       "id": 15568, 
@@ -217,12 +236,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
         0.543090283870697, 
         0.926712691783905, 
-        0.578470706939697, 
+        0.5784707069396973, 
         1.0
       ], 
       "id": 15569, 
@@ -238,12 +258,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.544089019298553, 
-        0.970614612102509, 
-        0.698472082614899, 
+        0.5440890192985535, 
+        0.9706146121025085, 
+        0.6984720826148987, 
         1.0
       ], 
       "id": 15570, 
@@ -259,12 +280,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.687262952327728, 
+        0.6872629523277283, 
         0.585415244102478, 
-        0.992594540119171, 
+        0.9925945401191711, 
         1.0
       ], 
       "id": 15571, 
@@ -280,12 +302,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.547603487968445, 
-        0.651105284690857, 
-        0.942572236061096, 
+        0.5476034879684448, 
+        0.6511052846908569, 
+        0.9425722360610962, 
         1.0
       ], 
       "id": 15572, 
@@ -301,12 +324,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.860836505889893, 
+        0.8608365058898926, 
         0.567978024482727, 
-        0.721250355243683, 
+        0.7212503552436829, 
         1.0
       ], 
       "id": 15573, 
@@ -322,12 +346,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.511655807495117, 
-        0.563025772571564, 
-        0.816533744335175, 
+        0.5116558074951172, 
+        0.5630257725715637, 
+        0.8165337443351746, 
         1.0
       ], 
       "id": 15574, 
@@ -343,12 +368,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.74264669418335, 
-        0.766704499721527, 
-        0.626766085624695, 
+        0.7426466941833496, 
+        0.7667044997215271, 
+        0.6267660856246948, 
         1.0
       ], 
       "id": 15575, 
@@ -364,12 +390,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.936005651950836, 
-        0.737228572368622, 
-        0.807985961437225, 
+        0.9360056519508362, 
+        0.7372285723686218, 
+        0.8079859614372253, 
         1.0
       ], 
       "id": 15576, 
@@ -385,12 +412,13 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
         0.505707859992981, 
-        0.992025196552277, 
-        0.623720347881317, 
+        0.9920251965522766, 
+        0.6237203478813171, 
         1.0
       ], 
       "id": 15577, 
@@ -406,11 +434,12 @@
     {
       "biologicalAnnotation": {
         "description": null, 
+        "externalReferences": [], 
         "numberOfInstances": null
       }, 
       "colour": [
-        0.985998213291168, 
-        0.971223950386047, 
+        0.9859982132911682, 
+        0.9712239503860474, 
         0.712830126285553, 
         1.0
       ], 
@@ -428,7 +457,7 @@
   "software": {
     "name": "segger", 
     "processingDetails": null, 
-    "version": "2"
+    "version": 2
   }, 
   "transforms": [], 
   "version": "0.6.0a4"

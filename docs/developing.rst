@@ -2,6 +2,8 @@
 Developing with sfftk
 =====================
 
+.. contents::
+
 Introduction
 ============
 
@@ -644,4 +646,4 @@ Converting Application-Specific Segmentations to EMDB-SFF
 
     sff_seg = as_seg.convert()
 
-Note that the segmentation is now only an EMDB-SFF object but is not of a particular file format. The file format is chosen by the extension when `*using the export method* <#exporting-emdb-sff-objects>`__.
+Note that the segmentation is now only an EMDB-SFF object but is not of a particular file format. The file format is chosen by the extension when `using the export method <#exporting-emdb-sff-objects>`__.

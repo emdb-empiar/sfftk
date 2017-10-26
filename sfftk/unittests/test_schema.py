@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # test_schema.py
-import sys
 import random
 import tempfile
 import unittest
 import json
-import h5py
 
 import __init__ as tests
 

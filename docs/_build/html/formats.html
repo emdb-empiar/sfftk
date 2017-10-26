@@ -1,44 +1,201 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>sfftk.formats package &#8212; sfftk 0.1.1.dev0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.1.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="sfftk.notes package" href="notes.html" />
-    <link rel="prev" title="sfftk.readers package" href="readers.html" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sfftk.formats package &mdash; sfftk 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+        <link rel="up" title="sfftk packages" href="sfftk.html"/>
+        <link rel="next" title="sfftk.readers package" href="readers.html"/>
+        <link rel="prev" title="sfftk.schema package" href="schema.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> sfftk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (sfftk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="schema.html">sfftk.schema package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sfftk.formats package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.am">AmiraMesh module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-am">sfftk.formats.am</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.map">CCP4 mask module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-map">sfftk.formats.map</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.mod">IMOD module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-mod">sfftk.formats.mod</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.seg">Segger module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-seg">sfftk.formats.seg</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.stl">Stereolithography module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-stl">sfftk.formats.stl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.surf">Amira HyperSurface module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-surf">sfftk.formats.surf</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readers.html">sfftk.readers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html">sfftk.notes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">sfftk.core package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sfftk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="sfftk.html">sfftk packages</a> &raquo;</li>
+        
+      <li>sfftk.formats package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/formats.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="sfftk-formats-package">
 <h1>sfftk.formats package<a class="headerlink" href="#sfftk-formats-package" title="Permalink to this headline">¶</a></h1>
@@ -59,7 +216,7 @@
 <dl class="method">
 <dt id="sfftk.formats.am.AmiraMeshSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegmentation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -104,7 +261,7 @@
 <dl class="method">
 <dt id="sfftk.formats.am.AmiraMeshSegment.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshSegment.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -136,7 +293,7 @@
 <dl class="method">
 <dt id="sfftk.formats.am.AmiraMeshAnnotation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshAnnotation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -155,7 +312,7 @@
 <dl class="method">
 <dt id="sfftk.formats.am.AmiraMeshContours.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshContours.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFContourList</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFContourList" title="sfftk.schema.SFFContourList"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFContourList</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -168,7 +325,7 @@
 <dl class="method">
 <dt id="sfftk.formats.am.AmiraMeshMesh.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshMesh.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMesh</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFMesh" title="sfftk.schema.SFFMesh"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMesh</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -204,7 +361,7 @@
 <dl class="method">
 <dt id="sfftk.formats.map.MapSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegmentation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -242,7 +399,7 @@
 <dl class="method">
 <dt id="sfftk.formats.map.MapSegment.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapSegment.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -267,7 +424,7 @@
 <dl class="method">
 <dt id="sfftk.formats.map.MapAnnotation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapAnnotation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -310,7 +467,7 @@
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>args</em>, <em>*args_</em>, <em>**kwargs_</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODSegmentation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to convert an IMOD file to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code> object</p>
+<dd><p>Method to convert an IMOD file to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -347,7 +504,7 @@
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODSegment.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODSegment.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -378,7 +535,7 @@
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODAnnotation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODAnnotation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -397,7 +554,7 @@
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODContours.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODContours.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFContourList</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFContourList" title="sfftk.schema.SFFContourList"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFContourList</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -410,7 +567,7 @@
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODMeshes.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODMeshes.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMeshList</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFMeshList" title="sfftk.schema.SFFMeshList"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMeshList</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -536,7 +693,7 @@
 <dl class="method">
 <dt id="sfftk.formats.seg.SeggerSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.seg.SeggerSegmentation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to convert a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code> object</p>
+<dd><p>Method to convert a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -616,7 +773,7 @@
 <dl class="method">
 <dt id="sfftk.formats.seg.SeggerSegment.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.seg.SeggerSegment.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -629,7 +786,7 @@
 <dl class="method">
 <dt id="sfftk.formats.seg.SeggerAnnotation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.seg.SeggerAnnotation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -666,7 +823,7 @@
 <dl class="method">
 <dt id="sfftk.formats.stl.STLSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLSegmentation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -704,7 +861,7 @@
 <dl class="method">
 <dt id="sfftk.formats.stl.STLSegment.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLSegment.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -729,7 +886,7 @@
 <dl class="method">
 <dt id="sfftk.formats.stl.STLAnnotation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLAnnotation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -742,7 +899,7 @@
 <dl class="method">
 <dt id="sfftk.formats.stl.STLMesh.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLMesh.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMesh</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFMesh" title="sfftk.schema.SFFMesh"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMesh</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -778,7 +935,7 @@
 <dl class="method">
 <dt id="sfftk.formats.surf.AmiraHyperSurfaceSegmentation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceSegmentation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -816,7 +973,7 @@
 <dl class="method">
 <dt id="sfftk.formats.surf.AmiraHyperSurfaceSegment.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceSegment.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -847,7 +1004,7 @@
 <dl class="method">
 <dt id="sfftk.formats.surf.AmiraHyperSurfaceAnnotation.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceAnnotation.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -866,7 +1023,7 @@
 <dl class="method">
 <dt id="sfftk.formats.surf.AmiraHyperSurfaceMesh.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceMesh.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMesh</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFMesh" title="sfftk.schema.SFFMesh"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFMesh</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -888,87 +1045,75 @@
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="readers.html" class="btn btn-neutral float-right" title="sfftk.readers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="schema.html" class="btn btn-neutral" title="sfftk.schema package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, EMBL-EBI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">sfftk.formats package</a><ul>
-<li><a class="reference internal" href="#module-sfftk.formats.am">AmiraMesh module</a><ul>
-<li><a class="reference internal" href="#sfftk-formats-am">sfftk.formats.am</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-sfftk.formats.map">CCP4 mask module</a><ul>
-<li><a class="reference internal" href="#sfftk-formats-map">sfftk.formats.map</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-sfftk.formats.mod">IMOD module</a><ul>
-<li><a class="reference internal" href="#sfftk-formats-mod">sfftk.formats.mod</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-sfftk.formats.seg">Segger module</a><ul>
-<li><a class="reference internal" href="#sfftk-formats-seg">sfftk.formats.seg</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-sfftk.formats.stl">Stereolithography module</a><ul>
-<li><a class="reference internal" href="#sfftk-formats-stl">sfftk.formats.stl</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-sfftk.formats.surf">Amira HyperSurface module</a><ul>
-<li><a class="reference internal" href="#sfftk-formats-surf">sfftk.formats.surf</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="sfftk.html">sfftk packages</a><ul>
-      <li>Previous: <a href="readers.html" title="previous chapter">sfftk.readers package</a></li>
-      <li>Next: <a href="notes.html" title="next chapter">sfftk.notes package</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/formats.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, EMBL-EBI.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/formats.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

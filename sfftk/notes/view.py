@@ -391,7 +391,7 @@ def list_notes(args):
     else:
         sorted_note_views = sorted(note_views, key=lambda n: n.id, reverse=args.reverse)
     # table header
-    if not args.list_ids:
+    if not args.list_ids and not args.long_format:
         print TableHeaderView()
     for note_view in sorted_note_views:
         print note_view

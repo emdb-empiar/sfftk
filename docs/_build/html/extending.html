@@ -1,49 +1,194 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Extending sfftk &#8212; sfftk 0.1.1.dev0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.1.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="sfftk packages" href="sfftk.html" />
-    <link rel="prev" title="Developing with sfftk" href="developing.html" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Extending sfftk &mdash; sfftk 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+        <link rel="next" title="sfftk packages" href="sfftk.html"/>
+        <link rel="prev" title="Developing with sfftk" href="developing.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> sfftk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (sfftk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending sfftk</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-a-segmentation-file-format">Adding A Segmentation File Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-i-create-a-reader">Step I: Create a reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-ii-create-a-format-adapter">Step II: Create a format adapter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iii-add-test-data">Step III: Add test data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iv-write-tests">Step IV: Write tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sfftk.html">sfftk packages</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sfftk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Extending sfftk</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/extending.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="extending-sfftk">
-<h1>Extending sfftk<a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id1">Extending sfftk</a><a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#extending-sfftk" id="id1">Extending sfftk</a><ul>
+<li><a class="reference internal" href="#adding-a-segmentation-file-format" id="id2">Adding A Segmentation File Format</a><ul>
+<li><a class="reference internal" href="#step-i-create-a-reader" id="id3">Step I: Create a reader</a></li>
+<li><a class="reference internal" href="#step-ii-create-a-format-adapter" id="id4">Step II: Create a format adapter</a></li>
+<li><a class="reference internal" href="#step-iii-add-test-data" id="id5">Step III: Add test data</a></li>
+<li><a class="reference internal" href="#step-iv-write-tests" id="id6">Step IV: Write tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="adding-a-segmentation-file-format">
-<h2>Adding A Segmentation File Format<a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id2">Adding A Segmentation File Format</a><a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this headline">¶</a></h2>
 <p>There are four (4) steps involved.</p>
 <ul class="simple">
 <li>Create a reader</li>
@@ -52,19 +197,19 @@
 <li>Write unit tests</li>
 </ul>
 <div class="section" id="step-i-create-a-reader">
-<h3>Step I: Create a reader<a class="headerlink" href="#step-i-create-a-reader" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id3">Step I: Create a reader</a><a class="headerlink" href="#step-i-create-a-reader" title="Permalink to this headline">¶</a></h3>
 <p>Write a reader module and place it in sfftk.readers package. The reader module may implement a single class that provides a simple API to segmentation files. There is not predefined structure on how to handle reading the file. However, the reader module must implement a <cite>get_data(fn, *args, **kwargs)</cite> function that takes the name of a file as a string. The name of the module should be the extension followed by the word ‘reader’ e.g. for Segger files it is segreader.py.</p>
 </div>
 <div class="section" id="step-ii-create-a-format-adapter">
-<h3>Step II: Create a format adapter<a class="headerlink" href="#step-ii-create-a-format-adapter" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id4">Step II: Create a format adapter</a><a class="headerlink" href="#step-ii-create-a-format-adapter" title="Permalink to this headline">¶</a></h3>
 <p>Write a format module and place it in the sfftk.formats package. This module adapts the reader in Step II to the schema (EMDB-SFF data model) API. The name of the module must be simply the extension of the file format e.g. for Segger files it is seg.py. The module uses the inherited segmentation parts from the classes defined in sfftk.formats.base module and have names indicating the segmentation format e.g. for Segger seg.py has a SeggerSegmentation class that inherits from the generic Segmentation class which provides a way to hook functionality required of all custom segmentation representations. This module will then tie the segmentation file format API defined in readers with the schema (EMDB-SFF data model) API.</p>
 </div>
 <div class="section" id="step-iii-add-test-data">
-<h3>Step III: Add test data<a class="headerlink" href="#step-iii-add-test-data" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id5">Step III: Add test data</a><a class="headerlink" href="#step-iii-add-test-data" title="Permalink to this headline">¶</a></h3>
 <p>Provide an example segmentation file in the sfftk.test_data package.</p>
 </div>
 <div class="section" id="step-iv-write-tests">
-<h3>Step IV: Write tests<a class="headerlink" href="#step-iv-write-tests" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id6">Step IV: Write tests</a><a class="headerlink" href="#step-iv-write-tests" title="Permalink to this headline">¶</a></h3>
 <p>Write unit tests and add them to the sfftk.unittests.test_formats module. Each format that you add should implement a read and convert test method (respectively called test_&lt;format&gt;_read and test_&lt;format&gt;_convert. See the sfftk.unittests.test_formats module for examples.</p>
 <p>Once all this components are in place conversion to XML, HDF5 and JSON should be automatic.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.&lt;</span><span class="nb">format</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">f</span> <span class="n">sff</span>
@@ -82,68 +227,75 @@
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sfftk.html" class="btn btn-neutral float-right" title="sfftk packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="developing.html" class="btn btn-neutral" title="Developing with sfftk" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, EMBL-EBI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Extending sfftk</a><ul>
-<li><a class="reference internal" href="#adding-a-segmentation-file-format">Adding A Segmentation File Format</a><ul>
-<li><a class="reference internal" href="#step-i-create-a-reader">Step I: Create a reader</a></li>
-<li><a class="reference internal" href="#step-ii-create-a-format-adapter">Step II: Create a format adapter</a></li>
-<li><a class="reference internal" href="#step-iii-add-test-data">Step III: Add test data</a></li>
-<li><a class="reference internal" href="#step-iv-write-tests">Step IV: Write tests</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="developing.html" title="previous chapter">Developing with sfftk</a></li>
-      <li>Next: <a href="sfftk.html" title="next chapter">sfftk packages</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/extending.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, EMBL-EBI.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/extending.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

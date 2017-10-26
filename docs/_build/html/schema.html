@@ -1,43 +1,178 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>sfftk.schema package &#8212; sfftk 0.1.1.dev0 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.1.dev0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="sfftk packages" href="sfftk.html" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>sfftk.schema package &mdash; sfftk 0.1.1.dev0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+        <link rel="up" title="sfftk packages" href="sfftk.html"/>
+        <link rel="next" title="sfftk.formats package" href="formats.html"/>
+        <link rel="prev" title="sfftk packages" href="sfftk.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> sfftk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1.dev0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (sfftk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">sfftk.schema package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sfftk-schema">sfftk.schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html">sfftk.formats package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers.html">sfftk.readers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes.html">sfftk.notes package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">sfftk.core package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sfftk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="sfftk.html">sfftk packages</a> &raquo;</li>
+        
+      <li>sfftk.schema package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/schema.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-sfftk.schema">
 <span id="sfftk-schema-package"></span><h1>sfftk.schema package<a class="headerlink" href="#module-sfftk.schema" title="Permalink to this headline">¶</a></h1>
@@ -109,7 +244,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegmentation</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Adapter class to make using the output of <code class="docutils literal"><span class="pre">generateDS</span></code> easier to use</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFSegmentation.as_hff">
@@ -140,7 +275,7 @@
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFSegmentation.from_hff">
 <em class="property">classmethod </em><code class="descname">from_hff</code><span class="sig-paren">(</span><em>hff_data</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation.from_hff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an <a class="reference internal" href="sfftk.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from HDF5 formatted data</p>
+<dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from HDF5 formatted data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -149,7 +284,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Return sff_seg:</th><td class="field-body">an EMDB-SFF segmentation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="sfftk.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -158,7 +293,7 @@
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFSegmentation.from_json">
 <em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation.from_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an <a class="reference internal" href="sfftk.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from JSON formatted data</p>
+<dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from JSON formatted data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -167,7 +302,7 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Return sff_seg:</th><td class="field-body">an EMDB-SFF segmentation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="sfftk.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -187,7 +322,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other_seg</strong> (<a class="reference internal" href="sfftk.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – segmentation to get annotations from</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other_seg</strong> (<a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – segmentation to get annotations from</td>
 </tr>
 </tbody>
 </table>
@@ -204,14 +339,14 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFTransform">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransform</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Transform</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFTransformationMatrix">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransformationMatrix</code><span class="sig-paren">(</span><em>t=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
 <p>Transformation matrix transform</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFTransformationMatrix.gds_type">
@@ -224,7 +359,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFCanonicalEulerAngles">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCanonicalEulerAngles</code><span class="sig-paren">(</span><em>t=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCanonicalEulerAngles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
 <p>Canonical euler angles</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFCanonicalEulerAngles.gds_type">
@@ -237,14 +372,14 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFViewVectorRotation">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFViewVectorRotation</code><span class="sig-paren">(</span><em>t=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFViewVectorRotation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
 <p>View vector rotation</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFBoundingBox">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFBoundingBox</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFBoundingBox" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Dimensions of bounding box</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFBoundingBox.as_hff">
@@ -263,14 +398,14 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFGlobalExternalReferences">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFGlobalExternalReferences</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFGlobalExternalReferences" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for global external references</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFBiologicalAnnotation">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFBiologicalAnnotation</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Biological annotation</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFBiologicalAnnotation.as_hff">
@@ -289,21 +424,21 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFExternalReferences">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFExternalReferences</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFExternalReferences" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for external references</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFExternalReference">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFExternalReference</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFExternalReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates an external reference</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFComplexesAndMacromolecules">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFComplexesAndMacromolecules</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFComplexesAndMacromolecules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Complexes and macromolecules</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFComplexesAndMacromolecules.as_hff">
@@ -328,7 +463,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFComplexes">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFComplexes</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFComplexes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates complex</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFComplexes.from_hff">
@@ -354,7 +489,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFMacromolecules">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMacromolecules</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMacromolecules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates macromolecule</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFMacromolecules.from_hff">
@@ -367,7 +502,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFColour">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFColour</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFColour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Segment colour</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFColour.as_hff">
@@ -392,14 +527,14 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFRGBA">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFRGBA</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFRGBA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>RGBA colour</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFSegmentList">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegmentList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for segments</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFSegmentList.as_hff">
@@ -418,7 +553,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFSegment">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegment</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates segment data</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFSegment.as_hff">
@@ -443,7 +578,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFContourList">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFContourList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFContourList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Contour list representation</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFContourList.as_hff">
@@ -462,7 +597,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFContour">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFContour</code><span class="sig-paren">(</span><em>c=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFContour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single contour</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFContour.from_hff">
@@ -475,14 +610,14 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFContourPoint">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFContourPoint</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFContourPoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Point in 3-space</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFMeshList">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMeshList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMeshList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Mesh list representation</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFMeshList.as_hff">
@@ -501,7 +636,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFMesh">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMesh</code><span class="sig-paren">(</span><em>m=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMesh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single mesh</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFMesh.from_hff">
@@ -514,7 +649,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFVertexList">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVertexList</code><span class="sig-paren">(</span><em>vL=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVertexList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>List of vertices</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFVertexList.from_hff">
@@ -527,14 +662,14 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFVertex">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVertex</code><span class="sig-paren">(</span><em>v=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVertex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single vertex</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFPolygonList">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFPolygonList</code><span class="sig-paren">(</span><em>pL=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygonList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>List of polygons</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFPolygonList.from_hff">
@@ -547,7 +682,7 @@
 <dl class="class">
 <dt id="sfftk.schema.SFFPolygon">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFPolygon</code><span class="sig-paren">(</span><em>p=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="sfftk.html#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single polygon</p>
 </dd></dl>
 
@@ -555,63 +690,75 @@
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="formats.html" class="btn btn-neutral float-right" title="sfftk.formats package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sfftk.html" class="btn btn-neutral" title="sfftk packages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, EMBL-EBI.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">sfftk.schema package</a><ul>
-<li><a class="reference internal" href="#sfftk-schema">sfftk.schema</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="sfftk.html">sfftk packages</a><ul>
-      <li>Previous: <a href="sfftk.html" title="previous chapter">sfftk packages</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/schema.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, EMBL-EBI.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/schema.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.1.dev0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>
