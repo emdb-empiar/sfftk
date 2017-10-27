@@ -117,12 +117,12 @@ The main function of sfftk is to handle conversion to and from application-speci
 Conversion
 ----------
 
-The primary functionality in sfftk is conversion of application-specific segmentation file formats to the open EMDB-SFF. For a full description of how to perform conversion, please see the :doc:`guide to format conversion <converting>`__.
+The primary functionality in sfftk is conversion of application-specific segmentation file formats to the open EMDB-SFF. For a full description of how to perform conversion, please see the :doc:`guide to format conversion <converting>`.
 
 Annotation
 ----------
 
-sfftk provides a simple set of tools to allow viewing, searching and modifying annotations (notes) associated with the segmentation and individual segments. Annotations added should be either from a published ontology or be an accession from a published database. See the :doc:`guide to annotating segmentations <annotating>`__for a full treatment.
+sfftk provides a simple set of tools to allow viewing, searching and modifying annotations (notes) associated with the segmentation and individual segments. Annotations added should be either from a public ontology or be an accession from a public database. See the :doc:`guide to annotating segmentations <annotating>` for a full treatment.
 
 Miscellaneous
 -------------
@@ -135,14 +135,14 @@ sfftk may also be used for several miscellaneous operations such as:
 
 -  Running unit tests
 
-More information on this can be found in the :doc:`guide to miscellaneous operations <misc>`__.
+More information on this can be found in the :doc:`guide to miscellaneous operations <misc>`.
 
 Developing with sfftk
 ---------------------
 
-sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. Checkout the `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`__. See the :doc:`guide to developing with sfftk <developing>`__ for a complete description.
+sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. Here is the `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`__. See the :doc:`guide to developing with sfftk <developing>` for a complete description.
 
 Extending sfftk
 ---------------
 
-sfftk has built with extensibility in mind. It is anticipated that most extension will take the form of supporting additional file formats. Please read the :doc:`guide to extending sfftk <extending>`__ to learn how to do this.
+sfftk has built with extensibility in mind. It is anticipated that most extension will take the form of supporting additional file formats. Please read the :doc:`guide to extending sfftk <extending>` to learn how to do this.
