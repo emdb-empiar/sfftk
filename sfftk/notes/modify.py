@@ -20,37 +20,26 @@ See the License for the specific language governing permissions
 and limitations under the License.
 """
 
-
-
-from collections import namedtuple
 import re
 import shlex
 import shutil
-import sys, os
-
-import h5py
+import os
 
 from .. import schema
-from ..core.configs import get_configs
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes.view import HeaderView, NoteView
 from ..sff import handle_convert
+from . import EXTERNAL_REFERENCES
 
 """
 :TODO: allow user to modify/view hierarchy through segmentation annotation toolkit 
 """
-
-configs = get_configs()
-
     
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-04-07"
 
-
-# externalReference
-# ExternalReference = namedtuple('ExternalReference', ['type', 'otherType', 'value'], verbose=False)
 
 class ExternalReference(object):
     def __init__(self, type_=None, otherType=None, value=None):
@@ -70,7 +59,7 @@ class ExternalReference(object):
         label = None
         description = None
         # only search for label and description if from OLS
-        if self.type.lower() not in ['pdb', 'uniprot']:
+        if self.type.lower() not in EXTERNAL_REFERENCES:
             url = "http://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
                 ontology=self.type,
                 iri=self.iri
@@ -79,8 +68,14 @@ class ExternalReference(object):
             R = requests.get(url)
             import json
             self._result = json.loads(R.text)
-            label = self._result['label']
-            description = self._result['description'][0] if self._result['description'] else None
+            try:
+                label = self._result['label']
+            except KeyError:
+                label = ''
+            try:
+                description = self._result['description'][0] if self._result['description'] else None
+            except KeyError:
+                description = ''
         return label, description
 
 
@@ -265,9 +260,10 @@ class AbstractGlobalNote(BaseNote):
         
 
 class GlobalArgsNote(AbstractGlobalNote):
-    def __init__(self, args, *args_, **kwargs_):
+    def __init__(self, args, configs, *args_, **kwargs_):
         super(GlobalArgsNote, self).__init__(*args_, **kwargs_)
         self.name = args.name
+        self.configs = configs
         self.softwareName = args.software_name
         self.softwareVersion = args.software_version
         self.softwareProcessingDetails = args.software_processing_details
@@ -499,7 +495,7 @@ class AbstractNote(BaseNote):
 
 
 class ArgsNote(AbstractNote):
-    def __init__(self, args, *args_, **kwargs_):
+    def __init__(self, args, configs, *args_, **kwargs_):
         super(ArgsNote, self).__init__(*args_, **kwargs_)
         self.description = args.description
         self.numberOfInstances = args.number_of_instances
@@ -552,7 +548,7 @@ class SimpleNote(AbstractNote):
         self.macromolecules = macromolecules
 
 
-def add_note(args):
+def add_note(args, configs):
     """Add annotation to a segment specified in args
     
     :param args: parsed arguments
@@ -562,7 +558,7 @@ def add_note(args):
     # global changes
     if args.segment_id is None:
         # create a GlobalArgsNote object
-        global_note = GlobalArgsNote(args)
+        global_note = GlobalArgsNote(args, configs)
         # add notes to segmentation
         sff_seg = global_note.add_to_segmentation(sff_seg)
         # show the updated header
@@ -571,7 +567,7 @@ def add_note(args):
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                note = ArgsNote(args)
+                note = ArgsNote(args, configs)
                 sff_seg.segment = note.add_to_segment(segment)
                 print NoteView(sff_seg.segment, _long=True)
                 found_segment = True
@@ -583,7 +579,7 @@ def add_note(args):
     return 0
 
 
-def edit_note(args):
+def edit_note(args, configs):
     """Edit annotation to a segment specified in args
     
     :param args: parsed arguments
@@ -593,7 +589,7 @@ def edit_note(args):
     # global changes
     if args.segment_id is None:
         # create a GlobalArgsNote object
-        global_note = GlobalArgsNote(args)
+        global_note = GlobalArgsNote(args, configs)
         # edit the notes in the segmentation
         # editing name, software, filePath, details are exactly the same as adding
         # editing external references is different:
@@ -606,7 +602,7 @@ def edit_note(args):
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                note = ArgsNote(args)
+                note = ArgsNote(args, configs)
                 sff_seg.segment = note.edit_in_segment(segment)
                 print NoteView(sff_seg.segment, _long=True)
                 found_segment = True
@@ -618,7 +614,7 @@ def edit_note(args):
     return 0
 
 
-def del_note(args):
+def del_note(args, configs):
     """Delete annotation to a segment specified in args
     
     :param args: parsed arguments
@@ -628,7 +624,7 @@ def del_note(args):
     # global changes
     if args.segment_id is None:
         # create a GlobalArgsNote object
-        global_note = GlobalArgsNote(args)
+        global_note = GlobalArgsNote(args, configs)
         # delete the notes from segmentation
         sff_seg = global_note.del_from_segmentation(sff_seg)
         # show the updated header
@@ -637,7 +633,7 @@ def del_note(args):
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                note = ArgsNote(args)
+                note = ArgsNote(args, configs)
                 sff_seg.segment = note.del_from_segment(segment)
                 print NoteView(sff_seg.segment, _long=True)
                 found_segment = True
@@ -649,7 +645,7 @@ def del_note(args):
     return 0
 
 
-def merge(args):
+def merge(args, configs):
     """Merge two EMDB-SFF files
     
     :param args: parsed arguments
@@ -676,7 +672,7 @@ def merge(args):
     return 0
 
 
-def save(args):
+def save(args, configs):
     """Save changes made
     
     :param args: parsed arguments
@@ -725,7 +721,7 @@ def save(args):
     return 0
 
 
-def trash(args):
+def trash(args, configs):
     """Trash changes made
     
     :param args: parsed arguments

@@ -122,7 +122,7 @@ The primary functionality in sfftk is conversion of application-specific segment
 Annotation
 ----------
 
-sfftk provides a simple set of tools to allow viewing, searching and modifying annotations (notes) associated with the segmentation and individual segments. Annotations added should be either from a [published] ontology or be an accession from a [published] database. See the :doc:`guide to annotating segmentations <annotating>` for a full treatment.
+sfftk provides a simple set of tools to allow viewing, searching and modifying annotations (notes) associated with the segmentation and individual segments. Annotations added should be either from a public ontology or be an accession from a public database. See the :doc:`guide to annotating segmentations <annotating>` for a full treatment.
 
 Miscellaneous
 -------------
@@ -140,7 +140,7 @@ More information on this can be found in the :doc:`guide to miscellaneous operat
 Developing with sfftk
 ---------------------
 
-sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. The full API is available at [link]. See the :doc:`guide to developing with sfftk <developing>` for a complete description.
+sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. Here is the `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`__. See the :doc:`guide to developing with sfftk <developing>` for a complete description.
 
 Extending sfftk
 ---------------

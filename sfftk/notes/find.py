@@ -90,8 +90,9 @@ GET /api/ontologies/{ontology_id}
 class SearchQuery(object):
     """SearchQuery class"""
     root_url = "http://www.ebi.ac.uk/ols/api/"
-    def __init__(self, args):
+    def __init__(self, args, configs):
         self._search_args = args
+        self.configs = configs
         self._results = None
     @property
     def search_args(self):
@@ -111,7 +112,7 @@ class SearchQuery(object):
             url = self.root_url + "ontologies?size=1000"
             R = requests.get(url)
             self._results = R.text
-            return SearchResults(self.results, self.search_args, *args, **kwargs)
+            return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
         else:
             url = self.root_url + "search?q={}&start={}&rows={}".format(
                 self.search_args.search_term,
@@ -126,7 +127,7 @@ class SearchQuery(object):
                 url += "&obsoletes=on"
             R = requests.get(url)
             self._results = R.text
-            return SearchResults(self.results, self.search_args, *args, **kwargs)
+            return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
             
 
 class SearchResults(object):
@@ -143,9 +144,10 @@ class SearchResults(object):
     ONTOLOGY_NAME_WIDTH = 15
     DESCRIPTION_WIDTH = 80
     TYPE_WIDTH = 18
-    def __init__(self, json_result, search_args, *args, **kwargs):
+    def __init__(self, json_result, search_args, configs, *args, **kwargs):
         self._json_result = json_result
         self._search_args = search_args
+        self.configs = configs
         import json
         self._str_result = json.loads(self._json_result, 'utf-8')
     @property

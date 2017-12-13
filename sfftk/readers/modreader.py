@@ -226,6 +226,12 @@ class CLIP_FLAGS(FLAGS):
         super(CLIP_FLAGS, self).__init__(*args, **kwargs)
 
 
+class MCLP_FLAGS(FLAGS):
+    """Flags in the MCLP chunk"""
+    def __init__(self, *args, **kwargs):
+        super(MCLP_FLAGS, self).__init__(*args, **kwargs)
+        
+
 class IMAT_FLAGS(FLAGS):
     """
     Flags in the IMAT chunk.
@@ -293,6 +299,7 @@ class IMOD(object):
         self.current_objt = None
         self.views = dict()
         self.view_count = 0
+        self.mclp = None
         self.minx = None
         self.most = None
     
@@ -780,6 +787,42 @@ something:    %s""" % (self.count, self.flags, self.trans, self.plane, self.norm
         return string
 
 
+class MCLP(object):
+    """MCLP chunk class
+    
+    Model clipping plane parameters
+    """
+    def __init__(self, f):
+        self.f = f
+        self.isset = False
+    
+    def read(self):
+        f = self.f
+        self.count = struct.unpack('>B', f.read(1))[0]
+        self.flags = MCLP_FLAGS(struct.unpack('>B', f.read(1))[0], 1)
+        self.trans, self.plane = struct.unpack('>BB', f.read(2))
+        if self.count == 0:
+            count = 1
+        else:
+            count = self.count
+        self.normal = struct.unpack('>fff', f.read(12*count))
+        self.point = struct.unpack('>fff', f.read(12*count))
+        self.something = struct.unpack('>i', f.read(4))[0]
+        self.isset = True
+        return f
+    
+    def __repr__(self):
+        string = """\
+count:        %s
+flags:        %s
+trans:        %s
+plane:        %s
+normal:       %s
+point:        %s
+something:    %s""" % (self.count, self.flags, self.trans, self.plane, self.normal, self.point, self.something)
+        return string
+
+
 class MEPA(object):
     """MEPA chunk class"""
     def __init__(self, f):
@@ -892,11 +935,15 @@ def get_data(fn):
             elif chunk_name == 'MEST':
                 mest = MEST(f)
                 f = mest.read()
-                imod.currest_objt.current_mesh.mest = mest
+                imod.current_objt.current_mesh.mest = mest
             elif chunk_name == 'CLIP':
                 clip = CLIP(f)
                 f = clip.read()
                 imod.current_objt.clip = clip
+            elif chunk_name == 'MCLP':
+                mclp = MCLP(f)
+                f = mclp.read()
+                imod.mclp = mclp
             elif chunk_name == 'IMAT':
                 imat = IMAT(f)
                 f = imat.read()

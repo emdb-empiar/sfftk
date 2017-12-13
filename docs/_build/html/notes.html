@@ -182,7 +182,7 @@
 <span id="find-notes-module"></span><h2>Find notes module<a class="headerlink" href="#module-sfftk.notes.find" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="sfftk.notes.find.SearchQuery">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchQuery</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchQuery" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchQuery</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchQuery" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>SearchQuery class</p>
 <dl class="attribute">
@@ -211,7 +211,7 @@
 
 <dl class="class">
 <dt id="sfftk.notes.find.SearchResults">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResults</code><span class="sig-paren">(</span><em>json_result</em>, <em>search_args</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResults</code><span class="sig-paren">(</span><em>json_result</em>, <em>search_args</em>, <em>configs</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>SearchResults class</p>
 </dd></dl>
@@ -237,7 +237,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.view.list_notes">
-<code class="descclassname">sfftk.notes.view.</code><code class="descname">list_notes</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.list_notes" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.view.</code><code class="descname">list_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.list_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all notes in an EMDB-SFF file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -254,7 +254,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.view.show_notes">
-<code class="descclassname">sfftk.notes.view.</code><code class="descname">show_notes</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.show_notes" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.view.</code><code class="descname">show_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.show_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show notes in an EMDB-SFF file for the specified segment IDs</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -397,7 +397,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.modify.add_note">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">add_note</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.add_note" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.modify.</code><code class="descname">add_note</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.add_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add annotation to a segment specified in args</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -411,7 +411,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.modify.del_note">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">del_note</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.del_note" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.modify.</code><code class="descname">del_note</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.del_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete annotation to a segment specified in args</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -425,7 +425,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.modify.edit_note">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">edit_note</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.edit_note" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.modify.</code><code class="descname">edit_note</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.edit_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit annotation to a segment specified in args</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -439,7 +439,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.modify.merge">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">merge</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.merge" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.modify.</code><code class="descname">merge</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.merge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge two EMDB-SFF files</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -453,7 +453,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.modify.save">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">save</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.save" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.modify.</code><code class="descname">save</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save changes made</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -467,7 +467,7 @@
 
 <dl class="function">
 <dt id="sfftk.notes.modify.trash">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">trash</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.trash" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.notes.modify.</code><code class="descname">trash</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.trash" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trash changes made</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

@@ -406,8 +406,9 @@ class IMODSegment(Segment):
         # text
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         # geometry
-        if self.contours:
-            segment.contours = self.contours.convert()
+        # ignore contours
+#         if self.contours:
+#             segment.contours = self.contours.convert()
         if self.shapes:
             segment.shapes, transforms = self.shapes.convert()
         segment.meshes = self.meshes.convert()
@@ -435,6 +436,21 @@ class IMODSegmentation(Segmentation):
         for objt in self._segmentation.objts.itervalues():
             segment = IMODSegment(self._header, objt)
             self._segments.append(segment)
+    @property
+    def has_mesh_or_shapes(self):
+        """Check whether the segmentation has meshes or shapes
+        
+        If it only has contours this property is False
+        Do not convert segmentations that only have contours
+        """
+        status = True
+        for segment in self.segments:
+            if segment.meshes or segment.shapes:
+                pass 
+            else:
+                status = False
+                break
+        return status
     @property
     def header(self):
         """Header in segmentation"""
@@ -501,6 +517,8 @@ class IMODSegmentation(Segmentation):
         segmentation.segments = segments
         # now is the right time to set the primary descriptor attribute
         # if there are at least as many segments as descriptors then set that 
+        segmentation.primaryDescriptor = "meshList"
+        """
         if len(segmentation.segments) <= no_contours:
             segmentation.primaryDescriptor = "contourList"
         elif len(segmentation.segments) <= no_meshes:
@@ -525,6 +543,7 @@ class IMODSegmentation(Segmentation):
                 print_date("Retaining detected primary descriptor")
 #         if args.verbose:
 #             print_date("Set primaryDescriptor to {}".format(segmentation.primaryDescriptor))
+        """
             
         # details
         if args.details is not None:

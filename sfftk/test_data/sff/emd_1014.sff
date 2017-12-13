@@ -22,6 +22,8 @@
     <primaryDescriptor>threeDVolume</primaryDescriptor>
     <segmentList>
         <segment id="15559" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.921817600727081</red>
@@ -37,6 +39,8 @@
             </threeDVolume>
         </segment>
         <segment id="15560" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.5660200715065</red>
@@ -52,6 +56,8 @@
             </threeDVolume>
         </segment>
         <segment id="15561" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.786771178245544</red>
@@ -67,6 +73,8 @@
             </threeDVolume>
         </segment>
         <segment id="15562" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.795820534229279</red>
@@ -82,6 +90,8 @@
             </threeDVolume>
         </segment>
         <segment id="15563" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.945388078689575</red>
@@ -97,6 +107,8 @@
             </threeDVolume>
         </segment>
         <segment id="15564" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.997010350227356</red>
@@ -112,6 +124,8 @@
             </threeDVolume>
         </segment>
         <segment id="15565" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.810978293418884</red>
@@ -127,6 +141,8 @@
             </threeDVolume>
         </segment>
         <segment id="15566" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.506448566913605</red>
@@ -142,6 +158,8 @@
             </threeDVolume>
         </segment>
         <segment id="15567" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.795838892459869</red>
@@ -157,6 +175,8 @@
             </threeDVolume>
         </segment>
         <segment id="15568" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.795708417892456</red>
@@ -172,6 +192,8 @@
             </threeDVolume>
         </segment>
         <segment id="15569" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.543090283870697</red>
@@ -187,6 +209,8 @@
             </threeDVolume>
         </segment>
         <segment id="15570" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.544089019298553</red>
@@ -202,6 +226,8 @@
             </threeDVolume>
         </segment>
         <segment id="15571" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.687262952327728</red>
@@ -217,6 +243,8 @@
             </threeDVolume>
         </segment>
         <segment id="15572" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.547603487968445</red>
@@ -232,6 +260,8 @@
             </threeDVolume>
         </segment>
         <segment id="15573" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.860836505889893</red>
@@ -247,6 +277,8 @@
             </threeDVolume>
         </segment>
         <segment id="15574" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.511655807495117</red>
@@ -262,6 +294,8 @@
             </threeDVolume>
         </segment>
         <segment id="15575" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.74264669418335</red>
@@ -277,6 +311,8 @@
             </threeDVolume>
         </segment>
         <segment id="15576" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.936005651950836</red>
@@ -292,6 +328,8 @@
             </threeDVolume>
         </segment>
         <segment id="15577" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.505707859992981</red>
@@ -307,6 +345,8 @@
             </threeDVolume>
         </segment>
         <segment id="15578" parentID="0">
+            <biologicalAnnotation/>
+            <complexesAndMacromolecules/>
             <colour>
                 <rgba>
                     <red>0.985998213291168</red>

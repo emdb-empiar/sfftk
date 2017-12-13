@@ -23,8 +23,10 @@ def get_data(fn, *args, **kwargs):
     :return segments_by_stream: segments organised by stream
     :rtype segments_by_stream: ``ahds.data_streams.ImageSet``
     """
-    header = ahds.header.AmiraHeader.from_file(fn, *args, **kwargs)
-    data_streams =  ahds.data_stream.DataStreams(fn, *args, **kwargs)
+#     header = ahds.header.AmiraHeader.from_file(fn, *args, **kwargs)
+#     data_streams =  ahds.data_stream.DataStreams(fn, *args, **kwargs)
+    af = ahds.AmiraFile(fn, *args, **kwargs)
+    header = af.header
     
     """
     :TODO: handle <hxsurface> from .am files
@@ -32,6 +34,15 @@ def get_data(fn, *args, **kwargs):
     if header.designation.extra_format == "<hxsurface>":
         return header, None
     else:
+        # read now
+        af.read()
+        data_streams = af.data_streams
+        images_by_stream = dict()
+        for data_stream in af.data_streams:
+            images = data_stream.to_images()
+            data_stream_index = data_stream.data_pointer.data_index
+            images_by_stream[data_stream_index] = images.data
+#         """
         # convert the data into images
         images_by_stream = dict()
         for stream in data_streams:
@@ -44,4 +55,5 @@ def get_data(fn, *args, **kwargs):
             segments_by_stream[stream_id] = image_set.segments
             
         return header, segments_by_stream
+#         """
 

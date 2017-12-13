@@ -187,19 +187,181 @@
 <span id="configuration-module"></span><h2>Configuration module<a class="headerlink" href="#module-sfftk.core.configs" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="configs-py">
 <h3>configs.py<a class="headerlink" href="#configs-py" title="Permalink to this headline">¶</a></h3>
-<p>SFFTK configs</p>
+<p>This module defines a way in which to handle configs in a hierarchical manner.</p>
+<p>There are three classes of configs:</p>
+<ol class="arabic simple">
+<li>CLI configs</li>
+<li>User configs</li>
+<li>Shipped configs</li>
+</ol>
+<p>Only one class can be used at a time .i.e. either all values are specified
+as (1) or (2) or (3). No mixing of configs.</p>
+<p>1. CLI configs are specified as CLI arguments. The have the highest 
+priority. They come in two flavours:</p>
+<ol class="lowerroman simple">
+<li>Path to a custom config file</li>
+<li>Individual configs</li>
+</ol>
+<p>(i) has priority over (ii). In (i) the path has to be valid otherwise
+the config file is not even considered.</p>
+<p>2. User configs are stored by default in ~/.sfftk/sff.conf. They are the 
+default configs for storing user-specific configs.</p>
+<p>3. <code class="docutils literal"><span class="pre">sfftk</span></code> ships will basic configs for <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span></code>, which are stored
+in <code class="docutils literal"><span class="pre">sfftk.sff.conf</span></code>. They will only apply if neither (1) nor (2) are 
+present. They cannot be changed and are only overriden by CLI or User configs.</p>
+<dl class="class">
+<dt id="sfftk.core.configs.Configs">
+<em class="property">class </em><code class="descclassname">sfftk.core.configs.</code><code class="descname">Configs</code><span class="sig-paren">(</span><em>config_fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.OrderedDict</span></code></p>
+<p>Configs class as a thin wrap around OrderedDict</p>
+<dl class="method">
+<dt id="sfftk.core.configs.Configs.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear configs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.core.configs.Configs.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read configs from file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.core.configs.Configs.write">
+<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write configs to file</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
-<dt id="sfftk.core.configs.get_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">get_configs</code><span class="sig-paren">(</span><em>fn='/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/sff.conf'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get SFFTK configs</p>
+<dt id="sfftk.core.configs.clear_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">clear_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.clear_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all configs</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fn</strong> (<em>str</em>) – filename (default: <code class="docutils literal"><span class="pre">./sff.conf</span></code>)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.configs.del_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">del_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.del_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the named config</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.configs.get_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">get_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the named config</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.configs.list_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">list_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.list_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List configs in terminal</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.configs.load_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">load_configs</code><span class="sig-paren">(</span><em>args</em>, <em>user_folder='.sfftk'</em>, <em>conf_fn='sff.conf'</em>, <em>config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.load_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load sfftk configs (persistent arguments)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>user_folder</strong> (<em>str</em>) – name of the user folder; default is <em>.sfftk</em></li>
+<li><strong>conf_fn</strong> (<em>str</em>) – name of the config file; default is <em>sff.conf</em></li>
+</ul>
+</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Return dict configs:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">dictionary of configs</td>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">dictionary of configs</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.configs.set_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">set_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.set_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the config of the given name to have the given value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -243,7 +405,7 @@
 <dl class="function">
 <dt id="sfftk.core.parser.parse_args">
 <code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse and check command-line arguments</p>
+<dd><p>Parse and check command-line arguments and also return configs</p>
 <p>Subcommand handlers defined in __main__.py (e.g. handle_conver(…)) should not have to check arguments for consistency</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -253,7 +415,11 @@
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed arguments</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>argparse.Namespace</cite></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">argparse.Namespace</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">config dict-like object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.core.configs.Config</span></code></td>
 </tr>
 </tbody>
 </table>

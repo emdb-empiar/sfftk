@@ -370,6 +370,7 @@ class TestSFFSegmentation(unittest.TestCase):
         cls.segmentation.export(cls.sff_file)
         cls.segmentation.export(cls.hff_file)
         cls.segmentation.export(cls.json_file)
+        
     @classmethod
     def tearDownClass(cls):
         os.remove(cls.sff_file)
@@ -379,6 +380,7 @@ class TestSFFSegmentation(unittest.TestCase):
         assert not os.path.exists(cls.sff_file)
         assert not os.path.exists(cls.hff_file)
         assert not os.path.exists(cls.json_file)
+        
     def test_create(self):
         """Create an SFFSegmentation object from scratch"""
         # assertions
@@ -453,6 +455,7 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(segment.shapes.numCylinders, 1)
         self.assertEqual(segment.shapes.numCuboids, 2)
         self.assertEqual(segment.shapes.numEllipsoids, 2)
+        
     def test_read_sff(self):
         """Read from XML (.sff) file"""
         sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
@@ -464,11 +467,12 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(segmentation.software.name, "segger")
         self.assertEqual(segmentation.software.version, "2")
         self.assertEqual(segmentation.software.processingDetails, None)
-        self.assertEqual(segmentation.filePath, "/Users/pkorir/Data/segmentations/seg")
+        self.assertEqual(segmentation.filePath, "/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/test_data/sff")
         self.assertEqual(segmentation.primaryDescriptor, "threeDVolume")
         self.assertEqual(transform.rows, 3)
         self.assertEqual(transform.cols, 4)
         self.assertEqual(transform.data, "3.3900001049 0.0 0.0 -430.529998779 0.0 3.3900001049 0.0 -430.529998779 0.0 0.0 3.3900001049 -430.529998779")
+        
     def test_read_hff(self):
         """Read from HDF5 (.hff) file"""
         hff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.hff')
@@ -477,10 +481,11 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(segmentation.name, "Segger Segmentation")
         self.assertTrue(len(segmentation.version) > 0)
         self.assertEqual(segmentation.software.name, "segger")
-        self.assertEqual(segmentation.software.version, "2")
+        self.assertEqual(segmentation.software.version, "2" )
         self.assertEqual(segmentation.software.processingDetails, None)
-        self.assertEqual(segmentation.filePath, "/Users/pkorir/Data/segmentations/seg")
+        self.assertEqual(segmentation.filePath, "/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/test_data/sff")
         self.assertEqual(segmentation.primaryDescriptor, "threeDVolume")
+        
     def test_read_json(self):
         """Read from JSON (.json) file"""
         json_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.json')
@@ -491,8 +496,9 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(segmentation.software.name, "segger")
         self.assertEqual(segmentation.software.version, "2")
         self.assertEqual(segmentation.software.processingDetails, None)
-        self.assertEqual(segmentation.filePath, "/Users/pkorir/Data/segmentations/seg")
+        self.assertEqual(segmentation.filePath, "/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/test_data/sff")
         self.assertEqual(segmentation.primaryDescriptor, "threeDVolume")
+        
     def test_export_sff(self):
         """Export to an XML (.sff) file"""
         temp_file = tempfile.NamedTemporaryFile()
@@ -500,6 +506,7 @@ class TestSFFSegmentation(unittest.TestCase):
         # assertions
         with open(temp_file.name + '.sff') as f:
             self.assertEqual(f.readline(), '<?xml version="1.0" encoding="UTF-8"?>\n')
+            
     def test_export_hff(self):
         """Export to an HDF5 file"""
         temp_file = tempfile.NamedTemporaryFile()
@@ -507,6 +514,7 @@ class TestSFFSegmentation(unittest.TestCase):
         # assertions
         with open(temp_file.name + '.hff') as f:
             self.assertGreaterEqual(f.readline().find('HDF'), 0)
+            
     def test_export_json(self):
         """Export to a JSON file"""
         temp_file = tempfile.NamedTemporaryFile()
@@ -516,7 +524,6 @@ class TestSFFSegmentation(unittest.TestCase):
             J = json.load(f)
             self.assertEqual(J['primaryDescriptor'], u"primaryDescriptor")
             
-
 
 if __name__ == "__main__":
     

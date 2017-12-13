@@ -9,7 +9,7 @@ Unit tests for convert subcommand
 """
 
 __author__  = 'Paul K. Korir, PhD'
-__email__   = 'pkorir@ebi.ac.uk'
+__email__   = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__    = '2016-06-10'
 
 
@@ -22,6 +22,8 @@ import shlex
 from ..core.parser import parse_args
 import __init__ as tests
 from .. import sff as Main
+
+import sfftk
 
 # sys.path.insert(0, "..")
 
@@ -41,6 +43,10 @@ port = '4064'
 
 
 class TestMain_handle_convert(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(sfftk.__path__[0], 'sff.conf')
+        
     def setUp(self):
         unittest.TestCase.setUp(self)
         # clear all 
@@ -52,101 +58,113 @@ class TestMain_handle_convert(unittest.TestCase):
          
     def test_seg(self):
         """Test that we can convert .seg"""
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.seg')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.seg'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
          
     def test_mod(self):
         """Test that we can convert .mod"""
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
           
-    def test_am(self):
-        """Test that we can convert .am"""
-        args = parse_args(shlex.split('convert -o {} {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am')
-            )))
-        Main.handle_convert(args)
-        sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.sff'))
-        self.assertEqual(len(sff_files), 1)
+#     def test_am(self):
+#         """Test that we can convert .am"""
+#         args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
+#             os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
+#             os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am'),
+#             self.config_fn,
+#             )))
+#         Main.handle_convert(args, configs)
+#         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.sff'))
+#         self.assertEqual(len(sff_files), 1)
+        
     def test_surf(self):
         """Test that we can convert .surf"""
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.surf')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.surf'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
             
     def test_unknown(self):
         """Test that unknown fails"""
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.xxx')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.xxx'),
+            self.config_fn,
             )))         
         with self.assertRaises(ValueError):
-            Main.handle_convert(args)
+            Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 0)
      
     def test_sff(self):
         """Test that we can convert .sff"""
         # first convert from some other format e.g. .mod
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         # then convert to .hff
-        args = parse_args(shlex.split('convert {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff')
+        args, configs = parse_args(shlex.split('convert {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.hff'))
         self.assertEqual(len(sff_files), 1)
 
     def test_hff(self):
         """Test that we can convert .hff"""
         # first convert from some other format e.g. .mod
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.hff'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         # then convert to .sff
-        args = parse_args(shlex.split('convert {} -o {}'.format(
+        args, configs = parse_args(shlex.split('convert {} -o {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.hff'),
-            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff')
+            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.hff'))
         self.assertEqual(len(sff_files), 1)
 
     def test_json(self):
         """Test that we can convert .json"""
         # first convert from some other format e.g. .mod
-        args = parse_args(shlex.split('convert -o {} {}'.format(
+        args, configs = parse_args(shlex.split('convert -o {} {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.json'),
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         # then convert to .sff
-        args = parse_args(shlex.split('convert {} -o {}'.format(
+        args, configs = parse_args(shlex.split('convert {} -o {} --config-path {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'test_data.json'),
-            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff')
+            os.path.join(tests.TEST_DATA_PATH, 'test_data.sff'),
+            self.config_fn,
             )))
-        Main.handle_convert(args)
+        Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(tests.TEST_DATA_PATH, '*.hff'))
         self.assertEqual(len(sff_files), 1)
     
@@ -156,67 +174,83 @@ class TestMain_handle_convert(unittest.TestCase):
 """
  
 class TestMain_handle_view(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(sfftk.__path__[0], 'sff.conf')
+        
     def test_read_am(self):
         """Test that we can view .am"""
-        args = parse_args(shlex.split('view {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am')
+        args, configs = parse_args(shlex.split('view {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_view(args))
+        self.assertEqual(0, Main.handle_view(args, configs))
          
     def test_read_map(self):
         """Test that we can view .map"""
-        args = parse_args(shlex.split('view {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map')
+        args, configs = parse_args(shlex.split('view {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_view(args))
+        self.assertEqual(0, Main.handle_view(args, configs))
      
     def test_read_mod(self):
         """Test that we can view .mod"""
-        args = parse_args(shlex.split('view {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+        args, configs = parse_args(shlex.split('view {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_view(args))
+        self.assertEqual(0, Main.handle_view(args, configs))
     
     def test_seg(self):
         """Test that we can view .seg"""
-        args = parse_args(shlex.split('view {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.seg')
+        args, configs = parse_args(shlex.split('view {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.seg'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_view(args))
+        self.assertEqual(0, Main.handle_view(args, configs))
         
     def test_read_surf(self):
         """Test that we can view .surf"""
-        args = parse_args(shlex.split('view {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.surf')
+        args, configs = parse_args(shlex.split('view {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.surf'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_view(args))
+        self.assertEqual(0, Main.handle_view(args, configs))
          
     def test_read_unknown(self):
         """Test that we cannot view unknown"""
-        args = parse_args(shlex.split('view {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.xxx')
+        args, configs = parse_args(shlex.split('view {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.xxx'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_view(args))
+        self.assertEqual(0, Main.handle_view(args, configs))
 
 
 class TestMain_handle_notes(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(sfftk.__path__[0], 'sff.conf')
+        
     def test_list(self):
         """Test that we can list notes"""
-        args = parse_args(shlex.split('notes list {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
+        args, configs = parse_args(shlex.split('notes list {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_notes_list(args))
+        self.assertEqual(0, Main.handle_notes_list(args, configs))
     
     def test_show(self):
         """Test that we can list notes"""
-        args = parse_args(shlex.split('notes show -i 15559 {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
+        args, configs = parse_args(shlex.split('notes show -i 15559 {} --config-path {}'.format(
+            os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff'),
+            self.config_fn,
             )))
-        self.assertEqual(0, Main.handle_notes_show(args))
+        self.assertEqual(0, Main.handle_notes_show(args, configs))
     
     def test_search(self):
         """Test that we can list notes"""
-        args = parse_args(shlex.split('notes search "mitochondria"'))
-        self.assertEqual(0, Main.handle_notes_search(args))
+        args, configs = parse_args(shlex.split('notes search "mitochondria" --config-path {}'.format(self.config_fn)))
+        self.assertEqual(0, Main.handle_notes_search(args, configs))
     
     

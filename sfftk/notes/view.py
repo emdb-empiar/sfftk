@@ -371,7 +371,7 @@ class TableHeaderView(View):
         return string
 
 
-def list_notes(args):
+def list_notes(args, configs):
     """List all notes in an EMDB-SFF file
     
     :param args: parsed arguments
@@ -398,7 +398,7 @@ def list_notes(args):
     return 0
 
 
-def show_notes(args):
+def show_notes(args, configs):
     """Show notes in an EMDB-SFF file for the specified segment IDs
     
     :param args: parsed arguments

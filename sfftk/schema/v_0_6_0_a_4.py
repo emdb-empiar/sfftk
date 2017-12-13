@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Mon Oct 16 13:58:37 2017 by generateDS.py version 2.22a.
+# Generated Thu Nov 23 14:15:28 2017 by generateDS.py version 2.22a.
 #
 # Command line options:
-#   ('-o', 'schema/v_0_6_0_a_4.py')
+#   ('-o', 'sfftk/schema/v_0_6_0_a_4.py')
 #
 # Command line arguments:
 #   /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
 #
 # Command line:
-#   /usr/local/bin/generateDS.py -o "schema/v_0_6_0_a_4.py" /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
+#   /usr/local/bin/generateDS.py -o "sfftk/schema/v_0_6_0_a_4.py" /Users/pkorir/Documents/workspace/schema/trunk/DA_schema/segmentation_da.xsd
 #
 # Current working directory (os.getcwd()):
 #   sfftk
@@ -725,7 +725,8 @@ class segmentation(GeneratedsSuper):
     references to have the form <ref [attrs]/> 4) Now
     externalReferenceType has attributes: type (required), otherType
     (required), value (required), label (new, optional), description
-    (new, optional)"""
+    (new, optional) 0.6.0a4, 2017/11/23, Paul Korir: 5) Replaced all
+    active 'token' to 'string' types"""
     subclass = None
     superclass = None
     def __init__(self, schemaVersion='0.6.0a4', version=None, name=None, software=None, transformList=None, filePath=None, primaryDescriptor=None, boundingBox=None, globalExternalReferences=None, segmentList=None, details=None):
@@ -867,7 +868,6 @@ class segmentation(GeneratedsSuper):
         if value is not None and 'schemaVersion' not in already_processed:
             already_processed.add('schemaVersion')
             self.schemaVersion = value
-            self.schemaVersion = ' '.join(self.schemaVersion.split())
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'version':
             version_ = child_.text
@@ -889,7 +889,6 @@ class segmentation(GeneratedsSuper):
             obj_.original_tagname_ = 'transformList'
         elif nodeName_ == 'filePath':
             filePath_ = child_.text
-            filePath_ = re_.sub(String_cleanup_pat_, " ", filePath_).strip()
             filePath_ = self.gds_validate_string(filePath_, node, 'filePath')
             self.filePath = filePath_
         elif nodeName_ == 'primaryDescriptor':
@@ -1000,12 +999,10 @@ class softwareType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'name':
             name_ = child_.text
-            name_ = re_.sub(String_cleanup_pat_, " ", name_).strip()
             name_ = self.gds_validate_string(name_, node, 'name')
             self.name = name_
         elif nodeName_ == 'version':
             version_ = child_.text
-            version_ = re_.sub(String_cleanup_pat_, " ", version_).strip()
             version_ = self.gds_validate_string(version_, node, 'version')
             self.version = version_
         elif nodeName_ == 'processingDetails':
@@ -1920,7 +1917,6 @@ class threeDVolumeType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'file':
             file_ = child_.text
-            file_ = re_.sub(String_cleanup_pat_, " ", file_).strip()
             file_ = self.gds_validate_string(file_, node, 'file')
             self.file = file_
         elif nodeName_ == 'objectPath':
@@ -2546,7 +2542,6 @@ class colourType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'name':
             name_ = child_.text
-            name_ = re_.sub(String_cleanup_pat_, " ", name_).strip()
             name_ = self.gds_validate_string(name_, node, 'name')
             self.name = name_
         elif nodeName_ == 'rgba':
@@ -2981,17 +2976,14 @@ class externalReferenceType(GeneratedsSuper):
         if value is not None and 'type' not in already_processed:
             already_processed.add('type')
             self.type_ = value
-            self.type_ = ' '.join(self.type_.split())
         value = find_attr_value_('otherType', node)
         if value is not None and 'otherType' not in already_processed:
             already_processed.add('otherType')
             self.otherType = value
-            self.otherType = ' '.join(self.otherType.split())
         value = find_attr_value_('value', node)
         if value is not None and 'value' not in already_processed:
             already_processed.add('value')
             self.value = value
-            self.value = ' '.join(self.value.split())
         value = find_attr_value_('label', node)
         if value is not None and 'label' not in already_processed:
             already_processed.add('label')

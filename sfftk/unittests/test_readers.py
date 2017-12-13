@@ -25,37 +25,37 @@ __date__    = "2017-05-15"
 
 
 # readers
-class TestReaders_amreader(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.am_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am')
-        cls.header, cls.segments_by_stream = amreader.get_data(cls.am_file)
-        
-    def test_get_data(self):
-        """Test the main entry point: get_data(...)"""
-        self.assertIsInstance(self.header, ahds.header.AmiraHeader)
-        self.assertIsInstance(self.segments_by_stream, dict)
-        self.assertGreaterEqual(len(self.segments_by_stream), 1)
-        
-    def test_first_line_amiramesh(self):
-        """test that it's declared as an AmiraMesh file"""
-        self.assertEqual(self.header.designation.filetype, 'AmiraMesh')
-        
-    def test_first_line_binary_little_endian(self):
-        """test that it is formatted as BINARY-LITTLE-ENDIAN"""
-        self.assertEqual(self.header.designation.format, 'BINARY-LITTLE-ENDIAN')
-        
-    def test_first_line_version(self):
-        """test that it is version 2.1"""
-        self.assertEqual(self.header.designation.version, '2.1')
-        
-    def test_lattice_present(self):
-        """test Lattice definition exists in definitions"""
-        self.assertTrue('Lattice' in self.header.definitions.attrs)
-        
-    def test_materials_present(self):
-        """test Materials exist in parameters"""
-        self.assertIsNotNone('Materials' in self.header.parameters.attrs)
+# class TestReaders_amreader(unittest.TestCase):
+#     @classmethod
+#     def setUpClass(cls):
+#         cls.am_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am')
+#         cls.header, cls.segments_by_stream = amreader.get_data(cls.am_file)
+#         
+#     def test_get_data(self):
+#         """Test the main entry point: get_data(...)"""
+#         self.assertIsInstance(self.header, ahds.header.AmiraHeader)
+#         self.assertIsInstance(self.segments_by_stream, dict)
+#         self.assertGreaterEqual(len(self.segments_by_stream), 1)
+#         
+#     def test_first_line_amiramesh(self):
+#         """test that it's declared as an AmiraMesh file"""
+#         self.assertEqual(self.header.designation.filetype, 'AmiraMesh')
+#         
+#     def test_first_line_binary_little_endian(self):
+#         """test that it is formatted as BINARY-LITTLE-ENDIAN"""
+#         self.assertEqual(self.header.designation.format, 'BINARY-LITTLE-ENDIAN')
+#         
+#     def test_first_line_version(self):
+#         """test that it is version 2.1"""
+#         self.assertEqual(self.header.designation.version, '2.1')
+#         
+#     def test_lattice_present(self):
+#         """test Lattice definition exists in definitions"""
+#         self.assertTrue('Lattice' in self.header.definitions.attrs)
+#         
+#     def test_materials_present(self):
+#         """test Materials exist in parameters"""
+#         self.assertIsNotNone('Materials' in self.header.parameters.attrs)
          
          
 class TestReaders_mapreader(unittest.TestCase):
@@ -149,6 +149,7 @@ class TestReaders_mapreader(unittest.TestCase):
         with self.assertRaises(ValueError):
             mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data1.map'))
   
+
 class TestReaders_modreader(unittest.TestCase):
     @classmethod
     def setUp(cls):
