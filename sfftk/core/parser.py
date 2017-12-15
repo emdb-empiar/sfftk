@@ -687,17 +687,17 @@ def parse_args(_args):
             import re
             dirname = os.path.dirname(args.from_file)
             if args.format:
-                fn = "".join(os.path.basename(args.from_file).split('.')[:-1]) + '.{}'.format(args.format)
+                fn = ".".join(os.path.basename(args.from_file).split('.')[:-1]) + '.{}'.format(args.format)
                 args.__setattr__('output', os.path.join(dirname, fn))
             else:
                 if re.match(r'.*\.sff$', args.from_file): # convert file.sff to file.hff
-                    fn = "".join(os.path.basename(args.from_file).split('.')[:-1]) + '.hff'
+                    fn = ".".join(os.path.basename(args.from_file).split('.')[:-1]) + '.hff'
                     args.__setattr__('output', os.path.join(dirname, fn))
                 elif re.match(r'.*\.hff$', args.from_file): # convert file.hff to file.sff
-                    fn = "".join(os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
+                    fn = ".".join(os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
                     args.__setattr__('output', os.path.join(dirname, fn))
             if args.verbose:
-                print_date("Seting output file to {}".format(args.output))
+                print_date("Setting output file to {}".format(args.output))
         
         # ensure valid primary_descriptor
         if args.primary_descriptor:
