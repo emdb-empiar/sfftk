@@ -28,14 +28,14 @@ class TestFormats(unittest.TestCase):
         # schema version
         cls.schema_version = schema.SFFSegmentation().version
         # files
-#         cls.am_file = os.path.join(cls.segmentations_path, 'test_data.am')
+        cls.am_file = os.path.join(cls.segmentations_path, 'test_data.am')
         cls.seg_file = os.path.join(cls.segmentations_path, 'test_data.seg')
         cls.map_file = os.path.join(cls.segmentations_path, 'test_data.map')
         cls.mod_file = os.path.join(cls.segmentations_path, 'test_data.mod')
         cls.stl_file = os.path.join(cls.segmentations_path, 'test_data.stl')
         cls.surf_file = os.path.join(cls.segmentations_path, 'test_data.surf')
         # am
-#         cls.am_segmentation = am.AmiraMeshSegmentation(cls.am_file)
+        cls.am_segmentation = am.AmiraMeshSegmentation(cls.am_file)
         # seg
         cls.seg_segmentation = seg.SeggerSegmentation(cls.seg_file)
         # map
@@ -48,12 +48,12 @@ class TestFormats(unittest.TestCase):
         cls.surf_segmentation = surf.AmiraHyperSurfaceSegmentation(cls.surf_file)
         
     # read
-#     def test_am_read(self):
-#         """Read an AmiraMesh (.am) segmentation"""
-#         # assertions
-#         self.assertIsInstance(self.am_segmentation.header, am.AmiraMeshHeader)
-#         self.assertIsInstance(self.am_segmentation.segments, list)
-#         self.assertIsInstance(self.am_segmentation.segments[0], am.AmiraMeshSegment)
+    def test_am_read(self):
+        """Read an AmiraMesh (.am) segmentation"""
+        # assertions
+        self.assertIsInstance(self.am_segmentation.header, am.AmiraMeshHeader)
+        self.assertIsInstance(self.am_segmentation.segments, list)
+        self.assertIsInstance(self.am_segmentation.segments[0], am.AmiraMeshSegment)
          
     def test_seg_read(self):
         """Read a Segger (.seg) segmentation"""
@@ -89,19 +89,19 @@ class TestFormats(unittest.TestCase):
         self.assertIsInstance(self.surf_segmentation.header, surf.AmiraHyperSurfaceHeader)
         self.assertIsInstance(self.surf_segmentation.segments, list)
         self.assertIsInstance(self.surf_segmentation.segments[0], surf.AmiraHyperSurfaceSegment)
-#         
-#     # convert
-#     def test_am_convert(self):
-#         """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
-#         sff_segmentation = self.am_segmentation.convert()
-#         # assertions
-#         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-#         self.assertEqual(sff_segmentation.name, 'AmiraMesh Segmentation')
-#         self.assertEqual(sff_segmentation.version, self.schema_version)
-#         self.assertEqual(sff_segmentation.software.name, 'Amira')
-#         self.assertEqual(sff_segmentation.software.version, self.am_segmentation.header.designation.version)
-#         self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.am_file))
-#         self.assertEqual(sff_segmentation.primaryDescriptor, 'contourList')
+         
+    # convert
+    def test_am_convert(self):
+        """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
+        sff_segmentation = self.am_segmentation.convert()
+        # assertions
+        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
+        self.assertEqual(sff_segmentation.name, 'AmiraMesh Segmentation')
+        self.assertEqual(sff_segmentation.version, self.schema_version)
+        self.assertEqual(sff_segmentation.software.name, 'Amira')
+        self.assertEqual(sff_segmentation.software.version, self.am_segmentation.header.designation.version)
+        self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.am_file)))
+        self.assertEqual(sff_segmentation.primaryDescriptor, 'threeDVolume')
          
     def test_seg_convert(self):
         """Convert a segmentation from a Segger file to an SFFSegmentation object"""
