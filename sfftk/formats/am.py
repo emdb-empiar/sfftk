@@ -266,8 +266,15 @@ class AmiraMeshSegmentation(Segmentation):
     def segments(self):
         """Segments in this segmentation"""
         segments = list()
-        for segment_id in self.header.parameters.Materials.ids:
-            segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
+        if hasattr(self.header.parameters, 'Materials') or hasattr(self.header.parameters, 'materials'):
+            for segment_id in self.header.parameters.Materials.ids:
+                segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
+        else:
+            indices_set = set(self._volume.flatten().tolist())
+            print indices_set
+            segment_indices = indices_set.difference(set([0]))
+            for segment_id in segment_indices:
+                segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
         return segments
         """
         segments = list()
