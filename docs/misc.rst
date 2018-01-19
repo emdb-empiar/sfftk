@@ -14,7 +14,8 @@ Viewing File Metadata
 Settings Configurations
 =======================
 
-Some of the functionality provided by sfftk relies on persistent configurations. In the section we outline all you need to know to work with sfftk configurations.
+Some of the functionality provided by sfftk relies on persistent configurations. 
+In the section we outline all you need to know to work with sfftk configurations.
 
 Configurations are handled using the ``config`` utility with several subcommands.
 
