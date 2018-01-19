@@ -107,40 +107,57 @@ sfftk is available on PyPI meaning that all that one needs to do is run:
 Source
 ~~~~~~
 
-The sfftk source is available from CCP-EM SVN repository `https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F <https://ccpforge.cse.rl.ac.uk/gf/project/ccpem/scmsvn/?action=browse&path=%2Fsrc%2Fccpem_progs%2Femdb_sfftk%2F>`__.
+The sfftk source is available from Github `https://github.com/emdb-empiar/sfftk <https://github.com/emdb-empiar/sfftk>`_ or from CCP-EM Gitlab repository `https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk <https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk>`_.
 
 Features
 ========
 
-The main function of sfftk is to handle conversion to and from application-specific segmentation file formats and annotation of EMDB-SFF files.
+sfftk has two principal functions:
+
+- convert application-specific segmentation file format (AS-SFF) files to EMDB-SFF;
+- annotate EMDB-SFF files against known ontologies.
 
 Conversion
 ----------
 
-The primary functionality in sfftk is conversion of application-specific segmentation file formats to the open EMDB-SFF. For a full description of how to perform conversion, please see the :doc:`guide to format conversion <converting>`.
+Segmentation files may be converted to EMDB-SFF files using the ``convert`` command.
+
+.. code:: bash
+
+	sff convert file.am -o file.sff
+
+For a full description of how to perform conversion, please see the :doc:`guide to format conversion <converting>`.
 
 Annotation
 ----------
 
-sfftk provides a simple set of tools to allow viewing, searching and modifying annotations (notes) associated with the segmentation and individual segments. Annotations added should be either from a public ontology or be an accession from a public database. See the :doc:`guide to annotating segmentations <annotating>` for a full treatment.
+Annotation is performed using the ``notes`` utility on EMDB-SFF files.
+
+.. code:: bash
+
+	sff notes show -H file.sff
+
+sfftk provides a simple set of tools to allow `viewing, searching and modifying annotations` associated with the segmentation and individual segments. The added annotations should be either from a public ontology or be an accession from a public database. 
+
+See the :doc:`guide to annotating segmentations <annotating>` for a full treatment.
 
 Miscellaneous
 -------------
 
 sfftk may also be used for several miscellaneous operations such as:
 
--  Viewing metadata
+-  Viewing segmentation metadata
 
--  Setting configurations
+-  Setting configurations that affect how sfftk works
 
--  Running unit tests
+-  Running unit tests with the ``tests`` command
 
 More information on this can be found in the :doc:`guide to miscellaneous operations <misc>`.
 
 Developing with sfftk
 ---------------------
 
-sfftk has be developed to be modular with functionality decoupled between sub-packages. The main classes involved are found in the sfftk.schema package. Here is the `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`__. See the :doc:`guide to developing with sfftk <developing>` for a complete description.
+sfftk is developed as a set of decoupled packages providing the various functionality. The main classes involved are found in the ``sfftk.schema package``. Please see `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`__. There is also a :doc:`guide to developing with sfftk <developing>` which provides useful instructions.
 
 Extending sfftk
 ---------------
