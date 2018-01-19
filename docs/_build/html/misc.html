@@ -96,7 +96,18 @@
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Miscellaneous Operations Using sfftk</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#viewing-file-metadata">Viewing File Metadata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#settings-configurations">Settings Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#settings-configurations">Settings Configurations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-commands">Configuration commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#listing-available-configurations">Listing available configurations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-a-single-configuration-value">Getting a single configuration value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-a-single-configuration-value">Setting a single configuration value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-a-single-configuration">Deleting a single configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clearing-all-configurations">Clearing all configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#where-configurations-are-stored">Where configurations are stored</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#running-unit-tests">Running Unit Tests</a></li>
 </ul>
 </li>
@@ -167,24 +178,106 @@
            <div itemprop="articleBody">
             
   <div class="section" id="miscellaneous-operations-using-sfftk">
-<h1>Miscellaneous Operations Using sfftk<a class="headerlink" href="#miscellaneous-operations-using-sfftk" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id1">Miscellaneous Operations Using sfftk</a><a class="headerlink" href="#miscellaneous-operations-using-sfftk" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#miscellaneous-operations-using-sfftk" id="id1">Miscellaneous Operations Using sfftk</a><ul>
+<li><a class="reference internal" href="#viewing-file-metadata" id="id2">Viewing File Metadata</a></li>
+<li><a class="reference internal" href="#settings-configurations" id="id3">Settings Configurations</a><ul>
+<li><a class="reference internal" href="#configuration-commands" id="id4">Configuration commands</a><ul>
+<li><a class="reference internal" href="#listing-available-configurations" id="id5">Listing available configurations</a></li>
+<li><a class="reference internal" href="#getting-a-single-configuration-value" id="id6">Getting a single configuration value</a></li>
+<li><a class="reference internal" href="#setting-a-single-configuration-value" id="id7">Setting a single configuration value</a></li>
+<li><a class="reference internal" href="#deleting-a-single-configuration" id="id8">Deleting a single configuration</a></li>
+<li><a class="reference internal" href="#clearing-all-configurations" id="id9">Clearing all configurations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-configurations-are-stored" id="id10">Where configurations are stored</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-unit-tests" id="id11">Running Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section" id="viewing-file-metadata">
-<h2>Viewing File Metadata<a class="headerlink" href="#viewing-file-metadata" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id2">Viewing File Metadata</a><a class="headerlink" href="#viewing-file-metadata" title="Permalink to this headline">¶</a></h2>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">view</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="settings-configurations">
-<h2>Settings Configurations<a class="headerlink" href="#settings-configurations" title="Permalink to this headline">¶</a></h2>
-<p>TBA</p>
-</div>
-<div class="section" id="running-unit-tests">
-<h2>Running Unit Tests<a class="headerlink" href="#running-unit-tests" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">test</span> <span class="p">[</span><span class="n">tool</span><span class="p">]</span>
-<span class="n">sff</span> <span class="n">tests</span> <span class="p">[</span><span class="n">tool</span><span class="p">]</span>
+<h2><a class="toc-backref" href="#id3">Settings Configurations</a><a class="headerlink" href="#settings-configurations" title="Permalink to this headline">¶</a></h2>
+<p>Some of the functionality provided by sfftk relies on persistent configurations. In the section we outline all you need to know to work with sfftk configurations.</p>
+<p>Configurations are handled using the <code class="docutils literal"><span class="pre">config</span></code> utility with several subcommands.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="p">[</span><span class="n">subcommand</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>&lt;tool&gt; is optional</p>
+<div class="section" id="configuration-commands">
+<h3><a class="toc-backref" href="#id4">Configuration commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="listing-available-configurations">
+<h4><a class="toc-backref" href="#id5">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">list</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-a-single-configuration-value">
+<h4><a class="toc-backref" href="#id6">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="n">CONFIG_NAME</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-a-single-configuration-value">
+<h4><a class="toc-backref" href="#id7">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">CONFIG_NAME</span> <span class="n">CONFIG_VALUE</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-single-configuration">
+<h4><a class="toc-backref" href="#id8">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="k">del</span> <span class="n">CONFIG_NAME</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="clearing-all-configurations">
+<h4><a class="toc-backref" href="#id9">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this headline">¶</a></h4>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">clear</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="where-configurations-are-stored">
+<h3><a class="toc-backref" href="#id10">Where configurations are stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
+<p>sfftk ships with a config file called <code class="docutils literal"><span class="pre">sff.conf</span></code> which is located in the root of the package.
+In some cases this might be a read-only location e.g. if installed <code class="docutils literal"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
+Therefore, default read-only configurations will be obtained from this file.
+However, if the user would like to write new configs they will be written to <code class="docutils literal"><span class="pre">~/sfftk/sff.conf</span></code>.
+Additionally, a user may specify a third location using the <code class="docutils literal"><span class="pre">-p/--config-path</span></code> flag to either read or write a new config.
+Correspondingly, custom configs will only be used if the <code class="docutils literal"><span class="pre">-p/--config-path</span></code> flag is used.</p>
+<p>For example</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VAL</span>
+</pre></div>
+</div>
+<p>will add the line <code class="docutils literal"><span class="pre">NAME=VAL</span></code> to <code class="docutils literal"><span class="pre">~/.sfftk/sff.conf</span></code> but</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VAL</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>will add it to <code class="docutils literal"><span class="pre">/path/to/sff.conf</span></code> (provided it is writable by the current user).</p>
+<p>The order of precedence, therefore is:</p>
+<ul class="simple">
+<li>custom configs specified with <code class="docutils literal"><span class="pre">-p/--config-path</span></code>;</li>
+<li>user configs in <code class="docutils literal"><span class="pre">~/.sfftk/sff.conf</span></code>; then</li>
+<li>packaged configs (fallback if none of the above are present);</li>
+</ul>
+</div>
+</div>
+<div class="section" id="running-unit-tests">
+<h2><a class="toc-backref" href="#id11">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="p">[</span><span class="n">tool</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">&lt;tool&gt;</span></code> is optional and if left out all tests for all packages are run.</p>
 </div>
 </div>
 
