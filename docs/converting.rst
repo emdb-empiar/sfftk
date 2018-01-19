@@ -236,7 +236,10 @@ TODO: ALLOW A USER TO PASS A FILE WHOSE CONTENTS WILL BE INSERTED INTO <details/
 Changing The Primary Descriptor
 ===============================
 
-The EMDB-SFF data model provides for four possible geometrical descriptors: contours (contourList), meshes (meshList), shape primitives (shapePrimitiveList) and 3D volumes (threeDVolume). In some cases, e.g., IMOD segmentations, more than one geometrical descriptor may have been specified for the same segmentations. The mandatory <primaryDescriptor/> field specifies the main geometrical descriptor to be used when performing conversions and other processing tasks. Only valid values are allowed; otherwise a ValueError is raised.
+The EMDB-SFF data model provides for four possible geometrical descriptors: `meshes (meshList), shape primitives (shapePrimitiveList)` and `3D volumes (threeDVolume)`. 
+In some cases, e.g., IMOD segmentations, more than one geometrical descriptor may have been specified for the same segmentations. 
+The mandatory `<primaryDescriptor/>` field specifies the main geometrical descriptor to be used when performing conversions and other processing tasks. 
+Only valid values are allowed; otherwise a ValueError is raised.
 
 .. code:: bash
 

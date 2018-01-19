@@ -409,7 +409,10 @@
 </div>
 <div class="section" id="changing-the-primary-descriptor">
 <h2><a class="toc-backref" href="#id24">Changing The Primary Descriptor</a><a class="headerlink" href="#changing-the-primary-descriptor" title="Permalink to this headline">¶</a></h2>
-<p>The EMDB-SFF data model provides for four possible geometrical descriptors: contours (contourList), meshes (meshList), shape primitives (shapePrimitiveList) and 3D volumes (threeDVolume). In some cases, e.g., IMOD segmentations, more than one geometrical descriptor may have been specified for the same segmentations. The mandatory &lt;primaryDescriptor/&gt; field specifies the main geometrical descriptor to be used when performing conversions and other processing tasks. Only valid values are allowed; otherwise a ValueError is raised.</p>
+<p>The EMDB-SFF data model provides for four possible geometrical descriptors: <cite>meshes (meshList), shape primitives (shapePrimitiveList)</cite> and <cite>3D volumes (threeDVolume)</cite>.
+In some cases, e.g., IMOD segmentations, more than one geometrical descriptor may have been specified for the same segmentations.
+The mandatory <cite>&lt;primaryDescriptor/&gt;</cite> field specifies the main geometrical descriptor to be used when performing conversions and other processing tasks.
+Only valid values are allowed; otherwise a ValueError is raised.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">primary</span><span class="o">-</span><span class="n">descriptor</span> <span class="n">contourList</span> <span class="n">file</span><span class="o">.</span><span class="n">surf</span> <span class="c1"># AmiraHxSurface file</span>
 </pre></div>
 </div>
