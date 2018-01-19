@@ -120,7 +120,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#truncating-segments-segger-only">Truncating Segments (Segger Only)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#specify-details">Specify Details</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#changing-the-primary-descriptor">Changing The Primary Descriptor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#experimental-convert-contour-segmentation-to-mesh-surface"><em>Experimental</em>: Convert Contour Segmentation to Mesh Surface</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
@@ -224,7 +223,6 @@
 <li><a class="reference internal" href="#truncating-segments-segger-only" id="id22">Truncating Segments (Segger Only)</a></li>
 <li><a class="reference internal" href="#specify-details" id="id23">Specify Details</a></li>
 <li><a class="reference internal" href="#changing-the-primary-descriptor" id="id24">Changing The Primary Descriptor</a></li>
-<li><a class="reference internal" href="#experimental-convert-contour-segmentation-to-mesh-surface" id="id25"><em>Experimental</em>: Convert Contour Segmentation to Mesh Surface</a></li>
 </ul>
 </li>
 </ul>
@@ -449,15 +447,6 @@
 </table>
 <p>Note that the primary descriptor should only be changed to a value of a geometrical descriptor that is <em>actually</em> present in the EMDB-SFF file.</p>
 <p>For IMOD files, sfftk tries to intelligently determine which primary descriptor to use. Also, it also tries to ensure that a change corresponds to the actual file contents.</p>
-</div>
-<div class="section" id="experimental-convert-contour-segmentation-to-mesh-surface">
-<h2><a class="toc-backref" href="#id25"><em>Experimental</em>: Convert Contour Segmentation to Mesh Surface</a><a class="headerlink" href="#experimental-convert-contour-segmentation-to-mesh-surface" title="Permalink to this headline">¶</a></h2>
-<p>Mesh surfaces are more efficient to work with than contours. However, converting contours to a mesh is not straightforward. This option relies on IMOD imodmesh command to convert an (note!) EMDB-SFF file with contours into one with meshes. It is experimental and may fail on some files.</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">M</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">contour</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">mesh</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="n">file_mesh</span><span class="o">.</span><span class="n">sff</span>
-</pre></div>
-</div>
-<p>Here file.sff has a <em>contourList</em> primary descriptor. If successful, the converted file will have meshes and primary descriptor set to <em>meshList</em>. The output file will be XML (by default).</p>
 </div>
 </div>
 

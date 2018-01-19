@@ -27,7 +27,7 @@ sfftk is released under an Apache License, Version 2.0 and is copyright of EMBL-
 Data Model
 ----------
 
-sfftk is built to handle EMDB-SFF files. The corresponding schema (v0.6.0a4) may be obtained at `http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html <http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html>`__. Changes to the schema are welcome for discussion at the Segmentation Working Group at `https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg <https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg>`__.
+sfftk is built to handle EMDB-SFF files. The corresponding schema (v0.6.0a4) may be obtained at `http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html <http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html>`_. Changes to the schema are welcome for discussion at the Segmentation Working Group at `https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg <https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg>`_.
 
 Supported Formats
 -----------------
@@ -49,7 +49,7 @@ The following file formats are currently supported (in alphabetical order of ext
 Contact
 -------
 
-Any questions or comments should be addressed to `ardan@ebi.ac.uk <mailto:ardan@ebi.ac.uk>`__ or `pkorir@ebi.ac.uk <mailto:pkorir@ebi.ac.uk>`__.
+Any questions or comments should be addressed to `ardan@ebi.ac.uk <mailto:ardan@ebi.ac.uk>`_ or `pkorir@ebi.ac.uk <mailto:pkorir@ebi.ac.uk>`_.
 
 Publications
 ------------
@@ -60,11 +60,11 @@ The following articles should be cited whenever sfftk is used in a publication:
 
 The EMDB-SFF data model is the result of various community consultations which are published in the following articles:
 
--  `Patwardhan, Ardan, Robert Brandt, Sarah J. Butcher, Lucy Collinson, David Gault, Kay Grünewald, Corey Hecksel et al. Building bridges between cellular and molecular structural biology. eLife 6 (2017). <http://europepmc.org/abstract/MED/28682240>`__
+-  `Patwardhan, Ardan, Robert Brandt, Sarah J. Butcher, Lucy Collinson, David Gault, Kay Grünewald, Corey Hecksel et al. Building bridges between cellular and molecular structural biology. eLife 6 (2017). <http://europepmc.org/abstract/MED/28682240>`_
 
--  `Patwardhan, Ardan, Alun Ashton, Robert Brandt, Sarah Butcher, Raffaella Carzaniga, Wah Chiu, Lucy Collinson et al. A 3D cellular context for the macromolecular world. Nature structural & molecular biology 21, no. 10 (2014): 841-845. <http://europepmc.org/abstract/MED/25289590>`__
+-  `Patwardhan, Ardan, Alun Ashton, Robert Brandt, Sarah Butcher, Raffaella Carzaniga, Wah Chiu, Lucy Collinson et al. A 3D cellular context for the macromolecular world. Nature structural & molecular biology 21, no. 10 (2014): 841-845. <http://europepmc.org/abstract/MED/25289590>`_
 
--  `Patwardhan, Ardan, José-Maria Carazo, Bridget Carragher, Richard Henderson, J. Bernard Heymann, Emma Hill, Grant J. Jensen et al. Data management challenges in three-dimensional EM. Nature structural & molecular biology 19, no. 12 (2012): 1203-1207. <http://europepmc.org/abstract/MED/23211764>`__
+-  `Patwardhan, Ardan, José-Maria Carazo, Bridget Carragher, Richard Henderson, J. Bernard Heymann, Emma Hill, Grant J. Jensen et al. Data management challenges in three-dimensional EM. Nature structural & molecular biology 19, no. 12 (2012): 1203-1207. <http://europepmc.org/abstract/MED/23211764>`_
 
 Getting Started
 ===============
@@ -75,9 +75,9 @@ Obtaining and Installing sfftk
 Dependencies
 ~~~~~~~~~~~~
 
-We highly recommend installing sfftk in an anaconda environment because this makes it easy to obtain some of the dependencies. You can find out more about installing anaconda at `https://www.anaconda.com/download/ <https://www.anaconda.com/download/>`__.
+We highly recommend installing sfftk in an anaconda environment because this makes it easy to obtain some of the dependencies. You can find out more about installing anaconda at `https://www.anaconda.com/download/ <https://www.anaconda.com/download/>`_.
 
-The following dependencies are required and will be automatically installed when `using PyPI <#pypi>`__:
+The following dependencies are required and will be automatically installed when `using PyPI <#pypi>`_:
 
 -  ahds (v.0.1.6 or greater)
 
@@ -107,7 +107,7 @@ sfftk is available on PyPI meaning that all that one needs to do is run:
 Source
 ~~~~~~
 
-The sfftk source is available from Github `https://github.com/emdb-empiar/sfftk <https://github.com/emdb-empiar/sfftk>`__ or from CCP-EM Gitlab repository `https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk <https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk>`_.
+The sfftk source is available from Github `https://github.com/emdb-empiar/sfftk <https://github.com/emdb-empiar/sfftk>`_ or from CCP-EM Gitlab repository `https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk <https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk>`_.
 
 Features
 ========
@@ -157,7 +157,7 @@ More information on this can be found in the :doc:`guide to miscellaneous operat
 Developing with sfftk
 ---------------------
 
-sfftk is developed as a set of decoupled packages providing the various functionality. The main classes involved are found in the ``sfftk.schema package``. Please see `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`__. There is also a :doc:`guide to developing with sfftk <developing>` which provides useful instructions.
+sfftk is developed as a set of decoupled packages providing the various functionality. The main classes involved are found in the ``sfftk.schema package``. Please see `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`_. There is also a :doc:`guide to developing with sfftk <developing>` which provides useful instructions.
 
 Extending sfftk
 ---------------
