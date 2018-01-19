@@ -187,69 +187,29 @@
 <span id="configuration-module"></span><h2>Configuration module<a class="headerlink" href="#module-sfftk.core.configs" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="configs-py">
 <h3>configs.py<a class="headerlink" href="#configs-py" title="Permalink to this headline">¶</a></h3>
-<p>This module defines a way in which to handle configs in a hierarchical manner.</p>
-<p>There are three classes of configs:</p>
-<ol class="arabic simple">
-<li>CLI configs</li>
-<li>User configs</li>
-<li>Shipped configs</li>
-</ol>
-<p>Only one class can be used at a time .i.e. either all values are specified
-as (1) or (2) or (3). No mixing of configs.</p>
-<p>1. CLI configs are specified as CLI arguments. The have the highest 
-priority. They come in two flavours:</p>
-<ol class="lowerroman simple">
-<li>Path to a custom config file</li>
-<li>Individual configs</li>
-</ol>
-<p>(i) has priority over (ii). In (i) the path has to be valid otherwise
-the config file is not even considered.</p>
-<p>2. User configs are stored by default in ~/.sfftk/sff.conf. They are the 
-default configs for storing user-specific configs.</p>
-<p>3. <code class="docutils literal"><span class="pre">sfftk</span></code> ships will basic configs for <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span></code>, which are stored
-in <code class="docutils literal"><span class="pre">sfftk.sff.conf</span></code>. They will only apply if neither (1) nor (2) are 
-present. They cannot be changed and are only overriden by CLI or User configs.</p>
-<dl class="class">
-<dt id="sfftk.core.configs.Configs">
-<em class="property">class </em><code class="descclassname">sfftk.core.configs.</code><code class="descname">Configs</code><span class="sig-paren">(</span><em>config_fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.OrderedDict</span></code></p>
-<p>Configs class as a thin wrap around OrderedDict</p>
-<dl class="method">
-<dt id="sfftk.core.configs.Configs.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.clear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear configs</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="sfftk.core.configs.Configs.read">
-<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read configs from file</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="sfftk.core.configs.Configs.write">
-<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write configs to file</p>
-</dd></dl>
-
-</dd></dl>
-
+<p>This module defines classes and functions to correctly process persistent
+configurations. Please see the <a class="reference internal" href="misc.html"><span class="doc">guide to miscellaneous operations</span></a>
+for a complete description of working with configs.</p>
 <dl class="function">
-<dt id="sfftk.core.configs.clear_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">clear_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.clear_configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear all configs</p>
+<dt id="sfftk.core.configs.load_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">load_configs</code><span class="sig-paren">(</span><em>args</em>, <em>user_folder='.sfftk'</em>, <em>conf_fn='sff.conf'</em>, <em>config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.load_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load sfftk configs (persistent arguments)</p>
+<p>It is called in <code class="docutils literal"><span class="pre">sfftk.core.parser.py</span></code> to get configs for the current
+command.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>user_folder</strong> (<em>str</em>) – name of the user folder; default is <em>.sfftk</em></li>
+<li><strong>conf_fn</strong> (<em>str</em>) – name of the config file; default is <em>sff.conf</em></li>
+<li><strong>Configs</strong> (<em>class</em>) – the class defining configs</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+<tr class="field-even field"><th class="field-name" colspan="2">Return dict configs:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">dictionary of configs</p>
 </td>
 </tr>
 </tbody>
@@ -257,9 +217,9 @@ present. They cannot be changed and are only overriden by CLI or User configs.</
 </dd></dl>
 
 <dl class="function">
-<dt id="sfftk.core.configs.del_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">del_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.del_configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete the named config</p>
+<dt id="sfftk.core.configs.list_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">list_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.list_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List configs in terminal</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -301,51 +261,6 @@ present. They cannot be changed and are only overriden by CLI or User configs.</
 </dd></dl>
 
 <dl class="function">
-<dt id="sfftk.core.configs.list_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">list_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.list_configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>List configs in terminal</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="sfftk.core.configs.load_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">load_configs</code><span class="sig-paren">(</span><em>args</em>, <em>user_folder='.sfftk'</em>, <em>conf_fn='sff.conf'</em>, <em>config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.load_configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load sfftk configs (persistent arguments)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>user_folder</strong> (<em>str</em>) – name of the user folder; default is <em>.sfftk</em></li>
-<li><strong>conf_fn</strong> (<em>str</em>) – name of the config file; default is <em>sff.conf</em></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return dict configs:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">dictionary of configs</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="sfftk.core.configs.set_configs">
 <code class="descclassname">sfftk.core.configs.</code><code class="descname">set_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.set_configs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the config of the given name to have the given value</p>
@@ -367,15 +282,121 @@ present. They cannot be changed and are only overriden by CLI or User configs.</
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="sfftk.core.configs.del_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">del_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.del_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the named config</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.core.configs.clear_configs">
+<code class="descclassname">sfftk.core.configs.</code><code class="descname">clear_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.clear_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all configs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
+<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.core.configs.Configs">
+<em class="property">class </em><code class="descclassname">sfftk.core.configs.</code><code class="descname">Configs</code><span class="sig-paren">(</span><em>config_fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.OrderedDict</span></code></p>
+<p>Class defining configs</p>
+<p>Configurations are stored in a subclass of <code class="docutils literal"><span class="pre">OrderedDict</span></code> with 
+appended methods for reading (<code class="docutils literal"><span class="pre">read()</span></code>), writing (<code class="docutils literal"><span class="pre">write</span></code>) and 
+clearing (<code class="docutils literal"><span class="pre">clear()</span></code>) configs.</p>
+<p>Printing an object of this class displays all configs.</p>
+<p>This class is used an argument to <code class="docutils literal"><span class="pre">load_configs()</span></code>.</p>
+<dl class="method">
+<dt id="sfftk.core.configs.Configs.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear configs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.core.configs.Configs.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read configs from file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.core.configs.Configs.write">
+<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write configs to file</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="module-sfftk.core.parser">
 <span id="parser-module"></span><h2>Parser module<a class="headerlink" href="#module-sfftk.core.parser" title="Permalink to this headline">¶</a></h2>
 <p>Parses command-line options</p>
 <dl class="function">
+<dt id="sfftk.core.parser.parse_args">
+<code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse and check command-line arguments and also return configs.</p>
+<p>This function does all the heavy lifting in ensuring that commandline
+arguments are properly formatted and checked for sanity. It also 
+extracts configs from the config files.</p>
+<p>In this way command handlers (defined in <code class="docutils literal"><span class="pre">sfftk/sff.py</span></code> e.g. <code class="docutils literal"><span class="pre">handle_convert(...)</span></code>)
+assume correct argument values and can concentrate on functionality.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>_args</strong> (<em>list</em>) – list of arguments</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed arguments</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">argparse.Namespace</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">config dict-like object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.core.configs.Config</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="sfftk.core.parser.add_args">
 <code class="descclassname">sfftk.core.parser.</code><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em>, <em>the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to return the argument definition to the given parser</p>
+<dd><p>Convenience function to add <code class="docutils literal"><span class="pre">the_arg</span></code> to the <code class="docutils literal"><span class="pre">parser</span></code>.</p>
+<p>This relies on the argument being structured as a dictionary with the keys 
+<code class="docutils literal"><span class="pre">args</span></code> for positional arguments and <code class="docutils literal"><span class="pre">kwargs</span></code> for the keyword
+arguments. The value of doing this is that arguments that are reused
+in several parsers can be referred to by a variable instead of being 
+redefined.</p>
 <p>Usage:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_arg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-x&#39;</span><span class="p">],</span> <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">}}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">this_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
@@ -397,29 +418,6 @@ present. They cannot be changed and are only overriden by CLI or User configs.</
 </tr>
 <tr class="field-odd field"><th class="field-name">Rtype parser:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">argparse.Parser</span></code></p>
 </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="sfftk.core.parser.parse_args">
-<code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse and check command-line arguments and also return configs</p>
-<p>Subcommand handlers defined in __main__.py (e.g. handle_conver(…)) should not have to check arguments for consistency</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>_args</strong> (<em>list</em>) – list of arguments</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed arguments</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">argparse.Namespace</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">config dict-like object</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.core.configs.Config</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -470,7 +468,9 @@ present. They cannot be changed and are only overriden by CLI or User configs.</
 <dl class="function">
 <dt id="sfftk.core.print_tools.print_static">
 <code class="descclassname">sfftk.core.print_tools.</code><code class="descname">print_static</code><span class="sig-paren">(</span><em>print_string</em>, <em>stream=&lt;open file '&lt;stderr&gt;'</em>, <em>mode 'w'&gt;</em>, <em>incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_static" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the given string with date on the given stream</p>
+<dd><p>Print the given string with date on the given stream from the first position 
+overwriting any characters.</p>
+<p>This is a useful way to display progress without overcrowding the screen.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

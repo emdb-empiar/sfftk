@@ -107,15 +107,20 @@ sfftk is available on PyPI meaning that all that one needs to do is run:
 Source
 ~~~~~~
 
-The sfftk source is available from Github `https://github.com/emdb-empiar/sfftk <https://github.com/emdb-empiar/sfftk>`_ or from CCP-EM Gitlab repository `https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk <https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk>`_.
+The sfftk source is available from Github `https://github.com/emdb-empiar/sfftk 
+<https://github.com/emdb-empiar/sfftk>`_ 
+or from CCP-EM Gitlab repository 
+`https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk 
+<https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk>`_.
 
 Features
 ========
 
 sfftk has two principal functions:
 
-- convert application-specific segmentation file format (AS-SFF) files to EMDB-SFF;
-- annotate EMDB-SFF files against known ontologies.
+- `convert` application-specific segmentation file format (AS-SFF) files to EMDB-SFF;
+
+- `annotate` EMDB-SFF files against known ontologies.
 
 Conversion
 ----------

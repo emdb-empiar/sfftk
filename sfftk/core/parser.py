@@ -18,7 +18,13 @@ from ..notes import EXTERNAL_REFERENCES
 verbosity_range = range(4)
 
 def add_args(parser, the_arg):
-    """Convenience function to return the argument definition to the given parser
+    """Convenience function to add ``the_arg`` to the ``parser``.
+    
+    This relies on the argument being structured as a dictionary with the keys 
+    ``args`` for positional arguments and ``kwargs`` for the keyword
+    arguments. The value of doing this is that arguments that are reused
+    in several parsers can be referred to by a variable instead of being 
+    redefined. 
     
     Usage::
     
@@ -633,9 +639,14 @@ tests_parser.add_argument('-v', '--verbosity', default=1, type=int, help="set ve
 # parser function
 def parse_args(_args):
     """
-    Parse and check command-line arguments and also return configs
+    Parse and check command-line arguments and also return configs.
     
-    Subcommand handlers defined in __main__.py (e.g. handle_conver(...)) should not have to check arguments for consistency
+    This function does all the heavy lifting in ensuring that commandline
+    arguments are properly formatted and checked for sanity. It also 
+    extracts configs from the config files.
+    
+    In this way command handlers (defined in ``sfftk/sff.py`` e.g. ``handle_convert(...)``)
+    assume correct argument values and can concentrate on functionality.
     
     :param list _args: list of arguments
     :return: parsed arguments

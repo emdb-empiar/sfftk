@@ -59,7 +59,10 @@ def get_printable_ascii_string(s):
 
 
 def print_static(print_string, stream=sys.stderr, incl_date=True):
-    """Print the given string with date on the given stream
+    """Print the given string with date on the given stream from the first position 
+    overwriting any characters. 
+    
+    This is a useful way to display progress without overcrowding the screen.
     
     :param str print_string: the string to be printed
     :param stream: the stream to write to

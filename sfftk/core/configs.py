@@ -3,32 +3,9 @@
 configs.py
 ===========
 
-This module defines a way in which to handle configs in a hierarchical manner.
-
-There are three classes of configs:
-
-1. CLI configs
-2. User configs
-3. Shipped configs
-
-Only one class can be used at a time .i.e. either all values are specified
-as (1) or (2) or (3). No mixing of configs.
-
-1. CLI configs are specified as CLI arguments. The have the highest 
-priority. They come in two flavours:
-
-i. Path to a custom config file
-ii. Individual configs
-
-(i) has priority over (ii). In (i) the path has to be valid otherwise
-the config file is not even considered.
-
-2. User configs are stored by default in ~/.sfftk/sff.conf. They are the 
-default configs for storing user-specific configs.
-
-3. ``sfftk`` ships will basic configs for ``sff notes``, which are stored
-in ``sfftk.sff.conf``. They will only apply if neither (1) nor (2) are 
-present. They cannot be changed and are only overriden by CLI or User configs.
+This module defines classes and functions to correctly process persistent
+configurations. Please see the :doc:`guide to miscellaneous operations <misc>`
+for a complete description of working with configs.
 """
 from collections import OrderedDict
 import os.path
@@ -44,7 +21,16 @@ __date__    = '2016-08-23'
 
 
 class Configs(OrderedDict):
-    """Configs class as a thin wrap around OrderedDict"""
+    """Class defining configs
+    
+    Configurations are stored in a subclass of ``OrderedDict`` with 
+    appended methods for reading (``read()``), writing (``write``) and 
+    clearing (``clear()``) configs.
+    
+    Printing an object of this class displays all configs.
+    
+    This class is used an argument to ``load_configs()``.
+    """
     shipped_configs = os.path.join(sfftk.__path__[0], 'sff.conf')
     
     def __init__(self, config_fn, *args, **kwargs):
@@ -91,10 +77,14 @@ class Configs(OrderedDict):
 def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Configs):
     """Load sfftk configs (persistent arguments)
     
+    It is called in ``sfftk.core.parser.py`` to get configs for the current
+    command.
+    
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :param str user_folder: name of the user folder; default is *.sfftk*
     :param str conf_fn: name of the config file; default is *sff.conf*
+    :param class Configs: the class defining configs
     :return dict configs: dictionary of configs
     """ 
     """
