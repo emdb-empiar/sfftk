@@ -264,14 +264,3 @@ Note that the primary descriptor should only be changed to a value of a geometri
 
 For IMOD files, sfftk tries to intelligently determine which primary descriptor to use. Also, it also tries to ensure that a change corresponds to the actual file contents.
 
-*Experimental*: Convert Contour Segmentation to Mesh Surface
-============================================================
-
-Mesh surfaces are more efficient to work with than contours. However, converting contours to a mesh is not straightforward. This option relies on IMOD imodmesh command to convert an (note!) EMDB-SFF file with contours into one with meshes. It is experimental and may fail on some files.
-
-.. code:: bash
-
-    sff convert -M file.sff
-    sff convert --contour-to-mesh file.sff --output file_mesh.sff
-
-Here file.sff has a *contourList* primary descriptor. If successful, the converted file will have meshes and primary descriptor set to *meshList*. The output file will be XML (by default).
