@@ -2,6 +2,9 @@
 EMDB-SFF Toolkit (sfftk)
 ========================
 
+.. image:: https://badge.fury.io/py/sfftk.svg
+    :target: https://badge.fury.io/py/sfftk
+
 .. contents::
 
 Introduction
