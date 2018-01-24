@@ -8,6 +8,9 @@ EMDB-SFF Toolkit (``sfftk``)
 .. image:: https://travis-ci.org/emdb-empiar/sfftk.svg?branch=master
     :target: https://travis-ci.org/emdb-empiar/sfftk
 
+.. image:: https://coveralls.io/repos/github/emdb-empiar/sfftk/badge.svg?branch=master
+	:target: https://coveralls.io/github/emdb-empiar/sfftk?branch=master
+
 .. contents::
 
 Introduction
