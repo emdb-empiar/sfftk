@@ -1,6 +1,7 @@
 before_script:
     - python --version
     - yum -y update
+    - yum -y install gcc gcc-c++
     - yum install -y python-devel
     - curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
     - python get-pip.py
