@@ -1,0 +1,17 @@
+language: python
+sudo: true
+
+before_install:
+  - python --version
+  - apt-get update
+  - apt-get install build-essential
+  - apt-get install -y python-dev python-pip
+  - pip -V
+  - pip install setuptools
+
+install:
+  - python setup.py develop
+  - sff --help
+
+script:
+  - sff tests schema -v 3
