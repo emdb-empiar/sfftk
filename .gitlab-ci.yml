@@ -1,6 +1,7 @@
 before_script:
-    - which python
-    - python -v
+    - python --version
+    - python setup.py develop
+    - sff --help
 
 test:
     script:
