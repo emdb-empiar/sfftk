@@ -11,6 +11,11 @@ before_script:
     - python setup.py develop
     - sff --help
 
-test:
+tests:
     script:
-        - sff tests schema
+        - sff tests schema -v 3
+        - sff tests readers -v 3
+        - sff tests formats -v 3
+        - sff tests notes -v 3
+        - sff tests core -v 3
+        - sff tests main -v 3
