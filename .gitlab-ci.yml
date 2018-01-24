@@ -1,0 +1,3 @@
+before_script:
+    - which python
+    - python -v
