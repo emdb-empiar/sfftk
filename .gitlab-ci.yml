@@ -1,6 +1,6 @@
 before_script:
     - python --version
-    - yum install -y python-dev python-pip
+    - yum install -y python-devel python-pip
     - pip install setuptools
     - python setup.py develop
     - sff --help
