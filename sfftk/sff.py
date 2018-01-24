@@ -9,7 +9,6 @@ sfftk.sff is the main entry point for performing command-line operations.
 import os
 import re
 import shlex
-import struct
 import sys
 
 from . import schema
@@ -20,119 +19,6 @@ __author__  = "Paul K. Korir, PhD"
 __email__   = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__    = '2017-02-15'
 
-
-
-"""
-:TODO: add details!!!
-"""
-
-def create_mod(seg):
-    """Convert EMDB-SFF contourList segmentation to IMOD binary format
-    
-    :param seg: EMDB-SFF segmentation object
-    :type seg: sfftk.schema.SFFSegmentation
-    :return str bindata: binary packed string
-    """
-    bindata = struct.pack('>8s', 'IMODV1.2') # header
-    bindata += struct.pack('>128s', seg.name.ljust(128)) # name
-    if seg.boundingBox.xmax is not None:
-        bindata += struct.pack('>3i', seg.boundingBox.xmax, seg.boundingBox.ymax, seg.boundingBox.zmax) # xmax, ymax, zmax
-    bindata += struct.pack('>i', len(seg.segments)) # objsize
-    flags = [0] * 32
-    flags[-14] = 1 # Bit 13 on : mat1 and mat3 are stored as bytes
-    flags[-15] = 1 # Bit 14 on : otrans has image origin values
-    flags[-16] = 1 # Bit 15 on : current tilt angles are stored correctly
-    flags[-17] = 1 # Bit 16 on : model last viewed on Y/Z flipped or rotated image
-    bindata += struct.pack('>I', int("".join(map(str, flags)), 2)) # flags
-    bindata += struct.pack('>i', 1) # drawmode
-    bindata += struct.pack('>i', 2) # mousemode
-    bindata += struct.pack('>i', 136) # blacklevel
-    bindata += struct.pack('>i', 195) # whitelevel
-    bindata += struct.pack('>3f', 0, 0, 0) # xoffset, yoffset, zoffset
-    bindata += struct.pack('>3f', 1.0, 1.0, 1.0) # xscale, yscale, zscale
-    bindata += struct.pack('>i', 1) # object
-    bindata += struct.pack('>i', 20) # contour
-    bindata += struct.pack('>i', -1) # point
-    bindata += struct.pack('>i', 3) # res
-    bindata += struct.pack('>i', 128) # thresh
-    bindata += struct.pack('>f', 2.20196008682) # pixsize
-    bindata += struct.pack('>i', -9) # units
-    bindata += struct.pack('>i', 600936520) # csum
-    bindata += struct.pack('>3f', 0, 0, 0) # alpha, beta, gamma
-    # objts
-    for segment in seg.segments:
-        bindata += struct.pack('>4s', 'OBJT')
-        bindata += struct.pack('>64s', 'segment_{}'.format(segment.id).ljust(64)) # name
-        bindata += struct.pack('>16I', *([0] * 16)) # extra
-        bindata += struct.pack('>I', len(segment.contours)) # contsize
-        flags = [0] * 32
-        """
-        bit n is flags[-(n+1)]
-        e.g. bit 1 is flags[-2]
-        """
-#         flags[-4] = 1 # open - contours are not closed
-#         flags[-5] = 1 # wild - contours are not constrained in z
-#         flags[-9] = 0 # fill
-#         flags[-12] = 1 # lines
-#         flags[-14] = 1 # keep contours planar in open object
-        bindata += struct.pack('>I', int("".join(map(str, flags)), 2)) # flags
-        bindata += struct.pack('>i', 0) # axis
-        bindata += struct.pack('>i', 1) # drawmode
-        red, green, blue, alpha = segment.colour.rgba.value
-        bindata += struct.pack('>3f', red, green, blue) # red, green, blue
-        bindata += struct.pack('>i', 0) # pdrawsize
-        bindata += struct.pack('>B', 1) # symbol
-        bindata += struct.pack('>B', 3) # symsize
-        bindata += struct.pack('>B', 1) # linewidth2
-        bindata += struct.pack('>B', 1) # linewidth
-        bindata += struct.pack('>B', 0) # linesty
-        bindata += struct.pack('>B', 0) # symflags
-        bindata += struct.pack('>B', 0) # sympad
-        bindata += struct.pack('>B', int(100 - alpha*100)) # trans
-        bindata += struct.pack('>i', 0) # meshsize
-        bindata += struct.pack('>i', 0) # surfsize
-        # conts
-        for contour in segment.contours:
-            bindata += struct.pack('>4s', 'CONT')
-            bindata += struct.pack('>i', len(contour)) # psize
-            """
-            setting flags for this contour
-            flag bit 4: 0 - points of equal z
-                        1 - points not of equal z
-            """
-            flags = [0] * 32
-            bindata += struct.pack('>i', 0) # time
-            points = list()
-            for point in contour.points:
-                points += [point.x, point.y, point.z]
-            bindata += struct.pack('>I', int("".join(map(str, flags)), 2)) # flags
-            bindata += struct.pack('>i', 0) # surf
-            bindata += struct.pack('>{}f'.format(3*len(contour)), *points) # pt
-    # minx
-    data_array = map(float, seg.transforms[0].data_array.flatten().tolist())
-    bindata += struct.pack('>4s', 'MINX')
-    bindata += struct.pack('>i', 72) # bytes
-    bindata += struct.pack('>3f', 0.0, 0.0, 0.0) # oscale
-    bindata += struct.pack('>3f', data_array[3],data_array[7], data_array[11]) # otrans
-    bindata += struct.pack('>3f', 0.0, 0.0, 0.0) # orot
-    bindata += struct.pack('>3f', data_array[0],data_array[5], data_array[10]) # cscale
-    bindata += struct.pack('>3f', data_array[3],data_array[7], data_array[11]) # ctrans
-    bindata += struct.pack('>3f', 0.0, 0.0, 0.0) # crot
-    # ieof
-    bindata += struct.pack('>4c', *list('IEOF'))
-    return bindata
-
-def run_imodmesh(mod_file):
-    """Append meshes using imodmesh
-    
-    :param str mod_file: name of the IMOD file
-    :return int status: exit status of command line execution of imodmesh
-    """
-    import subprocess
-    cmd = "imodmesh -c -s -P 4 -T -o 8,13 {}".format(mod_file)
-    print_date("Running {}".format(cmd))
-    status = subprocess.call(shlex.split(cmd))
-    return status
 
 def handle_convert(args, configs):  # @UnusedVariable
     """
@@ -173,30 +59,6 @@ def handle_convert(args, configs):  # @UnusedVariable
         if args.verbose:
             print_date("Converting from EMDB-SFf (XML) file {}".format(args.from_file))
         seg = schema.SFFSegmentation(args.from_file)
-        """
-        # convert contours to meshes
-        if args.contours_to_mesh:
-            if args.verbose:
-                print_date("Attempting conversion of contourList to meshList".format(args.from_file))
-            pd = seg.primaryDescriptor
-            if pd == "contourList":
-                \"""
-                :TODO: first check if there are populated meshes; if so only change the primaryDescriptor
-                \"""
-                mod = create_mod(seg)
-                mod_file = tempfile.NamedTemporaryFile('w+b', dir=".", suffix=".mod", delete=False)
-                with open(mod_file.name, 'wb') as m:
-                    m.write(mod)
-                run_imodmesh(mod_file.name)
-                from .formats.mod import IMODSegmentation  # @Reimport
-                mod_seg = IMODSegmentation(mod_file.name)
-                seg = mod_seg.convert(args)
-                seg.primaryDescriptor = "meshList"
-                seg.contours = None
-            else:
-                print_date("Error: wrong primary descriptor type ({}); should be 'contourList'".format(pd))
-                return 1
-        """
     elif re.match(r'.*\.hff$', args.from_file, re.IGNORECASE):
         if args.verbose:
             print_date("Converting from EMDB-SFF (HDF5) file {}".format(args.from_file))
@@ -583,12 +445,12 @@ def handle_tests(args, configs):
         if 'core' in args.tool:
             from .unittests import test_core
             _module_test_runner(test_core, args)
-        if 'formats' in args.tool:
-            from .unittests import test_formats
-            _module_test_runner(test_formats, args)
         if 'schema' in args.tool:
             from .unittests import test_schema
             _module_test_runner(test_schema, args)
+        if 'formats' in args.tool:
+            from .unittests import test_formats
+            _module_test_runner(test_formats, args)
         if 'readers' in args.tool:
             from .unittests import test_readers
             _module_test_runner(test_readers, args)

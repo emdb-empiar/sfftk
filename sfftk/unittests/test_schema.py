@@ -407,6 +407,7 @@ class TestSFFSegmentation(unittest.TestCase):
         # test the number of transforms
         self.assertEqual(len(self.segmentation.transforms), 14)
         # test the transform IDs
+        print map(lambda t: t.id, self.segmentation.transforms)
         self.assertItemsEqual(map(lambda t: t.id, self.segmentation.transforms), range(14))
         # segments
         self.assertEqual(len(self.segmentation.segments), 1)

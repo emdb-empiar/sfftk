@@ -34,7 +34,7 @@ For example:
 	__TEMP_FILE_REF      = @
 	NAME                 = VALUE
 
-Configuration commands
+Configuration Commands
 ----------------------
 
 Listing available configurations
@@ -72,11 +72,14 @@ Clearing all configurations
 
 	sff config clear
 
-Where configurations are stored
+
+.. _configs:
+
+Where Configurations Are Stored
 ---------------------------------
 
 sfftk ships with a config file called ``sff.conf`` which is located in the root of the package. 
-In some cases this might be a read-only location e.g. if installed ``/usr/local/lib/python2.7/site-packages``. 
+In some cases this might be a read-only location e.g. if installed in an unmodified ``/usr/local/lib/python2.7/site-packages``. 
 Therefore, default read-only configurations will be obtained from this file. 
 However, if the user would like to write new configs they will be written to ``~/sfftk/sff.conf``. 
 Additionally, a user may specify a third location using the ``-p/--config-path`` flag to either read or write a new config. 
@@ -102,7 +105,7 @@ The order of precedence, therefore is:
 
 - user configs in ``~/.sfftk/sff.conf``; then
 
-- packaged configs (fallback if none of the above are present);
+- shipped configs (fallback if none of the above are present) which are prioritised using the ``-b/--shipped-configs`` option;
 
 
 Running Unit Tests

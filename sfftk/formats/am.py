@@ -302,7 +302,7 @@ class AmiraMeshSegmentation(Segmentation):
             segmentation.name = kwargs['name']
         else:
             segmentation.name = "AmiraMesh Segmentation"
-        segmentation.version = segmentation.version # strange but this is how it works!
+#         segmentation.version = segmentation.version # strange but this is how it works!
         segmentation.software = schema.SFFSoftware(
             name="Amira",
             version=kwargs['softwareVersion'] if 'softwareVersion' in kwargs else "{}".format(self.header.designation.version),

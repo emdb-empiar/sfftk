@@ -333,7 +333,7 @@ class TestReaders_stlreader(unittest.TestCase):
         self.assertEqual(set(vertex_ids), set(vertices.keys()))
         
     def test_read_binary(self):
-        """Test that we can read a binary StL file"""
+        """Test that we can read a binary STL file"""
         meshes = stlreader.get_data(self.stl_bin_file)
         print >> sys.stderr, meshes[0][0]
         name, vertices, polygons = meshes[0]
@@ -346,7 +346,7 @@ class TestReaders_stlreader(unittest.TestCase):
         self.assertItemsEqual(set(vertices.keys()), set(polygon_ids))
         
     def test_read_multiple(self):
-        """Test that we can read a multi-solid StL file
+        """Test that we can read a multi-solid STL file
           
         Only works for ASCII by concatenation"""
         meshes = stlreader.get_data(self.stl_mult_file)

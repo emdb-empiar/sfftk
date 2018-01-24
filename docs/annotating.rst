@@ -7,12 +7,12 @@ Annotating EMDB-SFF Segmentations
 Introduction
 ============
 
-Annotation of EMDB-SFF segmentations is the second core function of sfftk. 
+Annotation of EMDB-SFF segmentations is the second core function of ``sfftk``. 
 Here we outline how to perform annotations of EMDB-SFF segmentations via the 
 command-line.
 
 Annotation is performed using the `notes` utility that is accessed with the 
-**notes** subcommand.
+``notes`` subcommand.
 
 .. code:: bash
 
@@ -22,7 +22,7 @@ Annotation Levels: Global vs. Local Notes
 -----------------------------------------
 
 Annotations can be added at the segmentation (global) or individual segment 
-(local) level. `sfftk` distinguishes between both levels of annotations. 
+(local) level. ``sfftk`` distinguishes between both levels of annotations. 
 Global notes are 
 useful for terms that describe the segmentation as a whole such as the 
 species, the tissue type, disease state and such global references. Local 
@@ -34,38 +34,42 @@ Simply add notes to the segment whose ID you are targetting.
 Operations: Find, View, Modify
 ------------------------------
 
-There are three main operations that a user can perform using the **notes** subcommand.
+There are three main operations that a user can perform using the ``notes`` subcommand.
 
--  *Finding* notes from an ontology principally the Ontology Lookup Service (OLS) hosted at EMBL-EBI;
+-  **Find** notes from an ontology principally the `Ontology Lookup Service (OLS) hosted at EMBL-EBI <https://www.ebi.ac.uk/ols/index>`_;
 
--  *Viewing* notes present in an EMDB-SFF file;
+-  **View** notes present in an EMDB-SFF file;
 
--  *Modifying* notes in an EMDB-SFF file.
+-  **Modify** notes in an EMDB-SFF file.
 
 States: FIND, VIEW, MODIFY
 --------------------------
 
 Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and the MODIFY state. These will be indicated by the colour of the text on the screen.
 
--  White indicates the VIEW STATE i.e. that no modifications have been done on any EMDB-SFF file
+-  **WHITE** indicates the ``VIEW STATE`` i.e. that no modifications will be done on the EMDB-SFF file
 
--  Yellow indicates the FIND STATE i.e. search results, and
+-  **YELLOW** indicates the ``FIND STATE`` i.e. search for terms from `OLS <https://www.ebi.ac.uk/ols/index>`_, and
 
--  Green indicates the MODIFY STATE i.e. that a file is currently being edited. Note, viewing the contents of an EMDB-SFF file in the MODIFY STATE will also appear in green even if it a view action.
+-  **GREEN** indicates the ``MODIFY STATE`` i.e. that a file is currently being edited. 
+
+.. note::
+
+	Note, viewing the contents of an EMDB-SFF file in the ``MODIFY STATE`` will also appear in green even if a view command is invoked.
 
 The full listing of sub-subcommands organised by operation are:
 
--  Finding
+-  Find
 
    -  **search**
 
--  Viewing
+-  View
 
    -  **list**
 
    -  **show**
 
--  Modifying
+-  Modify
 
    -  **add**
 
@@ -87,7 +91,9 @@ Quick Start
 Finding Notes
 =============
 
-The search sub-subcommand displays results from searching EMBL-EBI’s OLS. As described in `States <#states-find-view-modify>`__, the terminal text is coloured yellow.
+The search sub-subcommand displays results from searching EMBL-EBI’s OLS. As 
+described in `States <#states-find-view-modify>`__, the terminal text is 
+coloured yellow.
 
 .. code:: bash
 
@@ -100,7 +106,8 @@ display available options.
 Specifying Search Terms
 -----------------------
 
-For single worded searches enter the term with or without quotes. Multi-word terms must be quoted to prevent splitting them.
+For single worded searches enter the term with or without quotes. Multi-word 
+terms must be quoted to prevent splitting them.
 
 .. code:: bash
 
@@ -133,7 +140,8 @@ Specifying The Ontology To Search
     sff notes search -O <ontology_name> “<term>”
     sff notes search --ontology <ontology_name> “<term>”
 
-See `Listing Available Ontologies <#listing-available-ontologies>`__ on how to get an ontology to search.
+See `Listing Available Ontologies <#listing-available-ontologies>`__ on how 
+to get an ontology to search.
 
 Performing Exact Searches
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,7 +156,8 @@ Exact searches only return results matching the search term *exactly.*
 Including Obsolete Terms
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Some terms are retired and are excluded by default. They can be included using the -o/--obsoletes flag.
+Some terms are retired and are excluded by default. They can be included using 
+the ``-o/--obsoletes`` flag.
 
 .. code:: bash
 
@@ -163,12 +172,16 @@ Listing Available Ontologies
     sff notes search -L “term”
     sff notes search --list-ontologies “term”
 
-By default this provides a multi-line result for each ontology consisting of the *namespace* (also called *ID space), preferred prefix, title, description, homepage, the ontology ID,* and *version* of the ontology.
+By default this provides a multi-line result for each ontology consisting of 
+the *namespace* (also called *ID space*), *preferred prefix, title, 
+description, homepage, the ontology ID,* and *version* of the ontology.
 
-Short Listing Of Ontologies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Short Listing Of Available Ontologies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Alternatively, a simple table result can be displayed using the -l/--short-list-ontologies flag which displays only two columns: *namespace* and *description.*
+Alternatively, a simple table result can be displayed using the 
+``-l/--short-list-ontologies`` flag which displays only two columns: 
+*namespace* and *description.*
 
 .. code:: bash
 
@@ -178,14 +191,19 @@ Alternatively, a simple table result can be displayed using the -l/--short-list-
 Traversing Searching Results
 ----------------------------
 
-By default, ``sff notes`` search only shows the first page of results. Quite often, there will be more than one page of results. This will be evident from the last line of the results:
+By default, ``sff notes`` search only shows the first page of results. Quite 
+often, there will be more than one page of results. This will be evident from 
+the last line of the results:
 
-Showing: 1 to 10 of 139 results found
+.. code:: bash
+	
+	Showing: 1 to 10 of 139 results found
 
 Specifying The Start Result
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The user can specify the result index at which results should be displayed using the -s/--start flag.
+The user can specify the result index at which results should be displayed 
+using the ``-s/--start`` flag.
 
 .. code:: bash
 
@@ -202,18 +220,21 @@ More results can be display using the ``-r/--rows`` flag.
     sff notes search -r 11 “<term>”
     sff notes search --row 11 “<term>”
 
-Entering invalid values for ``-s/--start`` and ``-r/--rows`` raise ``ValueError`` exceptions.
+Entering invalid values for ``-s/--start`` and ``-r/--rows`` raise 
+``ValueError`` exceptions.
 
 Viewing Notes
 =============
 
-`sfftk` includes utilities to view annotations (notes) included in EMDB-SFF files. There are two main functionalities:
+``sfftk`` includes utilities to view annotations (notes) included in EMDB-SFF 
+files. There are two main functionalities:
 
 -  `Listing` all notes present using the ``sff notes list`` sub-subcommand, and
 
 -  `Showing` global notes or those in a single segment using the ``sff notes show`` sub-command.
 
-As describe in `States <#states-find-view-modify>`__, the teminal text colour when viewing is white.
+As describe in `States <#states-find-view-modify>`__, the teminal text colour 
+when viewing is **WHITE**.
 
 Listing All Notes
 -----------------
@@ -277,7 +298,7 @@ where the first line provides some status information about the current
 listing. Status messages will become much more important when we look at 
 `modifying notes in EMDB-SFF files <#_c0sybxydflf7>`__. Status messages begin 
 with a timestamp. Following status messages is the EMDB-SFF header 
-information which specifies the schema version (0.6.0a4), the name of the 
+information which specifies the schema version (``0.6.0a4``), the name of the 
 segmentation (‘STL Segmentation’), software information including processing 
 details, the primary descriptor (*meshList* in this case) and additional 
 details on this segmentation. A row asterisks then divides the metadata from 
@@ -310,36 +331,6 @@ structure except now that the Segment metadata section has much more detail.
 
 .. code::
 
-	==============================================================================================================
-	EMDB-SFF v.0.6.0a4
-	--------------------------------------------------------------------------------------------------------------
-	Segmentation name:
-		Segger Segmentation
-	Segmentation software:
-		Software: segger
-		Version:  2
-	Software processing details:
-	        -*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Primary descriptor:
-		threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	File path:
-		/Users/pkorir/Data/segmentations/seg
-	--------------------------------------------------------------------------------------------------------------
-	Bounding box:
-		(0, None, 0, None, 0, None)
-	--------------------------------------------------------------------------------------------------------------
-	Global external references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: ncit             http://purl.obolibrary.org/obo/NCIT_C14206               NCIT_C14206          Y Y
-		1: dron             http://purl.obolibrary.org/obo/DRON_00018778             DRON_00018778        Y N
-		2: omit             http://purl.obolibrary.org/obo/OMIT_0006157              OMIT_0006157         Y N
-		3: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_562             NCBITaxon_562        Y N
-	--------------------------------------------------------------------------------------------------------------
-	Segmentation details:
-		-*- NOT DEFINED -*-
 	**************************************************************************************************************
 	ID:		9764
 	PARENT ID:	0
@@ -432,7 +423,9 @@ structure except now that the Segment metadata section has much more detail.
 Including Segmentation Metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, segmentation metadata (name, software, global notes, file path, details) are not included when listing or showing notes. The ``-H/--header`` flag includes this.
+By default, segmentation metadata (name, software, global notes, file path, 
+details) are not included when listing or showing notes. The ``-H/--header`` 
+flag includes this.
 
 .. code:: bash
 
@@ -502,7 +495,7 @@ And here's an example:
 Sorting Notes By Description
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Notes are sorted by the index (first column) by default. However, the user can sort notes by description (third column) using the -D/--sort-by-description flag.
+Notes are sorted by the index (first column) by default. However, the user can sort notes by description (third column) using the ``-D/--sort-by-description`` flag.
 
 .. code:: bash
 
@@ -548,12 +541,14 @@ becomes
 	9897    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
 
 
-Note that descriptions longer than 40 characters are truncated and terminated with an ellipsis (...) but the full description is visible in long format.
+Note that descriptions longer than 40 characters are truncated and terminated 
+with an ellipsis (``...``) but the full description is visible in long format.
 
 Reverse Sorting
 ~~~~~~~~~~~~~~~
 
-Alternative, sorting can be reversed using the ``-r/--reverse`` flag. This applies to both sorting by index or by description.
+Alternative, sorting can be reversed using the ``-r/--reverse`` flag. This 
+applies to both sorting by index or by description.
 
 Reverse sorting by index:
 
@@ -610,6 +605,47 @@ leading to
 	9914    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
 
 
+Viewing Segment IDs Only
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To view the segment IDs only write:
+
+.. code:: bash
+
+	sff notes list -I file.sff
+	9764
+	9814
+	9815
+	9840
+	9859
+	9893
+	9897
+	9911
+	9914
+	9952
+	9955
+	9956
+	
+which are sorted in ascending order. These can be reversed using the 
+``-r/--reverse`` flag.
+
+.. code:: bash
+
+	sff notes list -I -r file.sff
+	9956
+	9955
+	9952
+	9914
+	9911
+	9897
+	9893
+	9859
+	9840
+	9815
+	9814
+	9764
+	
+
 Listing Notes In A Single Segment
 ---------------------------------
 
@@ -643,7 +679,9 @@ Example:
 	--------------------------------------------------------------------------------------------------------------
 	9911    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
 
-Note that there are NO SPACES between the sequence of segment IDs. As with listing notes, the user can show notes in long format using the ``-l/--long-format`` flag.
+Note that there are **NO SPACES** between the sequence of segment IDs. As with 
+listing notes, the user can show notes in long format using the 
+``-l/--long-format`` flag.
 
 .. code:: bash
 
@@ -680,7 +718,7 @@ Example:
 	
 
 Viewing Segmentation Metadata Only
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As specified for ``sff notes list``, using the ``-H/--header`` flag with 
 ``sff notes show`` will display the header (segmentation metadata) only.
@@ -728,7 +766,7 @@ Modifying Notes
 ===============
 
 Modifying notes is slightly more complicated than the read-only activities 
-of finding and viewing described above. It involves making changes to the 
+of *finding* and *viewing* described above. It involves making changes to the 
 annotation sections (*biologicalAnnotation: description, numberOfInstances, 
 externalReferences* and *complexesAndMacromolecules: complexes* and 
 *macromolecules*) of the segments of interest.
@@ -740,24 +778,53 @@ In order to avoid destroying the EMDB-SFF file to be modified, ``sfftk`` makes a
 temporary copy to be used throughout the modification process. Once the user 
 is satisfied with the annotation the temporary file should be saved. 
 Alternatively, the user can discard all changes by trashing the annotations 
-then starting again.
+in the temporary file then starting again.
 
-A Note About EMDB-SFF Formats
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. note::
 
-Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary file. 
-However, JSON is preferred because of the absence of geometrical data. XML 
-(particularly) and HDF5 can have voluminous geometrical data which can make 
-the process of modifying an EMDB-SFF very slow. The default format used is 
-JSON.
+	**A Note About EMDB-SFF Formats**
+	
+	Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary file. 
+	However, JSON is preferred because of the absence of geometrical data. XML 
+	(particularly) and HDF5 can have voluminous geometrical data which can make 
+	the process of modifying an EMDB-SFF very slow. 
+	
+	The default format used is JSON.
+
+You can modify the name and format of the temporary file using the ``config``
+command to modify the ``__TEMP_FILE`` option.
+
+.. code:: bash
+
+	sff config get __TEMP_FILE
+	Mon Jan 22 16:49:59 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
+	Mon Jan 22 16:49:59 2018	Getting config __TEMP_FILE...
+	./temp-annotated.json
+	
+to view current settings. As for ``convert``, the extension of the temporary
+file determines the output form.
+
+.. code:: bash
+
+	sff config set __TEMP_FILE ./my-annotations.json
+	Mon Jan 22 16:49:27 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
+	Mon Jan 22 16:49:27 2018	Setting config __TEMP_FILE to value ./my-annotations.json...
+	sff config list
+	Mon Jan 22 16:49:31 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
+	Mon Jan 22 16:49:31 2018	Listing all 3 configs...
+	__TEMP_FILE          = ./my-annotations.json
+	__TEMP_FILE_REF      = @
+	NAME                 = VALUE
+	
 
 Temporary File Shorthand
 ------------------------
 
-Once the user has entered the MODIFY state (by either running sff notes add 
-or sff notes edit or or sff notes del) the user can refer to the temporary 
-file using a shorthand specified in the configs. The default shorthand is 
-the 'at' symbol (@).
+Once the user has entered the MODIFY state (by either running one of ``sff notes add``, 
+``sff notes edit`` or ``sff notes del``) the user can refer to the temporary 
+file using a shorthand specified in the configs. 
+
+The default shorthand is the 'at' symbol (``@``).
 
 .. code:: bash
 
@@ -779,27 +846,32 @@ or
 
     sff notes add -i 1 -D ‘some description’ ~/experiments/files/tomograms/zebra_fish_20170312/masks_repeat_19_3.3_relion_2.0.json
     sff notes edit -i 1 -D ‘some description’ @
+    
+The attentive reader will have noticed the option ``__TEMP_FILE_REF`` above. 
+Indeed this variable specifieds the temporary file shorthand and can 
+be modifed as above.
 
 Modify Sequence
 ---------------
 
-The following diagram illustrates the sequence of steps to be carried out with the names of the sub-subcommand next to arrows showing the modification that occurs.
+The following diagram illustrates the sequence of steps to be carried out with 
+the names of the sub-subcommand next to arrows showing the modification that occurs.
 
 .. image:: annotating-01.png
 
 There are four types of annotations that can be made:
 
--  the segment description
+-  the segment *description*;
 
--  the number of instances of the segment
+-  the *number of instances* of the segment;
 
--  external references using public accessions
+-  *external references* available in public archives
 
-   -  global external references apply to the segmentation as a whole such as specimen type, scientific name
+   -  *global external references* apply to the segmentation as a whole such as specimen type, scientific name
 
-   -  external references for a single segment apply only to a single segment
+   -  *external references* for a single segment apply only to a single segment
 
--  complexes and macromolecules
+-  *complexes and macromolecules*
 
 Adding Notes
 ------------
@@ -811,31 +883,48 @@ Global notes are added using the ``sff notes add`` sub-command. The
 following flags modify segmentation metadata and global external
 references:
 
-- ``-N/--name``: the name of the segmentation as a whole;
+- ``-N/--name``: the *name of the segmentation* as a whole;
 
-- ``-S/--software-name``: the name of the program that produced the segmentation;
+- ``-S/--software-name``: the *name of the software program* that produced the segmentation;
 
-- ``-V/--software-version``: the software version;
+- ``-V/--software-version``: the *version of the software* used;
 
 - ``-P/--software-processing-details``: a quoted string outlining the processing details by which the segmentation was obtained;
 
-- ``-F/--file-path``: the path to the segmentation file on the local machine;
+	.. todo::
+	
+		Make ``-P/--software-processing-details`` take an optional file 
+		argument containing the segmentation protocol
 
-- ``d/--details``: a quoted string of additional details pertaining to this segmentation;
+- ``-F/--file-path``: the *path to the segmentation file* on the local machine;
 
-- ``-E/--external-ref`` - for global or segment external references;
+	.. warning::
+	
+		The ``-F/--file-path`` option has been used to link to external files holding
+		geometrical data. This will be deprecated in favour of hosting all 
+		geometrical data within the EMDB-SFF file (HDF5 and XML). 
 
-Each of the above will be demonstrated.
+- ``d/--details``: a quoted string of additional *details* pertaining to this segmentation;
+
+- ``-E/--external-ref`` for *global* or *segment external references*;
+
+Each of the above will be demonstrated. The examples demonstrate before entering
+the MODIFY STATE (explicitly specifying the filename) and after entering the 
+MODIFY STATE (using file shorthand e.g. ``@`` used).
 
 Adding A Segmentation Name
 ``````````````````````````````````````````````````````
 
-To be on the safe side use a quoted string to accommodate spaces.
+To be on the safe side use a quoted string to accommodate spaces. However, for 
+single word values no quotes are required.
 
 .. code::
 
+	# general
 	sff notes add -N "My Best Segmentation" file.json 	# not in MODIFY state yet
 	sff notes add --name "My Worst Segmentation" @ 		# already in MODIFY state
+	# single word
+	sff notes add -N Mitochondria file.json 
 	
 Adding The Software Name
 ``````````````````````````````````````````````````````
@@ -876,7 +965,7 @@ Adding Segmentation Details
 	# not in MODIFY state
 	sff notes add -d "Specimen was irradiated with 5 lux of light then imaged vertically" file.json
 	# MODIFY state
-	sff notes add --description "All imaging was done at 17 K"
+	sff notes add --description "All imaging was done at 17 K" @
 	
 
 Adding Global External References
@@ -885,7 +974,7 @@ The external references flag (``-E/--external-ref``) takes three arguments:
 
 - the ``name of the source`` at which the reference may be found;
 
-- the ``IRI to the term`` where more details may be found;
+- the ``IRI to the term`` [2]_ to the term in its archive;
 
 - the ``accession code`` for the reference.
 
@@ -899,8 +988,8 @@ You can use multiple ``-E/--external-ref`` flags at once.
 	# more than one reference
 	sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
 
-Adding Local Notes (Single Segment)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding Local Notes (To A Single Segment)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Notes are added using the **sff notes add** sub-subcommand.
 
@@ -915,16 +1004,16 @@ Use the ``-D/--description`` flag to add a description. Multi-word descriptions 
 
 .. code:: bash
 
-    sff notes add -D 'a very good description' file.sff
-    sff notes add --description 'a very good description' file.sff
+    sff notes add -i 9911 -D 'a very good description' file.sff
+    sff notes add --segment-id 9911 --description 'a very good description' file.sff
 
 Adding The Number of Instances
 ``````````````````````````````````````````````````````
 
 .. code:: bash
 
-    sff notes add -i <segment_id> -n <int> file.json
-    sff notes add -i <segment_id> --number-of-instances <int> file.json
+    sff notes add -i 9911 -n <int> file.json
+    sff notes add --segment-id 9911 --number-of-instances <int> file.json
 
 Adding An External Reference
 ``````````````````````````````````````````````````````
@@ -941,18 +1030,25 @@ You can use multiple ``-E/--external-ref`` flags at once.
 
 All of these may be obtained either from the OLS website of using the output of `sff notes search ‘<term>’ <#finding-notes>`__.
 
-For example, suppose we obtain the following result in a search:
-
-.. ::
-
-	INSERT NEW IMAGE
-
-and are interested in adding the second result as an external reference to a segment. We note down the ontology name (go) and the obo_id (GO:0005739) then use the following command:
+For example, suppose we ran
 
 .. code:: bash
 
-    sff notes add -i <segment_id> -E <source> <iri> <short_form> file.json
-    sff notes add -i <segment_id> --external-ref <ontology> <obo_id> file.json
+	sff notes search 'mitochondria'
+	
+and obtain the following results: 
+
+.. image:: search-results-01.png
+
+and are interested in adding the second result as an external reference to a 
+segment. We note down the *ontology name* (``go``), *IRI* 
+(``http://purl.obolibrary.org/obo/GO_0005739``) and the *short_form* 
+(``GO:0005739``) then use the following command:
+
+.. code:: bash
+
+    sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
+    sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
 
 Adding A Complex (Internal Use)
 ``````````````````````````````````````````````````````
@@ -976,10 +1072,31 @@ Editing Notes
 Editing Global Notes (Segmentation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Editing global notes is straightforward and works exactly like adding notes
+for all items of metadata except external references. In fact, one can use 
+``add`` and ``edit`` interchangeably for *name, software name, software version, software processing details, file path* and *details*.
+
+Editing External References
+``````````````````````````````````````````````````````
+
+As we will see shortly, an extra argument is needed to specify the external
+reference to be edited (``-e/--external-ref-id``).
+
+.. code:: bash
+
+	sff notes edit -e <ref_id> -E <ontology_name> <iri> <short_form> file.json
+	
+Specifying ``sff notes edit -e 0 -E <ontology_name> <iri> <short_form> file.json `` 
+when there are no external references is equivalent to
+using ``sff notes add -E <ontology_name> <iri> <short_form> file.json``.
+
 Editing Local Notes (Single Segment)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a segment in an EMDB-SFF file already contains notes then we can only edit the notes using the sff notes edit sub-subcommand. Because some edit options will need to refer to specific entries (e.g. the third external reference) extra arguments are required to specify which entry is being edited.
+If a segment in an EMDB-SFF file already contains notes then we can edit 
+the notes using the ``sff notes edit`` sub-subcommand. Because some edit 
+options will need to refer to specific entries (e.g. the third external 
+reference) extra arguments are required to specify which item is being edited.
 
 Editing A Description
 ``````````````````````````````````````````````````````
@@ -1028,16 +1145,90 @@ Editing A Macromolecule (Internal Use)
 Deleting Notes
 --------------
 
+Notes may be deleted using the ``sff notes del`` sub-subcommand. 
+
+Unlike when adding and editing, delete options take no arguments except when
+referring to listed metadata (external references, complexes and macromolecules).
+
 Deleting Global Notes (Segmentation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Deleting A Segmentation Name
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -N file.json
+	sff notes del -N @
+
+results in
+
+.. code:: bash
+
+	sff notes show -H @
+	...
+	Segmentation name:
+		Segger Segmentation
+
+to become 
+
+.. code:: bash
+
+	sff notes show -H @
+	...
+	Segmentation name:
+		-*- NOT DEFINED -*-
+	
+Deleting The Software Name
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -S file.json
+	sff notes del -S @ 
+	
+Deleting The Software Version
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -V file.json
+	sff notes del -V @
+	
+Deleting The Software Processing Details
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -P file.json
+	sff notes del -P @
+	
+Deleting the Filepath
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -F file.json
+	sff notes del -F @
+	
+Deleting Details
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -d file.json
+	sff notes del -d @
+	
+Deleting External References
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+	sff notes del -e <extref_id> file.json
+	sff notes del -e <extref_id> @
+	
 Deleting Local Notes (Single Segment)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-
-Notes may be deleted using the sff notes del sub-subcommand. Because deleting is a destructive process the user only needs to specify which notes is being deleted.
 
 Deleting A Description
 ``````````````````````````````````````````````````````
@@ -1045,6 +1236,7 @@ Deleting A Description
 .. code:: bash
 
     sff notes del -i <segment_id> -D file.json
+    sff notes del -i <segment_id> -D @
 
 Deleting The Number Of Instances
 ``````````````````````````````````````````````````````
@@ -1052,6 +1244,7 @@ Deleting The Number Of Instances
 .. code:: bash
 
     sff notes del -i <segment_id> -n file.json
+    sff notes del -i <segment_id> -n @
 
 Deleting An External Reference
 ``````````````````````````````````````````````````````
@@ -1077,7 +1270,14 @@ Deleting A Macromolecule (Internal Use)
 Saving Notes
 ------------
 
-It is important to periodically save notes. Running sff notes save save_to_file.json merges all notes from the temporary file into the destination file.
+It is important to periodically save notes. Running ``sff notes save save_to_file.json`` 
+overwrites all notes from the temporary file into the destination file.
+
+.. note::
+
+	By **overwrite** we mean that the final result will be only from the 
+	temporary file. But this should not be a worry because the temporary
+	file was a copy of the original file. 
 
 .. code:: bash
 
@@ -1090,14 +1290,17 @@ Note that the file specified must exist and correspond to the annotated EMDB-SFF
 Trashing Notes
 --------------
 
-Only one EMDB-SFF file per directory may have its notes modified at a time. This is because only one temporary file is created and an attempt to modify another file will raise a warning.
+Only one EMDB-SFF file per directory at a time may have its notes modified. 
+This is because only one temporary file is created and an attempt to modify 
+another file will raise a warning.
 
 .. code:: bash
 
     Wed Sep 13 12:55:42 2017 Temporary file shorthand to use: @
     Wed Sep 13 12:55:42 2017 Found temp file ./temp-annotated.json. Either run 'save' or 'trash' to discard changes before working on another file.
 
-The user can trash using the sff notes trash @ to reset the current directory to a VIEW state.
+The user can trash using the ``sff notes trash @`` to reset the current 
+directory to a VIEW STATE.
 
 .. code:: bash
 
@@ -1107,20 +1310,35 @@ The user can trash using the sff notes trash @ to reset the current directory to
 Merging Notes
 -------------
 
-Notes can be manually merged from two EMDB-SFF files. Obviously both files must refer to the exact same segmentation i.e. the number and IDs of segments must be identical. The user must specify an output file with the extension determining the output format.
+Notes can be manually merged from two EMDB-SFF files. Obviously both files 
+must refer to the exact same segmentation i.e. the number and IDs of segments 
+must be identical. The user must specify an output file with the extension 
+determining the output format.
 
 .. code:: bash
 
     sff notes merge file1.sff file2.json -o merged_file.hff
+    sff notes merge file1.sff file2.json --output merged_file.hff
 
 Configuration Settings
 ======================
 
 There are two main parameters that control the annotation process:
 
--  __TEMP_FILE sets the path and name of the file to be used as a temporary store of annotations while in the MODIFY STATE. The temporary file holds all modifications until they are saved. All actions done in the MODIFY STATE occur on this file so that any crashes will leave the original file unchanged. Depending on the format used it can significantly speed up viewing and modification of notes. By default it is a JSON file.
+-  ``__TEMP_FILE`` sets the path and name of the file to be used as a 
+   temporary store of annotations while in the MODIFY STATE. The temporary 
+   file holds all modifications until they are saved. All actions done in 
+   the MODIFY STATE occur on this file so that any crashes will leave the 
+   original file unchanged. Depending on the format used it can significantly 
+   speed up viewing and modification of notes. By default it is a JSON file.
 
--  __TEMP_FILE_REF serves as a shorthand reference to the segmentation file. It can only be used in the MODIFY STATE. The default value is ‘@’. The use can use it to refer to the segmentation file instead of typing the full file path and name.
+-  ``__TEMP_FILE_REF`` serves as a shorthand reference to the segmentation 
+   file. It can only be used in the MODIFY STATE. The default value is ``@``. 
+   The use can use it to refer to the segmentation file instead of typing 
+   the full file path and name.
 
 .. [1]
    A unique identifier for a term under the Open Biology Ontologies consortium’s OBO Foundry (see `http://www.obofoundry.org/id-policy.html <http://www.obofoundry.org/id-policy.html>`__ to learn more about obo_id). For example, in the Gene Ontology (GO) the term *positive regulation of release of cytochrome c from mitochondria* has the OBO ID *GO:0090200.*
+
+.. [2]
+	An *internationalised resource identifier* (IRI) is a type of link to a resource that may include international characters e.g. Chinese.

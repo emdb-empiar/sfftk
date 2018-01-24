@@ -97,7 +97,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Miscellaneous Operations Using sfftk</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#viewing-file-metadata">Viewing File Metadata</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#settings-configurations">Settings Configurations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#configuration-commands">Configuration commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-commands">Configuration Commands</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#listing-available-configurations">Listing available configurations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#getting-a-single-configuration-value">Getting a single configuration value</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setting-a-single-configuration-value">Setting a single configuration value</a></li>
@@ -105,7 +105,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#clearing-all-configurations">Clearing all configurations</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#where-configurations-are-stored">Where configurations are stored</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#where-configurations-are-stored">Where Configurations Are Stored</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#running-unit-tests">Running Unit Tests</a></li>
@@ -185,7 +185,7 @@
 <li><a class="reference internal" href="#miscellaneous-operations-using-sfftk" id="id1">Miscellaneous Operations Using sfftk</a><ul>
 <li><a class="reference internal" href="#viewing-file-metadata" id="id2">Viewing File Metadata</a></li>
 <li><a class="reference internal" href="#settings-configurations" id="id3">Settings Configurations</a><ul>
-<li><a class="reference internal" href="#configuration-commands" id="id4">Configuration commands</a><ul>
+<li><a class="reference internal" href="#configuration-commands" id="id4">Configuration Commands</a><ul>
 <li><a class="reference internal" href="#listing-available-configurations" id="id5">Listing available configurations</a></li>
 <li><a class="reference internal" href="#getting-a-single-configuration-value" id="id6">Getting a single configuration value</a></li>
 <li><a class="reference internal" href="#setting-a-single-configuration-value" id="id7">Setting a single configuration value</a></li>
@@ -193,7 +193,7 @@
 <li><a class="reference internal" href="#clearing-all-configurations" id="id9">Clearing all configurations</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#where-configurations-are-stored" id="id10">Where configurations are stored</a></li>
+<li><a class="reference internal" href="#where-configurations-are-stored" id="id10">Where Configurations Are Stored</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#running-unit-tests" id="id11">Running Unit Tests</a></li>
@@ -225,7 +225,7 @@ NAME                 = VALUE
 </pre></div>
 </div>
 <div class="section" id="configuration-commands">
-<h3><a class="toc-backref" href="#id4">Configuration commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id4">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="listing-available-configurations">
 <h4><a class="toc-backref" href="#id5">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">list</span>
@@ -258,9 +258,9 @@ NAME                 = VALUE
 </div>
 </div>
 <div class="section" id="where-configurations-are-stored">
-<h3><a class="toc-backref" href="#id10">Where configurations are stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
+<span id="configs"></span><h3><a class="toc-backref" href="#id10">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
 <p>sfftk ships with a config file called <code class="docutils literal"><span class="pre">sff.conf</span></code> which is located in the root of the package.
-In some cases this might be a read-only location e.g. if installed <code class="docutils literal"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
+In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
 Therefore, default read-only configurations will be obtained from this file.
 However, if the user would like to write new configs they will be written to <code class="docutils literal"><span class="pre">~/sfftk/sff.conf</span></code>.
 Additionally, a user may specify a third location using the <code class="docutils literal"><span class="pre">-p/--config-path</span></code> flag to either read or write a new config.
@@ -278,7 +278,7 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
 <ul class="simple">
 <li>custom configs specified with <code class="docutils literal"><span class="pre">-p/--config-path</span></code>;</li>
 <li>user configs in <code class="docutils literal"><span class="pre">~/.sfftk/sff.conf</span></code>; then</li>
-<li>packaged configs (fallback if none of the above are present);</li>
+<li>shipped configs (fallback if none of the above are present) which are prioritised using the <code class="docutils literal"><span class="pre">-b/--shipped-configs</span></code> option;</li>
 </ul>
 </div>
 </div>

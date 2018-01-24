@@ -587,8 +587,8 @@ merge_notes_parser = notes_subparsers.add_parser(
     )
 add_args(merge_notes_parser, config_path)
 add_args(merge_notes_parser, shipped_configs)
-merge_notes_parser.add_argument('-s', '--source', help="source EMDB-SFF file")
-merge_notes_parser.add_argument('-d', '--destination', help="destination EMDB-SFF file")
+merge_notes_parser.add_argument('sff_file1', help="first EMDB-SFF file")
+merge_notes_parser.add_argument('sff_file2', help="second EMDB-SFF file")
 output['kwargs']['help'] = "file to convert to; the extension (.sff, .hff, .json) determines the output format; if not specified then DESTINATION NOTES ONLY will be overwritten [default: None]"
 merge_notes_parser.add_argument(*output['args'], **output['kwargs'])
 merge_notes_parser.add_argument(*verbose['args'], **verbose['kwargs'])

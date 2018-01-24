@@ -1702,6 +1702,11 @@ class SFFTransformList(SFFType):
     gds_type = sff.transformListType
     ref = "Transform list"
     repr_string = "List of transforms"
+    
+    def __init__(self, *args, **kwargs):
+        # a new container of transforms needs the transform ID reset
+        SFFTransform.reset_id()
+        super(SFFTransformList, self).__init__(*args, **kwargs)
 
     # attributes
     @staticmethod

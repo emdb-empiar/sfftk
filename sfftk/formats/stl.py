@@ -159,6 +159,13 @@ class STLSegmentation(Segmentation):
             version="Unknown",
             )
         segmentation.transforms = schema.SFFTransformList()
+        segmentation.transforms.add_transform(
+            schema.SFFTransformationMatrix(
+                rows=3,
+                cols=4,
+                data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+                )
+            )
         segmentation.filePath = os.path.abspath(self._fn)
         segmentation.primaryDescriptor = "meshList"
         
