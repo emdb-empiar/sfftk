@@ -8,6 +8,7 @@ before_install:
   - sudo apt-get install -y python-dev python-pip
   - pip -V
   - pip install setuptools
+  - pip install coveralls
 
 install:
   - python setup.py develop
@@ -20,3 +21,6 @@ script:
   - sff tests notes -v 3
   - sff tests core -v 3
   - sff tests main -v 3
+
+after_script:
+  - coveralls
