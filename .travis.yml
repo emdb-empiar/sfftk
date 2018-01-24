@@ -22,5 +22,5 @@ script:
   - sff tests core -v 3
   - sff tests main -v 3
 
-after_script:
+after_success:
   - coveralls
