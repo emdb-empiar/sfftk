@@ -1,6 +1,10 @@
 before_script:
     - python --version
-    - yum install -y python-devel python-pip
+    - yum -y update
+    - yum install -y python-devel
+    - curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    - python get-pip.py
+    - pip -V
     - pip install setuptools
     - python setup.py develop
     - sff --help
