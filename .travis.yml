@@ -15,12 +15,12 @@ install:
   - sff --help
 
 script:
-  - sff tests schema -v 3
-  - sff tests readers -v 3
-  - sff tests formats -v 3
-  - sff tests notes -v 3
-  - sff tests core -v 3
-  - sff tests main -v 3
+  - coverage run `which sff` tests schema -v 3
+  - coverage run `which sff` tests readers -v 3
+  - coverage run `which sff` tests formats -v 3
+  - coverage run `which sff` tests notes -v 3
+  - coverage run `which sff` tests core -v 3
+  - coverage run `which sff` tests main -v 3
 
 after_success:
   - coveralls
