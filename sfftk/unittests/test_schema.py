@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # test_schema.py
+import json
+import os
 import random
+import sys
 import tempfile
 import unittest
-import json
 
 import __init__ as tests
 
@@ -14,7 +16,6 @@ __author__  = "Paul K. Korir, PhD"
 __email__   = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__    = "2017-02-20"
 
-import os
 
 
 # import tempfile
@@ -111,7 +112,7 @@ class TestSFFSegmentation(unittest.TestCase):
             )
         # segments
         segments = schema.SFFSegmentList()
-        # new segment
+        # segment one
         segment = schema.SFFSegment()
         biolAnn = schema.SFFBiologicalAnnotation()
         biolAnn.description = "Some description"
@@ -184,11 +185,11 @@ class TestSFFSegmentation(unittest.TestCase):
             while j < J:
                 contour.add_point(
                     schema.SFFContourPoint(
-                    x=tests._random_float()*10,
-                    y=tests._random_float()*10,
-                    z=tests._random_float()*10,
+                        x=tests._random_float()*10,
+                        y=tests._random_float()*10,
+                        z=tests._random_float()*10,
+                        )
                     )
-                )
                 j += 1
             contours.add_contour(contour)
             i += 1
@@ -201,7 +202,13 @@ class TestSFFSegmentation(unittest.TestCase):
         cls.no_vertices1 = tests._random_integer(stop=100) 
         for i in xrange(cls.no_vertices1):
             vertex = schema.SFFVertex()
-            vertex.point = tuple(map(float, (tests._random_integer(1, 1000), tests._random_integer(1, 1000), tests._random_integer(1, 1000))))
+            vertex.point = tuple(
+                map(float, (
+                    tests._random_integer(1, 1000), 
+                    tests._random_integer(1, 1000), 
+                    tests._random_integer(1, 1000)
+                    ))
+                )
             vertices1.add_vertex(vertex)
         polygons1 = schema.SFFPolygonList()
         cls.no_polygons1 = tests._random_integer(stop=100)
@@ -358,10 +365,202 @@ class TestSFFSegmentation(unittest.TestCase):
                 )
             )
         segment.shapes = shapes
-        segments.add_segment(segment)        
+        segments.add_segment(segment)
+        # segment two
+        segment = schema.SFFSegment()
+        # colour
+        segment.colour = schema.SFFColour()
+        segment.colour.rgba = schema.SFFRGBA(
+            red=0,
+            green=0.5,
+            blue=0.2,
+            alpha=0.7,
+            )
+        # contours
+        contours = schema.SFFContourList()
+        i = 0
+        while i < 20:
+            contour = schema.SFFContour()
+            j = 0
+            J = tests._random_integer(10, 20)
+            while j < J:
+                contour.add_point(
+                    schema.SFFContourPoint(
+                        x=tests._random_float()*10,
+                        y=tests._random_float()*10,
+                        z=tests._random_float()*100,
+                        )
+                    )
+                j += 1
+            contours.add_contour(contour)
+            i += 1
+        segment.contours = contours
+        # mesh
+        meshes = schema.SFFMeshList()
+        mesh = schema.SFFMesh()
+        vertices3 = schema.SFFVertexList()
+        cls.no_vertices3 = tests._random_integer(stop=100)
+        for i in xrange(cls.no_vertices3):
+            vertex = schema.SFFVertex()
+            vertex.point = tuple(
+                map(float, (
+                    tests._random_integer(1, 1000), 
+                    tests._random_integer(1, 1000),
+                    tests._random_integer(1, 1000)
+                    ))
+                )
+            vertices3.add_vertex(vertex)
+        polygons3 = schema.SFFPolygonList()
+        cls.no_polygons3 = tests._random_integer(stop=100)
+        for i in xrange(cls.no_polygons3):
+            polygon = schema.SFFPolygon()
+            polygon.add_vertex(random.choice(range(tests._random_integer())))
+            polygon.add_vertex(random.choice(range(tests._random_integer())))
+            polygon.add_vertex(random.choice(range(tests._random_integer())))
+            polygons3.add_polygon(polygon)
+        mesh.vertices = vertices3
+        mesh.polygons = polygons3
+        meshes.add_mesh(mesh)
+        segment.meshes = meshes
+        # shapes
+        shapes = schema.SFFShapePrimitiveList()
+        transform = schema.SFFViewVectorRotation(
+            x=10.0,
+            y=10.0,
+            z=10.0,
+            r=10.0
+            )     
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCone(
+                height=tests._random_float()*100,
+                bottomRadius=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFTransformationMatrix(
+            rows=3,
+            cols=4,
+            data=" ".join(map(str, range(12))),
+            )        
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCone(
+                height=tests._random_float()*100,
+                bottomRadius=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFViewVectorRotation(
+            x=10.0,
+            y=10.0,
+            z=10.0,
+            r=10.0
+            )          
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCone(
+                height=tests._random_float()*100,
+                bottomRadius=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFTransformationMatrix(
+            rows=3,
+            cols=4,
+            data=" ".join(map(str, range(12))),
+            )        
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCuboid(
+                x=tests._random_float()*100,
+                y=tests._random_float()*100,
+                z=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFTransformationMatrix(
+            rows=3,
+            cols=4,
+            data=" ".join(map(str, range(12))),
+            )        
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCuboid(
+                x=tests._random_float()*100,
+                y=tests._random_float()*100,
+                z=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFTransformationMatrix(
+            rows=3,
+            cols=4,
+            data=" ".join(map(str, range(12))),
+            )        
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCylinder(
+                height=tests._random_float()*100,
+                diameter=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFTransformationMatrix(
+            rows=3,
+            cols=4,
+            data=" ".join(map(str, range(12))),
+            )        
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFEllipsoid(
+                x=tests._random_float()*100,
+                y=tests._random_float()*100,
+                z=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFTransformationMatrix(
+            rows=3,
+            cols=4,
+            data=" ".join(map(str, range(12))),
+            )        
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFEllipsoid(
+                x=tests._random_float()*100,
+                y=tests._random_float()*100,
+                z=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        transform = schema.SFFCanonicalEulerAngles(
+            phi=10.0,
+            theta=10.0,
+            psi=10.0
+            )  
+        transforms.add_transform(transform)
+        shapes.add_shape(
+            schema.SFFCone(
+                height=tests._random_float()*100,
+                bottomRadius=tests._random_float()*100,
+                transformId=transform.id,
+                )
+            )
+        segment.shapes = shapes
+        # add segmen to segments
+        segments.add_segment(segment)       
         segmentation.transforms = transforms
         segmentation.segments = segments
+        # segmentation one
         cls.segmentation = segmentation
+        # segmentation two
+        segmentation2 = schema.SFFSegmentation()
+        segmentation2.segments = schema.SFFSegmentList()
+        segmentation2.segments.add_segment(
+            schema.SFFSegment()
+            )
+        cls.segmentation2 = segmentation2
         # write out an XML, HDF5, JSON version for later testing
         cls.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'test_data.sff')
         cls.hff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'test_data.hff')
@@ -405,13 +604,12 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(self.segmentation.globalExternalReferences[1].otherType, 'five')
         self.assertEqual(self.segmentation.globalExternalReferences[1].value, 'six')
         # test the number of transforms
-        self.assertEqual(len(self.segmentation.transforms), 14)
+        self.assertEqual(len(self.segmentation.transforms), 23)
         # test the transform IDs
-        print map(lambda t: t.id, self.segmentation.transforms)
-        self.assertItemsEqual(map(lambda t: t.id, self.segmentation.transforms), range(14))
+        self.assertItemsEqual(map(lambda t: t.id, self.segmentation.transforms), range(23))
         # segments
-        self.assertEqual(len(self.segmentation.segments), 1)
-        # segment
+        self.assertEqual(len(self.segmentation.segments), 2)
+        # segment one
         segment = self.segmentation.segments[0] 
         # segment: biologicalAnnotation
         self.assertEqual(segment.biologicalAnnotation.description, "Some description")
@@ -456,6 +654,23 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(segment.shapes.numCylinders, 1)
         self.assertEqual(segment.shapes.numCuboids, 2)
         self.assertEqual(segment.shapes.numEllipsoids, 2)
+        # tests to ensure IDs are correctly reset
+        # segment two :: mainly to test that ids of mesh, contour, polygon, segment, shape, vertex reset
+        segment = self.segmentation.segments[1]
+        # mesh
+        self.assertEqual(segment.meshes[0].id, 0)
+        # contour
+        self.assertEqual(segment.contours[0].id, 0)
+        # polygon
+        self.assertEqual(segment.meshes[0].polygons[0].PID, 0)
+        # vertex
+        self.assertEqual(segment.meshes[0].vertices[0].vID, 0)
+        # shape
+        self.assertEqual(segment.shapes[0].id, 0)
+        # segment in segmentation2
+        segment2 = self.segmentation2.segments[0]
+        self.assertEqual(segment2.id, 1)
+        
         
     def test_read_sff(self):
         """Read from XML (.sff) file"""
