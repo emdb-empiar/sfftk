@@ -1,1 +1,1 @@
-docs/index.rst
+docs/toolkit.rst
