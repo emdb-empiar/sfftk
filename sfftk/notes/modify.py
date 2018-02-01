@@ -653,12 +653,12 @@ def merge(args, configs):
     """
     # source
     if args.verbose:
-        print_date("Reading in source: {}...".format(args.source))
-    source = schema.SFFSegmentation(args.source)
+        print_date("Reading in source: {}...".format(args.sff_file1))
+    source = schema.SFFSegmentation(args.sff_file1)
     # destination
     if args.verbose:
-        print_date("Reading in destination: {}...".format(args.destination))
-    dest = schema.SFFSegmentation(args.destination)
+        print_date("Reading in destination: {}...".format(args.sff_file2))
+    dest = schema.SFFSegmentation(args.sff_file2)
     if args.verbose:
         print_date("Merging annotations...")
     dest.merge_annotation_from(source)
