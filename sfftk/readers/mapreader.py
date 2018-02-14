@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
+'''
 sfftk.readers.mapreader
 ========================
 
@@ -11,42 +11,42 @@ The following article is useful as it exposes many internals of map files:
 
 - ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf
 
-"""
-
+'''
 from __future__ import division
 
-__author__  = 'Paul K. Korir, PhD'
-__email__   = 'pkorir@ebi.ac.uk'
-__date__    = '2016-07-05'
 
+__author__ = 'Paul K. Korir, PhD'
+__email__ = 'pkorir@ebi.ac.uk'
+__date__ = '2016-07-05'
+__updated__ = '2018-02-14'
 
 
 class Map(object):
-    """Class to encapsulate a CCP4 mask"""
+    '''Class to encapsulate a CCP4 mask'''
     def __init__(self, fn):
-        """Initialise a Map object
+        '''Initialise a Map object
         
         :param str fn: file name
-        """ 
+        '''
         self._inverted = False
         with open(fn) as f:
             status = self.read(f)
-        # 0 is good
+        #  0 is good
         assert status == 0
     @property
     def name(self):
-        """Name of the map which corresponds to the MAP attribute"""
+        '''Name of the map which corresponds to the MAP attribute'''
         return self._map
-    
+
     def write(self, f):
-        """Write data to an EMDB Map file
+        '''Write data to an EMDB Map file
         
         :param file f: file object
         :return int status: 0 on success; fail otherwise
-        """  
+        '''
         import struct
-        
-        string  = struct.pack('<iii', self._nc, self._nr, self._ns)
+
+        string = struct.pack('<iii', self._nc, self._nr, self._ns)
         string += struct.pack('<I', self._mode)
         string += struct.pack('<iii', self._ncstart, self._nrstart, self._nsstart)
         string += struct.pack('<iii', self._nx, self._ny, self._nz)
@@ -55,20 +55,20 @@ class Map(object):
         string += struct.pack('<iii', self._mapc, self._mapr, self._maps)
         string += struct.pack('<fff', self._amin, self._amax, self._amean)
         string += struct.pack('<iii', self._ispg, self._nsymbt, self._lskflg)
-        string += struct.pack('<' + 'f'*(9), self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33)
+        string += struct.pack('<' + 'f' * (9), self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33)
         string += struct.pack('<fff', self._t1, self._t2, self._t3)
         string += struct.pack('<15i', *self._extra)
         string += struct.pack('<4c', *self._map)
         string += struct.pack('<i', self._machst)
         string += struct.pack('<f', self._rms)
-        
-        # if inverted we will add one more label
+
+        #  if inverted we will add one more label
         if self._inverted:
             string += struct.pack('<i', self._nlabl + 1)
         else:
             string += struct.pack('<i', self._nlabl)
-        
-        
+
+
         for i in xrange(self._nlabl):
             len_label = len(self.__getattribute__('_label_%s' % i))
             string += struct.pack('<%sc' % len_label, *self.__getattribute__('_label_%s' % i))
@@ -82,25 +82,25 @@ class Map(object):
                         "mapreader.py: inverted intensities",
                         d.strftime("%d-%b-%y  %H:%M:%S     ")
                         )
-        
+
         # pad up to full header of 1024 bytes
-        string += struct.pack('<' + str(1024 - len(string)) + 'x') # dodgy line because we may need to move one byte forward or back
-        
+        string += struct.pack('<' + str(1024 - len(string)) + 'x')  # dodgy line because we may need to move one byte forward or back
+
         string += struct.pack('<' + self._voxel_type * self._voxel_count, *tuple(self._voxels))
-                
+
         with f:
             f.write(string)
-        
+
         return 0
-           
+
     def read(self, f):
-        """Read data from an EMDB Map mask
+        '''Read data from an EMDB Map mask
         
         :param file f: file object
         :return int status: 0 on success; fail otherwise
-        """
+        '''
         import struct
-        
+
         # source: ftp://ftp.ebi.ac.uk/pub/databases/emdb/doc/Map-format/current/EMDB_map_format.pdf
         # number of columns (fastest changing), rows, sections (slowest changing)
         self._nc, self._nr, self._ns = struct.unpack('<iii', f.read(12))
@@ -123,29 +123,29 @@ class Map(object):
         # flag for skew matrix
         self._ispg, self._nsymbt, self._lskflg = struct.unpack('<iii', f.read(12))
         # skew matrix-S11, S12, S13, S21, S22, S23, S31, S32, S33
-        self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33  = struct.unpack('<' + 'f'*(9), f.read(9*4))
+        self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33 = struct.unpack('<' + 'f' * (9), f.read(9 * 4))
         # skew translation-T1, T2, T3
         self._t1, self._t2, self._t3 = struct.unpack('<fff', f.read(12))
         # user-defined metadata
-        self._extra = struct.unpack('<15i', f.read(15*4))
+        self._extra = struct.unpack('<15i', f.read(15 * 4))
         # MRC/CCP4 MAP format identifier
         self._map = "".join(struct.unpack('<4c', f.read(4)))
         # machine stamp
         self._machst = struct.unpack('<i', f.read(4))[0]
         # Density root-mean-square deviation
         self._rms = struct.unpack('<f', f.read(4))[0]
-        # number of labels 
+        # number of labels
         self._nlabl = struct.unpack('<i', f.read(4))[0]
         # Up to 10 user-defined labels
         for i in xrange(int(self._nlabl)):
             self.__setattr__('_label_%s' % i, "".join(struct.unpack('<80c', f.read(80))).rstrip(' '))
-            
+
         # jump to the beginning of data
         if f.tell() < 1024:
             f.seek(1024)
         else:
             raise ValueError("Current byte position in file (%s) is past end of header (1024)" % f.tell())
-            
+
         if self._mode == 0:
             self._voxel_type = 'b'
             self._voxel_size = 1
@@ -159,40 +159,40 @@ class Map(object):
             raise ValueError("No support for complex signed integer Fourier maps")
         elif self._mode == 4:
             raise ValueError("No support for complex floating point Fourier maps")
-        
+
 #         import math
-        
+
         self._voxel_count = self._nc * self._nr * self._ns
         self._voxels = struct.unpack('<' + self._voxel_type * self._voxel_count, f.read(self._voxel_count * self._voxel_size))
         self._voxel_values = set(self._voxels)
-        
+
         import numpy
-        
+
         if self._voxel_type == 'b':
             data_type = numpy.int8
         elif self._voxel_type == 'h':
             data_type = numpy.int16
         elif self._voxel_type == 'f':
             data_type = numpy.float32
-            
+
         self._voxel_array = numpy.array(self._voxels, dtype=data_type)
         self._voxel_array.shape = self._ns, self._nr, self._nc
 
-        # we are done reading; let's make sure we are at the end 
-            
-        current_position = f.tell() # where are we in the file
-        from os import SEEK_END    
-        f.seek(0, SEEK_END)      
-        final_position = f.tell()   # where the end really is
-        
+        # we are done reading; let's make sure we are at the end
+
+        current_position = f.tell()  # where are we in the file
+        from os import SEEK_END
+        f.seek(0, SEEK_END)
+        final_position = f.tell()  # where the end really is
+
         # ensure we are the end
         if current_position != final_position:
             raise ValueError("There is still some data (%s bytes) to read: current_position = %; end_position = %s" % (final_position - current_position, current_position, final_position))
-        
+
         return 0
-        
+
     def __unicode__(self):
-        string = u"""\
+        string = u'''\
         \rCols, rows, sections: 
         \r    {0}, {1}, {2}
         \rMode: {3}
@@ -224,7 +224,7 @@ class Map(object):
         \rMach-stamp: {39}
         \rRMS: {40}
         \rLabel count: {41}
-        \r""".format(
+        \r'''.format(
                    self._nc, self._nr, self._ns,
                    self._mode,
                    self._ncstart, self._nrstart, self._nsstart,
@@ -235,7 +235,7 @@ class Map(object):
                    self._amin, self._amax, self._amean,
                    self._ispg,
                    self._nsymbt,
-                   self._lskflg, 
+                   self._lskflg,
                    self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33,
                    self._t1, self._t2, self._t3,
                    self._extra,
@@ -246,37 +246,37 @@ class Map(object):
                    )
         if int(self._nlabl) > 0:
             for i in xrange(int(self._nlabl)):
-                string += """\
+                string += '''\
                 \rLabel {0}:\
                 \r    {1}
-                \r""".format(i, self.__getattribute__('_label_%s' % i))
-        
+                \r'''.format(i, self.__getattribute__('_label_%s' % i))
+
         return string.encode('utf-8')
-    
+
     def __str__(self):
         return self.__unicode__()
 
     def __repr__(self):
-        return "<class '%s'>" % self.__class__ 
-    
+        return "<class '%s'>" % self.__class__
+
     @property
     def voxels(self):
-        """The voxel mask"""
+        '''The voxel mask'''
         return self._voxel_array
-    
+
     @property
     def is_mask(self):
-        """Determine if this is a mask or not
+        '''Determine if this is a mask or not
         
         :return bool status: mask or not
-        """
+        '''
         if len(self._voxel_values) == 2 and 0.0 in self._voxel_values:
             return True
         else:
             return False
-          
+
     def fix_mask(self, mask_value=1.0, voxel_values_threshold=3):
-        """Try to fix this mask
+        '''Try to fix this mask
         
         A mask should have only two voxel values: some non-zero value (usualy 1) and zero (0) for masked-out regions.
         Sometimes the process of manipulating the mask (e.g. volume rotation) relies on interpolation, which
@@ -285,47 +285,47 @@ class Map(object):
         
         :param float mask_value: the mask value
         :param int voxel_value_threshold: the maxmimum number of voxel values permitted in fixing the mask
-        """
-        assert voxel_values_threshold > 2 # no need to fix a proper mask (value of 2)
-        
+        '''
+        assert voxel_values_threshold > 2  #  no need to fix a proper mask (value of 2)
+
         # round values
         import numpy
         self._voxel_array = numpy.around(self._voxel_array, decimals=1)
         self._voxel_values = set(self._voxel_array.flatten().tolist())
-        
+
         if len(self._voxel_values) > voxel_values_threshold:
             raise ValueError("Unfixable mask: too many values ({0:,}) > {1}!".format(len(self._voxel_values), voxel_values_threshold))
         else:
             for value in self._voxel_values:
-                if value != 0.0: # only modify masked regions
+                if value != 0.0:  # only modify masked regions
                     self._voxel_array = (self._voxel_array == value) * mask_value
-                            
+
         # reset voxel_values list
         self._voxel_values = set(self._voxel_array.flatten().tolist())
-    
+
     def invert(self):
-        """Invert the map file (mask or not)"""
+        '''Invert the map file (mask or not)'''
         x_prime = (self._voxel_array - self._amin) / (self._amax - self._amin)
 #         self._voxel_array = 1 - x_prime
-        self._voxel_array = self._amin + (1 - x_prime) * (self._amax - self._amin) 
-#         
-#         self._voxel_array = self._amax + self._amin - 
+        self._voxel_array = self._amin + (1 - x_prime) * (self._amax - self._amin)
+#
+#         self._voxel_array = self._amax + self._amin -
         self._amin = self._voxel_array.min()
         self._amax = self._voxel_array.max()
         self._amean = self._voxel_array.mean()
-        
+
         self._voxels = self._voxel_array.flatten().tolist()
         self._inverted = True
     @property
     def labels(self):
-        """A string of labels found in the CCP4 mask file"""
+        '''A string of labels found in the CCP4 mask file'''
         label_list = list()
         for i in xrange(self._nlabl):
             label_list.append(getattr(self, "_label_{}".format(i)))
         return "\n".join(label_list)
     @property
     def skew_matrix_data(self):
-        """Skew matrix data"""
+        '''Skew matrix data'''
         return " ".join(map(str,
             [
             self._s11, self._s12, self._s13,
@@ -339,15 +339,15 @@ class Map(object):
 
 
 def get_data(fn, inverted=False):
-    """Get structured data from EMDB Map file
+    '''Get structured data from EMDB Map file
     
     :param str fn: map filename
     :param bool inverted: should we invert the histogram or not (default)?
     :return: map object
     :rtype: :py:class:`sfftk.readers.mapreader.Map`
-    """
+    '''
     my_map = Map(fn)
-    
+
     if inverted: my_map.invert()
-    
+
     return my_map

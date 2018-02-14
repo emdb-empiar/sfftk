@@ -1,43 +1,42 @@
 # -*- coding: utf-8 -*-
 # surf.py
-"""
+'''
 sfftk.formats.surf
 ===================
 
 User-facing reader classes for Amira HxSurface files
-"""
+'''
 from __future__ import division
 
 import inspect
 import os.path
-import sys
 
 from .. import schema
-from base import Segmentation, Header, Segment, Annotation, Mesh
 from ..readers import surfreader
+from .base import Segmentation, Header, Segment, Annotation, Mesh
 
-
-__author__  = "Paul K. Korir, PhD"
-__email__   = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
-__date__    = "2016-11-11"
+__author__ = "Paul K. Korir, PhD"
+__email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
+__date__ = "2016-11-11"
+__updated__ = '2018-02-14'
 
 
 class AmiraHyperSurfaceMesh(Mesh):
-    """Mesh class"""
+    '''Mesh class'''
     def __init__(self, segment):
-        self._vertices = segment.vertices 
+        self._vertices = segment.vertices
         self._triangles = segment.triangles
     @property
     def vertices(self):
-        """Dictionary of vertex_id to (x, y, z)"""
+        '''Dictionary of vertex_id to (x, y, z)'''
         return self._vertices
     @property
     def polygons(self):
-        """List of (v1, v2, v3) (triangles)"""
+        '''List of (v1, v2, v3) (triangles)'''
         return self._triangles
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFMesh` object"""
-        # vertices
+        '''Convert to a :py:class:`sfftk.schema.SFFMesh` object'''
+        #  vertices
         vertices = schema.SFFVertexList()
         for vID, v in self.vertices.iteritems():
             x, y, z = v
@@ -63,21 +62,21 @@ class AmiraHyperSurfaceMesh(Mesh):
 
 
 class AmiraHyperSurfaceAnnotation(Annotation):
-    """Annotation class"""
+    '''Annotation class'''
     def __init__(self, segment):
         self._segment = segment
         self._name = self._segment.name
         self._colour = self._segment.colour
     @property
     def name(self):
-        """Segment name"""
+        '''Segment name'''
         return self._name
     @property
     def colour(self):
-        """Segment colour"""
+        '''Segment colour'''
         return self._colour
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        '''Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object'''
         # annotation
         annotation = schema.SFFBiologicalAnnotation(
             description=self.name,
@@ -95,7 +94,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
 
 
 class AmiraHyperSurfaceSegment(Segment):
-    """Segment class"""
+    '''Segment class'''
     def __init__(self, segment):
         self._segment = segment
         self._segment_id = self._segment.id
@@ -104,29 +103,29 @@ class AmiraHyperSurfaceSegment(Segment):
         self._meshes = [AmiraHyperSurfaceMesh(segment)]
     @property
     def id(self):
-        """Segment ID"""
+        '''Segment ID'''
         return self._segment_id
     @property
     def annotation(self):
-        """Segment annotation"""
+        '''Segment annotation'''
         return self._annotation
     @property
     def meshes(self):
-        """Segment meshes"""
+        '''Segment meshes'''
         return self._meshes
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        '''Convert to a :py:class:`sfftk.schema.SFFSegment` object'''
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
         for mesh in self.meshes:
             meshes.add_mesh(mesh.convert())
         segment.meshes = meshes
-        return segment 
+        return segment
 
 
 class AmiraHyperSurfaceHeader(Header):
-    """Header class"""
+    '''Header class'''
     def __init__(self, header):
         self._header = header
         for attr in dir(self._header):
@@ -136,20 +135,20 @@ class AmiraHyperSurfaceHeader(Header):
                 continue
             else:
                 setattr(self, attr, getattr(self._header, attr))
-    
+
     def convert(self):
         pass
 
 
 class AmiraHyperSurfaceSegmentation(Segmentation):
-    """Class representing an AmiraHyperSurface segmentation
+    '''Class representing an AmiraHyperSurface segmentation
     
     .. code:: python
     
         from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
         surf_seg = AmiraHyperSurfaceSegmentation('file.surf')
         
-    """
+    '''
     def __init__(self, fn):
         self._fn = fn
         header, segments = surfreader.get_data(self._fn)
@@ -159,14 +158,14 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
             self._segments.append(AmiraHyperSurfaceSegment(segment))
     @property
     def header(self):
-        """The header in the segmentation"""
+        '''The header in the segmentation'''
         return self._header
     @property
     def segments(self):
-        """The segments in the segmentation"""
+        '''The segments in the segmentation'''
         return self._segments
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        '''Convert to a :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Amira HyperSurface Segmentation"
         segmentation.software = schema.SFFSoftware(

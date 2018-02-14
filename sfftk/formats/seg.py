@@ -1,29 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
+'''
 sfftk.formats.seg
 =================
 
 User-facing reader classes for Segger files
 
-"""
-
+'''
 from __future__ import division
 
-import sys
 from .. import schema
-from base import Annotation, Volume, Segment, Header, \
-    Segmentation
 from ..readers import segreader
-
+from .base import Annotation, Volume, Segment, Header, \
+    Segmentation
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-02-02"
+__updated__ = '2018-02-14'
 
 
 class SeggerAnnotation(Annotation):
-    """Annotation class"""
+    '''Annotation class'''
     def __init__(self, segmentation, region_id):
         self._segmentation = segmentation
         self._region_id = region_id
@@ -35,7 +33,7 @@ class SeggerAnnotation(Annotation):
         r, g, b, a = self._segmentation.region_colours[self._region_id]
         return r, g, b, a
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        '''Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object'''
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -51,7 +49,7 @@ class SeggerAnnotation(Annotation):
 
 
 class SeggerVolume(Volume):
-    """Volume class"""
+    '''Volume class'''
     def __init__(self, segmentation):
         self._segmentation = segmentation
     @property
@@ -64,7 +62,7 @@ class SeggerVolume(Volume):
     def mask(self):
         return self._segmentation.mask
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object"""
+        '''Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object'''
         volume = schema.SFFThreeDVolume()
         volume.file = self.file
         volume.contourLevel = self.map_level
@@ -74,7 +72,7 @@ class SeggerVolume(Volume):
 
 
 class SeggerSegment(Segment):
-    """Segment class"""
+    '''Segment class'''
     def __init__(self, segmentation, region_id):
         self._segmentation = segmentation
         self._region_id = region_id
@@ -91,7 +89,7 @@ class SeggerSegment(Segment):
     def volume(self):
         return SeggerVolume(self._segmentation)
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        '''Convert to a :py:class:`sfftk.schema.SFFSegment` object'''
         segment = schema.SFFSegment()
         segment.id = self.region_id
         segment.parentID = self.parent_id
@@ -103,71 +101,71 @@ class SeggerSegment(Segment):
 
 
 class SeggerHeader(Header):
-    """Header class"""
+    '''Header class'''
     def __init__(self, segmentation):
         self._segmentation = segmentation
     @property
     def name(self):
-        """The name of segmentation"""
+        '''The name of segmentation'''
         return self._segmentation.format
     @property
     def version(self):
-        """The version of Segger used"""
+        '''The version of Segger used'''
         return self._segmentation.format_version
     @property
     def map_path(self):
-        """The path to the original segmented map"""
+        '''The path to the original segmented map'''
         return self._segmentation.map_path
     @property
     def ijk_to_xyz_transform(self):
-        """The image-to-physical transform"""
+        '''The image-to-physical transform'''
         return self._segmentation.ijk_to_xyz_transform
     @property
     def file_path(self):
-        """The path to the .seg file"""
+        '''The path to the .seg file'''
         return self._segmentation.file_path
     @property
     def root_parent_ids(self):
-        """Parent IDs for root segments"""
+        '''Parent IDs for root segments'''
         return self._segmentation.root_parent_ids
     @property
     def region_ids(self):
-        """All region IDs"""
+        '''All region IDs'''
         return self._segmentation.region_ids
     @property
     def parent_ids(self):
-        """All parent IDs"""
+        '''All parent IDs'''
         return self._segmentation.parent_ids
 
 
 class SeggerSegmentation(Segmentation):
-    """Class representing an Segger segmentation
+    '''Class representing an Segger segmentation
     
     .. code:: python
     
         from sfftk.formats.seg import SeggerSegmentation
         seg_seg = SeggerSegmentation('file.seg')
         
-    """
+    '''
     def __init__(self, fn, top_level=False, *args, **kwargs):
-        """Initialise the reader"""
+        '''Initialise the reader'''
         self._fn = fn
         self._segmentation = segreader.get_data(self._fn, *args, **kwargs)
         self._top_level = top_level
     @property
     def header(self):
-        """The header for this segmentation"""
+        '''The header for this segmentation'''
         return SeggerHeader(self._segmentation)
     @property
     def segments(self):
-        """The segments in this segmentation"""
+        '''The segments in this segmentation'''
         if self._top_level:
             segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.root_parent_ids]
         else:
             segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.region_ids if region_id != 0]
         return segments
     def convert(self, *args, **kwargs):
-        """Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        '''Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Segger Segmentation"
         segmentation.software = schema.SFFSoftware(
@@ -201,5 +199,4 @@ class SeggerSegmentation(Segmentation):
         if 'details' in kwargs:
             segmentation.details = kwargs['details']
         return segmentation
-        
-        
+

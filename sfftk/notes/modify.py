@@ -1,44 +1,33 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+'''
+sfftk.notes.modify
+
+Add, edit and delete terms in EMDB-SFF files
+'''
 from __future__ import division
-"""
-sfftk.notes.edit
 
-Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at 
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied. 
-
-See the License for the specific language governing permissions 
-and limitations under the License.
-"""
-
+import os
 import re
 import shlex
 import shutil
-import os
 
+from . import EXTERNAL_REFERENCES
 from .. import schema
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes.view import HeaderView, NoteView
 from ..sff import handle_convert
-from . import EXTERNAL_REFERENCES
 
-"""
-:TODO: allow user to modify/view hierarchy through segmentation annotation toolkit 
-"""
-    
+
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-04-07"
+__updated__ = '2018-02-14'
+
+'''
+:TODO: allow user to modify/view hierarchy through segmentation annotation toolkit 
+'''
 
 
 class ExternalReference(object):
@@ -49,13 +38,13 @@ class ExternalReference(object):
         self.label, self.description = self._get_text()
     @property
     def iri(self):
-        """The IRI value should be *double url-encoded"""
+        '''The IRI value should be *double url-encoded'''
         from urllib import urlencode
         urlenc = urlencode({'iri': self.value.encode('idna')})
         urlenc2 = urlencode({'iri': urlenc.split('=')[1]})
         return urlenc2.split('=')[1]
     def _get_text(self):
-        """Get the label and description if they exist"""
+        '''Get the label and description if they exist'''
         label = None
         description = None
         # only search for label and description if from OLS
@@ -66,16 +55,21 @@ class ExternalReference(object):
                 )
             import requests
             R = requests.get(url)
-            import json
-            self._result = json.loads(R.text)
-            try:
-                label = self._result['label']
-            except KeyError:
-                label = ''
-            try:
-                description = self._result['description'][0] if self._result['description'] else None
-            except KeyError:
-                description = ''
+            if R.status_code == 200:
+                import json
+                self._result = json.loads(R.text)
+                #  label
+                try:
+                    label = self._result['label']
+                except KeyError:
+                    label = ''
+                #  description
+                try:
+                    description = self._result['description'][0] if self._result['description'] else None
+                except KeyError:
+                    description = ''
+            else:
+                pass
         return label, description
 
 
@@ -87,20 +81,20 @@ class NoteAttr(object):
         return self.val
     def __set__(self, obj, val):
         self.val = val
-        
 
-"""
+
+'''
 :TODO: attribute type checking
-"""
+'''
 class BaseNote(object):
-    """Note base class"""
+    '''Note base class'''
     def __init__(self):
         self._extRefList = list()
-    
+
     @property
     def externalReferences(self):
         return self._extRefList
-    
+
     @externalReferences.setter
     def externalReferences(self, value):
         for v in value:
@@ -108,7 +102,7 @@ class BaseNote(object):
 
 
 class AbstractGlobalNote(BaseNote):
-    """GlobalNote 'abstract' class that defines private attributes and methods"""
+    '''GlobalNote 'abstract' class that defines private attributes and methods'''
     name = NoteAttr('name')
     softwareName = NoteAttr('softwareName')
     softwareVersion = NoteAttr('sofwareVersion')
@@ -116,16 +110,16 @@ class AbstractGlobalNote(BaseNote):
     filePath = NoteAttr('filePath')
     details = NoteAttr('details')
     externalReferenceId = NoteAttr('externalReferenceId')
-    
+
     def add_to_segmentation(self, segmentation):
-        """Add attributes to a segmentation
+        '''Add attributes to a segmentation
         
         :param segmentation: an EMDB-SFF segmentation
         :type segmentation: ``sfftk.schema.SFFSegmentation``
         :return segmentation: an EMDB-SFF segmentation
         :rtype segmentation: ``sfftk.schema.SFFSegmentation``
-        """
-        # name
+        '''
+        #  name
         if self.name is not None:
             segmentation.name = self.name
         # software name
@@ -134,7 +128,7 @@ class AbstractGlobalNote(BaseNote):
         # software version
         if self.softwareVersion is not None:
             segmentation.software.version = self.softwareVersion
-        # software processing details
+        #  software processing details
         if self.softwareProcessingDetails is not None:
             segmentation.software.processingDetails = self.softwareProcessingDetails
         # file path
@@ -154,20 +148,20 @@ class AbstractGlobalNote(BaseNote):
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
                         label=gExtRef.label,
-                        description=gExtRef.description 
+                        description=gExtRef.description
                         )
                     )
         return segmentation
 
     def edit_in_segmentation(self, segmentation):
-        """Edit attributes in a segmentation
+        '''Edit attributes in a segmentation
         
         :param segmentation: an EMDB-SFF segmentation
         :type segmentation: ``sfftk.schema.SFFSegmentation``
         :return segmentation: an EMDB-SFF segmentation
         :rtype segmentation: ``sfftk.schema.SFFSegmentation``
-        """
-        # name
+        '''
+        #  name
         if self.name is not None:
             segmentation.name = self.name
         # software name
@@ -176,7 +170,7 @@ class AbstractGlobalNote(BaseNote):
         # software version
         if self.softwareVersion is not None:
             segmentation.software.version = self.softwareVersion
-        # software processing details
+        #  software processing details
         if self.softwareProcessingDetails is not None:
             segmentation.software.processingDetails = self.softwareProcessingDetails
         # file path
@@ -201,7 +195,7 @@ class AbstractGlobalNote(BaseNote):
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
                         label=gExtRef.label,
-                        description=gExtRef.description 
+                        description=gExtRef.description
                         ),
                     start_index,
                     )
@@ -214,7 +208,7 @@ class AbstractGlobalNote(BaseNote):
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
                         label=gExtRef.label,
-                        description=gExtRef.description 
+                        description=gExtRef.description
                         ),
                     start_index,
                     )
@@ -222,14 +216,14 @@ class AbstractGlobalNote(BaseNote):
         return segmentation
 
     def del_from_segmentation(self, segmentation):
-        """Delete attributes from a segmentation
+        '''Delete attributes from a segmentation
         
         :param segmentation: an EMDB-SFF segmentation
         :type segmentation: ``sfftk.schema.SFFSegmentation``
         :return segmentation: an EMDB-SFF segmentation
         :rtype segmentation: ``sfftk.schema.SFFSegmentation``
-        """
-        # name
+        '''
+        #  name
         if self.name:
             segmentation.name = None
         # software name
@@ -256,8 +250,8 @@ class AbstractGlobalNote(BaseNote):
                     print_date("Failed to delete global external reference ID {}".format(self.externalReferenceId))
             else:
                 print_date("No global external references to delete from.")
-        return segmentation        
-        
+        return segmentation
+
 
 class GlobalArgsNote(AbstractGlobalNote):
     def __init__(self, args, configs, *args_, **kwargs_):
@@ -281,10 +275,10 @@ class GlobalArgsNote(AbstractGlobalNote):
                             value=_value
                             )
                         )
-                    
+
 
 class AbstractNote(BaseNote):
-    """Note 'abstact' class that defines private attributes and main methods"""
+    '''Note 'abstact' class that defines private attributes and main methods'''
     description = NoteAttr('description')
     numberOfInstances = NoteAttr('numberOfInstances')
     externalReferenceId = NoteAttr('externalReferenceId')
@@ -292,13 +286,13 @@ class AbstractNote(BaseNote):
     complexes = NoteAttr('complexes')
     macromoleculeId = NoteAttr('macromoleculeId')
     macromolecules = NoteAttr('macromolecules')
-    
+
     def add_to_segment(self, segment):
-        """Add the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
+        '''Add the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
          
         :param segment: single segment in EMDB-SFF
         :type segment: ``sfftk.schema.SFFSegment``
-        """
+        '''
         # biologicalAnnotation
         bA = segment.biologicalAnnotation
         if self.description:
@@ -322,7 +316,7 @@ class AbstractNote(BaseNote):
                         otherType=extRef.otherType,
                         value=extRef.value,
                         label=extRef.label,
-                        description=extRef.description 
+                        description=extRef.description
                         )
                     )
             segment.biologicalAnnotation = bA
@@ -346,13 +340,13 @@ class AbstractNote(BaseNote):
             cAM.macromolecules = segment.complexesAndMacromolecules.macromolecules
         segment.complexesAndMacromolecules = cAM
         return segment
-    
+
     def edit_in_segment(self, segment):
-        """Edit the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
+        '''Edit the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
          
         :param segment: single segment in EMDB-SFF
         :type segment: ``sfftk.schema.SFFSegment``
-        """
+        '''
         # biologicalAnnotation
         if not segment.biologicalAnnotation:
             print_date("Note: no biological anotation was found. You may edit only after adding with 'sff notes add'.")
@@ -368,32 +362,32 @@ class AbstractNote(BaseNote):
                 start_index = self.externalReferenceId
                 # first replace
                 # then insert any additional
-                replaced = False  
+                replaced = False
                 for extRef in self.externalReferences:
                     # replace
                     if not replaced and bA.externalReferences:
                         bA.externalReferences.replace_externalReference(
                             schema.SFFExternalReference(
-                                type_=extRef.type, 
+                                type_=extRef.type,
                                 otherType=extRef.otherType,
                                 value=extRef.value,
                                 label=extRef.label,
-                                description=extRef.description 
-                                ),  
-                            start_index,              
+                                description=extRef.description
+                                ),
+                            start_index,
                             )
                         replaced = True
                     # insert
                     else:
                         bA.externalReferences.insert_externalReference(
                             schema.SFFExternalReference(
-                                type_=extRef.type, 
+                                type_=extRef.type,
                                 otherType=extRef.otherType,
                                 value=extRef.value,
                                 label=extRef.label,
-                                description=extRef.description 
+                                description=extRef.description
                                 ),
-                            start_index,              
+                            start_index,
                             )
                     start_index += 1
             segment.biologicalAnnotation = bA
@@ -404,51 +398,51 @@ class AbstractNote(BaseNote):
             cAM = segment.complexesAndMacromolecules
             # complexes
             if self.complexes:
-                if cAM.complexes: # complexes already present
-                    for i in xrange(len(self.complexes)):                            
-                        if i == 0: # there are complexes but editing the first item mentioned
+                if cAM.complexes:  # complexes already present
+                    for i in xrange(len(self.complexes)):
+                        if i == 0:  # there are complexes but editing the first item mentioned
                             try:
                                 cAM.complexes.replace_complex_at(self.complexId + i, self.complexes[i])
                             except IndexError:
                                 cAM.complexes.add_complex(self.complexes[i])
-                        else: # all other new complexes are inserted after pushing others down
+                        else:  # all other new complexes are inserted after pushing others down
                             try:
                                 cAM.complexes.insert_complex_at(self.complexId + i, self.complexes[i])
                             except IndexError:
                                 cAM.complexes.add_complex(self.complexes[i])
-                else: # no complexes 
+                else:  # no complexes
                     complexes = schema.SFFComplexes()
                     for c in self.complexes:
                         complexes.add_complex(c)
                     cAM.complexes = complexes
             # macromolecules
             if self.macromolecules:
-                if cAM.macromolecules: # macromolecules already present
+                if cAM.macromolecules:  # macromolecules already present
                     for i in xrange(len(self.macromolecules)):
-                        if i == 0: # there are macromolecules but editing the first item mentioned
+                        if i == 0:  # there are macromolecules but editing the first item mentioned
                             try:
                                 cAM.macromolecules.replace_macromolecule_at(self.macromoleculeId + i, self.macromolecules[i])
                             except IndexError:
                                 cAM.macromolecules.add_macromolecule(self.macromolecules[i])
-                        else: # all other new macromolecules are inserted after pushing others down
+                        else:  # all other new macromolecules are inserted after pushing others down
                             try:
                                 cAM.macromolecules.insert_macromolecule_at(self.macromoleculeId + i, self.macromolecules[i])
                             except IndexError:
                                 cAM.macromolecules.add_macromolecule(self.macromolecules[i])
-                else: # no macromolecules
+                else:  # no macromolecules
                     macromolecules = schema.SFFMacromolecules()
                     for m in self.macromolecules:
                         macromolecules.add_macromolecule(m)
                     cAM.macromolecules = macromolecules
             segment.complexesAndMacromolecules = cAM
         return segment
-    
+
     def del_from_segment(self, segment):
-        """Delete the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
+        '''Delete the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
          
         :param segment: single segment in EMDB-SFF
         :type segment: ``sfftk.schema.SFFSegment``
-        """
+        '''
         # biologicalAnnotation
         if not segment.biologicalAnnotation:
             print_date("No biological anotation found! Use 'add' to first add a new annotation.")
@@ -458,10 +452,10 @@ class AbstractNote(BaseNote):
                 bA.description = None
             if self.numberOfInstances:
                 bA.numberOfInstances = None
-            if self.externalReferenceId is not None: # it could be 0, which is valid but False
+            if self.externalReferenceId is not None:  # it could be 0, which is valid but False
                 if bA.externalReferences:
                     try:
-                        del bA.externalReferences[self.externalReferenceId] # externalReferences is a list
+                        del bA.externalReferences[self.externalReferenceId]  # externalReferences is a list
                     except IndexError:
                         print_date("Failed to delete external reference of ID {}".format(self.externalReferenceId))
                 else:
@@ -502,7 +496,7 @@ class ArgsNote(AbstractNote):
         if hasattr(args, 'external_ref_id'):
             self.externalReferenceId = args.external_ref_id
         # externalReferences
-        if hasattr(args, 'external_ref'): # sff notes del has no -E arg
+        if hasattr(args, 'external_ref'):  # sff notes del has no -E arg
             if args.external_ref:
                 for _type, _otherType, _value in args.external_ref:
                     self._extRefList.append(
@@ -549,11 +543,11 @@ class SimpleNote(AbstractNote):
 
 
 def add_note(args, configs):
-    """Add annotation to a segment specified in args
+    '''Add annotation to a segment specified in args
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
-    """
+    '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # global changes
     if args.segment_id is None:
@@ -580,23 +574,23 @@ def add_note(args, configs):
 
 
 def edit_note(args, configs):
-    """Edit annotation to a segment specified in args
+    '''Edit annotation to a segment specified in args
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
-    """
+    '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # global changes
     if args.segment_id is None:
-        # create a GlobalArgsNote object
+        #  create a GlobalArgsNote object
         global_note = GlobalArgsNote(args, configs)
         # edit the notes in the segmentation
         # editing name, software, filePath, details are exactly the same as adding
-        # editing external references is different:
+        #  editing external references is different:
         # the externalReferenceId refers to the extRef to edit
         # any additionally specified external references (-E a b -E x y) are inserted after the edited index
         sff_seg = global_note.edit_in_segmentation(sff_seg)
-        # show the updated header
+        #  show the updated header
         print HeaderView(sff_seg)
     else:
         found_segment = False
@@ -615,11 +609,11 @@ def edit_note(args, configs):
 
 
 def del_note(args, configs):
-    """Delete annotation to a segment specified in args
+    '''Delete annotation to a segment specified in args
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
-    """
+    '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # global changes
     if args.segment_id is None:
@@ -627,7 +621,7 @@ def del_note(args, configs):
         global_note = GlobalArgsNote(args, configs)
         # delete the notes from segmentation
         sff_seg = global_note.del_from_segmentation(sff_seg)
-        # show the updated header
+        #  show the updated header
         print HeaderView(sff_seg)
     else:
         found_segment = False
@@ -646,11 +640,11 @@ def del_note(args, configs):
 
 
 def merge(args, configs):
-    """Merge two EMDB-SFF files
+    '''Merge two EMDB-SFF files
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
-    """
+    '''
     # source
     if args.verbose:
         print_date("Reading in source: {}...".format(args.sff_file1))
@@ -668,16 +662,16 @@ def merge(args, configs):
     dest.export(args.output)
     if args.verbose:
         print_date("Done.")
-    
+
     return 0
 
 
 def save(args, configs):
-    """Save changes made
+    '''Save changes made
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
-    """
+    '''
     temp_file = configs['__TEMP_FILE']
     if os.path.exists(temp_file):
         # temp_file: file.sff; args.sff_file: file.sff     copy
@@ -699,7 +693,7 @@ def save(args, configs):
             (re.match(r'.*\.hff$', temp_file, re.IGNORECASE) and (re.match(r'.*\.json$', args.sff_file, re.IGNORECASE) or re.match(r'.*\.sff$', args.sff_file, re.IGNORECASE))):
             cmd = shlex.split("convert -v {} -o {}".format(temp_file, args.sff_file))
             _args = parse_args(cmd)
-            handle_convert(_args) # convert
+            handle_convert(_args)  #  convert
             print_date("Deleting temp file {}...".format(temp_file))
             os.remove(temp_file)
             assert not os.path.exists(temp_file)
@@ -708,7 +702,7 @@ def save(args, configs):
         elif re.match(r'.*\.json$', temp_file, re.IGNORECASE) and (re.match(r'.*\.sff$', args.sff_file, re.IGNORECASE) or re.match(r'.*\.hff$', args.sff_file, re.IGNORECASE)):
             json_seg = schema.SFFSegmentation(temp_file)
             seg = schema.SFFSegmentation(args.sff_file)
-            # merge
+            #  merge
             seg.merge_annotation_from(json_seg)
             seg.export(args.sff_file)
             print_date("Deleting temp file {}...".format(temp_file))
@@ -722,11 +716,11 @@ def save(args, configs):
 
 
 def trash(args, configs):
-    """Trash changes made
+    '''Trash changes made
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
-    """
+    '''
     temp_file = configs['__TEMP_FILE']
     if os.path.exists(temp_file):
         print_date("Discarding all changes made in temp file {}...".format(temp_file), newline=False)

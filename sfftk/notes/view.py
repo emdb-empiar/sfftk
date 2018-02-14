@@ -1,45 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import division
-"""
+'''
 sfftk.notes.view
 
+Display notes in EMDB-SFF files
+'''
+from __future__ import division
 
-
-Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at 
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied. 
-
-See the License for the specific language governing permissions 
-and limitations under the License.
-"""
-
-
-import re
-import sys
 import textwrap
 
-import h5py
-
-from sfftk import schema
-from sfftk.core.print_tools import print_date
+from .. import schema
+from ..core.print_tools import print_date
 
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-04-07"
+__updated__ = '2018-02-14'
 
 
 def _add_index(L, pre="\t"):
-    """Add indexes to items in L"""
+    '''Add indexes to items in L'''
     LL = list()
     i = 0
     for l in L:
@@ -58,10 +39,10 @@ class View(object):
 
 
 class NoteView(View):
-    """NoteView class
+    '''NoteView class
     
     Display annotation for a single segment
-    """
+    '''
     def __init__(self, segment, _long=False, list_ids=False):
         self._segment = segment
         self._long = _long
@@ -162,7 +143,7 @@ class NoteView(View):
             return ", ".join(segment_type)
     def __str__(self):
         if self._long:
-            string = """\
+            string = '''\
 {}
 ID:\t\t{}
 PARENT ID:\t{}
@@ -183,7 +164,7 @@ Macromolecules:
 {}
 Colour:
 \t{}\
-            """.format(
+            '''.format(
                 # ****
                 self.LINE3,
                 self.id,
@@ -222,10 +203,10 @@ Colour:
 
 
 class HeaderView(View):
-    """HeaverView class
+    '''HeaverView class
     
     Display EMDB-SFF header
-    """
+    '''
     def __init__(self, segmentation):
         self._segmentation = segmentation
     @property
@@ -239,16 +220,16 @@ class HeaderView(View):
         return self._segmentation.version
     @property
     def software(self):
-        return u"""\
+        return u'''\
 \tSoftware: {}
 \tVersion:  {}
 Software processing details: \n{}\
-        """.format(
+        '''.format(
             self._segmentation.software.name if self._segmentation.software.name else self.NOT_DEFINED,
             self._segmentation.software.version if self._segmentation.software.version else self.NOT_DEFINED,
             textwrap.fill(
                 u"\t" + self._segmentation.software.processingDetails \
-                    if self._segmentation.software.processingDetails else "\t" + self.NOT_DEFINED, 
+                    if self._segmentation.software.processingDetails else "\t" + self.NOT_DEFINED,
                 self.DISPLAY_WIDTH
                 ),
             ).encode('utf-8')
@@ -300,7 +281,7 @@ Software processing details: \n{}\
         else:
             return self.NOT_DEFINED
     def __str__(self):
-        string = """\
+        string = '''\
 {}
 EMDB-SFF v.{}
 {}
@@ -323,7 +304,7 @@ Global external references:
 {}
 Segmentation details:
 \t{}\
-        """.format(
+        '''.format(
             # ===
             self.LINE1,
             self.version,
@@ -352,13 +333,13 @@ Segmentation details:
 
 class TableHeaderView(View):
     def __str__(self):
-        string = """\
+        string = '''\
 {}
 {:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
 {}\
-        """.format(
+        '''.format(
             View.LINE3,
-            "id", 
+            "id",
             "parId",
             "description",
             "#inst",
@@ -372,17 +353,17 @@ class TableHeaderView(View):
 
 
 def list_notes(args, configs):
-    """List all notes in an EMDB-SFF file
+    '''List all notes in an EMDB-SFF file
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :return int status: 0 is OK, else failure
-    """
+    '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
-    """
+    '''
     :TODO: make this optional
     :TODO: define the stream to use
-    """
+    '''
     if args.header:
         print HeaderView(sff_seg)
     note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]
@@ -399,12 +380,12 @@ def list_notes(args, configs):
 
 
 def show_notes(args, configs):
-    """Show notes in an EMDB-SFF file for the specified segment IDs
+    '''Show notes in an EMDB-SFF file for the specified segment IDs
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :return int status: 0 is OK, else failure
-    """
+    '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     if args.header:
         print HeaderView(sff_seg)

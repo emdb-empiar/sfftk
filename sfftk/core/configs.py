@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
+'''
 configs.py
 ===========
 
 This module defines classes and functions to correctly process persistent
 configurations. Please see the :doc:`guide to miscellaneous operations <misc>`
 for a complete description of working with configs.
-"""
+'''
 from collections import OrderedDict
 import os.path
 import sys
@@ -14,14 +14,14 @@ import sys
 import sfftk
 from .print_tools import print_date
 
-
-__author__  = 'Paul K. Korir, PhD'
-__email__   = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
-__date__    = '2016-08-23'
+__author__ = 'Paul K. Korir, PhD'
+__email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
+__date__ = '2016-08-23'
+__updated__ = '2018-02-14'
 
 
 class Configs(OrderedDict):
-    """Class defining configs
+    '''Class defining configs
     
     Configurations are stored in a subclass of ``OrderedDict`` with 
     appended methods for reading (``read()``), writing (``write``) and 
@@ -30,31 +30,31 @@ class Configs(OrderedDict):
     Printing an object of this class displays all configs.
     
     This class is used an argument to ``load_configs()``.
-    """
+    '''
     shipped_configs = os.path.join(sfftk.__path__[0], 'sff.conf')
-    
+
     def __init__(self, config_fn, *args, **kwargs):
         self.config_fn = config_fn
         super(Configs, self).__init__(*args, **kwargs)
-    
+
     def clear(self):
-        """Clear configs"""
+        '''Clear configs'''
         for item in self:
             del self[item]
-    
+
     def read(self):
-        """Read configs from file"""
+        '''Read configs from file'''
         with open(self.config_fn, 'r') as f:
             for row in f:
-                if row[0] == '#': # comments
+                if row[0] == '#':  # comments
                     continue
-                if row.strip() == '': # blank lines
+                if row.strip() == '':  # blank lines
                     continue
                 name, value = row.strip().split('=')
                 self[name] = value
 
     def write(self):
-        """Write configs to file"""
+        '''Write configs to file'''
         # you can't write to shipped configs
         if self.config_fn == self.shipped_configs:
             print_date("Unable to set configs to shipped configs.")
@@ -64,18 +64,18 @@ class Configs(OrderedDict):
         with open(self.config_fn, 'w') as f:
             for name, value in self.iteritems():
                 f.write('{}={}\n'.format(name, value))
-        
+
         return 0
-            
+
     def __str__(self):
         string = ""
         for name, value in self.iteritems():
             string += "{:<20} = {:<20}\n".format(name, value)
         return string[:-1]
-    
+
 
 def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Configs):
-    """Load sfftk configs (persistent arguments)
+    '''Load sfftk configs (persistent arguments)
     
     It is called in ``sfftk.core.parser.py`` to get configs for the current
     command.
@@ -86,17 +86,17 @@ def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Co
     :param str conf_fn: name of the config file; default is *sff.conf*
     :param class Configs: the class defining configs
     :return dict configs: dictionary of configs
-    """ 
-    """
+    '''
+    '''
     :TODO: add individual args to 'if args.config_path' as an OR condition
-    """
+    '''
     # path to user folder
     user_folder_path = os.path.join("~", user_folder)
     # path to user config file
     user_conf_path = os.path.join(user_folder_path, conf_fn)
     # 1 - custom config path
     if args.config_path:
-        # if it exists 
+        # if it exists
         if os.path.exists(args.config_path):
             config_fn = args.config_path
         # otherwise create it
@@ -126,36 +126,36 @@ def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Co
                     pass
                 # create the config file
                 config_fn = config_path
-    
+
 #     if hasattr(args, 'verbose'):
 #         if args.verbose:
     print_date("Reading configs from {}".format(config_fn))
-    
+
     configs = config_class(config_fn)
     configs.read()
     return configs
 
 def list_configs(args, configs):
-    """List configs in terminal
+    '''List configs in terminal
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
     :return int status: status
-    """
+    '''
     print_date("Listing all {} configs...".format(len(configs)))
     # view the config object
     print >> sys.stderr, configs
     return 0
 
 def get_configs(args, configs):
-    """Get the value of the named config
+    '''Get the value of the named config
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
     :return int status: status
-    """
+    '''
     print_date("Getting config {}...".format(args.name))
     # obtain the named config
     try:
@@ -168,13 +168,13 @@ def get_configs(args, configs):
     return 0
 
 def set_configs(args, configs):
-    """Set the config of the given name to have the given value
+    '''Set the config of the given name to have the given value
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
     :return int status: status
-    """
+    '''
     print_date("Setting config {} to value {}...".format(args.name, args.value))
     # add the new config
     configs[args.name] = args.value
@@ -182,13 +182,13 @@ def set_configs(args, configs):
     return configs.write()
 
 def del_configs(args, configs):
-    """Delete the named config
+    '''Delete the named config
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
     :return int status: status
-    """
+    '''
     # del the named config
     print_date("Deleting config {} having value {}...".format(args.name, configs[args.name]))
     del configs[args.name]
@@ -196,13 +196,13 @@ def del_configs(args, configs):
     return configs.write()
 
 def clear_configs(args, configs):
-    """Clear all configs
+    '''Clear all configs
     
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
     :return int status: status
-    """
+    '''
     print_date("Clearing all {} configs...".format(len(configs)))
     # empty all values
     configs.clear()

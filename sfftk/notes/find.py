@@ -1,32 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import division
-"""
+'''
 sfftk.notes.find
 
-Copyright 2017 EMBL - European Bioinformatics Institute
-Licensed under the Apache License, Version 2.0 (the "License"); 
-you may not use this file except in compliance with the License. 
-You may obtain a copy of the License at 
+Search for terms and display ontologies
+'''
+from __future__ import division
 
-http://www.apache.org/licenses/LICENSE-2.0
+__author__ = "Paul K. Korir, PhD"
+__email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
+__date__ = "2017-04-07"
+__updated__ = '2018-02-14'
 
-Unless required by applicable law or agreed to in writing, software 
-distributed under the License is distributed on an 
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-either express or implied. 
-
-See the License for the specific language governing permissions 
-and limitations under the License.
-"""
-
-__author__  = "Paul K. Korir, PhD"
-__email__   = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
-__date__    = "2017-04-07"
-
-import os
-
-"""
+'''
 :TODO: expand OLS options to below
 
 ontology
@@ -80,15 +66,14 @@ How many results per page
 start
 
 The results page number
-"""
+'''
 
-"""
-:TODO: Retrieve an ontology
-GET /api/ontologies/{ontology_id}
-"""
+'''
+:TODO: Retrieve an ontology GET /api/ontologies/{ontology_id}
+'''
 
 class SearchQuery(object):
-    """SearchQuery class"""
+    '''SearchQuery class'''
     root_url = "http://www.ebi.ac.uk/ols/api/"
     def __init__(self, args, configs):
         self._search_args = args
@@ -99,20 +84,23 @@ class SearchQuery(object):
         return self._search_args
     @property
     def results(self):
-        """JSON of response from HTTP API"""
+        '''JSON of response from HTTP API'''
         return self._results
     def search(self, *args, **kwargs):
-        """Do the search
+        '''Do the search
         
         :return result: search results
         :rtype result: ``SearchResults``
-        """
+        '''
         import requests
         if self.search_args.list_ontologies or self.search_args.short_list_ontologies:
             url = self.root_url + "ontologies?size=1000"
             R = requests.get(url)
-            self._results = R.text
-            return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
+            if R.status_code == 200:
+                self._results = R.text
+                return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
+            else:
+                raise ValueError(R.text)
         else:
             url = self.root_url + "search?q={}&start={}&rows={}".format(
                 self.search_args.search_term,
@@ -126,18 +114,21 @@ class SearchQuery(object):
             if self.search_args.obsoletes:
                 url += "&obsoletes=on"
             R = requests.get(url)
-            self._results = R.text
-            return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
-            
+            if R.status_code == 200:
+                self._results = R.text
+                return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
+            else:
+                raise ValueError(R.text)
+
 
 class SearchResults(object):
-    """SearchResults class"""
-    # try and get 
+    '''SearchResults class'''
+    # try and get
 #     try:
 #         rows, cols = map(int, os.popen('stty size').read().split())
 #         TTY_WIDTH = cols
 #     except:
-    TTY_WIDTH = 180 # unreasonable default
+    TTY_WIDTH = 180  # unreasonable default
     INDEX_WIDTH = 6
     LABEL_WIDTH = 20
     SHORT_FORM_WIDTH = 20
@@ -175,7 +166,7 @@ class SearchResults(object):
                     string += "\n".join(ont)
                     string += "\n" + "-" * self.TTY_WIDTH
             elif self.search_args.short_list_ontologies:
-                string +=  "List of ontologies\n"
+                string += "List of ontologies\n"
                 string += "-" * self.TTY_WIDTH
                 for ontology in self.result['_embedded']['ontologies']:
                     c = ontology['config']
@@ -198,11 +189,11 @@ class SearchResults(object):
                 ]
             string += "\t".join(header) + "\n"
             string += "=" * self.TTY_WIDTH + "\n"
-            
+
             start = self.search_args.start
-            
+
             for e in self.result['response']['docs']:
-                if e.has_key('description'):        
+                if e.has_key('description'):
                     wrapped_description = textwrap.wrap(e['description'][0] + " /{}".format(e['iri']), self.DESCRIPTION_WIDTH)
                     if len(wrapped_description) == 1:
                         row = [
@@ -244,14 +235,14 @@ class SearchResults(object):
                         e['type'].ljust(self.TYPE_WIDTH),
                         ]
                     string += "\t".join(row) + "\n"
-                    
+
                 string += "-" * self.TTY_WIDTH + "\n"
-                start += 1    
-            
+                start += 1
+
             if self.result['response']['numFound']:
                 string += "Showing: {} to {} of {} results found".format(
-                    self.search_args.start, 
-                    min(self.result['response']['numFound'], self.search_args.start + self.search_args.rows - 1), 
+                    self.search_args.start,
+                    min(self.result['response']['numFound'], self.search_args.start + self.search_args.rows - 1),
                     self.result['response']['numFound']
                     )
             else:
