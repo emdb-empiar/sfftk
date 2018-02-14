@@ -10,6 +10,10 @@ EMDB-SFF Toolkit (``sfftk``)
 
 .. image:: https://coveralls.io/repos/github/emdb-empiar/sfftk/badge.svg?branch=master
 	:target: https://coveralls.io/github/emdb-empiar/sfftk?branch=master
+	
+.. image:: https://readthedocs.org/projects/sfftk/badge/?version=latest
+	:target: http://sfftk.readthedocs.io/en/latest/?badge=latest
+	:alt: Documentation Status
 
 .. contents::
 
