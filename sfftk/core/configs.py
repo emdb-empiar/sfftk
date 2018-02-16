@@ -11,13 +11,13 @@ from collections import OrderedDict
 import os.path
 import sys
 
-import sfftk
+from .. import BASE_DIR
 from .print_tools import print_date
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-08-23'
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-16'
 
 
 class Configs(OrderedDict):
@@ -31,7 +31,7 @@ class Configs(OrderedDict):
     
     This class is used an argument to ``load_configs()``.
     '''
-    shipped_configs = os.path.join(sfftk.__path__[0], 'sff.conf')
+    shipped_configs = os.path.join(BASE_DIR, 'sff.conf')
 
     def __init__(self, config_fn, *args, **kwargs):
         self.config_fn = config_fn
