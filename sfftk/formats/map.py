@@ -18,7 +18,7 @@ from .base import Segmentation, Header, Segment, Annotation, Volume
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-09"
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 class MapVolume(Volume):
@@ -139,7 +139,7 @@ class MapSegmentation(Segmentation):
     def segments(self):  # only one segment
         '''The segments in this segmentation'''
         return [MapSegment(self)]
-    def convert(self, *args, **kwargs):
+    def convert(self, args, *_args, **_kwargs):
         '''Convert to a :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
 
@@ -179,6 +179,8 @@ class MapSegmentation(Segmentation):
         # finally pack everything together
         segmentation.segments = segments
 
-        if 'details' in kwargs:
-            segmentation.details = kwargs['details']
+        if args.details is not None:
+            segmentation.details = args.details
+        elif 'details' in _kwargs:
+            segmentation.details = _kwargs['details']
         return segmentation

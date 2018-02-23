@@ -22,7 +22,7 @@ from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Sha
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-09-28"
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 class IMODVertex(object):
@@ -456,7 +456,7 @@ class IMODSegmentation(Segmentation):
     def segments(self):
         '''Segments in segmentation'''
         return self._segments
-    def convert(self, args, *args_, **kwargs_):
+    def convert(self, args, *_args, **_kwargs):
         '''Method to convert an IMOD file to a :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
         segmentation.name = self.header.name
@@ -545,8 +545,8 @@ class IMODSegmentation(Segmentation):
         # details
         if args.details is not None:
             segmentation.details = args.details
-        elif 'details' in kwargs_:
-            segmentation.details = kwargs_['details']
+        elif 'details' in _kwargs:
+            segmentation.details = _kwargs['details']
 
         return segmentation
 

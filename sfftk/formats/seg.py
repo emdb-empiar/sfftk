@@ -17,7 +17,7 @@ from .base import Annotation, Volume, Segment, Header, \
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-02-02"
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 class SeggerAnnotation(Annotation):
@@ -164,7 +164,7 @@ class SeggerSegmentation(Segmentation):
         else:
             segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.region_ids if region_id != 0]
         return segments
-    def convert(self, *args, **kwargs):
+    def convert(self, args, *_args, **_kwargs):
         '''Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Segger Segmentation"
@@ -196,7 +196,9 @@ class SeggerSegmentation(Segmentation):
         # finally pack everything together
         segmentation.segments = segments
         # details
-        if 'details' in kwargs:
-            segmentation.details = kwargs['details']
+        if args.details is not None:
+            segmentation.details = args.details
+        elif 'details' in _kwargs:
+            segmentation.details = _kwargs['details']
         return segmentation
 

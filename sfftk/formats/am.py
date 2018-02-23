@@ -20,7 +20,7 @@ from .base import Segmentation, Header, Segment, Annotation, Contours, Mesh, Vol
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-10"
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 '''
@@ -268,7 +268,6 @@ class AmiraMeshSegmentation(Segmentation):
                 segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
         else:
             indices_set = set(self._volume.flatten().tolist())
-            print indices_set
             segment_indices = indices_set.difference(set([0]))
             for segment_id in segment_indices:
                 segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
@@ -281,7 +280,7 @@ class AmiraMeshSegmentation(Segmentation):
         return segments
         '''
 
-    def convert(self, *args, **kwargs):
+    def convert(self, args, *_args, **_kwargs):
         '''Convert to :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
 
@@ -295,15 +294,15 @@ class AmiraMeshSegmentation(Segmentation):
             print_date("Writing volume data to /mask in {}...".format(hdf5_fn))
             _ = f.create_dataset("mask", data=self._volume)
 
-        if 'name' in kwargs:
-            segmentation.name = kwargs['name']
+        if 'name' in _kwargs:
+            segmentation.name = _kwargs['name']
         else:
             segmentation.name = "AmiraMesh Segmentation"
 #         segmentation.version = segmentation.version # strange but this is how it works!
         segmentation.software = schema.SFFSoftware(
             name="Amira",
-            version=kwargs['softwareVersion'] if 'softwareVersion' in kwargs else "{}".format(self.header.designation.version),
-            processingDetails=kwargs['processingDetails'] if 'processingDetails' in kwargs else "None",
+            version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(self.header.designation.version),
+            processingDetails=_kwargs['processingDetails'] if 'processingDetails' in _kwargs else "None",
             )
         segmentation.transforms = schema.SFFTransformList()
         segmentation.transforms.add_transform(
@@ -324,7 +323,9 @@ class AmiraMeshSegmentation(Segmentation):
         # finally pack everyting together
         segmentation.segments = segments
 
-        if 'details' in kwargs:
-            segmentation.details = kwargs['details']
+        if args.details is not None:
+            segmentation.details = args.details
+        elif 'details' in _kwargs:
+            segmentation.details = _kwargs['details']
         return segmentation
 

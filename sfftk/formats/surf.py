@@ -18,7 +18,7 @@ from .base import Segmentation, Header, Segment, Annotation, Mesh
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-11"
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 class AmiraHyperSurfaceMesh(Mesh):
@@ -164,7 +164,7 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
     def segments(self):
         '''The segments in the segmentation'''
         return self._segments
-    def convert(self, *args, **kwargs):
+    def convert(self, args, *_args, **_kwargs):
         '''Convert to a :py:class:`sfftk.schema.SFFSegmentation` object'''
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Amira HyperSurface Segmentation"
@@ -189,6 +189,8 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
             segments.add_segment(s.convert())
         segmentation.segments = segments
         # details
-        if 'details' in kwargs:
-            segmentation.details = kwargs['details']
+        if args.details is not None:
+            segmentation.details = args.details
+        elif 'details' in _kwargs:
+            segmentation.details = _kwargs['details']
         return segmentation
