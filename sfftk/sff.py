@@ -18,7 +18,7 @@ from .core.print_tools import print_date
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = '2017-02-15'
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 def handle_convert(args, configs):  # @UnusedVariable
@@ -77,12 +77,16 @@ def handle_convert(args, configs):  # @UnusedVariable
     # export (convert first if needed)
     if isinstance(seg, schema.SFFSegmentation):
         sff_seg = seg  #  no conversion needed
+        if args.primary_descriptor is not None:
+            sff_seg.primaryDescriptor = args.primary_descriptor
+        if args.details is not None:
+            sff_seg.details = args.details
     else:
         sff_seg = seg.convert(args)  # convert according to args
     # export as args.format
     if args.verbose:
         print_date("Exporting to {}".format(args.output))
-    sff_seg.export(args.output)
+    sff_seg.export(args)
     if args.verbose:
         print_date("Done")
 

@@ -24,7 +24,7 @@ from ..core.print_tools import print_date
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-09-14"
-__updated__ = '2018-02-14'
+__updated__ = '2018-02-23'
 
 
 # ensure that we can read/write encoded data
@@ -193,12 +193,13 @@ class SFFType(object):
         elif issubclass(cls, SFFVertex):
             cls.vertex_id = -1
 
-    def export(self, fn, *args, **kwargs):
+    def export(self, args, *_args, **_kwargs):
         '''Export to a file on disc
 
         :param str fn: filename to export to
         :param str ext: extension to signify which file format to export as [default: 'sff']
         '''
+        fn = args.output
         fn_ext = fn.split('.')[-1]
         valid_extensions = ['sff', 'hff', 'json']
         try:
@@ -212,17 +213,17 @@ class SFFType(object):
         if fn_ext == 'sff':
             with open(fn, 'w') as f:
                 # write version and encoding
-                version = kwargs.get('version') if 'version' in kwargs else "1.0"
-                encoding = kwargs.get('encoding') if 'encoding' in kwargs else "UTF-8"
+                version = _kwargs.get('version') if 'version' in _kwargs else "1.0"
+                encoding = _kwargs.get('encoding') if 'encoding' in _kwargs else "UTF-8"
                 f.write('<?xml version="{}" encoding="{}"?>\n'.format(version, encoding))
                 # always export from the root
-                self._local.export(f, 0, *args, **kwargs)
+                self._local.export(f, 0, *_args, **_kwargs)
         elif fn_ext == 'hff':
             with h5py.File(fn, 'w') as f:
-                self.as_hff(f, *args, **kwargs)
+                self.as_hff(f, *_args, **_kwargs)
         elif fn_ext == 'json':
             with open(fn, 'w') as f:
-                self.as_json(f, *args, **kwargs)
+                self.as_json(f, *_args, **_kwargs)
 
 
 class SFFAttribute(object):

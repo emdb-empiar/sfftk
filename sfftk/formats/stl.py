@@ -177,7 +177,7 @@ class STLSegmentation(Segmentation):
         segmentation.segments = segments
         # details
         if args.details is not None:
-            segmentation.details = args.kwargs
+            segmentation.details = args.details
         elif 'details' in _kwargs:
             segmentation.details = _kwargs['details']
         return segmentation
