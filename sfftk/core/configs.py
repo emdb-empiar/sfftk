@@ -17,7 +17,7 @@ from .print_tools import print_date
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-08-23'
-__updated__ = '2018-02-16'
+__updated__ = '2018-02-27'
 
 
 class Configs(OrderedDict):
@@ -51,7 +51,7 @@ class Configs(OrderedDict):
                 if row.strip() == '':  # blank lines
                     continue
                 name, value = row.strip().split('=')
-                self[name] = value
+                self[name.strip()] = value.strip()
 
     def write(self):
         '''Write configs to file'''
@@ -97,7 +97,7 @@ def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Co
     # 1 - custom config path
     if args.config_path:
         # if it exists
-        if os.path.exists(args.config_path):
+        if os.path.exists(os.path.dirname(args.config_path)):
             config_fn = args.config_path
         # otherwise create it
         else:
