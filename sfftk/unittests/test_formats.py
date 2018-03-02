@@ -94,7 +94,8 @@ class TestFormats(unittest.TestCase):
     # convert
     def test_am_convert(self):
         '''Convert a segmentation from an AmiraMesh file to an SFFSegmentation object'''
-        sff_segmentation = self.am_segmentation.convert()
+        args, configs = parse_args(shlex.split('convert {}'.format(self.am_file)))
+        sff_segmentation = self.am_segmentation.convert(args, configs)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
         self.assertEqual(sff_segmentation.name, 'AmiraMesh Segmentation')
@@ -107,7 +108,8 @@ class TestFormats(unittest.TestCase):
 
     def test_seg_convert(self):
         '''Convert a segmentation from a Segger file to an SFFSegmentation object'''
-        sff_segmentation = self.seg_segmentation.convert()
+        args, configs = parse_args(shlex.split('convert {}'.format(self.mod_file)))
+        sff_segmentation = self.seg_segmentation.convert(args, configs)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
         self.assertEqual(sff_segmentation.name, 'Segger Segmentation')
@@ -120,7 +122,8 @@ class TestFormats(unittest.TestCase):
 
     def test_map_convert(self):
         '''Convert a segmentation from an EMDB Map mask file to an SFFSegmentation object'''
-        sff_segmentation = self.map_segmentation.convert()
+        args, configs = parse_args(shlex.split('convert {}'.format(self.map_file)))
+        sff_segmentation = self.map_segmentation.convert(args, configs)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
         self.assertEqual(sff_segmentation.name, 'MAP ')  # might have an extra space at the end
@@ -145,7 +148,8 @@ class TestFormats(unittest.TestCase):
 
     def test_stl_convert(self):
         '''Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object'''
-        sff_segmentation = self.stl_segmentation.convert()
+        args, configs = parse_args(shlex.split('convert {}'.format(self.stl_file)))
+        sff_segmentation = self.stl_segmentation.convert(args, configs)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
         self.assertEqual(sff_segmentation.name, 'STL Segmentation')
@@ -157,7 +161,8 @@ class TestFormats(unittest.TestCase):
 
     def test_surf_convert(self):
         '''Convert a segmentation from a HyperSurface file to an SFFSegmentation object'''
-        sff_segmentation = self.surf_segmentation.convert()
+        args, configs = parse_args(shlex.split('convert {}'.format(self.surf_file)))
+        sff_segmentation = self.surf_segmentation.convert(args, configs)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
         self.assertEqual(sff_segmentation.name, 'Amira HyperSurface Segmentation')

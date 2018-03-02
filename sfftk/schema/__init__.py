@@ -193,13 +193,12 @@ class SFFType(object):
         elif issubclass(cls, SFFVertex):
             cls.vertex_id = -1
 
-    def export(self, args, *_args, **_kwargs):
+    def export(self, fn, *_args, **_kwargs):
         '''Export to a file on disc
 
         :param str fn: filename to export to
         :param str ext: extension to signify which file format to export as [default: 'sff']
         '''
-        fn = args.output
         fn_ext = fn.split('.')[-1]
         valid_extensions = ['sff', 'hff', 'json']
         try:
