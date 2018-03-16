@@ -14,13 +14,14 @@ from .. import schema
 from ..core.parser import parse_args
 from ..notes import view, modify, find
 
-
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
 __updated__ = '2018-02-14'
 
+
 # :TODO: rewrite to use sfftk.notes.modify.SimpleNote
+
 
 class TestNotes_view(unittest.TestCase):
     @classmethod
@@ -36,7 +37,7 @@ class TestNotes_view(unittest.TestCase):
         args, configs = parse_args(shlex.split("notes list {} --config-path {}".format(
             self.sff_file,
             self.config_fn,
-            )))
+        )))
         status = view.list_notes(args, configs)
         # assertions
         self.assertEqual(status, 0)
@@ -46,7 +47,7 @@ class TestNotes_view(unittest.TestCase):
         args, configs = parse_args(shlex.split("notes list -l {} --config-path {}".format(
             self.sff_file,
             self.config_fn,
-            )))
+        )))
         status = view.list_notes(args, configs)
         # assertions
         self.assertEqual(status, 0)
@@ -57,7 +58,7 @@ class TestNotes_view(unittest.TestCase):
             self.segment_id,
             self.sff_file,
             self.config_fn,
-            )))
+        )))
         status = view.show_notes(args, configs)
         self.assertEqual(status, 0)
 
@@ -67,7 +68,7 @@ class TestNotes_view(unittest.TestCase):
             self.segment_id,
             self.sff_file,
             self.config_fn,
-            )))
+        )))
         status = view.show_notes(args, configs)
         self.assertEqual(status, 0)
 
@@ -82,7 +83,7 @@ class TestNotes_modify(unittest.TestCase):
         self.segment_id = 15559
 
     def _test_add(self):
-        '''Test that we can add a note to an .sff (XML) file'''
+        '''Test that we can add a note'''
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'ldjls']
@@ -98,8 +99,8 @@ class TestNotes_modify(unittest.TestCase):
                 ','.join(macromolecules),
                 self.sff_file,
                 self.config_fn,
-                )
             )
+        )
         args, configs = parse_args(cmd)
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation(self.sff_file)
@@ -118,7 +119,7 @@ class TestNotes_modify(unittest.TestCase):
         self.assertEqual(segment.complexesAndMacromolecules.macromolecules[2], macromolecules[2])
 
     def _test_edit(self):
-        '''Test that we can edit a note in an .sff (XML) file'''
+        '''Test that we can edit a note'''
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'ldjss']
@@ -134,8 +135,8 @@ class TestNotes_modify(unittest.TestCase):
                 ','.join(macromolecules),
                 self.sff_file,
                 self.config_fn,
-                )
             )
+        )
         args, configs = parse_args(cmd)
         # add
         modify.add_note(args, configs)
@@ -151,7 +152,7 @@ class TestNotes_modify(unittest.TestCase):
             macromolecules[2][::-1],
             self.sff_file,
             self.config_fn,
-            ))
+        ))
         args1, configs = parse_args(cmd1)
         # edit
         status1 = modify.edit_note(args1, configs)
@@ -167,7 +168,7 @@ class TestNotes_modify(unittest.TestCase):
         self.assertEqual(segment.complexesAndMacromolecules.macromolecules[2], macromolecules[2][::-1])
 
     def _test_del(self):
-        '''Test that we can delete a note from an .sff (XML) file'''
+        '''Test that we can delete a note'''
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'dsljfl']
@@ -183,8 +184,8 @@ class TestNotes_modify(unittest.TestCase):
                 ','.join(macromolecules),
                 self.sff_file,
                 self.config_fn,
-                )
             )
+        )
         args, configs = parse_args(cmd)
         # add
         modify.add_note(args, configs)
@@ -193,7 +194,7 @@ class TestNotes_modify(unittest.TestCase):
             self.segment_id,
             self.sff_file,
             self.config_fn,
-            ))
+        ))
         args1, configs = parse_args(cmd1)
         status1 = modify.del_note(args1, configs)
         seg = schema.SFFSegmentation(self.sff_file)
@@ -232,6 +233,8 @@ class TestNotes_modify_sff(TestNotes_modify):
 '''
 :FIXME: hff tests work but quadruple size of file
 '''
+
+
 # class TestNotes_modify_hff(TestNotes_modify):
 #     def setUp(self):
 #         super(TestNotes_modify_hff, self).setUp()
@@ -255,7 +258,7 @@ class TestNotes_modify_sff(TestNotes_modify):
 class TestNotes_modify_json(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_json, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
+        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.json')
 
     def tearDown(self):
         seg = schema.SFFSegmentation(self.sff_file)
@@ -273,6 +276,28 @@ class TestNotes_modify_json(TestNotes_modify):
 
     def test_del(self):
         super(TestNotes_modify_json, self)._test_del()
+
+
+class TestNotes_modify_merge(unittest.TestCase):
+    def test_merge(self):
+        """Test that we can perform a merge with all args specified explicitly"""
+        args, _ = parse_args(shlex.split("notes merge --config-path {config_fn} --source {source} {other} --output {output}".format(
+            config_fn=self.config_fn,
+            source=source,
+            other=other,
+            output=output,
+        )))
+        self.assertTrue(False)
+
+    def test_merge_output_implied(self):
+        """Test that we can perform a merge with an implied output"""
+        args, _ = parse_args(
+            shlex.split("notes merge --config-path {config_fn} --source {source} {other}".format(
+                config_fn=self.config_fn,
+                source=source,
+                other=other,
+            )))
+        self.assertTrue(False)
 
 
 class TestNotes_find(unittest.TestCase):
@@ -295,7 +320,8 @@ class TestNotes_find(unittest.TestCase):
     def test_search_no_results(self):
         '''Test search that returns no results'''
         # I'm not sure when some biological entity with such a name will be discovered!
-        args, configs = parse_args(shlex.split("notes search 'nothing' --exact --config-path {}".format(self.config_fn)))
+        args, configs = parse_args(
+            shlex.split("notes search 'nothing' --exact --config-path {}".format(self.config_fn)))
         query = find.SearchQuery(args, configs)
         try:
             results = query.search()
@@ -311,7 +337,8 @@ class TestNotes_find(unittest.TestCase):
         NOTE: this test is likely to break as the ontologies get updated
         '''
         # this usually returns a single result
-        args, configs = parse_args(shlex.split("notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn)))
+        args, configs = parse_args(shlex.split(
+            "notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn)))
         query = find.SearchQuery(args, configs)
         results = query.search()
         self.assertEqual(len(results), 2)  # funny!
@@ -319,7 +346,8 @@ class TestNotes_find(unittest.TestCase):
     def test_search_ontology(self):
         '''Test that we can search an ontology'''
         #  this search should bring at least one result
-        args, configs = parse_args(shlex.split("notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn)))
+        args, configs = parse_args(
+            shlex.split("notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn)))
         query = find.SearchQuery(args, configs)
         try:
             results = query.search()
@@ -336,7 +364,7 @@ class TestNotes_find(unittest.TestCase):
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --start {} --config-path {}".format(
             random_start,
             self.config_fn,
-            )))
+        )))
         query = find.SearchQuery(args, configs)
         try:
             results = query.search()
@@ -353,7 +381,7 @@ class TestNotes_find(unittest.TestCase):
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --rows {} --config-path {}".format(
             random_rows,
             self.config_fn,
-            )))
+        )))
         query = find.SearchQuery(args, configs)
         try:
             results = query.search()

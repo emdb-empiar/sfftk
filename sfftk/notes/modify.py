@@ -547,6 +547,9 @@ def add_note(args, configs):
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
+    :param configs: configurations object
+	:type configs: ``sfftk.core.configs.Congif``
+    :return int status: status
     '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # global changes
@@ -578,6 +581,9 @@ def edit_note(args, configs):
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
+    :param configs: configurations object
+	:type configs: ``sfftk.core.configs.Congif``
+    :return int status: status
     '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # global changes
@@ -613,6 +619,9 @@ def del_note(args, configs):
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
+    :param configs: configurations object
+	:type configs: ``sfftk.core.configs.Congif``
+    :return int status: status
     '''
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # global changes
@@ -644,6 +653,9 @@ def merge(args, configs):
     
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
+    :param configs: configurations object
+	:type configs: ``sfftk.core.configs.Congif``
+    :return int status: status
     '''
     # source
     if args.verbose:
@@ -670,7 +682,10 @@ def save(args, configs):
     '''Save changes made
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: ``argparse.Namespace``
+    :param configs: configurations object
+	:type configs: ``sfftk.core.configs.Congif``
+    :return int status: status
     '''
     temp_file = configs['__TEMP_FILE']
     if os.path.exists(temp_file):
@@ -719,7 +734,10 @@ def trash(args, configs):
     '''Trash changes made
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: ``argparse.Namespace``
+    :param configs: configurations object
+	:type configs: ``sfftk.core.configs.Congif``
+    :return int status: status
     '''
     temp_file = configs['__TEMP_FILE']
     if os.path.exists(temp_file):

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # parser.py
-'''Parses command-line options'''
+"""Parses command-line options"""
 
 import argparse
-from copy import deepcopy
 import os
 import sys
+from copy import deepcopy
 
-from ..notes import EXTERNAL_REFERENCES
 from .print_tools import print_date
+from ..notes import RESOURCE_LIST
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -19,7 +19,7 @@ verbosity_range = range(4)
 
 
 def add_args(parser, the_arg):
-    '''Convenience function to add ``the_arg`` to the ``parser``.
+    """Convenience function to add ``the_arg`` to the ``parser``.
 
     This relies on the argument being structured as a dictionary with the keys 
     ``args`` for positional arguments and ``kwargs`` for the keyword
@@ -38,8 +38,9 @@ def add_args(parser, the_arg):
     :param dict the_arg: the argument specified as a dict with keys 'args' and 'kwargs'
     :return parser: a parser
     :rtype parser: ``argparse.Parser``
-    '''
+    """
     return parser.add_argument(*the_arg['args'], **the_arg['kwargs'])
+
 
 Parser = argparse.ArgumentParser(
     prog='sff', description="The EMDB-SFF Toolkit (sfftk)")
@@ -51,9 +52,9 @@ subparsers = Parser.add_subparsers(
     metavar="EMDB-SFF tools"
 )
 
-#=========================================================================
+# =========================================================================
 # common arguments
-#=========================================================================
+# =========================================================================
 sff_file = {
     'args': ['sff_file'],
     'kwargs': {
@@ -98,13 +99,13 @@ external_ref = {
     'args': ['-E', '--external-ref'],
     'kwargs': {
         'nargs': 3,
-        'help': '''An external reference consists of three components: the 
+        'help': """An external reference consists of three components: the 
 name of the external reference, a URL to the particular external reference 
 and the accession. If you use the sff notes search utility these will 
 correspond to the ontology_name, IRI and short_form. The following is a list 
 of valid external references: {}. You can also specify multiple external 
 reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23 
-file.json'''.format(', '.join(EXTERNAL_REFERENCES)),
+file.json""".format(', '.join(RESOURCE_LIST.keys())),
     }
 }
 file_path = {
@@ -227,10 +228,9 @@ verbose = {
     },
 }
 
-
-#=========================================================================
+# =========================================================================
 # convert subparser
-#=========================================================================
+# =========================================================================
 convert_parser = subparsers.add_parser(
     'convert', description="Perform conversions to EMDB-SFF", help="converts from/to EMDB-SFF")
 convert_parser.add_argument('from_file', help="file to convert from")
@@ -249,9 +249,9 @@ group = convert_parser.add_mutually_exclusive_group()
 group.add_argument(*output['args'], **output['kwargs'])
 group.add_argument(*format_['args'], **format_['kwargs'])
 
-#=========================================================================
+# =========================================================================
 # config subparser
-#=========================================================================
+# =========================================================================
 config_parser = subparsers.add_parser(
     'config',
     description="Configuration utility",
@@ -265,9 +265,9 @@ config_subparsers = config_parser.add_subparsers(
     metavar='Commands:'
 )
 
-#=============================================================================
+# =============================================================================
 # config: list
-#=============================================================================
+# =============================================================================
 list_configs_parser = config_subparsers.add_parser(
     'list',
     description='List sfftk configuration parameters',
@@ -276,9 +276,9 @@ list_configs_parser = config_subparsers.add_parser(
 add_args(list_configs_parser, config_path)
 add_args(list_configs_parser, shipped_configs)
 
-#=============================================================================
+# =============================================================================
 # config: get
-#=============================================================================
+# =============================================================================
 get_configs_parser = config_subparsers.add_parser(
     'get',
     description='Get the value of a single configuration parameter',
@@ -290,9 +290,9 @@ get_configs_parser.add_argument(
 add_args(get_configs_parser, config_path)
 add_args(get_configs_parser, shipped_configs)
 
-#=============================================================================
+# =============================================================================
 # config: set
-#=============================================================================
+# =============================================================================
 set_configs_parser = config_subparsers.add_parser(
     'set',
     description='Set the value of a single configuration parameter',
@@ -307,9 +307,9 @@ set_configs_parser.add_argument(
 add_args(set_configs_parser, config_path)
 add_args(set_configs_parser, shipped_configs)
 
-#=============================================================================
+# =============================================================================
 # config: del
-#=============================================================================
+# =============================================================================
 del_configs_parser = config_subparsers.add_parser(
     'del',
     description='Delete the named configuration parameter',
@@ -321,9 +321,9 @@ del_configs_parser.add_argument(
 add_args(del_configs_parser, config_path)
 add_args(del_configs_parser, shipped_configs)
 
-#=============================================================================
+# =============================================================================
 # config: clear
-#=============================================================================
+# =============================================================================
 clear_configs_parser = config_subparsers.add_parser(
     'clear',
     description='Clear all configuration parameters',
@@ -332,9 +332,9 @@ clear_configs_parser = config_subparsers.add_parser(
 add_args(clear_configs_parser, config_path)
 add_args(clear_configs_parser, shipped_configs)
 
-#=========================================================================
+# =========================================================================
 # view subparser
-#=========================================================================
+# =========================================================================
 view_parser = subparsers.add_parser(
     'view', description="View a summary of an SFF file", help="view file summary")
 view_parser.add_argument('from_file', help="any SFF file")
@@ -346,9 +346,9 @@ view_parser.add_argument('-C', '--show-chunks', action='store_true',
                          help="show sequence of chunks in IMOD file; only works with IMOD model files (.mod) [default: False]")
 view_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 
-#=============================================================================
+# =============================================================================
 # notes parser
-#=============================================================================
+# =============================================================================
 notes_parser = subparsers.add_parser(
     'notes',
     description="The EMDB-SFF Annotation Toolkit",
@@ -362,44 +362,81 @@ notes_subparsers = notes_parser.add_subparsers(
     metavar="EMDB-SFF annotation tools",
 )
 
-#=========================================================================
+# =========================================================================
 # notes: search
-#=========================================================================
+# =========================================================================
 search_notes_parser = notes_subparsers.add_parser(
     'search',
     description="Search ontologies for annotation by text labels",
     help="search for terms by labels",
 )
+# todo: how to make search_term optional for -l/-L?
 search_notes_parser.add_argument(
     'search_term', help="the term to search; add quotes if spaces are included")
 add_args(search_notes_parser, config_path)
 add_args(search_notes_parser, shipped_configs)
 search_notes_parser.add_argument(
-    '-r', '--rows', type=int, default=10, help="number of rows [default: 10]")
+    '-R', '--resource', default=RESOURCE_LIST.keys()[0], choices=RESOURCE_LIST.keys(),
+    help='the resource to search for terms or accessions; other valid options are {resources} [default: {default}]'.format(
+        resources=RESOURCE_LIST.keys(),
+        default=RESOURCE_LIST.keys()[0],
+    )
+)
 search_notes_parser.add_argument(
-    '-s', '--start', type=int, default=1, help="start index [default: 1]")
+    '-s', '--start', type=int, default=1, help="start index [default: 1]"
+)
 search_notes_parser.add_argument(
+    '-r', '--rows', type=int, default=10, help="number of rows [default: 10]"
+)
+ols_parser = search_notes_parser.add_argument_group(
+    title='EBI Ontology Lookup Service (OLS)',
+    description='The Ontology Lookup Service (OLS) is a repository for biomedical ontologies that aims to provide a '
+                'single point of access to the latest ontology versions. Searching against OLS can use the following '
+                'options:'
+)
+ols_parser.add_argument(
     '-O', '--ontology', default=None, help="the ontology to search [default: None]")
-search_notes_parser.add_argument(
+ols_parser.add_argument(
     '-x', '--exact', default=False, action='store_true', help="exact matches? [default: False]")
-search_notes_parser.add_argument(
+ols_parser.add_argument(
     '-o', '--obsoletes', default=False, action='store_true', help="include obsoletes? [default: False]")
-search_notes_parser.add_argument('-L', '--list-ontologies', default=False,
-                                 action='store_true', help="list available ontologies [default: False]")
-search_notes_parser.add_argument('-l', '--short-list-ontologies', default=False,
-                                 action='store_true', help="short list of available ontologies [default: False]")
+ols_parser.add_argument(
+    '-L', '--list-ontologies', default=False,
+    action='store_true', help="list available ontologies [default: False]"
+)
+ols_parser.add_argument(
+    '-l', '--short-list-ontologies', default=False,
+    action='store_true', help="short list of available ontologies [default: False]"
+)
 
-#=========================================================================
+# todo: add resource-specific argument groups
+# emdb_parser = search_notes_parser.add_argument_group(
+#     title='The Electron Microscopy Data Bank (EMDB)',
+#     description='The Electron Microscopy Data Bank (EMDB) is a public repository for electron microscopy density maps '
+#                 'of macromolecular complexes and subcellular structures. Searching against EMDB can use the following '
+#                 'options:'
+# )
+# uniprot_parser = search_notes_parser.add_argument_group(
+#     title='The Universal Protein Resource (UniProt)',
+#     description='The Universal Protein Resource (UniProt) is a comprehensive resource for protein sequence and '
+#                 'annotation data. Searching against UniProt can use the following options:'
+# )
+# pdb_parser = search_notes_parser.add_argument_group(
+#     title='The Protein Data Bank archive (PDB)',
+#     description='Since 1971, the Protein Data Bank archive (PDB) has served as the single repository of information '
+#                 'about the 3D structures of proteins, nucleic acids, and complex assemblies. Searching against EMDB '
+#                 'can use the following options:'
+# )
+
+# =========================================================================
 # notes: suggest
-#=========================================================================
-'''
-:TODO: suggest terms from a description
-'''
+# =========================================================================
+# todo: suggest terms from a description
 # TBA
 
-#=========================================================================
+# =========================================================================
 # notes: list
-#=========================================================================
+# =========================================================================
 list_notes_parser = notes_subparsers.add_parser(
     'list',
     description="List all available annotations present in an EMDB-SFF file",
@@ -426,9 +463,9 @@ list_notes_parser.add_argument('-I', '--list-ids', default=False, action='store_
                                help="only list the IDs for segments one per line [default: False]")
 add_args(list_notes_parser, verbose)
 
-#=========================================================================
+# =========================================================================
 # notes: show
-#=========================================================================
+# =========================================================================
 show_notes_parser = notes_subparsers.add_parser(
     'show',
     description="Show a specific annotations by ID present in an EMDB-SFF file",
@@ -446,9 +483,9 @@ show_segment_id['kwargs'][
 show_notes_parser.add_argument(
     *show_segment_id['args'], **show_segment_id['kwargs'])
 
-#=========================================================================
+# =========================================================================
 # notes:add
-#=========================================================================
+# =========================================================================
 add_notes_parser = notes_subparsers.add_parser(
     'add',
     description="Add a new annotation to an EMDB-SFF file",
@@ -485,9 +522,9 @@ add_args(add_segment_notes_parser, number_of_instances)
 add_args(add_segment_notes_parser, complexes)
 add_args(add_segment_notes_parser, macromolecules)
 
-#=========================================================================
+# =========================================================================
 # notes: edit
-#=========================================================================
+# =========================================================================
 edit_notes_parser = notes_subparsers.add_parser(
     'edit',
     description="Edit an existing annotation to an EMDB-SFF file",
@@ -524,9 +561,9 @@ add_args(edit_segment_notes_parser, complexes)
 add_args(edit_segment_notes_parser, macromolecule_id)
 add_args(edit_segment_notes_parser, macromolecules)
 
-#=========================================================================
+# =========================================================================
 # notes: del
-#=========================================================================
+# =========================================================================
 del_notes_parser = notes_subparsers.add_parser(
     'del',
     description="Delete an existing annotation to an EMDB-SFF file",
@@ -599,9 +636,9 @@ add_args(del_segment_notes_parser, number_of_instances)
 add_args(del_segment_notes_parser, complex_id)
 add_args(del_segment_notes_parser, macromolecule_id)
 
-#=============================================================================
+# =============================================================================
 # notes: merge
-#=============================================================================
+# =============================================================================
 merge_notes_parser = notes_subparsers.add_parser(
     'merge',
     description="Merge notes from two EMDB-SFF files",
@@ -609,17 +646,17 @@ merge_notes_parser = notes_subparsers.add_parser(
 )
 add_args(merge_notes_parser, config_path)
 add_args(merge_notes_parser, shipped_configs)
-merge_notes_parser.add_argument('sff_file1', help="first EMDB-SFF file")
-merge_notes_parser.add_argument('sff_file2', help="second EMDB-SFF file")
+merge_notes_parser.add_argument('--source', help="EMDB-SFF file from which to obtain notes", required=True)
+merge_notes_parser.add_argument('other',
+                                help="EMDB-SFF file whose content will be merged with notes from the file specified with --source")
 output['kwargs'][
     'help'] = "file to convert to; the extension (.sff, .hff, .json) determines the output format; if not specified then DESTINATION NOTES ONLY will be overwritten [default: None]"
 merge_notes_parser.add_argument(*output['args'], **output['kwargs'])
 merge_notes_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 
-
-#=========================================================================
+# =========================================================================
 # notes: save
-#=========================================================================
+# =========================================================================
 save_notes_parser = notes_subparsers.add_parser(
     'save',
     description="Save all changes made to the actual file",
@@ -629,9 +666,9 @@ save_notes_parser.add_argument(*sff_file['args'], **sff_file['kwargs'])
 add_args(save_notes_parser, config_path)
 add_args(save_notes_parser, shipped_configs)
 
-#=========================================================================
+# =========================================================================
 # notes: trash
-#=========================================================================
+# =========================================================================
 trash_notes_parser = notes_subparsers.add_parser(
     'trash',
     description="Discard all notes by deleting the temporary file",
@@ -656,6 +693,7 @@ add_args(tests_parser, shipped_configs)
 tests_parser.add_argument('-v', '--verbosity', default=1, type=int,
                           help="set verbosity; valid values: %s [default: 0]" % ", ".join(map(str, verbosity_range)))
 
+
 # test_parser = subparsers.add_parser('test', description="Run unit tests", help="run unit tests")
 # test_parser.add_argument('tool', nargs='*', default='all', help=test_help)
 # add_args(test_parser, config_path)
@@ -665,7 +703,7 @@ tests_parser.add_argument('-v', '--verbosity', default=1, type=int,
 
 
 def parse_args(_args):
-    '''
+    """
     Parse and check command-line arguments and also return configs.
 
     This function does all the heavy lifting in ensuring that commandline
@@ -680,7 +718,7 @@ def parse_args(_args):
     :rtype: ``argparse.Namespace``
     :return: config dict-like object
     :rtype: ``sfftk.core.configs.Config``
-    '''
+    """
     # if we have no subcommands then show the available tools
     if len(_args) == 0:
         Parser.print_help()
@@ -690,14 +728,14 @@ def parse_args(_args):
         if _args[0] == 'tests':
             pass
         elif _args[0] in Parser._actions[1].choices.keys():
-            exec('{}_parser.print_help()'.format(_args[0]))
+            exec ('{}_parser.print_help()'.format(_args[0]))
             sys.exit(0)
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
             if _args[1] in Parser._actions[1].choices['notes']._actions[1].choices.keys():
-                exec('{}_notes_parser.print_help()'.format(_args[1]))
+                exec ('{}_notes_parser.print_help()'.format(_args[1]))
                 sys.exit(0)
     # parse arguments
     args = Parser.parse_args(_args)
@@ -836,8 +874,8 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 # ensure we have at least one item to add
                 try:
                     assert (args.description is not None) or (args.number_of_instances is not None) or \
-                        (args.external_ref is not None) or (args.complexes is not None) or \
-                        (args.macromolecules is not None)
+                           (args.external_ref is not None) or (args.complexes is not None) or \
+                           (args.macromolecules is not None)
                 except AssertionError:
                     print_date(
                         "Nothing specified to add. Use one or more of the following options:\n\t-D <description> \n\t-E <extrefType> <extrefValue> \n\t-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
@@ -909,11 +947,11 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
 
                 # ensure we have at least one item to add
                 assert args.description or args.number_of_instances or \
-                    (args.external_ref_id is not None) or (args.complex_id is not None) or \
-                    (args.macromolecule_id is not None)
+                       (args.external_ref_id is not None) or (args.complex_id is not None) or \
+                       (args.macromolecule_id is not None)
 
         elif args.notes_subcommand == "merge":
             if args.output is None:
-                args.output = args.destination
+                args.output = args.other
 
     return args, configs
