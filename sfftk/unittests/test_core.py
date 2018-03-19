@@ -15,6 +15,7 @@ from ..core.configs import \
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes import RESOURCE_LIST
+from ..core import utils
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -634,6 +635,105 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.other, 'file.hff')
         self.assertEqual(args.output, 'file.hff')
         self.assertEqual(args.config_path, self.config_fn)
+
+
+class TestUtils(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        print >> sys.stderr, "utils tests..."
+
+    def test_get_path_one_level(self):
+        """Test that we can get an item at a path one level deep"""
+        x = _random_integer()
+        y = _random_integer()
+        D = {'a': x, 1: y}
+        path = ['a']
+        self.assertEqual(utils.get_path(D, path), x)
+        path = [1]
+        self.assertEqual(utils.get_path(D, path), y)
+
+    def test_get_path_two_level(self):
+        """Test that we can get an item at a path two levels deep"""
+        x = _random_integer()
+        y = _random_integer()
+        D = {'a': {
+            'b': x,
+            1: y,
+        }}
+        path = ['a', 'b']
+        self.assertEqual(utils.get_path(D, path), x)
+        path = ['a', 1]
+        self.assertEqual(utils.get_path(D, path), y)
+
+    def test_get_path_three_levels(self):
+        """Test that we can get an item at a path three levels deep"""
+        x = _random_integer()
+        y = _random_integer()
+        D = {'a': {
+            'b': {
+                'c': x,
+            },
+            1: {
+                2: y,
+            }
+        }}
+        path = ['a', 'b', 'c']
+        self.assertEqual(utils.get_path(D, path), x)
+        path = ['a', 1, 2]
+        self.assertEqual(utils.get_path(D, path), y)
+
+    def test_get_path_four_levels(self):
+        """Test that we can get an item at a path four levels deep"""
+        x = _random_integer()
+        y = _random_integer()
+        D = {'a': {
+            'b': {
+                'c': {
+                    'd': x,
+                },
+                1: {
+                    2: y,
+                }
+            }
+        }}
+        path = ['a', 'b', 'c', 'd']
+        self.assertEqual(utils.get_path(D, path), x)
+        path = ['a', 'b', 1, 2]
+        self.assertEqual(utils.get_path(D, path), y)
+
+    def test_get_path_keyerror(self):
+        """Test that we get a KeyError exception if the path does not exist"""
+        x = _random_integer()
+        y = _random_integer()
+        D = {'a': {
+            'b': {
+                'c': {
+                    'd': x,
+                },
+                'e': {
+                    'f': y,
+                }
+            }
+        }}
+        path = ['a', 'b', 'c', 'f']
+        with self.assertRaises(KeyError):
+            utils.get_path(D, path)
+
+    def test_get_path_nondict_type_error(self):
+        """Test that we get an exception when D is not a dict"""
+        D = ['some rubbish list']
+        path = ['a']
+        with self.assertRaises(AssertionError):
+            utils.get_path(D, path)
+
+    def test_get_path_unhashable_in_path(self):
+        """Test that unhashable in path fails"""
+        x = _random_integer()
+        y = _random_integer()
+        D = {'a': x, 'b': y}
+        path = [[5]]
+        with self.assertRaises(TypeError):
+            utils.get_path(D, path)
 
 
 if __name__ == "__main__":

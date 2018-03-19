@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''Unit tests for :py:mod:`sfftk.core.notes` package'''
+"""Unit tests for :py:mod:`sfftk.core.notes` package"""
 
 from __future__ import division
 
@@ -33,7 +33,7 @@ class TestNotes_view(unittest.TestCase):
         self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
 
     def test_list_default(self):
-        '''Test that we can view the list of segmentations with annotations'''
+        """Test that we can view the list of segmentations with annotations"""
         args, configs = parse_args(shlex.split("notes list {} --config-path {}".format(
             self.sff_file,
             self.config_fn,
@@ -43,7 +43,7 @@ class TestNotes_view(unittest.TestCase):
         self.assertEqual(status, 0)
 
     def test_long_list(self):
-        '''Test that we can long list (-l) the list of segmentations with annotations'''
+        """Test that we can long list (-l) the list of segmentations with annotations"""
         args, configs = parse_args(shlex.split("notes list -l {} --config-path {}".format(
             self.sff_file,
             self.config_fn,
@@ -53,7 +53,7 @@ class TestNotes_view(unittest.TestCase):
         self.assertEqual(status, 0)
 
     def test_show_default(self):
-        '''Test that we can show annotations in a single segment'''
+        """Test that we can show annotations in a single segment"""
         args, configs = parse_args(shlex.split("notes show -i {} {} --config-path {}".format(
             self.segment_id,
             self.sff_file,
@@ -63,7 +63,7 @@ class TestNotes_view(unittest.TestCase):
         self.assertEqual(status, 0)
 
     def test_long_show(self):
-        '''Test that we can show in long format annotations in a single segment'''
+        """Test that we can show in long format annotations in a single segment"""
         args, configs = parse_args(shlex.split("notes show -l -i {} {} --config-path {}".format(
             self.segment_id,
             self.sff_file,
@@ -83,7 +83,7 @@ class TestNotes_modify(unittest.TestCase):
         self.segment_id = 15559
 
     def _test_add(self):
-        '''Test that we can add a note'''
+        """Test that we can add a note"""
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'ldjls']
@@ -119,7 +119,7 @@ class TestNotes_modify(unittest.TestCase):
         self.assertEqual(segment.complexesAndMacromolecules.macromolecules[2], macromolecules[2])
 
     def _test_edit(self):
-        '''Test that we can edit a note'''
+        """Test that we can edit a note"""
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'ldjss']
@@ -168,7 +168,7 @@ class TestNotes_modify(unittest.TestCase):
         self.assertEqual(segment.complexesAndMacromolecules.macromolecules[2], macromolecules[2][::-1])
 
     def _test_del(self):
-        '''Test that we can delete a note'''
+        """Test that we can delete a note"""
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'dsljfl']
@@ -230,9 +230,9 @@ class TestNotes_modify_sff(TestNotes_modify):
         super(TestNotes_modify_sff, self)._test_del()
 
 
-'''
+"""
 :FIXME: hff tests work but quadruple size of file
-'''
+"""
 
 
 # class TestNotes_modify_hff(TestNotes_modify):
@@ -281,12 +281,13 @@ class TestNotes_modify_json(TestNotes_modify):
 class TestNotes_modify_merge(unittest.TestCase):
     def test_merge(self):
         """Test that we can perform a merge with all args specified explicitly"""
-        args, _ = parse_args(shlex.split("notes merge --config-path {config_fn} --source {source} {other} --output {output}".format(
-            config_fn=self.config_fn,
-            source=source,
-            other=other,
-            output=output,
-        )))
+        args, _ = parse_args(
+            shlex.split("notes merge --config-path {config_fn} --source {source} {other} --output {output}".format(
+                config_fn=self.config_fn,
+                source=source,
+                other=other,
+                output=output,
+            )))
         self.assertTrue(False)
 
     def test_merge_output_implied(self):
@@ -306,7 +307,7 @@ class TestNotes_find(unittest.TestCase):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_search_default(self):
-        '''Test default search parameters'''
+        """Test default search parameters"""
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --config-path {}".format(self.config_fn)))
         query = find.SearchQuery(args, configs)
         try:
@@ -318,7 +319,7 @@ class TestNotes_find(unittest.TestCase):
             self.assertTrue(False)
 
     def test_search_no_results(self):
-        '''Test search that returns no results'''
+        """Test search that returns no results"""
         # I'm not sure when some biological entity with such a name will be discovered!
         args, configs = parse_args(
             shlex.split("notes search 'nothing' --exact --config-path {}".format(self.config_fn)))
@@ -332,10 +333,10 @@ class TestNotes_find(unittest.TestCase):
             self.assertTrue(False)
 
     def test_search_exact_result(self):
-        '''Test that we get an exact result
+        """Test that we get an exact result
             
         NOTE: this test is likely to break as the ontologies get updated
-        '''
+        """
         # this usually returns a single result
         args, configs = parse_args(shlex.split(
             "notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn)))
@@ -344,7 +345,7 @@ class TestNotes_find(unittest.TestCase):
         self.assertEqual(len(results), 2)  # funny!
 
     def test_search_ontology(self):
-        '''Test that we can search an ontology'''
+        """Test that we can search an ontology"""
         #  this search should bring at least one result
         args, configs = parse_args(
             shlex.split("notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn)))
@@ -358,7 +359,7 @@ class TestNotes_find(unittest.TestCase):
             self.assertTrue(False)
 
     def test_search_from_start(self):
-        '''Test that we can search from the starting index'''
+        """Test that we can search from the starting index"""
         # this search usually has close to 1000 results; 100 is a reasonable start
         random_start = tests._random_integer(1, 970)
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --start {} --config-path {}".format(
@@ -375,7 +376,7 @@ class TestNotes_find(unittest.TestCase):
             self.assertTrue(False)
 
     def test_search_result_rows(self):
-        '''Test that we get as many result rows as specified'''
+        """Test that we get as many result rows as specified"""
         # this search usually has close to 1000 results; 100 is a reasonable start
         random_rows = tests._random_integer(10, 100)
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --rows {} --config-path {}".format(

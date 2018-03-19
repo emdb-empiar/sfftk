@@ -12,7 +12,7 @@ import re
 import shlex
 import shutil
 
-from . import EXTERNAL_REFERENCES
+from . import RESOURCE_LIST
 from .. import schema
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
@@ -43,12 +43,18 @@ class ExternalReference(object):
         urlenc = urlencode({'iri': self.value.encode('idna')})
         urlenc2 = urlencode({'iri': urlenc.split('=')[1]})
         return urlenc2.split('=')[1]
+    # fixme: perhaps the text should exist already instead of being searched for?
+    # this seems to be a special case for OLS
+    # the user provides  the name of the resource, the IRI/URL and the accession and this
+    # method obtains the text meaning that its implementation would have to depend on
+    # the name of the resource i.e. the field from which to extract the text
+    # will vary by resource
     def _get_text(self):
         '''Get the label and description if they exist'''
         label = None
         description = None
         # only search for label and description if from OLS
-        if self.type.lower() not in EXTERNAL_REFERENCES:
+        if self.type.lower() not in RESOURCE_LIST.keys():
             url = "http://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
                 ontology=self.type,
                 iri=self.iri
