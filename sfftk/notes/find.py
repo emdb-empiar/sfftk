@@ -7,18 +7,21 @@ Search for terms and display ontologies
 """
 from __future__ import division, print_function
 
+import math
 import os
 import sys
 import textwrap
 
+from backports.shutil_get_terminal_size import get_terminal_size
+
 from . import RESOURCE_LIST
 from ..core import utils
+from ..core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-04-07"
 __updated__ = '2018-02-14'
-
 
 # todo: expand OLS options to below
 
@@ -48,6 +51,10 @@ __updated__ = '2018-02-14'
 
 
 # todo: Retrieve an ontology GET /api/ontologies/{ontology_id}
+
+
+JUSTIFY = ['left', 'right', 'center']
+
 
 class SearchResource(object):
     """A resource against which to look for accessions or terms"""
@@ -213,24 +220,101 @@ class SearchQuery(object):
 
 
 class TableField(object):
-    def __init__(self, name, key=None, width=20, justify='left', is_index=False, is_iterable=False):
-        # todo: assert justify
-        # todo: assert width
-        self._name = name
-        if key is None:
+    def __init__(self, name, key=None, text=None, width=20, pc=None, justify='left', format=None, is_index=False,
+                 is_iterable=False, position_in_iterable=0):
+        """A single field (column) in a table
+
+        :param str name: the name of the field that will appear in header; can be any object that implements __str__
+        :param str key: the key to use to extract the value for the field; if this is not defined then the value of
+        name is used instead
+        :param str text: a substitute for key; fixed text to appear in this field for all rows
+        :param int width: a positive integer for the width of this field
+        :param float pc: percentage width of the terminal occupied by this field
+        :param str justify: 'left' (default), 'right' or 'center'; how to align text in the field
+        :param str format: a format string with one pair of empty braces to construct a string for each row
+        :param bool is_index: if true then this field will be an index (numeric value) for the row
+        :param bool is_iterable: if true then the value obtained using key will be from a list and position_in_iterable
+        index will be retrieved from the iterable
+        :param int position_in_iterable: if is_iterable is true then the value for this field will be retrieved from the
+         specified index in the iterable value
+        """
+        # check mutex nature of key and text
+        try:
+            assert key is None or text is None
+        except AssertionError:
+            raise ValueError('key and text are mutually exclusive; only define one or none of them')
+            sys.exit(os.EX_DATAERR)
+        # check valid type for width
+        try:
+            assert isinstance(width, int) or isinstance(width, long)
+        except AssertionError:
+            raise ValueError('field width must be int or long')
+            sys.exit(os.EX_DATAERR)
+        # check valid value for width
+        try:
+            assert width > 0
+        except AssertionError:
+            raise ValueError('field width must be greater than 0')
+            sys.exit(os.EX_DATAERR)
+        # ensure pc is valid type
+        try:
+            assert isinstance(pc, int) or isinstance(pc, long) or isinstance(pc, float) or pc is None
+        except AssertionError:
+            raise ValueError('invalid type for pc (percentage): {}'.format(type(pc)))
+            sys.exit(os.EX_DATAERR)
+        # ensure pc is a valid value
+        try:
+            assert 0 < pc < 100 or pc is None
+        except AssertionError:
+            raise ValueError('invalid value for pc (percentage): {}'.format(pc))
+            sys.exit(os.EX_DATAERR)
+        # check valid values for justify
+        try:
+            assert justify in JUSTIFY
+        except AssertionError:
+            raise ValueError("invalid value for kwarg justify: {}; should be {}".format(
+                justify,
+                ', '.join(JUSTIFY),
+            ))
+        # check valid value for format
+        try:
+            assert format is None or format.find("{}") >= 0
+        except AssertionError:
+            raise ValueError(
+                "invalid value for format: {}; it should be either None or have one and only one pair of braces".format(
+                    format,
+                ))
+        # check valid type for position_in_iterable
+        try:
+            assert isinstance(position_in_iterable, int) or isinstance(position_in_iterable, long)
+        except AssertionError:
+            raise ValueError('field position_in_iterable must be int or long')
+            sys.exit(os.EX_DATAERR)
+        # check valid value for position_in_iterable
+        try:
+            assert position_in_iterable >= 0
+        except AssertionError:
+            raise ValueError('field position_in_iterable must be greater or equal than 0')
+            sys.exit(os.EX_DATAERR)
+        self._name = str(name)
+        if key is None and text is None:
             self._key = name
         else:
             self._key = key
+        self._text = text
         self._width = width
+        self._pc = pc
+        self._format = format
         self._justify = justify
         self._is_index = is_index
         self._is_iterable = is_iterable
+        self._position_in_iterable = position_in_iterable
 
     def justify(self, text):
         if self._justify == 'left':
             return text.ljust(self._width)
         elif self._justify == 'right':
-            return text.ljust(self._width)
+            return text.rjust(self._width)
         elif self._justify == 'center':
             return text.center(self._width)
 
@@ -242,18 +326,41 @@ class TableField(object):
     def is_index(self):
         return self._is_index
 
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self, width):
+        try:
+            assert isinstance(width, int) or isinstance(width, long)
+        except AssertionError:
+            raise ValueError('width must be an int or long')
+            sys.exit(os.EX_DATAERR)
+        self._width = width
+
+    @property
+    def pc(self):
+        return self._pc
+
     def render(self, row_data, index):
         if self.is_index:
             text = unicode(index)
-        else:
+        elif self._key is not None:
             try:
                 if self._is_iterable:
-                    text = row_data[self._key][0]
+                    text = row_data[self._key][self._position_in_iterable]
                 else:
                     text = row_data[self._key]
             except KeyError:
                 text = u'-'
-        wrapped_text = textwrap.wrap(text, self._width)
+        elif self._text is not None:
+            text = self._text
+        # format
+        if self._format is not None:
+            wrapped_text = textwrap.wrap(self._format.format(text), self._width)
+        else:
+            wrapped_text = textwrap.wrap(text, self._width)
         if not wrapped_text:  # empty list for empty string
             return [self.justify(u'')]
         else:
@@ -262,7 +369,7 @@ class TableField(object):
 
 class Table(object):
     """Table superclass"""
-    column_separator = u"\t"
+    column_separator = u" | "
     row_separator = u"\n"
 
 
@@ -300,14 +407,18 @@ class TableRow(Table):
                 except IndexError:
                     field = F.justify(u'')
                 row.append(field)
-            string += self.column_separator.join(row) + self.row_separator
+            # don't add an extra row separator to the last line
+            if i == no_lines - 1:
+                string += self.column_separator.join(row)
+            else:
+                string += self.column_separator.join(row) + self.row_separator
         return string
 
 
 class ResultsTable(Table):
     """Class that formats search results as a table"""
 
-    def __init__(self, search_results, fields, width=180, *args, **kwargs):
+    def __init__(self, search_results, fields, width='auto', *args, **kwargs):
         """Initialise a ResultsTable object by specifying results and fields
 
         :param search_results: a SearchResults object
@@ -315,12 +426,79 @@ class ResultsTable(Table):
         :param list fields: a list of TableField objects
         :param int width: a non-negative integer
         """
+        # check the type of search_results
+        try:
+            assert isinstance(search_results, SearchResults)
+        except AssertionError:
+            raise ValueError('search_results must be a SearchResults object')
+            sys.exit(os.EX_DATAERR)
+        # ensure that we have at least one field
+        try:
+            assert fields  # nice! an empty list asserts to False
+        except AssertionError:
+            raise ValueError('fields kwarg should not be empty')
+            sys.exit(os.EX_DATAERR)
+        # ensure that the fields kwarg is populated with TableField objects
+        try:
+            assert all(map(lambda f: isinstance(f, TableField), fields))
+        except AssertionError:
+            raise ValueError('non-TableField object in iterable fields')
+            sys.exit(os.EX_DATAERR)
+        # check valid type for width
+        try:
+            assert isinstance(width, int) or isinstance(width, long) or width == 'auto'
+        except AssertionError:
+            raise ValueError("field width must be instance of int or long or the string 'auto'")
+            sys.exit(os.EX_DATAERR)
+        # check valid value for width
+        try:
+            assert width > 0 or width == 'auto'
+        except AssertionError:
+            raise ValueError("field width must be greater than 0 or the string 'auto'")
+            sys.exit(os.EX_DATAERR)
+        # only one index field per table
+        try:
+            assert len(filter(lambda f: f.is_index, fields)) <= 1
+        except AssertionError:
+            raise ValueError(
+                'there is more than one field with is_index=True set; only one index field per table supported')
+            sys.exit(os.EX_DATAERR)
         super(ResultsTable, self).__init__(*args, **kwargs)
         self._search_results = search_results
-        self._fields = fields
-        self._width = width
-        # todo: ensure width is less than the sum of fields
-        # todo: there can only be one index field (result number)
+        if width == 'auto':
+            terminal_size = get_terminal_size((200, 80))  # fallback values
+            self._width = terminal_size.columns
+        else:
+            self._width = width
+        self._fields = self._evaluate_widths(fields)
+        # ensure width is less than the sum of fields
+        total_width = sum([f.width for f in fields])
+        try:
+            assert total_width < self._width
+        except AssertionError:
+            print_date(
+                'total field widths greater than table width; distortion will occur: table width={}; total field width={}'.format(
+                    self._width,
+                    total_width,
+                ))
+
+    def _evaluate_widths(self, fields):
+        """Convert percentage widths into fixed widths
+
+        :param list fields: list of TableField objects
+        :return list _fields: list of TableField objects
+        """
+        _fields = list()
+        # we calculate the field's width by taking into account the column separator
+        inter_column_distance = len(fields) * len(self.column_separator)
+        # subtract the inter-column distance from the screen width
+        reduced_width = self._width - inter_column_distance
+        for field in fields:
+            if field.pc is not None:
+                # the field's width is now...
+                field.width = int(math.floor(reduced_width * field.pc / 100))
+            _fields.append(field)
+        return _fields
 
     @property
     def header(self):
@@ -330,7 +508,16 @@ class ResultsTable(Table):
             self.row_separator,
             self.row_separator,
         )
-        header += self.column_separator.join(map(unicode, self._fields)) + self.row_separator
+        # _fields = list()
+        # for f in self._fields:
+        #     _f_unicode = unicode(f)
+        #     if len(_f_unicode) > f.width:
+        #         f_unicode = _f_unicode[:f.width]
+        #     else:
+        #         f_unicode = _f_unicode
+        #     _fields.append(f_unicode)
+        # header += self.column_separator.join(_fields) + self.row_separator
+        header += self.column_separator.join(map(lambda f: unicode(f)[:f.width], self._fields)) + self.row_separator
         header += u"=" * self._width + self.row_separator
         return header
 
@@ -464,120 +651,51 @@ class SearchResults(object):
             # list search results
             else:
                 fields = [
-                    TableField('index', key='index', width=6, is_index=True),
-                    TableField('label', key='label', width=20),
-                    TableField('short_form', key='short_form', width=20),
-                    TableField('ontology_name', key='ontology_name', width=15),
-                    TableField('description', key='description', width=50, is_iterable=True),
-                    TableField('type', key='type', width=18),
+                    TableField('index', key='index', pc=5, is_index=True, justify='right'),
+                    TableField('label', key='label', pc=10),
+                    TableField('short_form', key='short_form', pc=10, justify='center'),
+                    TableField('resource', key='ontology_name', pc=5, justify='center'),
+                    TableField('description', key='description', pc=40, is_iterable=True),
+                    TableField('iri', key='iri', pc=30),
                 ]
                 table = ResultsTable(self, fields=fields)
-                # table += "=" * self.TTY_WIDTH + "\n"
-                # table += "Search term: {}\n\n".format(self.search_args.search_term)
-                # header = [
-                #     "index".ljust(self.INDEX_WIDTH),
-                #     "label".ljust(self.LABEL_WIDTH),
-                #     "short_form".ljust(self.SHORT_FORM_WIDTH),
-                #     "ontology_name".ljust(self.ONTOLOGY_NAME_WIDTH),
-                #     "description/IRI".ljust(self.DESCRIPTION_WIDTH),
-                #     "type".ljust(self.TYPE_WIDTH),
-                # ]
-                # table += "\t".join(header) + "\n"
-                # table += "=" * self.TTY_WIDTH + "\n"
-                #
-                # start = self.search_args.start
-                #
-                # for e in self.results:
-                #     if e.has_key('description'):
-                #         wrapped_description = textwrap.wrap(e['description'][0] + " /{}".format(e['iri']),
-                #                                             self.DESCRIPTION_WIDTH)
-                #         if len(wrapped_description) == 1:
-                #             row = [
-                #                 str(start).ljust(self.INDEX_WIDTH),
-                #                 e['label'].ljust(self.LABEL_WIDTH),
-                #                 e['short_form'].ljust(self.SHORT_FORM_WIDTH) if e.has_key('short_form') else '-'.ljust(
-                #                     self.SHORT_FORM_WIDTH),
-                #                 e['ontology_name'].ljust(self.ONTOLOGY_NAME_WIDTH),
-                #                 wrapped_description[0].ljust(self.DESCRIPTION_WIDTH),
-                #                 e['type'].ljust(self.TYPE_WIDTH),
-                #             ]
-                #             table += "\t".join(row) + "\n"
-                #         else:
-                #             row = [
-                #                 str(start).ljust(self.INDEX_WIDTH),
-                #                 e['label'].ljust(self.LABEL_WIDTH),
-                #                 e['short_form'].ljust(self.SHORT_FORM_WIDTH) if e.has_key('short_form') else '-'.ljust(
-                #                     self.SHORT_FORM_WIDTH),
-                #                 e['ontology_name'].ljust(self.ONTOLOGY_NAME_WIDTH),
-                #                 wrapped_description[0].ljust(self.DESCRIPTION_WIDTH),
-                #                 e['type'].ljust(self.TYPE_WIDTH),
-                #             ]
-                #             table += "\t".join(row) + "\n"
-                #             for i in xrange(1, len(wrapped_description)):
-                #                 row = [
-                #                     ''.ljust(self.INDEX_WIDTH),
-                #                     ''.ljust(self.LABEL_WIDTH),
-                #                     ''.ljust(self.SHORT_FORM_WIDTH),
-                #                     ''.ljust(self.ONTOLOGY_NAME_WIDTH),
-                #                     wrapped_description[i].ljust(self.DESCRIPTION_WIDTH),
-                #                     ''.ljust(self.TYPE_WIDTH),
-                #                 ]
-                #                 table += "\t".join(row) + "\n"
-                #     else:
-                #         row = [
-                #             str(start).ljust(self.INDEX_WIDTH),
-                #             e['label'].ljust(self.LABEL_WIDTH),
-                #             e['short_form'].ljust(self.SHORT_FORM_WIDTH) if e.has_key('short_form') else '-'.ljust(
-                #                 self.SHORT_FORM_WIDTH),
-                #             e['ontology_name'].ljust(self.ONTOLOGY_NAME_WIDTH),
-                #             "{}".format(e['iri']).ljust(self.DESCRIPTION_WIDTH),
-                #             e['type'].ljust(self.TYPE_WIDTH),
-                #         ]
-                #         table += "\t".join(row) + "\n"
-                #
-                #     table += "-" * self.TTY_WIDTH + "\n"
-                #     start += 1
-                #
-                # if len(self):
-                #     table += "Showing: {} to {} of {} results found".format(
-                #         self.search_args.start,
-                #         min(len(self), self.search_args.start + self.search_args.rows - 1),
-                #         len(self),
-                #     )
-                # else:
-                #     table += "No results found."
         elif self._resource.name == 'EMDB':
             fields = [
-                TableField('index', key='index', width=6, is_index=True),
-                TableField('title', key='Title', width=80),
-                TableField('entry_id', key='EntryID', width=30),
+                TableField('index', key='index', pc=5, is_index=True, justify='right'),
+                TableField('label', text=self._resource.search_args.search_term, pc=10),
+                TableField('short_form', key='EntryID', pc=10, format='EMD-{}'),
+                TableField('resource', text='EMDB', pc=5),
+                TableField('description', key='Title', pc=40),
+                TableField('iri', key='EntryID', format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
             ]
             table = ResultsTable(self, fields=fields)
         elif self._resource.name == "UniProt":
             fields = [
-                TableField('index', width=6, is_index=True),
-                TableField('id', key='id', width=10),
-                TableField('name', key='name', width=30),
-                TableField('proteins', key='proteins', width=50),
-                TableField('organism', key='organism', width=40),
+                TableField('index', pc=5, is_index=True, justify='right'),
+                TableField('label', key='name', pc=10),
+                TableField('short_form', key='id', pc=10),
+                TableField('resource', text='UniProt', pc=5),
+                TableField('description', key='proteins', pc=40),
+                # TableField('organism', key='organism', width=40),
+                TableField('iri', key='id', format='https://www.uniprot.org/uniprot/{}', pc=30),
             ]
             table = ResultsTable(self, fields=fields)
         elif self._resource.name == "PDB":
             fields = [
-                TableField('index', width=6, is_index=True),
-                TableField('description', key='organism_scientific_name', width=20, is_iterable=True),
-                TableField('pdb_id', key='pdb_id', width=6),
-                TableField('title', key='title', width=20),
+                TableField('index', pc=5, is_index=True, justify='right'),
+                TableField('label', text=self._resource.search_args.search_term, pc=10),
+                TableField('short_form', key='pdb_id', pc=10),
+                TableField('resource', text='PDB', pc=5),
+                # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
+                TableField('description', key='title', pc=40),
+                TableField('iri', key='pdb_id', format='https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
             ]
             table = ResultsTable(self, fields=fields)
         return table
 
-    #     def __len__(self):
-    #         return self._result_list
     def __repr__(self):
         pass
 
-    #         return "SearchResult object containing {} result(s)".format(len(self))
     def __len__(self):
         if self._resource.result_count is not None:
             return utils.get_path(self._structured_response, self._resource.result_count)
