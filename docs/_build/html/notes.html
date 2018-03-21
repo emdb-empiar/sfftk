@@ -92,7 +92,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (sfftk)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal"><span class="pre">sfftk</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
@@ -180,45 +180,74 @@
 <h1>sfftk.notes package<a class="headerlink" href="#sfftk-notes-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-sfftk.notes.find">
 <span id="find-notes-module"></span><h2>Find notes module<a class="headerlink" href="#module-sfftk.notes.find" title="Permalink to this headline">¶</a></h2>
+<p>sfftk.notes.find</p>
+<p>Search for terms and display ontologies</p>
+<dl class="class">
+<dt id="sfftk.notes.find.ResultsTable">
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">ResultsTable</code><span class="sig-paren">(</span><em>search_results</em>, <em>fields</em>, <em>width='auto'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.Table</span></code></a></p>
+<p>Class that formats search results as a table</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="sfftk.notes.find.SearchQuery">
 <em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchQuery</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchQuery" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>SearchQuery class</p>
-<dl class="attribute">
-<dt id="sfftk.notes.find.SearchQuery.results">
-<code class="descname">results</code><a class="headerlink" href="#sfftk.notes.find.SearchQuery.results" title="Permalink to this definition">¶</a></dt>
-<dd><p>JSON of response from HTTP API</p>
+<p>Class that handles queries</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.notes.find.SearchResource">
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResource</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A resource against which to look for accessions or terms</p>
+<dl class="method">
+<dt id="sfftk.notes.find.SearchResource.get_url">
+<code class="descname">get_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the url to search against</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="sfftk.notes.find.SearchQuery.search">
-<code class="descname">search</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchQuery.search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Do the search</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return result:</th><td class="field-body">search results</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Rtype result:</th><td class="field-body"><code class="docutils literal"><span class="pre">SearchResults</span></code></td>
-</tr>
-</tbody>
-</table>
+<dt id="sfftk.notes.find.SearchResource.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a search against this resource</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.find.SearchResults">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResults</code><span class="sig-paren">(</span><em>json_result</em>, <em>search_args</em>, <em>configs</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResults</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>SearchResults class</p>
+<dl class="method">
+<dt id="sfftk.notes.find.SearchResults.tabulate">
+<code class="descname">tabulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults.tabulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tabulate the search results</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.notes.find.Table">
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">Table</code><a class="headerlink" href="#sfftk.notes.find.Table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Table superclass</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.notes.find.TableRow">
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">TableRow</code><span class="sig-paren">(</span><em>row_data</em>, <em>fields</em>, <em>index</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.Table</span></code></a></p>
+<p>A single row in the table</p>
+<p>Wrapping is automatically handled</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-sfftk.notes.view">
 <span id="view-notes-module"></span><h2>View notes module<a class="headerlink" href="#module-sfftk.notes.view" title="Permalink to this headline">¶</a></h2>
+<p>sfftk.notes.view</p>
+<p>Display notes in EMDB-SFF files</p>
 <dl class="class">
 <dt id="sfftk.notes.view.HeaderView">
 <em class="property">class </em><code class="descclassname">sfftk.notes.view.</code><code class="descname">HeaderView</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.HeaderView" title="Permalink to this definition">¶</a></dt>
@@ -272,6 +301,8 @@
 </div>
 <div class="section" id="module-sfftk.notes.modify">
 <span id="modify-notes-module"></span><h2>Modify notes module<a class="headerlink" href="#module-sfftk.notes.modify" title="Permalink to this headline">¶</a></h2>
+<p>sfftk.notes.modify</p>
+<p>Add, edit and delete terms in EMDB-SFF files</p>
 <dl class="class">
 <dt id="sfftk.notes.modify.AbstractGlobalNote">
 <em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">AbstractGlobalNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote" title="Permalink to this definition">¶</a></dt>
@@ -403,7 +434,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -417,7 +457,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -431,7 +480,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -445,7 +503,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -459,7 +526,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -473,7 +549,16 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
+</td>
 </tr>
 </tbody>
 </table>
