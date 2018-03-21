@@ -12,7 +12,8 @@ setup(
     url="http://sfftk.readthedocs.io/en/latest/index.html",
     license="Apache License",
     keywords="EMDB-SFF, SFF, segmentation",
-    install_requires=["ahds", "lxml", "h5py==2.6.0", "requests", "scikit-image", "bitarray", "numpy-stl", "configparser"],
+    install_requires=["ahds", "lxml", "h5py==2.6.0", "requests", "scikit-image", "bitarray", "numpy-stl",
+                      "configparser", "backports.shutil_get_terminal_size"],
     classifiers=[
         # maturity
         'Development Status :: 2 - Pre-Alpha',
@@ -29,6 +30,6 @@ setup(
     entry_points={
         'console_scripts': [
             'sff = sfftk.sff:main',
-            ]
-        },
+        ]
+    },
 )
