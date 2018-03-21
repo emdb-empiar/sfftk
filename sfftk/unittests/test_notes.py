@@ -26,17 +26,21 @@ __updated__ = '2018-02-14'
 
 
 class TestNotesFindSearchResource(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
+
     def test_unknown_resource(self):
         """Test exception raised formed unknown resource"""
         with self.assertRaises(SystemExit):
             args, config = parse_args(shlex.split(
-                'notes search --resource xxx "something"'
+                'notes search --resource xxx "something" --config-path {}'.format(self.config_fn)
             ))
 
     def test_configs_attribute(self):
         """Test the value of the configs attribute"""
         args, configs = parse_args(shlex.split(
-            'notes search --resource ols "mitochondria"'
+            'notes search --resource ols "mitochondria" --config-path {}'.format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.configs, configs)
@@ -44,7 +48,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
     def test_result_path(self):
         """Test result path attr"""
         args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria'"
+            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.result_path, RESOURCE_LIST['ols']['result_path'])
@@ -52,7 +56,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
     def test_result_count(self):
         """Test result_count attr"""
         args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria'"
+            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.result_count, RESOURCE_LIST['ols']['result_count'])
@@ -60,7 +64,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
     def test_format(self):
         """Test format attr"""
         args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria'"
+            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.format, RESOURCE_LIST['ols']['format'])
@@ -68,7 +72,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
     def test_response(self):
         """Test response attr"""
         args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria'"
+            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
         self.assertIsNone(resource.response)
@@ -86,8 +90,9 @@ class TestNotesFindSearchResource(unittest.TestCase):
         """Test url correctness for OLS"""
         resource_name = 'ols'
         args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria' -L".format(
-                resource_name=resource_name
+            "notes search -R {resource_name} 'mitochondria' -L --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
             ),
         ))
         resource = find.SearchResource(args, configs)
@@ -100,8 +105,9 @@ class TestNotesFindSearchResource(unittest.TestCase):
         """Test url correctness for OLS"""
         resource_name = 'ols'
         args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria' -O go -x -o".format(
-                resource_name=resource_name
+            "notes search -R {resource_name} 'mitochondria' -O go -x -o --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
             ),
         ))
         resource = find.SearchResource(args, configs)
@@ -118,8 +124,9 @@ class TestNotesFindSearchResource(unittest.TestCase):
         """Test url correctness for EMDB"""
         resource_name = 'emdb'
         args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria'".format(
-                resource_name=resource_name
+            "notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
             ),
         ))
         resource = find.SearchResource(args, configs)
@@ -135,8 +142,9 @@ class TestNotesFindSearchResource(unittest.TestCase):
         """Test url correctness for UniProt"""
         resource_name = 'uniprot'
         args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria'".format(
-                resource_name=resource_name
+            "notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
             ),
         ))
         resource = find.SearchResource(args, configs)
@@ -152,8 +160,9 @@ class TestNotesFindSearchResource(unittest.TestCase):
         """Test url correctness for PDB"""
         resource_name = 'pdb'
         args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria'".format(
-                resource_name=resource_name
+            "notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
             ),
         ))
         resource = find.SearchResource(args, configs)
@@ -167,10 +176,14 @@ class TestNotesFindSearchResource(unittest.TestCase):
 
 
 class TestNotesFindSearchQuery(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
+
     def test_search_args_attr(self):
         """Test that search_args attr works"""
         args, configs = parse_args(shlex.split(
-            "notes search -R emdb mitochondria"
+            "notes search -R emdb mitochondria --config-path {}".format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
         query = resource.search()
