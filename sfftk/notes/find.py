@@ -12,7 +12,7 @@ import os
 import sys
 import textwrap
 
-from backports.shutil_get_terminal_size import get_terminal_size
+import backports.shutil_get_terminal_size
 
 from . import RESOURCE_LIST
 from ..core import utils
@@ -460,7 +460,7 @@ class ResultsTable(Table):
         super(ResultsTable, self).__init__(*args, **kwargs)
         self._search_results = search_results
         if width == 'auto':
-            terminal_size = get_terminal_size((200, 80))  # fallback values
+            terminal_size = backports.shutil_get_terminal_size.get_terminal_size((200, 80))  # fallback values
             self._width = terminal_size.columns
         else:
             self._width = width
