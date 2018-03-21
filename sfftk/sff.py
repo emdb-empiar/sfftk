@@ -107,9 +107,7 @@ def handle_notes_search(args, configs):
     # search
     results = query.search()
     # view
-    # print_date("\033[0;33m\r", incl_date=False, newline=False)
     print results
-    # print_date("\033[0;0m\r", incl_date=False, newline=False)
     return os.EX_OK
 
 

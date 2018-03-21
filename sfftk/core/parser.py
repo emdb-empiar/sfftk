@@ -650,7 +650,7 @@ merge_notes_parser.add_argument('--source', help="EMDB-SFF file from which to ob
 merge_notes_parser.add_argument('other',
                                 help="EMDB-SFF file whose content will be merged with notes from the file specified with --source")
 output['kwargs'][
-    'help'] = "file to convert to; the extension (.sff, .hff, .json) determines the output format; if not specified then DESTINATION NOTES ONLY will be overwritten [default: None]"
+    'help'] = "file to convert to; the extension (.sff, .hff, .json) determines the output format; if not specified then NOTES IN OTHER ONLY will be overwritten [default: None]"
 merge_notes_parser.add_argument(*output['args'], **output['kwargs'])
 merge_notes_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 

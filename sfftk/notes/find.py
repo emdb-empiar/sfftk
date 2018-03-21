@@ -63,13 +63,7 @@ class SearchResource(object):
         self._args = args
         self._configs = configs
         self._response = None
-        try:
-            self._resource = RESOURCE_LIST[args.resource]
-        except KeyError:
-            raise ValueError("unknown resource '{resource}".format(
-                resource=args.resource,
-            ))
-            sys.exit(os.EX_DATAERR)
+        self._resource = RESOURCE_LIST[args.resource]
 
     @property
     def search_args(self):
