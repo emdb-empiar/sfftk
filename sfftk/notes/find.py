@@ -158,61 +158,6 @@ class SearchResource(object):
             sys.exit(os.EX_DATAERR)
 
 
-class SearchQuery(object):
-    """Class that handles queries"""
-
-    def __init__(self, args, configs):
-        self._resource = SearchResource(args, configs)
-        self._search_args = args
-        self.configs = configs
-        self._results = None
-
-    @property
-    def search_args(self):
-        return self._search_args
-
-    # @property
-    # def results(self):
-    #     """JSON of response from HTTP API"""
-    #     return self._results
-
-    def search(self, *args, **kwargs):
-        return self._resource.search(*args, **kwargs)
-    # def search(self, *args, **kwargs):
-    #     """Do the search
-    #
-    #     :return result: search results
-    #     :rtype result: ``SearchResults``
-    #     """
-    #     import requests
-    #     if self.search_args.list_ontologies or self.search_args.short_list_ontologies:
-    #         url = self.root_url + "ontologies?size=1000"
-    #         R = requests.get(url)
-    #         if R.status_code == 200:
-    #             self._results = R.text
-    #             return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
-    #         else:
-    #             raise ValueError(R.text)
-    #     else:
-    #         url = self.root_url + "search?q={}&start={}&rows={}".format(
-    #             self.search_args.search_term,
-    #             self.search_args.start - 1,
-    #             self.search_args.rows,
-    #         )
-    #         if self.search_args.ontology:
-    #             url += "&ontology={}".format(self.search_args.ontology)
-    #         if self.search_args.exact:
-    #             url += "&exact=on"
-    #         if self.search_args.obsoletes:
-    #             url += "&obsoletes=on"
-    #         R = requests.get(url)
-    #         if R.status_code == 200:
-    #             self._results = R.text
-    #             return SearchResults(self.results, self.search_args, self.configs, *args, **kwargs)
-    #         else:
-    #             raise ValueError(R.text)
-
-
 class TableField(object):
     def __init__(self, name, key=None, text=None, width=20, pc=None, justify='left', format=None, is_index=False,
                  is_iterable=False, position_in_iterable=0):
@@ -656,8 +601,8 @@ class SearchResults(object):
         elif self._resource.name == 'EMDB':
             fields = [
                 TableField('index', key='index', pc=5, is_index=True, justify='right'),
-                TableField('label', text=self._resource.search_args.search_term, pc=10),
-                TableField('short_form', key='EntryID', pc=10, format='EMD-{}'),
+                TableField('label', text=self._resource.search_args.search_term, pc=10, justify='center'),
+                TableField('short_form', key='EntryID', pc=10, format='EMD-{}', justify='center'),
                 TableField('resource', text='EMDB', pc=5),
                 TableField('description', key='Title', pc=40),
                 TableField('iri', key='EntryID', format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
@@ -667,8 +612,8 @@ class SearchResults(object):
             fields = [
                 TableField('index', pc=5, is_index=True, justify='right'),
                 TableField('label', key='name', pc=10),
-                TableField('short_form', key='id', pc=10),
-                TableField('resource', text='UniProt', pc=5),
+                TableField('short_form', key='id', pc=10, justify='center'),
+                TableField('resource', text='UniProt', pc=5, justify='center'),
                 TableField('description', key='proteins', pc=40),
                 # TableField('organism', key='organism', width=40),
                 TableField('iri', key='id', format='https://www.uniprot.org/uniprot/{}', pc=30),
@@ -678,8 +623,8 @@ class SearchResults(object):
             fields = [
                 TableField('index', pc=5, is_index=True, justify='right'),
                 TableField('label', text=self._resource.search_args.search_term, pc=10),
-                TableField('short_form', key='pdb_id', pc=10),
-                TableField('resource', text='PDB', pc=5),
+                TableField('short_form', key='pdb_id', pc=10, justify='center'),
+                TableField('resource', text='PDB', pc=5, justify='center'),
                 # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
                 TableField('description', key='title', pc=40),
                 TableField('iri', key='pdb_id', format='https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),

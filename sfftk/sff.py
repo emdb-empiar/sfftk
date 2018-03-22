@@ -103,9 +103,9 @@ def handle_notes_search(args, configs):
     """
     from sfftk.notes import find
     # query
-    query = find.SearchQuery(args, configs)
+    resource = find.SearchResource(args, configs)
     # search
-    results = query.search()
+    results = resource.search()
     # view
     print results
     return os.EX_OK
