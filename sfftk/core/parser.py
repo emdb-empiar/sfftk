@@ -478,6 +478,7 @@ add_args(show_notes_parser, header)
 add_args(show_notes_parser, long_format)
 add_args(show_notes_parser, verbose)
 show_segment_id = deepcopy(segment_id)
+# todo: use nargs='+' instead of csv
 show_segment_id['kwargs'][
     'help'] += "; pass more than one ID as a comma-separated list with no spaces e.g. 'id1,id2,...,idN'"
 show_notes_parser.add_argument(
@@ -635,6 +636,80 @@ number_of_instances['kwargs'] = {
 add_args(del_segment_notes_parser, number_of_instances)
 add_args(del_segment_notes_parser, complex_id)
 add_args(del_segment_notes_parser, macromolecule_id)
+
+# =============================================================================
+# notes: copy
+# =============================================================================
+copy_notes_parser = notes_subparsers.add_parser(
+    'copy',
+    description="Copy notes from one/multiple segment to one/multiple/all other segments within the same EMDB-SFF file",
+    help="copy notes across segments within the same EMDB-SFF file"
+)
+add_args(copy_notes_parser, sff_file)
+add_args(copy_notes_parser, config_path)
+add_args(copy_notes_parser, shipped_configs)
+# todo: merge with segment_id above
+copy_notes_parser.add_argument(
+    '-i', '--segment-id',
+    help="segment ID or a comma-separated sequence of segment IDs of source segment(s); run 'sff notes list <file>' for a list of "
+         "segment IDs",
+)
+copy_global_notes_parse = copy_notes_parser.add_mutually_exclusive_group()
+copy_global_notes_parse.add_argument(
+    '--from-global',
+    action='store_true',
+    default=False,
+    help="copy notes from global (metadata) to --to-segment segments"
+)
+copy_global_notes_parse.add_argument(
+    '--to-global',
+    action='store_true',
+    default=False,
+    help="copy notes from --segment-id segment to global (metadata)"
+)
+to_segment_or_all_copy_notes_parser = copy_notes_parser.add_mutually_exclusive_group()
+to_segment_or_all_copy_notes_parser.add_argument(
+    '-t', '--to-segment',
+    help="segment ID or a comma-separated sequence of segment IDs of destination segment(s); run 'sff notes list <file>' for a list of "
+         "segment IDs",
+)
+to_segment_or_all_copy_notes_parser.add_argument(
+    '--to-all',
+    action='store_true',
+    default=False,
+    help="copy notes from --segment-id segment to all (other) segments"
+)
+
+# =============================================================================
+# notes: clear
+# =============================================================================
+clear_notes_parser = notes_subparsers.add_parser(
+    'clear',
+    description="Clear all notes for one or more segments in an EMDB-SFF file",
+    help="clear notes in an EMDB-SFF file"
+)
+add_args(clear_notes_parser, config_path)
+add_args(clear_notes_parser, shipped_configs)
+add_args(clear_notes_parser, sff_file)
+clear_notes_parser.add_argument(
+    '--from-global',
+    action='store_true',
+    default=False,
+    help="clear notes from global (metadata)"
+)
+from_segment_or_all_clear_notes_parser = clear_notes_parser.add_mutually_exclusive_group()
+from_segment_or_all_clear_notes_parser.add_argument(
+    '-i', '--segment-id',
+    help="segment ID or a comma-separated sequence of segment IDs of source segment(s); run 'sff notes list <file>' for a list of "
+         "segment IDs",
+)
+from_segment_or_all_clear_notes_parser.add_argument(
+    '--from-all-segments',
+    action='store_true',
+    default=False,
+    help="clear notes from all segments"
+)
+
 
 # =============================================================================
 # notes: merge
@@ -865,6 +940,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
         elif args.notes_subcommand == "add":
             # external ref consistency
             if args.external_ref:
+                # todo: check this; doesn't seem right
                 if len(args.external_ref) == 2 and isinstance(args.external_ref[0], str):
                     args.external_ref = [args.external_ref]
 
@@ -902,6 +978,7 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                     return None, configs
 
                 # consistency of format
+                # todo: check this; doesn't seem right
                 if len(args.external_ref) == 0 and isinstance(args.external_ref[0], str):
                     args.external_ref = [args.external_ref]
 
@@ -949,6 +1026,46 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 assert args.description or args.number_of_instances or \
                        (args.external_ref_id is not None) or (args.complex_id is not None) or \
                        (args.macromolecule_id is not None)
+
+        elif args.notes_subcommand == "copy":
+            # convert from and to to lists of ints
+            if args.segment_id is not None:
+                from_segment = map(int, args.segment_id.split(','))
+                if isinstance(from_segment, int):
+                    args.segment_id = [from_segment]
+                else:
+                    args.segment_id = from_segment
+            if args.to_segment is not None:
+                to_segment = map(int, args.to_segment.split(','))
+                if isinstance(to_segment, int):
+                    args.to_segment = [to_segment]
+                else:
+                    args.to_segment = to_segment
+
+            # enforced automatically by package
+            # if args.to_segment is not None and args.all:
+            #     raise ValueError("--to-segment and --all are mutually exclusive")
+            #     sys.exit(os.EX_DATAERR)
+
+            if args.segment_id is not None and args.to_segment is not None:
+                from_set = set(args.segment_id)
+                to_set = set(args.to_segment)
+                common = from_set.intersection(to_set)
+                if len(common) > 0:
+                    raise ValueError(
+                        "the following segment IDs appear in both --segment-id and --to-segment: {}".format(
+                            " ".join(map(str, common))
+                        ))
+                    sys.exit(os.EX_DATAERR)
+
+        elif args.notes_subcommand == "clear":
+            # where to clear notes from
+            if args.segment_id is not None:
+                from_segment = map(int, args.segment_id.split(','))
+                if isinstance(from_segment, int):
+                    args.segment_id = [from_segment]
+                else:
+                    args.segment_id = from_segment
 
         elif args.notes_subcommand == "merge":
             if args.output is None:

@@ -243,6 +243,34 @@ def handle_notes_del(args, configs):
     return del_note(args, configs)
 
 
+def handle_notes_copy(args, configs):
+    """Handle `copy` subcommand of `notes` subcommand
+
+    :param args: parsed arguments
+    :type args: `argparse.Namespace`
+    :param configs: configurations object
+    :type configs: ``sfftk.core.configs.Configs``
+    :return int status: status
+    """
+    args = _handle_notes_modify(args, configs)
+    from sfftk.notes.modify import copy_notes
+    return copy_notes(args, configs)
+
+
+def handle_notes_clear(args, configs):
+    """Handle `copy` subcommand of `notes` subcommand
+
+    :param args: parsed arguments
+    :type args: `argparse.Namespace`
+    :param configs: configurations object
+    :type configs: ``sfftk.core.configs.Configs``
+    :return int status: status
+    """
+    args = _handle_notes_modify(args, configs)
+    from sfftk.notes.modify import clear_notes
+    return clear_notes(args, configs)
+
+
 def handle_notes_merge(args, configs):
     """Handle `merge` subcommand of `notes` subcommand
     
@@ -303,6 +331,10 @@ def handle_notes(args, configs):
         return handle_notes_edit(args, configs)
     elif args.notes_subcommand == "del":
         return handle_notes_del(args, configs)
+    elif args.notes_subcommand == "copy":
+        return handle_notes_copy(args, configs)
+    elif args.notes_subcommand == "clear":
+        return handle_notes_clear(args, configs)
     elif args.notes_subcommand == "merge":
         return handle_notes_merge(args, configs)
     elif args.notes_subcommand == "save":

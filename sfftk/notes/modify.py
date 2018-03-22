@@ -663,6 +663,74 @@ def del_note(args, configs):
     return 0
 
 
+def copy_notes(args, configs):
+    """Copy notes across segments
+
+    One or more segments can be chosen for either or both source and destination
+
+    :param args: parse arguments
+    :param configs: configurations object
+    :return: status
+    """
+    sff_seg = schema.SFFSegmentation(args.sff_file)
+    # from segment
+    if args.segment_id is not None:
+        from_segment = args.segment_id
+    if args.from_global:
+        try:
+            from_segment.append(-1)
+        except NameError:
+            from_segment = [-1]
+    # to_segment
+    if args.to_segment is not None:
+        to_segment = args.to_segment
+    elif args.to_all:
+        all_segment_ids = set(sff_seg.segments.get_ids())
+        to_segment = list(all_segment_ids.difference(set(from_segment)))
+    if args.to_global:
+        try:
+            to_segment.append(-1)
+        except NameError:
+            to_segment = [-1]
+    # if args.to_segment is None and not args.to_all:
+    #     to_segment = [-1]
+    # else:
+    #     to_segment.append(-1)
+    for f in from_segment:
+        for t in to_segment:
+            sff_seg.copy_annotation(f, t)
+    # export
+    sff_seg.export(args.sff_file)
+    return os.EX_OK
+
+
+def clear_notes(args, configs):
+    """Copy notes across segments
+
+        One or more segments can be chosen for either or both source and destination
+
+        :param args: parse arguments
+        :param configs: configurations object
+        :return: status
+        """
+    sff_seg = schema.SFFSegmentation(args.sff_file)
+    if args.segment_id is not None:
+        from_segment = args.segment_id
+    elif args.from_all_segments:
+        from_segment = sff_seg.segments.get_ids()
+    if args.from_global:
+        try:
+            from_segment.append(-1)
+        except NameError:
+            from_segment = [-1]
+    for f in from_segment:
+        sff_seg.clear_annotation(f)
+
+    # export
+    sff_seg.export(args.sff_file)
+    return os.EX_OK
+
+
 def merge(args, configs):
     """Merge two EMDB-SFF files
     

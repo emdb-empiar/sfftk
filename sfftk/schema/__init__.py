@@ -2339,3 +2339,33 @@ class SFFSegmentation(SFFType):
             other_segment = other_seg.segments.get_by_id(segment.id)
             segment.biologicalAnnotation = other_segment.biologicalAnnotation
             segment.complexesAndMacromolecules = other_segment.complexesAndMacromolecules
+
+    def copy_annotation(self, from_id, to_id):
+        """Copy annotation across segments
+
+        :param int/list from_id: segment ID to get notes from; use -1 for for global notes
+        :param int/list to_id: segment ID to copy notes to; use -1 for global notes
+        """
+        if from_id == -1:
+            _from = self.globalExternalReferences
+        else:
+            _from = self.segments.get_by_id(from_id).biologicalAnnotation.externalReferences
+        if to_id == -1:
+            to = self.globalExternalReferences
+        else:
+            to = self.segments.get_by_id(to_id).biologicalAnnotation.externalReferences
+        # the id for global notes
+        for extref in _from:
+            to.add_externalReference(extref)
+
+    def clear_annotation(self, from_id):
+        """Clear all annotations from the segment with ID specified
+
+        :param from_id: segment ID
+        :return:
+        """
+        if from_id == -1:
+            self.globalExternalReferences = SFFGlobalExternalReferences()
+        else:
+            segment = self.segments.get_by_id(from_id)
+            segment.biologicalAnnotation.externalReferences = SFFExternalReferences()

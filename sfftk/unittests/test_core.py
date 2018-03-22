@@ -1,21 +1,21 @@
 # test_core.py
 # -*- coding: utf-8 -*-
 """Unit tests for :py:mod:`sfftk.core` package"""
-from __future__ import division
+from __future__ import division, print_function
 
 import os
 import shlex
 import sys
 import unittest
 
-from . import TEST_DATA_PATH, _random_integer
+from . import TEST_DATA_PATH, _random_integer, _random_integers
 from .. import BASE_DIR
+from ..core import utils
 from ..core.configs import \
     list_configs, get_configs, set_configs, del_configs, clear_configs
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes import RESOURCE_LIST
-from ..core import utils
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -196,12 +196,12 @@ class TestCore_print_utils(unittest.TestCase):
 class TestParser_convert(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        print >> sys.stderr, "convert tests..."
+        print("convert tests...", file=sys.stderr)
         cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
 
     @classmethod
     def tearDownClass(cls):
-        print >> sys.stderr, ""
+        print("", file=sys.stderr)
 
     def test_default(self):
         """Test convert parser"""
@@ -284,11 +284,11 @@ class TestParser_view(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        print >> sys.stderr, "view tests..."
+        print("view tests...", file=sys.stderr)
 
     @classmethod
     def tearDownClass(cls):
-        print >> sys.stderr, ""
+        print("", file=sys.stderr)
 
     def test_default(self):
         """Test view parser"""
@@ -315,11 +315,11 @@ class TestParser_notes_ro(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        print >> sys.stderr, "notes ro tests..."
+        print("notes ro tests...", file=sys.stderr)
 
     @classmethod
     def tearDownClass(cls):
-        print >> sys.stderr, ""
+        print("", file=sys.stderr)
 
     # =========================================================================
     # find
@@ -379,7 +379,8 @@ class TestParser_notes_ro(unittest.TestCase):
         """Test various values of -R/--resource"""
         resources = RESOURCE_LIST.keys()
         for R in resources:
-            args, _ = parse_args(shlex.split('notes search "term" --resource {} --config-path {}'.format(R, self.config_fn)))
+            args, _ = parse_args(
+                shlex.split('notes search "term" --resource {} --config-path {}'.format(R, self.config_fn)))
             self.assertEqual(args.resource, R)
 
     # =========================================================================
@@ -454,11 +455,11 @@ class TestParser_notes_rw(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        print >> sys.stderr, "notes rw tests..."
+        print("notes rw tests...", file=sys.stderr)
 
     @classmethod
     def tearDownClass(cls):
-        print >> sys.stderr, ""
+        print("", file=sys.stderr)
 
     def setUp(self):
         unittest.TestCase.setUp(self)
@@ -587,6 +588,158 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.config_path, self.config_fn)
 
     # =========================================================================
+    # notes: copy
+    # =========================================================================
+    def test_copy_default(self):
+        """Test that we can run copy"""
+        source_id = _random_integer(start=1)
+        other_id = _random_integer(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
+            source_id=source_id, other_id=other_id, config_fn=self.config_fn, )
+        print(cmd, file=sys.stderr)
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertEqual(args.notes_subcommand, 'copy')
+        self.assertItemsEqual(args.segment_id, [source_id])
+        self.assertItemsEqual(args.to_segment, [other_id])
+        self.assertEqual(args.sff_file, 'file.sff')
+        self.assertEqual(args.config_path, self.config_fn)
+
+    def test_copy_to_multiple(self):
+        """Test that we can copy from one to multiple"""
+        source_id = _random_integer(start=1)
+        other_id = _random_integers(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
+            source_id=source_id, other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
+        print(cmd, file=sys.stderr)
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertEqual(args.notes_subcommand, 'copy')
+        self.assertItemsEqual(args.segment_id, [source_id])
+        self.assertItemsEqual(args.to_segment, other_id)
+        self.assertEqual(args.sff_file, 'file.sff')
+        self.assertEqual(args.config_path, self.config_fn)
+
+    def test_copy_from_multiple(self):
+        """Test that we can copy from multiple to one"""
+        source_id = _random_integers(start=1)
+        other_id = _random_integer(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
+            source_id=','.join(map(str, source_id)), other_id=other_id, config_fn=self.config_fn, )
+        print(cmd, file=sys.stderr)
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertEqual(args.notes_subcommand, 'copy')
+        self.assertItemsEqual(args.segment_id, source_id)
+        self.assertItemsEqual(args.to_segment, [other_id])
+        self.assertEqual(args.sff_file, 'file.sff')
+        self.assertEqual(args.config_path, self.config_fn)
+
+    def test_copy_from_multiple_to_multiple(self):
+        """Test that we can copy from multiple to multiple"""
+        source_id = _random_integers(start=1)
+        other_id = _random_integers(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
+            source_id=','.join(map(str, source_id)), other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
+        print('source_id: ', source_id, file=sys.stderr)
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertEqual(args.notes_subcommand, 'copy')
+        self.assertItemsEqual(args.segment_id, source_id)
+        self.assertItemsEqual(args.to_segment, other_id)
+        self.assertEqual(args.sff_file, 'file.sff')
+        self.assertEqual(args.config_path, self.config_fn)
+
+    def test_copy_check_unique_ids(self):
+        """Test that we don't copy ids between the same segment"""
+        source_id = _random_integers(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
+            source_id=','.join(map(str, source_id)), other_id=','.join(map(str, source_id)), config_fn=self.config_fn, )
+        with self.assertRaises(ValueError):
+            args, _ = parse_args(shlex.split(cmd))
+
+    def test_copy_all(self):
+        """Test that we can copy to all others"""
+        # all other ids should be correctly generated
+        source_id = _random_integer(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-all --config-path {config_fn} file.sff'.format(
+            source_id=source_id,
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertTrue(args.to_all)
+
+    def test_copy_to_and_all_exception(self):
+        source_id = _random_integer(start=1)
+        other_id = _random_integer(start=1)
+        cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --to-all --config-path {config_fn} file.sff'.format(
+            source_id=source_id,
+            other_id=other_id,
+            config_fn=self.config_fn,
+        )
+        with self.assertRaises(SystemExit):
+            args, _ = parse_args(shlex.split(cmd))
+
+    def test_copy_from_global_notes(self):
+        """Test copy from global"""
+        other_id = _random_integers(start=1)
+        cmd = "notes copy --from-global --to-segment {other_id} --config-path {config_fn} file.sff".format(
+            other_id=','.join(map(str, other_id)),
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertTrue(args.from_global)
+        self.assertFalse(args.to_global)
+
+    def test_copy_to_global_notes(self):
+        """Test copy to global"""
+        source_id = _random_integer(start=1)
+        cmd = "notes copy --segment-id {source_id} --to-global --config-path {config_fn} file.sff".format(
+            source_id=source_id,
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertTrue(args.to_global)
+        self.assertFalse(args.from_global)
+
+    # =========================================================================
+    # notes: clear
+    # =========================================================================
+    def test_clear_default(self):
+        """Test that we can clear notes for a single segment"""
+        source_id = _random_integer(start=1)
+        cmd = "notes clear --segment-id {source_id} --config-path {config_fn} file.sff".format(
+            source_id=source_id,
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertEqual(args.notes_subcommand, 'clear')
+        self.assertEqual(args.segment_id, [source_id])
+        self.assertFalse(args.from_all_segments)
+
+    def test_clear_multiple(self):
+        """Test that we can clear many but not all"""
+        source_id = _random_integers(start=1)
+        cmd = "notes clear --segment-id {source_id} --config-path {config_fn} file.sff".format(
+            source_id=','.join(map(str, source_id)),
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertEqual(args.segment_id, source_id)
+
+    def test_clear_all_except_global(self):
+        """Test that we can clear all except global"""
+        cmd = "notes clear --from-all-segments --config-path {config_fn} file.sff".format(
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertTrue(args.from_all_segments)
+
+    def test_clear_global_only(self):
+        """Test that we can clear global only"""
+        cmd = "notes clear --from-global --config-path {config_fn} file.sff".format(
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertTrue(args.from_global)
+
+    # =========================================================================
     # notes: save
     # =========================================================================
     def test_save(self):
@@ -640,7 +793,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
 class TestUtils(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        print >> sys.stderr, "utils tests..."
+        print("utils tests...", file=sys.stderr)
 
     def test_get_path_one_level(self):
         """Test that we can get an item at a path one level deep"""
