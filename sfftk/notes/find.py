@@ -405,8 +405,11 @@ class ResultsTable(Table):
         super(ResultsTable, self).__init__(*args, **kwargs)
         self._search_results = search_results
         if width == 'auto':
-            terminal_size = backports.shutil_get_terminal_size.get_terminal_size((200, 80))  # fallback values
-            self._width = terminal_size.columns
+            terminal_size = backports.shutil_get_terminal_size.get_terminal_size()  # fallback values
+            if terminal_size.columns > 0:
+                self._width = terminal_size.columns
+            else:
+                self._width = 80
         else:
             self._width = width
         self._fields = self._evaluate_widths(fields)

@@ -634,8 +634,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
 
     def test_copy_from_multiple_to_multiple(self):
         """Test that we can copy from multiple to multiple"""
-        source_id = _random_integers(start=1)
-        other_id = _random_integers(start=1)
+        source_id = _random_integers(start=1, stop=100)
+        other_id = _random_integers(start=101, stop=200)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
         print('source_id: ', source_id, file=sys.stderr)

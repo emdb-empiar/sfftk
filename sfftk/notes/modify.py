@@ -750,13 +750,13 @@ def merge(args, configs):
     other = schema.SFFSegmentation(args.other)
     if args.verbose:
         print_date("Merging annotations...")
-    other.merge_annotation_from(source)
+    other.merge_annotation(source)
     # export
     if args.verbose:
         print_date("Writing output to {}".format(args.output))
     other.export(args.output)
     if args.verbose:
-        print_date("Done.")
+        print_date("Done")
 
     return 0
 
@@ -809,7 +809,7 @@ def save(args, configs):
             json_seg = schema.SFFSegmentation(temp_file)
             seg = schema.SFFSegmentation(args.sff_file)
             #  merge
-            seg.merge_annotation_from(json_seg)
+            seg.merge_annotation(json_seg)
             seg.export(args.sff_file)
             print_date("Deleting temp file {}...".format(temp_file))
             os.remove(temp_file)

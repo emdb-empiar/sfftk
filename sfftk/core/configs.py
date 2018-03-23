@@ -127,9 +127,9 @@ def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Co
                 # create the config file
                 config_fn = config_path
 
-#     if hasattr(args, 'verbose'):
-#         if args.verbose:
-    print_date("Reading configs from {}".format(config_fn))
+    if hasattr(args, 'verbose'):
+        if args.verbose:
+            print_date("Reading configs from {}".format(config_fn))
 
     configs = config_class(config_fn)
     configs.read()

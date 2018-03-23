@@ -186,8 +186,7 @@ class TestNotesFindSearchQuery(unittest.TestCase):
             "notes search -R emdb mitochondria --config-path {}".format(self.config_fn)
         ))
         resource = find.SearchResource(args, configs)
-        query = resource.search()
-        self.assertEqual(query.search_args, args)
+        self.assertEqual(resource.search_args, args)
 
 
 class TestNotesFindTableField(unittest.TestCase):
@@ -313,6 +312,7 @@ class TestNotes_modify(unittest.TestCase):
                 self.config_fn,
             )
         )
+        print(cmd, file=sys.stderr)
         args, configs = parse_args(cmd)
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation(self.sff_file)
@@ -518,35 +518,33 @@ class TestNotes_modify_sff(TestNotes_modify):
         super(TestNotes_modify_sff, self)._test_merge()
 
 
-"""
-FIXME: hff tests work but quadruple size of file
-"""
+
+# fixme: hff tests work but quadruple size of file
 
 
-# class TestNotes_modify_hff(TestNotes_modify):
-#     def setUp(self):
-#         super(TestNotes_modify_hff, self).setUp()
-#         self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.hff')
-#         self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'other_emd_1014.hff')
-#         self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'output_emd_1014.hff')
-#
-#     def tearDown(self):
-#         with h5py.File(self.sff_file) as h:
-#             seg = schema.SFFSegmentation.from_hff(h)
-#             # remove all annotations
-#             for segment in seg.segments:
-#                 segment.biologicalAnnotation = schema.SFFBiologicalAnnotation()
-#                 segment.complexesAndMacromolecules = schema.SFFComplexesAndMacromolecules()
-#         seg.export(self.sff_file)
-#
-#     def test_add(self):
-#         super(TestNotes_modify_hff, self)._test_add()
-#
-#     def test_edit(self):
-#         super(TestNotes_modify_hff, self)._test_edit()
-#
-#     def test_del(self):
-#         super(TestNotes_modify_hff, self)._test_del()
+class TestNotes_modify_hff(TestNotes_modify):
+    def setUp(self):
+        super(TestNotes_modify_hff, self).setUp()
+        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.hff')
+        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'other_emd_1014.hff')
+        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'output_emd_1014.hff')
+
+    def tearDown(self):
+        seg = schema.SFFSegmentation(self.sff_file)
+        # remove all annotations
+        for segment in seg.segments:
+            segment.biologicalAnnotation = schema.SFFBiologicalAnnotation()
+            segment.complexesAndMacromolecules = schema.SFFComplexesAndMacromolecules()
+        seg.export(self.sff_file)
+
+    def test_add(self):
+        super(TestNotes_modify_hff, self)._test_add()
+
+    def test_edit(self):
+        super(TestNotes_modify_hff, self)._test_edit()
+
+    def test_del(self):
+        super(TestNotes_modify_hff, self)._test_del()
 
 
 class TestNotes_modify_json(TestNotes_modify):
@@ -585,9 +583,9 @@ class TestNotes_find(unittest.TestCase):
     def test_search_default(self):
         """Test default search parameters"""
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --config-path {}".format(self.config_fn)))
-        query = find.SearchQuery(args, configs)
+        resource = find.SearchResource(args, configs)
         try:
-            results = query.search()
+            results = resource.search()
             self.assertGreater(len(results), 0)
         except ValueError as v:
             print(str(v), file=sys.stderr)
@@ -598,9 +596,9 @@ class TestNotes_find(unittest.TestCase):
         # I'm not sure when some biological entity with such a name will be discovered!
         args, configs = parse_args(
             shlex.split("notes search 'nothing' --exact --config-path {}".format(self.config_fn)))
-        query = find.SearchQuery(args, configs)
+        resource = find.SearchResource(args, configs)
         try:
-            results = query.search()
+            results = resource.search()
             self.assertEqual(len(results), 0)
         except ValueError as v:
             print(str(v), file=sys.stderr)
@@ -614,8 +612,8 @@ class TestNotes_find(unittest.TestCase):
         # this usually returns a single result
         args, configs = parse_args(shlex.split(
             "notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn)))
-        query = find.SearchQuery(args, configs)
-        results = query.search()
+        resource = find.SearchResource(args, configs)
+        results = resource.search()
         self.assertEqual(len(results), 2)  # funny!
 
     def test_search_ontology(self):
@@ -623,9 +621,9 @@ class TestNotes_find(unittest.TestCase):
         #  this search should bring at least one result
         args, configs = parse_args(
             shlex.split("notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn)))
-        query = find.SearchQuery(args, configs)
+        resource = find.SearchResource(args, configs)
         try:
-            results = query.search()
+            results = resource.search()
             self.assertGreaterEqual(len(results), 1)
         except ValueError as v:
             print(str(v), file=sys.stderr)
@@ -639,9 +637,9 @@ class TestNotes_find(unittest.TestCase):
             random_start,
             self.config_fn,
         )))
-        query = find.SearchQuery(args, configs)
+        resource = find.SearchResource(args, configs)
         try:
-            results = query.search()
+            results = resource.search()
             self.assertGreaterEqual(results.structured_response['response']['start'], random_start - 1)
         except ValueError as v:
             print(str(v), file=sys.stderr)
@@ -655,9 +653,9 @@ class TestNotes_find(unittest.TestCase):
             random_rows,
             self.config_fn,
         )))
-        query = find.SearchQuery(args, configs)
+        resource = find.SearchResource(args, configs)
         try:
-            results = query.search()
+            results = resource.search()
             self.assertGreaterEqual(len(results), random_rows)
         except ValueError as v:
             print(str(v), file=sys.stderr)
