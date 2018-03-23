@@ -2240,13 +2240,21 @@ class SFFSegmentation(SFFType):
         if 'globalExternalReferences' in J:
             sff_seg.globalExternalReferences = SFFGlobalExternalReferences()
             for gextref in J['globalExternalReferences']:
+                try:
+                    label = gextref['label']
+                except KeyError:
+                    label = None
+                try:
+                    description = gextref['description']
+                except KeyError:
+                    description = None
                 sff_seg.globalExternalReferences.add_externalReference(
                     SFFExternalReference(
                         type=gextref['type'],
                         otherType=gextref['otherType'],
                         value=gextref['value'],
-                        label=gextref['label'],
-                        description=gextref['description'],
+                        label=label,
+                        description=description,
                         )
                     )
         # segments
@@ -2263,12 +2271,20 @@ class SFFSegmentation(SFFType):
                 if 'externalReferences' in s['biologicalAnnotation']:
                     biologicalAnnotation.externalReferences = SFFExternalReferences()
                     for extRef in s['biologicalAnnotation']['externalReferences']:
+                        try:
+                            label = extRef['label']
+                        except KeyError:
+                            label = None
+                        try:
+                            description = extRef['description']
+                        except KeyError:
+                            description = None
                         externalReference = SFFExternalReference(
                             type=extRef['type'],
                             otherType=extRef['otherType'],
                             value=extRef['value'],
-                            label=extRef['label'],
-                            description=extRef['description'],
+                            label=label,
+                            description=description,
                             )
                         biologicalAnnotation.externalReferences.add_externalReference(externalReference)
                 segment.biologicalAnnotation = biologicalAnnotation
@@ -2317,7 +2333,7 @@ class SFFSegmentation(SFFType):
         sff_seg.details = J['details']
         return sff_seg
 
-    def merge_annotation_from(self, other_seg):
+    def merge_annotation(self, other_seg):
         '''Merge the annotation from another sff_seg to this one
         
         :param other_seg: segmentation to get annotations from
