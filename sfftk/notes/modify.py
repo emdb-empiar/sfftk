@@ -583,7 +583,6 @@ def add_note(args, configs):
                 sff_seg.segment = note.add_to_segment(segment)
                 print NoteView(sff_seg.segment, _long=True)
                 found_segment = True
-                break
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
@@ -621,7 +620,6 @@ def edit_note(args, configs):
                 sff_seg.segment = note.edit_in_segment(segment)
                 print NoteView(sff_seg.segment, _long=True)
                 found_segment = True
-                break
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
@@ -655,7 +653,6 @@ def del_note(args, configs):
                 sff_seg.segment = note.del_from_segment(segment)
                 print NoteView(sff_seg.segment, _long=True)
                 found_segment = True
-                break
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export

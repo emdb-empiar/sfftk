@@ -739,6 +739,16 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         args, _ = parse_args(shlex.split(cmd))
         self.assertTrue(args.from_global)
 
+    def test_clear_all(self):
+        """Test that we can clear all notes"""
+        cmd = "notes clear --all --config-path {config_fn} file.sff".format(
+            config_fn=self.config_fn,
+        )
+        args, _ = parse_args(shlex.split(cmd))
+        self.assertTrue(args.all)
+        self.assertTrue(args.from_global)
+        self.assertTrue(args.from_all_segments)
+
     # =========================================================================
     # notes: save
     # =========================================================================

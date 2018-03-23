@@ -692,6 +692,12 @@ add_args(clear_notes_parser, config_path)
 add_args(clear_notes_parser, shipped_configs)
 add_args(clear_notes_parser, sff_file)
 clear_notes_parser.add_argument(
+    '--all',
+    action='store_true',
+    default=False,
+    help="clear all notes; USE WITH CARE!"
+)
+clear_notes_parser.add_argument(
     '--from-global',
     action='store_true',
     default=False,
@@ -1066,6 +1072,9 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                     args.segment_id = [from_segment]
                 else:
                     args.segment_id = from_segment
+            elif args.all:
+                args.from_global = True
+                args.from_all_segments = True
 
         elif args.notes_subcommand == "merge":
             if args.output is None:
