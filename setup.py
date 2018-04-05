@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sfftk",
-    version="0.2.0.dev0",
+    version="0.2.1.dev0",
     packages=find_packages(),
     author="Paul K. Korir, PhD",
     author_email="pkorir@ebi.ac.uk, paul.korir@gmail.com",

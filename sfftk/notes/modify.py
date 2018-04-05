@@ -5,7 +5,7 @@ sfftk.notes.modify
 
 Add, edit and delete terms in EMDB-SFF files
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import os
 import re
@@ -147,7 +147,7 @@ class AbstractGlobalNote(BaseNote):
         if self.filePath is not None:
             segmentation.filePath = self.filePath
         # details
-        if self.details is not None:
+        if self.details:
             segmentation.details = self.details
         # global external references
         if self.externalReferences:
@@ -574,14 +574,14 @@ def add_note(args, configs):
         # add notes to segmentation
         sff_seg = global_note.add_to_segmentation(sff_seg)
         # show the updated header
-        print HeaderView(sff_seg)
+        print(HeaderView(sff_seg))
     else:
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.add_to_segment(segment)
-                print NoteView(sff_seg.segment, _long=True)
+                print(NoteView(sff_seg.segment, _long=True))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -611,14 +611,14 @@ def edit_note(args, configs):
         # any additionally specified external references (-E a b -E x y) are inserted after the edited index
         sff_seg = global_note.edit_in_segmentation(sff_seg)
         #  show the updated header
-        print HeaderView(sff_seg)
+        print(HeaderView(sff_seg))
     else:
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.edit_in_segment(segment)
-                print NoteView(sff_seg.segment, _long=True)
+                print(NoteView(sff_seg.segment, _long=True))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -644,14 +644,14 @@ def del_note(args, configs):
         # delete the notes from segmentation
         sff_seg = global_note.del_from_segmentation(sff_seg)
         #  show the updated header
-        print HeaderView(sff_seg)
+        print(HeaderView(sff_seg))
     else:
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.del_from_segment(segment)
-                print NoteView(sff_seg.segment, _long=True)
+                print(NoteView(sff_seg.segment, _long=True))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
