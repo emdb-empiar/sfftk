@@ -198,6 +198,8 @@ class TestParser_convert(unittest.TestCase):
     def setUpClass(cls):
         print("convert tests...", file=sys.stderr)
         cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+        cls.test_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'emd_1014.sff')
+        cls.test_hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'emd_1014.hff')
 
     @classmethod
     def tearDownClass(cls):
@@ -253,6 +255,16 @@ class TestParser_convert(unittest.TestCase):
         args, _ = parse_args(shlex.split('convert {} -o file.json'.format(self.test_data_file)))
         # assertions
         self.assertEqual(args.output, 'file.json')
+
+    def test_hff_default_output_sff(self):
+        """Test that converting an .hff with no args gives .sff"""
+        args, _ = parse_args(shlex.split('convert {}'.format(self.test_hff_file)))
+        self.assertEqual(args.output, self.test_sff_file)
+
+    def test_sff_default_output_hff(self):
+        """Test that converting a .sff with no args gives .hff"""
+        args, _ = parse_args(shlex.split('convert {}'.format(self.test_sff_file)))
+        self.assertEqual(args.output, self.test_hff_file)
 
     def test_primary_descriptor(self):
         """Test convert parser with primary_descriptor"""

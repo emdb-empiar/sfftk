@@ -123,7 +123,7 @@ FORMAT_LIST = [
 format_ = {
     'args': ['-f', '--format'],
     'kwargs': {
-        'default': 'sff',
+        # 'default': 'sff',
         'help': "output file format; valid options are: {} [default: sff]".format(
             ", ".join(map(lambda x: "{} ({})".format(x[0], x[1]), FORMAT_LIST))
         ),
@@ -837,29 +837,32 @@ def parse_args(_args):
             sys.exit(1)
         # set the output file
         if args.output is None:
-            try:
-                assert args.format in map(lambda x: x[0], FORMAT_LIST)
-            except AssertionError:
-                print_date("Invalid output format: {}; valid values are: {}".format(
-                    args.format, ", ".join(map(lambda x: x[0], FORMAT_LIST))))
-                return None, configs
             import re
             dirname = os.path.dirname(args.from_file)
             if args.format:
+                try:
+                    assert args.format in map(lambda x: x[0], FORMAT_LIST)
+                except AssertionError:
+                    print_date("Invalid output format: {}; valid values are: {}".format(
+                        args.format, ", ".join(map(lambda x: x[0], FORMAT_LIST))))
+                    return None, configs
                 fn = ".".join(os.path.basename(args.from_file).split(
                     '.')[:-1]) + '.{}'.format(args.format)
                 args.__setattr__('output', os.path.join(dirname, fn))
+            # convert file.sff to file.hff
+            elif re.match(r'.*\.sff$', args.from_file):
+                fn = ".".join(
+                    os.path.basename(args.from_file).split('.')[:-1]) + '.hff'
+                args.__setattr__('output', os.path.join(dirname, fn))
+            # convert file.hff to file.sff
+            elif re.match(r'.*\.hff$', args.from_file):
+                fn = ".".join(
+                    os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
+                args.__setattr__('output', os.path.join(dirname, fn))
             else:
-                # convert file.sff to file.hff
-                if re.match(r'.*\.sff$', args.from_file):
-                    fn = ".".join(
-                        os.path.basename(args.from_file).split('.')[:-1]) + '.hff'
-                    args.__setattr__('output', os.path.join(dirname, fn))
-                # convert file.hff to file.sff
-                elif re.match(r'.*\.hff$', args.from_file):
-                    fn = ".".join(
-                        os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
-                    args.__setattr__('output', os.path.join(dirname, fn))
+                fn = ".".join(
+                    os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
+                args.__setattr__('output', os.path.join(dirname, fn))
             if args.verbose:
                 print_date("Setting output file to {}".format(args.output))
 
