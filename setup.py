@@ -2,13 +2,17 @@
 # setup.py
 from setuptools import setup, find_packages
 
+with open('README.rst') as f:
+    long_description = f.read()
+
 setup(
     name="sfftk",
-    version="0.2.1.dev1",
+    version="0.2.1.dev2",
     packages=find_packages(),
     author="Paul K. Korir, PhD",
     author_email="pkorir@ebi.ac.uk, paul.korir@gmail.com",
     description="Toolkit for working with EMDB-SFF and other segmentation file formats",
+    long_description=long_description,
     url="http://sfftk.readthedocs.io/en/latest/index.html",
     license="Apache License",
     keywords="EMDB-SFF, SFF, segmentation",
