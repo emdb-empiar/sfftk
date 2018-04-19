@@ -303,6 +303,12 @@
 <em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshContours</code><span class="sig-paren">(</span><em>z_segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshContours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Contours</span></code></p>
 <p>Contour container class</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<div class="last deprecated">
+<p><span class="versionmodified">Deprecated since version 0.6.0a4: </span>AmiraMesh segments are now represented as 3D volumes</p>
+</div>
+</div>
 <dl class="method">
 <dt id="sfftk.formats.am.AmiraMeshContours.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshContours.convert" title="Permalink to this definition">¶</a></dt>
@@ -437,7 +443,7 @@
 <dl class="method">
 <dt id="sfftk.formats.map.MapVolume.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapVolume.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFThreeDVolume" title="sfftk.schema.SFFThreeDVolume"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -553,6 +559,15 @@ Do not convert segmentations that only have contours</p>
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODContours</code><span class="sig-paren">(</span><em>header</em>, <em>conts</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODContours" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Contours</span></code></p>
 <p>Contours class</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 0.6.0a4: </span>IMOD contour segments should be converted to meshes using</p>
+</div>
+<div class="code bash last highlight-default"><div class="highlight"><pre><span></span>~$ imodmesh [options] file.mod
+</pre></div>
+</div>
+</div>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODContours.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODContours.convert" title="Permalink to this definition">¶</a></dt>
@@ -620,7 +635,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODShapes.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODShapes.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFShapePrimitiveList</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFShapePrimitiveList" title="sfftk.schema.SFFShapePrimitiveList"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFShapePrimitiveList</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
@@ -640,7 +655,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODCylinder.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODCylinder.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFCylinder</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFCylinder" title="sfftk.schema.SFFCylinder"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFCylinder</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -665,7 +680,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODEllipsoid.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODEllipsoid.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFEllipsoid</span></code> object</p>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFEllipsoid" title="sfftk.schema.SFFEllipsoid"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFEllipsoid</span></code></a> object</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -801,7 +816,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="method">
 <dt id="sfftk.formats.seg.SeggerVolume.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.seg.SeggerVolume.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to a <code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code> object</p>
+<dd><p>Convert to a <a class="reference internal" href="schema.html#sfftk.schema.SFFThreeDVolume" title="sfftk.schema.SFFThreeDVolume"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>

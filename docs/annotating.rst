@@ -61,27 +61,31 @@ The full listing of sub-subcommands organised by operation are:
 
 -  Find
 
-   -  **search**
+    -  **search**
 
 -  View
 
-   -  **list**
+    -  **list**
 
-   -  **show**
+    -  **show**
 
 -  Modify
 
-   -  **add**
+    -  **add**
 
-   -  **edit**
+    -  **edit**
 
-   -  **del**
+    - **copy**
 
-   -  **merge**
+    - **clear**
 
-   -  **save**
+    -  **merge**
 
-   -  **trash**
+    -  **del**
+
+    -  **save**
+
+    -  **trash**
 
 We will look at each of these in turn.
 
@@ -891,18 +895,18 @@ references:
 
 - ``-P/--software-processing-details``: a quoted string outlining the processing details by which the segmentation was obtained;
 
-	.. todo::
-	
-		Make ``-P/--software-processing-details`` take an optional file 
-		argument containing the segmentation protocol
+.. todo::
+
+    Make ``-P/--software-processing-details`` take an optional file
+    argument containing the segmentation protocol
 
 - ``-F/--file-path``: the *path to the segmentation file* on the local machine;
 
-	.. warning::
-	
-		The ``-F/--file-path`` option has been used to link to external files holding
-		geometrical data. This will be deprecated in favour of hosting all 
-		geometrical data within the EMDB-SFF file (HDF5 and XML). 
+.. warning::
+
+    .. deprecated:: 0.7.0
+        The ``-F/--file-path`` option has been used to link to external files holding geometrical data. This will
+        be deprecated in favour of hosting all geometrical data within the EMDB-SFF file (HDF5 and XML).
 
 - ``d/--details``: a quoted string of additional *details* pertaining to this segmentation;
 
@@ -1142,6 +1146,281 @@ Editing A Macromolecule (Internal Use)
     sff notes edit -i <segment_id> -m <macr_id> -M <macr1>,<macr2>,...,<macrN> file.json
     sff notes edit -i <segment_id> --macromolecule-id <macr_id> -M <macr1>,<macr2>,...,<macrN> file.json
 
+
+Copying Notes
+-------------
+
+Users may copy notes using the ``sff notes copy`` command.
+
+Important points to remember:
+
+-   Copying only makes use of external references - the segment description and number of instances are left intact.
+
+-   It is currently not possible to select a subset of annotations (this will be added in a later release); all
+    annotations are copied to the destination. However, individual annotations that are to be excluded may be removed
+    using the following sequence:
+
+    1.  view notes in the segment using
+
+        .. code:: bash
+
+            sff notes show --long-format -i <id> file.json
+
+        or
+
+        .. code:: bash
+
+            sff notes show -H file.json
+
+        for global notes;
+
+    2.  delete specific notes using
+
+        .. code:: bash
+
+            sff notes del <id1>,<id2>,...,<idN> file.json
+
+For the complete set of options run:
+
+.. code:: bash
+
+    sff notes copy
+    usage: sff notes copy [-h] [-p CONFIG_PATH] [-b] [-i SEGMENT_ID]
+                      [--from-global | --to-global] [-t TO_SEGMENT | --to-all]
+                      sff_file
+
+    Copy notes from one/multiple segment to one/multiple/all other segments within
+    the same EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            segment ID or a comma-separated sequence of segment
+                            IDs of source segment(s); run 'sff notes list <file>'
+                            for a list of segment IDs
+      --from-global         copy notes from global (metadata) to --to-segment
+                            segments
+      --to-global           copy notes from --segment-id segment to global
+                            (metadata)
+      -t TO_SEGMENT, --to-segment TO_SEGMENT
+                            segment ID or a comma-separated sequence of segment
+                            IDs of destination segment(s); run 'sff notes list
+                            <file>' for a list of segment IDs
+      --to-all              copy notes from --segment-id segment to all (other)
+                            segments
+
+Source of Notes: One or More Segments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Copy Notes To Another
+`````````````````````
+
+.. code:: bash
+
+    sff notes copy -i <source_segment_id> -t <dest_segment_id> file.json
+
+Copy Notes To Multiple Segments
+```````````````````````````````
+
+.. code:: bash
+
+    sff notes copy -i <source_segment_id> -t <id1>,<id2>,...,<idN> file.json
+
+Copy Notes To All Other Segments
+````````````````````````````````
+
+.. code:: bash
+
+    sff notes copy -i <source_segment_id> --to-all file.json
+
+The source segment will be excluded in the destination segments.
+
+Copy Notes To Global External References
+````````````````````````````````````````
+
+.. code:: bash
+
+    sff notes copy -i <source_segment_id> --to-global file.json
+
+Source of Notes: Global External References
+```````````````````````````````````````````
+
+Copy Notes To One Segment
+`````````````````````````
+
+.. code:: bash
+
+    sff notes copy --from-global -t <id> file.json
+
+Copy Notes To Multiple Segments
+```````````````````````````````
+
+.. code:: bash
+
+    sff notes copy --from-global -t <id1>,<id2>,...,<idN> file.json
+
+Copy Notes To All Segments
+``````````````````````````
+
+.. code:: bash
+
+    sff notes copy --from-global --to-all file.json
+
+Clearing Notes
+--------------
+
+The ``sff notes clear`` utility removes all notes from one or more segments or clears global external references.
+As always we can view the full list of options:
+
+
+.. code:: bash
+
+    sff notes clear
+    usage: sff notes clear [-h] [-p CONFIG_PATH] [-b] [--all] [--from-global]
+                           [-i SEGMENT_ID | --from-all-segments]
+                           sff_file
+
+    Clear all notes for one or more segments in an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      --all                 clear all notes; USE WITH CARE!
+      --from-global         clear notes from global (metadata)
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            segment ID or a comma-separated sequence of segment
+                            IDs of source segment(s); run 'sff notes list <file>'
+                            for a list of segment IDs
+      --from-all-segments   clear notes from all segments
+
+
+Segments
+~~~~~~~~
+
+One Segment
+```````````
+
+.. code:: bash
+
+    sff notes clear -i <segment_id> file.json
+
+Multiple Segments
+`````````````````
+
+.. code:: bash
+
+    sff notes clear -i <id1>,<id2>,...,<idN> file.json
+
+All Segments
+````````````
+
+.. code:: bash
+
+    sff notes clear --from-all-segments file.json
+
+Global External References
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+    sff notes clear --from-global file.json
+
+All Notes
+~~~~~~~~~
+
+This command clears both global and segment-level notes. Use it with care.
+
+.. code:: bash
+
+    sff notes clear --all file.json
+
+However, given that modification happens on a temporary file, clearing all notes is reversible provided
+``sff notes save file.json`` is not run.
+
+.. code:: bash
+
+    # restore to status before beginning the current modify session
+    sff notes trash @
+
+It is advisable to constantly save instead of only at the end of the annotation. This will ensure that there will be a
+minimal loss of annotations.
+
+Merging Notes
+-------------
+
+Notes can be manually merged from two EMDB-SFF files using ``sff notes merge``.
+
+.. code:: bash
+
+    sff notes merge
+    usage: sff notes merge [-h] [-p CONFIG_PATH] [-b] --source SOURCE [-o OUTPUT]
+                       [-v]
+                       other
+
+    Merge notes from two EMDB-SFF files
+
+    positional arguments:
+      other                 EMDB-SFF file whose content will be merged with notes
+                            from the file specified with --source
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      --source SOURCE       EMDB-SFF file from which to obtain notes
+      -o OUTPUT, --output OUTPUT
+                            file to convert to; the extension (.sff, .hff, .json)
+                            determines the output format; if not specified then
+                            NOTES IN OTHER ONLY will be overwritten [default:
+                            None]
+      -v, --verbose         verbose output
+
+Both files must refer to the exact same segmentation i.e. the number and IDs of segments must correspond (in
+cardinality and value).
+
+To merge notes from one EMDB-SFF file to another the user must specify the source file using the ``--source``
+argument. Any other file (a positional argument) will be treated as the destination.
+
+Explicit Output
+~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+    sff notes merge --source file.json file.sff -o file.hff
+
+will produce an HDF5 file while ``file.sff`` will remain unchanged. As in all other cases, the output format is
+defined by the extension.
+
+Implicit Output
+~~~~~~~~~~~~~~~
+
+In this case, the destination file is overwritten.
+
+.. code:: bash
+
+    sff notes merge --source file.json file.sff
+
+will produce an XML file (``file.sff``).
+
+
 Deleting Notes
 --------------
 
@@ -1307,18 +1586,6 @@ directory to a VIEW STATE.
     sff notes trash @
     Wed Sep 13 12:56:18 2017 Discarding all changes made in temp file ./temp-annotated.json... Done
 
-Merging Notes
--------------
-
-Notes can be manually merged from two EMDB-SFF files. Obviously both files 
-must refer to the exact same segmentation i.e. the number and IDs of segments 
-must be identical. The user must specify an output file with the extension 
-determining the output format.
-
-.. code:: bash
-
-    sff notes merge file1.sff file2.json -o merged_file.hff
-    sff notes merge file1.sff file2.json --output merged_file.hff
 
 Configuration Settings
 ======================

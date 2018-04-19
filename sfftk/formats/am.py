@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # am.py
-'''
+"""
 sfftk.formats.am
 ================
 
 User-facing reader classes for AmiraMesh files
 
-'''
+"""
 from __future__ import division
 
 import inspect
@@ -23,28 +23,28 @@ __date__ = "2016-11-10"
 __updated__ = '2018-02-23'
 
 
-'''
+"""
 :TODO: handle meshes <hxsurface>
-'''
+"""
 
 class AmiraMeshMesh(Mesh):
-    '''Mesh class'''
+    """Mesh class"""
     def __init__(self):
         self._vertices = None
         self._triangles = None
 
     @property
     def vertices(self):
-        '''Vertices in mesh'''
+        """Vertices in mesh"""
         return self._vertices
 
     @property
     def triangles(self):
-        '''Triangles in mesh'''
+        """Triangles in mesh"""
         return self._triangles
 
     def convert(self):
-        '''Convert to :py:class:`sfftk.schema.SFFMesh` object'''
+        """Convert to :py:class:`sfftk.schema.SFFMesh` object"""
         mesh = schema.SFFMesh()
         vertices = schema.SFFVertexList()
         polygons = schema.SFFPolygonList()
@@ -54,13 +54,13 @@ class AmiraMeshMesh(Mesh):
 
 
 class AmiraMeshAnnotation(Annotation):
-    '''Annotation class'''
+    """Annotation class"""
     def __init__(self, material):
         self._material = material
 
     @property
     def description(self):
-        '''Segment description'''
+        """Segment description"""
         try:
             return self._material.name
         except AttributeError:
@@ -68,9 +68,9 @@ class AmiraMeshAnnotation(Annotation):
 
     @property
     def colour(self):
-        '''Segment colour
+        """Segment colour
         
-        Colour may or may not exist. Return None if it doesn't and the caller will determine what to do'''
+        Colour may or may not exist. Return None if it doesn't and the caller will determine what to do"""
         try:
             colour = self._material.Color
         except AttributeError:
@@ -79,7 +79,7 @@ class AmiraMeshAnnotation(Annotation):
 #         self.colour_to_material = colour_to_material
 
     def convert(self):
-        '''Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object'''
+        """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
@@ -100,13 +100,19 @@ class AmiraMeshAnnotation(Annotation):
 
 
 class AmiraMeshContours(Contours):
-    '''Contour container class'''
+    """Contour container class
+
+    .. warning::
+
+        .. deprecated:: 0.6.0a4
+            AmiraMesh segments are now represented as 3D volumes
+    """
     def __init__(self, z_segment):
         self.z_segment = z_segment
     def __iter__(self):
         return iter(self.z_segment)
     def convert(self):
-        '''Convert to :py:class:`sfftk.schema.SFFContourList` object'''
+        """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
         contours = schema.SFFContourList()
         for z, cs in self.z_segment.iteritems():  # for each contour_set at this value of z
             for c in cs:  # for each contour in the contour set (at this value of z)
@@ -121,13 +127,13 @@ class AmiraMeshContours(Contours):
 
 
 class AmiraMeshVolume(Volume):
-    '''Volume container class'''
+    """Volume container class"""
     def __init__(self, fn, header):
         self._fn = fn
         self._header = header
 
     def convert(self):
-        '''Convert to :py:class:`sfftk.schema.SFFThreeDVolume` object'''
+        """Convert to :py:class:`sfftk.schema.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
         # make file
         hdf5_fn = "".join(self._fn.split('.')[:-1]) + '.hdf'
@@ -137,21 +143,21 @@ class AmiraMeshVolume(Volume):
 
 
 # class AmiraMeshSegment(Segment):
-#     '''Segment class'''
+#     """Segment class"""
 #     def __init__(self, header, segment_id, segment):
-#         '''Initialiser of AmiraMeshSegment
+#         """Initialiser of AmiraMeshSegment
 #
 #         :param header: an ``AmiraMeshHeader`` object containing header metadata
 #         :type header: AmiraMeshHeader
 #         :param int segment_id: the integer identifier for this segment ('Id' in Materials)
 #         :param dict segment: dictionary of z value to ``amira.data_streams.ContourSets`` objects (lists of ``amira.data_streams.Contour`` objects)
-#         '''
+#         """
 #         self._header = header
 #         self.id = segment_id
 #         self._segment = segment
 #     @property
 #     def material(self):
-#         '''Material may or may not exist. Return None if it doesn't and the caller will determine what to do'''
+#         """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
 #         try: # assume that we have materials defined
 #             material = self._header.parameters.Materials[self.id + 1] # Ids are 1-based but in the images are 0-based
 #         except AttributeError:
@@ -159,18 +165,18 @@ class AmiraMeshVolume(Volume):
 #         return material
 #     @property
 #     def annotation(self):
-#         '''Segment annotation'''
+#         """Segment annotation"""
 #         return AmiraMeshAnnotation(self.material)
 #     @property
 #     def contours(self):
-#         '''Contours in this segment'''
+#         """Contours in this segment"""
 #         return AmiraMeshContours(self._segment)
 #     @property
 #     def meshes(self):
-#         '''Meshes in this segment'''
+#         """Meshes in this segment"""
 #         return None
 #     def convert(self):
-#         '''Convert to :py:class:`sfftk.schema.SFFSegment` object'''
+#         """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
 #         segment = schema.SFFSegment()
 #         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
 #         segment.contours = self.contours.convert()
@@ -178,14 +184,14 @@ class AmiraMeshVolume(Volume):
 
 
 class AmiraMeshSegment(Segment):
-    '''Segment class'''
+    """Segment class"""
     def __init__(self, fn, header, segment_id):
-        '''Initialiser of AmiraMeshSegment
+        """Initialiser of AmiraMeshSegment
          
         :param header: an ``AmiraMeshHeader`` object containing header metadata
         :type header: AmiraMeshHeader
         :param int segment_id: the integer identifier for this segment ('Id' in Materials)
-        '''
+        """
         self._fn = fn
         self._header = header
         self._segment_id = segment_id
@@ -196,7 +202,7 @@ class AmiraMeshSegment(Segment):
 
     @property
     def material(self):
-        '''Material may or may not exist. Return None if it doesn't and the caller will determine what to do'''
+        """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
         try:  # assume that we have materials defined
             material = self._header.parameters.Materials[self.segment_id]  # Ids are 1-based but in the images are 0-based
         except AttributeError:
@@ -205,16 +211,16 @@ class AmiraMeshSegment(Segment):
 
     @property
     def annotation(self):
-        '''Segment annotation'''
+        """Segment annotation"""
         return AmiraMeshAnnotation(self.material)
 
     @property
     def volume(self):
-        '''The segmentation as a volume'''
+        """The segmentation as a volume"""
         return AmiraMeshVolume(self._fn, self._header)
 
     def convert(self):
-        '''Convert to :py:class:`sfftk.schema.SFFSegment` object'''
+        """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         segment.volume = self.volume.convert()
@@ -222,7 +228,7 @@ class AmiraMeshSegment(Segment):
 
 
 class AmiraMeshHeader(Header):
-    '''Header class'''
+    """Header class"""
     def __init__(self, header):
         self._header = header
 
@@ -239,29 +245,29 @@ class AmiraMeshHeader(Header):
 
 
 class AmiraMeshSegmentation(Segmentation):
-    '''Class representing an AmiraMesh segmentation
+    """Class representing an AmiraMesh segmentation
     
     .. code:: python
     
         from sfftk.formats.am import AmiraMeshSegmentation
         am_seg = AmiraMeshSegmentation('file.am')
         
-    '''
+    """
     def __init__(self, fn, *args, **kwargs):
         self._fn = fn
         self._header, self._volume = amreader.get_data(self._fn, *args, **kwargs)
 
     @property
     def header(self):
-        '''The AmiraMesh header obtained using the ``ahds`` package
+        """The AmiraMesh header obtained using the ``ahds`` package
         
         The header is wrapped with a generic AmiraMeshHeader class 
-        '''
+        """
         return AmiraMeshHeader(self._header)
 
     @property
     def segments(self):
-        '''Segments in this segmentation'''
+        """Segments in this segmentation"""
         segments = list()
         if hasattr(self.header.parameters, 'Materials') or hasattr(self.header.parameters, 'materials'):
             for segment_id in self.header.parameters.Materials.ids:
@@ -272,16 +278,16 @@ class AmiraMeshSegmentation(Segmentation):
             for segment_id in segment_indices:
                 segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
         return segments
-        '''
+        """
         segments = list()
         for stream in self._segmentation.itervalues():
             for segment_id, segment in stream.iteritems():
                 segments.append(AmiraMeshSegment(self.header, segment_id, segment))
         return segments
-        '''
+        """
 
     def convert(self, args, *_args, **_kwargs):
-        '''Convert to :py:class:`sfftk.schema.SFFSegmentation` object'''
+        """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
 
         # volume mask

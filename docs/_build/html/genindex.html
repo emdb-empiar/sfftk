@@ -261,6 +261,8 @@
 </li>
         <li><a href="schema.html#sfftk.schema.SFFSegmentation.as_hff">(sfftk.schema.SFFSegmentation method)</a>
 </li>
+        <li><a href="schema.html#sfftk.schema.SFFTransformList.as_hff">(sfftk.schema.SFFTransformList method)</a>
+</li>
       </ul></li>
       <li><a href="schema.html#sfftk.schema.SFFSegmentation.as_json">as_json() (sfftk.schema.SFFSegmentation method)</a>
 </li>
@@ -278,9 +280,15 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="schema.html#sfftk.schema.SFFTransformList.check_transformation_matrix_homogeneity">check_transformation_matrix_homogeneity() (sfftk.schema.SFFTransformList method)</a>
+</li>
       <li><a href="core.html#sfftk.core.configs.Configs.clear">clear() (sfftk.core.configs.Configs method)</a>
 </li>
+      <li><a href="schema.html#sfftk.schema.SFFSegmentation.clear_annotation">clear_annotation() (sfftk.schema.SFFSegmentation method)</a>
+</li>
       <li><a href="core.html#sfftk.core.configs.clear_configs">clear_configs() (in module sfftk.core.configs)</a>
+</li>
+      <li><a href="notes.html#sfftk.notes.modify.clear_notes">clear_notes() (in module sfftk.notes.modify)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.CLIP">CLIP (class in sfftk.readers.modreader)</a>
 </li>
@@ -368,6 +376,10 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="schema.html#sfftk.schema.SFFSegmentation.copy_annotation">copy_annotation() (sfftk.schema.SFFSegmentation method)</a>
+</li>
+      <li><a href="notes.html#sfftk.notes.modify.copy_notes">copy_notes() (in module sfftk.notes.modify)</a>
+</li>
       <li><a href="readers.html#sfftk.readers.modreader.COST">COST (class in sfftk.readers.modreader)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.COST_FLAGS">COST_FLAGS (class in sfftk.readers.modreader)</a>
@@ -471,6 +483,12 @@
 </li>
         <li><a href="schema.html#sfftk.schema.SFFSegmentation.from_hff">(sfftk.schema.SFFSegmentation class method)</a>
 </li>
+        <li><a href="schema.html#sfftk.schema.SFFShapePrimitiveList.from_hff">(sfftk.schema.SFFShapePrimitiveList class method)</a>
+</li>
+        <li><a href="schema.html#sfftk.schema.SFFThreeDVolume.from_hff">(sfftk.schema.SFFThreeDVolume class method)</a>
+</li>
+        <li><a href="schema.html#sfftk.schema.SFFTransformList.from_hff">(sfftk.schema.SFFTransformList class method)</a>
+</li>
         <li><a href="schema.html#sfftk.schema.SFFVertexList.from_hff">(sfftk.schema.SFFVertexList class method)</a>
 </li>
       </ul></li>
@@ -490,6 +508,10 @@
         <li><a href="schema.html#sfftk.schema.SFFColour.gds_type">(sfftk.schema.SFFColour attribute)</a>
 </li>
         <li><a href="schema.html#sfftk.schema.SFFComplexesAndMacromolecules.gds_type">(sfftk.schema.SFFComplexesAndMacromolecules attribute)</a>
+</li>
+        <li><a href="schema.html#sfftk.schema.SFFCuboid.gds_type">(sfftk.schema.SFFCuboid attribute)</a>
+</li>
+        <li><a href="schema.html#sfftk.schema.SFFEllipsoid.gds_type">(sfftk.schema.SFFEllipsoid attribute)</a>
 </li>
         <li><a href="schema.html#sfftk.schema.SFFSegment.gds_type">(sfftk.schema.SFFSegment attribute)</a>
 </li>
@@ -670,7 +692,7 @@
 </li>
       <li><a href="notes.html#sfftk.notes.modify.merge">merge() (in module sfftk.notes.modify)</a>
 </li>
-      <li><a href="schema.html#sfftk.schema.SFFSegmentation.merge_annotation_from">merge_annotation_from() (sfftk.schema.SFFSegmentation method)</a>
+      <li><a href="schema.html#sfftk.schema.SFFSegmentation.merge_annotation">merge_annotation() (sfftk.schema.SFFSegmentation method)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.MESH">MESH (class in sfftk.readers.modreader)</a>
 </li>
@@ -822,8 +844,6 @@
 </li>
       <li><a href="notes.html#sfftk.notes.find.SearchResource.search">search() (sfftk.notes.find.SearchResource method)</a>
 </li>
-      <li><a href="notes.html#sfftk.notes.find.SearchQuery">SearchQuery (class in sfftk.notes.find)</a>
-</li>
       <li><a href="notes.html#sfftk.notes.find.SearchResource">SearchResource (class in sfftk.notes.find)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.find.SearchResults">SearchResults (class in sfftk.notes.find)</a>
@@ -872,11 +892,19 @@
 </li>
       <li><a href="schema.html#sfftk.schema.SFFComplexesAndMacromolecules">SFFComplexesAndMacromolecules (class in sfftk.schema)</a>
 </li>
+      <li><a href="schema.html#sfftk.schema.SFFCone">SFFCone (class in sfftk.schema)</a>
+</li>
       <li><a href="schema.html#sfftk.schema.SFFContour">SFFContour (class in sfftk.schema)</a>
 </li>
       <li><a href="schema.html#sfftk.schema.SFFContourList">SFFContourList (class in sfftk.schema)</a>
 </li>
       <li><a href="schema.html#sfftk.schema.SFFContourPoint">SFFContourPoint (class in sfftk.schema)</a>
+</li>
+      <li><a href="schema.html#sfftk.schema.SFFCuboid">SFFCuboid (class in sfftk.schema)</a>
+</li>
+      <li><a href="schema.html#sfftk.schema.SFFCylinder">SFFCylinder (class in sfftk.schema)</a>
+</li>
+      <li><a href="schema.html#sfftk.schema.SFFEllipsoid">SFFEllipsoid (class in sfftk.schema)</a>
 </li>
       <li><a href="schema.html#sfftk.schema.SFFExternalReference">SFFExternalReference (class in sfftk.schema)</a>
 </li>
@@ -900,9 +928,15 @@
 </li>
       <li><a href="schema.html#sfftk.schema.SFFSegmentation">SFFSegmentation (class in sfftk.schema)</a>
 </li>
+      <li><a href="schema.html#sfftk.schema.SFFSegmentList">SFFSegmentList (class in sfftk.schema)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="schema.html#sfftk.schema.SFFSegmentList">SFFSegmentList (class in sfftk.schema)</a>
+      <li><a href="schema.html#sfftk.schema.SFFShape">SFFShape (class in sfftk.schema)</a>
+</li>
+      <li><a href="schema.html#sfftk.schema.SFFShapePrimitiveList">SFFShapePrimitiveList (class in sfftk.schema)</a>
+</li>
+      <li><a href="schema.html#sfftk.schema.SFFThreeDVolume">SFFThreeDVolume (class in sfftk.schema)</a>
 </li>
       <li><a href="sfftk.html#module-sfftk.__init__">sfftk.__init__ (module)</a>
 </li>
@@ -947,6 +981,8 @@
       <li><a href="schema.html#sfftk.schema.SFFTransform">SFFTransform (class in sfftk.schema)</a>
 </li>
       <li><a href="schema.html#sfftk.schema.SFFTransformationMatrix">SFFTransformationMatrix (class in sfftk.schema)</a>
+</li>
+      <li><a href="schema.html#sfftk.schema.SFFTransformList">SFFTransformList (class in sfftk.schema)</a>
 </li>
       <li><a href="schema.html#sfftk.schema.SFFType">SFFType (class in sfftk.schema)</a>
 </li>

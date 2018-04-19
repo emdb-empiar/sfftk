@@ -113,7 +113,7 @@ about installing anaconda at `https://www.anaconda.com/download/
 <https://www.anaconda.com/download/>`_.
 
 The following dependencies are required and will be automatically installed 
-when `using PyPI <#pypi>`_:
+when using PyPI:
 
 -  `ahds <http://ahds.readthedocs.io/en/latest/>`_ (v.0.1.6 or greater)
 
