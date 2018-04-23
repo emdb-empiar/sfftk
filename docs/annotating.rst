@@ -36,16 +36,18 @@ Operations: Find, View, Modify
 
 There are three main operations that a user can perform using the ``notes`` subcommand.
 
--  **Find** notes from an ontology principally the `Ontology Lookup Service (OLS) hosted at EMBL-EBI <https://www.ebi.ac.uk/ols/index>`_;
+-   **Find** notes from an ontology principally the
+    `Ontology Lookup Service (OLS) hosted at EMBL-EBI <https://www.ebi.ac.uk/ols/index>`_;
 
--  **View** notes present in an EMDB-SFF file;
+-   **View** notes present in an EMDB-SFF file;
 
--  **Modify** notes in an EMDB-SFF file.
+-   **Modify** notes in an EMDB-SFF file.
 
 States: FIND, VIEW, MODIFY
 --------------------------
 
-Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and the MODIFY state. These will be indicated by the colour of the text on the screen.
+Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and
+the MODIFY state. These will be indicated by the colour of the text on the screen.
 
 -  **WHITE** indicates the ``VIEW STATE`` i.e. that no modifications will be done on the EMDB-SFF file
 
@@ -55,7 +57,8 @@ Correspondingly, using the notes subcommand puts the user in one of three states
 
 .. note::
 
-	Note, viewing the contents of an EMDB-SFF file in the ``MODIFY STATE`` will also appear in green even if a view command is invoked.
+	Note, viewing the contents of an EMDB-SFF file in the ``MODIFY STATE`` will also appear in green even if a view
+	command is invoked.
 
 The full listing of sub-subcommands organised by operation are:
 

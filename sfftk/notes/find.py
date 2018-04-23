@@ -159,7 +159,9 @@ class SearchResource(object):
 
 
 class TableField(object):
-    def __init__(self, name, key=None, text=None, width=20, pc=None, justify='left', format=None, is_index=False,
+    """Class definition for a TableField - single column in a table"""
+
+    def __init__(self, name, key=None, text=None, width=20, pc=None, justify='left', _format=None, is_index=False,
                  is_iterable=False, position_in_iterable=0):
         """A single field (column) in a table
 
@@ -170,7 +172,7 @@ class TableField(object):
         :param int width: a positive integer for the width of this field
         :param float pc: percentage width of the terminal occupied by this field
         :param str justify: 'left' (default), 'right' or 'center'; how to align text in the field
-        :param str format: a format string with one pair of empty braces to construct a string for each row
+        :param str _format: a format string with one pair of empty braces to construct a string for each row
         :param bool is_index: if true then this field will be an index (numeric value) for the row
         :param bool is_iterable: if true then the value obtained using key will be from a list and position_in_iterable
         index will be retrieved from the iterable
@@ -215,13 +217,13 @@ class TableField(object):
                 justify,
                 ', '.join(JUSTIFY),
             ))
-        # check valid value for format
+        # check valid value for _format
         try:
-            assert format is None or format.find("{}") >= 0
+            assert _format is None or _format.find("{}") >= 0
         except AssertionError:
             raise ValueError(
-                "invalid value for format: {}; it should be either None or have one and only one pair of braces".format(
-                    format,
+                "invalid value for _format: {}; it should be either None or have one and only one pair of braces".format(
+                    _format,
                 ))
         # check valid type for position_in_iterable
         try:
@@ -243,13 +245,17 @@ class TableField(object):
         self._text = text
         self._width = width
         self._pc = pc
-        self._format = format
+        self._format = _format
         self._justify = justify
         self._is_index = is_index
         self._is_iterable = is_iterable
         self._position_in_iterable = position_in_iterable
 
     def justify(self, text):
+        """Justify the given text
+
+        :param str text: the text to justify
+        """
         if self._justify == 'left':
             return text.ljust(self._width)
         elif self._justify == 'right':
@@ -258,15 +264,16 @@ class TableField(object):
             return text.center(self._width)
 
     def __unicode__(self):
-        # todo: other justifications
         return self.justify(self._name)
 
     @property
     def is_index(self):
+        """Is this field an index (numbered) field?"""
         return self._is_index
 
     @property
     def width(self):
+        """The width of the field in characters"""
         return self._width
 
     @width.setter
@@ -280,9 +287,11 @@ class TableField(object):
 
     @property
     def pc(self):
+        """The width of the field in percent; resolves to a character width"""
         return self._pc
 
     def render(self, row_data, index):
+        """Render this field"""
         if self.is_index:
             text = unicode(index)
         elif self._key is not None:
@@ -313,12 +322,18 @@ class Table(object):
 
 
 class TableRow(Table):
-    """A single row in the table
+    """Class definition for a single row in the table
 
     Wrapping is automatically handled
     """
 
     def __init__(self, row_data, fields, index, *args, **kwargs):
+        """Initialise a ``TableRow`` object
+
+        :param row_data: the data for the different fields in the row
+        :param fields: an iterable of :py:class:`TableField` objects
+        :param index: the index for this row; externally resolved henced passed an an init var
+        """
         super(TableRow, self).__init__(*args, **kwargs)
         self._row_data = row_data
         self._fields = fields
@@ -605,10 +620,10 @@ class SearchResults(object):
             fields = [
                 TableField('index', key='index', pc=5, is_index=True, justify='right'),
                 TableField('label', text=self._resource.search_args.search_term, pc=10, justify='center'),
-                TableField('short_form', key='EntryID', pc=10, format='EMD-{}', justify='center'),
+                TableField('short_form', key='EntryID', pc=10, _format='EMD-{}', justify='center'),
                 TableField('resource', text='EMDB', pc=5),
                 TableField('description', key='Title', pc=40),
-                TableField('iri', key='EntryID', format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
+                TableField('iri', key='EntryID', _format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
             ]
             table = ResultsTable(self, fields=fields)
         elif self._resource.name == "UniProt":
@@ -619,7 +634,7 @@ class SearchResults(object):
                 TableField('resource', text='UniProt', pc=5, justify='center'),
                 TableField('description', key='proteins', pc=40),
                 # TableField('organism', key='organism', width=40),
-                TableField('iri', key='id', format='https://www.uniprot.org/uniprot/{}', pc=30),
+                TableField('iri', key='id', _format='https://www.uniprot.org/uniprot/{}', pc=30),
             ]
             table = ResultsTable(self, fields=fields)
         elif self._resource.name == "PDB":
@@ -630,7 +645,7 @@ class SearchResults(object):
                 TableField('resource', text='PDB', pc=5, justify='center'),
                 # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
                 TableField('description', key='title', pc=40),
-                TableField('iri', key='pdb_id', format='https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
+                TableField('iri', key='pdb_id', _format='https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
             ]
             table = ResultsTable(self, fields=fields)
         return table

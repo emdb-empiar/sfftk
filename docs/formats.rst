@@ -5,7 +5,7 @@ AmiraMesh module
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.am
-	:members: AmiraMeshSegmentation, AmiraMeshHeader, AmiraMeshSegment, AmiraMeshAnnotation, AmiraMeshContours, AmiraMeshMesh
+	:members: AmiraMeshSegmentation, AmiraMeshHeader, AmiraMeshSegment, AmiraMeshAnnotation, AmiraMeshContours, AmiraMeshMesh, AmiraMeshVolume
 	:show-inheritance:
 
 CCP4 mask module

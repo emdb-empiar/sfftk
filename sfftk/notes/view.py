@@ -29,6 +29,7 @@ def _add_index(L, pre="\t"):
 
 
 class View(object):
+    """View base class"""
     DISPLAY_WIDTH = 110
     NOT_DEFINED = "-*- NOT DEFINED -*-"
     NOT_DEFINED_ALT = "N/A"
@@ -355,6 +356,7 @@ Segmentation details:
 
 
 class TableHeaderView(View):
+    """Class defining the view of a table header object"""
     def __str__(self):
         string = """\
 {}
