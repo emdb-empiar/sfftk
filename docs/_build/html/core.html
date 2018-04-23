@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.core package &mdash; sfftk 0.1.1.dev0 documentation</title>
+  <title>sfftk.core package &mdash; sfftk 0.2.1.dev3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+    <link rel="top" title="sfftk 0.2.1.dev3 documentation" href="index.html"/>
         <link rel="up" title="sfftk packages" href="sfftk.html"/>
         <link rel="prev" title="sfftk.notes package" href="notes.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.1.1.dev0
+                0.2.1.dev3
               </div>
             
           
@@ -202,8 +202,8 @@ command.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>user_folder</strong> (<em>str</em>) – name of the user folder; default is <em>.sfftk</em></li>
-<li><strong>conf_fn</strong> (<em>str</em>) – name of the config file; default is <em>sff.conf</em></li>
+<li><strong>user_folder</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the user folder; default is <em>.sfftk</em></li>
+<li><strong>conf_fn</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the config file; default is <em>sff.conf</em></li>
 <li><strong>Configs</strong> (<em>class</em>) – the class defining configs</li>
 </ul>
 </td>
@@ -226,7 +226,7 @@ command.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
 </ul>
 </td>
 </tr>
@@ -248,7 +248,7 @@ command.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
 </ul>
 </td>
 </tr>
@@ -270,7 +270,7 @@ command.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
 </ul>
 </td>
 </tr>
@@ -292,7 +292,7 @@ command.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
 </ul>
 </td>
 </tr>
@@ -314,7 +314,7 @@ command.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<em>dict</em>) – configuration options</li>
+<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
 </ul>
 </td>
 </tr>
@@ -329,7 +329,7 @@ command.</p>
 <dl class="class">
 <dt id="sfftk.core.configs.Configs">
 <em class="property">class </em><code class="descclassname">sfftk.core.configs.</code><code class="descname">Configs</code><span class="sig-paren">(</span><em>config_fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">collections.OrderedDict</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/collections.html#collections.OrderedDict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">collections.OrderedDict</span></code></a></p>
 <p>Class defining configs</p>
 <p>Configurations are stored in a subclass of <code class="docutils literal"><span class="pre">OrderedDict</span></code> with 
 appended methods for reading (<code class="docutils literal"><span class="pre">read()</span></code>), writing (<code class="docutils literal"><span class="pre">write</span></code>) and 
@@ -409,7 +409,7 @@ redefined.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>parser</strong> (<code class="docutils literal"><span class="pre">argparse.Parser</span></code>) – a parser</li>
-<li><strong>the_arg</strong> (<em>dict</em>) – the argument specified as a dict with keys ‘args’ and ‘kwargs’</li>
+<li><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the argument specified as a dict with keys ‘args’ and ‘kwargs’</li>
 </ul>
 </td>
 </tr>
@@ -437,7 +437,7 @@ redefined.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<em>str</em>) – the string to search</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the string to search</td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Return str ascii_s:</th></tr>
 <tr class="field-even field"><td>&#160;</td><td class="field-body">the minimal ASCII string</td>
@@ -455,9 +455,9 @@ redefined.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>print_string</strong> (<em>str</em>) – the string to be printed</li>
+<li><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the string to be printed</li>
 <li><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</li>
-<li><strong>newline</strong> (<em>bool</em>) – whether (default) or not to add a newline at the end</li>
+<li><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</li>
 </ul>
 </td>
 </tr>
@@ -476,9 +476,9 @@ overwriting any characters.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>print_string</strong> (<em>str</em>) – the string to be printed</li>
+<li><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the string to be printed</li>
 <li><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</li>
-<li><strong>newline</strong> (<em>bool</em>) – whether (default) or not to add a newline at the end</li>
+<li><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</li>
 </ul>
 </td>
 </tr>
@@ -532,7 +532,7 @@ overwriting any characters.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.1.dev0',
+            VERSION:'0.2.1.dev3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

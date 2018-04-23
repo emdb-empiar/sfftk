@@ -9,15 +9,15 @@ User-facing reader classes for IMOD files
 """
 from __future__ import division
 
-from UserList import UserList
 import inspect
-import os.path
+from UserList import UserList
 
+import os.path
 from numpy import matrix
 
+from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
 from .. import schema
 from ..readers import modreader
-from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -27,14 +27,17 @@ __updated__ = '2018-02-23'
 
 class IMODVertex(object):
     """IMOD vertex class"""
+
     def __init__(self, vertex, designation='surface'):
         assert designation in ['vertex', 'normal']
         self._designation = designation
         self._point = vertex
+
     @property
     def designation(self):
         """Is this a surface vertex or normal vertex?"""
         return self._designation
+
     @property
     def point(self):
         """The vertex"""
@@ -43,19 +46,23 @@ class IMODVertex(object):
 
 class IMODMesh(Mesh):
     """Mesh class"""
+
     def __init__(self, imod_mesh):
         self._mesh = imod_mesh
         # dictionary of indices to vertices
         self._vertex_dict = dict(zip(range(len(self._mesh.vert)), self._mesh.vert))
         self._vertices, self._polygons = self._configure()
+
     @property
     def vertices(self):
         """The vertices constituting this mesh"""
         return self._vertices
+
     @property
     def polygons(self):
         """The polygons constituting this mesh"""
         return self._polygons
+
     def _split_indices(self):
         # convert list of vertices to a csv string
         index_string = ",".join(map(str, self._mesh.list))  # string
@@ -68,11 +75,12 @@ class IMODMesh(Mesh):
         # get rid of last list (contains list [-1])
         indices = list_of_lists_of_indices[:-1]
         #  one-line version
-#         split_indices = map(
-#             lambda x: map(int, x.split(',')),
-#             ",".join(map(str, objt.meshes[0].list)).split(',-22,')
-#             )[:-1]
+        #         split_indices = map(
+        #             lambda x: map(int, x.split(',')),
+        #             ",".join(map(str, objt.meshes[0].list)).split(',-22,')
+        #             )[:-1]
         return indices
+
     def _configure(self):
         # get the vertix indices split
         split_indices = self._split_indices()
@@ -125,15 +133,20 @@ class IMODMesh(Mesh):
 
 class IMODMeshes(UserList):
     """Container class for IMOD meshes"""
+
     def __init__(self, header, imod_meshes):
         self._header = header
         self._meshes = imod_meshes
+
     def __iter__(self):
         return iter(map(IMODMesh, self._meshes.itervalues()))
+
     def __getitem__(self, index):
         return IMODMesh(self._meshes.values()[index])
+
     def __len__(self):
         return len(self._meshes)
+
     def convert(self, *args, **kwargs):
         """Convert to :py:class:`sfftk.schema.SFFMeshList` object"""
         meshes = schema.SFFMeshList()
@@ -150,7 +163,7 @@ class IMODMeshes(UserList):
                     y=y,
                     z=z,
                     designation=v.designation
-                    )
+                )
                 vertices.add_vertex(vertex)
             # polygons
             polygons = schema.SFFPolygonList()
@@ -185,9 +198,11 @@ class IMODContours(Contours):
 
             ~$ imodmesh [options] file.mod
     """
+
     def __init__(self, header, conts):
         self._header = header
         self._conts = conts
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
         contours = schema.SFFContourList()
@@ -197,9 +212,10 @@ class IMODContours(Contours):
             for x, y, z in cont.pt:
                 contour.add_point(
                     schema.SFFContourPoint(x=x, y=y, z=z)
-                    )
+                )
             contours.add_contour(contour)
         return contours
+
     def __len__(self):
         return len(self._conts)
 
@@ -207,30 +223,41 @@ class IMODContours(Contours):
 """
 :TODO: *args, **kwargs???
 """
+
+
 class IMODShape(object):
-    """Shape base class"""
+    """Base class for IMOD shapes"""
     x = 0
     y = 0
     z = 0
+
     @property
     def transform(self):
+        """The transform associated with the shape
+
+        Is used to place (transform) the shape in the volume
+        """
         return matrix('[1 0 0 {}; 0 1 0 {}; 0 0 1 {}'.format(self.x, self.y, self.z))
 
     def convert(self, *args, **kwargs):
+        """Convert this shape into an EMDB-SFF shape object"""
         pass
 
 
 class IMODEllipsoid(IMODShape):
-    """Ellisoid class"""
+    """Class definition fo an ellipsoid shape primitive"""
+
     def __init__(self, radius, x, y, z):
         self._radius = radius
         self.x = x
         self.y = y
         self.z = z
+
     @property
     def radius(self):
-        """The radius"""
+        """Ellipsoid radius"""
         return self._radius
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFEllipsoid` object"""
         # shape
@@ -249,20 +276,24 @@ class IMODEllipsoid(IMODShape):
 
 class IMODCylinder(IMODShape):
     """Cylinder class"""
+
     def __init__(self, diameter, height, x, y, z):
         self._diameter = diameter
         self._height = height
         self.x = x
         self.y = y
         self.z = z
+
     @property
     def diameter(self):
         """The diameter"""
         return self._diameter
+
     @property
     def height(self):
         """The height"""
         return self._height
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFCylinder` object"""
         # shape
@@ -280,14 +311,18 @@ class IMODCylinder(IMODShape):
 
 class IMODShapes(Shapes):
     """Container class for shapes"""
+
     def __init__(self, header, objt):
         self._header = header
         self._objt = objt
         self._shapes = self._configure()
+
     def __getitem__(self, index):
         return self._shapes[index]
+
     def __iter__(self):
         return iter(self._shapes)
+
     def _configure(self):
         shapes = list()
         if self._objt.pdrawsize > 0:
@@ -302,6 +337,7 @@ class IMODShapes(Shapes):
                 for x, y, z in contour.pt:
                     shapes.append(IMODCylinder(diameter, height, x, y, z))
         return shapes
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFShapePrimitiveList` object"""
         shapes = schema.SFFShapePrimitiveList()
@@ -316,6 +352,7 @@ class IMODShapes(Shapes):
 
 class IMODAnnotation(Annotation):
     """Annotation class"""
+
     def __init__(self, header, objt):
         self._header, self._objt = header, objt
 
@@ -325,14 +362,17 @@ class IMODAnnotation(Annotation):
             if inspect.ismethod(getattr(self._objt, attr)):
                 continue
             setattr(self, attr, getattr(self._objt, attr))
+
     @property
     def description(self):
         """Segment description"""
         return self.name
+
     @property
     def colour(self):
         """Segment colour"""
         return self.red, self.green, self.blue
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         # annotation
@@ -345,7 +385,7 @@ class IMODAnnotation(Annotation):
             red=self.red,
             green=self.green,
             blue=self.blue,
-            )
+        )
         return annotation, colour
 
     """
@@ -354,6 +394,8 @@ class IMODAnnotation(Annotation):
 
 
 class IMODHeader(Header):
+    """Class definition for the header in an IMOD segmentation file"""
+
     def __init__(self, segmentation):
         self._segmentation = segmentation
 
@@ -365,11 +407,16 @@ class IMODHeader(Header):
             setattr(self, attr, getattr(self._segmentation, attr))
 
     def convert(self, *args, **kwargs):
+        """Convert to an EMDB-SFF segmentation header object
+
+        Currently not implemented
+        """
         pass
 
 
 class IMODSegment(Segment):
     """Segment class"""
+
     def __init__(self, header, objt):
         self._header = header
         self._objt = objt
@@ -379,10 +426,12 @@ class IMODSegment(Segment):
             if inspect.ismethod(getattr(objt, attr)):
                 continue
             setattr(self, 'mod_' + attr, getattr(objt, attr))
+
     @property
     def annotation(self):
         """The annotation for this segment"""
         return IMODAnnotation(self._header, self._objt)
+
     @property
     def contours(self):
         """The contours in this segment"""
@@ -393,10 +442,12 @@ class IMODSegment(Segment):
                 return IMODContours(self._header, self._objt.conts)
             else:
                 return None
+
     @property
     def meshes(self):
         """The meshes in this segment"""
         return IMODMeshes(self._header, self._objt.meshes)
+
     @property
     def shapes(self):
         """The shapes in this segment"""
@@ -406,6 +457,7 @@ class IMODSegment(Segment):
             return IMODShapes(self._header, self._objt)
         else:
             return None
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
@@ -414,8 +466,8 @@ class IMODSegment(Segment):
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         # geometry
         # ignore contours
-#         if self.contours:
-#             segment.contours = self.contours.convert()
+        #         if self.contours:
+        #             segment.contours = self.contours.convert()
         if self.shapes:
             segment.shapes, transforms = self.shapes.convert()
         segment.meshes = self.meshes.convert()
@@ -431,6 +483,7 @@ class IMODSegmentation(Segmentation):
         mod_seg = IMODSegmentation('file.mod')
         
     """
+
     def __init__(self, fn, *args, **kwargs):
         """Initialise the IMODReader
         
@@ -443,6 +496,7 @@ class IMODSegmentation(Segmentation):
         for objt in self._segmentation.objts.itervalues():
             segment = IMODSegment(self._header, objt)
             self._segments.append(segment)
+
     @property
     def has_mesh_or_shapes(self):
         """Check whether the segmentation has meshes or shapes
@@ -458,14 +512,17 @@ class IMODSegmentation(Segmentation):
                 status = False
                 break
         return status
+
     @property
     def header(self):
         """Header in segmentation"""
         return self._header
+
     @property
     def segments(self):
         """Segments in segmentation"""
         return self._segments
+
     def convert(self, args, *_args, **_kwargs):
         """Method to convert an IMOD file to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
@@ -475,7 +532,7 @@ class IMODSegmentation(Segmentation):
             name="IMOD",
             version=self.header.version,
             processingDetails='None'
-            )
+        )
         segmentation.filePath = os.path.abspath(self._fn)
         # transforms
         segmentation.transforms = schema.SFFTransformList()
@@ -490,14 +547,14 @@ class IMODSegmentation(Segmentation):
                     self.header.minx.ctrans[1],
                     self.header.minx.cscale[2],
                     self.header.minx.ctrans[2],
-                    )
-                ),
-            )
+                )
+            ),
+        )
         segmentation.boundingBox = schema.SFFBoundingBox(
             xmax=self.header.xmax,
             ymax=self.header.ymax,
             zmax=self.header.zmax
-            )
+        )
         segments = schema.SFFSegmentList()
         transforms = list()
         schema.SFFSegment.reset_id()
@@ -511,10 +568,10 @@ class IMODSegmentation(Segmentation):
             elif s.meshes is not None:
                 if len(s.meshes) > 0:
                     no_meshes += 1
-#             if len(s.contours) > 0:
-#                 no_contours += 1
-#             elif len(s.meshes) > 0:
-#                 no_meshes += 1
+            #             if len(s.contours) > 0:
+            #                 no_contours += 1
+            #             elif len(s.meshes) > 0:
+            #                 no_meshes += 1
             transforms += _transforms
             segments.add_segment(segment)
         # if we have additional transforms from shapes
@@ -559,4 +616,3 @@ class IMODSegmentation(Segmentation):
             segmentation.details = _kwargs['details']
 
         return segmentation
-

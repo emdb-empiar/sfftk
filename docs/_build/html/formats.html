@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.formats package &mdash; sfftk 0.1.1.dev0 documentation</title>
+  <title>sfftk.formats package &mdash; sfftk 0.2.1.dev3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk 0.1.1.dev0 documentation" href="index.html"/>
+    <link rel="top" title="sfftk 0.2.1.dev3 documentation" href="index.html"/>
         <link rel="up" title="sfftk packages" href="sfftk.html"/>
         <link rel="next" title="sfftk.readers package" href="readers.html"/>
         <link rel="prev" title="sfftk.schema package" href="schema.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1.1.dev0
+                0.2.1.dev3
               </div>
             
           
@@ -238,7 +238,14 @@
 <dt id="sfftk.formats.am.AmiraMeshHeader">
 <em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshHeader</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshHeader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
-<p>Header class</p>
+<p>Class defining the header of an AmiraMesh segmentation file</p>
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshHeader.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshHeader.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an AmiraMeshHeader object into an EMDB-SFF segmentation header</p>
+<p>Currently empty</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -342,6 +349,31 @@
 
 </dd></dl>
 
+<dl class="class">
+<dt id="sfftk.formats.am.AmiraMeshVolume">
+<em class="property">class </em><code class="descclassname">sfftk.formats.am.</code><code class="descname">AmiraMeshVolume</code><span class="sig-paren">(</span><em>fn</em>, <em>header</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshVolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Volume</span></code></p>
+<p>Class defining the 3D volume of an AmiraMesh segmentation file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the AmiraMesh segmentation file</li>
+<li><strong>header</strong> – <a class="reference internal" href="#sfftk.formats.am.AmiraMeshHeader" title="sfftk.formats.am.AmiraMeshHeader"><code class="xref py py-class docutils literal"><span class="pre">AmiraMeshHeader</span></code></a> object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sfftk.formats.am.AmiraMeshVolume.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.am.AmiraMeshVolume.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to <a class="reference internal" href="schema.html#sfftk.schema.SFFThreeDVolume" title="sfftk.schema.SFFThreeDVolume"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code></a> object</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="module-sfftk.formats.map">
@@ -382,7 +414,14 @@
 <dt id="sfftk.formats.map.MapHeader">
 <em class="property">class </em><code class="descclassname">sfftk.formats.map.</code><code class="descname">MapHeader</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapHeader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
-<p>Header class</p>
+<p>Class defining the header in a CCP4 file</p>
+<dl class="method">
+<dt id="sfftk.formats.map.MapHeader.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.map.MapHeader.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this object into an EMDB-SFF segmentation header</p>
+<p>Currently  not implement</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -493,6 +532,20 @@ Do not convert segmentations that only have contours</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="sfftk.formats.mod.IMODHeader">
+<em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODHeader</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
+<p>Class definition for the header in an IMOD segmentation file</p>
+<dl class="method">
+<dt id="sfftk.formats.mod.IMODHeader.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODHeader.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to an EMDB-SFF segmentation header object</p>
+<p>Currently not implemented</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="sfftk.formats.mod.IMODSegment">
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODSegment</code><span class="sig-paren">(</span><em>header</em>, <em>objt</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODSegment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Segment</span></code></p>
@@ -579,7 +632,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="class">
 <dt id="sfftk.formats.mod.IMODMeshes">
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODMeshes</code><span class="sig-paren">(</span><em>header</em>, <em>imod_meshes</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODMeshes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">UserList.UserList</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/userdict.html#UserList.UserList" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">UserList.UserList</span></code></a></p>
 <p>Container class for IMOD meshes</p>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODMeshes.convert">
@@ -611,7 +664,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="class">
 <dt id="sfftk.formats.mod.IMODVertex">
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODVertex</code><span class="sig-paren">(</span><em>vertex</em>, <em>designation='surface'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODVertex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>IMOD vertex class</p>
 <dl class="attribute">
 <dt id="sfftk.formats.mod.IMODVertex.designation">
@@ -643,8 +696,21 @@ Do not convert segmentations that only have contours</p>
 <dl class="class">
 <dt id="sfftk.formats.mod.IMODShape">
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODShape</code><a class="headerlink" href="#sfftk.formats.mod.IMODShape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Shape base class</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Base class for IMOD shapes</p>
+<dl class="method">
+<dt id="sfftk.formats.mod.IMODShape.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODShape.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this shape into an EMDB-SFF shape object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.formats.mod.IMODShape.transform">
+<code class="descname">transform</code><a class="headerlink" href="#sfftk.formats.mod.IMODShape.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transform associated with the shape</p>
+<p>Is used to place (transform) the shape in the volume</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -676,7 +742,7 @@ Do not convert segmentations that only have contours</p>
 <dt id="sfftk.formats.mod.IMODEllipsoid">
 <em class="property">class </em><code class="descclassname">sfftk.formats.mod.</code><code class="descname">IMODEllipsoid</code><span class="sig-paren">(</span><em>radius</em>, <em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODEllipsoid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.formats.mod.IMODShape" title="sfftk.formats.mod.IMODShape"><code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.mod.IMODShape</span></code></a></p>
-<p>Ellisoid class</p>
+<p>Class definition fo an ellipsoid shape primitive</p>
 <dl class="method">
 <dt id="sfftk.formats.mod.IMODEllipsoid.convert">
 <code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.mod.IMODEllipsoid.convert" title="Permalink to this definition">¶</a></dt>
@@ -686,7 +752,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="attribute">
 <dt id="sfftk.formats.mod.IMODEllipsoid.radius">
 <code class="descname">radius</code><a class="headerlink" href="#sfftk.formats.mod.IMODEllipsoid.radius" title="Permalink to this definition">¶</a></dt>
-<dd><p>The radius</p>
+<dd><p>Ellipsoid radius</p>
 </dd></dl>
 
 </dd></dl>
@@ -861,7 +927,14 @@ Do not convert segmentations that only have contours</p>
 <dt id="sfftk.formats.stl.STLHeader">
 <em class="property">class </em><code class="descclassname">sfftk.formats.stl.</code><code class="descname">STLHeader</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLHeader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
-<p>Header class</p>
+<p>Class definition for header in an STL segmentation file</p>
+<dl class="method">
+<dt id="sfftk.formats.stl.STLHeader.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.stl.STLHeader.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to an EMDB-SFF segmentation header</p>
+<p>Currently not implemented</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -973,7 +1046,14 @@ Do not convert segmentations that only have contours</p>
 <dt id="sfftk.formats.surf.AmiraHyperSurfaceHeader">
 <em class="property">class </em><code class="descclassname">sfftk.formats.surf.</code><code class="descname">AmiraHyperSurfaceHeader</code><span class="sig-paren">(</span><em>header</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceHeader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sfftk.formats.base.Header</span></code></p>
-<p>Header class</p>
+<p>Class definition for an AmiraHyperSurface segmentation file</p>
+<dl class="method">
+<dt id="sfftk.formats.surf.AmiraHyperSurfaceHeader.convert">
+<code class="descname">convert</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceHeader.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to an EMDB-SFF segmentation header object</p>
+<p>Currently not implemented</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1105,7 +1185,7 @@ Do not convert segmentations that only have contours</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.1.dev0',
+            VERSION:'0.2.1.dev3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

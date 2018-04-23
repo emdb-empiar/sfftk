@@ -10,25 +10,27 @@ User-facing reader classes for AmiraMesh files
 from __future__ import division
 
 import inspect
+
 import os.path
 
+from .base import Segmentation, Header, Segment, Annotation, Contours, Mesh, Volume
 from .. import schema
 from ..core.print_tools import print_date
 from ..readers import amreader
-from .base import Segmentation, Header, Segment, Annotation, Contours, Mesh, Volume
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-10"
 __updated__ = '2018-02-23'
 
-
 """
 :TODO: handle meshes <hxsurface>
 """
 
+
 class AmiraMeshMesh(Mesh):
     """Mesh class"""
+
     def __init__(self):
         self._vertices = None
         self._triangles = None
@@ -55,6 +57,7 @@ class AmiraMeshMesh(Mesh):
 
 class AmiraMeshAnnotation(Annotation):
     """Annotation class"""
+
     def __init__(self, material):
         self._material = material
 
@@ -76,7 +79,8 @@ class AmiraMeshAnnotation(Annotation):
         except AttributeError:
             colour = None
         return colour
-#         self.colour_to_material = colour_to_material
+
+    #         self.colour_to_material = colour_to_material
 
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
@@ -88,14 +92,15 @@ class AmiraMeshAnnotation(Annotation):
         else:
             import random
             red, green, blue = random.random(), random.random(), random.random()
-            print_date("Colour not defined for segment (Material) {}. Setting colour to random RGB value of {}".format(self.description, (red, green, blue)))
+            print_date("Colour not defined for segment (Material) {}. Setting colour to random RGB value of {}".format(
+                self.description, (red, green, blue)))
 
         colour = schema.SFFColour()
         colour.rgba = schema.SFFRGBA(
             red=red,
             green=green,
             blue=blue,
-            )
+        )
         return annotation, colour
 
 
@@ -107,10 +112,13 @@ class AmiraMeshContours(Contours):
         .. deprecated:: 0.6.0a4
             AmiraMesh segments are now represented as 3D volumes
     """
+
     def __init__(self, z_segment):
         self.z_segment = z_segment
+
     def __iter__(self):
         return iter(self.z_segment)
+
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
         contours = schema.SFFContourList()
@@ -121,13 +129,18 @@ class AmiraMeshContours(Contours):
                     # add the point as an SFFContourPoint to the contour (as an SFFContour)
                     contour.add_point(
                         schema.SFFContourPoint(x=x, y=y, z=z)
-                        )
+                    )
                 contours.add_contour(contour)  # add the contour to the list of contours (as an SFFContourList)
         return contours
 
 
 class AmiraMeshVolume(Volume):
-    """Volume container class"""
+    """Class defining the 3D volume of an AmiraMesh segmentation file
+
+    :param str fn: name of the AmiraMesh segmentation file
+    :param header: :py:class:`AmiraMeshHeader` object
+    """
+
     def __init__(self, fn, header):
         self._fn = fn
         self._header = header
@@ -142,49 +155,9 @@ class AmiraMeshVolume(Volume):
         return volume
 
 
-# class AmiraMeshSegment(Segment):
-#     """Segment class"""
-#     def __init__(self, header, segment_id, segment):
-#         """Initialiser of AmiraMeshSegment
-#
-#         :param header: an ``AmiraMeshHeader`` object containing header metadata
-#         :type header: AmiraMeshHeader
-#         :param int segment_id: the integer identifier for this segment ('Id' in Materials)
-#         :param dict segment: dictionary of z value to ``amira.data_streams.ContourSets`` objects (lists of ``amira.data_streams.Contour`` objects)
-#         """
-#         self._header = header
-#         self.id = segment_id
-#         self._segment = segment
-#     @property
-#     def material(self):
-#         """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
-#         try: # assume that we have materials defined
-#             material = self._header.parameters.Materials[self.id + 1] # Ids are 1-based but in the images are 0-based
-#         except AttributeError:
-#             material = None
-#         return material
-#     @property
-#     def annotation(self):
-#         """Segment annotation"""
-#         return AmiraMeshAnnotation(self.material)
-#     @property
-#     def contours(self):
-#         """Contours in this segment"""
-#         return AmiraMeshContours(self._segment)
-#     @property
-#     def meshes(self):
-#         """Meshes in this segment"""
-#         return None
-#     def convert(self):
-#         """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
-#         segment = schema.SFFSegment()
-#         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
-#         segment.contours = self.contours.convert()
-#         return segment
-
-
 class AmiraMeshSegment(Segment):
     """Segment class"""
+
     def __init__(self, fn, header, segment_id):
         """Initialiser of AmiraMeshSegment
          
@@ -204,7 +177,8 @@ class AmiraMeshSegment(Segment):
     def material(self):
         """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
         try:  # assume that we have materials defined
-            material = self._header.parameters.Materials[self.segment_id]  # Ids are 1-based but in the images are 0-based
+            material = self._header.parameters.Materials[
+                self.segment_id]  # Ids are 1-based but in the images are 0-based
         except AttributeError:
             material = None
         return material
@@ -228,8 +202,16 @@ class AmiraMeshSegment(Segment):
 
 
 class AmiraMeshHeader(Header):
-    """Header class"""
+    """Class defining the header of an AmiraMesh segmentation file"""
+
     def __init__(self, header):
+        """Initialise an AmiraMeshHeader object
+
+        Adds attributes from the ``ahda.header.AmiraHeader`` object into this one
+
+        :param header: header from an AmiraMesh segmentation file
+        :type header: ``ahda.header.AmiraHeader`` object
+        """
         self._header = header
 
         for attr in dir(header):
@@ -241,6 +223,9 @@ class AmiraMeshHeader(Header):
                 setattr(self, attr, getattr(self._header, attr))
 
     def convert(self, *args, **kwargs):
+        """Convert an AmiraMeshHeader object into an EMDB-SFF segmentation header
+
+        Currently empty"""
         pass
 
 
@@ -253,6 +238,7 @@ class AmiraMeshSegmentation(Segmentation):
         am_seg = AmiraMeshSegmentation('file.am')
         
     """
+
     def __init__(self, fn, *args, **kwargs):
         self._fn = fn
         self._header, self._volume = amreader.get_data(self._fn, *args, **kwargs)
@@ -304,20 +290,21 @@ class AmiraMeshSegmentation(Segmentation):
             segmentation.name = _kwargs['name']
         else:
             segmentation.name = "AmiraMesh Segmentation"
-#         segmentation.version = segmentation.version # strange but this is how it works!
+        #         segmentation.version = segmentation.version # strange but this is how it works!
         segmentation.software = schema.SFFSoftware(
             name="Amira",
-            version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(self.header.designation.version),
+            version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(
+                self.header.designation.version),
             processingDetails=_kwargs['processingDetails'] if 'processingDetails' in _kwargs else "None",
-            )
+        )
         segmentation.transforms = schema.SFFTransformList()
         segmentation.transforms.add_transform(
             schema.SFFTransformationMatrix(
                 rows=3,
                 cols=4,
                 data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
-                )
             )
+        )
         segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
         segmentation.primaryDescriptor = "threeDVolume"
 
@@ -334,4 +321,3 @@ class AmiraMeshSegmentation(Segmentation):
         elif 'details' in _kwargs:
             segmentation.details = _kwargs['details']
         return segmentation
-

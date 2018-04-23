@@ -7,7 +7,7 @@ with open('README.rst') as f:
 
 setup(
     name="sfftk",
-    version="0.2.1.dev3",
+    version="0.2.1.dev4",
     packages=find_packages(),
     author="Paul K. Korir, PhD",
     author_email="pkorir@ebi.ac.uk, paul.korir@gmail.com",

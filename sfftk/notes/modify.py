@@ -30,7 +30,15 @@ __updated__ = '2018-02-14'
 
 
 class ExternalReference(object):
+    """Class definition for a :py:class:`ExternalReference` object"""
+
     def __init__(self, type_=None, otherType=None, value=None):
+        """Initialise an object of class :py:class:`ExternalReference`
+
+        :param type_: the name of the resource
+        :param otherType: the IRI at which the resource may be reached
+        :param value: the external reference accession code
+        """
         self.type = type_
         self.otherType = otherType
         self.value = value
@@ -38,7 +46,7 @@ class ExternalReference(object):
 
     @property
     def iri(self):
-        """The IRI value should be *double url-encoded"""
+        """The IRI value should be *double* url-encoded"""
         from urllib import urlencode
         urlenc = urlencode({'iri': self.value.encode('idna')})
         urlenc2 = urlencode({'iri': urlenc.split('=')[1]})
@@ -81,6 +89,12 @@ class ExternalReference(object):
 
 
 class NoteAttr(object):
+    """Descriptor class for note attributes
+
+    :param initval: the initial value of the attribute (default: :py:class:`None`)
+    :param str name: the name of the variable (default: 'var')
+    """
+
     def __init__(self, initval=None, name='var'):
         self.val = initval
         self.name = name
@@ -114,7 +128,18 @@ class BaseNote(object):
 
 
 class AbstractGlobalNote(BaseNote):
-    """GlobalNote 'abstract' class that defines private attributes and methods"""
+    """Abstract class definition for global annotations
+
+    Defines attributes of global annotation.
+
+    Also defines three methods that effect the annotation to a segmentation object:
+
+    - :py:func:`add_to_segmentation`
+
+    - :py:func:`edit_in_segmentation`
+
+    - :py:func:`del_from_segmentation`
+    """
     name = NoteAttr('name')
     softwareName = NoteAttr('softwareName')
     softwareVersion = NoteAttr('sofwareVersion')
@@ -124,12 +149,11 @@ class AbstractGlobalNote(BaseNote):
     externalReferenceId = NoteAttr('externalReferenceId')
 
     def add_to_segmentation(self, segmentation):
-        """Add attributes to a segmentation
-        
-        :param segmentation: an EMDB-SFF segmentation
-        :type segmentation: ``sfftk.schema.SFFSegmentation``
-        :return segmentation: an EMDB-SFF segmentation
-        :rtype segmentation: ``sfftk.schema.SFFSegmentation``
+        """Adds this note to the given segmentation
+
+        :param segmentation: an EMDB-SFF segmentation object
+        :type segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :return segmentation: the EMDB-SFF segmentation with the annotation added
         """
         #  name
         if self.name is not None:
@@ -166,12 +190,12 @@ class AbstractGlobalNote(BaseNote):
         return segmentation
 
     def edit_in_segmentation(self, segmentation):
-        """Edit attributes in a segmentation
+        """Modify the global annotation of the given segmentation
         
-        :param segmentation: an EMDB-SFF segmentation
-        :type segmentation: ``sfftk.schema.SFFSegmentation``
-        :return segmentation: an EMDB-SFF segmentation
-        :rtype segmentation: ``sfftk.schema.SFFSegmentation``
+        :param segmentation: an EMDB-SFF segmentation object
+        :type segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :return segmentation: the EMDB-SFF segmentation with annotated edited
+        :rtype segmentation: :py:class:`sfftk.schema.SFFSegmentation`
         """
         #  name
         if self.name is not None:
@@ -230,10 +254,10 @@ class AbstractGlobalNote(BaseNote):
     def del_from_segmentation(self, segmentation):
         """Delete attributes from a segmentation
         
-        :param segmentation: an EMDB-SFF segmentation
-        :type segmentation: ``sfftk.schema.SFFSegmentation``
-        :return segmentation: an EMDB-SFF segmentation
-        :rtype segmentation: ``sfftk.schema.SFFSegmentation``
+        :param segmentation: an EMDB-SFF segmentation object
+        :type segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :return segmentation: the EMDB-SFF segmentation with annotation deleted
+        :rtype segmentation: :py:class:`sfftk.schema.SFFSegmentation`
         """
         #  name
         if self.name:
@@ -266,6 +290,12 @@ class AbstractGlobalNote(BaseNote):
 
 
 class GlobalArgsNote(AbstractGlobalNote):
+    """Class defining segmentation (global) annotation based on command-line arguments
+
+    :param args: an :py:class:`argparse.Namespace` object
+    :param configs: persistent configurations for ``sfftk``
+    """
+
     def __init__(self, args, configs, *args_, **kwargs_):
         super(GlobalArgsNote, self).__init__(*args_, **kwargs_)
         self.name = args.name
@@ -504,7 +534,14 @@ class AbstractNote(BaseNote):
 
 
 class ArgsNote(AbstractNote):
+    """Class definition for an ArgsNote object"""
+
     def __init__(self, args, configs, *args_, **kwargs_):
+        """Initialise an :py:class:`ArgsNote` object
+
+        :param args: an :py:class:`argparse.Namespace` object
+        :params configs: ``sfftk`` persistent configs (see :py:mod:`sfftk.config` documentation)
+        """
         super(ArgsNote, self).__init__(*args_, **kwargs_)
         self.description = args.description
         self.numberOfInstances = args.number_of_instances
@@ -532,11 +569,24 @@ class ArgsNote(AbstractNote):
 
 
 class SimpleNote(AbstractNote):
+    """Class definition for a :py:class:`SimpleNote` object"""
+
     def __init__(
             self, description=None, numberOfInstances=None, externalReferenceId=None,
             externalReferences=None, complexId=None, complexes=None,
             macromoleculeId=None, macromolecules=None, *args, **kwargs
     ):
+        """Initialise an :py:class:`SimpleNote` object
+
+        :param str description: the description string of the segment
+        :param int numberOfInstances: the number of instances of this segment
+        :param int externalReferenceId: ID of an external reference
+        :param externalReferences: iterable of external references
+        :param complexId: ID of a complex
+        :param complexes: iterable of complexes
+        :param macromoleculeId: ID of a macromolecule
+        :param macromolecules: iterable of macromolecules
+        """
         super(SimpleNote, self).__init__(*args, **kwargs)
         self.description = description
         self.numberOfInstances = numberOfInstances

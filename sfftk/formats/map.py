@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 # map.py
-'''
+"""
 sfftk.formats.map
 =================
 
 User-facing reader classes for CCP4 masks
-'''
+"""
 from __future__ import division
 
 import inspect
+
 import os.path
 
+from .base import Segmentation, Header, Segment, Annotation, Volume
 from .. import schema
 from ..readers import mapreader
-from .base import Segmentation, Header, Segment, Annotation, Volume
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -22,13 +23,14 @@ __updated__ = '2018-02-23'
 
 
 class MapVolume(Volume):
-    '''Volume class'''
+    """Volume class"""
+
     def __init__(self, segmentation, *args, **kwargs):
         self._segmentation = segmentation
         self.voxels = segmentation._segmentation.voxels
 
     def convert(self, *args, **kwargs):
-        '''Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object'''
+        """Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
 
         #  make file
@@ -48,48 +50,56 @@ class MapVolume(Volume):
 
 
 class MapAnnotation(Annotation):
-    '''Annotation class'''
+    """Annotation class"""
+
     @property
     def description(self):
-        '''Segment description'''
+        """Segment description"""
         return None
+
     @property
     def colour(self):
-        '''Segment colour'''
+        """Segment colour"""
         return None
+
     def convert(self):
-        '''Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object'''
+        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.description = self.description
         annotation.numberOfInstances = 1
         import random
         from warnings import warn
         red, green, blue = random.random(), random.random(), random.random()
-        warn("Colour not defined for mask segments. Setting colour to random RGB value of {}".format((red, green, blue)))
+        warn(
+            "Colour not defined for mask segments. Setting colour to random RGB value of {}".format((red, green, blue)))
 
         colour = schema.SFFColour()
         colour.rgba = schema.SFFRGBA(
             red=red,
             green=green,
             blue=blue,
-            )
+        )
         return annotation, colour
 
 
 class MapSegment(Segment):
-    '''Segment class'''
+    """Segment class"""
+
     def __init__(self, segmentation):
         self._segmentation = segmentation
+
     @property
     def annotation(self):
-        '''Segment annotation'''
+        """Segment annotation"""
         return MapAnnotation()
+
     @property
     def volume(self):
-        '''Three-D volume data in this segment'''
+        """Three-D volume data in this segment"""
         return MapVolume(self._segmentation)
+
     def convert(self):
-        '''Convert to a :py:class:`sfftk.schema.SFFSegment` object'''
+        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         segment.volume = self.volume.convert()
@@ -97,7 +107,8 @@ class MapSegment(Segment):
 
 
 class MapHeader(Header):
-    '''Header class'''
+    """Class defining the header in a CCP4 file"""
+
     def __init__(self, segmentation):
         self._segmentation = segmentation._segmentation
         for attr in dir(self._segmentation):
@@ -110,37 +121,45 @@ class MapHeader(Header):
             setattr(self, attr, getattr(self._segmentation, attr))
 
     def convert(self, *args, **kwargs):
+        """Convert this object into an EMDB-SFF segmentation header
+
+        Currently  not implement"""
         pass
 
 
 class MapSegmentation(Segmentation):
-    '''Class representing an CCP4/MAP mask segmentation
+    """Class representing an CCP4/MAP mask segmentation
     
     .. code:: python
     
         from sfftk.formats.map import MapSegmentation
         map_seg = MapSegmentation('file.map')
         
-    '''
+    """
+
     def __init__(self, fn, *args, **kwargs):
-        '''Initialise the MapSegmentation reader'''
+        """Initialise the MapSegmentation reader"""
         self._fn = fn
 
         # set the segmentation attribute
         self._segmentation = mapreader.get_data(fn)
-    '''
+
+    """
     :TODO: document attributes and methods of readers
-    '''
+    """
+
     @property
     def header(self):
-        '''Segmentation metadata'''
+        """Segmentation metadata"""
         return MapHeader(self)
+
     @property
     def segments(self):  # only one segment
-        '''The segments in this segmentation'''
+        """The segments in this segmentation"""
         return [MapSegment(self)]
+
     def convert(self, args, *_args, **_kwargs):
-        '''Convert to a :py:class:`sfftk.schema.SFFSegmentation` object'''
+        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
 
         segmentation.name = self.header.name
@@ -150,7 +169,7 @@ class MapSegmentation(Segmentation):
             name="Undefined",
             version="Undefined",
             processingDetails='None'
-            )
+        )
         segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
         segmentation.primaryDescriptor = "threeDVolume"
 
@@ -161,15 +180,15 @@ class MapSegmentation(Segmentation):
                 rows=3,
                 cols=3,
                 data=self.header.skew_matrix_data,
-                )
             )
+        )
         segmentation.transforms.add_transform(
             schema.SFFTransformationMatrix(
                 rows=3,
                 cols=1,
                 data=self.header.skew_translation_data,
-                )
             )
+        )
 
         segments = schema.SFFSegmentList()
         for s in self.segments:
