@@ -61,31 +61,31 @@ The full listing of sub-subcommands organised by operation are:
 
 -  Find
 
-    -  **search**
+    -   **search**
 
 -  View
 
-    -  **list**
+    -   **list**
 
-    -  **show**
+    -   **show**
 
 -  Modify
 
-    -  **add**
+    -   **add**
 
-    -  **edit**
+    -   **edit**
 
-    - **copy**
+    -   **copy**
 
-    - **clear**
+    -   **clear**
 
-    -  **merge**
+    -   **merge**
 
-    -  **del**
+    -   **del**
 
-    -  **save**
+    -   **save**
 
-    -  **trash**
+    -   **trash**
 
 We will look at each of these in turn.
 
