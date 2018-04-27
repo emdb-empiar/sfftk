@@ -7,6 +7,7 @@ This module defines classes and functions to correctly process persistent
 configurations. Please see the :doc:`guide to miscellaneous operations <misc>`
 for a complete description of working with configs.
 """
+from __future__ import print_function
 from collections import OrderedDict
 import os.path
 import sys
@@ -145,7 +146,7 @@ def list_configs(args, configs):
     """
     print_date("Listing all {} configs...".format(len(configs)))
     # view the config object
-    print >> sys.stderr, configs
+    print(configs, file=sys.stderr)
     return 0
 
 def get_configs(args, configs):
@@ -164,7 +165,7 @@ def get_configs(args, configs):
         print_date("No config with name {}".format(args.name))
         return 1
     # view the config
-    print config
+    print(config)
     return 0
 
 def set_configs(args, configs):
@@ -206,6 +207,6 @@ def clear_configs(args, configs):
     print_date("Clearing all {} configs...".format(len(configs)))
     # empty all values
     configs.clear()
-    print >> sys.stderr, configs
+    print(configs, file=sys.stderr)
     # save the configs
     return configs.write()

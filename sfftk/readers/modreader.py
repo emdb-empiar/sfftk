@@ -32,7 +32,7 @@ in the design of these classes:
 
 In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import os
 import struct
@@ -138,7 +138,7 @@ class FLAGS(object):
         
         .. code:: python
         
-            >>> from readers.modreader import FLAGS
+            >>> from sfftk.readers.modreader import FLAGS
             >>> flag = FLAGS(10, 2)
             >>> flag
             0000000000001010
@@ -610,7 +610,7 @@ class MESH(object):
         # first get the array of floats
         # then isolate each frame (0, 1, 2)
         # then zip them all together
-#         print >> sys.stderr, 12*self.vsize
+#         print(sys.stderr, 12*self.vsize, file=sys.stderr)
         vert = struct.unpack('>' + 'fff' * self.vsize, f.read(12 * self.vsize))
         vert_x = vert[0::3]
         vert_y = vert[1::3]
@@ -929,7 +929,6 @@ def get_data(fn):
         if chunk_name == 'IEOF':
             f.seek(0)
         else:
-    #         print >> sys.stderr, "Invalid file: missing terminal IEOF; has %s instead" % chunk_name
             raise ValueError("Invalid file: missing terminal IEOF; has %s instead" % chunk_name)
 
         chunk_name = struct.unpack('>4s', f.read(4))[0]
@@ -937,7 +936,6 @@ def get_data(fn):
             imod = None
             first_view = True
         else:
-    #         print >> sys.stderr, "Invalid file: %s" % chunk_name
             raise ValueError("Invalid file: %s" % chunk_name)
 
         while chunk_name != 'IEOF':
@@ -953,7 +951,7 @@ def get_data(fn):
                 f = objt.read()
                 imod.add_objt(objt)
             elif chunk_name == 'OGRP':
-                print >> sys.stderr, "OGRP: skipping data..."
+                print("OGRP: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
                 f.read(bytes)
             elif chunk_name == 'OBST':
@@ -976,7 +974,7 @@ def get_data(fn):
                 f = mesh.read()
                 imod.current_objt.add_mesh(mesh)
             elif chunk_name == 'SKLI':
-                print >> sys.stderr, "SKLI: skipping data..."
+                print("SKLI: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
                 f.read(num_bytes)
             elif chunk_name == 'MEST':
@@ -996,7 +994,7 @@ def get_data(fn):
                 f = imat.read()
                 imod.current_objt.imat = imat
             elif chunk_name == 'SLAN':  # the class exists but has not been integrated; need an example of where it occurs
-                print >> sys.stderr, "SLAN: skipping data..."
+                print("SLAN: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
                 f.read(bytes)
             elif chunk_name == 'MEPA':
@@ -1017,12 +1015,14 @@ def get_data(fn):
                 imod.minx = minx
             elif chunk_name == 'OLBL':
                 chunk_length, next_chunk = find_chunk_length(f)  # for diagnostics only
-                print "The chunk %s has a length of %s bytes. The next chunk is %s." % (chunk_name, chunk_length, next_chunk)
+                print("The chunk {} has a length of {} bytes. The next chunk is {}.".format(
+                    chunk_name, chunk_length, next_chunk
+                ))
             else:
-                print "This chunk is %(chunk_name)s." % {'chunk_name': chunk_name}
+                print("This chunk is %(chunk_name)s." % {'chunk_name': chunk_name})
                 chunk_length, next_chunk = find_chunk_length(f)  # for diagnostics only
-                print "It has a length of %(chunk_length)s bytes." % {'chunk_length': chunk_length}
-                print "The next chunk is %(next_chunk)s." % {'next_chunk': next_chunk}
+                print("It has a length of %(chunk_length)s bytes." % {'chunk_length': chunk_length})
+                print("The next chunk is %(next_chunk)s." % {'next_chunk': next_chunk})
                 raise ValueError("Unknown chunk named '%s'" % chunk_name)
             chunk_name = struct.unpack('>4s', f.read(4))[0]
 
@@ -1064,11 +1064,11 @@ def show_chunks(fn):
                 marker_count[current_marker] += 1
             elif next_marker != current_marker:
                 marker_count[current_marker] += 1
-                print current_marker, marker_count[current_marker]
+                print(current_marker, marker_count[current_marker])
     #             waiter = raw_input('')
                 marker_count[current_marker] = 0
         # print the last one
-        print next_marker
+        print(next_marker)
 
     return
 
@@ -1086,41 +1086,41 @@ def print_model(mod, output):
     else:
         output_dest = output
 
-    print >> output_dest, "***************************************************************************************"
-    print >> output_dest, 'IMOD'
-    print >> output_dest, mod
-    print >> output_dest, "***************************************************************************************"
+    print("***************************************************************************************", file=output_dest)
+    print('IMOD', file=output_dest)
+    print(mod, file=output_dest)
+    print("***************************************************************************************", file=output_dest)
 
     for o, O in mod.objts.iteritems():
-        print >> output_dest, 'OBJT%s' % o
-        print >> output_dest, O
-        print >> output_dest, "***************************************************************************************"
+        print('OBJT%s' % o, file=output_dest)
+        print(O, file=output_dest)
+        print("***************************************************************************************", file=output_dest)
         for c, C in O.conts.iteritems():
-            print >> output_dest, 'CONT%s' % c
-            print >> output_dest, C
-            print >> output_dest, "***************************************************************************************"
+            print('CONT%s' % c, file=output_dest)
+            print(C, file=output_dest)
+            print("***************************************************************************************", file=output_dest)
         for m, M in O.meshes.iteritems():
-            print >> output_dest, 'MESH%s' % m
-            print >> output_dest, M
-            print >> output_dest, "***************************************************************************************"
+            print('MESH%s' % m, file=output_dest)
+            print(M, file=output_dest)
+            print("***************************************************************************************", file=output_dest)
         if O.clip is not None:
-            print >> output_dest, 'CLIP'
-            print >> output_dest, O.clip
-            print >> output_dest, "***************************************************************************************"
-        print >> output_dest, 'IMAT'
-        print >> output_dest, O.imat
-        print >> output_dest, "***************************************************************************************"
+            print('CLIP', file=output_dest)
+            print(O.clip, file=output_dest)
+            print("***************************************************************************************", file=output_dest)
+        print('IMAT', file=output_dest)
+        print(O.imat, file=output_dest)
+        print("***************************************************************************************", file=output_dest)
         if O.mepa is not None:
-            print >> output_dest, 'MEPA'
-            print >> output_dest, O.mepa
-            print >> output_dest, "***************************************************************************************"
+            print('MEPA', file=output_dest)
+            print(O.mepa, file=output_dest)
+            print("***************************************************************************************", file=output_dest)
     for v, V in mod.views.iteritems():
-        print >> output_dest, 'VIEW%s' % v
-        print >> output_dest, V
-        print >> output_dest, "***************************************************************************************"
-    print >> output_dest, 'MINX'
-    print >> output_dest, mod.minx
-    print >> output_dest, "***************************************************************************************"
+        print('VIEW%s' % v, file=output_dest)
+        print(V, file=output_dest)
+        print("***************************************************************************************", file=output_dest)
+    print('MINX', file=output_dest)
+    print(mod.minx, file=output_dest)
+    print("***************************************************************************************", file=output_dest)
 
     if output is not sys.stdout:
         output_dest.close()

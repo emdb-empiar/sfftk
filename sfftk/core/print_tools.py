@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
+"""
 print_tools.py
 ==============
 
 Utilities for printing stuff to the screen.
-'''
-from __future__ import division
+"""
+from __future__ import division, print_function
 
 import sys
 import time
@@ -18,31 +18,31 @@ __updated__ = '2018-02-14'
 
 
 def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
-    '''Print the given string with date on the given stream
+    """Print the given string with date on the given stream
     
     :param str print_string: the string to be printed
     :param stream: the stream to write to
     :type stream: `sys.stderr` or `sys.stdout`
     :param bool newline: whether (default) or not to add a newline at the end
-    '''
+    """
     if newline:
         if incl_date:
-            print >> stream, "%s\t%s" % (time.ctime(time.time()), print_string)
+            print("%s\t%s" % (time.ctime(time.time()), print_string), file=stream)
         else:
-            print >> stream, "%s" % (print_string)
+            print("%s" % (print_string), file=stream)
     else:
         if incl_date:
-            print >> stream, "%s\t%s" % (time.ctime(time.time()), print_string),
+            print("%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
         else:
-            print >> stream, "%s" % (print_string),
+            print("%s" % (print_string), file=stream, end='')
 
 
 def get_printable_ascii_string(s):
-    '''Given a string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.
+    """Given a string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.
     
     :param str s: the string to search
     :return str ascii_s: the minimal ASCII string
-    '''
+    """
     # get the list of ordinals
     s_ord = map(ord, s)
     # ASCII have ordinals on 0-127
@@ -59,7 +59,7 @@ def get_printable_ascii_string(s):
 
 
 def print_static(print_string, stream=sys.stderr, incl_date=True):
-    '''Print the given string with date on the given stream from the first position 
+    """Print the given string with date on the given stream from the first position 
     overwriting any characters. 
     
     This is a useful way to display progress without overcrowding the screen.
@@ -68,13 +68,16 @@ def print_static(print_string, stream=sys.stderr, incl_date=True):
     :param stream: the stream to write to
     :type stream: `sys.stderr` or `sys.stdout`
     :param bool newline: whether (default) or not to add a newline at the end
-    '''
+    """
     try:
         assert stream is sys.stderr or stream is sys.stdout
     except:
-        print >> sys.stderr, "Invalid stream '%s'; should be Python objects `sys.stderr` or `sys.stdout`" % stream
+        print(
+            "Invalid stream '{}'; should be Python objects `sys.stderr` or `sys.stdout`".format(stream),
+            file=sys.stderr
+        )
 
     if incl_date:
-        print >> stream, "\r%s\t%s" % (time.ctime(time.time()), print_string),
+        print("\r%s\t%s" % (time.ctime(time.time()), print_string), file=stream)
     else:
-        print >> stream, "\r%s" % (print_string),
+        print("\r%s" % (print_string), file=stream)

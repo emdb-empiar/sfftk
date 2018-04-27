@@ -253,33 +253,6 @@ Colours can either be described by name or by normalised RGBA values (each chann
 	segment.colour = schema.SFFColour()
 	segment.colour.rgba = rgba
 
-Setting Contour Segments
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code:: python
-
-    from random import random, randint
-    
-    contours = schema.SFFContourList()
-    i = 0
-    while i < 10:
-	    contour = schema.SFFContour()
-	    j = 0
-	    J = randint(10, 20)
-	    while j < J:
-		    contour.add_point(
-			    schema.SFFContourPoint(
-				    x=random()*10,
-				    y=random()*10,
-				    z=random()*10,
-				    )
-			    )
-		    j += 1
-		    contours.add_contour(contour)
-	    i += 1
-
-    # add the contours to the segment
-    segment.contours = contours
 
 Setting Mesh Segments
 ^^^^^^^^^^^^^^^^^^^^^
@@ -461,15 +434,7 @@ Segments
 
     for segment in seg.segments:
     	# do something with segment
-	
-Contours
-~~~~~~~~
 
-.. code:: python
-
-    for contour in segment.contours:
-	    for point in contour.points:
-	    	x, y, z = point.x, point.y, point.z
 
 Meshes
 ~~~~~~

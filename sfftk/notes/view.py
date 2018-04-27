@@ -5,7 +5,7 @@ sfftk.notes.view
 
 Display notes in EMDB-SFF files
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import textwrap
 
@@ -143,7 +143,6 @@ class NoteView(View):
         if self._segment.contours:
             segment_type.append("contourList")
         if self._segment.meshes:
-            print 'here'
             segment_type.append("meshList")
         if self._segment.shapes:
             segment_type.append("shapePrimitiveList")
@@ -390,7 +389,7 @@ def list_notes(args, configs):
     :TODO: define the stream to use
     """
     if args.header:
-        print HeaderView(sff_seg)
+        print(HeaderView(sff_seg))
     note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]
     if args.sort_by_description:
         sorted_note_views = sorted(note_views, key=lambda n: n.description, reverse=args.reverse)
@@ -398,9 +397,9 @@ def list_notes(args, configs):
         sorted_note_views = sorted(note_views, key=lambda n: n.id, reverse=args.reverse)
     # table header
     if not args.list_ids and not args.long_format:
-        print TableHeaderView()
+        print(TableHeaderView())
     for note_view in sorted_note_views:
-        print note_view
+        print(note_view)
     return 0
 
 
@@ -413,14 +412,14 @@ def show_notes(args, configs):
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
     if args.header:
-        print HeaderView(sff_seg)
+        print(HeaderView(sff_seg))
     if args.segment_id is not None:
         if not args.long_format:
-            print TableHeaderView()
+            print(TableHeaderView())
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                print NoteView(segment, _long=args.long_format)
+                print(NoteView(segment, _long=args.long_format))
                 found_segment = True
         if not found_segment:
             print_date("No segment with ID(s) {}".format(", ".join(map(str, args.segment_id))))

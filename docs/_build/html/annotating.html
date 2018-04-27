@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Annotating EMDB-SFF Segmentations &mdash; sfftk 0.2.1.dev3 documentation</title>
+  <title>Annotating EMDB-SFF Segmentations &mdash; sfftk 0.2.1.dev4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk 0.2.1.dev3 documentation" href="index.html"/>
+    <link rel="top" title="sfftk 0.2.1.dev4 documentation" href="index.html"/>
         <link rel="next" title="Miscellaneous Operations Using sfftk" href="misc.html"/>
         <link rel="prev" title="Converting Files To EMDB-SFF" href="converting.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.1.dev3
+                0.2
               </div>
             
           
@@ -103,6 +103,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#finding-notes">Finding Notes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#specifying-search-terms">Specifying Search Terms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#specifying-the-resource-to-search">Specifying The Resource To Search</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#specifying-the-ontology-to-search">Specifying The Ontology To Search</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#performing-exact-searches">Performing Exact Searches</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#including-obsolete-terms">Including Obsolete Terms</a></li>
@@ -128,7 +129,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#viewing-segment-ids-only">Viewing Segment IDs Only</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#listing-notes-in-a-single-segment">Listing Notes In A Single Segment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#showing-notes-in-one-or-more-segments">Showing Notes In One Or More Segments</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#viewing-segmentation-metadata-only">Viewing Segmentation Metadata Only</a></li>
 </ul>
 </li>
@@ -140,7 +141,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#modify-sequence">Modify Sequence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#adding-notes">Adding Notes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#adding-global-notes-segmentation">Adding Global Notes (Segmentation)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#adding-local-notes-to-a-single-segment">Adding Local Notes (To A Single Segment)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-local-notes-single-segment">Adding Local Notes (Single Segment)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#editing-notes">Editing Notes</a><ul>
@@ -153,9 +154,9 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#clearing-notes">Clearing Notes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#segments">Segments</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#global-external-references">Global External References</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#all-notes">All Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clearing-local-notes-segments">Clearing Local Notes (Segments)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clearing-global-external-references">Clearing Global External References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clearing-all-notes">Clearing All Notes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#merging-notes">Merging Notes</a><ul>
@@ -243,153 +244,153 @@
            <div itemprop="articleBody">
             
   <div class="section" id="annotating-emdb-sff-segmentations">
-<h1><a class="toc-backref" href="#id6">Annotating EMDB-SFF Segmentations</a><a class="headerlink" href="#annotating-emdb-sff-segmentations" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7">Annotating EMDB-SFF Segmentations</a><a class="headerlink" href="#annotating-emdb-sff-segmentations" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#annotating-emdb-sff-segmentations" id="id6">Annotating EMDB-SFF Segmentations</a><ul>
-<li><a class="reference internal" href="#introduction" id="id7">Introduction</a><ul>
-<li><a class="reference internal" href="#annotation-levels-global-vs-local-notes" id="id8">Annotation Levels: Global vs. Local Notes</a></li>
-<li><a class="reference internal" href="#operations-find-view-modify" id="id9">Operations: Find, View, Modify</a></li>
-<li><a class="reference internal" href="#states-find-view-modify" id="id10">States: FIND, VIEW, MODIFY</a></li>
-<li><a class="reference internal" href="#quick-start" id="id11">Quick Start</a></li>
+<li><a class="reference internal" href="#annotating-emdb-sff-segmentations" id="id7">Annotating EMDB-SFF Segmentations</a><ul>
+<li><a class="reference internal" href="#introduction" id="id8">Introduction</a><ul>
+<li><a class="reference internal" href="#annotation-levels-global-vs-local-notes" id="id9">Annotation Levels: Global vs. Local Notes</a></li>
+<li><a class="reference internal" href="#operations-find-view-modify" id="id10">Operations: Find, View, Modify</a></li>
+<li><a class="reference internal" href="#states-find-view-modify" id="id11">States: FIND, VIEW, MODIFY</a></li>
+<li><a class="reference internal" href="#quick-start" id="id12">Quick Start</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#finding-notes" id="id12">Finding Notes</a><ul>
-<li><a class="reference internal" href="#specifying-search-terms" id="id13">Specifying Search Terms</a><ul>
-<li><a class="reference internal" href="#specifying-the-ontology-to-search" id="id14">Specifying The Ontology To Search</a></li>
-<li><a class="reference internal" href="#performing-exact-searches" id="id15">Performing Exact Searches</a></li>
-<li><a class="reference internal" href="#including-obsolete-terms" id="id16">Including Obsolete Terms</a></li>
+<li><a class="reference internal" href="#finding-notes" id="id13">Finding Notes</a><ul>
+<li><a class="reference internal" href="#specifying-search-terms" id="id14">Specifying Search Terms</a><ul>
+<li><a class="reference internal" href="#specifying-the-resource-to-search" id="id15">Specifying The Resource To Search</a></li>
+<li><a class="reference internal" href="#specifying-the-ontology-to-search" id="id16">Specifying The Ontology To Search</a></li>
+<li><a class="reference internal" href="#performing-exact-searches" id="id17">Performing Exact Searches</a></li>
+<li><a class="reference internal" href="#including-obsolete-terms" id="id18">Including Obsolete Terms</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#listing-available-ontologies" id="id17">Listing Available Ontologies</a><ul>
-<li><a class="reference internal" href="#short-listing-of-available-ontologies" id="id18">Short Listing Of Available Ontologies</a></li>
+<li><a class="reference internal" href="#listing-available-ontologies" id="id19">Listing Available Ontologies</a><ul>
+<li><a class="reference internal" href="#short-listing-of-available-ontologies" id="id20">Short Listing Of Available Ontologies</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#traversing-searching-results" id="id19">Traversing Searching Results</a><ul>
-<li><a class="reference internal" href="#specifying-the-start-result" id="id20">Specifying The Start Result</a></li>
-<li><a class="reference internal" href="#specifying-the-number-of-rows-to-display" id="id21">Specifying The Number Of Rows To Display</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#viewing-notes" id="id22">Viewing Notes</a><ul>
-<li><a class="reference internal" href="#listing-all-notes" id="id23">Listing All Notes</a><ul>
-<li><a class="reference internal" href="#long-format" id="id24">Long Format</a></li>
-<li><a class="reference internal" href="#including-segmentation-metadata" id="id25">Including Segmentation Metadata</a></li>
-<li><a class="reference internal" href="#sorting-notes-by-description" id="id26">Sorting Notes By Description</a></li>
-<li><a class="reference internal" href="#reverse-sorting" id="id27">Reverse Sorting</a></li>
-<li><a class="reference internal" href="#viewing-segment-ids-only" id="id28">Viewing Segment IDs Only</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#listing-notes-in-a-single-segment" id="id29">Listing Notes In A Single Segment</a><ul>
-<li><a class="reference internal" href="#viewing-segmentation-metadata-only" id="id30">Viewing Segmentation Metadata Only</a></li>
+<li><a class="reference internal" href="#traversing-searching-results" id="id21">Traversing Searching Results</a><ul>
+<li><a class="reference internal" href="#specifying-the-start-result" id="id22">Specifying The Start Result</a></li>
+<li><a class="reference internal" href="#specifying-the-number-of-rows-to-display" id="id23">Specifying The Number Of Rows To Display</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#modifying-notes" id="id31">Modifying Notes</a><ul>
-<li><a class="reference internal" href="#temporary-file" id="id32">Temporary File</a></li>
-<li><a class="reference internal" href="#temporary-file-shorthand" id="id33">Temporary File Shorthand</a></li>
-<li><a class="reference internal" href="#modify-sequence" id="id34">Modify Sequence</a></li>
-<li><a class="reference internal" href="#adding-notes" id="id35">Adding Notes</a><ul>
-<li><a class="reference internal" href="#adding-global-notes-segmentation" id="id36">Adding Global Notes (Segmentation)</a><ul>
-<li><a class="reference internal" href="#adding-a-segmentation-name" id="id37">Adding A Segmentation Name</a></li>
-<li><a class="reference internal" href="#adding-the-software-name" id="id38">Adding The Software Name</a></li>
-<li><a class="reference internal" href="#adding-the-software-version" id="id39">Adding The Software Version</a></li>
-<li><a class="reference internal" href="#adding-software-processing-details" id="id40">Adding Software Processing Details</a></li>
-<li><a class="reference internal" href="#adding-a-file-path" id="id41">Adding A File Path</a></li>
-<li><a class="reference internal" href="#adding-segmentation-details" id="id42">Adding Segmentation Details</a></li>
-<li><a class="reference internal" href="#adding-global-external-references" id="id43">Adding Global External References</a></li>
+<li><a class="reference internal" href="#viewing-notes" id="id24">Viewing Notes</a><ul>
+<li><a class="reference internal" href="#listing-all-notes" id="id25">Listing All Notes</a><ul>
+<li><a class="reference internal" href="#long-format" id="id26">Long Format</a></li>
+<li><a class="reference internal" href="#including-segmentation-metadata" id="id27">Including Segmentation Metadata</a></li>
+<li><a class="reference internal" href="#sorting-notes-by-description" id="id28">Sorting Notes By Description</a></li>
+<li><a class="reference internal" href="#reverse-sorting" id="id29">Reverse Sorting</a></li>
+<li><a class="reference internal" href="#viewing-segment-ids-only" id="id30">Viewing Segment IDs Only</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#adding-local-notes-to-a-single-segment" id="id44">Adding Local Notes (To A Single Segment)</a><ul>
-<li><a class="reference internal" href="#adding-a-description" id="id45">Adding A Description</a></li>
-<li><a class="reference internal" href="#adding-the-number-of-instances" id="id46">Adding The Number of Instances</a></li>
-<li><a class="reference internal" href="#adding-an-external-reference" id="id47">Adding An External Reference</a></li>
-<li><a class="reference internal" href="#adding-a-complex-internal-use" id="id48">Adding A Complex (Internal Use)</a></li>
-<li><a class="reference internal" href="#adding-a-macromolecule-internal-use" id="id49">Adding A Macromolecule (Internal Use)</a></li>
+<li><a class="reference internal" href="#showing-notes-in-one-or-more-segments" id="id31">Showing Notes In One Or More Segments</a><ul>
+<li><a class="reference internal" href="#viewing-segmentation-metadata-only" id="id32">Viewing Segmentation Metadata Only</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#editing-notes" id="id50">Editing Notes</a><ul>
-<li><a class="reference internal" href="#editing-global-notes-segmentation" id="id51">Editing Global Notes (Segmentation)</a><ul>
-<li><a class="reference internal" href="#editing-external-references" id="id52">Editing External References</a></li>
+<li><a class="reference internal" href="#modifying-notes" id="id33">Modifying Notes</a><ul>
+<li><a class="reference internal" href="#temporary-file" id="id34">Temporary File</a></li>
+<li><a class="reference internal" href="#temporary-file-shorthand" id="id35">Temporary File Shorthand</a></li>
+<li><a class="reference internal" href="#modify-sequence" id="id36">Modify Sequence</a></li>
+<li><a class="reference internal" href="#adding-notes" id="id37">Adding Notes</a><ul>
+<li><a class="reference internal" href="#adding-global-notes-segmentation" id="id38">Adding Global Notes (Segmentation)</a><ul>
+<li><a class="reference internal" href="#adding-a-segmentation-name" id="id39">Adding A Segmentation Name</a></li>
+<li><a class="reference internal" href="#adding-the-software-name" id="id40">Adding The Software Name</a></li>
+<li><a class="reference internal" href="#adding-the-software-version" id="id41">Adding The Software Version</a></li>
+<li><a class="reference internal" href="#adding-software-processing-details" id="id42">Adding Software Processing Details</a></li>
+<li><a class="reference internal" href="#adding-a-file-path" id="id43">Adding A File Path</a></li>
+<li><a class="reference internal" href="#adding-segmentation-details" id="id44">Adding Segmentation Details</a></li>
+<li><a class="reference internal" href="#adding-an-external-reference-global-or-local" id="id45">Adding An External Reference (Global Or Local)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#editing-local-notes-single-segment" id="id53">Editing Local Notes (Single Segment)</a><ul>
-<li><a class="reference internal" href="#editing-a-description" id="id54">Editing A Description</a></li>
-<li><a class="reference internal" href="#editing-the-number-of-instances" id="id55">Editing The Number of Instances</a></li>
-<li><a class="reference internal" href="#editing-an-external-reference" id="id56">Editing An External Reference</a></li>
-<li><a class="reference internal" href="#editing-a-complex-internal-use" id="id57">Editing A Complex (Internal Use)</a></li>
-<li><a class="reference internal" href="#editing-a-macromolecule-internal-use" id="id58">Editing A Macromolecule (Internal Use)</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#copying-notes" id="id59">Copying Notes</a><ul>
-<li><a class="reference internal" href="#source-of-notes-one-or-more-segments" id="id60">Source of Notes: One or More Segments</a><ul>
-<li><a class="reference internal" href="#copy-notes-to-another" id="id61">Copy Notes To Another</a></li>
-<li><a class="reference internal" href="#copy-notes-to-multiple-segments" id="id62">Copy Notes To Multiple Segments</a></li>
-<li><a class="reference internal" href="#copy-notes-to-all-other-segments" id="id63">Copy Notes To All Other Segments</a></li>
-<li><a class="reference internal" href="#copy-notes-to-global-external-references" id="id64">Copy Notes To Global External References</a></li>
-<li><a class="reference internal" href="#source-of-notes-global-external-references" id="id65">Source of Notes: Global External References</a></li>
-<li><a class="reference internal" href="#copy-notes-to-one-segment" id="id66">Copy Notes To One Segment</a></li>
-<li><a class="reference internal" href="#id3" id="id67">Copy Notes To Multiple Segments</a></li>
-<li><a class="reference internal" href="#copy-notes-to-all-segments" id="id68">Copy Notes To All Segments</a></li>
+<li><a class="reference internal" href="#adding-local-notes-single-segment" id="id46">Adding Local Notes (Single Segment)</a><ul>
+<li><a class="reference internal" href="#adding-a-description" id="id47">Adding A Description</a></li>
+<li><a class="reference internal" href="#adding-the-number-of-instances" id="id48">Adding The Number of Instances</a></li>
+<li><a class="reference internal" href="#adding-a-complex-internal-use" id="id49">Adding A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#adding-a-macromolecule-internal-use" id="id50">Adding A Macromolecule (Internal Use)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#clearing-notes" id="id69">Clearing Notes</a><ul>
-<li><a class="reference internal" href="#segments" id="id70">Segments</a><ul>
-<li><a class="reference internal" href="#one-segment" id="id71">One Segment</a></li>
-<li><a class="reference internal" href="#multiple-segments" id="id72">Multiple Segments</a></li>
-<li><a class="reference internal" href="#all-segments" id="id73">All Segments</a></li>
+<li><a class="reference internal" href="#editing-notes" id="id51">Editing Notes</a><ul>
+<li><a class="reference internal" href="#editing-global-notes-segmentation" id="id52">Editing Global Notes (Segmentation)</a><ul>
+<li><a class="reference internal" href="#editing-external-references" id="id53">Editing External References</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#global-external-references" id="id74">Global External References</a></li>
-<li><a class="reference internal" href="#all-notes" id="id75">All Notes</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#merging-notes" id="id76">Merging Notes</a><ul>
-<li><a class="reference internal" href="#explicit-output" id="id77">Explicit Output</a></li>
-<li><a class="reference internal" href="#implicit-output" id="id78">Implicit Output</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#deleting-notes" id="id79">Deleting Notes</a><ul>
-<li><a class="reference internal" href="#deleting-global-notes-segmentation" id="id80">Deleting Global Notes (Segmentation)</a><ul>
-<li><a class="reference internal" href="#deleting-a-segmentation-name" id="id81">Deleting A Segmentation Name</a></li>
-<li><a class="reference internal" href="#deleting-the-software-name" id="id82">Deleting The Software Name</a></li>
-<li><a class="reference internal" href="#deleting-the-software-version" id="id83">Deleting The Software Version</a></li>
-<li><a class="reference internal" href="#deleting-the-software-processing-details" id="id84">Deleting The Software Processing Details</a></li>
-<li><a class="reference internal" href="#deleting-the-filepath" id="id85">Deleting the Filepath</a></li>
-<li><a class="reference internal" href="#deleting-details" id="id86">Deleting Details</a></li>
-<li><a class="reference internal" href="#deleting-external-references" id="id87">Deleting External References</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#deleting-local-notes-single-segment" id="id88">Deleting Local Notes (Single Segment)</a><ul>
-<li><a class="reference internal" href="#deleting-a-description" id="id89">Deleting A Description</a></li>
-<li><a class="reference internal" href="#deleting-the-number-of-instances" id="id90">Deleting The Number Of Instances</a></li>
-<li><a class="reference internal" href="#deleting-an-external-reference" id="id91">Deleting An External Reference</a></li>
-<li><a class="reference internal" href="#deleting-a-complex-internal-use" id="id92">Deleting A Complex (Internal Use)</a></li>
-<li><a class="reference internal" href="#deleting-a-macromolecule-internal-use" id="id93">Deleting A Macromolecule (Internal Use)</a></li>
+<li><a class="reference internal" href="#editing-local-notes-single-segment" id="id54">Editing Local Notes (Single Segment)</a><ul>
+<li><a class="reference internal" href="#editing-a-description" id="id55">Editing A Description</a></li>
+<li><a class="reference internal" href="#editing-the-number-of-instances" id="id56">Editing The Number of Instances</a></li>
+<li><a class="reference internal" href="#editing-an-external-reference" id="id57">Editing An External Reference</a></li>
+<li><a class="reference internal" href="#editing-a-complex-internal-use" id="id58">Editing A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#editing-a-macromolecule-internal-use" id="id59">Editing A Macromolecule (Internal Use)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#saving-notes" id="id94">Saving Notes</a></li>
-<li><a class="reference internal" href="#trashing-notes" id="id95">Trashing Notes</a></li>
+<li><a class="reference internal" href="#copying-notes" id="id60">Copying Notes</a><ul>
+<li><a class="reference internal" href="#source-of-notes-one-or-more-segments" id="id61">Source of Notes: One or More Segments</a><ul>
+<li><a class="reference internal" href="#copy-notes-to-another" id="id62">Copy Notes To Another</a></li>
+<li><a class="reference internal" href="#copy-notes-to-multiple-segments" id="id63">Copy Notes To Multiple Segments</a></li>
+<li><a class="reference internal" href="#copy-notes-to-all-other-segments" id="id64">Copy Notes To All Other Segments</a></li>
+<li><a class="reference internal" href="#copy-notes-to-global-external-references" id="id65">Copy Notes To Global External References</a></li>
+<li><a class="reference internal" href="#source-of-notes-global-external-references" id="id66">Source of Notes: Global External References</a></li>
+<li><a class="reference internal" href="#copy-notes-to-one-segment" id="id67">Copy Notes To One Segment</a></li>
+<li><a class="reference internal" href="#id4" id="id68">Copy Notes To Multiple Segments</a></li>
+<li><a class="reference internal" href="#copy-notes-to-all-segments" id="id69">Copy Notes To All Segments</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configuration-settings" id="id96">Configuration Settings</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clearing-notes" id="id70">Clearing Notes</a><ul>
+<li><a class="reference internal" href="#clearing-local-notes-segments" id="id71">Clearing Local Notes (Segments)</a><ul>
+<li><a class="reference internal" href="#one-segment" id="id72">One Segment</a></li>
+<li><a class="reference internal" href="#multiple-segments" id="id73">Multiple Segments</a></li>
+<li><a class="reference internal" href="#all-segments" id="id74">All Segments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clearing-global-external-references" id="id75">Clearing Global External References</a></li>
+<li><a class="reference internal" href="#clearing-all-notes" id="id76">Clearing All Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#merging-notes" id="id77">Merging Notes</a><ul>
+<li><a class="reference internal" href="#explicit-output" id="id78">Explicit Output</a></li>
+<li><a class="reference internal" href="#implicit-output" id="id79">Implicit Output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deleting-notes" id="id80">Deleting Notes</a><ul>
+<li><a class="reference internal" href="#deleting-global-notes-segmentation" id="id81">Deleting Global Notes (Segmentation)</a><ul>
+<li><a class="reference internal" href="#deleting-a-segmentation-name" id="id82">Deleting A Segmentation Name</a></li>
+<li><a class="reference internal" href="#deleting-the-software-name" id="id83">Deleting The Software Name</a></li>
+<li><a class="reference internal" href="#deleting-the-software-version" id="id84">Deleting The Software Version</a></li>
+<li><a class="reference internal" href="#deleting-the-software-processing-details" id="id85">Deleting The Software Processing Details</a></li>
+<li><a class="reference internal" href="#deleting-the-filepath" id="id86">Deleting the Filepath</a></li>
+<li><a class="reference internal" href="#deleting-details" id="id87">Deleting Details</a></li>
+<li><a class="reference internal" href="#deleting-external-references" id="id88">Deleting External References</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deleting-local-notes-single-segment" id="id89">Deleting Local Notes (Single Segment)</a><ul>
+<li><a class="reference internal" href="#deleting-a-description" id="id90">Deleting A Description</a></li>
+<li><a class="reference internal" href="#deleting-the-number-of-instances" id="id91">Deleting The Number Of Instances</a></li>
+<li><a class="reference internal" href="#deleting-an-external-reference" id="id92">Deleting An External Reference</a></li>
+<li><a class="reference internal" href="#deleting-a-complex-internal-use" id="id93">Deleting A Complex (Internal Use)</a></li>
+<li><a class="reference internal" href="#deleting-a-macromolecule-internal-use" id="id94">Deleting A Macromolecule (Internal Use)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#saving-notes" id="id95">Saving Notes</a></li>
+<li><a class="reference internal" href="#trashing-notes" id="id96">Trashing Notes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-settings" id="id97">Configuration Settings</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="introduction">
-<h2><a class="toc-backref" href="#id7">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Annotation of EMDB-SFF segmentations is the second core function of <code class="docutils literal"><span class="pre">sfftk</span></code>.
 Here we outline how to perform annotations of EMDB-SFF segmentations via the
 command-line.</p>
@@ -399,7 +400,7 @@ command-line.</p>
 </pre></div>
 </div>
 <div class="section" id="annotation-levels-global-vs-local-notes">
-<h3><a class="toc-backref" href="#id8">Annotation Levels: Global vs. Local Notes</a><a class="headerlink" href="#annotation-levels-global-vs-local-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Annotation Levels: Global vs. Local Notes</a><a class="headerlink" href="#annotation-levels-global-vs-local-notes" title="Permalink to this headline">¶</a></h3>
 <p>Annotations can be added at the segmentation (global) or individual segment
 (local) level. <code class="docutils literal"><span class="pre">sfftk</span></code> distinguishes between both levels of annotations.
 Global notes are
@@ -411,7 +412,7 @@ biological entities of interest. Given the segment relationship specified by
 Simply add notes to the segment whose ID you are targetting.</p>
 </div>
 <div class="section" id="operations-find-view-modify">
-<h3><a class="toc-backref" href="#id9">Operations: Find, View, Modify</a><a class="headerlink" href="#operations-find-view-modify" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Operations: Find, View, Modify</a><a class="headerlink" href="#operations-find-view-modify" title="Permalink to this headline">¶</a></h3>
 <p>There are three main operations that a user can perform using the <code class="docutils literal"><span class="pre">notes</span></code> subcommand.</p>
 <ul class="simple">
 <li><strong>Find</strong> notes from an ontology principally the
@@ -421,7 +422,7 @@ Simply add notes to the segment whose ID you are targetting.</p>
 </ul>
 </div>
 <div class="section" id="states-find-view-modify">
-<h3><a class="toc-backref" href="#id10">States: FIND, VIEW, MODIFY</a><a class="headerlink" href="#states-find-view-modify" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">States: FIND, VIEW, MODIFY</a><a class="headerlink" href="#states-find-view-modify" title="Permalink to this headline">¶</a></h3>
 <p>Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and
 the MODIFY state. These will be indicated by the colour of the text on the screen.</p>
 <ul class="simple">
@@ -469,11 +470,11 @@ command is invoked.</p>
 <p>We will look at each of these in turn.</p>
 </div>
 <div class="section" id="quick-start">
-<h3><a class="toc-backref" href="#id11">Quick Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Quick Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="finding-notes">
-<h2><a class="toc-backref" href="#id12">Finding Notes</a><a class="headerlink" href="#finding-notes" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id13">Finding Notes</a><a class="headerlink" href="#finding-notes" title="Permalink to this headline">¶</a></h2>
 <p>The search sub-subcommand displays results from searching EMBL-EBI’s OLS. As
 described in <a class="reference external" href="#states-find-view-modify">States</a>, the terminal text is
 coloured yellow.</p>
@@ -484,7 +485,7 @@ coloured yellow.</p>
 </div>
 <p>display available options.</p>
 <div class="section" id="specifying-search-terms">
-<h3><a class="toc-backref" href="#id13">Specifying Search Terms</a><a class="headerlink" href="#specifying-search-terms" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">Specifying Search Terms</a><a class="headerlink" href="#specifying-search-terms" title="Permalink to this headline">¶</a></h3>
 <p>For single worded searches enter the term with or without quotes. Multi-word
 terms must be quoted to prevent splitting them.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span># single word term
@@ -499,13 +500,36 @@ sff notes search ‘fragment mitochondria’
 <ul class="simple">
 <li><em>index</em></li>
 <li><em>label</em> of the result term</li>
-<li><em>short_form</em>  <a class="footnote-reference" href="#id4" id="id1">[1]</a> of the result term</li>
+<li><em>short_form</em>  <a class="footnote-reference" href="#id5" id="id1">[1]</a> of the result term</li>
 <li><em>ontology_name</em></li>
 <li><em>description/IRI</em> is free text describing the term and IRI refers to a link by which the term in the ontology may be accessed, and</li>
 <li><em>type</em> can have one of the following values: <em>class, property, individual, ontology</em></li>
 </ul>
+<div class="section" id="specifying-the-resource-to-search">
+<span id="id2"></span><h4><a class="toc-backref" href="#id15">Specifying The Resource To Search</a><a class="headerlink" href="#specifying-the-resource-to-search" title="Permalink to this headline">¶</a></h4>
+<p>By default all searches are carried out against the <a class="reference external" href="https://www.ebi.ac.uk/ols/index">EBI Ontology Lookup Service (OLS)</a>.</p>
+<p>In addition to the OLS users can also search the follow resources for accessions to use for annotation:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.emdatabank.org/">The Electron Microscopy Data Bank (EMDB)</a>;</li>
+<li><a class="reference external" href="https://www.wwpdb.org/">The Protein Data Bank (PDB)</a>;</li>
+<li><a class="reference external" href="http://www.uniprot.org/">The Universal Protein Resource (UniProt)</a></li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">-R/--resource</span></code> flag is used to specify the desired resource to search, which takes a string arguments as follows:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ols</span></code> (default) will search EBI OLS;</li>
+<li><code class="docutils literal"><span class="pre">emdb</span></code> will search the EMDB;</li>
+<li><code class="docutils literal"><span class="pre">pdb</span></code> will search PDB;</li>
+<li><code class="docutils literal"><span class="pre">uniprot</span></code> will search UniProt.</li>
+</ul>
+<p>For example, to search for <em>mitochondria</em> in EMDB the user would type one of the following:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>sff notes search -R emdb <span class="s2">&quot;mitochodria&quot;</span>
+sff notes search --resource emdb <span class="s2">&quot;mitochondria&quot;</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="specifying-the-ontology-to-search">
-<h4><a class="toc-backref" href="#id14">Specifying The Ontology To Search</a><a class="headerlink" href="#specifying-the-ontology-to-search" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id16">Specifying The Ontology To Search</a><a class="headerlink" href="#specifying-the-ontology-to-search" title="Permalink to this headline">¶</a></h4>
+<p>This only applies to searches against the <a class="reference external" href="https://www.ebi.ac.uk/ols/index">EBI Ontology Lookup Service</a> (the default resource to search or <code class="docutils literal"><span class="pre">-R/--resource</span> <span class="pre">ols</span></code>).</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -O &lt;ontology_name&gt; “&lt;term&gt;”
 sff notes search --ontology &lt;ontology_name&gt; “&lt;term&gt;”
 </pre></div>
@@ -514,7 +538,7 @@ sff notes search --ontology &lt;ontology_name&gt; “&lt;term&gt;”
 to get an ontology to search.</p>
 </div>
 <div class="section" id="performing-exact-searches">
-<h4><a class="toc-backref" href="#id15">Performing Exact Searches</a><a class="headerlink" href="#performing-exact-searches" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id17">Performing Exact Searches</a><a class="headerlink" href="#performing-exact-searches" title="Permalink to this headline">¶</a></h4>
 <p>Exact searches only return results matching the search term <em>exactly.</em></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -x “&lt;term&gt;”
 sff notes search --exact “&lt;term&gt;”
@@ -522,7 +546,7 @@ sff notes search --exact “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="including-obsolete-terms">
-<h4><a class="toc-backref" href="#id16">Including Obsolete Terms</a><a class="headerlink" href="#including-obsolete-terms" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id18">Including Obsolete Terms</a><a class="headerlink" href="#including-obsolete-terms" title="Permalink to this headline">¶</a></h4>
 <p>Some terms are retired and are excluded by default. They can be included using
 the <code class="docutils literal"><span class="pre">-o/--obsoletes</span></code> flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -o “&lt;term&gt;”
@@ -532,7 +556,7 @@ sff notes search --obsoletes “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="listing-available-ontologies">
-<h3><a class="toc-backref" href="#id17">Listing Available Ontologies</a><a class="headerlink" href="#listing-available-ontologies" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id19">Listing Available Ontologies</a><a class="headerlink" href="#listing-available-ontologies" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -L “term”
 sff notes search --list-ontologies “term”
 </pre></div>
@@ -541,7 +565,7 @@ sff notes search --list-ontologies “term”
 the <em>namespace</em> (also called <em>ID space</em>), <em>preferred prefix, title,
 description, homepage, the ontology ID,</em> and <em>version</em> of the ontology.</p>
 <div class="section" id="short-listing-of-available-ontologies">
-<h4><a class="toc-backref" href="#id18">Short Listing Of Available Ontologies</a><a class="headerlink" href="#short-listing-of-available-ontologies" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id20">Short Listing Of Available Ontologies</a><a class="headerlink" href="#short-listing-of-available-ontologies" title="Permalink to this headline">¶</a></h4>
 <p>Alternatively, a simple table result can be displayed using the
 <code class="docutils literal"><span class="pre">-l/--short-list-ontologies</span></code> flag which displays only two columns:
 <em>namespace</em> and <em>description.</em></p>
@@ -552,7 +576,7 @@ sff notes search --short-list-ontologies “term”
 </div>
 </div>
 <div class="section" id="traversing-searching-results">
-<h3><a class="toc-backref" href="#id19">Traversing Searching Results</a><a class="headerlink" href="#traversing-searching-results" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id21">Traversing Searching Results</a><a class="headerlink" href="#traversing-searching-results" title="Permalink to this headline">¶</a></h3>
 <p>By default, <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span></code> search only shows the first page of results. Quite
 often, there will be more than one page of results. This will be evident from
 the last line of the results:</p>
@@ -560,7 +584,7 @@ the last line of the results:</p>
 </pre></div>
 </div>
 <div class="section" id="specifying-the-start-result">
-<h4><a class="toc-backref" href="#id20">Specifying The Start Result</a><a class="headerlink" href="#specifying-the-start-result" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id22">Specifying The Start Result</a><a class="headerlink" href="#specifying-the-start-result" title="Permalink to this headline">¶</a></h4>
 <p>The user can specify the result index at which results should be displayed
 using the <code class="docutils literal"><span class="pre">-s/--start</span></code> flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -s 1 “&lt;term&gt;”
@@ -569,7 +593,7 @@ sff notes search --start 1 “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="specifying-the-number-of-rows-to-display">
-<h4><a class="toc-backref" href="#id21">Specifying The Number Of Rows To Display</a><a class="headerlink" href="#specifying-the-number-of-rows-to-display" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id23">Specifying The Number Of Rows To Display</a><a class="headerlink" href="#specifying-the-number-of-rows-to-display" title="Permalink to this headline">¶</a></h4>
 <p>More results can be display using the <code class="docutils literal"><span class="pre">-r/--rows</span></code> flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes search -r 11 “&lt;term&gt;”
 sff notes search --row 11 “&lt;term&gt;”
@@ -581,7 +605,7 @@ sff notes search --row 11 “&lt;term&gt;”
 </div>
 </div>
 <div class="section" id="viewing-notes">
-<h2><a class="toc-backref" href="#id22">Viewing Notes</a><a class="headerlink" href="#viewing-notes" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id24">Viewing Notes</a><a class="headerlink" href="#viewing-notes" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal"><span class="pre">sfftk</span></code> includes utilities to view annotations (notes) included in EMDB-SFF
 files. There are two main functionalities:</p>
 <ul class="simple">
@@ -591,7 +615,7 @@ files. There are two main functionalities:</p>
 <p>As describe in <a class="reference external" href="#states-find-view-modify">States</a>, the teminal text colour
 when viewing is <strong>WHITE</strong>.</p>
 <div class="section" id="listing-all-notes">
-<h3><a class="toc-backref" href="#id23">Listing All Notes</a><a class="headerlink" href="#listing-all-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id25">Listing All Notes</a><a class="headerlink" href="#listing-all-notes" title="Permalink to this headline">¶</a></h3>
 <p>The <strong>sff notes list</strong> sub-command only lists a summary table of notes
 available for each segment.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
@@ -647,7 +671,7 @@ parentID, description, number of instances, number of external references,
 number of complexes, number of macromolecules,</em> and <em>RGBA colour</em> of the
 segment. When modifying notes these values change.</p>
 <div class="section" id="long-format">
-<h4><a class="toc-backref" href="#id24">Long Format</a><a class="headerlink" href="#long-format" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id26">Long Format</a><a class="headerlink" href="#long-format" title="Permalink to this headline">¶</a></h4>
 <p>To view the list of notes by segment in long format (much more detail) use
 the <code class="docutils literal"><span class="pre">-l/--long-format</span></code> flag. This can be done with or without the header
 (<code class="docutils literal"><span class="pre">-H/--header</span></code> flag).</p>
@@ -754,7 +778,7 @@ the <code class="docutils literal"><span class="pre">-l/--long-format</span></co
 </div>
 </div>
 <div class="section" id="including-segmentation-metadata">
-<h4><a class="toc-backref" href="#id25">Including Segmentation Metadata</a><a class="headerlink" href="#including-segmentation-metadata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id27">Including Segmentation Metadata</a><a class="headerlink" href="#including-segmentation-metadata" title="Permalink to this headline">¶</a></h4>
 <p>By default, segmentation metadata (name, software, global notes, file path,
 details) are not included when listing or showing notes. The <code class="docutils literal"><span class="pre">-H/--header</span></code>
 flag includes this.</p>
@@ -820,7 +844,7 @@ flag includes this.</p>
 </div>
 </div>
 <div class="section" id="sorting-notes-by-description">
-<h4><a class="toc-backref" href="#id26">Sorting Notes By Description</a><a class="headerlink" href="#sorting-notes-by-description" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id28">Sorting Notes By Description</a><a class="headerlink" href="#sorting-notes-by-description" title="Permalink to this headline">¶</a></h4>
 <p>Notes are sorted by the index (first column) by default. However, the user can sort notes by description (third column) using the <code class="docutils literal"><span class="pre">-D/--sort-by-description</span></code> flag.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">-</span><span class="n">D</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">sort</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">description</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
@@ -865,7 +889,7 @@ flag includes this.</p>
 with an ellipsis (<code class="docutils literal"><span class="pre">...</span></code>) but the full description is visible in long format.</p>
 </div>
 <div class="section" id="reverse-sorting">
-<h4><a class="toc-backref" href="#id27">Reverse Sorting</a><a class="headerlink" href="#reverse-sorting" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id29">Reverse Sorting</a><a class="headerlink" href="#reverse-sorting" title="Permalink to this headline">¶</a></h4>
 <p>Alternative, sorting can be reversed using the <code class="docutils literal"><span class="pre">-r/--reverse</span></code> flag. This
 applies to both sorting by index or by description.</p>
 <p>Reverse sorting by index:</p>
@@ -916,7 +940,7 @@ applies to both sorting by index or by description.</p>
 </div>
 </div>
 <div class="section" id="viewing-segment-ids-only">
-<h4><a class="toc-backref" href="#id28">Viewing Segment IDs Only</a><a class="headerlink" href="#viewing-segment-ids-only" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id30">Viewing Segment IDs Only</a><a class="headerlink" href="#viewing-segment-ids-only" title="Permalink to this headline">¶</a></h4>
 <p>To view the segment IDs only write:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">-</span><span class="n">I</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 <span class="mi">9764</span>
@@ -952,14 +976,14 @@ applies to both sorting by index or by description.</p>
 </div>
 </div>
 </div>
-<div class="section" id="listing-notes-in-a-single-segment">
-<h3><a class="toc-backref" href="#id29">Listing Notes In A Single Segment</a><a class="headerlink" href="#listing-notes-in-a-single-segment" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="showing-notes-in-one-or-more-segments">
+<h3><a class="toc-backref" href="#id31">Showing Notes In One Or More Segments</a><a class="headerlink" href="#showing-notes-in-one-or-more-segments" title="Permalink to this headline">¶</a></h3>
 <p>Listing notes from EMDB-SFF files with many segments could clutter the screen.
 The user can switch between listing all segments to finding segment IDs of
-interest then displaying one or more segments of interest using the sff
-notes show sub-subcommand. Therefore, this takes an extra parameter
+interest then displaying one or more segments of interest using the <code class="docutils literal"><span class="pre">sff</span>
+<span class="pre">notes</span> <span class="pre">show</span></code> sub-subcommand. Therefore, this takes an extra parameter
 <code class="docutils literal"><span class="pre">-i/--segment-id</span></code> which takes either one ID or a sequence of IDs separated
-only by commas (,).</p>
+only by commas (<code class="docutils literal"><span class="pre">,</span></code>).</p>
 <p>Show one segment:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
@@ -1011,7 +1035,7 @@ listing notes, the user can show notes in long format using the
 </pre></div>
 </div>
 <div class="section" id="viewing-segmentation-metadata-only">
-<h4><a class="toc-backref" href="#id30">Viewing Segmentation Metadata Only</a><a class="headerlink" href="#viewing-segmentation-metadata-only" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id32">Viewing Segmentation Metadata Only</a><a class="headerlink" href="#viewing-segmentation-metadata-only" title="Permalink to this headline">¶</a></h4>
 <p>As specified for <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">list</span></code>, using the <code class="docutils literal"><span class="pre">-H/--header</span></code> flag with
 <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">show</span></code> will display the header (segmentation metadata) only.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">show</span> <span class="o">-</span><span class="n">H</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
@@ -1053,14 +1077,14 @@ listing notes, the user can show notes in long format using the
 </div>
 </div>
 <div class="section" id="modifying-notes">
-<h2><a class="toc-backref" href="#id31">Modifying Notes</a><a class="headerlink" href="#modifying-notes" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id33">Modifying Notes</a><a class="headerlink" href="#modifying-notes" title="Permalink to this headline">¶</a></h2>
 <p>Modifying notes is slightly more complicated than the read-only activities
 of <em>finding</em> and <em>viewing</em> described above. It involves making changes to the
 annotation sections (<em>biologicalAnnotation: description, numberOfInstances,
 externalReferences</em> and <em>complexesAndMacromolecules: complexes</em> and
 <em>macromolecules</em>) of the segments of interest.</p>
 <div class="section" id="temporary-file">
-<h3><a class="toc-backref" href="#id32">Temporary File</a><a class="headerlink" href="#temporary-file" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id34">Temporary File</a><a class="headerlink" href="#temporary-file" title="Permalink to this headline">¶</a></h3>
 <p>In order to avoid destroying the EMDB-SFF file to be modified, <code class="docutils literal"><span class="pre">sfftk</span></code> makes a
 temporary copy to be used throughout the modification process. Once the user
 is satisfied with the annotation the temporary file should be saved.
@@ -1098,7 +1122,7 @@ file determines the output form.</p>
 </div>
 </div>
 <div class="section" id="temporary-file-shorthand">
-<h3><a class="toc-backref" href="#id33">Temporary File Shorthand</a><a class="headerlink" href="#temporary-file-shorthand" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id35">Temporary File Shorthand</a><a class="headerlink" href="#temporary-file-shorthand" title="Permalink to this headline">¶</a></h3>
 <p>Once the user has entered the MODIFY state (by either running one of <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">add</span></code>,
 <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">edit</span></code> or <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">del</span></code>) the user can refer to the temporary
 file using a shorthand specified in the configs.</p>
@@ -1124,26 +1148,35 @@ Indeed this variable specifieds the temporary file shorthand and can
 be modifed as above.</p>
 </div>
 <div class="section" id="modify-sequence">
-<h3><a class="toc-backref" href="#id34">Modify Sequence</a><a class="headerlink" href="#modify-sequence" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id36">Modify Sequence</a><a class="headerlink" href="#modify-sequence" title="Permalink to this headline">¶</a></h3>
 <p>The following diagram illustrates the sequence of steps to be carried out with
 the names of the sub-subcommand next to arrows showing the modification that occurs.</p>
 <img alt="_images/annotating-01.png" src="_images/annotating-01.png" />
-<p>There are four types of annotations that can be made:</p>
+<p>Annotations may be added either to the <em>segmentation</em> (global) or to <em>individual segments</em>.</p>
+<p>At the segmentation level one may add:</p>
+<ul class="simple">
+<li>the <em>name</em> of the segmentation;</li>
+<li>the segmentation software’s:<ul>
+<li><em>name</em></li>
+<li><em>version</em></li>
+<li><em>processingDetails</em></li>
+</ul>
+</li>
+<li>the segmentation’s <em>details</em> (description)</li>
+<li>a list of <em>global external references</em>.</li>
+</ul>
+<p>At the segment level there are four types of annotations that can be made:</p>
 <ul class="simple">
 <li>the segment <em>description</em>;</li>
 <li>the <em>number of instances</em> of the segment;</li>
-<li><em>external references</em> available in public archives<ul>
-<li><em>global external references</em> apply to the segmentation as a whole such as specimen type, scientific name</li>
-<li><em>external references</em> for a single segment apply only to a single segment</li>
-</ul>
-</li>
-<li><em>complexes and macromolecules</em></li>
+<li><em>external references</em> available in public archives</li>
+<li><em>complexes and macromolecules</em> (reserved for internal use)</li>
 </ul>
 </div>
 <div class="section" id="adding-notes">
-<h3><a class="toc-backref" href="#id35">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id37">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="adding-global-notes-segmentation">
-<h4><a class="toc-backref" href="#id36">Adding Global Notes (Segmentation)</a><a class="headerlink" href="#adding-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id38">Adding Global Notes (Segmentation)</a><a class="headerlink" href="#adding-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
 <p>Global notes are added using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">add</span></code> sub-command. The
 following flags modify segmentation metadata and global external
 references:</p>
@@ -1164,7 +1197,8 @@ argument containing the segmentation protocol</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <div class="last deprecated">
-<p><span class="versionmodified">Deprecated since version 0.7.0: </span>The <code class="docutils literal"><span class="pre">-F/--file-path</span></code> option has been used to link to external files holding geometrical data. This will
+<p><span class="versionmodified">Deprecated since version EMDB-SFF: </span>0.7.0
+The <code class="docutils literal"><span class="pre">-F/--file-path</span></code> option has been used to link to external files holding geometrical data. This will
 be deprecated in favour of hosting all geometrical data within the EMDB-SFF file (HDF5 and XML).</p>
 </div>
 </div>
@@ -1176,7 +1210,7 @@ be deprecated in favour of hosting all geometrical data within the EMDB-SFF file
 the MODIFY STATE (explicitly specifying the filename) and after entering the
 MODIFY STATE (using file shorthand e.g. <code class="docutils literal"><span class="pre">&#64;</span></code> used).</p>
 <div class="section" id="adding-a-segmentation-name">
-<h5><a class="toc-backref" href="#id37">Adding A Segmentation Name</a><a class="headerlink" href="#adding-a-segmentation-name" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id39">Adding A Segmentation Name</a><a class="headerlink" href="#adding-a-segmentation-name" title="Permalink to this headline">¶</a></h5>
 <p>To be on the safe side use a quoted string to accommodate spaces. However, for
 single word values no quotes are required.</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># general</span>
@@ -1188,21 +1222,21 @@ single word values no quotes are required.</p>
 </div>
 </div>
 <div class="section" id="adding-the-software-name">
-<h5><a class="toc-backref" href="#id38">Adding The Software Name</a><a class="headerlink" href="#adding-the-software-name" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id40">Adding The Software Name</a><a class="headerlink" href="#adding-the-software-name" title="Permalink to this headline">¶</a></h5>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">S</span> <span class="n">IMOD</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>                 <span class="c1"># not in MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">software</span><span class="o">-</span><span class="n">name</span> <span class="n">Amira</span> <span class="o">@</span>   <span class="c1"># MODIFY state</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-the-software-version">
-<h5><a class="toc-backref" href="#id39">Adding The Software Version</a><a class="headerlink" href="#adding-the-software-version" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id41">Adding The Software Version</a><a class="headerlink" href="#adding-the-software-version" title="Permalink to this headline">¶</a></h5>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">V</span> <span class="n">v5</span><span class="o">.</span><span class="mf">6.3</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>                       <span class="c1"># not in MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">software</span><span class="o">-</span><span class="n">version</span> <span class="n">v0</span><span class="o">.</span><span class="mf">1.1</span> <span class="o">@</span>       <span class="c1"># MODIFY state</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-software-processing-details">
-<h5><a class="toc-backref" href="#id40">Adding Software Processing Details</a><a class="headerlink" href="#adding-software-processing-details" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id42">Adding Software Processing Details</a><a class="headerlink" href="#adding-software-processing-details" title="Permalink to this headline">¶</a></h5>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">P</span> <span class="s2">&quot;Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="c1"># MODIFY state</span>
@@ -1211,14 +1245,14 @@ single word values no quotes are required.</p>
 </div>
 </div>
 <div class="section" id="adding-a-file-path">
-<h5><a class="toc-backref" href="#id41">Adding A File Path</a><a class="headerlink" href="#adding-a-file-path" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id43">Adding A File Path</a><a class="headerlink" href="#adding-a-file-path" title="Permalink to this headline">¶</a></h5>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">F</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">seg</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>         <span class="c1"># not in MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">file</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">seg</span> <span class="o">@</span>        <span class="c1"># MODIFY state</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-segmentation-details">
-<h5><a class="toc-backref" href="#id42">Adding Segmentation Details</a><a class="headerlink" href="#adding-segmentation-details" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id44">Adding Segmentation Details</a><a class="headerlink" href="#adding-segmentation-details" title="Permalink to this headline">¶</a></h5>
 <div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot;Specimen was irradiated with 5 lux of light then imaged vertically&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="c1"># MODIFY state</span>
@@ -1226,51 +1260,12 @@ single word values no quotes are required.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="adding-global-external-references">
-<h5><a class="toc-backref" href="#id43">Adding Global External References</a><a class="headerlink" href="#adding-global-external-references" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="adding-an-external-reference-global-or-local">
+<h5><a class="toc-backref" href="#id45">Adding An External Reference (Global Or Local)</a><a class="headerlink" href="#adding-an-external-reference-global-or-local" title="Permalink to this headline">¶</a></h5>
 <p>The external references flag (<code class="docutils literal"><span class="pre">-E/--external-ref</span></code>) takes three arguments:</p>
 <ul class="simple">
 <li>the <code class="docutils literal"><span class="pre">name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">source</span></code> at which the reference may be found;</li>
-<li>the <code class="docutils literal"><span class="pre">IRI</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">term</span></code> <a class="footnote-reference" href="#id5" id="id2">[2]</a> to the term in its archive;</li>
-<li>the <code class="docutils literal"><span class="pre">accession</span> <span class="pre">code</span></code> for the reference.</li>
-</ul>
-<p>You can use multiple <code class="docutils literal"><span class="pre">-E/--external-ref</span></code> flags at once.</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
-<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">E</span> <span class="n">ncbitaxon</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span> <span class="n">NCBITaxon_559292</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
-<span class="c1"># MODIFY state</span>
-<span class="c1"># more than one reference</span>
-<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">E</span> <span class="n">ncbitaxon</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span> <span class="n">NCBITaxon_559292</span> <span class="o">-</span><span class="n">E</span> <span class="n">pdb</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ebi</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">pdbe</span><span class="o">/</span><span class="n">entry</span><span class="o">/</span><span class="n">pdb</span><span class="o">/</span><span class="mi">3</span><span class="n">ja8</span> <span class="mi">3</span><span class="n">ja8</span> <span class="o">@</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="adding-local-notes-to-a-single-segment">
-<h4><a class="toc-backref" href="#id44">Adding Local Notes (To A Single Segment)</a><a class="headerlink" href="#adding-local-notes-to-a-single-segment" title="Permalink to this headline">¶</a></h4>
-<p>Notes are added using the <strong>sff notes add</strong> sub-subcommand.</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
-</pre></div>
-</div>
-<div class="section" id="adding-a-description">
-<h5><a class="toc-backref" href="#id45">Adding A Description</a><a class="headerlink" href="#adding-a-description" title="Permalink to this headline">¶</a></h5>
-<p>Use the <code class="docutils literal"><span class="pre">-D/--description</span></code> flag to add a description. Multi-word descriptions will need to be quoted.</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">-</span><span class="n">D</span> <span class="s1">&#39;a very good description&#39;</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="mi">9911</span> <span class="o">--</span><span class="n">description</span> <span class="s1">&#39;a very good description&#39;</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="adding-the-number-of-instances">
-<h5><a class="toc-backref" href="#id46">Adding The Number of Instances</a><a class="headerlink" href="#adding-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
-<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="mi">9911</span> <span class="o">--</span><span class="n">number</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">instances</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="adding-an-external-reference">
-<h5><a class="toc-backref" href="#id47">Adding An External Reference</a><a class="headerlink" href="#adding-an-external-reference" title="Permalink to this headline">¶</a></h5>
-<p>The external references flag (<code class="docutils literal"><span class="pre">-E/--external-ref</span></code>) takes three arguments:</p>
-<ul class="simple">
-<li>the <code class="docutils literal"><span class="pre">name</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">source</span></code> at which the reference may be found;</li>
-<li>the <code class="docutils literal"><span class="pre">IRI</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">term</span></code> where more details may be found;</li>
+<li>the <code class="docutils literal"><span class="pre">IRI</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">term</span></code> <a class="footnote-reference" href="#id6" id="id3">[2]</a> where more details may be found;</li>
 <li>the <code class="docutils literal"><span class="pre">accession</span> <span class="pre">code</span></code> for the reference.</li>
 </ul>
 <p>You can use multiple <code class="docutils literal"><span class="pre">-E/--external-ref</span></code> flags at once.</p>
@@ -1285,20 +1280,49 @@ single word values no quotes are required.</p>
 segment. We note down the <em>ontology name</em> (<code class="docutils literal"><span class="pre">go</span></code>), <em>IRI</em>
 (<code class="docutils literal"><span class="pre">http://purl.obolibrary.org/obo/GO_0005739</span></code>) and the <em>short_form</em>
 (<code class="docutils literal"><span class="pre">GO:0005739</span></code>) then use the following command:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">-</span><span class="n">E</span> <span class="n">go</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">GO_0005739</span> <span class="n">GO</span><span class="p">:</span><span class="mi">0005739</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="c1"># global (segmentation) notes</span>
+<span class="c1"># not in MODIFY state</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">E</span> <span class="n">ncbitaxon</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span> <span class="n">NCBITaxon_559292</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<span class="c1"># MODIFY state</span>
+<span class="c1"># more than one reference</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">E</span> <span class="n">ncbitaxon</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">NCBITaxon_559292</span> <span class="n">NCBITaxon_559292</span> <span class="o">-</span><span class="n">E</span> <span class="n">pdb</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ebi</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">pdbe</span><span class="o">/</span><span class="n">entry</span><span class="o">/</span><span class="n">pdb</span><span class="o">/</span><span class="mi">3</span><span class="n">ja8</span> <span class="mi">3</span><span class="n">ja8</span> <span class="o">@</span>
+<span class="c1"># local (per-segment) notes</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">-</span><span class="n">E</span> <span class="n">go</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">GO_0005739</span> <span class="n">GO</span><span class="p">:</span><span class="mi">0005739</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">--</span><span class="n">external</span><span class="o">-</span><span class="n">ref</span> <span class="n">go</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">purl</span><span class="o">.</span><span class="n">obolibrary</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">obo</span><span class="o">/</span><span class="n">GO_0005739</span> <span class="n">GO</span><span class="p">:</span><span class="mi">0005739</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="adding-local-notes-single-segment">
+<h4><a class="toc-backref" href="#id46">Adding Local Notes (Single Segment)</a><a class="headerlink" href="#adding-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
+<p>Notes are added using the <strong>sff notes add</strong> sub-subcommand.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<div class="section" id="adding-a-description">
+<h5><a class="toc-backref" href="#id47">Adding A Description</a><a class="headerlink" href="#adding-a-description" title="Permalink to this headline">¶</a></h5>
+<p>Use the <code class="docutils literal"><span class="pre">-D/--description</span></code> flag to add a description. Multi-word descriptions will need to be quoted.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">-</span><span class="n">D</span> <span class="s1">&#39;a very good description&#39;</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="mi">9911</span> <span class="o">--</span><span class="n">description</span> <span class="s1">&#39;a very good description&#39;</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-the-number-of-instances">
+<h5><a class="toc-backref" href="#id48">Adding The Number of Instances</a><a class="headerlink" href="#adding-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="mi">9911</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">segment</span><span class="o">-</span><span class="nb">id</span> <span class="mi">9911</span> <span class="o">--</span><span class="n">number</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">instances</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="adding-a-complex-internal-use">
-<h5><a class="toc-backref" href="#id48">Adding A Complex (Internal Use)</a><a class="headerlink" href="#adding-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id49">Adding A Complex (Internal Use)</a><a class="headerlink" href="#adding-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">complexes</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-a-macromolecule-internal-use">
-<h5><a class="toc-backref" href="#id49">Adding A Macromolecule (Internal Use)</a><a class="headerlink" href="#adding-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id50">Adding A Macromolecule (Internal Use)</a><a class="headerlink" href="#adding-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">M</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">macromolecules</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
@@ -1307,46 +1331,45 @@ segment. We note down the <em>ontology name</em> (<code class="docutils literal"
 </div>
 </div>
 <div class="section" id="editing-notes">
-<h3><a class="toc-backref" href="#id50">Editing Notes</a><a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id51">Editing Notes</a><a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="editing-global-notes-segmentation">
-<h4><a class="toc-backref" href="#id51">Editing Global Notes (Segmentation)</a><a class="headerlink" href="#editing-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id52">Editing Global Notes (Segmentation)</a><a class="headerlink" href="#editing-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
 <p>Editing global notes is straightforward and works exactly like adding notes
 for all items of metadata except external references. In fact, one can use
 <code class="docutils literal"><span class="pre">add</span></code> and <code class="docutils literal"><span class="pre">edit</span></code> interchangeably for <em>name, software name, software version, software processing details, file path</em> and <em>details</em>.</p>
 <div class="section" id="editing-external-references">
-<h5><a class="toc-backref" href="#id52">Editing External References</a><a class="headerlink" href="#editing-external-references" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id53">Editing External References</a><a class="headerlink" href="#editing-external-references" title="Permalink to this headline">¶</a></h5>
 <p>As we will see shortly, an extra argument is needed to specify the external
 reference to be edited (<code class="docutils literal"><span class="pre">-e/--external-ref-id</span></code>).</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">ref_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">ontology_name</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">iri</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">short_form</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-<p>Specifying <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">edit</span> <span class="pre">-e</span> <span class="pre">0</span> <span class="pre">-E</span> <span class="pre">&lt;ontology_name&gt;</span> <span class="pre">&lt;iri&gt;</span> <span class="pre">&lt;short_form&gt;</span> <span class="pre">file.json</span> <span class="pre">``</span>
-<span class="pre">when</span> <span class="pre">there</span> <span class="pre">are</span> <span class="pre">no</span> <span class="pre">external</span> <span class="pre">references</span> <span class="pre">is</span> <span class="pre">equivalent</span> <span class="pre">to</span>
-<span class="pre">using</span> <span class="pre">``sff</span> <span class="pre">notes</span> <span class="pre">add</span> <span class="pre">-E</span> <span class="pre">&lt;ontology_name&gt;</span> <span class="pre">&lt;iri&gt;</span> <span class="pre">&lt;short_form&gt;</span> <span class="pre">file.json</span></code>.</p>
+<p>Specifying <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">edit</span> <span class="pre">-e</span> <span class="pre">0</span> <span class="pre">-E</span> <span class="pre">&lt;ontology_name&gt;</span> <span class="pre">&lt;iri&gt;</span> <span class="pre">&lt;short_form&gt;</span> <span class="pre">file.json</span></code> when there are no external
+references is equivalent to using <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">add</span> <span class="pre">-E</span> <span class="pre">&lt;ontology_name&gt;</span> <span class="pre">&lt;iri&gt;</span> <span class="pre">&lt;short_form&gt;</span> <span class="pre">file.json</span></code>.</p>
 </div>
 </div>
 <div class="section" id="editing-local-notes-single-segment">
-<h4><a class="toc-backref" href="#id53">Editing Local Notes (Single Segment)</a><a class="headerlink" href="#editing-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id54">Editing Local Notes (Single Segment)</a><a class="headerlink" href="#editing-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
 <p>If a segment in an EMDB-SFF file already contains notes then we can edit
 the notes using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">edit</span></code> sub-subcommand. Because some edit
 options will need to refer to specific entries (e.g. the third external
 reference) extra arguments are required to specify which item is being edited.</p>
 <div class="section" id="editing-a-description">
-<h5><a class="toc-backref" href="#id54">Editing A Description</a><a class="headerlink" href="#editing-a-description" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id55">Editing A Description</a><a class="headerlink" href="#editing-a-description" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ file.json
 sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing a just-added description
 </pre></div>
 </div>
 </div>
 <div class="section" id="editing-the-number-of-instances">
-<h5><a class="toc-backref" href="#id55">Editing The Number of Instances</a><a class="headerlink" href="#editing-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id56">Editing The Number of Instances</a><a class="headerlink" href="#editing-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="o">@</span> <span class="c1"># if editing a just-added value</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="editing-an-external-reference">
-<h5><a class="toc-backref" href="#id56">Editing An External Reference</a><a class="headerlink" href="#editing-an-external-reference" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id57">Editing An External Reference</a><a class="headerlink" href="#editing-an-external-reference" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">ontology</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">obo_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">external</span><span class="o">-</span><span class="n">ref</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">E</span> <span class="o">&lt;</span><span class="n">ontology</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">obo_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="c1"># if editing a just-added description</span>
@@ -1355,7 +1378,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 </div>
 </div>
 <div class="section" id="editing-a-complex-internal-use">
-<h5><a class="toc-backref" href="#id57">Editing A Complex (Internal Use)</a><a class="headerlink" href="#editing-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id58">Editing A Complex (Internal Use)</a><a class="headerlink" href="#editing-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">comp_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="nb">complex</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">comp_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">comp1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">comp2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">compN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
@@ -1363,7 +1386,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 <p>If only one complex is specified then the complex at complex_id will be replaced. However, if more than one is specified then complex_id will be replaced and the new complexes will bump down all present complexes.</p>
 </div>
 <div class="section" id="editing-a-macromolecule-internal-use">
-<h5><a class="toc-backref" href="#id58">Editing A Macromolecule (Internal Use)</a><a class="headerlink" href="#editing-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id59">Editing A Macromolecule (Internal Use)</a><a class="headerlink" href="#editing-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">m</span> <span class="o">&lt;</span><span class="n">macr_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">M</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">edit</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">macromolecule</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">macr_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">M</span> <span class="o">&lt;</span><span class="n">macr1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macr2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">macrN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
@@ -1372,7 +1395,7 @@ sff notes edit -i &lt;segment_id&gt; -D ‘&lt;description&gt;’ @ # if editing
 </div>
 </div>
 <div class="section" id="copying-notes">
-<h3><a class="toc-backref" href="#id59">Copying Notes</a><a class="headerlink" href="#copying-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id60">Copying Notes</a><a class="headerlink" href="#copying-notes" title="Permalink to this headline">¶</a></h3>
 <p>Users may copy notes using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">copy</span></code> command.</p>
 <p>Important points to remember:</p>
 <ul>
@@ -1436,49 +1459,49 @@ using the following sequence:</p>
 </pre></div>
 </div>
 <div class="section" id="source-of-notes-one-or-more-segments">
-<h4><a class="toc-backref" href="#id60">Source of Notes: One or More Segments</a><a class="headerlink" href="#source-of-notes-one-or-more-segments" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id61">Source of Notes: One or More Segments</a><a class="headerlink" href="#source-of-notes-one-or-more-segments" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="copy-notes-to-another">
-<h5><a class="toc-backref" href="#id61">Copy Notes To Another</a><a class="headerlink" href="#copy-notes-to-another" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id62">Copy Notes To Another</a><a class="headerlink" href="#copy-notes-to-another" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">source_segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">dest_segment_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="copy-notes-to-multiple-segments">
-<h5><a class="toc-backref" href="#id62">Copy Notes To Multiple Segments</a><a class="headerlink" href="#copy-notes-to-multiple-segments" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id63">Copy Notes To Multiple Segments</a><a class="headerlink" href="#copy-notes-to-multiple-segments" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">source_segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">id1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">id2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">idN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="copy-notes-to-all-other-segments">
-<h5><a class="toc-backref" href="#id63">Copy Notes To All Other Segments</a><a class="headerlink" href="#copy-notes-to-all-other-segments" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id64">Copy Notes To All Other Segments</a><a class="headerlink" href="#copy-notes-to-all-other-segments" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">source_segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="nb">all</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 <p>The source segment will be excluded in the destination segments.</p>
 </div>
 <div class="section" id="copy-notes-to-global-external-references">
-<h5><a class="toc-backref" href="#id64">Copy Notes To Global External References</a><a class="headerlink" href="#copy-notes-to-global-external-references" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id65">Copy Notes To Global External References</a><a class="headerlink" href="#copy-notes-to-global-external-references" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">source_segment_id</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="k">global</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="source-of-notes-global-external-references">
-<h5><a class="toc-backref" href="#id65">Source of Notes: Global External References</a><a class="headerlink" href="#source-of-notes-global-external-references" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id66">Source of Notes: Global External References</a><a class="headerlink" href="#source-of-notes-global-external-references" title="Permalink to this headline">¶</a></h5>
 </div>
 <div class="section" id="copy-notes-to-one-segment">
-<h5><a class="toc-backref" href="#id66">Copy Notes To One Segment</a><a class="headerlink" href="#copy-notes-to-one-segment" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id67">Copy Notes To One Segment</a><a class="headerlink" href="#copy-notes-to-one-segment" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="k">global</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id3">
-<h5><a class="toc-backref" href="#id67">Copy Notes To Multiple Segments</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="id4">
+<h5><a class="toc-backref" href="#id68">Copy Notes To Multiple Segments</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="k">global</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">id1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">id2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">idN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="copy-notes-to-all-segments">
-<h5><a class="toc-backref" href="#id68">Copy Notes To All Segments</a><a class="headerlink" href="#copy-notes-to-all-segments" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id69">Copy Notes To All Segments</a><a class="headerlink" href="#copy-notes-to-all-segments" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">copy</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="k">global</span> <span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="nb">all</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -1486,7 +1509,7 @@ using the following sequence:</p>
 </div>
 </div>
 <div class="section" id="clearing-notes">
-<h3><a class="toc-backref" href="#id69">Clearing Notes</a><a class="headerlink" href="#clearing-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id70">Clearing Notes</a><a class="headerlink" href="#clearing-notes" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">clear</span></code> utility removes all notes from one or more segments or clears global external references.
 As always we can view the full list of options:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span>sff notes clear
@@ -1515,35 +1538,35 @@ optional arguments:
   --from-all-segments   clear notes from all segments
 </pre></div>
 </div>
-<div class="section" id="segments">
-<h4><a class="toc-backref" href="#id70">Segments</a><a class="headerlink" href="#segments" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="clearing-local-notes-segments">
+<h4><a class="toc-backref" href="#id71">Clearing Local Notes (Segments)</a><a class="headerlink" href="#clearing-local-notes-segments" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="one-segment">
-<h5><a class="toc-backref" href="#id71">One Segment</a><a class="headerlink" href="#one-segment" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id72">One Segment</a><a class="headerlink" href="#one-segment" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">clear</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="multiple-segments">
-<h5><a class="toc-backref" href="#id72">Multiple Segments</a><a class="headerlink" href="#multiple-segments" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id73">Multiple Segments</a><a class="headerlink" href="#multiple-segments" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">clear</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">id1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">id2</span><span class="o">&gt;</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="o">&lt;</span><span class="n">idN</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="all-segments">
-<h5><a class="toc-backref" href="#id73">All Segments</a><a class="headerlink" href="#all-segments" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id74">All Segments</a><a class="headerlink" href="#all-segments" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">clear</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">segments</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="global-external-references">
-<h4><a class="toc-backref" href="#id74">Global External References</a><a class="headerlink" href="#global-external-references" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="clearing-global-external-references">
+<h4><a class="toc-backref" href="#id75">Clearing Global External References</a><a class="headerlink" href="#clearing-global-external-references" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">clear</span> <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="k">global</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="all-notes">
-<h4><a class="toc-backref" href="#id75">All Notes</a><a class="headerlink" href="#all-notes" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="clearing-all-notes">
+<h4><a class="toc-backref" href="#id76">Clearing All Notes</a><a class="headerlink" href="#clearing-all-notes" title="Permalink to this headline">¶</a></h4>
 <p>This command clears both global and segment-level notes. Use it with care.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">clear</span> <span class="o">--</span><span class="nb">all</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
@@ -1559,7 +1582,7 @@ minimal loss of annotations.</p>
 </div>
 </div>
 <div class="section" id="merging-notes">
-<h3><a class="toc-backref" href="#id76">Merging Notes</a><a class="headerlink" href="#merging-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id77">Merging Notes</a><a class="headerlink" href="#merging-notes" title="Permalink to this headline">¶</a></h3>
 <p>Notes can be manually merged from two EMDB-SFF files using <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">merge</span></code>.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">merge</span>
 <span class="n">usage</span><span class="p">:</span> <span class="n">sff</span> <span class="n">notes</span> <span class="n">merge</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">CONFIG_PATH</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="o">--</span><span class="n">source</span> <span class="n">SOURCE</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span>
@@ -1593,7 +1616,7 @@ cardinality and value).</p>
 <p>To merge notes from one EMDB-SFF file to another the user must specify the source file using the <code class="docutils literal"><span class="pre">--source</span></code>
 argument. Any other file (a positional argument) will be treated as the destination.</p>
 <div class="section" id="explicit-output">
-<h4><a class="toc-backref" href="#id77">Explicit Output</a><a class="headerlink" href="#explicit-output" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id78">Explicit Output</a><a class="headerlink" href="#explicit-output" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">merge</span> <span class="o">--</span><span class="n">source</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
 </pre></div>
 </div>
@@ -1601,7 +1624,7 @@ argument. Any other file (a positional argument) will be treated as the destinat
 defined by the extension.</p>
 </div>
 <div class="section" id="implicit-output">
-<h4><a class="toc-backref" href="#id78">Implicit Output</a><a class="headerlink" href="#implicit-output" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id79">Implicit Output</a><a class="headerlink" href="#implicit-output" title="Permalink to this headline">¶</a></h4>
 <p>In this case, the destination file is overwritten.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="n">merge</span> <span class="o">--</span><span class="n">source</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
 </pre></div>
@@ -1610,14 +1633,14 @@ defined by the extension.</p>
 </div>
 </div>
 <div class="section" id="deleting-notes">
-<h3><a class="toc-backref" href="#id79">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id80">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
 <p>Notes may be deleted using the <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">del</span></code> sub-subcommand.</p>
 <p>Unlike when adding and editing, delete options take no arguments except when
 referring to listed metadata (external references, complexes and macromolecules).</p>
 <div class="section" id="deleting-global-notes-segmentation">
-<h4><a class="toc-backref" href="#id80">Deleting Global Notes (Segmentation)</a><a class="headerlink" href="#deleting-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id81">Deleting Global Notes (Segmentation)</a><a class="headerlink" href="#deleting-global-notes-segmentation" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="deleting-a-segmentation-name">
-<h5><a class="toc-backref" href="#id81">Deleting A Segmentation Name</a><a class="headerlink" href="#deleting-a-segmentation-name" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id82">Deleting A Segmentation Name</a><a class="headerlink" href="#deleting-a-segmentation-name" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">N</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">N</span> <span class="o">@</span>
 </pre></div>
@@ -1638,42 +1661,42 @@ referring to listed metadata (external references, complexes and macromolecules)
 </div>
 </div>
 <div class="section" id="deleting-the-software-name">
-<h5><a class="toc-backref" href="#id82">Deleting The Software Name</a><a class="headerlink" href="#deleting-the-software-name" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id83">Deleting The Software Name</a><a class="headerlink" href="#deleting-the-software-name" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">S</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">S</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-the-software-version">
-<h5><a class="toc-backref" href="#id83">Deleting The Software Version</a><a class="headerlink" href="#deleting-the-software-version" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id84">Deleting The Software Version</a><a class="headerlink" href="#deleting-the-software-version" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">V</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">V</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-the-software-processing-details">
-<h5><a class="toc-backref" href="#id84">Deleting The Software Processing Details</a><a class="headerlink" href="#deleting-the-software-processing-details" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id85">Deleting The Software Processing Details</a><a class="headerlink" href="#deleting-the-software-processing-details" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">P</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">P</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-the-filepath">
-<h5><a class="toc-backref" href="#id85">Deleting the Filepath</a><a class="headerlink" href="#deleting-the-filepath" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id86">Deleting the Filepath</a><a class="headerlink" href="#deleting-the-filepath" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">F</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">F</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-details">
-<h5><a class="toc-backref" href="#id86">Deleting Details</a><a class="headerlink" href="#deleting-details" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id87">Deleting Details</a><a class="headerlink" href="#deleting-details" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">d</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">d</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-external-references">
-<h5><a class="toc-backref" href="#id87">Deleting External References</a><a class="headerlink" href="#deleting-external-references" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id88">Deleting External References</a><a class="headerlink" href="#deleting-external-references" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="o">@</span>
 </pre></div>
@@ -1681,35 +1704,35 @@ referring to listed metadata (external references, complexes and macromolecules)
 </div>
 </div>
 <div class="section" id="deleting-local-notes-single-segment">
-<h4><a class="toc-backref" href="#id88">Deleting Local Notes (Single Segment)</a><a class="headerlink" href="#deleting-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id89">Deleting Local Notes (Single Segment)</a><a class="headerlink" href="#deleting-local-notes-single-segment" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="deleting-a-description">
-<h5><a class="toc-backref" href="#id89">Deleting A Description</a><a class="headerlink" href="#deleting-a-description" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id90">Deleting A Description</a><a class="headerlink" href="#deleting-a-description" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">D</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">D</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-the-number-of-instances">
-<h5><a class="toc-backref" href="#id90">Deleting The Number Of Instances</a><a class="headerlink" href="#deleting-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id91">Deleting The Number Of Instances</a><a class="headerlink" href="#deleting-the-number-of-instances" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">n</span> <span class="o">@</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-an-external-reference">
-<h5><a class="toc-backref" href="#id91">Deleting An External Reference</a><a class="headerlink" href="#deleting-an-external-reference" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id92">Deleting An External Reference</a><a class="headerlink" href="#deleting-an-external-reference" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">e</span> <span class="o">&lt;</span><span class="n">extref_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-a-complex-internal-use">
-<h5><a class="toc-backref" href="#id92">Deleting A Complex (Internal Use)</a><a class="headerlink" href="#deleting-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id93">Deleting A Complex (Internal Use)</a><a class="headerlink" href="#deleting-a-complex-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">comp_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-a-macromolecule-internal-use">
-<h5><a class="toc-backref" href="#id93">Deleting A Macromolecule (Internal Use)</a><a class="headerlink" href="#deleting-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id94">Deleting A Macromolecule (Internal Use)</a><a class="headerlink" href="#deleting-a-macromolecule-internal-use" title="Permalink to this headline">¶</a></h5>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="k">del</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">m</span> <span class="o">&lt;</span><span class="n">macr_id</span><span class="o">&gt;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -1717,7 +1740,7 @@ referring to listed metadata (external references, complexes and macromolecules)
 </div>
 </div>
 <div class="section" id="saving-notes">
-<h3><a class="toc-backref" href="#id94">Saving Notes</a><a class="headerlink" href="#saving-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id95">Saving Notes</a><a class="headerlink" href="#saving-notes" title="Permalink to this headline">¶</a></h3>
 <p>It is important to periodically save notes. Running <code class="docutils literal"><span class="pre">sff</span> <span class="pre">notes</span> <span class="pre">save</span> <span class="pre">save_to_file.json</span></code>
 overwrites all notes from the temporary file into the destination file.</p>
 <div class="admonition note">
@@ -1734,7 +1757,7 @@ file was a copy of the original file.</p>
 <p>Note that the file specified must exist and correspond to the annotated EMDB-SFF file.</p>
 </div>
 <div class="section" id="trashing-notes">
-<h3><a class="toc-backref" href="#id95">Trashing Notes</a><a class="headerlink" href="#trashing-notes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id96">Trashing Notes</a><a class="headerlink" href="#trashing-notes" title="Permalink to this headline">¶</a></h3>
 <p>Only one EMDB-SFF file per directory at a time may have its notes modified.
 This is because only one temporary file is created and an attempt to modify
 another file will raise a warning.</p>
@@ -1751,7 +1774,7 @@ directory to a VIEW STATE.</p>
 </div>
 </div>
 <div class="section" id="configuration-settings">
-<h2><a class="toc-backref" href="#id96">Configuration Settings</a><a class="headerlink" href="#configuration-settings" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id97">Configuration Settings</a><a class="headerlink" href="#configuration-settings" title="Permalink to this headline">¶</a></h2>
 <p>There are two main parameters that control the annotation process:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">__TEMP_FILE</span></code> sets the path and name of the file to be used as a
@@ -1765,16 +1788,16 @@ file. It can only be used in the MODIFY STATE. The default value is <code class=
 The use can use it to refer to the segmentation file instead of typing
 the full file path and name.</li>
 </ul>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>A unique identifier for a term under the Open Biology Ontologies consortium’s OBO Foundry (see <a class="reference external" href="http://www.obofoundry.org/id-policy.html">http://www.obofoundry.org/id-policy.html</a> to learn more about obo_id). For example, in the Gene Ontology (GO) the term <em>positive regulation of release of cytochrome c from mitochondria</em> has the OBO ID <em>GO:0090200.</em></td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
+<table class="docutils footnote" frame="void" id="id6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>An <em>internationalised resource identifier</em> (IRI) is a type of link to a resource that may include international characters e.g. Chinese.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>An <em>internationalised resource identifier</em> (IRI) is a type of link to a resource that may include international characters e.g. Chinese.</td></tr>
 </tbody>
 </table>
 </div>
@@ -1824,7 +1847,7 @@ the full file path and name.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.1.dev3',
+            VERSION:'0.2.1.dev4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

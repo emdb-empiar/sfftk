@@ -77,7 +77,7 @@ positional argument) and an optional keyword argument ``sff_type`` denoting the 
 example, the ``software`` attribute will be of class :py:class:`SFFSoftware`.
 
 """
-
+from __future__ import division, print_function
 import re
 import sys
 from warnings import warn
@@ -1192,7 +1192,7 @@ class SFFContourPoint(SFFType):
 
     .. warning::
 
-        .. deprecated:: 0.7.0
+        .. deprecated:: EMDB-SFF 0.7.0
             The only valid segment representations are mesh (:py:class:`SFFMesh`), shape (subclasses of :py:class:`SFFShape`), or 3D volume (:py:class:`SFFThreeDVolume`)
     """
     gds_type = sff.floatVectorType
@@ -1226,7 +1226,7 @@ class SFFContour(SFFType):
 
     .. warning::
 
-        .. deprecated:: 0.7.0
+        .. deprecated:: EMDB-SFF 0.7.0
             The only valid segment representations are mesh (:py:class:`SFFMesh`), shape (subclasses of :py:class:`SFFShape`), or 3D volume (:py:class:`SFFThreeDVolume`)
     """
     gds_type = sff.contourType
@@ -1300,7 +1300,7 @@ class SFFContourList(SFFType):
 
     .. warning::
 
-        .. deprecated:: 0.7.0
+        .. deprecated:: EMDB-SFF 0.7.0
             The only valid segment representations are mesh (:py:class:`SFFMesh`), shape (subclasses of :py:class:`SFFShape`), or 3D volume (:py:class:`SFFThreeDVolume`)
     """
     gds_type = sff.contourListType
@@ -1351,6 +1351,7 @@ class SFFContourList(SFFType):
         assert isinstance(parent_group, h5py.Group)
         # /sff/segments/1/contours
         group = parent_group.create_group(name)
+        # todo: get rid of contours everywhere
         for contour in self.contours:
             # /sff/segments/1/contours/0 - contour 0
             h_contour = group.create_group("{}".format(contour.id))
@@ -2009,7 +2010,7 @@ class SFFCanonicalEulerAngles(SFFTransform):
 
     .. warning::
 
-        .. deprecated:: 0.7.0
+        .. deprecated:: EMDB-SFF 0.7.0
             All matrices should be defined using the :py:class:`SFFTransformationMatrix` class making the appropriate conversion.
     """
     gds_type = sff.canonicalEulerAnglesType
@@ -2040,7 +2041,7 @@ class SFFViewVectorRotation(SFFTransform):
 
     .. warning::
 
-        .. deprecated:: 0.7.0
+        .. deprecated:: EMDB-SFF 0.7.0
             All matrices should be defined using the :py:class:`SFFTransformationMatrix` class making the appropriate conversion.
     """
     gds_type = sff.viewVectorRotationType

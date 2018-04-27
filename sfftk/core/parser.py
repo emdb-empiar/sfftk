@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # parser.py
 """Parses command-line options"""
-
+from __future__ import print_function
 import argparse
 import os
 import sys
@@ -761,7 +761,7 @@ add_args(trash_notes_parser, shipped_configs)
 
 # get the full list of tools from the Parser object
 # tool_list = Parser._actions[1].choices.keys()
-# print tool_list
+# print(tool_list)
 tool_list = ['core', 'formats', 'notes', 'readers', 'schema', 'main']
 
 # tests
@@ -888,9 +888,14 @@ def parse_args(_args):
                 try:
                     assert tool in tool_list
                 except AssertionError:
-                    print >> sys.stderr, "Unknown tool: {}".format(tool)
-                    print >> sys.stderr, "Available tools for test: {}".format(
-                        ", ".join(tool_list))
+                    print(
+                        "Unknown tool: {}".format(tool),
+                        file=sys.stderr,
+                    )
+                    print(
+                        "Available tools for test: {}".format(", ".join(tool_list)),
+                        file=sys.stderr
+                    )
         if args.verbosity:
             try:
                 assert args.verbosity in range(4)

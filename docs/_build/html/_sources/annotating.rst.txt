@@ -139,8 +139,44 @@ The search results are displayed as a table with the following columns:
 
 -  *type* can have one of the following values: *class, property, individual, ontology*
 
+.. _specifying-the-resource-to-search:
+
+Specifying The Resource To Search
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default all searches are carried out against the `EBI Ontology Lookup Service (OLS) <https://www.ebi.ac.uk/ols/index>`_.
+
+In addition to the OLS users can also search the follow resources for accessions to use for annotation:
+
+-   `The Electron Microscopy Data Bank (EMDB) <http://www.emdatabank.org/>`_;
+
+-   `The Protein Data Bank (PDB) <https://www.wwpdb.org/>`_;
+
+-   `The Universal Protein Resource (UniProt) <http://www.uniprot.org/>`_
+
+The ``-R/--resource`` flag is used to specify the desired resource to search, which takes a string arguments as follows:
+
+-   ``ols`` (default) will search EBI OLS;
+
+-   ``emdb`` will search the EMDB;
+
+-   ``pdb`` will search PDB;
+
+-   ``uniprot`` will search UniProt.
+
+
+For example, to search for *mitochondria* in EMDB the user would type one of the following:
+
+.. code-block:: bash
+
+    sff notes search -R emdb "mitochodria"
+    sff notes search --resource emdb "mitochondria"
+
+
 Specifying The Ontology To Search
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This only applies to searches against the `EBI Ontology Lookup Service <https://www.ebi.ac.uk/ols/index>`_ (the default resource to search or ``-R/--resource ols``).
 
 .. code:: bash
 
@@ -653,15 +689,15 @@ which are sorted in ascending order. These can be reversed using the
 	9764
 	
 
-Listing Notes In A Single Segment
----------------------------------
+Showing Notes In One Or More Segments
+-------------------------------------
 
 Listing notes from EMDB-SFF files with many segments could clutter the screen. 
 The user can switch between listing all segments to finding segment IDs of 
-interest then displaying one or more segments of interest using the sff 
-notes show sub-subcommand. Therefore, this takes an extra parameter 
+interest then displaying one or more segments of interest using the ``sff
+notes show`` sub-subcommand. Therefore, this takes an extra parameter
 ``-i/--segment-id`` which takes either one ID or a sequence of IDs separated 
-only by commas (,).
+only by commas (``,``).
 
 Show one segment:
 
@@ -866,7 +902,25 @@ the names of the sub-subcommand next to arrows showing the modification that occ
 
 .. image:: annotating-01.png
 
-There are four types of annotations that can be made:
+Annotations may be added either to the *segmentation* (global) or to *individual segments*.
+
+At the segmentation level one may add:
+
+-   the *name* of the segmentation;
+
+-   the segmentation software's:
+
+    -   *name*
+
+    -   *version*
+
+    -   *processingDetails*
+
+-   the segmentation's *details* (description)
+
+-   a list of *global external references*.
+
+At the segment level there are four types of annotations that can be made:
 
 -  the segment *description*;
 
@@ -874,11 +928,7 @@ There are four types of annotations that can be made:
 
 -  *external references* available in public archives
 
-   -  *global external references* apply to the segmentation as a whole such as specimen type, scientific name
-
-   -  *external references* for a single segment apply only to a single segment
-
--  *complexes and macromolecules*
+-  *complexes and macromolecules* (reserved for internal use)
 
 Adding Notes
 ------------
@@ -907,7 +957,7 @@ references:
 
 .. warning::
 
-    .. deprecated:: 0.7.0
+    .. deprecated:: EMDB-SFF 0.7.0
         The ``-F/--file-path`` option has been used to link to external files holding geometrical data. This will
         be deprecated in favour of hosting all geometrical data within the EMDB-SFF file (HDF5 and XML).
 
@@ -974,28 +1024,49 @@ Adding Segmentation Details
 	# MODIFY state
 	sff notes add --description "All imaging was done at 17 K" @
 	
-
-Adding Global External References
+Adding An External Reference (Global Or Local)
 ``````````````````````````````````````````````````````
+
 The external references flag (``-E/--external-ref``) takes three arguments:
 
 - the ``name of the source`` at which the reference may be found;
 
-- the ``IRI to the term`` [2]_ to the term in its archive;
+- the ``IRI to the term`` [2]_ where more details may be found;
 
 - the ``accession code`` for the reference.
 
-You can use multiple ``-E/--external-ref`` flags at once. 
+You can use multiple ``-E/--external-ref`` flags at once.
 
-.. code::
+All of these may be obtained either from the OLS website of using the output of `sff notes search ‘<term>’ <#finding-notes>`__.
 
-	# not in MODIFY state
-	sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 file.json
-	# MODIFY state
-	# more than one reference
-	sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
+For example, suppose we ran
 
-Adding Local Notes (To A Single Segment)
+.. code:: bash
+
+	sff notes search 'mitochondria'
+
+and obtain the following results:
+
+.. image:: search-results-01.png
+
+and are interested in adding the second result as an external reference to a
+segment. We note down the *ontology name* (``go``), *IRI*
+(``http://purl.obolibrary.org/obo/GO_0005739``) and the *short_form*
+(``GO:0005739``) then use the following command:
+
+.. code:: bash
+
+    # global (segmentation) notes
+    # not in MODIFY state
+    sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 file.json
+    # MODIFY state
+    # more than one reference
+    sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
+    # local (per-segment) notes
+    sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
+    sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
+
+Adding Local Notes (Single Segment)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Notes are added using the **sff notes add** sub-subcommand.
@@ -1022,40 +1093,6 @@ Adding The Number of Instances
     sff notes add -i 9911 -n <int> file.json
     sff notes add --segment-id 9911 --number-of-instances <int> file.json
 
-Adding An External Reference
-``````````````````````````````````````````````````````
-
-The external references flag (``-E/--external-ref``) takes three arguments:
-
-- the ``name of the source`` at which the reference may be found;
-
-- the ``IRI to the term`` where more details may be found;
-
-- the ``accession code`` for the reference.
-
-You can use multiple ``-E/--external-ref`` flags at once. 
-
-All of these may be obtained either from the OLS website of using the output of `sff notes search ‘<term>’ <#finding-notes>`__.
-
-For example, suppose we ran
-
-.. code:: bash
-
-	sff notes search 'mitochondria'
-	
-and obtain the following results: 
-
-.. image:: search-results-01.png
-
-and are interested in adding the second result as an external reference to a 
-segment. We note down the *ontology name* (``go``), *IRI* 
-(``http://purl.obolibrary.org/obo/GO_0005739``) and the *short_form* 
-(``GO:0005739``) then use the following command:
-
-.. code:: bash
-
-    sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
-    sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
 
 Adding A Complex (Internal Use)
 ``````````````````````````````````````````````````````
@@ -1093,9 +1130,8 @@ reference to be edited (``-e/--external-ref-id``).
 
 	sff notes edit -e <ref_id> -E <ontology_name> <iri> <short_form> file.json
 	
-Specifying ``sff notes edit -e 0 -E <ontology_name> <iri> <short_form> file.json `` 
-when there are no external references is equivalent to
-using ``sff notes add -E <ontology_name> <iri> <short_form> file.json``.
+Specifying ``sff notes edit -e 0 -E <ontology_name> <iri> <short_form> file.json`` when there are no external
+references is equivalent to using ``sff notes add -E <ontology_name> <iri> <short_form> file.json``.
 
 Editing Local Notes (Single Segment)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1312,8 +1348,8 @@ As always we can view the full list of options:
       --from-all-segments   clear notes from all segments
 
 
-Segments
-~~~~~~~~
+Clearing Local Notes (Segments)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One Segment
 ```````````
@@ -1336,15 +1372,15 @@ All Segments
 
     sff notes clear --from-all-segments file.json
 
-Global External References
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Clearing Global External References
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: bash
 
     sff notes clear --from-global file.json
 
-All Notes
-~~~~~~~~~
+Clearing All Notes
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This command clears both global and segment-level notes. Use it with care.
 

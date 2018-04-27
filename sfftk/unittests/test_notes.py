@@ -175,7 +175,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
         self.assertEqual(resource.get_url(), url)
 
 
-class TestNotesFindSearchQuery(unittest.TestCase):
+class TestNotesFindSearchResource(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')

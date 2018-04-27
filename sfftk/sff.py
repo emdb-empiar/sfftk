@@ -6,6 +6,7 @@ sfftk.sff -- Toolkit to handle operations for EMDB-SFF files
 
 sfftk.sff is the main entry point for performing command-line operations.
 """
+from __future__ import division, print_function
 import os
 import re
 import shlex
@@ -107,7 +108,7 @@ def handle_notes_search(args, configs):
     # search
     results = resource.search()
     # view
-    print results
+    print(results)
     return os.EX_OK
 
 
@@ -354,62 +355,62 @@ def handle_view(args, configs):  # @UnusedVariable
     """
     if re.match(r'.*\.sff$', args.from_file, re.IGNORECASE):
         seg = schema.SFFSegmentation(args.from_file)
-        print "*" * 50
-        print "EMDB-SFF Segmentation version {}".format(seg.version)
-        print "Segmentation name: {}".format(seg.name)
-        print "Format: XML"
-        print "Primary descriptor: {}".format(seg.primaryDescriptor)
-        print "No. of segments: {}".format(len(seg.segments))
-        print "*" * 50
+        print("*" * 50)
+        print("EMDB-SFF Segmentation version {}".format(seg.version))
+        print("Segmentation name: {}".format(seg.name))
+        print("Format: XML")
+        print("Primary descriptor: {}".format(seg.primaryDescriptor))
+        print("No. of segments: {}".format(len(seg.segments)))
+        print("*" * 50)
     elif re.match(r'.*\.hff$', args.from_file, re.IGNORECASE):
         seg = schema.SFFSegmentation(args.from_file)
-        print "*" * 50
-        print "EMDB-SFF Segmentation version {}".format(seg.version)
-        print "Segmentation name: {}".format(seg.name)
-        print "Format: HDF5"
-        print "Primary descriptor: {}".format(seg.primaryDescriptor)
-        print "No. of segments: {}".format(len(seg.segments))
-        print "*" * 50
+        print("*" * 50)
+        print("EMDB-SFF Segmentation version {}".format(seg.version))
+        print("Segmentation name: {}".format(seg.name))
+        print("Format: HDF5")
+        print("Primary descriptor: {}".format(seg.primaryDescriptor))
+        print("No. of segments: {}".format(len(seg.segments)))
+        print("*" * 50)
     elif re.match(r'.*\.json$', args.from_file, re.IGNORECASE):
         seg = schema.SFFSegmentation(args.from_file)
-        print "*" * 50
-        print "EMDB-SFF Segmentation version {}".format(seg.version)
-        print "Segmentation name: {}".format(seg.name)
-        print "Format: JSON"
-        print "Primary descriptor: {}".format(seg.primaryDescriptor)
-        print "No. of segments: {}".format(len(seg.segments))
-        print "*" * 50
+        print("*" * 50)
+        print("EMDB-SFF Segmentation version {}".format(seg.version))
+        print("Segmentation name: {}".format(seg.name))
+        print("Format: JSON")
+        print("Primary descriptor: {}".format(seg.primaryDescriptor))
+        print("No. of segments: {}".format(len(seg.segments)))
+        print("*" * 50)
     elif re.match(r'.*\.mod$', args.from_file, re.IGNORECASE):
         from .formats.mod import IMODSegmentation
         seg = IMODSegmentation(args.from_file)
-        print "*" * 50
-        print "IMOD Segmentation version {}".format(seg.header.version)
-        print "Segmentation name: {}".format(seg.header.name)
-        print "Format: IMOD"
-        print "Primary descriptor: {}".format('contours')
+        print("*" * 50)
+        print("IMOD Segmentation version {}".format(seg.header.version))
+        print("Segmentation name: {}".format(seg.header.name))
+        print("Format: IMOD")
+        print("Primary descriptor: {}".format('contours'))
         mesh_count = 0
         for objt in seg.header.objts.itervalues():
             mesh_count += objt.meshsize
         if mesh_count > 0:
-            print "Auxiliary descriptors: meshes"
-        print "Pixel size: {}".format(seg.header.pixsize)
-        print "Pixel units: {}".format(seg.header.units)
-        print "xmax, ymax, zmax: {}".format((seg.header.xmax, seg.header.ymax, seg.header.zmax))
-        print "No. of segments: {}".format(len(seg.segments))
-        print "*" * 50
+            print("Auxiliary descriptors: meshes")
+        print("Pixel size: {}".format(seg.header.pixsize))
+        print("Pixel units: {}".format(seg.header.units))
+        print("xmax, ymax, zmax: {}".format((seg.header.xmax, seg.header.ymax, seg.header.zmax)))
+        print("No. of segments: {}".format(len(seg.segments)))
+        print("*" * 50)
         if args.show_chunks:
             from .readers import modreader
             modreader.show_chunks(args.from_file)
     elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE):
         from .formats.map import MapSegmentation
         seg = MapSegmentation(args.from_file)
-        print "*" * 50
-        print "CCP4/MAP Mask Segmentation"
-        print "*" * 50
-        print str(seg._segmentation)
-        print "*" * 50
+        print("*" * 50)
+        print("CCP4/MAP Mask Segmentation")
+        print("*" * 50)
+        print(str(seg._segmentation))
+        print("*" * 50)
     else:
-        print >> sys.stderr, "Not implemented view for files of type .{}".format(args.from_file.split('.')[-1])
+        print("Not implemented view for files of type .{}".format(args.from_file.split('.')[-1]), file=sys.stderr)
     return 0
 
 

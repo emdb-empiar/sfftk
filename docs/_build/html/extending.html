@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Extending sfftk &mdash; sfftk 0.2.1.dev3 documentation</title>
+  <title>Extending sfftk &mdash; sfftk 0.2.1.dev4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk 0.2.1.dev3 documentation" href="index.html"/>
+    <link rel="top" title="sfftk 0.2.1.dev4 documentation" href="index.html"/>
         <link rel="next" title="sfftk packages" href="sfftk.html"/>
         <link rel="prev" title="Developing with sfftk" href="developing.html"/> 
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.1.dev3
+                0.2
               </div>
             
           
@@ -102,6 +102,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#step-ii-create-a-format-adapter">Step II: Create a format adapter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#step-iii-add-test-data">Step III: Add test data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#step-iv-write-tests">Step IV: Write tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-a-search-resource">Adding A Search Resource</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-i-add-the-resource-description">Step I: Add the resource description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-ii-add-a-handler-to-return-the-correct-url">Step II: Add a handler to return the correct URL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iii-define-how-the-table-is-formated">Step III: Define how the table is formated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iv-write-tests-and-test">Step IV: Write tests and test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iv-write-documentation-for-the-new-resource">Step IV: Write documentation for the new resource</a></li>
 </ul>
 </li>
 </ul>
@@ -183,6 +191,14 @@
 <li><a class="reference internal" href="#step-iv-write-tests" id="id6">Step IV: Write tests</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#adding-a-search-resource" id="id7">Adding A Search Resource</a><ul>
+<li><a class="reference internal" href="#step-i-add-the-resource-description" id="id8">Step I: Add the resource description</a></li>
+<li><a class="reference internal" href="#step-ii-add-a-handler-to-return-the-correct-url" id="id9">Step II: Add a handler to return the correct URL</a></li>
+<li><a class="reference internal" href="#step-iii-define-how-the-table-is-formated" id="id10">Step III: Define how the table is formated</a></li>
+<li><a class="reference internal" href="#step-iv-write-tests-and-test" id="id11">Step IV: Write tests and test</a></li>
+<li><a class="reference internal" href="#step-iv-write-documentation-for-the-new-resource" id="id12">Step IV: Write documentation for the new resource</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -198,11 +214,20 @@
 </ul>
 <div class="section" id="step-i-create-a-reader">
 <h3><a class="toc-backref" href="#id3">Step I: Create a reader</a><a class="headerlink" href="#step-i-create-a-reader" title="Permalink to this headline">¶</a></h3>
-<p>Write a reader module and place it in sfftk.readers package. The reader module may implement a single class that provides a simple API to segmentation files. There is not predefined structure on how to handle reading the file. However, the reader module must implement a <cite>get_data(fn, *args, **kwargs)</cite> function that takes the name of a file as a string. The name of the module should be the extension followed by the word ‘reader’ e.g. for Segger files it is segreader.py.</p>
+<p>Write a reader module and place it in sfftk.readers package. The reader module may implement a single class that
+provides a simple API to segmentation files. There is not predefined structure on how to handle reading the file.
+However, the reader module must implement a <cite>get_data(fn, *args, **kwargs)</cite> function that takes the name of a file as a
+string. The name of the module should be the extension followed by the word ‘reader’ e.g. for Segger files it is segreader.py.</p>
 </div>
 <div class="section" id="step-ii-create-a-format-adapter">
 <h3><a class="toc-backref" href="#id4">Step II: Create a format adapter</a><a class="headerlink" href="#step-ii-create-a-format-adapter" title="Permalink to this headline">¶</a></h3>
-<p>Write a format module and place it in the sfftk.formats package. This module adapts the reader in Step II to the schema (EMDB-SFF data model) API. The name of the module must be simply the extension of the file format e.g. for Segger files it is seg.py. The module uses the inherited segmentation parts from the classes defined in sfftk.formats.base module and have names indicating the segmentation format e.g. for Segger seg.py has a SeggerSegmentation class that inherits from the generic Segmentation class which provides a way to hook functionality required of all custom segmentation representations. This module will then tie the segmentation file format API defined in readers with the schema (EMDB-SFF data model) API.</p>
+<p>Write a format module and place it in the sfftk.formats package. This module adapts the reader in Step II to the schema
+(EMDB-SFF data model) API. The name of the module must be simply the extension of the file format e.g. for Segger files
+it is seg.py. The module uses the inherited segmentation parts from the classes defined in sfftk.formats.base module
+and have names indicating the segmentation format e.g. for Segger seg.py has a SeggerSegmentation class that inherits
+from the generic Segmentation class which provides a way to hook functionality required of all custom segmentation
+representations. This module will then tie the segmentation file format API defined in readers with the schema
+(EMDB-SFF data model) API.</p>
 </div>
 <div class="section" id="step-iii-add-test-data">
 <h3><a class="toc-backref" href="#id5">Step III: Add test data</a><a class="headerlink" href="#step-iii-add-test-data" title="Permalink to this headline">¶</a></h3>
@@ -210,7 +235,9 @@
 </div>
 <div class="section" id="step-iv-write-tests">
 <h3><a class="toc-backref" href="#id6">Step IV: Write tests</a><a class="headerlink" href="#step-iv-write-tests" title="Permalink to this headline">¶</a></h3>
-<p>Write unit tests and add them to the sfftk.unittests.test_formats module. Each format that you add should implement a read and convert test method (respectively called test_&lt;format&gt;_read and test_&lt;format&gt;_convert. See the sfftk.unittests.test_formats module for examples.</p>
+<p>Write unit tests and add them to the sfftk.unittests.test_formats module. Each format that you add should implement a
+read and convert test method (respectively called test_&lt;format&gt;_read and test_&lt;format&gt;_convert. See the
+<code class="docutils literal"><span class="pre">sfftk.unittests.test_formats</span></code> module for examples.</p>
 <p>Once all this components are in place conversion to XML, HDF5 and JSON should be automatic.</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.&lt;</span><span class="nb">format</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">f</span> <span class="n">sff</span>
 <span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.&lt;</span><span class="nb">format</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">f</span> <span class="n">hff</span>
@@ -218,10 +245,129 @@
 </pre></div>
 </div>
 <p>Also, tests can be run as follows:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="nb">format</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="n">formats</span>
 <span class="n">sff</span> <span class="n">test</span> <span class="n">formats</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="adding-a-search-resource">
+<h2><a class="toc-backref" href="#id7">Adding A Search Resource</a><a class="headerlink" href="#adding-a-search-resource" title="Permalink to this headline">¶</a></h2>
+<p>The list of search resources is extensible. Any new search results must fulfil the following criteria:</p>
+<ul class="simple">
+<li>Have a A REST API;</li>
+<li>Return the result as either JSON or TAB-delimitted text;</li>
+</ul>
+<div class="section" id="step-i-add-the-resource-description">
+<h3><a class="toc-backref" href="#id8">Step I: Add the resource description</a><a class="headerlink" href="#step-i-add-the-resource-description" title="Permalink to this headline">¶</a></h3>
+<p>The resource descriptions are contained in <code class="xref py py-mod docutils literal"><span class="pre">sfftk.notes.__init__.py</span></code>. For example, the one for
+<a class="reference external" href="https://www.ebi.ac.uk/ols">OLS</a> is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">RESOURCE_LIST</span><span class="p">[</span><span class="s1">&#39;ols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;OLS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;root_url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://www.ebi.ac.uk/ols/api/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;result_path&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="s1">&#39;docs&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;result_count&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="s1">&#39;numFound&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">RESOURCE_LIST</span></code> is a dictionary whose primary key is the lower-case abbreviation of the resource name (<code class="docutils literal"><span class="pre">ols</span></code> here).
+Each resource’s description is a dictionary of:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">name</span></code> - proper abbreviation of the resource’s name (<code class="docutils literal"><span class="pre">UniProt</span></code> not <code class="docutils literal"><span class="pre">Uniprot</span></code>);</li>
+<li><code class="docutils literal"><span class="pre">root_url</span></code> - the part of the REST API which is invariant i.e. excluding search parameters;</li>
+<li><code class="docutils literal"><span class="pre">format</span></code> - either <code class="docutils literal"><span class="pre">json</span></code> or <code class="docutils literal"><span class="pre">tab</span></code>;</li>
+<li><code class="docutils literal"><span class="pre">result_path</span></code> - the part of the response data that contains a list of results. In the above example,
+<code class="docutils literal"><span class="pre">response</span></code>, <code class="docutils literal"><span class="pre">docs</span></code> are a path to a list element of the JSON where all results are found. If <code class="docutils literal"><span class="pre">format</span></code> is
+<code class="docutils literal"><span class="pre">tab</span></code> set this to <code class="docutils literal"><span class="pre">None</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">result_count</span></code> - the part of the response data that contains the count of the complete results. Usually only a
+page of all results is returned but it is useful to inform the user of how many results were found. If this is not
+present set it to <code class="docutils literal"><span class="pre">None</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="step-ii-add-a-handler-to-return-the-correct-url">
+<h3><a class="toc-backref" href="#id9">Step II: Add a handler to return the correct URL</a><a class="headerlink" href="#step-ii-add-a-handler-to-return-the-correct-url" title="Permalink to this headline">¶</a></h3>
+<p>Modify the <code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.SearchResults.get_url()</span></code> method by adding a conditional handler for
+the resource that returns the complete search URL (i.e. including the search term and additional options allowed on the
+REST API).</p>
+<p>The <code class="docutils literal"><span class="pre">if</span></code> statement uses the resource name to identify the resource.</p>
+<p>For example, the URL for OLS is generated as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ols</span>
+<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;OLS&#39;</span><span class="p">:</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_url</span> <span class="o">+</span> <span class="s2">&quot;search?q={}&amp;start={}&amp;rows={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">search_term</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">ontology</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;ontology={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">ontology</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">exact</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;exact=on&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">obsoletes</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;obsoletes=on&quot;</span>
+</pre></div>
+</div>
+<p>Each of the subsequent <code class="docutils literal"><span class="pre">if</span></code> statements conditionally include additional parameters specified in the command-line
+arguments.</p>
+</div>
+<div class="section" id="step-iii-define-how-the-table-is-formated">
+<h3><a class="toc-backref" href="#id10">Step III: Define how the table is formated</a><a class="headerlink" href="#step-iii-define-how-the-table-is-formated" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">sfftk.notes.find.SearchResource.tabulate()</span></code> specifies how to tabulate results from each resource. We use
+two classes: <a class="reference internal" href="notes.html#sfftk.notes.find.TableField" title="sfftk.notes.find.TableField"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.TableField</span></code></a> and <a class="reference internal" href="notes.html#sfftk.notes.find.ResultsTable" title="sfftk.notes.find.ResultsTable"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.ResultsTable</span></code></a> to do this. Here is
+an example for OLS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;OLS&#39;</span><span class="p">:</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">is_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">),</span>
+        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;short_form&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;short_form&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">),</span>
+        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;resource&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;ontology_name&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">),</span>
+        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">is_iterable</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">ResultsTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You will need to refer to the resource’s REST API documentation to match result fields with table fields.</p>
+<p><a class="reference internal" href="notes.html#sfftk.notes.find.TableField" title="sfftk.notes.find.TableField"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.TableField</span></code></a> accepts the following arguments:</p>
+<ul>
+<li><p class="first">The first (positional) argument is the name of the field and appears in the table header;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">key</span></code> is the official name of the field in the REST API; the <a class="reference internal" href="notes.html#sfftk.notes.find.TableField" title="sfftk.notes.find.TableField"><code class="xref py py-class docutils literal"><span class="pre">sfftk.notes.find.TableField</span></code></a> uses the key
+to extract the row values;</p>
+</li>
+<li><p class="first">Instead of using the <code class="docutils literal"><span class="pre">key</span></code> argument, the user may use <code class="docutils literal"><span class="pre">text</span></code> which will be a fixed value for all rows;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">pc</span></code> is the field width in <em>percent</em>; alternatively, use the <code class="docutils literal"><span class="pre">width</span></code> argument to specify how many characters
+wide the field should be;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">is_index</span></code> sets the field to be an index field i.e. to show the row number;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">justify</span></code> can either be <code class="docutils literal"><span class="pre">right</span></code>, <code class="docutils literal"><span class="pre">left</span></code> or <code class="docutils literal"><span class="pre">center</span></code> and specifies the field text alignment;</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">_format</span></code> specifies a <em>format string</em> (a string with with <code class="docutils literal"><span class="pre">{}</span></code> which will replace <code class="docutils literal"><span class="pre">{}</span></code> with the field value.
+This is helpful when creating URLs/IRIs to an accession page e.g.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;EntryID&#39;</span><span class="p">,</span> <span class="n">_format</span><span class="o">=</span><span class="s1">&#39;https://www.ebi.ac.uk/pdbe/emdb/EMD-{}&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>for an EMDB entry page.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="step-iv-write-tests-and-test">
+<h3><a class="toc-backref" href="#id11">Step IV: Write tests and test</a><a class="headerlink" href="#step-iv-write-tests-and-test" title="Permalink to this headline">¶</a></h3>
+<p>You will then need to write at least two tests sfin the <code class="docutils literal"><span class="pre">sfftk.unittests.test_notes.TestNotesFindSearchResource</span></code> class:</p>
+<ul class="simple">
+<li><em>parser</em> tests that check that the command-line arguments are correct (see the module for other examples);</li>
+<li><em>get_url</em> tests that ensure that the URL is correctly formed for all options;</li>
+</ul>
+</div>
+<div class="section" id="step-iv-write-documentation-for-the-new-resource">
+<h3><a class="toc-backref" href="#id12">Step IV: Write documentation for the new resource</a><a class="headerlink" href="#step-iv-write-documentation-for-the-new-resource" title="Permalink to this headline">¶</a></h3>
+<p>Finally, document the resource in the section <a class="reference internal" href="annotating.html#specifying-the-resource-to-search"><span class="std std-ref">Specifying The Resource To Search</span></a> by describing the following:</p>
+<ul class="simple">
+<li>the <em>name</em> and <em>link to</em> the resource in the list of resources;</li>
+<li>the <em>keyword</em> to be passed to the <code class="docutils literal"><span class="pre">-R/--resource</span></code> flag;</li>
+</ul>
 </div>
 </div>
 </div>
@@ -270,7 +416,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.1.dev3',
+            VERSION:'0.2.1.dev4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

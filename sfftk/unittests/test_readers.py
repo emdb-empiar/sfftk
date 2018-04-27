@@ -6,7 +6,7 @@ sfftk.unittests.test_readers
 This testing module should have no side-effects because it only reads.
 '''
 
-from __future__ import division
+from __future__ import division, print_function
 
 import glob
 import os
@@ -304,7 +304,7 @@ class TestReaders_segreader(unittest.TestCase):
     def test_get_data(self):
         '''Test the main entry point: get_data(...)'''
         seg = segreader.get_data(self.seg_file)
-        print >> sys.stderr, seg
+        print(seg, file=sys.stderr)
         self.assertIsInstance(seg, segreader.SeggerSegmentation)
         self.assertEqual(seg.map_level, 0.852)
         self.assertEqual(seg.format_version, 2)
@@ -336,7 +336,7 @@ class TestReaders_stlreader(unittest.TestCase):
     def test_read_binary(self):
         '''Test that we can read a binary STL file'''
         meshes = stlreader.get_data(self.stl_bin_file)
-        print >> sys.stderr, meshes[0][0]
+        print(meshes[0][0], file=sys.stderr)
         name, vertices, polygons = meshes[0]
         self.assertIsNone(name)
         self.assertTrue(len(vertices) > 0)
