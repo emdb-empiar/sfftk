@@ -19,7 +19,6 @@ from ..notes import find, modify, view, RESOURCE_LIST
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
-__updated__ = '2018-02-14'
 
 
 # :TODO: rewrite to use sfftk.notes.modify.SimpleNote
@@ -241,7 +240,7 @@ class TestNotes_view(unittest.TestCase):
 
     def setUp(self):
         self.segment_id = 15559
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
+        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
 
     def test_list_default(self):
         """Test that we can view the list of segmentations with annotations"""
@@ -312,7 +311,6 @@ class TestNotes_modify(unittest.TestCase):
                 self.config_fn,
             )
         )
-        print(cmd, file=sys.stderr)
         args, configs = parse_args(cmd)
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation(self.sff_file)
@@ -525,7 +523,7 @@ class TestNotes_modify_sff(TestNotes_modify):
 class TestNotes_modify_hff(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_hff, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.hff')
+        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
         self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'other_emd_1014.hff')
         self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'output_emd_1014.hff')
 

@@ -15,3 +15,9 @@ def get_path(D, path):
     for p in path:
         item = item[p]
     return item
+
+
+def parse_and_split(cmd):
+    from .parser import parse_args
+    from shlex import split
+    return parse_args(split(cmd))

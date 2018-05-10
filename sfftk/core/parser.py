@@ -16,6 +16,7 @@ __date__ = '2016-06-10'
 __updated__ = '2018-02-14'
 
 verbosity_range = range(4)
+multi_file_formats = ['stl', 'map']
 
 
 def add_args(parser, the_arg):
@@ -44,6 +45,12 @@ def add_args(parser, the_arg):
 
 Parser = argparse.ArgumentParser(
     prog='sff', description="The EMDB-SFF Toolkit (sfftk)")
+Parser.add_argument(
+    '-V', '--version',
+    action='store_true',
+    default=False,
+    help='show the sfftk version string',
+)
 
 subparsers = Parser.add_subparsers(
     title='Tools',
@@ -181,7 +188,7 @@ output = {
 primary_descriptor = {
     'args': ['-R', '--primary-descriptor'],
     'kwargs': {
-        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  threeDVolume, contourList, meshList, shapePrimitiveList]"
+        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  threeDVolume, meshList, shapePrimitiveList]"
     }
 }
 software_proc_details = {
@@ -233,7 +240,7 @@ verbose = {
 # =========================================================================
 convert_parser = subparsers.add_parser(
     'convert', description="Perform conversions to EMDB-SFF", help="converts from/to EMDB-SFF")
-convert_parser.add_argument('from_file', help="file to convert from")
+convert_parser.add_argument('from_file', nargs='*', help="file to convert from")
 add_args(convert_parser, config_path)
 add_args(convert_parser, shipped_configs)
 convert_parser.add_argument('-t', '--top-level-only', default=False,
@@ -244,7 +251,17 @@ convert_parser.add_argument(
     *primary_descriptor['args'], **primary_descriptor['kwargs'])
 convert_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 convert_parser.add_argument('-s', '--sub-tomogram-average', nargs=2,
-                            help="convert a subtomogram average into an EMDB-SFF file; two arguments are required: the table file and volume file (in that order)")
+                            help="convert a subtomogram average into an EMDB-SFF file; two arguments are required: the "
+                                 "table file and volume file (in that order)")
+convert_parser.add_argument(
+    '-m', '--multi-file',
+    action='store_true',
+    default=False,
+    help="enables convert to treat multiple files as individual segments of a single segmentation; only works for the "
+         "following filetypes: {} [default: False]".format(
+        ', '.join(multi_file_formats),
+    )
+)
 group = convert_parser.add_mutually_exclusive_group()
 group.add_argument(*output['args'], **output['kwargs'])
 group.add_argument(*format_['args'], **format_['kwargs'])
@@ -780,9 +797,28 @@ tests_parser.add_argument('-v', '--verbosity', default=1, type=int,
 # add_args(test_parser, config_path)
 # test_parser.add_argument('-v', '--verbosity', default=1, type=int, help="set verbosity; valid values: %s [default: 0]" % ", ".join(map(str, verbosity_range)))
 
+
+def check_multi_file_formats(file_names):
+    """Check file names for file formats"""
+    is_valid_format = True
+    file_formats = set()
+    invalid_formats = set()
+    for fn in file_names:
+        ff = fn.split('.')[-1].lower()
+        if ff in multi_file_formats:
+            file_formats.add(ff)
+        else:
+            invalid_formats.add(ff)
+            is_valid_format = False
+    if len(file_formats) == 1:
+        file_format = file_formats.pop()
+    else:
+        file_format = None
+        invalid_formats.union(file_formats)
+    return is_valid_format, file_format, invalid_formats
+
+
 # parser function
-
-
 def parse_args(_args):
     """
     Parse and check command-line arguments and also return configs.
@@ -806,9 +842,16 @@ def parse_args(_args):
         sys.exit(0)
     # if we only have a subcommand then show that subcommand's help
     elif len(_args) == 1:
+        # print(_args[0])
+        # print(Parser._actions[2].choices)
         if _args[0] == 'tests':
             pass
-        elif _args[0] in Parser._actions[1].choices.keys():
+        elif _args[0] == '-V' or _args[0] == '--version':
+            from .. import SFFTK_VERSION
+            print_date("sfftk version: {}".format(SFFTK_VERSION))
+            sys.exit(0)
+        # anytime a new argument is added to the base parser subparsers are bumped down in index
+        elif _args[0] in Parser._actions[2].choices.keys():
             exec ('{}_parser.print_help()'.format(_args[0]))
             sys.exit(0)
     # if we have 'notes' as the subcommand and a sub-subcommand show the
@@ -830,15 +873,45 @@ def parse_args(_args):
         pass
     # convert
     elif args.subcommand == 'convert':
-        try:
-            assert os.path.exists(args.from_file)
-        except AssertionError:
-            print_date("File {} was not found".format(args.from_file))
-            sys.exit(1)
+        # single vs. multi-file
+        # single vs. multiple file names provided
+        if len(args.from_file) == 1:
+            args.from_file = args.from_file[0]
+            try:
+                assert os.path.exists(args.from_file)
+            except AssertionError:
+                print_date("File {} was not found".format(args.from_file))
+                return None, configs
+        else:
+            if args.multi_file:
+                is_valid_format, file_format, invalid_formats = check_multi_file_formats(args.from_file)
+                if is_valid_format:
+                    file_missing = False
+                    for fn in args.from_file:
+                        try:
+                            assert os.path.exists(fn)
+                        except AssertionError:
+                            print_date("File {} was not found".format(fn))
+                            file_missing = True
+                    if file_missing:
+                        return None, configs
+                else:
+                    print_date("Invalid format(s) for multi-file segmentation: {}; should be only one of: {}".format(
+                        ', '.join(invalid_formats),
+                        ', '.join(multi_file_formats),
+                    ))
+                    return None, configs
+            else:
+                print_date("Please use -m/--multi-file argument for multi-file segmentations")
+                return None, configs
         # set the output file
         if args.output is None:
             import re
-            dirname = os.path.dirname(args.from_file)
+            if args.multi_file:
+                from_file = args.from_file[0]
+            else:
+                from_file = args.from_file
+            dirname = os.path.dirname(from_file)
             if args.format:
                 try:
                     assert args.format in map(lambda x: x[0], FORMAT_LIST)
@@ -846,22 +919,22 @@ def parse_args(_args):
                     print_date("Invalid output format: {}; valid values are: {}".format(
                         args.format, ", ".join(map(lambda x: x[0], FORMAT_LIST))))
                     return None, configs
-                fn = ".".join(os.path.basename(args.from_file).split(
+                fn = ".".join(os.path.basename(from_file).split(
                     '.')[:-1]) + '.{}'.format(args.format)
                 args.__setattr__('output', os.path.join(dirname, fn))
             # convert file.sff to file.hff
-            elif re.match(r'.*\.sff$', args.from_file):
+            elif re.match(r'.*\.sff$', from_file):
                 fn = ".".join(
-                    os.path.basename(args.from_file).split('.')[:-1]) + '.hff'
+                    os.path.basename(from_file).split('.')[:-1]) + '.hff'
                 args.__setattr__('output', os.path.join(dirname, fn))
             # convert file.hff to file.sff
-            elif re.match(r'.*\.hff$', args.from_file):
+            elif re.match(r'.*\.hff$', from_file):
                 fn = ".".join(
-                    os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
+                    os.path.basename(from_file).split('.')[:-1]) + '.sff'
                 args.__setattr__('output', os.path.join(dirname, fn))
             else:
                 fn = ".".join(
-                    os.path.basename(args.from_file).split('.')[:-1]) + '.sff'
+                    os.path.basename(from_file).split('.')[:-1]) + '.sff'
                 args.__setattr__('output', os.path.join(dirname, fn))
             if args.verbose:
                 print_date("Setting output file to {}".format(args.output))
@@ -870,7 +943,7 @@ def parse_args(_args):
         if args.primary_descriptor:
             try:
                 assert args.primary_descriptor in [
-                    'threeDVolume', 'contourList', 'meshList', 'shapePrimitive']
+                    'threeDVolume', 'meshList', 'shapePrimitive']
             except:
                 if args.verbose:
                     print_date(
@@ -1056,21 +1129,16 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 else:
                     args.to_segment = to_segment
 
-            # enforced automatically by package
-            # if args.to_segment is not None and args.all:
-            #     raise ValueError("--to-segment and --all are mutually exclusive")
-            #     sys.exit(os.EX_DATAERR)
-
             if args.segment_id is not None and args.to_segment is not None:
                 from_set = set(args.segment_id)
                 to_set = set(args.to_segment)
                 common = from_set.intersection(to_set)
                 if len(common) > 0:
-                    raise ValueError(
+                    print_date(
                         "the following segment IDs appear in both --segment-id and --to-segment: {}".format(
                             " ".join(map(str, common))
                         ))
-                    sys.exit(os.EX_DATAERR)
+                    return None, configs
 
         elif args.notes_subcommand == "clear":
             # where to clear notes from

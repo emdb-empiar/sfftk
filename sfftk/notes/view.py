@@ -130,18 +130,16 @@ class NoteView(View):
 
     @property
     def colour(self):
-        if self._segment.colour.name:
-            return self._segment.colour.name
-        elif self._segment.colour.rgba:
-            return self._segment.colour.rgba.value
+        if self._segment.colour.value:
+            return self._segment.colour.value
         else:
             return self.NOT_DEFINED
 
     @property
     def segmentType(self):
         segment_type = list()
-        if self._segment.contours:
-            segment_type.append("contourList")
+        # if self._segment.contours:
+        #     segment_type.append("contourList")
         if self._segment.meshes:
             segment_type.append("meshList")
         if self._segment.shapes:
@@ -202,6 +200,7 @@ Colour:
             string = "{}".format(self.id)
             return string
         else:
+            colour = self.colour
             string = "{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
                 self.id,
                 self.parentID,

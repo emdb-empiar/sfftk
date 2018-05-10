@@ -18,347 +18,166 @@
             <data>3.3900001049 0.0 0.0 -430.529998779 0.0 3.3900001049 0.0 -430.529998779 0.0 0.0 3.3900001049 -430.529998779</data>
         </transformationMatrix>
     </transformList>
-    <filePath>/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/test_data/sff</filePath>
     <primaryDescriptor>threeDVolume</primaryDescriptor>
     <segmentList>
         <segment id="15559" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.921817600727081</red>
-                    <green>0.931041955947876</green>
-                    <blue>0.71287328004837</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15560" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.5660200715065</red>
-                    <green>0.790880382061005</green>
-                    <blue>0.671353757381439</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15561" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.786771178245544</red>
-                    <green>0.566025853157043</green>
-                    <blue>0.6353360414505</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15562" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.795820534229279</red>
-                    <green>0.603736102581024</green>
-                    <blue>0.695636034011841</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15563" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.945388078689575</red>
-                    <green>0.960578083992004</green>
-                    <blue>0.895303726196289</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15564" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.997010350227356</red>
-                    <green>0.883732438087463</green>
-                    <blue>0.798247754573822</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15565" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.810978293418884</red>
-                    <green>0.710047245025635</green>
-                    <blue>0.938420295715332</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15566" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.506448566913605</red>
-                    <green>0.636659622192383</green>
-                    <blue>0.950494408607483</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15567" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.795838892459869</red>
-                    <green>0.848971366882324</green>
-                    <blue>0.898833751678467</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15568" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.795708417892456</red>
-                    <green>0.598218858242035</green>
-                    <blue>0.769633829593658</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15569" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.543090283870697</red>
-                    <green>0.926712691783905</green>
-                    <blue>0.578470706939697</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15570" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.544089019298553</red>
-                    <green>0.970614612102509</green>
-                    <blue>0.698472082614899</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15571" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.687262952327728</red>
-                    <green>0.585415244102478</green>
-                    <blue>0.992594540119171</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15572" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.547603487968445</red>
-                    <green>0.651105284690857</green>
-                    <blue>0.942572236061096</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15573" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.860836505889893</red>
-                    <green>0.567978024482727</green>
-                    <blue>0.721250355243683</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15574" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.511655807495117</red>
-                    <green>0.563025772571564</green>
-                    <blue>0.816533744335175</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15575" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.74264669418335</red>
-                    <green>0.766704499721527</green>
-                    <blue>0.626766085624695</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15576" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.936005651950836</red>
-                    <green>0.737228572368622</green>
-                    <blue>0.807985961437225</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15577" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.505707859992981</red>
-                    <green>0.992025196552277</green>
-                    <blue>0.623720347881317</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
         <segment id="15578" parentID="0">
             <biologicalAnnotation/>
             <complexesAndMacromolecules/>
-            <colour>
-                <rgba>
-                    <red>0.985998213291168</red>
-                    <green>0.971223950386047</green>
-                    <blue>0.712830126285553</blue>
-                </rgba>
-            </colour>
+            <colour/>
             <threeDVolume>
-                <file>emd_1014.seg</file>
-                <contourLevel>1.8</contourLevel>
                 <transformId>1</transformId>
-                <format>Segger</format>
             </threeDVolume>
         </segment>
     </segmentList>

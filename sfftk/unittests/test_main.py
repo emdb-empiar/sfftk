@@ -20,7 +20,6 @@ from ..core.parser import parse_args
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-06-10'
-__updated__ = '2018-02-14'
 
 user = 'test_user'
 password = 'test'
@@ -222,7 +221,7 @@ class TestMain_handle_notes(unittest.TestCase):
     def test_list(self):
         """Test that we can list notes"""
         args, configs = parse_args(shlex.split('notes list {} --config-path {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff'),
+            os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff'),
             self.config_fn,
         )))
         self.assertEqual(0, Main.handle_notes_list(args, configs))
@@ -230,7 +229,7 @@ class TestMain_handle_notes(unittest.TestCase):
     def test_show(self):
         """Test that we can list notes"""
         args, configs = parse_args(shlex.split('notes show -i 15559 {} --config-path {}'.format(
-            os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff'),
+            os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff'),
             self.config_fn,
         )))
         self.assertEqual(0, Main.handle_notes_show(args, configs))

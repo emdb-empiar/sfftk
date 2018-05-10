@@ -19,7 +19,6 @@ from ..readers import surfreader
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-11"
-__updated__ = '2018-02-23'
 
 
 class AmiraHyperSurfaceMesh(Mesh):
@@ -93,8 +92,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
         )
         # colour
         red, green, blue = self.colour
-        colour = schema.SFFColour()
-        colour.rgba = schema.SFFRGBA(
+        colour = schema.SFFRGBA(
             red=red,
             green=green,
             blue=blue,

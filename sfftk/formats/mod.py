@@ -22,7 +22,6 @@ from ..readers import modreader
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-09-28"
-__updated__ = '2018-02-23'
 
 
 class IMODVertex(object):
@@ -380,8 +379,7 @@ class IMODAnnotation(Annotation):
         annotation.description = self.description
         annotation.numberOfInstances = 1
         # colour
-        colour = schema.SFFColour()
-        colour.rgba = schema.SFFRGBA(
+        colour = schema.SFFRGBA(
             red=self.red,
             green=self.green,
             blue=self.blue,

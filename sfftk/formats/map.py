@@ -52,6 +52,57 @@ class MapVolume(Volume):
 class MapAnnotation(Annotation):
     """Annotation class"""
 
+    def __init__(self, map_obj):
+        self._map_obj = map_obj
+        for attr in dir(self._map_obj):
+            if attr[:2] == "__":
+                continue
+            if inspect.ismethod(getattr(self._map_obj, attr)):
+                continue
+            if attr == "voxels":  # leave the voxels for the volume
+                continue
+            setattr(self, attr, getattr(self._map_obj, attr))
+
+    @property
+    def cols(self):
+        return self._nc
+
+    @property
+    def rows(self):
+        return self._nr
+
+    @property
+    def sections(self):
+        return self._ns
+
+    @property
+    def start_cols(self):
+        return self._ncstart
+
+    @property
+    def start_rows(self):
+        return self._nrstart
+
+    @property
+    def start_sections(self):
+        return self._nsstart
+
+    @property
+    def mode(self):
+        if self._mode == 3 or self._mode == 4:
+            raise ValueError("Fourier transform instead of segmentation")
+        elif 0 <= self._mode <= 2:
+            return MODE_STRING[self._mode]
+
+    @property
+    def endianness(self):
+        if self._machst[0] == '\x44' and self._machst[1] == '\x41' and self._machst[2] == '\x00' and self._machst[3] == '\x00':
+            return 'little'
+        elif self._machst[0] == '\x11' and self._machst[1] == '\x11' and self._machst[2] == '\x00' and self._machst[3] == '\x00':
+            return 'big'
+        else:
+            raise ValueError("MACHST = ", self._machst)
+
     @property
     def description(self):
         """Segment description"""
@@ -73,8 +124,7 @@ class MapAnnotation(Annotation):
         warn(
             "Colour not defined for mask segments. Setting colour to random RGB value of {}".format((red, green, blue)))
 
-        colour = schema.SFFColour()
-        colour.rgba = schema.SFFRGBA(
+        colour = schema.SFFRGBA(
             red=red,
             green=green,
             blue=blue,
@@ -85,46 +135,108 @@ class MapAnnotation(Annotation):
 class MapSegment(Segment):
     """Segment class"""
 
-    def __init__(self, segmentation):
-        self._segmentation = segmentation
+    def __init__(self, map_obj):
+        self._map_obj = map_obj
 
     @property
     def annotation(self):
         """Segment annotation"""
-        return MapAnnotation()
+        return MapAnnotation(self._map_obj)
 
-    @property
-    def volume(self):
-        """Three-D volume data in this segment"""
-        return MapVolume(self._segmentation)
+    # @property
+    # def volume(self):
+    #     """Three-D volume data in this segment"""
+    #     return MapVolume(self._segmentation)
 
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        lattice_size = schema.SFFVolumeStructure(
+            cols=self.annotation.cols,
+            rows=self.annotation.rows,
+            sections=self.annotation.sections,
+        )
+        lattice = schema.SFFLattice(
+            mode=self.annotation.mode,
+            endianness=self.annotation.endianness,
+            size=lattice_size,
+            start=schema.SFFVolumeIndex(
+                cols=self.annotation.start_cols,
+                rows=self.annotation.start_rows,
+                sections=self.annotation.start_sections,
+            ),
+            data=schema.SFFLattice.encode(
+                mode=self.annotation.mode,
+                endianness=self.annotation.endianness,
+                size=lattice_size.voxelCount,
+                data=self._map_obj.voxels,
+            ),
+        )
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
-        segment.volume = self.volume.convert()
-        return segment
+        # segment.volume = self.volume.convert()
+        segment.volume = schema.SFFThreeDVolume(
+            latticeId=lattice.id,
+            value=1.0,
+        )
+        return segment, lattice
 
 
-class MapHeader(Header):
-    """Class defining the header in a CCP4 file"""
+MODE_STRING = {
+    0:  'int8',
+    1:  'int16',
+    2:  'float32',
+}
 
-    def __init__(self, segmentation):
-        self._segmentation = segmentation._segmentation
-        for attr in dir(self._segmentation):
-            if attr[:2] == "__" or attr[:1] == "_":
-                continue
-            if inspect.ismethod(getattr(self._segmentation, attr)):
-                continue
-            if attr == "voxels":  # leave the voxels for the volume
-                continue
-            setattr(self, attr, getattr(self._segmentation, attr))
-
-    def convert(self, *args, **kwargs):
-        """Convert this object into an EMDB-SFF segmentation header
-
-        Currently  not implement"""
-        pass
+# class MapHeader(Header):
+#     """Class defining the header in a CCP4 file"""
+#
+#     def __init__(self, segmentation):
+#         self._segmentation = segmentation._segmentation
+#         for attr in dir(self._segmentation):
+#             if attr[:2] == "__":
+#                 continue
+#             if inspect.ismethod(getattr(self._segmentation, attr)):
+#                 continue
+#             if attr == "voxels":  # leave the voxels for the volume
+#                 continue
+#             setattr(self, attr, getattr(self._segmentation, attr))
+#
+#     @property
+#     def cols(self):
+#         return self._nc
+#
+#     @property
+#     def rows(self):
+#         return self._nr
+#
+#     @property
+#     def sections(self):
+#         return self._ns
+#
+#     @property
+#     def start_cols(self):
+#         return self._ncstart
+#
+#     @property
+#     def start_rows(self):
+#         return self._nrstart
+#
+#     @property
+#     def start_sections(self):
+#         return self._nsstart
+#
+#     @property
+#     def mode(self):
+#         if self._mode == 3 or self._mode == 4:
+#             raise ValueError("Fourier transform instead of segmentation")
+#         elif 0 <= self._mode <= 2:
+#             return MODE_STRING[self._mode]
+#
+#     def convert(self, *args, **kwargs):
+#         """Convert this object into an EMDB-SFF segmentation header
+#
+#         Currently  not implement"""
+#         pass
 
 
 class MapSegmentation(Segmentation):
@@ -137,32 +249,37 @@ class MapSegmentation(Segmentation):
         
     """
 
-    def __init__(self, fn, *args, **kwargs):
+    def __init__(self, fns, *args, **kwargs):
         """Initialise the MapSegmentation reader"""
-        self._fn = fn
+        self._fns = fns
 
         # set the segmentation attribute
-        self._segmentation = mapreader.get_data(fn)
+        self._segments = list()
+        for fn in fns:
+            self._segments.append(MapSegment(mapreader.get_data(fn)))
+        # self._segmentation = mapreader.get_data(fn)
 
     """
     :TODO: document attributes and methods of readers
     """
 
-    @property
-    def header(self):
-        """Segmentation metadata"""
-        return MapHeader(self)
+    # @property
+    # def header(self):
+    #     """Segmentation metadata"""
+    #     return MapHeader(self)
 
     @property
     def segments(self):  # only one segment
         """The segments in this segmentation"""
-        return [MapSegment(self)]
+        return self._segments
+        # return [MapSegment(self)]
 
     def convert(self, args, *_args, **_kwargs):
         """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
 
-        segmentation.name = self.header.name
+        # segmentation.name = self.header.name
+        segmentation.name = "CCP4 mask segmentation"
 
         # software
         segmentation.software = schema.SFFSoftware(
@@ -170,33 +287,55 @@ class MapSegmentation(Segmentation):
             version="Undefined",
             processingDetails='None'
         )
-        segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
+        # segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
         segmentation.primaryDescriptor = "threeDVolume"
 
         # transforms
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=3,
-                data=self.header.skew_matrix_data,
-            )
-        )
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=1,
-                data=self.header.skew_translation_data,
-            )
-        )
+        # segmentation.transforms = schema.SFFTransformList()
+        # segmentation.transforms.add_transform(
+        #     schema.SFFTransformationMatrix(
+        #         rows=3,
+        #         cols=3,
+        #         data=self.header.skew_matrix_data,
+        #     )
+        # )
+        # segmentation.transforms.add_transform(
+        #     schema.SFFTransformationMatrix(
+        #         rows=3,
+        #         cols=1,
+        #         data=self.header.skew_translation_data,
+        #     )
+        # )
 
         segments = schema.SFFSegmentList()
+        lattices = schema.SFFLatticeList()
         for s in self.segments:
-            segment = s.convert()
+            segment, lattice = s.convert()
             segments.add_segment(segment)
+            lattices.add_lattice(lattice)
 
         # finally pack everything together
         segmentation.segments = segments
+        segmentation.lattices = lattices
+
+        # lattice
+        # lattices = schema.SFFLatticeList()
+        # lattice_mode = self.header.mode
+        # lattice_endianness = 'little'
+        # lattice_size = schema.SFFVolumeStructure(
+        #     cols=self.header.cols, rows=self.header.rows, sections=self.header.sections
+        # )
+        # lattice = schema.SFFLattice(
+        #     mode=lattice_mode,
+        #     endianness=lattice_endianness,
+        #     size=lattice_size,
+        #     start=schema.SFFVolumeIndex(
+        #         cols=self.header.start_cols, rows=self.header.start_rows, sections=self.header.start_sections
+        #     ),
+        #     data=schema.SFFLattice.encode(mode=lattice_mode, endianness=lattice_endianness, size=lattice_size.voxelCount, data=self._segmentation.voxels)
+        # )
+        # lattices.add_lattice(lattice)
+        # segmentation.lattices = lattices
 
         if args.details is not None:
             segmentation.details = args.details

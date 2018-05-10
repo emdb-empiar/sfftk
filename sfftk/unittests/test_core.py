@@ -3,6 +3,7 @@
 """Unit tests for :py:mod:`sfftk.core` package"""
 from __future__ import division, print_function
 
+import glob
 import os
 import shlex
 import sys
@@ -20,7 +21,6 @@ from ..notes import RESOURCE_LIST
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
-__updated__ = '2018-02-14'
 
 
 class TestCore_load_config(unittest.TestCase):
@@ -198,8 +198,11 @@ class TestParser_convert(unittest.TestCase):
     def setUpClass(cls):
         print("convert tests...", file=sys.stderr)
         cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
-        cls.test_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'emd_1014.sff')
-        cls.test_hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'emd_1014.hff')
+        cls.test_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
+        cls.test_hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
+        cls.empty_maps = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.map'))
+        cls.empty_stls = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.stl'))
+        cls.empty_segs = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.seg'))
 
     @classmethod
     def tearDownClass(cls):
@@ -217,9 +220,8 @@ class TestParser_convert(unittest.TestCase):
         self.assertEqual(args.output, os.path.join(os.path.dirname(self.test_data_file), 'test_data.sff'))
         self.assertEqual(args.primary_descriptor, None)
         self.assertFalse(args.verbose)
+        self.assertFalse(args.multi_file)
 
-    #         self.assertFalse(args.exclude_unannotated_regions)
-    #         self.assertFalse(args.contours_to_mesh)
     def test_config_path(self):
         """Test setting of arg config_path"""
         config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
@@ -231,12 +233,6 @@ class TestParser_convert(unittest.TestCase):
         args, _ = parse_args(shlex.split('convert -d "Some details" {}'.format(self.test_data_file)))
         # assertions
         self.assertEqual(args.details, 'Some details')
-
-    #     def test_contours_to_mesh(self):
-    #         """Test convert parser contours to mesh"""
-    #         args, _ = parse_args(shlex.split('convert -M {}'.format(self.test_data_file)))
-    #         # assertions
-    #         self.assertTrue(args.contours_to_mesh)
 
     def test_output_sff(self):
         """Test convert parser to .sff"""
@@ -284,6 +280,43 @@ class TestParser_convert(unittest.TestCase):
         # assertions
         self.assertTrue(args.verbose)
 
+    def test_multifile_map(self):
+        """Test that multi-file works for CCP4 masks"""
+        args, _ = utils.parse_and_split('convert -v -m {}'.format(' '.join(self.empty_maps)))
+        # assertions
+        self.assertTrue(args.multi_file)
+        self.assertItemsEqual(args.from_file, self.empty_maps)
+
+    def test_multifile_stl(self):
+        """Test that multi-file works for STLs"""
+        args, _ = utils.parse_and_split('convert -v -m {}'.format(' '.join(self.empty_stls)))
+        # assertions
+        self.assertTrue(args.multi_file)
+        self.assertItemsEqual(args.from_file, self.empty_stls)
+
+    def test_multifile_map_fail1(self):
+        """Test that excluding -m issues a warning for CCP4"""
+        args, _ = parse_args(shlex.split('convert -v {}'.format(' '.join(self.empty_maps))))
+        # assertions
+        self.assertIsNone(args)
+
+    def test_multifile_stl_fail2(self):
+        """Test that excluding -m issues a warning for STL"""
+        args, _ = parse_args(shlex.split('convert -v {}'.format(' '.join(self.empty_stls))))
+        # assertions
+        self.assertIsNone(args)
+
+    def test_multifile_xxx_fail3(self):
+        """Test that other file format fails for multifile e.g. Segger (.seg)"""
+        args, _ = parse_args(shlex.split('convert -v {}'.format(' '.join(self.empty_segs))))
+        # assertions
+        self.assertIsNone(args)
+
+    def test_multifile_xxx_fail4(self):
+        """Test that other file format fails even with -m e.g. Segger (.seg)"""
+        args, _ = parse_args(shlex.split('convert -v -m {}'.format(' '.join(self.empty_segs))))
+        # assertions
+        self.assertIsNone(args)
 
 #     def test_exclude_unannotated_regions(self):
 #         """Test that we set the exclude unannotated regions flag"""
@@ -663,8 +696,9 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         source_id = _random_integers(start=1)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, source_id)), config_fn=self.config_fn, )
-        with self.assertRaises(ValueError):
-            args, _ = parse_args(shlex.split(cmd))
+        args, _ = parse_args(shlex.split(cmd))
+        # with self.assertRaises(ValueError):
+        self.assertIsNone(args)
 
     def test_copy_all(self):
         """Test that we can copy to all others"""

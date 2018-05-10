@@ -31,49 +31,56 @@ def handle_convert(args, configs):  # @UnusedVariable
     :type configs: ``sfftk.core.configs.Configs``
     :return int status: status
     """
-    if re.match(r'.*\.mod$', args.from_file, re.IGNORECASE):
-        if args.verbose:
-            print_date("Converting from IMOD file {}".format(args.from_file))
-        from .formats.mod import IMODSegmentation
-        seg = IMODSegmentation(args.from_file, re.IGNORECASE)
-        if not seg.has_mesh_or_shapes:
-            print_date("IMOD segmentation missing meshes or shapes. Please add meshes using imodmesh utility")
-            return 1
-        if args.verbose:
-            print_date("Created IMODSegmentation object")
-    elif re.match(r'.*\.seg$', args.from_file, re.IGNORECASE):
-        from .formats.seg import SeggerSegmentation
-        seg = SeggerSegmentation(args.from_file, top_level=args.top_level_only)
-    elif re.match(r'.*\.surf$', args.from_file, re.IGNORECASE):
-        from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
-        seg = AmiraHyperSurfaceSegmentation(args.from_file)
-    elif re.match(r'.*\.am$', args.from_file, re.IGNORECASE):
-        from .formats.am import AmiraMeshSegmentation
-        seg = AmiraMeshSegmentation(args.from_file)
-    elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE):
-        from .formats.map import MapSegmentation
-        seg = MapSegmentation(args.from_file)
-    elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
-        from .formats.stl import STLSegmentation
-        seg = STLSegmentation(args.from_file)
-    elif re.match(r'.*\.sff$', args.from_file, re.IGNORECASE):
-        if args.verbose:
-            print_date("Converting from EMDB-SFf (XML) file {}".format(args.from_file))
-        seg = schema.SFFSegmentation(args.from_file)
-    elif re.match(r'.*\.hff$', args.from_file, re.IGNORECASE):
-        if args.verbose:
-            print_date("Converting from EMDB-SFF (HDF5) file {}".format(args.from_file))
-        seg = schema.SFFSegmentation(args.from_file)
-        if args.verbose:
-            print_date("Created SFFSegmentation object")
-    elif re.match(r'.*\.json$', args.from_file, re.IGNORECASE):
-        if args.verbose:
-            print_date("Converting from EMDB-SFF (JSON) file {}".format(args.from_file))
-        seg = schema.SFFSegmentation(args.from_file)
-        if args.verbose:
-            print_date("Created SFFSegmentation object")
+    if args.multi_file:
+        if re.match(r'.*\.map$', args.from_file[0], re.IGNORECASE):
+            from .formats.map import MapSegmentation
+            seg = MapSegmentation(args.from_file)
+        else:
+            raise ValueError("Unknown file type %s" % args.from_file)
     else:
-        raise ValueError("Unknown file type %s" % args.from_file)
+        if re.match(r'.*\.mod$', args.from_file, re.IGNORECASE):
+            if args.verbose:
+                print_date("Converting from IMOD file {}".format(args.from_file))
+            from .formats.mod import IMODSegmentation
+            seg = IMODSegmentation(args.from_file, re.IGNORECASE)
+            if not seg.has_mesh_or_shapes:
+                print_date("IMOD segmentation missing meshes or shapes. Please add meshes using imodmesh utility")
+                return 1
+            if args.verbose:
+                print_date("Created IMODSegmentation object")
+        elif re.match(r'.*\.seg$', args.from_file, re.IGNORECASE):
+            from .formats.seg import SeggerSegmentation
+            seg = SeggerSegmentation(args.from_file, top_level=args.top_level_only)
+        elif re.match(r'.*\.surf$', args.from_file, re.IGNORECASE):
+            from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
+            seg = AmiraHyperSurfaceSegmentation(args.from_file)
+        elif re.match(r'.*\.am$', args.from_file, re.IGNORECASE):
+            from .formats.am import AmiraMeshSegmentation
+            seg = AmiraMeshSegmentation(args.from_file)
+        # elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE):
+        #     from .formats.map import MapSegmentation
+        #     seg = MapSegmentation(args.from_file)
+        elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
+            from .formats.stl import STLSegmentation
+            seg = STLSegmentation(args.from_file)
+        elif re.match(r'.*\.sff$', args.from_file, re.IGNORECASE):
+            if args.verbose:
+                print_date("Converting from EMDB-SFf (XML) file {}".format(args.from_file))
+            seg = schema.SFFSegmentation(args.from_file)
+        elif re.match(r'.*\.hff$', args.from_file, re.IGNORECASE):
+            if args.verbose:
+                print_date("Converting from EMDB-SFF (HDF5) file {}".format(args.from_file))
+            seg = schema.SFFSegmentation(args.from_file)
+            if args.verbose:
+                print_date("Created SFFSegmentation object")
+        elif re.match(r'.*\.json$', args.from_file, re.IGNORECASE):
+            if args.verbose:
+                print_date("Converting from EMDB-SFF (JSON) file {}".format(args.from_file))
+            seg = schema.SFFSegmentation(args.from_file)
+            if args.verbose:
+                print_date("Created SFFSegmentation object")
+        else:
+            raise ValueError("Unknown file type %s" % args.from_file)
     # export (convert first if needed)
     if isinstance(seg, schema.SFFSegmentation):
         sff_seg = seg  #  no conversion needed

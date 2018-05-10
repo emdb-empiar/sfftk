@@ -78,11 +78,16 @@ example, the ``software`` attribute will be of class :py:class:`SFFSoftware`.
 
 """
 from __future__ import division, print_function
+
+import base64
 import re
+import struct
 import sys
+import zlib
 from warnings import warn
 
 import h5py
+import numpy
 import numpy as np
 
 import emdb_sff as sff
@@ -91,11 +96,9 @@ from ..core.print_tools import print_date
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-09-14"
-__updated__ = '2018-02-23'
 
 # ensure that we can read/write encoded data
 sff.ExternalEncoding = "utf-8"
-
 
 # unused = 0
 # containers = [
@@ -105,14 +108,37 @@ sff.ExternalEncoding = "utf-8"
 #     sff.transformListType
 #     ]
 
+FORMAT_CHARS = {
+    'int8': 'b',
+    'uint8': 'B',
+    'int16': 'h',
+    'uint16': 'H',
+    'int32': 'i',
+    'uint32': 'I',
+    'int64': 'q',
+    'uint64': 'Q',
+    'float32': 'f',
+    'float64': 'd',
+}
+
+ENDIANNESS = {
+    'little': '<',
+    'big': '>',
+}
+
+
 class SFFTypeError(Exception):
     """SFF type error"""
 
-    def __init__(self, value):
+    def __init__(self, value, message=None):
         self.value = value
+        self.message = message
 
     def __str__(self):
-        return repr("not object of {}".format(self.value))
+        if self.message is None:
+            return repr("not object of {}".format(self.value))
+        else:
+            return repr("no object of {}; {}".format(self.value, self.message))
 
 
 class SFFType(object):
@@ -279,7 +305,14 @@ class SFFType(object):
                 else:
                     raise ValueError('{} is not of type {}'.format(var, self.gds_type))
             else:
-                self._local = self.gds_type(*args, **kwargs)  # 1 and #3 - SFFType from (*a, **kw)
+                # restructure kwargs of type SFF* to their gds_type equivalents
+                _kwargs = dict()
+                for k in kwargs:
+                    if isinstance(kwargs[k], SFFType):
+                        _kwargs[k] = kwargs[k]._local
+                    else:
+                        _kwargs[k] = kwargs[k]
+                self._local = self.gds_type(*args, **_kwargs)  # 1 and #3 - SFFType from (*a, **kw)
                 # ensure that the version is copied without requiring user intervention
                 if isinstance(self._local, sff.segmentation):
                     self.version = self._local.schemaVersion
@@ -345,10 +378,10 @@ class SFFType(object):
         if self.iter_attr:
             for item in self:
                 if isinstance(item, SFFType):
-                    if isinstance(item, SFFContourPoint):
-                        pass  # contours points do not have ids (no reason why they can't though)
-                    else:
-                        self.iter_dict[item.id] = item
+                    # if isinstance(item, SFFContourPoint):
+                    #     pass  # contours points do not have ids (no reason why they can't though)
+                    # else:
+                    self.iter_dict[item.id] = item
                 elif isinstance(item, int):
                     self.iter_dict[item] = item
                 elif isinstance(item, str):
@@ -384,8 +417,8 @@ class SFFType(object):
         """Reset the ID for a subclass"""
         if issubclass(cls, SFFTransform):
             cls.transform_id = -1
-        elif issubclass(cls, SFFContour):
-            cls.contour_id = -1
+        # elif issubclass(cls, SFFContour):
+        #     cls.contour_id = -1
         elif issubclass(cls, SFFMesh):
             cls.mesh_id = -1
         elif issubclass(cls, SFFPolygon):
@@ -396,6 +429,8 @@ class SFFType(object):
             cls.shape_id = -1
         elif issubclass(cls, SFFVertex):
             cls.vertex_id = -1
+        elif issubclass(cls, SFFLattice):
+            cls.lattice_id = -1
 
     def export(self, fn, *_args, **_kwargs):
         """Export to a file on disc
@@ -527,52 +562,22 @@ class SFFRGBA(SFFType):
         else:
             return True
 
-
-class SFFColour(SFFType):
-    """Segment colour"""
-    gds_type = sff.colourType
-    ref = "Colour"
-    repr_string = "Segment colour: {}"
-    repr_args = ('rgba',)
-
-    # attributes
-    name = SFFAttribute('name')
-    rgba = SFFAttribute('rgba', sff_type=SFFRGBA)
-
-    def __nonzero__(self):
-        if self.name or self.rgba:
-            return True
-        else:
-            return False
-
     def as_hff(self, parent_group, name="colour"):
         """Return the data of this object as an HDF5 group in the given parent group"""
-
         assert isinstance(parent_group, h5py.Group)
-
-        group = parent_group.create_group(name)
-
-        if self.name:
-            group['name'] = self.name
-        elif self.rgba:
-            group['rgba'] = self.rgba.value
-
+        parent_group[name] = self.value
+        # group = parent_group.create_group(name)
+        # group['rgba'] = self.value
         return parent_group
 
     @classmethod
     def from_hff(cls, hff_data):
         """Return an SFFType object given an HDF5 object"""
-
         assert isinstance(hff_data, h5py.Group)
-
         obj = cls()
-        if "name" in hff_data:
-            obj.name = hff_data['name'].value
-        elif "rgba" in hff_data:
-            r = SFFRGBA()
-            r.value = hff_data['rgba'].value
-            obj.rgba = r
-
+        # r = SFFRGBA()
+        obj.value = hff_data['colour'].value
+        # obj.rgba = r
         return obj
 
 
@@ -851,6 +856,7 @@ class SFFBiologicalAnnotation(SFFType):
     repr_args = ('numExternalReferences',)
 
     # attributes
+    name = SFFAttribute('name')
     description = SFFAttribute('description')
     externalReferences = SFFAttribute('externalReferences', SFFExternalReferences)
     numberOfInstances = SFFAttribute('numberOfInstances')
@@ -884,6 +890,7 @@ class SFFBiologicalAnnotation(SFFType):
                 ]
             )
             # description and nubmerOfInstances as attributes
+            group['name'] = self.name if self.name else ''
             group['description'] = self.description if self.description else ''
             group['numberOfInstances'] = self.numberOfInstances if self.numberOfInstances > 0 else 0
             i = 0
@@ -897,7 +904,9 @@ class SFFBiologicalAnnotation(SFFType):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
-        if hff_data['description']:
+        if 'name' in hff_data:
+            obj.name = hff_data['name'].value
+        if 'description' in hff_data:
             obj.description = hff_data['description'].value
         obj.numberOfInstances = int(hff_data['numberOfInstances'].value)
         if "externalReferences" in hff_data:
@@ -913,42 +922,200 @@ class SFFThreeDVolume(SFFType):
     """Class representing segments described using a 3D volume"""
     gds_type = sff.threeDVolumeType
     ref = 'threeDVolume'
-    repr_string = "ThreeDVolume formatted segmentation"
+    repr_string = "3D formatted segment"
 
     # attributes
-    id = SFFAttribute('id')
-    file = SFFAttribute('file')
-    objectPath = SFFAttribute('objectPath')
-    contourLevel = SFFAttribute('contourLevel')
+    latticeId = SFFAttribute('latticeId')
+    value = SFFAttribute('value')
     transformId = SFFAttribute('transformId')
-    format = SFFAttribute('format')
 
     def __nonzero__(self):
-        if self.file and self.format:
-            return True
-        else:
+        if self.value is None:
             return False
+        else:
+            return True
+
+    def as_hff(self, parent_group, name="volume"):
+        """Return the data of this object as an HDF5 group in the given parent group"""
+        assert isinstance(parent_group, h5py.Group)
+        group = parent_group.create_group(name)
+        group['latticeId'] = self.latticeId
+        group['value'] = self.value
+        if self.transformId is not None:
+            group['transformId'] = self.transformId
+        return parent_group
+
+    @classmethod
+    def from_hff(cls, hff_data):
+        """Return an SFFType object given an HDF5 object"""
+        assert isinstance(hff_data, h5py.Group)
+        obj = cls()
+        obj.latticeId = hff_data['latticeId'].value
+        obj.value = hff_data['value'].value
+        if 'transformId' in hff_data:
+            obj.transformId = hff_data['transformId'].value
+        return obj
+
+
+class SFFVolume(SFFType):
+    """Class for represention 3-space dimension"""
+    # attributes
+    cols = SFFAttribute('cols')
+    rows = SFFAttribute('rows')
+    sections = SFFAttribute('sections')
+
+    @property
+    def value(self):
+        return self.cols, self.rows, self.sections
+
+    @value.setter
+    def value(self, value):
+        if len(value) == 3:
+            self.cols, self.rows, self.sections = value
+        else:
+            raise SFFTypeError("Iterable", "should be of length 3")
 
     @classmethod
     def from_hff(cls, hff_data):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Dataset)
         obj = cls()
-        obj.file = str(hff_data['file'][0])
-        obj.format = str(hff_data['format'][0])
-        try:
-            obj.contourLevel = float(hff_data['contourLevel'][0])
-        except ValueError:
-            obj.contourLevel = None
-        try:
-            obj.transformId = int(hff_data['transformId'][0])
-        except ValueError:
-            obj.transformId = None
-        try:
-            obj.objectPath = str(hff_data['objectPath'][0])
-        except ValueError:
-            obj.objectPath = None
+        obj.cols = hff_data[0]
+        obj.rows = hff_data[1]
+        obj.sections = hff_data[2]
+        return obj
 
+
+class SFFVolumeStructure(SFFVolume):
+    gds_type = sff.volumeStructureType
+    ref = "3D volume structure: cols, rows, sections"
+    repr_string = "3D volume structure: ({}, {}, {})"
+    repr_args = ('cols', 'rows', 'sections')
+
+    @property
+    def voxelCount(self):
+        return self.cols * self.rows * self.sections
+
+
+class SFFVolumeIndex(SFFVolume):
+    gds_type = sff.volumeIndexType
+    ref = "3D volume start index: cols, rows, sections"
+    repr_string = "3D volume start index: [{}, {}, {}]"
+    repr_args = ('cols', 'rows', 'sections')
+
+
+class SFFLattice(SFFType):
+    """Class representing 3D """
+    gds_type = sff.latticeType
+    ref = "3D lattice"
+    repr_string = "Actual 3D data"
+    lattice_id = -1
+
+    # attributes
+    id = SFFAttribute('id')
+    mode = SFFAttribute('mode')
+    endianness = SFFAttribute('endianness')
+    size = SFFAttribute('size', sff_type=SFFVolumeStructure)
+    start = SFFAttribute('start', sff_type=SFFVolumeIndex)
+    data = SFFAttribute('data')
+
+    def __new__(cls, *args, **kwargs):
+        cls.lattice_id += 1
+        return super(SFFLattice, cls).__new__(cls, *args, **kwargs)
+
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFLattice, self).__init__(var, *args, **kwargs)
+        if 'id' in kwargs:
+            self._local.id = kwargs['id']
+        elif not var:
+            self._local.id = self.lattice_id
+
+    @staticmethod
+    def encode(mode, endianness, size, data):
+        """Flatten -> Pack -> Zip -> Base64 encode"""
+        assert isinstance(data, numpy.ndarray)
+        binlist = data.flatten().tolist()
+        format_string = "{}{}{}".format(ENDIANNESS[endianness], size, FORMAT_CHARS[mode])
+        binpack = struct.pack(format_string, *binlist)
+        binzip = zlib.compress(binpack)
+        bin64 = base64.b64encode(binzip)
+        return bin64
+
+    def decode(self):
+        """Base64 decode -> Unzip -> Unpack -> Reshape"""
+        binzip = base64.b64decode(self.data)
+        binpack = zlib.decompress(binzip)
+        _count = self.size.voxelCount
+        bindata = struct.unpack("{}{}{}".format(ENDIANNESS[self.endianness], _count, FORMAT_CHARS[self.mode]), binpack)
+        data = numpy.array(bindata).reshape(*self.size.value[::-1])
+        return data
+
+    def as_hff(self, parent_group, name="{}"):
+        """Return the data of this object as an HDF5 group in the given parent group"""
+        assert isinstance(parent_group, h5py.Group)
+        group = parent_group.create_group(name.format(self.id))
+        group['mode'] = self.mode
+        group['endianness'] = self.endianness
+        group['size'] = self.size.value
+        group['start'] = self.start.value
+        group['data'] = self.data
+        return parent_group
+
+    @classmethod
+    def from_hff(cls, hff_data):
+        """Return an SFFType object given an HDF5 object"""
+        assert isinstance(hff_data, h5py.Group)
+        obj = cls()
+        obj.mode = hff_data['mode'].value
+        obj.endianness = hff_data['endianness'].value
+        obj.size = SFFVolumeStructure.from_hff(hff_data['size'])
+        obj.start = SFFVolumeIndex.from_hff(hff_data['start'])
+        obj.data = hff_data['data'].value
+        return obj
+
+
+class SFFLatticeList(SFFType):
+    """A container for lattice objects"""
+    gds_type = sff.latticeListType
+    ref = "Container for 3D lattices"
+    repr_string = "Container with {} 3D lattices"
+    repr_args = ("len()",)
+    iter_attr = ('lattice', SFFLattice)
+    iter_dict = dict()
+
+    def __init__(self, *args, **kwargs):
+        # reset id
+        SFFLattice.reset_id()
+        super(SFFLatticeList, self).__init__(*args, **kwargs)
+
+    def add_lattice(self, l):
+        """Add a lattie to the list of lattices
+
+        :param l: a lattice object
+        :type l: :py:class:`SFFLattice`
+        """
+        if isinstance(l, SFFLattice):
+            self._local.add_lattice(l._local)
+        else:
+            raise SFFTypeError(SFFLattice)
+
+    def as_hff(self, parent_group, name='lattices'):
+        """Return the data of this object as an HDF5 group in the given parent group"""
+        assert isinstance(parent_group, h5py.Group)
+        group = parent_group.create_group(name)
+        for lattice in self:
+            group = lattice.as_hff(group)
+        return parent_group
+
+    @classmethod
+    def from_hff(cls, hff_data):
+        """Return an SFFType object given an HDF5 object"""
+        assert isinstance(hff_data, h5py.Group)
+        obj = cls()
+        for lattice_id in hff_data:
+            L = SFFLattice.from_hff(hff_data[lattice_id])
+            L.id = int(lattice_id)
+            obj.add_lattice(L)
         return obj
 
 
@@ -1184,207 +1351,6 @@ class SFFShapePrimitiveList(SFFType):
                     c.attribute = float(cylinder['attribute'])
                 obj.add_shape(c)
 
-        return obj
-
-
-class SFFContourPoint(SFFType):
-    """Point in 3-space
-
-    .. warning::
-
-        .. deprecated:: EMDB-SFF 0.7.0
-            The only valid segment representations are mesh (:py:class:`SFFMesh`), shape (subclasses of :py:class:`SFFShape`), or 3D volume (:py:class:`SFFThreeDVolume`)
-    """
-    gds_type = sff.floatVectorType
-    ref = "Contour point"
-    repr_string = "Contour point: ({}, {}, {})"
-    repr_args = ('x', 'y', 'z')
-
-    # attributes
-    x = SFFAttribute('x')
-    y = SFFAttribute('y')
-    z = SFFAttribute('z')
-
-    @property
-    def value(self):
-        """Coordinate values of the contour point"""
-        return self.x, self.y, self.z
-
-    @value.setter
-    def value(self, p):
-        if isinstance(p, tuple):
-            if len(p) == 3:
-                self.x, self.y, self.z = p
-            else:
-                raise ValueError("point must have three values")
-        else:
-            raise SFFTypeError(tuple)
-
-
-class SFFContour(SFFType):
-    """Single contour
-
-    .. warning::
-
-        .. deprecated:: EMDB-SFF 0.7.0
-            The only valid segment representations are mesh (:py:class:`SFFMesh`), shape (subclasses of :py:class:`SFFShape`), or 3D volume (:py:class:`SFFThreeDVolume`)
-    """
-    gds_type = sff.contourType
-    ref = "Contour"
-    repr_string = "Contour {} composed of {} points"
-    repr_args = ('id', 'len()')
-    iter_attr = ('p', SFFContourPoint)
-    contour_id = -1
-    iter_dict = dict()
-
-    # attributes
-    id = SFFAttribute('id')
-
-    def __new__(cls, *args, **kwargs):
-        cls.contour_id += 1
-        return super(SFFContour, cls).__new__(cls, *args, **kwargs)
-
-    def __init__(self, c=None, *args, **kwargs):
-        """Initialiser for SFFContour
-        
-        :param bool reset_id: reset the contour ID to start from zero otherwise the ID values across contour lists will be continuous
-        """
-        super(SFFContour, self).__init__(c, *args, **kwargs)
-        if 'id' in kwargs:
-            self._local.id = kwargs['id']
-        elif not c:
-            self._local.id = self.contour_id
-
-    @property
-    def points(self):
-        """Iterable attribute over points in this contour"""
-        return self.__iter__()
-
-    @property
-    def numPoints(self):
-        """The numnber of points in the contour"""
-        return len(self)
-
-    def add_point(self, p):
-        """Add the contour point to this contour
-
-        :param p: a contour point
-        :type p: :py:class:`SFFContourPoint`
-        """
-        if isinstance(p, SFFContourPoint):
-            self._local.add_p(p._local)
-        else:
-            raise SFFTypeError(SFFContourPoint)
-
-    @classmethod
-    def from_hff(cls, hff_data):
-        """Return an SFFType object given an HDF5 object"""
-
-        assert isinstance(hff_data, h5py.Group)
-
-        obj = cls()
-
-        def load_point(p, P):
-            _p = SFFContourPoint()
-            _p.value = tuple(map(float, p))
-            P.add_point(_p)
-            return P
-
-        [load_point(_, obj) for _ in hff_data['points'].value]
-
-        return obj
-
-
-class SFFContourList(SFFType):
-    """Contour list representation
-
-    .. warning::
-
-        .. deprecated:: EMDB-SFF 0.7.0
-            The only valid segment representations are mesh (:py:class:`SFFMesh`), shape (subclasses of :py:class:`SFFShape`), or 3D volume (:py:class:`SFFThreeDVolume`)
-    """
-    gds_type = sff.contourListType
-    ref = "contourList"
-    repr_string = "Contour list with {} contours"
-    repr_args = ("len()",)
-    iter_attr = ('contour', SFFContour)
-    iter_dict = dict()
-
-    # attributes
-    transformId = SFFAttribute('transformId')
-
-    def __init__(self, *args, **kwargs):
-        # reset id of contours
-        SFFContour.reset_id()
-        super(SFFContourList, self).__init__(*args, **kwargs)
-
-    @property
-    def transformId(self):
-        """The ID of the transform associated with this list of contours"""
-        return self._local.transformId
-
-    @transformId.setter
-    def transformId(self, i):
-        if isinstance(i, int):
-            self._local.transformId = i
-        else:
-            raise SFFTypeError(int)
-
-    @property
-    def contours(self):
-        """Iterable attribute over the contours"""
-        return self.__iter__()
-
-    def add_contour(self, c):
-        """Add a contour to the list of contours
-
-        :param c: a contour
-        :type c: :py:class:`SFFContour`
-        """
-        if isinstance(c, SFFContour):
-            self._local.add_contour(c._local)
-        else:
-            raise SFFTypeError(SFFContour)
-
-    def as_hff(self, parent_group, name="contours"):
-        """Return the data of this object as an HDF5 group in the given parent group"""
-        assert isinstance(parent_group, h5py.Group)
-        # /sff/segments/1/contours
-        group = parent_group.create_group(name)
-        # todo: get rid of contours everywhere
-        for contour in self.contours:
-            # /sff/segments/1/contours/0 - contour 0
-            h_contour = group.create_group("{}".format(contour.id))
-            # structure
-            # /sff/segments/1/contours/0/points
-            h_points = h_contour.create_dataset(
-                "points",
-                (contour.numPoints,),
-                dtype=[
-                    ('x', 'f4'),
-                    ('y', 'f4'),
-                    ('z', 'f4'),
-                ],
-            )
-            # load data
-            i = 0
-            for point in contour.points:
-                #                 print 'i: {} | contour.numPoints: {}: unused: {}'.format(i, contour.numPoints, unused)
-                h_points[i] = (point.x, point.y, point.z)
-                i += 1
-        if self.transformId:
-            group["transformId"] = self.transformId
-        return parent_group
-
-    @classmethod
-    def from_hff(cls, hff_data):
-        """Return an SFFType object given an HDF5 object"""
-        assert isinstance(hff_data, h5py.Group)
-        obj = cls()
-        for contour_id in hff_data:
-            C = SFFContour.from_hff(hff_data["{}".format(contour_id)])
-            C.id = int(contour_id)
-            obj.add_contour(C)
         return obj
 
 
@@ -1743,9 +1709,9 @@ class SFFSegment(SFFType):
     parentID = SFFAttribute('parentID')
     biologicalAnnotation = SFFAttribute('biologicalAnnotation', sff_type=SFFBiologicalAnnotation)
     complexesAndMacromolecules = SFFAttribute('complexesAndMacromolecules', sff_type=SFFComplexesAndMacromolecules)
-    colour = SFFAttribute('colour', sff_type=SFFColour)
+    colour = SFFAttribute('colour', sff_type=SFFRGBA)
     meshes = SFFAttribute('meshList', sff_type=SFFMeshList)
-    contours = SFFAttribute('contourList', sff_type=SFFContourList)
+    # contours = SFFAttribute('contourList', sff_type=SFFContourList)
     volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume)
     shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList)
     mask = SFFAttribute('mask')  # used in sfftkplus
@@ -1785,8 +1751,6 @@ class SFFSegment(SFFType):
         # add segmentation data
         if self.meshes:
             group = self.meshes.as_hff(group)
-        if self.contours:
-            group = self.contours.as_hff(group)
         if self.shapes:
             # /sff/segments/1/shapes
             h_shapes = group.create_group("shapes")
@@ -1865,25 +1829,7 @@ class SFFSegment(SFFType):
                     warn("Unimplemented portion")
         if self.volume:
             # /sff/segments/1/volume
-            vl_str = h5py.special_dtype(vlen=str)
-            h_vol = group.create_dataset(
-                "volume",
-                (1,),
-                dtype=[
-                    ('file', vl_str),
-                    ('objectPath', vl_str),
-                    ('contourLevel', 'f4'),
-                    ('transformId', 'u4'),
-                    ('format', vl_str),
-                ]
-            )
-            h_vol[0] = (
-                self.volume.file,
-                self.volume.objectPath if self.volume.objectPath else '',
-                self.volume.contourLevel if self.volume.contourLevel else -1.0,
-                self.volume.transformId if self.volume.transformId else 0,
-                self.volume.format,
-            )
+            group = self.volume.as_hff(group)
         return parent_group
 
     @classmethod
@@ -1898,11 +1844,9 @@ class SFFSegment(SFFType):
             obj.complexesAndMacromolecules = SFFComplexesAndMacromolecules.from_hff(
                 hff_data["complexesAndMacromolecules"])
         if "colour" in hff_data:
-            obj.colour = SFFColour.from_hff(hff_data["colour"])
+            obj.colour = SFFRGBA.from_hff(hff_data)
         if "meshes" in hff_data:
             obj.meshes = SFFMeshList.from_hff(hff_data["meshes"])
-        if "contours" in hff_data:
-            obj.contours = SFFContourList.from_hff(hff_data["contours"])
         if "shapes" in hff_data:
             obj.shapes = SFFShapePrimitiveList.from_hff(hff_data["shapes"])
         if "volume" in hff_data:
@@ -2005,69 +1949,6 @@ class SFFTransformationMatrix(SFFTransform):
     """
 
 
-class SFFCanonicalEulerAngles(SFFTransform):
-    """Canonical euler angles
-
-    .. warning::
-
-        .. deprecated:: EMDB-SFF 0.7.0
-            All matrices should be defined using the :py:class:`SFFTransformationMatrix` class making the appropriate conversion.
-    """
-    gds_type = sff.canonicalEulerAnglesType
-    ref = "canonicalEulerAngles"
-
-    # attributes
-    phi = SFFAttribute('phi')
-    theta = SFFAttribute('theta')
-    psi = SFFAttribute('psi')
-
-    def __new__(cls, *args, **kwargs):
-        cls.transform_id = super(SFFCanonicalEulerAngles, cls).transform_id + 1
-        return super(SFFCanonicalEulerAngles, cls).__new__(cls, *args, **kwargs)
-
-    def __init__(self, t=None, *args, **kwargs):
-        super(SFFCanonicalEulerAngles, self).__init__(t, *args, **kwargs)
-        if 'id' in kwargs:
-            self._local.id = kwargs['id']
-            SFFTransform.transform_id = self.transform_id
-        elif not t:
-            self._local.id = self.transform_id
-            SFFTransform.transform_id = self.transform_id
-        self._local.original_tagname_ = self.ref
-
-
-class SFFViewVectorRotation(SFFTransform):
-    """View vector rotation
-
-    .. warning::
-
-        .. deprecated:: EMDB-SFF 0.7.0
-            All matrices should be defined using the :py:class:`SFFTransformationMatrix` class making the appropriate conversion.
-    """
-    gds_type = sff.viewVectorRotationType
-    ref = "viewVectorRotation"
-
-    # attributes
-    x = SFFAttribute('x')
-    y = SFFAttribute('y')
-    z = SFFAttribute('z')
-    r = SFFAttribute('r')
-
-    def __new__(cls, *args, **kwargs):
-        cls.transform_id = super(SFFViewVectorRotation, cls).transform_id + 1
-        return super(SFFViewVectorRotation, cls).__new__(cls, *args, **kwargs)
-
-    def __init__(self, t=None, *args, **kwargs):
-        super(SFFViewVectorRotation, self).__init__(t, *args, **kwargs)
-        if 'id' in kwargs:
-            self._local.id = kwargs['id']
-            SFFTransform.transform_id = self.transform_id
-        elif not t:
-            self._local.id = self.transform_id
-            SFFTransform.transform_id = self.transform_id
-        self._local.original_tagname_ = self.ref
-
-
 class SFFTransformList(SFFType):
     """Container for transforms"""
     gds_type = sff.transformListType
@@ -2084,10 +1965,6 @@ class SFFTransformList(SFFType):
     def _transform_cast(transform):
         if isinstance(transform, sff.transformationMatrixType):
             return SFFTransformationMatrix(transform)
-        elif isinstance(transform, sff.canonicalEulerAnglesType):
-            return SFFCanonicalEulerAngles(transform)
-        elif isinstance(transform, sff.viewVectorRotationType):
-            return SFFViewVectorRotation(transform)
         else:
             raise TypeError("unknown shape type '{}'".format(type(transform)))
 
@@ -2098,16 +1975,6 @@ class SFFTransformList(SFFType):
     def transformationMatrixCount(self):
         """The number of :py:class:`SFFTransformationMatrix` objects in this transform container"""
         return self._transform_count(sff.transformationMatrixType)
-
-    @property
-    def canonicalEulerAnglesCount(self):
-        """The number of :py:class:`SFFCanonicalEulerAngles` objects in this transform container """
-        return self._transform_count(sff.canonicalEulerAnglesType)
-
-    @property
-    def viewVectorRotationCount(self):
-        """The number of :py:class:`SFFViewVectorRotation` objects in this transform container"""
-        return self._transform_count(sff.viewVectorRotationType)
 
     def add_transform(self, T):
         """Add the specified transform to this transform container"""
@@ -2170,29 +2037,6 @@ class SFFTransformList(SFFType):
                 )
             else:
                 h_tM = group.create_group("transformationMatrix")
-        if self.canonicalEulerAnglesCount:
-            h_cEA = group.create_dataset(
-                "canonicalEulerAngles",
-                (self.canonicalEulerAnglesCount,),
-                dtype=[
-                    ('id', 'u4'),
-                    ('phi', 'f4'),
-                    ('theta', 'f4'),
-                    ('psi', 'f4'),
-                ]
-            )
-        if self.viewVectorRotationCount:
-            h_vVR = group.create_dataset(
-                "viewVectorRotation",
-                (self.viewVectorRotationCount,),
-                dtype=[
-                    ('id', 'u4'),
-                    ('x', 'f4'),
-                    ('y', 'f4'),
-                    ('z', 'f4'),
-                    ('r', 'f4'),
-                ]
-            )
         i = 0  # h_tM index
         j = 0  # h_cEA index
         k = 0  # h_vVR index
@@ -2214,12 +2058,6 @@ class SFFTransformList(SFFType):
                     )
                     tM[0] = (transform.id, transform.rows, transform.cols, transform.data_array)
                     i += 1
-            elif transform.ref == "canonicalEulerAngles":
-                h_cEA[j] = (transform.id, transform.phi, transform.theta, transform.psi)
-                j += 1
-            elif transform.ref == "viewVectorRotation":
-                h_vVR[k] = (transform.id, transform.x, transform.y, transform.z, transform.r)
-                k += 1
         return parent_group
 
     @classmethod
@@ -2238,23 +2076,6 @@ class SFFTransformList(SFFType):
                 T.rows = transform['rows']
                 T.cols = transform['cols']
                 T.data = " ".join(map(str, transform['data'].flatten()))
-                obj.add_transform(T)
-        if "canonicalEulerAngles" in hff_data:
-            for transform in hff_data['canonicalEulerAngles']:
-                T = SFFCanonicalEulerAngles(type="canonicalEulerAngles")
-                T.id = transform['id']
-                T.phi = transform['phi']
-                T.theta = transform['theta']
-                T.psi = transform['psi']
-                obj.add_transform(T)
-        if "viewVectorRotations" in hff_data:
-            for transform in hff_data['viewVectorRotations']:
-                T = SFFViewVectorRotation(type="viewVectorRotation")
-                T.id = transform['id']
-                T.x = transform['x']
-                T.y = transform['y']
-                T.z = transform['z']
-                T.r = transform['r']
                 obj.add_transform(T)
         return obj
 
@@ -2287,8 +2108,8 @@ class SFFSoftware(SFFType):
         """Return the data of this object as an HDF5 group in the given parent group"""
         assert isinstance(parent_group, h5py.Group)
         group = parent_group.create_group(name)
-        group['name'] = self.name
-        group['version'] = self.version
+        group['name'] = self.name if self.name else ''
+        group['version'] = self.version if self.version else ''
         if self.processingDetails:
             group['processingDetails'] = self.processingDetails
         return parent_group
@@ -2299,7 +2120,7 @@ class SFFSoftware(SFFType):
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
         obj.name = hff_data['name'].value
-        obj.version = hff_data['version'].value
+        obj.version = str(hff_data['version'].value)
         if 'processingDetails' in hff_data:
             obj.processingDetails = hff_data['processingDetails'].value
         return obj
@@ -2410,12 +2231,12 @@ class SFFSegmentation(SFFType):
     name = SFFAttribute('name')
     version = SFFAttribute('version')
     software = SFFAttribute('software', sff_type=SFFSoftware)
-    filePath = SFFAttribute('filePath')
     primaryDescriptor = SFFAttribute('primaryDescriptor')
     transforms = SFFAttribute('transformList', sff_type=SFFTransformList)
     boundingBox = SFFAttribute('boundingBox', sff_type=SFFBoundingBox)
     globalExternalReferences = SFFAttribute('globalExternalReferences', sff_type=SFFGlobalExternalReferences)
     segments = SFFAttribute('segmentList', sff_type=SFFSegmentList)
+    lattices = SFFAttribute('latticeList', sff_type=SFFLatticeList)
     details = SFFAttribute('details')
 
     # properties, methods
@@ -2448,9 +2269,8 @@ class SFFSegmentation(SFFType):
             group = parent_group.create_group(name)
         else:
             group = parent_group
-        group['name'] = self.name
+        group['name'] = self.name if self.name else ''
         group['version'] = self.version
-        group['filePath'] = self.filePath
         group['primaryDescriptor'] = self.primaryDescriptor
         # if we are adding another group then don't set dict style; just return the populated group
         group = self.software.as_hff(group)
@@ -2475,6 +2295,7 @@ class SFFSegmentation(SFFType):
                 h_gext[i] = (gExtRef.type, gExtRef.otherType, gExtRef.value, gExtRef.label, gExtRef.description)
                 i += 1
         group = self.segments.as_hff(group)
+        group = self.lattices.as_hff(group)
         group['details'] = self.details if self.details else ''
         return parent_group
 
@@ -2496,10 +2317,10 @@ class SFFSegmentation(SFFType):
                 hff_data.filename
             ))
             sys.exit(1)
-        obj.version = hff_data['version'].value
+        obj.version = str(hff_data['version'].value)
         obj.software = SFFSoftware.from_hff(hff_data['software'])
         obj.transforms = SFFTransformList.from_hff(hff_data['transforms'])
-        obj.filePath = hff_data['filePath'].value
+        # obj.filePath = hff_data['filePath'].value
         obj.primaryDescriptor = hff_data['primaryDescriptor'].value
         if 'boundingBox' in hff_data:
             obj.boundingBox = SFFBoundingBox.from_hff(hff_data['boundingBox'])
@@ -2510,6 +2331,7 @@ class SFFSegmentation(SFFType):
                 g.type, g.otherType, g.value, g.label, g.description = gref
                 obj.globalExternalReferences.add_externalReference(g)
         obj.segments = SFFSegmentList.from_hff(hff_data['segments'])
+        obj.lattices = SFFLatticeList.from_hff(hff_data['lattices'])
         obj.details = hff_data['details'].value
         return obj
 
@@ -2534,7 +2356,7 @@ class SFFSegmentation(SFFType):
             'processingDetails': self.software.processingDetails if self.software.processingDetails is not None else None,
         }
         sff_data['primaryDescriptor'] = self.primaryDescriptor
-        sff_data['filePath'] = self.filePath
+        # sff_data['filePath'] = self.filePath
         sff_data['details'] = self.details
         sff_data['transforms'] = list()
         boundingBox = {
@@ -2562,6 +2384,7 @@ class SFFSegmentation(SFFType):
             seg_data['id'] = int(segment.id)
             seg_data['parentID'] = int(segment.parentID)
             bioAnn = dict()
+            bioAnn['name'] = segment.biologicalAnnotation.name if segment.biologicalAnnotation.name is not None else None
             bioAnn['description'] = str(
                 segment.biologicalAnnotation.description) if segment.biologicalAnnotation.description is not None else None
             bioAnn[
@@ -2591,22 +2414,17 @@ class SFFSegmentation(SFFType):
                     'complexes': complexes,
                     'macromolecules': macromolecules,
                 }
-            if segment.colour.name:
-                seg_data['colour'] = segment.colour.name
-            elif segment.colour.rgba:
-                seg_data['colour'] = map(float, segment.colour.rgba.value)
-            if segment.contours:
-                seg_data['contourList'] = len(segment.contours)
+            seg_data['colour'] = map(float, segment.colour.value)
             if segment.meshes:
                 seg_data['meshList'] = len(segment.meshes)
-            if segment.volume:
-                seg_data['threeDVolume'] = {
-                    'file': segment.volume.file,  # mandatory
-                    'format': segment.volume.format,  # mandatory
-                    'objectPath': segment.volume.objectPath if segment.volume.objectPath is not None else None,
-                    'contourLevel': segment.volume.contourLevel if segment.volume.contourLevel is not None else None,
-                    'transformId': segment.volume.transformId if segment.volume.transformId is not None else None,
-                }
+            # exclude geometric data in JSON
+            # if segment.volume is not None:
+            #     seg_data['threeDVolume'] = {
+            #         'latticeId': segment.volume.latticeId,
+            #         'value': int(segment.volume.value),
+            #     }
+            #     if segment.volume.transformId is not None:
+            #         seg_data['threeDVolume']['transformId'] = segment.volume.transformId,
             if segment.shapes:
                 seg_data['shapePrimitiveList'] = len(segment.shapes)
             sff_data['segments'].append(seg_data)
@@ -2636,7 +2454,6 @@ class SFFSegmentation(SFFType):
             version=J['software']['version'],
             processingDetails=J['software']['processingDetails'],
         )
-        sff_seg.filePath = J['filePath']
         sff_seg.primaryDescriptor = J['primaryDescriptor']
         if 'boundingBox' in J:
             sff_seg.boundingBox = SFFBoundingBox(
@@ -2709,18 +2526,13 @@ class SFFSegmentation(SFFType):
                     macromolecules.set_macromolecules(s['complexesAndMacromolecules']['macromolecules'])
                     complexesAndMacromolecules.macromolecules = macromolecules
                 segment.complexesAndMacromolecules = complexesAndMacromolecules
-            segment.colour = SFFColour()
-            segment.colour.rgba = SFFRGBA(
+            segment.colour = SFFRGBA(
                 red=r,
                 green=g,
                 blue=b,
                 alpha=a,
             )
             # in order for sff notes to work with JSON there should be an empty geom
-            if 'contourList' in s:
-                segment.contours = SFFContourList()
-                for _ in xrange(s['contourList']):
-                    segment.contours.add_contour(SFFContour())
             if 'meshList' in s:
                 segment.meshes = SFFMeshList()
                 for _ in xrange(s['meshList']):
@@ -2756,7 +2568,7 @@ class SFFSegmentation(SFFType):
             sys.exit(1)
         # global data
         self.name = other_seg.name
-        self.filePath = other_seg.filePath
+        # self.filePath = other_seg.filePath
         self.software = other_seg.software
         self.globalExternalReferences = other_seg.globalExternalReferences
         self.details = other_seg.details

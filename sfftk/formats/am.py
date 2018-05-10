@@ -7,10 +7,12 @@ sfftk.formats.am
 User-facing reader classes for AmiraMesh files
 
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import inspect
+import sys
 
+import numpy
 import os.path
 
 from .base import Segmentation, Header, Segment, Annotation, Contours, Mesh, Volume
@@ -94,9 +96,7 @@ class AmiraMeshAnnotation(Annotation):
             red, green, blue = random.random(), random.random(), random.random()
             print_date("Colour not defined for segment (Material) {}. Setting colour to random RGB value of {}".format(
                 self.description, (red, green, blue)))
-
-        colour = schema.SFFColour()
-        colour.rgba = schema.SFFRGBA(
+        colour = schema.SFFRGBA(
             red=red,
             green=green,
             blue=blue,
@@ -197,7 +197,11 @@ class AmiraMeshSegment(Segment):
         """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
-        segment.volume = self.volume.convert()
+        # segment.volume = self.volume.convert()
+        segment.volume = schema.SFFThreeDVolume(
+            latticeId=0,
+            value=self.segment_id,
+        )
         return segment
 
 
@@ -313,8 +317,25 @@ class AmiraMeshSegmentation(Segmentation):
             segment = s.convert()
             segments.add_segment(segment)
 
-        # finally pack everyting together
+        # finally pack everything together
         segmentation.segments = segments
+        # lattices
+        lattices = schema.SFFLatticeList()
+        cols, rows, sections = self._volume.shape
+        lattice_size = schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections)
+        lattice_endianness = 'little'
+        lattice_mode = 'uint8'
+        data = self._volume.flatten()
+        lattice = schema.SFFLattice(
+            mode=lattice_mode,
+            endianness=lattice_endianness,
+            size=lattice_size,
+            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
+            data=schema.SFFLattice.encode(mode=lattice_mode, endianness=lattice_endianness,
+                                          size=lattice_size.voxelCount, data=data)
+        )
+        lattices.add_lattice(lattice)
+        segmentation.lattices = lattices
 
         if args.details is not None:
             segmentation.details = args.details

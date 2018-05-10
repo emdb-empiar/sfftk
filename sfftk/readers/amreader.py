@@ -13,7 +13,6 @@ from ..core.print_tools import print_date
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-01-21'
-__updated__ = '2018-02-14'
 
 
 def get_data(fn, *args, **kwargs):

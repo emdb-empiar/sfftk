@@ -18,7 +18,6 @@ from ..readers import stlreader
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-11"
-__updated__ = '2018-02-23'
 
 
 class STLMesh(Mesh):
@@ -81,8 +80,7 @@ class STLAnnotation(Annotation):
         annotation.numberOfInstances = 1
 
         red, green, blue = self.colour
-        colour = schema.SFFColour()
-        colour.rgba = schema.SFFRGBA(
+        colour = schema.SFFRGBA(
             red=red,
             green=green,
             blue=blue,

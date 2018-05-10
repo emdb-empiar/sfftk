@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # setup.py
 from setuptools import setup, find_packages
+from sfftk import SFFTK_VERSION
 
 with open('README.rst') as f:
     long_description = f.read()
 
 setup(
     name="sfftk",
-    version="0.2.1.dev5",
+    version=SFFTK_VERSION,
     packages=find_packages(),
     author="Paul K. Korir, PhD",
     author_email="pkorir@ebi.ac.uk, paul.korir@gmail.com",
@@ -17,7 +18,7 @@ setup(
     license="Apache License",
     keywords="EMDB-SFF, SFF, segmentation",
     install_requires=["ahds", "lxml", "h5py==2.6.0", "requests", "scikit-image", "bitarray", "numpy-stl",
-                      "configparser", "backports.shutil_get_terminal_size"],
+                      "configparser", "backports.shutil_get_terminal_size", "mock"],
     classifiers=[
         # maturity
         'Development Status :: 2 - Pre-Alpha',
