@@ -40,7 +40,7 @@ class TestFormats(unittest.TestCase):
         # seg
         cls.seg_segmentation = seg.SeggerSegmentation(cls.seg_file)
         # map
-        cls.map_segmentation = map.MapSegmentation(cls.map_file)
+        cls.map_segmentation = map.MapSegmentation([cls.map_file])
         # mod
         cls.mod_segmentation = mod.IMODSegmentation(cls.mod_file)
         # stl

@@ -169,6 +169,10 @@ class SeggerHeader(Header):
     def mask(self):
         return self._segmentation.mask
 
+    @property
+    def simplified_mask(self):
+        return self._segmentation.simplify_mask(self.mask)
+
 
 class SeggerSegmentation(Segmentation):
     """Class representing an Segger segmentation
@@ -243,7 +247,7 @@ class SeggerSegmentation(Segmentation):
             endianness=lattice_endianness,
             size=lattice_size,
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=schema.SFFLattice.encode(lattice_mode, lattice_endianness, lattice_size.voxelCount, self.header.mask.value)
+            data=schema.SFFLattice.encode(lattice_mode, lattice_endianness, lattice_size.voxelCount, self.header.simplified_mask)
         )
         segmentation.lattices.add_lattice(lattice)
         # details

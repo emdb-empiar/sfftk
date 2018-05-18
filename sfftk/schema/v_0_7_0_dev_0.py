@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed May  9 11:48:48 2018 by generateDS.py version 2.29.11.
+# Generated Fri May 11 11:06:45 2018 by generateDS.py version 2.29.11.
 # Python 2.7.13 |Continuum Analytics, Inc.| (default, Dec 20 2016, 23:05:08)  [GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)]
 #
 # Command line options:
@@ -1239,14 +1239,14 @@ class transformationMatrixType(GeneratedsSuper):
 class boundingBoxType(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, xmin=0, xmax=None, ymin=0, ymax=None, zmin=0, zmax=None):
+    def __init__(self, xmin='0', xmax=None, ymin='0', ymax=None, zmin='0', zmax=None):
         self.original_tagname_ = None
-        self.xmin = _cast(int, xmin)
-        self.xmax = _cast(int, xmax)
-        self.ymin = _cast(int, ymin)
-        self.ymax = _cast(int, ymax)
-        self.zmin = _cast(int, zmin)
-        self.zmax = _cast(int, zmax)
+        self.xmin = _cast(float, xmin)
+        self.xmax = _cast(float, xmax)
+        self.ymin = _cast(float, ymin)
+        self.ymax = _cast(float, ymax)
+        self.zmin = _cast(float, zmin)
+        self.zmax = _cast(float, zmax)
     def factory(*args_, **kwargs_):
         if CurrentSubclassModule_ is not None:
             subclass = getSubclassFromModule_(
@@ -1270,6 +1270,11 @@ class boundingBoxType(GeneratedsSuper):
     def set_zmin(self, zmin): self.zmin = zmin
     def get_zmax(self): return self.zmax
     def set_zmax(self, zmax): self.zmax = zmax
+    def validate_dimensionType(self, value):
+        # Validate type dimensionType, a restriction on xs:float.
+        if value is not None and Validate_simpletypes_:
+            if value < 0:
+                warnings_.warn('Value "%(value)s" does not match xsd minInclusive restriction on dimensionType' % {"value" : value} )
     def hasContent_(self):
         if (
 
@@ -1300,22 +1305,22 @@ class boundingBoxType(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='boundingBoxType'):
         if self.xmin != 0 and 'xmin' not in already_processed:
             already_processed.add('xmin')
-            outfile.write(' xmin="%s"' % self.gds_format_integer(self.xmin, input_name='xmin'))
+            outfile.write(' xmin=%s' % (quote_attrib(self.xmin), ))
         if self.xmax is not None and 'xmax' not in already_processed:
             already_processed.add('xmax')
-            outfile.write(' xmax="%s"' % self.gds_format_integer(self.xmax, input_name='xmax'))
+            outfile.write(' xmax=%s' % (quote_attrib(self.xmax), ))
         if self.ymin != 0 and 'ymin' not in already_processed:
             already_processed.add('ymin')
-            outfile.write(' ymin="%s"' % self.gds_format_integer(self.ymin, input_name='ymin'))
+            outfile.write(' ymin=%s' % (quote_attrib(self.ymin), ))
         if self.ymax is not None and 'ymax' not in already_processed:
             already_processed.add('ymax')
-            outfile.write(' ymax="%s"' % self.gds_format_integer(self.ymax, input_name='ymax'))
+            outfile.write(' ymax=%s' % (quote_attrib(self.ymax), ))
         if self.zmin != 0 and 'zmin' not in already_processed:
             already_processed.add('zmin')
-            outfile.write(' zmin="%s"' % self.gds_format_integer(self.zmin, input_name='zmin'))
+            outfile.write(' zmin=%s' % (quote_attrib(self.zmin), ))
         if self.zmax is not None and 'zmax' not in already_processed:
             already_processed.add('zmax')
-            outfile.write(' zmax="%s"' % self.gds_format_integer(self.zmax, input_name='zmax'))
+            outfile.write(' zmax=%s' % (quote_attrib(self.zmax), ))
     def exportChildren(self, outfile, level, namespace_='', name_='boundingBoxType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -1330,44 +1335,50 @@ class boundingBoxType(GeneratedsSuper):
         if value is not None and 'xmin' not in already_processed:
             already_processed.add('xmin')
             try:
-                self.xmin = int(value)
+                self.xmin = float(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise ValueError('Bad float/double attribute (xmin): %s' % exp)
+            self.validate_dimensionType(self.xmin)    # validate type dimensionType
         value = find_attr_value_('xmax', node)
         if value is not None and 'xmax' not in already_processed:
             already_processed.add('xmax')
             try:
-                self.xmax = int(value)
+                self.xmax = float(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise ValueError('Bad float/double attribute (xmax): %s' % exp)
+            self.validate_dimensionType(self.xmax)    # validate type dimensionType
         value = find_attr_value_('ymin', node)
         if value is not None and 'ymin' not in already_processed:
             already_processed.add('ymin')
             try:
-                self.ymin = int(value)
+                self.ymin = float(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise ValueError('Bad float/double attribute (ymin): %s' % exp)
+            self.validate_dimensionType(self.ymin)    # validate type dimensionType
         value = find_attr_value_('ymax', node)
         if value is not None and 'ymax' not in already_processed:
             already_processed.add('ymax')
             try:
-                self.ymax = int(value)
+                self.ymax = float(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise ValueError('Bad float/double attribute (ymax): %s' % exp)
+            self.validate_dimensionType(self.ymax)    # validate type dimensionType
         value = find_attr_value_('zmin', node)
         if value is not None and 'zmin' not in already_processed:
             already_processed.add('zmin')
             try:
-                self.zmin = int(value)
+                self.zmin = float(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise ValueError('Bad float/double attribute (zmin): %s' % exp)
+            self.validate_dimensionType(self.zmin)    # validate type dimensionType
         value = find_attr_value_('zmax', node)
         if value is not None and 'zmax' not in already_processed:
             already_processed.add('zmax')
             try:
-                self.zmax = int(value)
+                self.zmax = float(value)
             except ValueError as exp:
-                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+                raise ValueError('Bad float/double attribute (zmax): %s' % exp)
+            self.validate_dimensionType(self.zmax)    # validate type dimensionType
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class boundingBoxType

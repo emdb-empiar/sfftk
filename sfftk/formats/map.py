@@ -11,9 +11,13 @@ from __future__ import division
 import inspect
 
 import os.path
+import sys
 
+import sfftk.core.utils
 from .base import Segmentation, Header, Segment, Annotation, Volume
 from .. import schema
+from ..core.print_tools import print_date
+from ..core.utils import printable_substring
 from ..readers import mapreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -88,6 +92,18 @@ class MapAnnotation(Annotation):
         return self._nsstart
 
     @property
+    def x_length(self):
+        return self._x_length
+
+    @property
+    def y_length(self):
+        return self._y_length
+
+    @property
+    def z_length(self):
+        return self._z_length
+
+    @property
     def mode(self):
         if self._mode == 3 or self._mode == 4:
             raise ValueError("Fourier transform instead of segmentation")
@@ -96,7 +112,10 @@ class MapAnnotation(Annotation):
 
     @property
     def endianness(self):
-        if self._machst[0] == '\x44' and self._machst[1] == '\x41' and self._machst[2] == '\x00' and self._machst[3] == '\x00':
+        if (self._machst[0] == '\x44' and self._machst[1] == '\x41' and self._machst[2] == '\x00' and self._machst[3] == '\x00') or \
+            (self._machst[0] == 'D' and self._machst[1] == 'D' and self._machst[2] == '\x00' and self._machst[3] == '\x00') or \
+                (self._machst[0] == 'D' and self._machst[1] == 'A' and self._machst[2] == '\x00' and self._machst[
+                    3] == '\x00'):
             return 'little'
         elif self._machst[0] == '\x11' and self._machst[1] == '\x11' and self._machst[2] == '\x00' and self._machst[3] == '\x00':
             return 'big'
@@ -104,9 +123,9 @@ class MapAnnotation(Annotation):
             raise ValueError("MACHST = ", self._machst)
 
     @property
-    def description(self):
+    def name(self):
         """Segment description"""
-        return None
+        return printable_substring(self._label_0)
 
     @property
     def colour(self):
@@ -116,14 +135,14 @@ class MapAnnotation(Annotation):
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
-        annotation.description = self.description
+        annotation.name = self.name
         annotation.numberOfInstances = 1
         import random
         from warnings import warn
         red, green, blue = random.random(), random.random(), random.random()
-        warn(
-            "Colour not defined for mask segments. Setting colour to random RGB value of {}".format((red, green, blue)))
-
+        print_date(
+            "Colour not defined for mask segments. Setting colour to random RGB value of {}".format((red, green, blue))
+        )
         colour = schema.SFFRGBA(
             red=red,
             green=green,
@@ -146,7 +165,7 @@ class MapSegment(Segment):
     # @property
     # def volume(self):
     #     """Three-D volume data in this segment"""
-    #     return MapVolume(self._segmentation)
+    #     return MapVolume(self._map_obj)
 
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
@@ -187,50 +206,62 @@ MODE_STRING = {
     2:  'float32',
 }
 
-# class MapHeader(Header):
-#     """Class defining the header in a CCP4 file"""
-#
-#     def __init__(self, segmentation):
-#         self._segmentation = segmentation._segmentation
-#         for attr in dir(self._segmentation):
-#             if attr[:2] == "__":
-#                 continue
-#             if inspect.ismethod(getattr(self._segmentation, attr)):
-#                 continue
-#             if attr == "voxels":  # leave the voxels for the volume
-#                 continue
-#             setattr(self, attr, getattr(self._segmentation, attr))
-#
-#     @property
-#     def cols(self):
-#         return self._nc
-#
-#     @property
-#     def rows(self):
-#         return self._nr
-#
-#     @property
-#     def sections(self):
-#         return self._ns
-#
-#     @property
-#     def start_cols(self):
-#         return self._ncstart
-#
-#     @property
-#     def start_rows(self):
-#         return self._nrstart
-#
-#     @property
-#     def start_sections(self):
-#         return self._nsstart
-#
-#     @property
-#     def mode(self):
-#         if self._mode == 3 or self._mode == 4:
-#             raise ValueError("Fourier transform instead of segmentation")
-#         elif 0 <= self._mode <= 2:
-#             return MODE_STRING[self._mode]
+class MapHeader(Header):
+    """Class defining the header in a CCP4 file"""
+
+    def __init__(self, segment):
+        self._map_obj = segment.annotation._map_obj
+        for attr in dir(self._map_obj):
+            if attr[:2] == "__":
+                continue
+            if inspect.ismethod(getattr(self._map_obj, attr)):
+                continue
+            if attr == "voxels":  # leave the voxels for the volume
+                continue
+            setattr(self, attr, getattr(self._map_obj, attr))
+
+    @property
+    def cols(self):
+        return self._nc
+
+    @property
+    def rows(self):
+        return self._nr
+
+    @property
+    def sections(self):
+        return self._ns
+
+    @property
+    def start_cols(self):
+        return self._ncstart
+
+    @property
+    def start_rows(self):
+        return self._nrstart
+
+    @property
+    def start_sections(self):
+        return self._nsstart
+
+    @property
+    def x_length(self):
+        return self._x_length
+
+    @property
+    def y_length(self):
+        return self._y_length
+
+    @property
+    def z_length(self):
+        return self._z_length
+
+    @property
+    def mode(self):
+        if self._mode == 3 or self._mode == 4:
+            raise ValueError("Fourier transform instead of segmentation")
+        elif 0 <= self._mode <= 2:
+            return MODE_STRING[self._mode]
 #
 #     def convert(self, *args, **kwargs):
 #         """Convert this object into an EMDB-SFF segmentation header
@@ -255,18 +286,35 @@ class MapSegmentation(Segmentation):
 
         # set the segmentation attribute
         self._segments = list()
-        for fn in fns:
-            self._segments.append(MapSegment(mapreader.get_data(fn)))
-        # self._segmentation = mapreader.get_data(fn)
+        cols, rows, sections = 0, 0, 0
+        for fi, fn in enumerate(fns):
+            self._segments.append(MapSegment(mapreader.get_data(fn, *args, **kwargs)))
+            segment_annotation = self._segments[fi].annotation
+            if fi == 0:
+                cols = segment_annotation.cols
+                rows = segment_annotation.rows
+                sections = segment_annotation.sections
+            else:
+                if cols != segment_annotation.cols or rows != segment_annotation.rows or sections != segment_annotation.sections:
+                    print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
+                        os.path.basename(fn), segment_annotation.cols, segment_annotation.rows, segment_annotation.sections)
+                    )
+                    print_date("Error: The provided CCP4 masks have different volume dimensions")
+                    sys.exit(1)
+            print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
+                os.path.basename(fn), cols, rows, sections)
+            )
+
+        # self._map_obj = mapreader.get_data(fn)
 
     """
     :TODO: document attributes and methods of readers
     """
 
-    # @property
-    # def header(self):
-    #     """Segmentation metadata"""
-    #     return MapHeader(self)
+    @property
+    def header(self):
+        """Segmentation metadata must be exactly as in one segment"""
+        return MapHeader(self.segments[0])
 
     @property
     def segments(self):  # only one segment
@@ -290,22 +338,20 @@ class MapSegmentation(Segmentation):
         # segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
         segmentation.primaryDescriptor = "threeDVolume"
 
+        segmentation.boundingBox = schema.SFFBoundingBox(
+            xmax=self.header.x_length,
+            ymax=self.header.y_length,
+            zmax=self.header.z_length,
+        )
+
         # transforms
-        # segmentation.transforms = schema.SFFTransformList()
-        # segmentation.transforms.add_transform(
-        #     schema.SFFTransformationMatrix(
-        #         rows=3,
-        #         cols=3,
-        #         data=self.header.skew_matrix_data,
-        #     )
-        # )
-        # segmentation.transforms.add_transform(
-        #     schema.SFFTransformationMatrix(
-        #         rows=3,
-        #         cols=1,
-        #         data=self.header.skew_translation_data,
-        #     )
-        # )
+        segmentation.transforms = schema.SFFTransformList()
+        segmentation.transforms.add_transform(
+            schema.SFFTransformationMatrix(rows=3, cols=3, data=self.header.skew_matrix_data, )
+        )
+        segmentation.transforms.add_transform(
+            schema.SFFTransformationMatrix(rows=3, cols=1, data=self.header.skew_translation_data, )
+        )
 
         segments = schema.SFFSegmentList()
         lattices = schema.SFFLatticeList()
@@ -317,25 +363,6 @@ class MapSegmentation(Segmentation):
         # finally pack everything together
         segmentation.segments = segments
         segmentation.lattices = lattices
-
-        # lattice
-        # lattices = schema.SFFLatticeList()
-        # lattice_mode = self.header.mode
-        # lattice_endianness = 'little'
-        # lattice_size = schema.SFFVolumeStructure(
-        #     cols=self.header.cols, rows=self.header.rows, sections=self.header.sections
-        # )
-        # lattice = schema.SFFLattice(
-        #     mode=lattice_mode,
-        #     endianness=lattice_endianness,
-        #     size=lattice_size,
-        #     start=schema.SFFVolumeIndex(
-        #         cols=self.header.start_cols, rows=self.header.start_rows, sections=self.header.start_sections
-        #     ),
-        #     data=schema.SFFLattice.encode(mode=lattice_mode, endianness=lattice_endianness, size=lattice_size.voxelCount, data=self._segmentation.voxels)
-        # )
-        # lattices.add_lattice(lattice)
-        # segmentation.lattices = lattices
 
         if args.details is not None:
             segmentation.details = args.details

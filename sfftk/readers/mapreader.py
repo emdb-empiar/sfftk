@@ -12,7 +12,7 @@ The following article is useful as it exposes many internals of map files:
 - ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf
 
 """
-from __future__ import division
+from __future__ import division, print_function
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
@@ -22,21 +22,21 @@ __date__ = '2016-07-05'
 class Map(object):
     """Class to encapsulate a CCP4 mask"""
 
-    def __init__(self, fn):
+    def __init__(self, fn, *args, **kwargs):
         """Initialise a Map object
         
         :param str fn: file name
         """
         self._inverted = False
         with open(fn) as f:
-            status = self.read(f)
+            status = self.read(f, *args, **kwargs)
         #  0 is good
         assert status == 0
 
-    @property
-    def name(self):
-        """Name of the map which corresponds to the MAP attribute"""
-        return self._map
+    # @property
+    # def name(self):
+    #     """Name of the map which corresponds to the MAP attribute"""
+    #     return self._map
 
     def write(self, f):
         """Write data to an EMDB Map file
@@ -94,7 +94,7 @@ class Map(object):
 
         return 0
 
-    def read(self, f):
+    def read(self, f, header_only=False):
         """Read data from an EMDB Map mask
         
         :param file f: file object
@@ -162,6 +162,12 @@ class Map(object):
         elif self._mode == 4:
             raise ValueError("No support for complex floating point Fourier maps")
 
+        # exit here for header only read
+        if header_only:
+            self._voxel_values = set()
+            self._voxel_array = None
+            return 0
+
         #         import math
 
         self._voxel_count = self._nc * self._nr * self._ns
@@ -204,7 +210,7 @@ class Map(object):
         \r    {4}, {5}, {6}
         \rX, Y, Z: 
         \r    {7}, {8}, {9}
-        \rLengths X, Y, Z: 
+        \rLengths X, Y, Z (Ångstrom): 
         \r    {10}, {11}, {12}
         \r\U000003b1, \U000003b2, \U000003b3: 
         \r    {13}, {14}, {15}
@@ -346,7 +352,7 @@ class Map(object):
         return " ".join(map(str, [self._t1, self._t2, self._t3]))
 
 
-def get_data(fn, inverted=False):
+def get_data(fn, inverted=False, *args, **kwargs):
     """Get structured data from EMDB Map file
     
     :param str fn: map filename
@@ -354,7 +360,7 @@ def get_data(fn, inverted=False):
     :return: map object
     :rtype: :py:class:`sfftk.readers.mapreader.Map`
     """
-    my_map = Map(fn)
+    my_map = Map(fn, *args, **kwargs)
 
     if inverted: my_map.invert()
 

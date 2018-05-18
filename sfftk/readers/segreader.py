@@ -8,6 +8,7 @@ Ad hoc reader for Segger files
 from __future__ import division
 
 import os
+import numpy
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -169,7 +170,54 @@ class SeggerSegmentation(object):
     @property
     def mask(self):
         """The mask (TM)"""
-        return self._seg_handler['mask']
+        return self._seg_handler['mask'].value
+
+    def simplify_mask(self, mask, replace=True):
+        """Simplify the mask by replacing all `region_ids` with their `root_parent_id`
+
+        The `region_ids` and `parent_ids` are paired from which a tree is inferred. The root
+        of this tree is value `0`. `region_ids` that have a corresponding `parent_id` of 0
+        are penultimate roots. This method replaces each `region_id` with its penultimate `parent_id`.
+        It *simplifies* the volume.
+
+        :param bool replace: if `True` then the returned `mask` will have values; `False` will leave the `mask` unchanged (useful for running tests to speed things up)
+        :return: `simplified_mask`, `segment_colours`, `segment_ids`
+        :rtype: tuple
+        """
+        simplified_mask = numpy.ndarray(mask.shape, dtype=int)
+        simplified_mask[:,:,:] = 0
+        # group regions_ids by parent_id
+        root_parent_id_group = dict()
+        for r in self.region_ids:
+            p = get_root(self._region_parent_dict, r)
+            if p not in root_parent_id_group:
+                root_parent_id_group[p] = [r]
+            else:
+                root_parent_id_group[p] += [r]
+        if replace:
+            # It is vastly faster to use multiple array-wide comparisons than to do
+            # comparisons element-wise. Therefore, we generate a string to be executed
+            #  that will do hundreds of array-wide comparisons at a time.
+            # Each comparison is for all region_ids for a parent_id which will
+            # then get assigned the parent_id.
+            for parent_id, region_id_list in root_parent_id_group.items():
+                # check whether any element in the mask has a value == r0 OR r1 ... OR rN
+                # e.g. (mask == r0) | (mask == r1) | ... | (mask == rN)
+                comp = ' | '.join(['( mask == %s )' % r for r in region_id_list])
+                # set those that satisfy the above to have the parent_id
+                # Because parent_ids are non-overlapping (i.e. no region_id has two parent_ids)
+                # we can do successive summation instead of assignments.
+                full_op = 'simplified_mask += (' + comp + ') * %s' % parent_id
+                exec (full_op)
+        else:
+            simplified_mask = mask
+        return simplified_mask
+
+        # segment_ids = root_parent_id_group.keys()
+        #
+        # #     segment_colors = [r_c_zip[s] for s in segment_ids]
+        #
+        # return simplified_mask, segment_ids
 
     @property
     def ref_points(self):

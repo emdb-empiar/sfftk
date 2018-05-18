@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
+"""
 sfftk.unittests.test_readers
 
 This testing module should have no side-effects because it only reads.
-'''
+"""
 
 from __future__ import division, print_function
 
@@ -17,9 +17,7 @@ import ahds
 import numpy
 
 import __init__ as tests
-
 from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader
-
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -35,29 +33,29 @@ class TestReaders_amreader(unittest.TestCase):
         cls.header, cls.segments_by_stream = amreader.get_data(cls.am_file)
 
     def test_get_data(self):
-        '''Test the main entry point: get_data(...)'''
+        """Test the main entry point: get_data(...)"""
         self.assertIsInstance(self.header, ahds.header.AmiraHeader)
         self.assertIsInstance(self.segments_by_stream, numpy.ndarray)
         self.assertGreaterEqual(len(self.segments_by_stream), 1)
 
     def test_first_line_amiramesh(self):
-        '''test that it's declared as an AmiraMesh file'''
+        """test that it's declared as an AmiraMesh file"""
         self.assertEqual(self.header.designation.filetype, 'AmiraMesh')
 
     def test_first_line_binary_little_endian(self):
-        '''test that it is formatted as BINARY-LITTLE-ENDIAN'''
+        """test that it is formatted as BINARY-LITTLE-ENDIAN"""
         self.assertEqual(self.header.designation.format, 'BINARY-LITTLE-ENDIAN')
 
     def test_first_line_version(self):
-        '''test that it is version 2.1'''
+        """test that it is version 2.1"""
         self.assertEqual(self.header.designation.version, '2.1')
 
     def test_lattice_present(self):
-        '''test Lattice definition exists in definitions'''
+        """test Lattice definition exists in definitions"""
         self.assertTrue('Lattice' in self.header.definitions.attrs)
 
     def test_materials_present(self):
-        '''test Materials exist in parameters'''
+        """test Materials exist in parameters"""
         self.assertIsNotNone('Materials' in self.header.parameters.attrs)
 
 
@@ -66,7 +64,7 @@ class TestReaders_mapreader(unittest.TestCase):
         self.map_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map')
 
     def test_get_data(self):
-        '''Test the main entry point: get_data(...)'''
+        """Test the main entry point: get_data(...)"""
         map_ = mapreader.get_data(self.map_file)
         self.assertIsInstance(map_, mapreader.Map)
         self.assertGreater(map_._nc, 0)
@@ -107,12 +105,12 @@ class TestReaders_mapreader(unittest.TestCase):
         self.assertIsInstance(map_._t2, float)
         self.assertIsInstance(map_._t3, float)
         self.assertEqual(map_._map, 'MAP ')
-        self.assertIsInstance(map_._machst, int)
+        self.assertIsInstance(map_._machst, tuple)
         self.assertGreater(map_._rms, 0)
         self.assertGreater(map_._nlabl, 0)
 
     def test_write(self):
-        '''Test write map file'''
+        """Test write map file"""
         map_to_write = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_write_map.map')
         written_maps = glob.glob(map_to_write)
         self.assertEqual(len(written_maps), 0)
@@ -124,7 +122,7 @@ class TestReaders_mapreader(unittest.TestCase):
         map(os.remove, written_maps)
 
     def test_invert(self):
-        '''Test invert map intensities'''
+        """Test invert map intensities"""
         map_ = mapreader.get_data(self.map_file, inverted=False)
         self.assertFalse(map_._inverted)
         map_.invert()
@@ -133,14 +131,14 @@ class TestReaders_mapreader(unittest.TestCase):
         self.assertTrue(map_._inverted)
 
     def test_fix_mask(self):
-        '''Test fix mask for fixable mask'''
+        """Test fix mask for fixable mask"""
         fixable_mask = mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_fixable_mask.map'))
         self.assertFalse(fixable_mask.is_mask)
         fixable_mask.fix_mask()
         self.assertTrue(fixable_mask.is_mask)
 
     def test_unfixable_mask(self):
-        '''Test exception for unfixable mask'''
+        """Test exception for unfixable mask"""
         unfixable_mask = mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_unfixable_mask.map'))
         self.assertFalse(unfixable_mask.is_mask)
         with self.assertRaises(ValueError):
@@ -148,7 +146,7 @@ class TestReaders_mapreader(unittest.TestCase):
         self.assertFalse(unfixable_mask.is_mask)
 
     def test_bad_data_fail(self):
-        '''Test that a corrupted file (extra data at end) raises Exception'''
+        """Test that a corrupted file (extra data at end) raises Exception"""
         with self.assertRaises(ValueError):
             mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data1.map'))
 
@@ -160,7 +158,7 @@ class TestReaders_modreader(unittest.TestCase):
         cls.mod = modreader.get_data(cls.mod_file)
 
     def test_get_data(self):
-        '''Test the main entry point: get_data(...)'''
+        """Test the main entry point: get_data(...)"""
         self.assertTrue(self.mod.isset)
         self.assertGreater(len(self.mod.objts), 0)
         self.assertGreater(self.mod.objt_count, 0)
@@ -193,54 +191,54 @@ class TestReaders_modreader(unittest.TestCase):
         self.assertEqual(self.mod.gamma, 0)
 
     def test_read_fail1(self):
-        '''Test that file missing 'IMOD' at beginning fails'''
+        """Test that file missing 'IMOD' at beginning fails"""
         mod_fn = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data1.mod')
         with self.assertRaises(ValueError):
             modreader.get_data(mod_fn)  # missing 'IMOD' start
 
     def test_read_fail2(self):
-        '''Test that file missing 'IEOF' at end fails'''
+        """Test that file missing 'IEOF' at end fails"""
         mod_fn = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data2.mod')
         with self.assertRaises(ValueError):
             modreader.get_data(mod_fn)  # missing 'IEOF' end
 
     def test_IMOD_pass(self):
-        '''Test that IMOD chunk read'''
+        """Test that IMOD chunk read"""
         self.assertTrue(self.mod.isset)
 
     def test_OBJT_pass(self):
-        '''Test that OBJT chunk read'''
+        """Test that OBJT chunk read"""
         for O in self.mod.objts.itervalues():
             self.assertTrue(O.isset)
 
     def test_CONT_pass(self):
-        '''Test that CONT chunk read'''
+        """Test that CONT chunk read"""
         for O in self.mod.objts.itervalues():
             for C in O.conts.itervalues():
                 self.assertTrue(C.isset)
 
     def test_MESH_pass(self):
-        '''Test that MESH chunk read'''
+        """Test that MESH chunk read"""
         for O in self.mod.objts.itervalues():
             for M in O.meshes.itervalues():
                 self.assertTrue(M.isset)
 
     def test_IMAT_pass(self):
-        '''Test that IMAT chunk read'''
+        """Test that IMAT chunk read"""
         for O in self.mod.objts.itervalues():
             self.assertTrue(O.imat.isset)
 
     def test_VIEW_pass(self):
-        '''Test that VIEW chunk read'''
+        """Test that VIEW chunk read"""
         for V in self.mod.views.itervalues():
             self.assertTrue(V.isset)
 
     def test_MINX_pass(self):
-        '''Test that MINX chunk read'''
+        """Test that MINX chunk read"""
         self.assertTrue(self.mod.minx.isset)
 
     def test_MEPA_pass(self):
-        '''Test that MEPA chunk read'''
+        """Test that MEPA chunk read"""
         for O in self.mod.objts.itervalues():
             try:
                 self.assertTrue(O.mepa.isset)
@@ -248,7 +246,7 @@ class TestReaders_modreader(unittest.TestCase):
                 self.assertEqual(O.mepa, None)
 
     def test_CLIP_pass(self):
-        '''Test that CLIP chunk read'''
+        """Test that CLIP chunk read"""
         for O in self.mod.objts.itervalues():
             try:
                 self.assertTrue(O.clip.isset)
@@ -256,21 +254,21 @@ class TestReaders_modreader(unittest.TestCase):
                 self.assertEqual(O.clip, None)
 
     def test_number_of_OBJT_chunks(self):
-        '''Test that compares declared and found OBJT chunks'''
+        """Test that compares declared and found OBJT chunks"""
         self.assertEqual(self.mod.objsize, len(self.mod.objts))
 
     def test_number_of_CONT_chunks(self):
-        '''Test that compares declared and found CONT chunks'''
+        """Test that compares declared and found CONT chunks"""
         for O in self.mod.objts.itervalues():
             self.assertEqual(O.contsize, len(O.conts))
 
     def test_number_of_MESH_chunks(self):
-        '''Test that compares declared and found MESH chunks'''
+        """Test that compares declared and found MESH chunks"""
         for O in self.mod.objts.itervalues():
             self.assertEqual(O.meshsize, len(O.meshes))
 
     def test_number_of_surface_objects(self):
-        '''Test that compares declared and found surface objects'''
+        """Test that compares declared and found surface objects"""
         for O in self.mod.objts.itervalues():
             no_of_surfaces = 0
             for C in O.conts.itervalues():
@@ -279,19 +277,19 @@ class TestReaders_modreader(unittest.TestCase):
             self.assertEqual(O.surfsize, no_of_surfaces)
 
     def test_number_of_points_in_CONT_chunk(self):
-        '''Test that compares declared an found points in CONT chunks'''
+        """Test that compares declared an found points in CONT chunks"""
         for O in self.mod.objts.itervalues():
             for C in O.conts.itervalues():
                 self.assertEqual(C.psize, len(C.pt))
 
     def test_number_of_vertex_elements_in_MESH_chunk(self):
-        '''Test that compares declared an found vertices in MESH chunks'''
+        """Test that compares declared an found vertices in MESH chunks"""
         for O in self.mod.objts.itervalues():
             for M in O.meshes.itervalues():
                 self.assertEqual(M.vsize, len(M.vert))
 
     def test_number_of_list_elements_in_MESH_chunk(self):
-        '''Test that compares declared an found indices in MESH chunks'''
+        """Test that compares declared an found indices in MESH chunks"""
         for O in self.mod.objts.itervalues():
             for M in O.meshes.itervalues():
                 self.assertEqual(M.lsize, len(M.list))
@@ -302,7 +300,7 @@ class TestReaders_segreader(unittest.TestCase):
         self.seg_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.seg')
 
     def test_get_data(self):
-        '''Test the main entry point: get_data(...)'''
+        """Test the main entry point: get_data(...)"""
         seg = segreader.get_data(self.seg_file)
         print(seg, file=sys.stderr)
         self.assertIsInstance(seg, segreader.SeggerSegmentation)
@@ -320,7 +318,7 @@ class TestReaders_stlreader(unittest.TestCase):
         self.stl_mult_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
 
     def test_get_data(self):
-        '''Test the main entry point: get_data(...)'''
+        """Test the main entry point: get_data(...)"""
         meshes = stlreader.get_data(self.stl_file)  #  only one mesh here
         name, vertices, polygons = meshes[0]
         num_vertices = len(vertices)
@@ -334,7 +332,7 @@ class TestReaders_stlreader(unittest.TestCase):
         self.assertEqual(set(vertex_ids), set(vertices.keys()))
 
     def test_read_binary(self):
-        '''Test that we can read a binary STL file'''
+        """Test that we can read a binary STL file"""
         meshes = stlreader.get_data(self.stl_bin_file)
         print(meshes[0][0], file=sys.stderr)
         name, vertices, polygons = meshes[0]
@@ -347,9 +345,9 @@ class TestReaders_stlreader(unittest.TestCase):
         self.assertItemsEqual(set(vertices.keys()), set(polygon_ids))
 
     def test_read_multiple(self):
-        '''Test that we can read a multi-solid STL file
+        """Test that we can read a multi-solid STL file
           
-        Only works for ASCII by concatenation'''
+        Only works for ASCII by concatenation"""
         meshes = stlreader.get_data(self.stl_mult_file)
         for name, vertices, polygons in meshes:
             self.assertIsNone(name)
@@ -368,7 +366,7 @@ class TestReaders_surfreader(unittest.TestCase):
         cls.header, cls.segments = surfreader.get_data(cls.surf_file)  #  only one mesh here
 
     def test_get_data(self):
-        '''Test the main entry point: get_data(...)'''
+        """Test the main entry point: get_data(...)"""
         name = self.segments[2].name
         vertices = self.segments[2].vertices
         triangles = self.segments[2].triangles

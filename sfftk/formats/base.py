@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # base.py
-'''
+"""
 sfftk.formats.base
 ==================
 
@@ -21,19 +21,20 @@ Each segment container has two main parts:
 
 - the actual geometric container that can either be meshes, contours, a volume or shapes
 
-'''
+"""
 from __future__ import division
 
-__author__  = "Paul K. Korir, PhD"
-__email__   = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
-__date__    = "2017-03-28"
+__author__ = "Paul K. Korir, PhD"
+__email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
+__date__ = "2017-03-28"
 __updated__ = '2018-02-14'
 
 
 class SegmentationType(object):
-    '''Base class for all segmentation classes'''
+    """Base class for all segmentation classes"""
+
     def convert(self, *args, **kwargs):
-        '''Method to implement conversion to EMDB-SFF using the intermediary API.
+        """Method to implement conversion to EMDB-SFF using the intermediary API.
         
         :param str name: optional name of the segmentation used in <name/>
         :param str softwareVersion: optional software version for Amira use in <software><version/></software>
@@ -44,57 +45,64 @@ class SegmentationType(object):
         
         - use objects in the schema API
         - call objects locally extended from the formats API
-        '''
+        """
         raise NotImplementedError
+
     def __repr__(self):
         return str(self.__class__)
+
     def __str__(self):
         return str(self.__class__)
 
-  
+
 class SegmentFormat(SegmentationType):
-    '''Base class for all segmentation geometrical representation formats'''
+    """Base class for all segmentation geometrical representation formats"""
     format = None
+
     def __init__(self, *args, **kwargs):
         super(SegmentFormat, self).__init__(*args, **kwargs)
- 
- 
+
+
 class Mesh(SegmentFormat):
-    '''``meshList`` segmentation'''
+    """``meshList`` segmentation"""
     format = 'mesh'
+
     def __init__(self, *args, **kwargs):
         super(Mesh, self).__init__(*args, **kwargs)
- 
- 
+
+
 class Contours(SegmentFormat):
-    '''``contourList`` segmentation'''
-    format = 'contours'        
+    """``contourList`` segmentation"""
+    format = 'contours'
+
     def __init__(self, *args, **kwargs):
         super(Contours, self).__init__(*args, **kwargs)
- 
- 
+
+
 class Shapes(SegmentFormat):
-    '''``shapePrimitiveList`` segmentation'''
+    """``shapePrimitiveList`` segmentation"""
     format = 'shapes'
+
     def __init__(self, *args, **kwargs):
         super(Shapes, self).__init__(*args, **kwargs)
-         
+
 
 class Volume(SegmentFormat):
-    '''``threeDVolume`` segmentation'''
+    """``threeDVolume`` segmentation"""
     format = 'volume'
+
     def __init__(self, *args, **kwargs):
         super(Volume, self).__init__(*args, **kwargs)
 
 
 class Segment(SegmentationType):
-    '''Base class for segment classes'''
+    """Base class for segment classes"""
     annotation = None
     meshes = None
     contours = None
     volume = None
     shapes = None
-    
+
     def __repr__(self):
         formats = list()
         if self.meshes: formats.append(self.meshes.format)
@@ -105,16 +113,16 @@ class Segment(SegmentationType):
 
 
 class Annotation(SegmentationType):
-    '''Base class for all biological annotation classes'''
+    """Base class for all biological annotation classes"""
     pass
 
 
 class Header(SegmentationType):
-    '''Base class for all header classes (for metadata)'''        
+    """Base class for all header classes (for metadata)"""
     pass
-        
+
 
 class Segmentation(SegmentationType):
-    '''Base class for a segmentation'''
+    """Base class for a segmentation"""
     header = None
     segments = list()

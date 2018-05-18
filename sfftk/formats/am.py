@@ -270,7 +270,7 @@ class AmiraMeshSegmentation(Segmentation):
         return segments
         """
         segments = list()
-        for stream in self._segmentation.itervalues():
+        for stream in self._map_obj.itervalues():
             for segment_id, segment in stream.iteritems():
                 segments.append(AmiraMeshSegment(self.header, segment_id, segment))
         return segments

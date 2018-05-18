@@ -32,7 +32,9 @@ def handle_convert(args, configs):  # @UnusedVariable
     :return int status: status
     """
     if args.multi_file:
-        if re.match(r'.*\.map$', args.from_file[0], re.IGNORECASE):
+        if re.match(r'.*\.map$', args.from_file[0], re.IGNORECASE) or \
+                re.match(r'.*\.mrc$', args.from_file[0], re.IGNORECASE) or \
+                re.match(r'.*\.rec$', args.from_file[0], re.IGNORECASE):
             from .formats.map import MapSegmentation
             seg = MapSegmentation(args.from_file)
         else:
@@ -57,9 +59,11 @@ def handle_convert(args, configs):  # @UnusedVariable
         elif re.match(r'.*\.am$', args.from_file, re.IGNORECASE):
             from .formats.am import AmiraMeshSegmentation
             seg = AmiraMeshSegmentation(args.from_file)
-        # elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE):
-        #     from .formats.map import MapSegmentation
-        #     seg = MapSegmentation(args.from_file)
+        elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE) or \
+                re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
+                re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):
+            from .formats.map import MapSegmentation
+            seg = MapSegmentation([args.from_file])
         elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
             from .formats.stl import STLSegmentation
             seg = STLSegmentation(args.from_file)
@@ -408,13 +412,15 @@ def handle_view(args, configs):  # @UnusedVariable
         if args.show_chunks:
             from .readers import modreader
             modreader.show_chunks(args.from_file)
-    elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE):
+    elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE) or \
+                re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
+                re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):
         from .formats.map import MapSegmentation
-        seg = MapSegmentation(args.from_file)
+        seg = MapSegmentation([args.from_file], header_only=True)
         print("*" * 50)
-        print("CCP4/MAP Mask Segmentation")
+        print("CCP4 Mask Segmentation")
         print("*" * 50)
-        print(str(seg._segmentation))
+        print(str(seg.segments[0].annotation._map_obj))
         print("*" * 50)
     else:
         print("Not implemented view for files of type .{}".format(args.from_file.split('.')[-1]), file=sys.stderr)

@@ -1047,8 +1047,7 @@ class SFFLattice(SFFType):
         binpack = zlib.decompress(binzip)
         _count = self.size.voxelCount
         bindata = struct.unpack("{}{}{}".format(ENDIANNESS[self.endianness], _count, FORMAT_CHARS[self.mode]), binpack)
-        data = numpy.array(bindata).reshape(*self.size.value[::-1])
-        return data
+        self.data = numpy.array(bindata).reshape(*self.size.value[::-1])
 
     def as_hff(self, parent_group, name="{}"):
         """Return the data of this object as an HDF5 group in the given parent group"""
@@ -1714,7 +1713,7 @@ class SFFSegment(SFFType):
     # contours = SFFAttribute('contourList', sff_type=SFFContourList)
     volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume)
     shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList)
-    mask = SFFAttribute('mask')  # used in sfftkplus
+    # mask = SFFAttribute('mask')  # used in sfftkplus
 
     def __new__(cls, *args, **kwargs):
         cls.segment_id += 1
@@ -1919,7 +1918,7 @@ class SFFTransformationMatrix(SFFTransform):
     data = SFFAttribute('data')
 
     def __new__(cls, *args, **kwargs):
-        cls.transform_id = super(SFFTransformationMatrix, cls).transform_id + 1
+        cls.transform_id += 1
         return super(SFFTransformationMatrix, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, t=None, *args, **kwargs):
@@ -2538,6 +2537,7 @@ class SFFSegmentation(SFFType):
                 for _ in xrange(s['meshList']):
                     segment.meshes.add_mesh(SFFMesh())
             if 'threeDVolume' in s:
+                # fixme: invalid model
                 segment.volume = SFFThreeDVolume()
                 tDV = s['threeDVolume']
                 segment.volume.file = tDV['file']

@@ -1,11 +1,11 @@
 {
   "boundingBox": {
     "xmax": null, 
-    "xmin": 0, 
+    "xmin": 0.0, 
     "ymax": null, 
-    "ymin": 0, 
+    "ymin": 0.0, 
     "zmax": null, 
-    "zmin": 0
+    "zmin": 0.0
   }, 
   "details": null, 
   "globalExternalReferences": [], 
@@ -25,7 +25,7 @@
           }
         ], 
         "name": null, 
-        "numberOfInstances": 785
+        "numberOfInstances": 754
       }, 
       "colour": [
         0.921817600727081, 
