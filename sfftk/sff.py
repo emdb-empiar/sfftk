@@ -196,6 +196,8 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                     cmd = shlex.split("convert -v {} -o {}".format(args.sff_file, temp_file))
                 from .core.parser import parse_args
                 _args, _configs = parse_args(cmd)
+                if not _args:
+                    sys.exit(os.EX_USAGE)
                 handle_convert(_args, configs)  # convert
                 args.sff_file = temp_file
             elif re.match(r'.*\.hff$', temp_file, re.IGNORECASE):
@@ -208,6 +210,8 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                     cmd = shlex.split("convert -v {} -o {}".format(args.sff_file, temp_file))
                 from .core.parser import parse_args  # @Reimport
                 _args, _configs = parse_args(cmd)
+                if not _args:
+                    sys.exit(os.EX_USAGE)
                 handle_convert(_args, configs)  # convert
                 args.sff_file = temp_file
     return args
