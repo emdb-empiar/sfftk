@@ -78,6 +78,6 @@ def print_static(print_string, stream=sys.stderr, incl_date=True):
         )
 
     if incl_date:
-        print("\r%s\t%s" % (time.ctime(time.time()), print_string), file=stream)
+        print("\r%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
     else:
-        print("\r%s" % (print_string), file=stream)
+        print("\r%s" % (print_string), file=stream, end='')

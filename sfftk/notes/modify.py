@@ -22,11 +22,9 @@ from ..sff import handle_convert
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-04-07"
-__updated__ = '2018-02-14'
 
-"""
-:TODO: allow user to modify/view hierarchy through segmentation annotation toolkit 
-"""
+
+# todo: allow user to modify/view hierarchy through segmentation annotation toolkit
 
 
 class ExternalReference(object):
@@ -106,9 +104,7 @@ class NoteAttr(object):
         self.val = val
 
 
-"""
-:TODO: attribute type checking
-"""
+# todo: attribute type checking
 
 
 class BaseNote(object):
@@ -144,7 +140,6 @@ class AbstractGlobalNote(BaseNote):
     softwareName = NoteAttr('softwareName')
     softwareVersion = NoteAttr('sofwareVersion')
     softwareProcessingDetails = NoteAttr('softwareProcessingDetails')
-    filePath = NoteAttr('filePath')
     details = NoteAttr('details')
     externalReferenceId = NoteAttr('externalReferenceId')
 
@@ -167,9 +162,6 @@ class AbstractGlobalNote(BaseNote):
         #  software processing details
         if self.softwareProcessingDetails is not None:
             segmentation.software.processingDetails = self.softwareProcessingDetails
-        # file path
-        if self.filePath is not None:
-            segmentation.filePath = self.filePath
         # details
         if self.details:
             segmentation.details = self.details
@@ -209,9 +201,6 @@ class AbstractGlobalNote(BaseNote):
         #  software processing details
         if self.softwareProcessingDetails is not None:
             segmentation.software.processingDetails = self.softwareProcessingDetails
-        # file path
-        if self.filePath is not None:
-            segmentation.filePath = self.filePath
         # details
         if self.details is not None:
             segmentation.details = self.details
@@ -271,9 +260,6 @@ class AbstractGlobalNote(BaseNote):
         # sofware processing details
         if self.softwareProcessingDetails:
             segmentation.software.processingDetails = None
-        # file path
-        if self.filePath:
-            segmentation.filePath = None
         # details
         if self.details:
             segmentation.details = None
@@ -303,7 +289,6 @@ class GlobalArgsNote(AbstractGlobalNote):
         self.softwareName = args.software_name
         self.softwareVersion = args.software_version
         self.softwareProcessingDetails = args.software_processing_details
-        self.filePath = args.file_path
         self.details = args.details
         if hasattr(args, 'external_ref_id'):
             self.externalReferenceId = args.external_ref_id
@@ -321,6 +306,7 @@ class GlobalArgsNote(AbstractGlobalNote):
 
 class AbstractNote(BaseNote):
     """Note 'abstact' class that defines private attributes and main methods"""
+    name = NoteAttr('name')
     description = NoteAttr('description')
     numberOfInstances = NoteAttr('numberOfInstances')
     externalReferenceId = NoteAttr('externalReferenceId')
@@ -337,6 +323,8 @@ class AbstractNote(BaseNote):
         """
         # biologicalAnnotation
         bA = segment.biologicalAnnotation
+        if self.name:
+            bA.name = self.name
         if self.description:
             bA.description = self.description
         else:
@@ -394,6 +382,8 @@ class AbstractNote(BaseNote):
             print_date("Note: no biological anotation was found. You may edit only after adding with 'sff notes add'.")
         else:
             bA = segment.biologicalAnnotation
+            if self.name:
+                bA.name = self.name
             if self.description:
                 bA.description = self.description
             if self.numberOfInstances:
@@ -493,6 +483,8 @@ class AbstractNote(BaseNote):
             print_date("No biological anotation found! Use 'add' to first add a new annotation.")
         else:
             bA = segment.biologicalAnnotation
+            if self.name:
+                bA.name = None
             if self.description:
                 bA.description = None
             if self.numberOfInstances:
@@ -543,6 +535,7 @@ class ArgsNote(AbstractNote):
         :params configs: ``sfftk`` persistent configs (see :py:mod:`sfftk.config` documentation)
         """
         super(ArgsNote, self).__init__(*args_, **kwargs_)
+        self.name = args.segment_name
         self.description = args.description
         self.numberOfInstances = args.number_of_instances
         if hasattr(args, 'external_ref_id'):
@@ -572,7 +565,7 @@ class SimpleNote(AbstractNote):
     """Class definition for a :py:class:`SimpleNote` object"""
 
     def __init__(
-            self, description=None, numberOfInstances=None, externalReferenceId=None,
+            self, name=None, description=None, numberOfInstances=None, externalReferenceId=None,
             externalReferences=None, complexId=None, complexes=None,
             macromoleculeId=None, macromolecules=None, *args, **kwargs
     ):
@@ -588,6 +581,7 @@ class SimpleNote(AbstractNote):
         :param macromolecules: iterable of macromolecules
         """
         super(SimpleNote, self).__init__(*args, **kwargs)
+        self.name = name
         self.description = description
         self.numberOfInstances = numberOfInstances
         self.externalReferenceId = externalReferenceId
@@ -613,7 +607,7 @@ def add_note(args, configs):
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :param configs: configurations object
-	:type configs: ``sfftk.core.configs.Congif``
+    :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
@@ -646,7 +640,7 @@ def edit_note(args, configs):
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :param configs: configurations object
-	:type configs: ``sfftk.core.configs.Congif``
+    :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
@@ -683,7 +677,7 @@ def del_note(args, configs):
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :param configs: configurations object
-	:type configs: ``sfftk.core.configs.Congif``
+    :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
@@ -754,12 +748,12 @@ def copy_notes(args, configs):
 def clear_notes(args, configs):
     """Copy notes across segments
 
-        One or more segments can be chosen for either or both source and destination
+    One or more segments can be chosen for either or both source and destination
 
-        :param args: parse arguments
-        :param configs: configurations object
-        :return: status
-        """
+    :param args: parse arguments
+    :param configs: configurations object
+    :return: status
+    """
     sff_seg = schema.SFFSegmentation(args.sff_file)
     if args.segment_id is not None:
         from_segment = args.segment_id
@@ -784,7 +778,7 @@ def merge(args, configs):
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :param configs: configurations object
-	:type configs: ``sfftk.core.configs.Congif``
+    :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
     # source
@@ -814,7 +808,7 @@ def save(args, configs):
     :param args: parsed arguments
     :type args: ``argparse.Namespace``
     :param configs: configurations object
-	:type configs: ``sfftk.core.configs.Congif``
+    :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
     temp_file = configs['__TEMP_FILE']

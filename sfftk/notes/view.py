@@ -58,6 +58,13 @@ class NoteView(View):
         return self._segment.parentID
 
     @property
+    def name(self):
+        if self._segment.biologicalAnnotation.name:
+            return self._segment.biologicalAnnotation.name
+        else:
+            return self.NOT_DEFINED
+
+    @property
     def description(self):
         if self._segment.biologicalAnnotation.description:
             return textwrap.fill(self._segment.biologicalAnnotation.description, self.DISPLAY_WIDTH)
@@ -160,6 +167,8 @@ ID:\t\t{}
 PARENT ID:\t{}
 Segment Type:\t{}
 {}
+Name:
+\t{}
 Description:
 \t{}
 Number of instances:
@@ -183,6 +192,7 @@ Colour:
                 self.segmentType,
                 # ---
                 self.LINE2,
+                self.name,
                 self.description,
                 self.numberOfInstances,
                 # -----
@@ -204,7 +214,7 @@ Colour:
             string = "{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
                 self.id,
                 self.parentID,
-                self.description if len(self.description) <= 40 else self.description[:37] + "...",
+                self.name if len(self.name) <= 40 else self.name[:37] + "...",
                 self.numberOfInstances,
                 self.numberOfExternalReferences,
                 self.numberOfComplexes,
@@ -250,9 +260,9 @@ Software processing details: \n{}\
             ),
         ).encode('utf-8')
 
-    @property
-    def filePath(self):
-        return self._segmentation.filePath
+    # @property
+    # def filePath(self):
+    #     return self._segmentation.filePath
 
     @property
     def primaryDescriptor(self):
@@ -315,9 +325,6 @@ Segmentation software:
 Primary descriptor:
 \t{}
 {}
-File path:
-\t{}
-{}
 Bounding box:
 \t{}
 {}
@@ -339,9 +346,6 @@ Segmentation details:
             self.primaryDescriptor,
             # ---
             self.LINE2,
-            self.filePath,
-            # ---
-            self.LINE2,
             self.boundingBox,
             # ---
             self.LINE2,
@@ -355,6 +359,7 @@ Segmentation details:
 
 class TableHeaderView(View):
     """Class defining the view of a table header object"""
+
     def __str__(self):
         string = """\
 {}
@@ -364,7 +369,7 @@ class TableHeaderView(View):
             View.LINE3,
             "id",
             "parId",
-            "description",
+            "segment_name",
             "#inst",
             "#exRf",
             "#cplx",
@@ -390,8 +395,8 @@ def list_notes(args, configs):
     if args.header:
         print(HeaderView(sff_seg))
     note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]
-    if args.sort_by_description:
-        sorted_note_views = sorted(note_views, key=lambda n: n.description, reverse=args.reverse)
+    if args.sort_by_name:
+        sorted_note_views = sorted(note_views, key=lambda n: n.name, reverse=args.reverse)
     else:
         sorted_note_views = sorted(note_views, key=lambda n: n.id, reverse=args.reverse)
     # table header

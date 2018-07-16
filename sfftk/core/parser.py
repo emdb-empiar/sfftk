@@ -16,7 +16,7 @@ __date__ = '2016-06-10'
 __updated__ = '2018-02-14'
 
 verbosity_range = range(4)
-multi_file_formats = ['stl', 'map']
+multi_file_formats = ['stl', 'map', 'mrc', 'rec']
 
 
 def add_args(parser, the_arg):
@@ -115,13 +115,13 @@ reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23
 file.json""".format(', '.join(RESOURCE_LIST.keys())),
     }
 }
-file_path = {
-    'args': ['-F', '--file-path'],
-    'kwargs': {
-        'default': None,
-        'help': "file path [default: '.']"
-    }
-}
+# file_path = {
+#     'args': ['-F', '--file-path'],
+#     'kwargs': {
+#         'default': None,
+#         'help': "file path [default: '.']"
+#     }
+# }
 FORMAT_LIST = [
     ('sff', 'XML'),
     ('hff', 'HDF5'),
@@ -185,12 +185,6 @@ output = {
         'help': "file to convert to; the extension (.sff, .hff, .json) determines the output format [default: None]"
     }
 }
-primary_descriptor = {
-    'args': ['-R', '--primary-descriptor'],
-    'kwargs': {
-        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  threeDVolume, meshList, shapePrimitiveList]"
-    }
-}
 software_proc_details = {
     'args': ['-P', '--software-processing-details'],
     'kwargs': {
@@ -204,11 +198,24 @@ config_path = {
         'help': "path to configs file"
     }
 }
+primary_descriptor = {
+    'args': ['-R', '--primary-descriptor'],
+    'kwargs': {
+        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  threeDVolume, meshList, shapePrimitiveList]"
+    }
+}
 software_name = {
     'args': ['-S', '--software-name'],
     'kwargs': {
         'default': None,
         'help': "the name of the software used to create the segmentation [default: None]"
+    }
+}
+segment_name = {
+    'args': ['-s', '--segment-name'],
+    'kwargs': {
+        'default': None,
+        'help': "the name of the segment [default: None]"
     }
 }
 shipped_configs = {
@@ -472,8 +479,8 @@ long_format = {
     }
 }
 add_args(list_notes_parser, long_format)
-list_notes_parser.add_argument('-D', '--sort-by-description', default=False,
-                               action='store_true', help="sort listings by description [default: False (sorts by ID)]")
+list_notes_parser.add_argument('-D', '--sort-by-name', default=False,
+                               action='store_true', help="sort listings by segment name [default: False (sorts by ID)]")
 list_notes_parser.add_argument(
     '-r', '--reverse', default=False, action='store_true', help="reverse the sort order [default: False]")
 list_notes_parser.add_argument('-I', '--list-ids', default=False, action='store_true',
@@ -527,7 +534,7 @@ add_args(add_global_notes_parser, name)
 add_args(add_global_notes_parser, software_name)
 add_args(add_global_notes_parser, software_version)
 add_args(add_global_notes_parser, software_proc_details)
-add_args(add_global_notes_parser, file_path)
+# add_args(add_global_notes_parser, file_path)
 add_args(add_global_notes_parser, details)
 # segment notes
 add_segment_notes_parser = add_notes_parser.add_argument_group(
@@ -535,6 +542,7 @@ add_segment_notes_parser = add_notes_parser.add_argument_group(
     description="add attributes to a single segment in an EMDB-SFF file"
 )
 add_args(add_segment_notes_parser, segment_id)
+add_args(add_segment_notes_parser, segment_name)
 add_args(add_segment_notes_parser, description)
 add_args(add_segment_notes_parser, number_of_instances)
 add_args(add_segment_notes_parser, complexes)
@@ -564,7 +572,7 @@ add_args(edit_global_notes_parser, name)
 add_args(edit_global_notes_parser, software_name)
 add_args(edit_global_notes_parser, software_version)
 add_args(edit_global_notes_parser, software_proc_details)
-add_args(edit_global_notes_parser, file_path)
+# add_args(edit_global_notes_parser, file_path)
 add_args(edit_global_notes_parser, details)
 # segment notes
 edit_segment_notes_parser = edit_notes_parser.add_argument_group(
@@ -572,6 +580,7 @@ edit_segment_notes_parser = edit_notes_parser.add_argument_group(
     description="edit attributes to a single segment in an EMDB-SFF file"
 )
 add_args(edit_segment_notes_parser, segment_id)
+add_args(edit_segment_notes_parser, segment_name)
 add_args(edit_segment_notes_parser, description)
 add_args(edit_segment_notes_parser, number_of_instances)
 add_args(edit_segment_notes_parser, complex_id)
@@ -620,12 +629,12 @@ software_proc_details['kwargs'] = {
     'help': 'delete the software processing details [default: False]'
 }
 add_args(del_global_notes_parser, software_proc_details)
-file_path['kwargs'] = {
-    'action': 'store_true',
-    'default': False,
-    'help': 'delete the file path [default: False]'
-}
-add_args(del_global_notes_parser, file_path)
+# file_path['kwargs'] = {
+#     'action': 'store_true',
+#     'default': False,
+#     'help': 'delete the file path [default: False]'
+# }
+# add_args(del_global_notes_parser, file_path)
 details['kwargs'] = {
     'action': 'store_true',
     'default': False,
@@ -638,6 +647,12 @@ del_segment_notes_parser = del_notes_parser.add_argument_group(
     description="delete attributes to a single segment in an EMDB-SFF file"
 )
 add_args(del_segment_notes_parser, segment_id)
+segment_name['kwargs'] = {
+    'action': 'store_true',
+    'default': False,
+    'help': 'delete the segment name [default: False]'
+}
+add_args(del_segment_notes_parser, segment_name)
 description['kwargs'] = {
     'action': 'store_true',
     'default': False,
@@ -858,7 +873,7 @@ def parse_args(_args):
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
-            if _args[1] in Parser._actions[1].choices['notes']._actions[1].choices.keys():
+            if _args[1] in Parser._actions[2].choices['notes']._actions[1].choices.keys():
                 exec ('{}_notes_parser.print_help()'.format(_args[1]))
                 sys.exit(0)
     # parse arguments
@@ -1036,12 +1051,13 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
 
                 # ensure we have at least one item to add
                 try:
-                    assert (args.description is not None) or (args.number_of_instances is not None) or \
+                    assert (args.segment_name is not None) or (args.description is not None) or \
+                           (args.number_of_instances is not None) or \
                            (args.external_ref is not None) or (args.complexes is not None) or \
                            (args.macromolecules is not None)
                 except AssertionError:
                     print_date(
-                        "Nothing specified to add. Use one or more of the following options:\n\t-D <description> \n\t-E <extrefType> <extrefValue> \n\t-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
+                        "Nothing specified to add. Use one or more of the following options:\n\t-s <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefValue> \n\t-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
                     return None, configs
 
                 # replace the string in args.complexes with a list

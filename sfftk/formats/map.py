@@ -124,8 +124,16 @@ class MapAnnotation(Annotation):
 
     @property
     def name(self):
-        """Segment description"""
-        return printable_substring(self._label_0)
+        """Segment name (filename since we have a segment per file)"""
+        return self._map_obj._fn
+
+    @property
+    def description(self):
+        """Segment description (concat all labels)"""
+        desc = ''
+        for i in xrange(self._nlabl):
+            desc += printable_substring(getattr(self, '_label_{}'.format(i)))
+        return desc
 
     @property
     def colour(self):

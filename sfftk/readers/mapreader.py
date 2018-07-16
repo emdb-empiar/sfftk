@@ -27,6 +27,7 @@ class Map(object):
         
         :param str fn: file name
         """
+        self._fn = fn
         self._inverted = False
         with open(fn) as f:
             status = self.read(f, *args, **kwargs)
@@ -288,7 +289,7 @@ class Map(object):
     def fix_mask(self, mask_value=1.0, voxel_values_threshold=3):
         """Try to fix this mask
         
-        A mask should have only two voxel values: some non-zero value (usualy 1) and zero (0) for masked-out regions.
+        A mask should have only two voxel values: some non-zero value (usually 1) and zero (0) for masked-out regions.
         Sometimes the process of manipulating the mask (e.g. volume rotation) relies on interpolation, which
         converts a mask to have more than two voxel values. This function attempts to fix that provided that
         the number of voxel values is not greater than `voxel_value_threshold`.
