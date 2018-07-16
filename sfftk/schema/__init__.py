@@ -80,6 +80,7 @@ example, the ``software`` attribute will be of class :py:class:`SFFSoftware`.
 from __future__ import division, print_function
 
 import base64
+import multiprocessing
 import re
 import struct
 import sys
@@ -1004,6 +1005,16 @@ class SFFVolumeIndex(SFFVolume):
     repr_args = ('cols', 'rows', 'sections')
 
 
+def decode_lattice(lattice):
+    """Base64 decode -> Unzip -> Unpack -> Reshape"""
+    binzip = base64.b64decode(lattice.data)
+    binpack = zlib.decompress(binzip)
+    _count = lattice.size.voxelCount
+    bindata = struct.unpack("{}{}{}".format(ENDIANNESS[lattice.endianness], _count, FORMAT_CHARS[lattice.mode]), binpack)
+    lattice.data = numpy.array(bindata).reshape(*lattice.size.value[::-1])
+    return lattice
+
+
 class SFFLattice(SFFType):
     """Class representing 3D """
     gds_type = sff.latticeType
@@ -1048,6 +1059,14 @@ class SFFLattice(SFFType):
         _count = self.size.voxelCount
         bindata = struct.unpack("{}{}{}".format(ENDIANNESS[self.endianness], _count, FORMAT_CHARS[self.mode]), binpack)
         self.data = numpy.array(bindata).reshape(*self.size.value[::-1])
+
+    @property
+    def is_binary(self):
+        voxel_values = set(self.data.flatten().tolist()).difference(set([0]))
+        if len(voxel_values) == 1:
+            return True
+        else:
+            return False
 
     def as_hff(self, parent_group, name="{}"):
         """Return the data of this object as an HDF5 group in the given parent group"""
@@ -2492,6 +2511,7 @@ class SFFSegmentation(SFFType):
             segment.parentID = s['parentID']
             if 'biologicalAnnotation' in s:
                 biologicalAnnotation = SFFBiologicalAnnotation()
+                biologicalAnnotation.name = s['biologicalAnnotation']['name']
                 biologicalAnnotation.description = s['biologicalAnnotation']['description']
                 biologicalAnnotation.numberOfInstances = s['biologicalAnnotation']['numberOfInstances']
                 if 'externalReferences' in s['biologicalAnnotation']:
