@@ -418,6 +418,7 @@ class TestNotes_modify(unittest.TestCase):
 
     def _test_merge(self):
         """Test that we can merge notes"""
+        segment_name = 'my very nice segment'
         desc = 'a short description'
         num = tests._random_integer()
         extref = ['lsfj', 'sljfs', 'ldjss']
@@ -425,8 +426,9 @@ class TestNotes_modify(unittest.TestCase):
         macromolecules = ['xuidh', '29hf98e', 'ygce']
         # add
         cmd = shlex.split(
-            "notes add -i {} -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
+            "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
                 self.segment_id,
+                segment_name,
                 desc,
                 " ".join(extref),
                 num,
@@ -465,7 +467,6 @@ class TestNotes_modify(unittest.TestCase):
         self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].type, extref[0])
         self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].otherType, extref[1])
         self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].value, extref[2])
-        print(source_segment.biologicalAnnotation.externalReferences, file=sys.stderr)
         self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].type,
                          output_segment.biologicalAnnotation.externalReferences[0].type)
         self.assertEqual(source_segment.complexesAndMacromolecules.complexes[0], complexes[0])

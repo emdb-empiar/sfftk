@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # test_formats.py
-'''
+"""
 sfftk.formats modules unit tests
-'''
+"""
 from __future__ import division
 
 import os
@@ -50,42 +50,42 @@ class TestFormats(unittest.TestCase):
 
     # read
     def test_am_read(self):
-        '''Read an AmiraMesh (.am) segmentation'''
+        """Read an AmiraMesh (.am) segmentation"""
         # assertions
         self.assertIsInstance(self.am_segmentation.header, am.AmiraMeshHeader)
         self.assertIsInstance(self.am_segmentation.segments, list)
         self.assertIsInstance(self.am_segmentation.segments[0], am.AmiraMeshSegment)
 
     def test_seg_read(self):
-        '''Read a Segger (.seg) segmentation'''
+        """Read a Segger (.seg) segmentation"""
         # assertions
         self.assertIsInstance(self.seg_segmentation.header, seg.SeggerHeader)
         self.assertIsInstance(self.seg_segmentation.segments, list)
         self.assertIsInstance(self.seg_segmentation.segments[0], seg.SeggerSegment)
 
     def test_map_read(self):
-        '''Read an EMDB Map mask (.map) segmentation'''
+        """Read an EMDB Map mask (.map) segmentation"""
         # assertions
         self.assertIsInstance(self.map_segmentation.header, map.MapHeader)
         self.assertIsInstance(self.map_segmentation.segments, list)
         self.assertIsInstance(self.map_segmentation.segments[0], map.MapSegment)
 
     def test_mod_read(self):
-        '''Read an IMOD (.mod) segmentation'''
+        """Read an IMOD (.mod) segmentation"""
         # assertions
         self.assertIsInstance(self.mod_segmentation.header, mod.IMODHeader)
         self.assertIsInstance(self.mod_segmentation.segments, list)
         self.assertIsInstance(self.mod_segmentation.segments[0], mod.IMODSegment)
 
     def test_stl_read(self):
-        '''Read a Stereo Lithography (.stl) segmentation'''
+        """Read a Stereo Lithography (.stl) segmentation"""
         # assertions
         self.assertIsInstance(self.stl_segmentation.header, stl.STLHeader)
         self.assertIsInstance(self.stl_segmentation.segments, list)
         self.assertIsInstance(self.stl_segmentation.segments[0], stl.STLSegment)
 
     def test_surf_read(self):
-        '''Read a HyperSurface (.surf) segmentation'''
+        """Read a HyperSurface (.surf) segmentation"""
         # assertions
         self.assertIsInstance(self.surf_segmentation.header, surf.AmiraHyperSurfaceHeader)
         self.assertIsInstance(self.surf_segmentation.segments, list)
@@ -93,7 +93,7 @@ class TestFormats(unittest.TestCase):
 
     # convert
     def test_am_convert(self):
-        '''Convert a segmentation from an AmiraMesh file to an SFFSegmentation object'''
+        """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.am_file)))
         sff_segmentation = self.am_segmentation.convert(args, configs)
         # assertions
@@ -102,12 +102,12 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Amira')
         self.assertEqual(sff_segmentation.software.version, self.am_segmentation.header.designation.version)
-        self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.am_file)))
+        # self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.am_file)))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'threeDVolume')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
     def test_seg_convert(self):
-        '''Convert a segmentation from a Segger file to an SFFSegmentation object'''
+        """Convert a segmentation from a Segger file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.mod_file)))
         sff_segmentation = self.seg_segmentation.convert(args, configs)
         # assertions
@@ -121,20 +121,20 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
     def test_map_convert(self):
-        '''Convert a segmentation from an EMDB Map mask file to an SFFSegmentation object'''
+        """Convert a segmentation from an EMDB Map mask file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.map_file)))
         sff_segmentation = self.map_segmentation.convert(args, configs)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'MAP ')  # might have an extra space at the end
+        self.assertEqual(sff_segmentation.name, 'CCP4 mask segmentation')  # might have an extra space at the end
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Undefined')
-        self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.map_file)))
+        # self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.map_file)))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'threeDVolume')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
     def test_mod_convert(self):
-        '''Convert a segmentation from an IMOD file to an SFFSegmentation object'''
+        """Convert a segmentation from an IMOD file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.mod_file)))
         sff_segmentation = self.mod_segmentation.convert(args, configs)
         # assertions
@@ -142,12 +142,12 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.name, 'IMOD-NewModel')
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'IMOD')
-        self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.mod_file))
+        # self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.mod_file))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
     def test_stl_convert(self):
-        '''Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object'''
+        """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.stl_file)))
         sff_segmentation = self.stl_segmentation.convert(args, configs)
         # assertions
@@ -155,12 +155,12 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.name, 'STL Segmentation')
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Unknown')
-        self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.stl_file))
+        # self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.stl_file))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
     def test_surf_convert(self):
-        '''Convert a segmentation from a HyperSurface file to an SFFSegmentation object'''
+        """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.surf_file)))
         sff_segmentation = self.surf_segmentation.convert(args, configs)
         # assertions
@@ -169,7 +169,7 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Amira')
         self.assertEqual(sff_segmentation.software.version, self.surf_segmentation.header.designation.version)
-        self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.surf_file))
+        # self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.surf_file))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 

@@ -438,7 +438,7 @@ class TestParser_notes_ro(unittest.TestCase):
         self.assertEqual(args.notes_subcommand, 'list')
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertFalse(args.long_format)
-        self.assertFalse(args.sort_by_description)
+        self.assertFalse(args.sort_by_name)
         self.assertFalse(args.reverse)
 
     def test_list_long(self):
@@ -453,11 +453,11 @@ class TestParser_notes_ro(unittest.TestCase):
         #  assertions
         self.assertIsNone(args)
 
-    def test_list_sort_by_description(self):
+    def test_list_sort_by_name(self):
         """Test list segments sorted by description"""
         args, _ = parse_args(shlex.split('notes list -D file.sff --config-path {}'.format(self.config_fn)))
         # assertions
-        self.assertTrue(args.sort_by_description)
+        self.assertTrue(args.sort_by_name)
 
     def test_list_reverse_sort(self):
         """Test list sort in reverse"""

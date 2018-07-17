@@ -21,6 +21,7 @@ __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-02-20"
 
+
 # todo: add ID tests within each test method
 
 class TestSFFSegmentation(unittest.TestCase):
@@ -224,7 +225,8 @@ class TestSFFSegmentation(unittest.TestCase):
         # test the number of transforms
         self.assertEqual(len(segmentation.transforms), 3)
         # test the transform IDs
-        self.assertItemsEqual(map(lambda t: t.id, segmentation.transforms), range(3))
+        t_ids = map(lambda t: t.id, segmentation.transforms)
+        self.assertItemsEqual(t_ids, range(3))
         # segments
         self.assertEqual(len(segmentation.segments), 2)
         # segment one
@@ -748,7 +750,7 @@ class TestSFFSegmentation(unittest.TestCase):
         # colour
         self.assertEqual(segment.colour.value, (1, 0, 1, 0))
 
-    def test_ids(self):
+    def test_segment_ids(self):
         """Tests to ensure IDs are correctly reset"""
         # segmentation one
         segmentation = schema.SFFSegmentation()
@@ -771,6 +773,19 @@ class TestSFFSegmentation(unittest.TestCase):
         # self.assertEqual(segment.meshes[0].vertices[0].vID, 0)
         # # shape
         # self.assertEqual(segment.shapes[0].id, 0)
+
+    def test_transform_ids(self):
+        """Test that transform ids work correctly"""
+        transforms = schema.SFFTransformList()
+        matrix = schema.SFFTransformationMatrix(rows=3, cols=3, data=' '.join(map(str, range(9))))
+        transforms.add_transform(matrix)
+
+        transforms2 = schema.SFFTransformList()
+        matrix2 = schema.SFFTransformationMatrix(rows=3, cols=3, data=' '.join(map(str, range(9))))
+        transforms2.add_transform(matrix2)
+
+        self.assertIsNotNone(transforms[0].id)
+        self.assertEqual(transforms[0].id, transforms2[0].id)
 
     def test_read_sff(self):
         """Read from XML (.sff) file"""
