@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<segmentation>
+    <version>0.7.0.dev0</version>
+    <name>Segger Segmentation</name>
+    <software>
+        <name>segger</name>
+        <version>2</version>
+    </software>
+    <transformList>
+        <transformationMatrix id="0">
+            <rows>3</rows>
+            <cols>4</cols>
+            <data>1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0</data>
+        </transformationMatrix>
+        <transformationMatrix id="1">
+            <rows>3</rows>
+            <cols>4</cols>
+            <data>5.69999980927 0.0 0.0 -182.399993896 0.0 5.69999980927 0.0 -182.399993896 0.0 0.0 5.69999980927 -182.399993896</data>
+        </transformationMatrix>
+    </transformList>
+    <primaryDescriptor>threeDVolume</primaryDescriptor>
+    <segmentList>
+        <segment id="85" parentID="0">
+            <colour>
+                <red>0.521576881408691</red>
+                <green>0.889867722988129</green>
+                <blue>0.848475754261017</blue>
+            </colour>
+            <threeDVolume>
+                <latticeId>0</latticeId>
+                <value>85.</value>
+            </threeDVolume>
+        </segment>
+        <segment id="93" parentID="0">
+            <colour>
+                <red>0.504164099693298</red>
+                <green>0.644178092479706</green>
+                <blue>0.78633439540863</blue>
+            </colour>
+            <threeDVolume>
+                <latticeId>0</latticeId>
+                <value>93.</value>
+            </threeDVolume>
+        </segment>
+        <segment id="97" parentID="0">
+            <colour>
+                <red>0.669882595539093</red>
+                <green>0.86139714717865</green>
+                <blue>0.948218941688538</blue>
+            </colour>
+            <threeDVolume>
+                <latticeId>0</latticeId>
+                <value>97.</value>
+            </threeDVolume>
+        </segment>
+        <segment id="101" parentID="0">
+            <colour>
+                <red>0.862361133098602</red>
+                <green>0.965298295021057</green>
+                <blue>0.697644174098969</blue>
+            </colour>
+            <threeDVolume>
+                <latticeId>0</latticeId>
+                <value>101.</value>
+            </threeDVolume>
+        </segment>
+        <segment id="103" parentID="0">
+            <colour>
+                <red>0.706890761852264</red>
+                <green>0.626759827136993</green>
+                <blue>0.604495763778687</blue>
+            </colour>
+            <threeDVolume>
+                <latticeId>0</latticeId>
+                <value>103.</value>
+            </threeDVolume>
+        </segment>
+        <segment id="104" parentID="0">
+            <colour>
+                <red>0.787909328937531</red>
+                <green>0.924791157245636</green>
+                <blue>0.951091408729553</blue>
+            </colour>
+            <threeDVolume>
+                <latticeId>0</latticeId>
+                <value>104.</value>
+            </threeDVolume>
+        </segment>
+    </segmentList>
+    <latticeList>
+        <lattice id="0">
+            <mode>uint32</mode>
+            <endianness>little</endianness>
+            <size>
+                <cols>64</cols>
+                <rows>64</rows>
+                <sections>64</sections>
+            </size>
+            <start>
+                <cols>0</cols>
+                <rows>0</rows>
+                <sections>0</sections>
+            </start>
+            <data>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</data>
+        </lattice>
+    </latticeList>
+    <details></details>
+</segmentation>
