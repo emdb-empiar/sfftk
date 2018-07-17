@@ -61,7 +61,7 @@ class Map(object):
         string += struct.pack('<fff', self._t1, self._t2, self._t3)
         string += struct.pack('<15i', *self._extra)
         string += struct.pack('<4c', *self._map)
-        string += struct.pack('<i', self._machst)
+        string += struct.pack('<4c', *self._machst)
         string += struct.pack('<f', self._rms)
 
         #  if inverted we will add one more label
@@ -134,7 +134,7 @@ class Map(object):
         # MRC/CCP4 MAP format identifier
         self._map = "".join(struct.unpack('<4c', f.read(4)))
         # machine stamp
-        self._machst = struct.unpack('<4c', f.read(4)) #[0]
+        self._machst = struct.unpack('<4c', f.read(4))  # [0]
         # Density root-mean-square deviation
         self._rms = struct.unpack('<f', f.read(4))[0]
         # number of labels
@@ -198,7 +198,7 @@ class Map(object):
         # ensure we are the end
         if current_position != final_position:
             raise ValueError("There is still some data (%s bytes) to read: current_position = %; end_position = %s" % (
-            final_position - current_position, current_position, final_position))
+                final_position - current_position, current_position, final_position))
 
         return 0
 
