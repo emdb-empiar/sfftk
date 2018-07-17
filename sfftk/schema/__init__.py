@@ -80,7 +80,6 @@ example, the ``software`` attribute will be of class :py:class:`SFFSoftware`.
 from __future__ import division, print_function
 
 import base64
-import multiprocessing
 import re
 import struct
 import sys
@@ -416,10 +415,8 @@ class SFFType(object):
     @classmethod
     def reset_id(cls):
         """Reset the ID for a subclass"""
-        if issubclass(cls, SFFTransform):
+        if issubclass(cls, SFFTransformationMatrix):
             cls.transform_id = -1
-        # elif issubclass(cls, SFFContour):
-        #     cls.contour_id = -1
         elif issubclass(cls, SFFMesh):
             cls.mesh_id = -1
         elif issubclass(cls, SFFPolygon):
@@ -788,12 +785,12 @@ class SFFExternalReference(SFFType):
     description = SFFAttribute('description')
 
     # methods
-    def __init__(self, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # remap kwargs
         if 'type' in kwargs:
             kwargs['type_'] = kwargs['type']
             del kwargs['type']
-        super(SFFExternalReference, self).__init__(*args, **kwargs)
+        super(SFFExternalReference, self).__init__(var=var, *args, **kwargs)
 
 
 class SFFExternalReferences(SFFType):
@@ -1010,7 +1007,8 @@ def decode_lattice(lattice):
     binzip = base64.b64decode(lattice.data)
     binpack = zlib.decompress(binzip)
     _count = lattice.size.voxelCount
-    bindata = struct.unpack("{}{}{}".format(ENDIANNESS[lattice.endianness], _count, FORMAT_CHARS[lattice.mode]), binpack)
+    bindata = struct.unpack("{}{}{}".format(ENDIANNESS[lattice.endianness], _count, FORMAT_CHARS[lattice.mode]),
+                            binpack)
     lattice.data = numpy.array(bindata).reshape(*lattice.size.value[::-1])
     return lattice
 
@@ -1035,7 +1033,7 @@ class SFFLattice(SFFType):
         return super(SFFLattice, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, var=None, *args, **kwargs):
-        super(SFFLattice, self).__init__(var, *args, **kwargs)
+        super(SFFLattice, self).__init__(var=var, *args, **kwargs)
         if 'id' in kwargs:
             self._local.id = kwargs['id']
         elif not var:
@@ -1101,10 +1099,10 @@ class SFFLatticeList(SFFType):
     iter_attr = ('lattice', SFFLattice)
     iter_dict = dict()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # reset id
         SFFLattice.reset_id()
-        super(SFFLatticeList, self).__init__(*args, **kwargs)
+        super(SFFLatticeList, self).__init__(var=var, *args, **kwargs)
 
     def add_lattice(self, l):
         """Add a lattie to the list of lattices
@@ -1162,12 +1160,12 @@ class SFFCone(SFFShape):
         cls.shape_id = super(SFFCone, cls).shape_id + 1
         return super(SFFCone, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, s=None, *args, **kwargs):
-        super(SFFCone, self).__init__(s, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFCone, self).__init__(var=var, *args, **kwargs)
         if 'id' in kwargs:
             self._local.id = kwargs['id']
             SFFShape.shape_id = self.shape_id
-        elif not s:
+        elif not var:
             self._local.id = self.shape_id
             SFFShape.shape_id = self.shape_id
         self._local.original_tagname_ = self.ref
@@ -1187,12 +1185,12 @@ class SFFCuboid(SFFShape):
         cls.shape_id = super(SFFCuboid, cls).shape_id + 1
         return super(SFFCuboid, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, s=None, *args, **kwargs):
-        super(SFFCuboid, self).__init__(s, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFCuboid, self).__init__(var=var, *args, **kwargs)
         if 'id' in kwargs:
             self._local.id = kwargs['id']
             SFFShape.shape_id = self.shape_id
-        elif not s:
+        elif not var:
             self._local.id = self.shape_id
             SFFShape.shape_id = self.shape_id
         self._local.original_tagname_ = self.ref
@@ -1211,12 +1209,12 @@ class SFFCylinder(SFFShape):
         cls.shape_id = super(SFFCylinder, cls).shape_id + 1
         return super(SFFCylinder, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, s=None, *args, **kwargs):
-        super(SFFCylinder, self).__init__(s, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFCylinder, self).__init__(var=var, *args, **kwargs)
         if 'id' in kwargs:
             self._local.id = kwargs['id']
             SFFShape.shape_id = self.shape_id
-        elif not s:
+        elif not var:
             self._local.id = self.shape_id
             SFFShape.shape_id = self.shape_id
         self._local.original_tagname_ = self.ref
@@ -1236,12 +1234,12 @@ class SFFEllipsoid(SFFShape):
         cls.shape_id = super(SFFEllipsoid, cls).shape_id + 1
         return super(SFFEllipsoid, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, s=None, *args, **kwargs):
-        super(SFFEllipsoid, self).__init__(s, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFEllipsoid, self).__init__(var=var, *args, **kwargs)
         if 'id' in kwargs:
             self._local.id = kwargs['id']
             SFFShape.shape_id = self.shape_id
-        elif not s:
+        elif not var:
             self._local.id = self.shape_id
             SFFShape.shape_id = self.shape_id
         self._local.original_tagname_ = self.ref
@@ -1253,10 +1251,10 @@ class SFFShapePrimitiveList(SFFType):
     ref = 'shapePrimitiveList'
     repr_string = "Shape primitive list with some shapes"
 
-    def __init__(self, s=None, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # reset id
         SFFShape.reset_id()
-        super(SFFShapePrimitiveList, self).__init__(s, *args, **kwargs)
+        super(SFFShapePrimitiveList, self).__init__(var=var, *args, **kwargs)
 
     def add_shape(self, s):
         """Add the provide shape into this shape container
@@ -1391,14 +1389,14 @@ class SFFVertex(SFFType):
         cls.vertex_id += 1
         return super(SFFVertex, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, v=None, *args, **kwargs):
-        super(SFFVertex, self).__init__(v, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFVertex, self).__init__(var=var, *args, **kwargs)
         """
         :TODO: vID fails to take effect; fails with IMODSegmentation
         """
         if 'vID' in kwargs:
             self._local.vID = kwargs['vID']
-        elif not v:
+        elif not var:
             self._local.vID = self.vertex_id
 
     @property
@@ -1433,11 +1431,11 @@ class SFFPolygon(SFFType):
         cls.polygon_id += 1
         return super(SFFPolygon, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, p=None, *args, **kwargs):
-        super(SFFPolygon, self).__init__(p, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFPolygon, self).__init__(var=var, *args, **kwargs)
         if 'PID' in kwargs:
             self._local.PID = kwargs['PID']
-        elif not p:
+        elif not var:
             self._local.PID = self.polygon_id
 
     @property
@@ -1461,10 +1459,10 @@ class SFFVertexList(SFFType):
     gds_type = sff.vertexListType
     ref = "List of vertices"
 
-    def __init__(self, vL=None, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # reset id
         SFFVertex.reset_id()
-        super(SFFVertexList, self).__init__(vL, *args, **kwargs)
+        super(SFFVertexList, self).__init__(var=var, *args, **kwargs)
         self._vertex_dict = {v.vID: v for v in map(SFFVertex, self._local.v)}
 
     @property
@@ -1527,10 +1525,10 @@ class SFFPolygonList(SFFType):
     repr_string = "Polygon list with {} polygons"
     repr_args = ('len()',)
 
-    def __init__(self, pL=None, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # reset id
         SFFPolygon.reset_id()
-        super(SFFPolygonList, self).__init__(pL, *args, **kwargs)
+        super(SFFPolygonList, self).__init__(var=var, *args, **kwargs)
         self._polygon_dict = {P.PID: P for P in map(SFFPolygon, self._local.P)}
 
     @property
@@ -1598,11 +1596,11 @@ class SFFMesh(SFFType):
         cls.mesh_id += 1
         return super(SFFMesh, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, m=None, *args, **kwargs):
-        super(SFFMesh, self).__init__(m, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFMesh, self).__init__(var=var, *args, **kwargs)
         if 'id' in kwargs:
             self._local.id = kwargs['id']
-        elif not m:
+        elif not var:
             self._local.id = self.mesh_id
 
     @property
@@ -1632,10 +1630,10 @@ class SFFMeshList(SFFType):
     iter_attr = ('mesh', SFFMesh)
     iter_dict = dict()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # reset id
         SFFMesh.reset_id()
-        super(SFFMeshList, self).__init__(*args, **kwargs)
+        super(SFFMeshList, self).__init__(var=var, *args, **kwargs)
 
     def add_mesh(self, m):
         """Add a mesh into the list of meshes
@@ -1732,26 +1730,27 @@ class SFFSegment(SFFType):
     # contours = SFFAttribute('contourList', sff_type=SFFContourList)
     volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume)
     shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList)
+
     # mask = SFFAttribute('mask')  # used in sfftkplus
 
     def __new__(cls, *args, **kwargs):
         cls.segment_id += 1
         return super(SFFType, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, s=None, *args, **kwargs):
-        super(SFFSegment, self).__init__(s, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFSegment, self).__init__(var=var, *args, **kwargs)
         """
         :TODO: if I want to add a new segment to a set of available segments does the id begin at the right value?
         """
         # id
         if 'id' in kwargs:
             self._local.id = kwargs['id']
-        elif not s:
+        elif not var:
             self._local.id = self.segment_id
         # parentID
         if 'parentID' in kwargs:
             self._local.parentID = kwargs['parentID']
-        elif not s:
+        elif not var:
             self._local.parentID = self.segment_parentID
 
     def as_hff(self, parent_group, name="{}"):
@@ -1880,10 +1879,10 @@ class SFFSegmentList(SFFType):
     iter_attr = ('segment', SFFSegment)
     iter_dict = dict()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # reset id
         SFFSegment.reset_id()
-        super(SFFSegmentList, self).__init__(*args, **kwargs)
+        super(SFFSegmentList, self).__init__(var=var, *args, **kwargs)
 
     def add_segment(self, s):
         """Add a segment to this segment container
@@ -1917,21 +1916,23 @@ class SFFSegmentList(SFFType):
         return obj
 
 
-class SFFTransform(SFFType):
-    """Transform"""
-    ref = "transform"
+# class SFFTransform(SFFType):
+#     """Transform"""
+#     ref = "transform"
+#     transform_id = -1
+#
+#     # attributes
+#     id = SFFAttribute('id')
+
+
+class SFFTransformationMatrix(SFFType):
+    """Transformation matrix transform"""
+    gds_type = sff.transformationMatrixType
+    ref = "transformationMatrix"
     transform_id = -1
 
     # attributes
     id = SFFAttribute('id')
-
-
-class SFFTransformationMatrix(SFFTransform):
-    """Transformation matrix transform"""
-    gds_type = sff.transformationMatrixType
-    ref = "transformationMatrix"
-
-    # attributes
     rows = SFFAttribute('rows')
     cols = SFFAttribute('cols')
     data = SFFAttribute('data')
@@ -1940,14 +1941,14 @@ class SFFTransformationMatrix(SFFTransform):
         cls.transform_id += 1
         return super(SFFTransformationMatrix, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, t=None, *args, **kwargs):
-        super(SFFTransformationMatrix, self).__init__(t, *args, **kwargs)
+    def __init__(self, var=None, *args, **kwargs):
+        super(SFFTransformationMatrix, self).__init__(var=var, *args, **kwargs)
+        # override id if it is included
         if 'id' in kwargs:
             self._local.id = kwargs['id']
-            SFFTransform.transform_id = self.transform_id
-        elif not t:
+        elif not var:
             self._local.id = self.transform_id
-            SFFTransform.transform_id = self.transform_id
+
         self._local.original_tagname_ = self.ref
 
     @property
@@ -1957,10 +1958,7 @@ class SFFTransformationMatrix(SFFTransform):
         return data_array
 
     def __str__(self):
-        return """Transformation matrix:
-        \r[[{:>.4f} {:>.4f} {:>.4f} {:>.4f}]
-        \r [{:>.4f} {:>.4f} {:>.4f} {:>.4f}]
-        \r [{:>.4f} {:>.4f} {:>.4f} {:>.4f}]]""".format(*map(float, self.data.split(' ')))
+        return (("[" + "{:.4f} " * self.cols + "]\n") * self.rows).format(*map(float, self.data.split(' ')))
 
     """
     :TODO: a setter for the above attribute
@@ -1972,40 +1970,25 @@ class SFFTransformList(SFFType):
     gds_type = sff.transformListType
     ref = "Transform list"
     repr_string = "List of transforms"
+    iter_attr = ('transform', SFFTransformationMatrix)
+    iter_dict = dict()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, var=None, *args, **kwargs):
         # a new container of transforms needs the transform ID reset
-        SFFTransform.reset_id()
-        super(SFFTransformList, self).__init__(*args, **kwargs)
-
-    # attributes
-    @staticmethod
-    def _transform_cast(transform):
-        if isinstance(transform, sff.transformationMatrixType):
-            return SFFTransformationMatrix(transform)
-        else:
-            raise TypeError("unknown shape type '{}'".format(type(transform)))
-
-    def _transform_count(self, transform_type):
-        return len(filter(lambda s: isinstance(s, transform_type), self._local.transform))
+        SFFTransformationMatrix.reset_id()
+        super(SFFTransformList, self).__init__(var=var, *args, **kwargs)
 
     @property
     def transformationMatrixCount(self):
         """The number of :py:class:`SFFTransformationMatrix` objects in this transform container"""
-        return self._transform_count(sff.transformationMatrixType)
+        return len(self._local.transform)
 
     def add_transform(self, T):
         """Add the specified transform to this transform container"""
-        self._local.add_transform(T._local)
-
-    def __len__(self):
-        return len(self._local.transform)
-
-    def __iter__(self):
-        return iter(map(self._transform_cast, self._local.transform))
-
-    def __getitem__(self, index):
-        return self._transform_cast(self._local.transform[index])
+        if isinstance(T, SFFTransformationMatrix):
+            self._local.add_transform(T._local)
+        else:
+            raise SFFTypeError(SFFTransformationMatrix)
 
     def check_transformation_matrix_homogeneity(self):
         """Helper method to check transformation matrix homogeneity
@@ -2402,7 +2385,8 @@ class SFFSegmentation(SFFType):
             seg_data['id'] = int(segment.id)
             seg_data['parentID'] = int(segment.parentID)
             bioAnn = dict()
-            bioAnn['name'] = segment.biologicalAnnotation.name if segment.biologicalAnnotation.name is not None else None
+            bioAnn[
+                'name'] = segment.biologicalAnnotation.name if segment.biologicalAnnotation.name is not None else None
             bioAnn['description'] = str(
                 segment.biologicalAnnotation.description) if segment.biologicalAnnotation.description is not None else None
             bioAnn[
