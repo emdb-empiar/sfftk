@@ -5,7 +5,7 @@ sfftk.formats.stl
 ==================
 User-facing reader classes for Stereolithography files
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import inspect
 

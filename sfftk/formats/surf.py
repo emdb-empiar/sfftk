@@ -6,7 +6,7 @@ sfftk.formats.surf
 
 User-facing reader classes for Amira HxSurface files
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import inspect
 

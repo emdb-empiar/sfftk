@@ -6,7 +6,7 @@ sfftk.formats.map
 
 User-facing reader classes for CCP4 masks
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import inspect
 

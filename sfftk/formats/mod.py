@@ -7,7 +7,7 @@ sfftk.formats.mod
 User-facing reader classes for IMOD files
 
 """
-from __future__ import division
+from __future__ import division, print_function
 
 import inspect
 from UserList import UserList
