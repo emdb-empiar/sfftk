@@ -342,6 +342,7 @@ class TestParser_view(unittest.TestCase):
         self.assertEqual(args.from_file, 'file.sff')
         self.assertFalse(args.version)
         self.assertIsNone(args.config_path)
+        self.assertFalse(args.show_chunks)
 
     def test_version(self):
         """Test view version"""
@@ -354,6 +355,16 @@ class TestParser_view(unittest.TestCase):
         config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
         args, _ = parse_args(shlex.split('view --config-path {} file.sff'.format(config_fn)))
         self.assertEqual(args.config_path, config_fn)
+
+    def test_show_chunks_mod(self):
+        """Test that we can view chunks"""
+        args, _ = parse_args(shlex.split('view -C file.mod'))
+        self.assertTrue(args.show_chunks)
+
+    def test_show_chunks_other_fails(self):
+        """Test that show chunks only works for .mod files"""
+        args, _ = parse_args(shlex.split('view -C file.sff'))
+        self.assertIsNone(args)
 
 
 class TestParser_notes_ro(unittest.TestCase):

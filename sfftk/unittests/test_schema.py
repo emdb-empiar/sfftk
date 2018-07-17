@@ -994,8 +994,37 @@ class TestSFFVolumeIndex(unittest.TestCase):
 
 
 class TestSFFLattice(unittest.TestCase):
-    pass
+    @classmethod
+    def setUpClass(cls):
+        cls.lattice_size = schema.SFFVolumeStructure(
+            cols=10, rows=10, sections=10,
+        )
+        cls.lattice_endianness = 'little'
+        cls.lattice_mode = 'uint32'
+        cls.lattice_start = schema.SFFVolumeIndex(
+            cols=0, rows=0, sections=0
+        )
+        data_ = numpy.array(range(1000), dtype=numpy.uint32).reshape((10, 10, 10))
+        numpy.random.shuffle(data_)
+        cls.lattice_data = data_
+        cls.lattice = schema.SFFLattice(
+            mode=cls.lattice_mode,
+            endianness=cls.lattice_endianness,
+            size=cls.lattice_size,
+            start=cls.lattice_start,
+            data=schema.SFFLattice.encode(
+                mode=cls.lattice_mode,
+                endianness=cls.lattice_endianness,
+                size=cls.lattice_size.voxelCount,
+                data=cls.lattice_data.flatten(),
+            )
+        )
 
+    def test_decode(self):
+        """Test that we can decode a lattice"""
+        self.lattice.decode()
+        self.assertItemsEqual(self.lattice.data.flatten(), self.lattice_data.flatten())
+    
 
 class TestSFFLatticeList(unittest.TestCase):
     pass

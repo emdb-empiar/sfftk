@@ -2,8 +2,10 @@
 # parser.py
 """Parses command-line options"""
 from __future__ import print_function
+
 import argparse
 import os
+import re
 import sys
 from copy import deepcopy
 
@@ -748,7 +750,6 @@ from_segment_or_all_clear_notes_parser.add_argument(
     help="clear notes from all segments"
 )
 
-
 # =============================================================================
 # notes: merge
 # =============================================================================
@@ -886,6 +887,12 @@ def parse_args(_args):
     if args.subcommand == 'config':
         # handle config-specific argument modifications here
         pass
+    # view
+    elif args.subcommand == 'view':
+        if args.show_chunks:
+            if not re.match(r".*\.mod$", args.from_file, re.IGNORECASE):
+                print_date("Invalid file type to view chunks. Only works with IMOD files")
+                return None, configs
     # convert
     elif args.subcommand == 'convert':
         # single vs. multi-file
@@ -921,7 +928,6 @@ def parse_args(_args):
                 return None, configs
         # set the output file
         if args.output is None:
-            import re
             if args.multi_file:
                 from_file = args.from_file[0]
             else:

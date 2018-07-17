@@ -1,13 +1,14 @@
 {
   "boundingBox": {
     "xmax": null, 
-    "xmin": 0.0, 
+    "xmin": 0, 
     "ymax": null, 
-    "ymin": 0.0, 
+    "ymin": 0, 
     "zmax": null, 
-    "zmin": 0.0
+    "zmin": 0
   }, 
-  "details": null, 
+  "details": "", 
+  "filePath": "/Users/pkorir/git/sfftk/sfftk/test_data/segmentations", 
   "globalExternalReferences": [], 
   "name": "Segger Segmentation", 
   "primaryDescriptor": "threeDVolume", 
@@ -16,7 +17,6 @@
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -26,13 +26,19 @@
         1.0
       ], 
       "id": 15559, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -42,13 +48,19 @@
         1.0
       ], 
       "id": 15560, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -58,13 +70,19 @@
         1.0
       ], 
       "id": 15561, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -74,13 +92,19 @@
         1.0
       ], 
       "id": 15562, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -90,13 +114,19 @@
         1.0
       ], 
       "id": 15563, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -106,13 +136,19 @@
         1.0
       ], 
       "id": 15564, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -122,13 +158,19 @@
         1.0
       ], 
       "id": 15565, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -138,13 +180,19 @@
         1.0
       ], 
       "id": 15566, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -154,13 +202,19 @@
         1.0
       ], 
       "id": 15567, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -170,13 +224,19 @@
         1.0
       ], 
       "id": 15568, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -186,13 +246,19 @@
         1.0
       ], 
       "id": 15569, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -202,13 +268,19 @@
         1.0
       ], 
       "id": 15570, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -218,13 +290,19 @@
         1.0
       ], 
       "id": 15571, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -234,13 +312,19 @@
         1.0
       ], 
       "id": 15572, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -250,13 +334,19 @@
         1.0
       ], 
       "id": 15573, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -266,13 +356,19 @@
         1.0
       ], 
       "id": 15574, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -282,13 +378,19 @@
         1.0
       ], 
       "id": 15575, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -298,13 +400,19 @@
         1.0
       ], 
       "id": 15576, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -314,13 +422,19 @@
         1.0
       ], 
       "id": 15577, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }, 
     {
       "biologicalAnnotation": {
         "description": null, 
         "externalReferences": [], 
-        "name": null, 
         "numberOfInstances": null
       }, 
       "colour": [
@@ -330,7 +444,14 @@
         1.0
       ], 
       "id": 15578, 
-      "parentID": 0
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 1.8, 
+        "file": "emd_1014.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
     }
   ], 
   "software": {

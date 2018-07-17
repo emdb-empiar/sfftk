@@ -331,8 +331,11 @@ class AmiraMeshSegmentation(Segmentation):
             endianness=lattice_endianness,
             size=lattice_size,
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=schema.SFFLattice.encode(mode=lattice_mode, endianness=lattice_endianness,
-                                          size=lattice_size.voxelCount, data=data)
+            data=schema.SFFLattice.encode(
+                mode=lattice_mode,
+                endianness=lattice_endianness,
+                size=lattice_size.voxelCount,
+                data=data)
         )
         lattices.add_lattice(lattice)
         segmentation.lattices = lattices

@@ -182,7 +182,7 @@ class TestMain_handle_view(unittest.TestCase):
 
     def test_read_mod(self):
         """Test that we can view .mod"""
-        args, configs = parse_args(shlex.split('view {} --config-path {}'.format(
+        args, configs = parse_args(shlex.split('view {} --config-path --show-chunks {}'.format(
             os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
             self.config_fn,
         )))
