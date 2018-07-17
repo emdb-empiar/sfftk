@@ -219,7 +219,7 @@ Colour:
                 self.numberOfExternalReferences,
                 self.numberOfComplexes,
                 self.numberOfMacromolecules,
-                "(" + ", ".join(map(str, map(lambda c: round(c, 3), self.colour))) + ")",
+                "(" + ", ".join(map(str, map(lambda c: round(c, 3), colour))) + ")",
             )
         return string
 
