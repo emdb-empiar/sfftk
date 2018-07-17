@@ -818,7 +818,7 @@ class TestSFFSegmentation(unittest.TestCase):
 
     def test_read_json(self):
         """Read from JSON (.json) file"""
-        json_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.json')
+        json_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
         segmentation = schema.SFFSegmentation(json_file)
         # assertions
         self.assertEqual(segmentation.name, "Segger Segmentation")

@@ -805,7 +805,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             shlex.split("notes edit -i {} -D something file.sff --config-path {}".format(segment_id, self.config_fn)))
         self.assertEqual(args.sff_file, 'file.sff')
         #  can only save to an existing file
-        save_fn = os.path.join(TEST_DATA_PATH, 'sff', 'emd_1014.sff')
+        save_fn = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
         args1, _ = parse_args(shlex.split("notes save {} --config-path {}".format(save_fn, self.config_fn)))
         self.assertEqual(args1.notes_subcommand, 'save')
         self.assertEqual(args1.sff_file, save_fn)

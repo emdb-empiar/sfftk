@@ -492,9 +492,9 @@ class TestNotes_modify(unittest.TestCase):
 class TestNotes_modify_sff(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_sff, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.sff')
-        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'other_emd_1014.sff')
-        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'output_emd_1181.sff')
+        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
+        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.sff')
+        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.sff')
 
     def tearDown(self):
         seg = schema.SFFSegmentation(self.sff_file)
@@ -525,8 +525,8 @@ class TestNotes_modify_hff(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_hff, self).setUp()
         self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
-        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'other_emd_1014.hff')
-        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'output_emd_1014.hff')
+        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.hff')
+        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1014.hff')
 
     def tearDown(self):
         seg = schema.SFFSegmentation(self.sff_file)
@@ -549,9 +549,9 @@ class TestNotes_modify_hff(TestNotes_modify):
 class TestNotes_modify_json(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_json, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'emd_1014.json')
-        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'other_emd_1014.json')
-        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'output_emd_1181.json')
+        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
+        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.json')
+        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.json')
 
     def tearDown(self):
         seg = schema.SFFSegmentation(self.sff_file)
