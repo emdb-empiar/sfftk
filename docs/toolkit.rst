@@ -46,7 +46,7 @@ Data Model
 ----------
 
 ``sfftk`` is built to handle EMDB-SFF files. The corresponding schema 
-(``v0.6.0a4``) may be obtained at `http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html 
+(``v0.7.0.dev0``) may be obtained at `http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html
 <http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html>`_. 
 Changes to the schema are welcome for discussion at the *Segmentation Working Group* 
 at `https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg 

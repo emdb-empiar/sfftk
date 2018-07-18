@@ -19,6 +19,7 @@ __updated__ = '2018-02-14'
 
 verbosity_range = range(4)
 multi_file_formats = ['stl', 'map', 'mrc', 'rec']
+prepable_file_formats = ['mrc', 'map', 'rec']
 
 
 def add_args(parser, the_arg):
@@ -243,6 +244,76 @@ verbose = {
         'help': "verbose output"
     },
 }
+
+# =========================================================================
+# prep subparser
+# =========================================================================
+prep_parser = subparsers.add_parser(
+    'prep',
+    description="Prepare a segmentation for conversion to EMDB-SFF",
+    help="prepares a segmentation"
+)
+prep_subparsers = prep_parser.add_subparsers(
+    title='Segmentation preparation utility',
+    dest='prep_subcommand',
+    description="The following commands provide a number of pre-processing steps for various segmentation file formats. "
+                "Most only apply to one file type. See the help for each command by typing 'sff prep <command>'",
+    metavar='Preparation steps:'
+)
+# =========================================================================
+# prep: bin
+# =========================================================================
+binmap_prep_parser = prep_subparsers.add_parser(
+    'binmap',
+    description='Bin the CCP4 file to reduce file size',
+    help='bin a CCP4 map',
+)
+binmap_prep_parser.add_argument(
+    'from_file', help='the name of the segmentation file'
+)
+add_args(binmap_prep_parser, config_path)
+add_args(binmap_prep_parser, shipped_configs)
+binmap_prep_parser.add_argument(
+    '-m', '--mask-value',
+    default=1, type=int,
+    help='value to set to; all other voxels set to zero [default: 1]'
+)
+binmap_prep_parser.add_argument(
+    '-o', '--output',
+    default=None,
+    help='output file name [default: <infile>_binned.<ext>]'
+)
+binmap_prep_parser.add_argument(
+    '--overwrite',
+    default=False,
+    action='store_true',
+    help='overwrite output file [default: False]'
+)
+binmap_prep_parser.add_argument(
+    '-c', '--contour-level',
+    default=0,
+    type=float,
+    help='value (exclusive) about which to threshold [default: 0.0]'
+)
+binmap_prep_parser.add_argument(
+    '--negate',
+    default=False,
+    action='store_true',
+    help='use values below the contour level [default: False]'
+)
+binmap_prep_parser.add_argument(
+    '-B', '--bytes-per-voxel',
+    default=1,
+    type=int,
+    choices=[1, 2, 4, 8, 16],
+    help='number of bytes per voxel [default: 1]'
+)
+binmap_prep_parser.add_argument(
+    '--infix',
+    default='prep',
+    help="infix to be added to filenames e.g. file.map -> file_<infix>.map [default: 'prep']",
+)
+add_args(binmap_prep_parser, verbose)
 
 # =========================================================================
 # convert subparser
@@ -865,18 +936,22 @@ def parse_args(_args):
         elif _args[0] == '-V' or _args[0] == '--version':
             from .. import SFFTK_VERSION
             print_date("sfftk version: {}".format(SFFTK_VERSION))
-            sys.exit(0)
+            sys.exit(os.EX_USAGE)
         # anytime a new argument is added to the base parser subparsers are bumped down in index
         elif _args[0] in Parser._actions[2].choices.keys():
             exec ('{}_parser.print_help()'.format(_args[0]))
-            sys.exit(0)
+            sys.exit(os.EX_USAGE)
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
             if _args[1] in Parser._actions[2].choices['notes']._actions[1].choices.keys():
                 exec ('{}_notes_parser.print_help()'.format(_args[1]))
-                sys.exit(0)
+                sys.exit(os.EX_USAGE)
+        elif _args[0] == 'prep':
+            if _args[1] in Parser._actions[2].choices['prep']._actions[1].choices.keys():
+                exec ('{}_prep_parser.print_help()'.format(_args[1]))
+                sys.exit(os.EX_USAGE)
     # parse arguments
     args = Parser.parse_args(_args)
     from .configs import load_configs
@@ -887,6 +962,23 @@ def parse_args(_args):
     if args.subcommand == 'config':
         # handle config-specific argument modifications here
         pass
+    # prep
+    elif args.subcommand == 'prep':
+        # binmap
+        if args.prep_subcommand == 'binmap':
+            ext = args.from_file.split('.')[-1]
+            if ext.lower() not in prepable_file_formats:
+                print_date("File format {} not available for prepping".format(ext.lower()))
+                return None, configs
+            if args.output is None:
+                if args.infix != '':
+                    args.output = '.'.join(args.from_file.split('.')[:-1]) + '_' + args.infix + '.' + ext
+                else:
+                    print_date("Cannot overwrite input file")
+                    return None, configs
+                if args.verbose:
+                    print_date("Output will be written to {}".format(args.output))
+
     # view
     elif args.subcommand == 'view':
         if args.show_chunks:

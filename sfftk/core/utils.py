@@ -58,6 +58,9 @@ def parallelise(iterable, target=None, args=(), number_of_processes=None):
     :param args: arguments to target
     :return: the result of computing iterable in parallel
     """
+    if target is None:
+        return iterable
+
     from multiprocessing import Process, Queue, cpu_count
 
     def worker(input, output):

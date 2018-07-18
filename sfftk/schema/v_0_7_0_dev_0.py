@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Fri May 11 11:06:45 2018 by generateDS.py version 2.29.11.
+# Generated Wed Jul 18 15:56:28 2018 by generateDS.py version 2.29.14.
 # Python 2.7.13 |Continuum Analytics, Inc.| (default, Dec 20 2016, 23:05:08)  [GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)]
 #
 # Command line options:
@@ -12,7 +12,7 @@
 #   /Users/pkorir/Documents/workspace/segmentation_mask/DA_schema/segmentation_da.xsd
 #
 # Command line:
-#   /Users/pkorir/miniconda2/bin/generateDS -o "sfftk/schema/v_0_7_0_dev_0.py" /Users/pkorir/Documents/workspace/segmentation_mask/DA_schema/segmentation_da.xsd
+#   /Users/pkorir/miniconda2/envs/sfftk-0.7/bin/generateDS.py -o "sfftk/schema/v_0_7_0_dev_0.py" /Users/pkorir/Documents/workspace/segmentation_mask/DA_schema/segmentation_da.xsd
 #
 # Current working directory (os.getcwd()):
 #   sfftk
@@ -811,7 +811,9 @@ class segmentation(GeneratedsSuper):
     base64 string using new 'latticeType' 3) removed contour
     representation 0.7.0.dev0, 2018/05/04, Paul Korir: 4) segment
     name added 5) removed filePath 6) removed viewVectorRotation and
-    canonicalEulerAngles 7) colour has rgbaType now"""
+    canonicalEulerAngles 7) colour has rgbaType now 0.7.0.dev0,
+    2018/07/18, Paul Korir: 8) vertex designation now 'surface' or
+    'normal'"""
     subclass = None
     superclass = None
     def __init__(self, schemaVersion='0.7.0.dev0', version=None, name=None, software=None, transformList=None, primaryDescriptor=None, boundingBox=None, globalExternalReferences=None, segmentList=None, latticeList=None, details=None):
@@ -1941,7 +1943,7 @@ class latticeType(GeneratedsSuper):
         # Validate type modeType, a restriction on xs:string.
         if value is not None and Validate_simpletypes_:
             value = str(value)
-            enumerations = ['int8', 'uint8', 'int16', 'uint16', 'int32', 'uint32', 'int64', 'uint64', 'float32', 'float64']
+            enumerations = ['int8', 'int16', 'uint16', 'int32', 'uint32', 'int64', 'uint64', 'float32', 'float64']
             enumeration_respectee = False
             for enum in enumerations:
                 if value == enum:
@@ -2366,7 +2368,7 @@ class polygonListType(GeneratedsSuper):
 class vertexType(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, vID=None, designation='vertex', x=None, y=None, z=None):
+    def __init__(self, vID=None, designation='surface', x=None, y=None, z=None):
         self.original_tagname_ = None
         self.vID = _cast(int, vID)
         self.designation = _cast(None, designation)
@@ -2428,7 +2430,7 @@ class vertexType(GeneratedsSuper):
         if self.vID is not None and 'vID' not in already_processed:
             already_processed.add('vID')
             outfile.write(' vID="%s"' % self.gds_format_integer(self.vID, input_name='vID'))
-        if self.designation != "vertex" and 'designation' not in already_processed:
+        if self.designation != "surface" and 'designation' not in already_processed:
             already_processed.add('designation')
             outfile.write(' designation=%s' % (self.gds_encode(self.gds_format_string(quote_attrib(self.designation), input_name='designation')), ))
     def exportChildren(self, outfile, level, namespace_='', name_='vertexType', fromsubclass_=False, pretty_print=True):

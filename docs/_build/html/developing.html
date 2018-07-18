@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Developing with sfftk &mdash; sfftk v0.3.0.dev0 documentation</title>
+  <title>Developing with sfftk &mdash; sfftk v0.3.1.dev0 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk v0.3.0.dev0 documentation" href="index.html"/>
-        <link rel="next" title="Extending sfftk" href="extending.html"/>
-        <link rel="prev" title="Miscellaneous Operations Using sfftk" href="misc.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Extending sfftk" href="extending.html" />
+    <link rel="prev" title="Miscellaneous Operations Using sfftk" href="misc.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -91,7 +83,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal"><span class="pre">sfftk</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal notranslate"><span class="pre">sfftk</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
@@ -162,7 +154,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">sfftk</a>
@@ -170,9 +162,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -294,7 +287,7 @@
 <div class="section" id="reading-emdb-sff-files">
 <h2><a class="toc-backref" href="#id5">Reading EMDB-SFF Files</a><a class="headerlink" href="#reading-emdb-sff-files" title="Permalink to this headline">¶</a></h2>
 <p>All aspects of the structure of an EMDB-SFF file are handled by sfftk.schema package which defines the SFFSegmentation class to handle reading, creation and writing of EMDB-SFF files.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="k">import</span> <span class="n">SFFSegmentation</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="k">import</span> <span class="n">SFFSegmentation</span>
 <span class="kn">from</span> <span class="nn">sfftk.unittests</span> <span class="k">import</span> <span class="n">TEST_DATA_PATH</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -313,7 +306,7 @@
 </div>
 <div class="section" id="viewing-segmentation-metadata">
 <h3><a class="toc-backref" href="#id6">Viewing Segmentation Metadata</a><a class="headerlink" href="#viewing-segmentation-metadata" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># name</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># name</span>
 <span class="nb">print</span> <span class="n">seg</span><span class="o">.</span><span class="n">name</span>
 <span class="c1"># schema version</span>
 <span class="nb">print</span> <span class="n">seg</span><span class="o">.</span><span class="n">version</span>
@@ -336,19 +329,19 @@
 </div>
 <div class="section" id="viewing-segments">
 <h3><a class="toc-backref" href="#id7">Viewing Segments</a><a class="headerlink" href="#viewing-segments" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span>
 </pre></div>
 </div>
 <div class="section" id="getting-the-list-of-segment-ids">
 <h4><a class="toc-backref" href="#id8">Getting The List of Segment IDs</a><a class="headerlink" href="#getting-the-list-of-segment-ids" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># segment IDs</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># segment IDs</span>
 <span class="nb">print</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">get_ids</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="getting-a-segment-by-id">
 <h4><a class="toc-backref" href="#id9">Getting A Segment By ID</a><a class="headerlink" href="#getting-a-segment-by-id" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">segment</span>
 </pre></div>
 </div>
@@ -358,14 +351,14 @@
 <h3><a class="toc-backref" href="#id10">Viewing Segment Metadata</a><a class="headerlink" href="#viewing-segment-metadata" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="id-and-parent-id">
 <h4><a class="toc-backref" href="#id11">ID and Parent ID</a><a class="headerlink" href="#id-and-parent-id" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">id</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">id</span>
 <span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">parentID</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="biological-annotation">
 <h4><a class="toc-backref" href="#id12">Biological Annotation</a><a class="headerlink" href="#biological-annotation" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span>
 <span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">description</span>
 <span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">numberOfInstances</span>
 <span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">externalReferences</span>
@@ -375,7 +368,7 @@
 </div>
 <div class="section" id="complexes-and-macromolecules">
 <h4><a class="toc-backref" href="#id13">Complexes and Macromolecules</a><a class="headerlink" href="#complexes-and-macromolecules" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span>
 <span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span><span class="o">.</span><span class="n">complexes</span>
 <span class="nb">print</span> <span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span><span class="o">.</span><span class="n">macromolecules</span>
 </pre></div>
@@ -386,14 +379,14 @@
 <div class="section" id="creating-emdb-sff-objects">
 <h2><a class="toc-backref" href="#id14">Creating EMDB-SFF Objects</a><a class="headerlink" href="#creating-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
 <p>Users can create EMDB-SFF objects from scratch then export them to a file format of your choice.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk</span> <span class="k">import</span> <span class="n">schema</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk</span> <span class="k">import</span> <span class="n">schema</span>
 <span class="c1"># an empty EMDB-SFF segmentation</span>
 <span class="n">seg</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentation</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="section" id="setting-segmentation-metadata">
 <h3><a class="toc-backref" href="#id15">Setting Segmentation Metadata</a><a class="headerlink" href="#setting-segmentation-metadata" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span># view the schema version
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span># view the schema version
 print seg.version
 
 # segmentation name
@@ -437,12 +430,12 @@ seg.transforms.add_transform(transform)
 <h4><a class="toc-backref" href="#id16">Setting Segments</a><a class="headerlink" href="#setting-segments" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="setting-segment-metadata">
 <h5><a class="toc-backref" href="#id17">Setting Segment Metadata</a><a class="headerlink" href="#setting-segment-metadata" title="Permalink to this headline">¶</a></h5>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="section" id="id1">
 <h6><a class="toc-backref" href="#id18">Biological Annotation</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h6>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span># define the biological annotation object
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span># define the biological annotation object
 bioAnn = schema.SFFBiologicalAnnotation()
 bioAnn.description = “Some description&quot;
 bioAnn.numberOfInstances = 7
@@ -472,7 +465,7 @@ segment.biologicalAnnotation = bioAnn
 </div>
 <div class="section" id="id2">
 <h6><a class="toc-backref" href="#id19">Complexes and Macromolecules</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h6>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>compMacr = schema.SFFComplexesAndMacromolecules()
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>compMacr = schema.SFFComplexesAndMacromolecules()
 
 # complexes
 comp = schema.SFFComplexes()
@@ -496,7 +489,7 @@ segment.complexesAndMacromolecules = compMacr
 <div class="section" id="colour">
 <h6><a class="toc-backref" href="#id20">Colour</a><a class="headerlink" href="#colour" title="Permalink to this headline">¶</a></h6>
 <p>Colours can either be described by name or by normalised RGBA values (each channel has a value in the interval (0,1)).</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span># colour by name; see: https://en.wikipedia.org/wiki/Web_colors
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span># colour by name; see: https://en.wikipedia.org/wiki/Web_colors
 segment.colour = schema.SFFColour()
 LightSeaGreen: (32, 178, 170)
 segment.colour.name = “LightSeaGreen&quot;
@@ -517,7 +510,7 @@ segment.colour.rgba = rgba
 </div>
 <div class="section" id="setting-mesh-segments">
 <h5><a class="toc-backref" href="#id21">Setting Mesh Segments</a><a class="headerlink" href="#setting-mesh-segments" title="Permalink to this headline">¶</a></h5>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">randint</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">randint</span>
 
 <span class="c1"># the list of meshes</span>
 <span class="n">meshes</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFMeshList</span><span class="p">()</span>
@@ -562,7 +555,7 @@ segment.colour.rgba = rgba
 </div>
 <div class="section" id="setting-shape-segments">
 <h5><a class="toc-backref" href="#id22">Setting Shape Segments</a><a class="headerlink" href="#setting-shape-segments" title="Permalink to this headline">¶</a></h5>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">randint</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">randint</span>
 
 <span class="c1"># a list of shape</span>
 <span class="n">shapes</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFShapePrimitiveList</span><span class="p">()</span>
@@ -643,7 +636,7 @@ segment.colour.rgba = rgba
 </div>
 <div class="section" id="setting-volume-segments">
 <h5><a class="toc-backref" href="#id23">Setting Volume Segments</a><a class="headerlink" href="#setting-volume-segments" title="Permalink to this headline">¶</a></h5>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">segment</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFThreeDVolume</span><span class="p">(</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">segment</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFThreeDVolume</span><span class="p">(</span>
         <span class="n">file</span><span class="o">=</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="c1"># works with seg.filePath to get the actual file</span>
         <span class="n">objectPath</span><span class="o">=&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span><span class="p">,</span>
         <span class="n">contourLevel</span><span class="o">=</span><span class="mf">77.0</span><span class="p">,</span>
@@ -655,7 +648,7 @@ segment.colour.rgba = rgba
 </div>
 <div class="section" id="adding-a-segment-to-the-segmentation">
 <h5><a class="toc-backref" href="#id24">Adding A Segment To The Segmentation</a><a class="headerlink" href="#adding-a-segment-to-the-segmentation" title="Permalink to this headline">¶</a></h5>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># create the list of segments</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the list of segments</span>
 <span class="n">seg</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentList</span><span class="p">()</span>
 <span class="c1"># add the segment</span>
 <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">add_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
@@ -668,7 +661,7 @@ segment.colour.rgba = rgba
 <div class="section" id="exporting-emdb-sff-objects">
 <h2><a class="toc-backref" href="#id25">Exporting EMDB-SFF Objects</a><a class="headerlink" href="#exporting-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
 <p>Exporting an EMDB-SFF object infers the output format from the file extension.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span># XML
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span># XML
 seg.export(‘file.sff&#39;)
 
 # HDF5
@@ -685,14 +678,14 @@ seg.export(‘file.json&#39;)
 <h3><a class="toc-backref" href="#id27">Iterating</a><a class="headerlink" href="#iterating" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="segments">
 <h4><a class="toc-backref" href="#id28">Segments</a><a class="headerlink" href="#segments" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
     <span class="c1"># do something with segment</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="meshes">
 <h4><a class="toc-backref" href="#id29">Meshes</a><a class="headerlink" href="#meshes" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">meshes</span><span class="p">:</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">meshes</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
                 <span class="n">vertex</span><span class="o">.</span><span class="n">vID</span>
                 <span class="n">vertex</span><span class="o">.</span><span class="n">designation</span> <span class="c1"># ‘vertex&#39; or ‘normal&#39;</span>
@@ -706,7 +699,7 @@ seg.export(‘file.json&#39;)
 </div>
 <div class="section" id="external-references">
 <h4><a class="toc-backref" href="#id30">External References</a><a class="headerlink" href="#external-references" title="Permalink to this headline">¶</a></h4>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">extRef</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">:</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">extRef</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">:</span>
         <span class="n">extRef</span><span class="o">.</span><span class="n">type</span>
         <span class="n">extRef</span><span class="o">.</span><span class="n">otherType</span>
         <span class="n">extRef</span><span class="o">.</span><span class="n">value</span>
@@ -717,7 +710,7 @@ seg.export(‘file.json&#39;)
 </div>
 <div class="section" id="directly-accessing-a-segment">
 <h2><a class="toc-backref" href="#id31">Directly Accessing A Segment</a><a class="headerlink" href="#directly-accessing-a-segment" title="Permalink to this headline">¶</a></h2>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># view the list of segment IDs</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># view the list of segment IDs</span>
 <span class="n">seg</span><span class="o">.</span><span class="n">segment</span><span class="o">.</span><span class="n">get_ids</span><span class="p">()</span>
 <span class="c1"># get a segment by ID</span>
 <span class="n">segment</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">segment</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="o">&lt;</span><span class="n">segment_id</span><span class="o">&gt;</span><span class="p">)</span>
@@ -729,7 +722,7 @@ seg.export(‘file.json&#39;)
 <p>Use the sfftk.notes.modify module to perform annotations</p>
 <div class="section" id="note-objects">
 <h3><a class="toc-backref" href="#id33">Note Objects</a><a class="headerlink" href="#note-objects" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.notes.modify import SimpleNote, ExternalReference
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.notes.modify import SimpleNote, ExternalReference
 
 N = SimpleNote()
 N.description = ‘some description&#39;
@@ -748,7 +741,7 @@ segment = SFFSegment()
 </div>
 <div class="section" id="adding-notes">
 <h3><a class="toc-backref" href="#id34">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># add the notes</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># add the notes</span>
 <span class="n">segment</span> <span class="o">=</span> <span class="n">N</span><span class="o">.</span><span class="n">add_to_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -756,7 +749,7 @@ segment = SFFSegment()
 <div class="section" id="editing-notes">
 <h3><a class="toc-backref" href="#id35">Editing Notes</a><a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
 <p>First make an note containing the edits</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>E = SimpleNote(
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>E = SimpleNote(
         description=&#39;new description&#39;,
         numberOfInstances=14,
         externalReferenceId=0, # the external reference ID to change
@@ -771,14 +764,14 @@ segment = SFFSegment()
 </pre></div>
 </div>
 <p>Then call the edit method</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">N</span><span class="o">.</span><span class="n">edit_in_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">N</span><span class="o">.</span><span class="n">edit_in_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-notes">
 <h3><a class="toc-backref" href="#id36">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
 <p>Similary, create a note indicating which attribute (description, numberOfInstances) and/or IDs to be deleted.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">SimpleNote</span><span class="p">(</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="n">SimpleNote</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">numberOfInstances</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">externalReferenceId</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -788,7 +781,7 @@ segment = SFFSegment()
 </pre></div>
 </div>
 <p>Now call the delete method.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">delete_from_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">segment</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">delete_from_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -798,49 +791,49 @@ segment = SFFSegment()
 <p>Application-specific file format readers and converters are defined in the sfftk.formats package with each module defined by the file extension. For example, AmiraMesh files have an ‘am’ extension hence we would read them using the sfftk.formats.am module which defines an AmiraMeshSegmentation class.</p>
 <div class="section" id="amiramesh-am">
 <h3><a class="toc-backref" href="#id38">AmiraMesh (.am)</a><a class="headerlink" href="#amiramesh-am" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.formats.am import AmiraMeshSegmentation
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.formats.am import AmiraMeshSegmentation
 am_seg = AmiraMeshSegmentation(‘file.am&#39;)
 </pre></div>
 </div>
 </div>
 <div class="section" id="ccp4-map">
 <h3><a class="toc-backref" href="#id39">CCP4 (.map)</a><a class="headerlink" href="#ccp4-map" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.formats.map import MAPSegmentation
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.formats.map import MAPSegmentation
 map_seg = MAPSegmentation(‘file.map&#39;)
 </pre></div>
 </div>
 </div>
 <div class="section" id="imod-mod">
 <h3><a class="toc-backref" href="#id40">IMOD (.mod)</a><a class="headerlink" href="#imod-mod" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.formats.mod import IMODSegmentation
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.formats.mod import IMODSegmentation
 mod_seg = IMODSegmentation(‘file.mod&#39;)
 </pre></div>
 </div>
 </div>
 <div class="section" id="segger-seg">
 <h3><a class="toc-backref" href="#id41">Segger (.seg)</a><a class="headerlink" href="#segger-seg" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.formats.seg import SeggerSegmentation
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.formats.seg import SeggerSegmentation
 seg_seg = SeggerSegmentation(‘file.seg&#39;)
 </pre></div>
 </div>
 </div>
 <div class="section" id="stl-stl">
 <h3><a class="toc-backref" href="#id42">STL (.stl)</a><a class="headerlink" href="#stl-stl" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.formats.stl import STLSegmentation
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.formats.stl import STLSegmentation
 stl_seg = STLSegmentation(‘file.stl&#39;)
 </pre></div>
 </div>
 </div>
 <div class="section" id="amira-hypersurface-surf">
 <h3><a class="toc-backref" href="#id43">Amira HyperSurface (.surf)</a><a class="headerlink" href="#amira-hypersurface-surf" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span>from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span>from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
 surf_seg = AmiraHyperSurfaceSegmentation(‘file.surf&#39;)
 </pre></div>
 </div>
 </div>
 <div class="section" id="converting-application-specific-segmentations-to-emdb-sff">
 <h3><a class="toc-backref" href="#id44">Converting Application-Specific Segmentations to EMDB-SFF</a><a class="headerlink" href="#converting-application-specific-segmentations-to-emdb-sff" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">sff_seg</span> <span class="o">=</span> <span class="n">as_seg</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff_seg</span> <span class="o">=</span> <span class="n">as_seg</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Note that the segmentation is now only an EMDB-SFF object but is not of a particular file format. The file format is chosen by the extension when <a class="reference external" href="#exporting-emdb-sff-objects">using the export method</a>.</p>
@@ -850,9 +843,7 @@ surf_seg = AmiraHyperSurfaceSegmentation(‘file.surf&#39;)
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -874,7 +865,7 @@ surf_seg = AmiraHyperSurfaceSegmentation(‘file.surf&#39;)
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -892,7 +883,8 @@ surf_seg = AmiraHyperSurfaceSegmentation(‘file.surf&#39;)
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v0.3.0.dev0',
+            VERSION:'v0.3.1.dev0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -905,19 +897,13 @@ surf_seg = AmiraHyperSurfaceSegmentation(‘file.surf&#39;)
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

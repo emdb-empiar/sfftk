@@ -321,21 +321,14 @@ class AmiraMeshSegmentation(Segmentation):
         segmentation.segments = segments
         # lattices
         lattices = schema.SFFLatticeList()
+        # the lattice
         cols, rows, sections = self._volume.shape
-        lattice_size = schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections)
-        lattice_endianness = 'little'
-        lattice_mode = 'uint8'
-        data = self._volume.flatten()
         lattice = schema.SFFLattice(
-            mode=lattice_mode,
-            endianness=lattice_endianness,
-            size=lattice_size,
-            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=schema.SFFLattice.encode(
-                mode=lattice_mode,
-                endianness=lattice_endianness,
-                size=lattice_size.voxelCount,
-                data=data)
+            mode='uint8',
+            endianness='little',
+            size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
+            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=sections),
+            data=self._volume,
         )
         lattices.add_lattice(lattice)
         segmentation.lattices = lattices

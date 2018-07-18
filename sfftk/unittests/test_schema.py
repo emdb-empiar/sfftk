@@ -66,28 +66,22 @@ class TestSFFSegmentation(unittest.TestCase):
         lattices = schema.SFFLatticeList()
         # lattice 1
         binlist = numpy.array([random.randint(0, 5) for i in xrange(20 * 20 * 20)])
-        lattice_size = schema.SFFVolumeStructure(cols=20, rows=20, sections=20)
-        lattice_endianness = "little"
-        lattice_mode = 'uint32'
         lattice = schema.SFFLattice(
-            mode=lattice_mode,
-            endianness=lattice_endianness,
-            size=lattice_size,
+            mode='uint32',
+            endianness='little',
+            size=schema.SFFVolumeStructure(cols=20, rows=20, sections=20),
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=schema.SFFLattice.encode(lattice_mode, lattice_endianness, lattice_size.voxelCount, binlist),
+            data=binlist,
         )
         lattices.add_lattice(lattice)
         # lattice 2
         binlist2 = numpy.array([random.random() * 100 for i in xrange(30 * 40 * 50)])
-        lattice_size2 = schema.SFFVolumeStructure(cols=30, rows=40, sections=50)
-        lattice_endianness2 = "big"
-        lattice_mode2 = 'float32'
         lattice2 = schema.SFFLattice(
-            mode=lattice_mode2,
-            endianness=lattice_endianness2,
-            size=lattice_size2,
+            mode='float32',
+            endianness='big',
+            size=schema.SFFVolumeStructure(cols=30, rows=40, sections=50),
             start=schema.SFFVolumeIndex(cols=-50, rows=-40, sections=100),
-            data=schema.SFFLattice.encode(lattice_mode2, lattice_endianness2, lattice_size2.voxelCount, binlist2),
+            data=binlist2,
         )
         lattices.add_lattice(lattice2)
         # segments
@@ -166,28 +160,22 @@ class TestSFFSegmentation(unittest.TestCase):
         lattices = schema.SFFLatticeList()
         # lattice 1
         binlist = numpy.array([random.randint(0, 5) for i in xrange(20 * 20 * 20)])
-        lattice_size = schema.SFFVolumeStructure(cols=20, rows=20, sections=20)
-        lattice_endianness = "little"
-        lattice_mode = 'uint32'
         lattice = schema.SFFLattice(
-            mode=lattice_mode,
-            endianness=lattice_endianness,
-            size=lattice_size,
+            mode='uint32',
+            endianness='little',
+            size=schema.SFFVolumeStructure(cols=20, rows=20, sections=20),
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=schema.SFFLattice.encode(lattice_mode, lattice_endianness, lattice_size.voxelCount, binlist),
+            data=binlist,
         )
         lattices.add_lattice(lattice)
         # lattice 2
         binlist2 = numpy.array([random.random() * 100 for i in xrange(30 * 40 * 50)])
-        lattice_size2 = schema.SFFVolumeStructure(cols=30, rows=40, sections=50)
-        lattice_endianness2 = "big"
-        lattice_mode2 = 'float32'
         lattice2 = schema.SFFLattice(
-            mode=lattice_mode2,
-            endianness=lattice_endianness2,
-            size=lattice_size2,
+            mode='float32',
+            endianness='big',
+            size=schema.SFFVolumeStructure(cols=30, rows=40, sections=50),
             start=schema.SFFVolumeIndex(cols=-50, rows=-40, sections=100),
-            data=schema.SFFLattice.encode(lattice_mode2, lattice_endianness2, lattice_size2.voxelCount, binlist2),
+            data=binlist2,
         )
         lattices.add_lattice(lattice2)
         # segments
@@ -1001,30 +989,39 @@ class TestSFFLattice(unittest.TestCase):
         )
         cls.lattice_endianness = 'little'
         cls.lattice_mode = 'uint32'
-        cls.lattice_start = schema.SFFVolumeIndex(
-            cols=0, rows=0, sections=0
-        )
-        data_ = numpy.array(range(1000), dtype=numpy.uint32).reshape((10, 10, 10))
-        numpy.random.shuffle(data_)
+        cls.lattice_start = schema.SFFVolumeIndex(cols=0, rows=0, sections=0)
+        data_ = numpy.array(range(1000), dtype=numpy.uint32).reshape((10, 10, 10))  # data
+        numpy.random.shuffle(data_)  # shuffle in place
         cls.lattice_data = data_
+        lattices = schema.SFFLatticeList() # to reset lattice_id
         cls.lattice = schema.SFFLattice(
             mode=cls.lattice_mode,
             endianness=cls.lattice_endianness,
             size=cls.lattice_size,
             start=cls.lattice_start,
-            data=schema.SFFLattice.encode(
-                mode=cls.lattice_mode,
-                endianness=cls.lattice_endianness,
-                size=cls.lattice_size.voxelCount,
-                data=cls.lattice_data.flatten(),
-            )
+            data=cls.lattice_data
         )
+
+    def test_create(self):
+        """Test creation of a lattice object"""
+        self.assertEqual(self.lattice.ref, "3D lattice")
+        self.assertEqual(
+            str(self.lattice),
+            "Encoded 3D lattice with 3D volume structure: ({}, {}, {})".format(*self.lattice_size.value)
+        )
+        self.assertEqual(self.lattice.id, 0)
+        self.assertEqual(self.lattice.mode, self.lattice_mode)
+        self.assertEqual(self.lattice.endianness, self.lattice_endianness)
+        self.assertItemsEqual(self.lattice.size.value, self.lattice_data.shape)
+        self.assertItemsEqual(self.lattice.start.value, self.lattice_start.value)
+        self.assertTrue(self.lattice.is_encoded)
 
     def test_decode(self):
         """Test that we can decode a lattice"""
         self.lattice.decode()
         self.assertItemsEqual(self.lattice.data.flatten(), self.lattice_data.flatten())
-    
+        self.assertFalse(self.lattice.is_encoded)
+
 
 class TestSFFLatticeList(unittest.TestCase):
     pass

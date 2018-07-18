@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.schema package &mdash; sfftk v0.3.0.dev0 documentation</title>
+  <title>sfftk.schema package &mdash; sfftk v0.3.1.dev0 documentation</title>
   
 
   
@@ -24,28 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk v0.3.0.dev0 documentation" href="index.html"/>
-        <link rel="up" title="sfftk packages" href="sfftk.html"/>
-        <link rel="next" title="sfftk.formats package" href="formats.html"/>
-        <link rel="prev" title="sfftk packages" href="sfftk.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sfftk.formats package" href="formats.html" />
+    <link rel="prev" title="sfftk packages" href="sfftk.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -92,7 +83,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal"><span class="pre">sfftk</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal notranslate"><span class="pre">sfftk</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
@@ -101,8 +92,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">sfftk.schema package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#sfftk-schema">sfftk.schema</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#the-sfftype-base-class">The <code class="docutils literal"><span class="pre">SFFType</span></code> Base Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#the-sffattribute-descriptor-class">The <code class="docutils literal"><span class="pre">SFFAttribute</span></code> Descriptor Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-sfftype-base-class">The <code class="docutils literal notranslate"><span class="pre">SFFType</span></code> Base Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-sffattribute-descriptor-class">The <code class="docutils literal notranslate"><span class="pre">SFFAttribute</span></code> Descriptor Class</a></li>
 </ul>
 </li>
 </ul>
@@ -124,7 +115,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">sfftk</a>
@@ -132,9 +123,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -194,17 +186,17 @@ to)</li>
 </ul>
 <p>This adapter API therefore specifies two main base classes from which all other classes are built upon:</p>
 <div class="section" id="the-sfftype-base-class">
-<h3>The <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">SFFType</span></code></a> Base Class<a class="headerlink" href="#the-sfftype-base-class" title="Permalink to this headline">¶</a></h3>
+<h3>The <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFType</span></code></a> Base Class<a class="headerlink" href="#the-sfftype-base-class" title="Permalink to this headline">¶</a></h3>
 <p>This class contains all the magic to convert a subclass definition into a user-level class. View the
 API documentation of this class for details on its attributes.</p>
 </div>
 <div class="section" id="the-sffattribute-descriptor-class">
-<h3>The <a class="reference internal" href="#sfftk.schema.SFFAttribute" title="sfftk.schema.SFFAttribute"><code class="xref py py-class docutils literal"><span class="pre">SFFAttribute</span></code></a> Descriptor Class<a class="headerlink" href="#the-sffattribute-descriptor-class" title="Permalink to this headline">¶</a></h3>
-<p>Attributes of subclasses of <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">SFFType</span></code></a> are instances of this descriptor class.</p>
-<p>In addition to the two above classes there is a <a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><code class="xref py py-class docutils literal"><span class="pre">SFFTypeError</span></code></a> class which is raised whenever a type error
+<h3>The <a class="reference internal" href="#sfftk.schema.SFFAttribute" title="sfftk.schema.SFFAttribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFAttribute</span></code></a> Descriptor Class<a class="headerlink" href="#the-sffattribute-descriptor-class" title="Permalink to this headline">¶</a></h3>
+<p>Attributes of subclasses of <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFType</span></code></a> are instances of this descriptor class.</p>
+<p>In addition to the two above classes there is a <a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFTypeError</span></code></a> class which is raised whenever a type error
 occurs which provides details on the required type.</p>
-<p>Here is an example of how the <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> class is defined using these classes:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SFFSegmentation</span><span class="p">(</span><span class="n">SFFType</span><span class="p">):</span>
+<p>Here is an example of how the <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> class is defined using these classes:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SFFSegmentation</span><span class="p">(</span><span class="n">SFFType</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Adapter class to make using the output of ``generateDS`` easier to use&quot;&quot;&quot;</span>
     <span class="n">gds_type</span> <span class="o">=</span> <span class="n">sff</span><span class="o">.</span><span class="n">segmentation</span>
     <span class="n">ref</span> <span class="o">=</span> <span class="s2">&quot;Segmentation&quot;</span>
@@ -223,10 +215,10 @@ occurs which provides details on the required type.</p>
     <span class="n">details</span> <span class="o">=</span> <span class="n">SFFAttribute</span><span class="p">(</span><span class="s1">&#39;details&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In the above example, the <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> class inherits from <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">SFFType</span></code></a> which uses the first
-three attributes (<code class="docutils literal"><span class="pre">gds_type</span></code>, <code class="docutils literal"><span class="pre">ref</span></code> and <code class="docutils literal"><span class="pre">repr_string</span></code>) to configure the user-level <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a>
-class. A user can now use <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> normally:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="k">import</span> <span class="n">SFFSegmentation</span>
+<p>In the above example, the <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> class inherits from <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFType</span></code></a> which uses the first
+three attributes (<code class="docutils literal notranslate"><span class="pre">gds_type</span></code>, <code class="docutils literal notranslate"><span class="pre">ref</span></code> and <code class="docutils literal notranslate"><span class="pre">repr_string</span></code>) to configure the user-level <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a>
+class. A user can now use <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> normally:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="k">import</span> <span class="n">SFFSegmentation</span>
 
 <span class="c1"># to create a new empty EMDB-SFF segmentation object</span>
 <span class="n">seg</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">()</span>
@@ -237,19 +229,19 @@ class. A user can now use <a class="reference internal" href="#sfftk.schema.SFFS
 <span class="n">seg</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">(</span><span class="s1">&#39;file.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The attributes (<code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">version</span></code>, etc.) are all instances of <a class="reference internal" href="#sfftk.schema.SFFAttribute" title="sfftk.schema.SFFAttribute"><code class="xref py py-class docutils literal"><span class="pre">SFFAttribute</span></code></a>, which takes the name (first
-positional argument) and an optional keyword argument <code class="docutils literal"><span class="pre">sff_type</span></code> denoting the class of the attribute. In the above
-example, the <code class="docutils literal"><span class="pre">software</span></code> attribute will be of class <a class="reference internal" href="#sfftk.schema.SFFSoftware" title="sfftk.schema.SFFSoftware"><code class="xref py py-class docutils literal"><span class="pre">SFFSoftware</span></code></a>.</p>
+<p>The attributes (<code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">version</span></code>, etc.) are all instances of <a class="reference internal" href="#sfftk.schema.SFFAttribute" title="sfftk.schema.SFFAttribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFAttribute</span></code></a>, which takes the name (first
+positional argument) and an optional keyword argument <code class="docutils literal notranslate"><span class="pre">sff_type</span></code> denoting the class of the attribute. In the above
+example, the <code class="docutils literal notranslate"><span class="pre">software</span></code> attribute will be of class <a class="reference internal" href="#sfftk.schema.SFFSoftware" title="sfftk.schema.SFFSoftware"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSoftware</span></code></a>.</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFType">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFType</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all EMDB-SFF adapter classes</p>
 <p>This class reads and configures any subclass using the subclass’ definition.</p>
-<p>Subclasses of <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">SFFType</span></code></a> should define class attributes from the following list depending on whether
+<p>Subclasses of <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFType</span></code></a> should define class attributes from the following list depending on whether
 the subclass defines a container or not. Containers typically have <em>List</em> in the class name signifying that they
-are a <em>list</em> of objects of some type. For example, the <a class="reference internal" href="#sfftk.schema.SFFSegmentList" title="sfftk.schema.SFFSegmentList"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentList</span></code></a> objects are a <em>list of</em>
-<a class="reference internal" href="#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">SFFSegment</span></code></a> objects.</p>
+are a <em>list</em> of objects of some type. For example, the <a class="reference internal" href="#sfftk.schema.SFFSegmentList" title="sfftk.schema.SFFSegmentList"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentList</span></code></a> objects are a <em>list of</em>
+<a class="reference internal" href="#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegment</span></code></a> objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -258,28 +250,28 @@ are a <em>list</em> of objects of some type. For example, the <a class="referenc
 </tr>
 </tbody>
 </table>
-<p>The <a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">type</span></code></a> of <code class="docutils literal"><span class="pre">var</span></code> determines what the subclass does.</p>
+<p>The <a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a> of <code class="docutils literal notranslate"><span class="pre">var</span></code> determines what the subclass does.</p>
 <ul class="simple">
-<li>If the subclass is <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> then if <code class="docutils literal"><span class="pre">var</span></code> is:<ul>
-<li><code class="xref py py-class docutils literal"><span class="pre">None</span></code> it will produce an empty <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> object</li>
-<li>an <code class="docutils literal"><span class="pre">emdb_sff.segmentation</span></code> object it will produce a populated <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> object;</li>
-<li><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> it will try to treat <code class="docutils literal"><span class="pre">var</span></code> as a filename containing data to populate an
-<a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">SFFSegmentation</span></code></a> object; the extension of the filename determines the format to be read:<ul>
-<li><code class="docutils literal"><span class="pre">*.sff</span></code> will read as XML</li>
-<li><code class="docutils literal"><span class="pre">*.hff</span></code> will read as HDF5</li>
-<li><code class="docutils literal"><span class="pre">*.json</span></code> will read as JSON</li>
+<li>If the subclass is <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> then if <code class="docutils literal notranslate"><span class="pre">var</span></code> is:<ul>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code> it will produce an empty <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> object</li>
+<li>an <code class="docutils literal notranslate"><span class="pre">emdb_sff.segmentation</span></code> object it will produce a populated <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> object;</li>
+<li><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> it will try to treat <code class="docutils literal notranslate"><span class="pre">var</span></code> as a filename containing data to populate an
+<a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> object; the extension of the filename determines the format to be read:<ul>
+<li><code class="docutils literal notranslate"><span class="pre">*.sff</span></code> will read as XML</li>
+<li><code class="docutils literal notranslate"><span class="pre">*.hff</span></code> will read as HDF5</li>
+<li><code class="docutils literal notranslate"><span class="pre">*.json</span></code> will read as JSON</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>If the subclass is any other class then if <code class="docutils literal"><span class="pre">var</span></code> is:<ul>
-<li><code class="xref py py-class docutils literal"><span class="pre">None</span></code> it will produce an empty object of that class e.g. <code class="docutils literal"><span class="pre">SFFSoftware()</span></code> will produce an empty
+<li>If the subclass is any other class then if <code class="docutils literal notranslate"><span class="pre">var</span></code> is:<ul>
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code> it will produce an empty object of that class e.g. <code class="docutils literal notranslate"><span class="pre">SFFSoftware()</span></code> will produce an empty
 object for defining software data</li>
-<li><code class="xref py py-class docutils literal"><span class="pre">None</span></code> (or excluded) but keyword arguments to the generated generateDS class are specified it will
+<li><code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code> (or excluded) but keyword arguments to the generated generateDS class are specified it will
 produce a populated object of the corresponding adapter class e.g.
-<code class="docutils literal"><span class="pre">SFFSoftware(name=&quot;name&quot;,</span> <span class="pre">version=&quot;version&quot;,</span> <span class="pre">processingDetails=&quot;details&quot;)</span></code> will be an object loaded with
+<code class="docutils literal notranslate"><span class="pre">SFFSoftware(name=&quot;name&quot;,</span> <span class="pre">version=&quot;version&quot;,</span> <span class="pre">processingDetails=&quot;details&quot;)</span></code> will be an object loaded with
 the keyword data;</li>
-<li>any <code class="docutils literal"><span class="pre">emdb_sff</span></code> object it will produce a populated object of the corresponding adapter class;</li>
+<li>any <code class="docutils literal notranslate"><span class="pre">emdb_sff</span></code> object it will produce a populated object of the corresponding adapter class;</li>
 </ul>
 </li>
 </ul>
@@ -293,8 +285,8 @@ the keyword data;</li>
 <dt id="sfftk.schema.SFFType.repr_str">
 <code class="descname">repr_str</code><a class="headerlink" href="#sfftk.schema.SFFType.repr_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <em>string representation</em> for objects of the subclass that can be formatted. This string will be produced
-for calls to the <a class="reference external" href="https://docs.python.org/2/library/functions.html#print" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">print()</span></code></a> function. Formatting is accomplished by included empty format delimiters
-(<code class="docutils literal"><span class="pre">{}</span></code>) which will be populated with values from the <a class="reference internal" href="#sfftk.schema.SFFType.repr_args" title="sfftk.schema.SFFType.repr_args"><code class="xref py py-attr docutils literal"><span class="pre">repr_args</span></code></a> specified below otherwise
+for calls to the <a class="reference external" href="https://docs.python.org/2/library/functions.html#print" title="(in Python v2.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">print()</span></code></a> function. Formatting is accomplished by included empty format delimiters
+(<code class="docutils literal notranslate"><span class="pre">{}</span></code>) which will be populated with values from the <a class="reference internal" href="#sfftk.schema.SFFType.repr_args" title="sfftk.schema.SFFType.repr_args"><code class="xref py py-attr docutils literal notranslate"><span class="pre">repr_args</span></code></a> specified below otherwise
 literal braces will be displayed.</p>
 </dd></dl>
 
@@ -303,9 +295,9 @@ literal braces will be displayed.</p>
 <code class="descname">repr_args</code><a class="headerlink" href="#sfftk.schema.SFFType.repr_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <em>arguments of the string representation</em>, if any. This is a tuple containing any combination of either:</p>
 <ul class="simple">
-<li>the names of attributes of the subclass to populate the the <code class="xref py py-attr docutils literal"><span class="pre">repr_string</span></code> attribute;</li>
+<li>the names of attributes of the subclass to populate the the <code class="xref py py-attr docutils literal notranslate"><span class="pre">repr_string</span></code> attribute;</li>
 <li>a literal text string;</li>
-<li>the string <code class="docutils literal"><span class="pre">len()</span></code> to include the length of the subclass</li>
+<li>the string <code class="docutils literal notranslate"><span class="pre">len()</span></code> to include the length of the subclass</li>
 </ul>
 </dd></dl>
 
@@ -313,12 +305,12 @@ literal braces will be displayed.</p>
 <dt id="sfftk.schema.SFFType.iter_attr">
 <code class="descname">iter_attr</code><a class="headerlink" href="#sfftk.schema.SFFType.iter_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <em>iterable attribute</em> of the class. It refers to an attribute of the class pointed to by
-<a class="reference internal" href="#sfftk.schema.SFFType.gds_type" title="sfftk.schema.SFFType.gds_type"><code class="xref py py-attr docutils literal"><span class="pre">gds_type</span></code></a> which is iterable.</p>
-<p>It should be a two-tuple having the name of the generateDS class and <code class="docutils literal"><span class="pre">SFF*</span></code> class to adapt it to.</p>
+<a class="reference internal" href="#sfftk.schema.SFFType.gds_type" title="sfftk.schema.SFFType.gds_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gds_type</span></code></a> which is iterable.</p>
+<p>It should be a two-tuple having the name of the generateDS class and <code class="docutils literal notranslate"><span class="pre">SFF*</span></code> class to adapt it to.</p>
 <p>Only one attribute per class can be specified.</p>
-<p>For example, consider the following class definition for some fictional <code class="docutils literal"><span class="pre">SFFTest</span></code> class that adapts a class
-called <code class="docutils literal"><span class="pre">test</span></code> that was generated by generateDS.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">emdb_sff</span>
+<p>For example, consider the following class definition for some fictional <code class="docutils literal notranslate"><span class="pre">SFFTest</span></code> class that adapts a class
+called <code class="docutils literal notranslate"><span class="pre">test</span></code> that was generated by generateDS.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">emdb_sff</span>
 
 <span class="k">class</span> <span class="nc">SFFTest</span><span class="p">(</span><span class="n">SFFType</span><span class="p">):</span>
     <span class="n">gds_type</span> <span class="o">=</span> <span class="n">emdb_sff</span><span class="o">.</span><span class="n">test</span>
@@ -332,14 +324,14 @@ called <code class="docutils literal"><span class="pre">test</span></code> that 
 </div>
 <p>In this sample:</p>
 <ul class="simple">
-<li>the generateDS API is located in the module called <code class="docutils literal"><span class="pre">emdb_sff</span></code>;</li>
-<li><code class="docutils literal"><span class="pre">test</span></code> is a class in the <code class="docutils literal"><span class="pre">emdb_sff</span></code> module;</li>
-<li><code class="docutils literal"><span class="pre">i</span></code> is an iterable attribute of <code class="docutils literal"><span class="pre">test</span></code>;</li>
-<li><code class="docutils literal"><span class="pre">i</span></code> is adapted by the <code class="docutils literal"><span class="pre">SFFItem</span></code> class (which should have its <a class="reference internal" href="#sfftk.schema.SFFType.gds_type" title="sfftk.schema.SFFType.gds_type"><code class="xref py py-attr docutils literal"><span class="pre">gds_type</span></code></a> set to the class for
-<code class="docutils literal"><span class="pre">i</span></code>);</li>
+<li>the generateDS API is located in the module called <code class="docutils literal notranslate"><span class="pre">emdb_sff</span></code>;</li>
+<li><code class="docutils literal notranslate"><span class="pre">test</span></code> is a class in the <code class="docutils literal notranslate"><span class="pre">emdb_sff</span></code> module;</li>
+<li><code class="docutils literal notranslate"><span class="pre">i</span></code> is an iterable attribute of <code class="docutils literal notranslate"><span class="pre">test</span></code>;</li>
+<li><code class="docutils literal notranslate"><span class="pre">i</span></code> is adapted by the <code class="docutils literal notranslate"><span class="pre">SFFItem</span></code> class (which should have its <a class="reference internal" href="#sfftk.schema.SFFType.gds_type" title="sfftk.schema.SFFType.gds_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">gds_type</span></code></a> set to the class for
+<code class="docutils literal notranslate"><span class="pre">i</span></code>);</li>
 </ul>
 <p>Now consider this class in action:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="k">import</span> <span class="n">SFFTest</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="k">import</span> <span class="n">SFFTest</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">SFFTest</span><span class="p">()</span>
 <span class="c1"># ...</span>
@@ -356,13 +348,13 @@ called <code class="docutils literal"><span class="pre">test</span></code> that 
 subclass:</p>
 <ul>
 <li><p class="first">length i.e. len(obj);</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
 <span class="c1"># 37</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">indexing e.g. <code class="docutils literal"><span class="pre">obj[&lt;int&gt;]</span></code>;</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">T</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+<li><p class="first">indexing e.g. <code class="docutils literal notranslate"><span class="pre">obj[&lt;int&gt;]</span></code>;</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span>
 </pre></div>
 </div>
 </li>
@@ -382,9 +374,9 @@ subclass:</p>
 </tbody>
 </table>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">.sff</span></code> - XML</li>
-<li><code class="docutils literal"><span class="pre">.hff</span></code> - HDF5</li>
-<li><code class="docutils literal"><span class="pre">.json</span></code> - JSON</li>
+<li><code class="docutils literal notranslate"><span class="pre">.sff</span></code> - XML</li>
+<li><code class="docutils literal notranslate"><span class="pre">.hff</span></code> - HDF5</li>
+<li><code class="docutils literal notranslate"><span class="pre">.json</span></code> - JSON</li>
 </ul>
 </dd></dl>
 
@@ -434,23 +426,23 @@ subclass:</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFAttribute">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFAttribute</code><span class="sig-paren">(</span><em>name</em>, <em>sff_type=None</em>, <em>get_from=None</em>, <em>set_to=None</em>, <em>del_from=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFAttribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFAttribute</code><span class="sig-paren">(</span><em>name</em>, <em>sff_type=None</em>, <em>get_from=None</em>, <em>set_to=None</em>, <em>del_from=None</em>, <em>help=''</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Descriptor for SFFType subclass attributes</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="sfftk.schema.SFFTypeError">
 <em class="property">exception </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTypeError</code><span class="sig-paren">(</span><em>value</em>, <em>message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTypeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></a></p>
 <p>SFF type error</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFSegmentation">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegmentation</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
-<p>Adapter class to make using the output of <code class="docutils literal"><span class="pre">generateDS</span></code> easier to use</p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<p>Adapter class to make using the output of <code class="docutils literal notranslate"><span class="pre">generateDS</span></code> easier to use</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFSegmentation.as_hff">
 <code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation.as_hff" title="Permalink to this definition">¶</a></dt>
@@ -466,7 +458,7 @@ subclass:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>f</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) – open file handle</li>
+<li><strong>f</strong> (<em>file</em>) – open file handle</li>
 <li><strong>annotation_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – only extract annotation information and do not render geometric data</li>
 <li><strong>sort_keys</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to sort keys in the dictionaries</li>
 <li><strong>indent_width</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – indent width (default: 2)</li>
@@ -475,6 +467,12 @@ subclass:</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.boundingBox">
+<code class="descname">boundingBox</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.boundingBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>the bounding box in which the segmentation sits; a <a class="reference internal" href="#sfftk.schema.SFFBoundingBox" title="sfftk.schema.SFFBoundingBox"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFBoundingBox</span></code></a> object</p>
 </dd></dl>
 
 <dl class="method">
@@ -511,19 +509,25 @@ subclass:</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.details">
+<code class="descname">details</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.details" title="Permalink to this definition">¶</a></dt>
+<dd><p>any other details about this segmentation (free text)</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFSegmentation.from_hff">
 <em class="property">classmethod </em><code class="descname">from_hff</code><span class="sig-paren">(</span><em>hff_data</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation.from_hff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from HDF5 formatted data</p>
+<dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from HDF5 formatted data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hff_data</strong> (<code class="docutils literal"><span class="pre">h5py.File</span></code>) – an HDF5 File object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>hff_data</strong> (<code class="docutils literal notranslate"><span class="pre">h5py.File</span></code>) – an HDF5 File object</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return sff_seg:</th><td class="field-body">an EMDB-SFF segmentation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -532,7 +536,7 @@ subclass:</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFSegmentation.from_json">
 <em class="property">classmethod </em><code class="descname">from_json</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentation.from_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from JSON formatted data</p>
+<dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from JSON formatted data</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -541,7 +545,7 @@ subclass:</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return sff_seg:</th><td class="field-body">an EMDB-SFF segmentation</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Rtype sff_seg:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -550,7 +554,19 @@ subclass:</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFSegmentation.gds_type">
 <code class="descname">gds_type</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.gds_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">segmentation</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.emdb_sff.segmentation</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.globalExternalReferences">
+<code class="descname">globalExternalReferences</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.globalExternalReferences" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of external references that apply to the whole segmentation (global); a <a class="reference internal" href="#sfftk.schema.SFFGlobalExternalReferences" title="sfftk.schema.SFFGlobalExternalReferences"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFGlobalExternalReferences</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.lattices">
+<code class="descname">lattices</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.lattices" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of lattices (if any) containing 3D volumes referred to; a <a class="reference internal" href="#sfftk.schema.SFFLatticeList" title="sfftk.schema.SFFLatticeList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFLatticeList</span></code></a> object</p>
 </dd></dl>
 
 <dl class="method">
@@ -561,10 +577,16 @@ subclass:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other_seg</strong> (<a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – segmentation to get annotations from</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other_seg</strong> (<a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – segmentation to get annotations from</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.name">
+<code class="descname">name</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of this segmentation</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -573,12 +595,42 @@ subclass:</p>
 <dd><p>The number of global external references</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.primaryDescriptor">
+<code class="descname">primaryDescriptor</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.primaryDescriptor" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main type of representation used for this segmentation; can be one of ‘meshList’, ‘shapePrimitiveList’ or ‘threeDVolume’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.segments">
+<code class="descname">segments</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of annotated segments; a <a class="reference internal" href="#sfftk.schema.SFFSegmentList" title="sfftk.schema.SFFSegmentList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentList</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.software">
+<code class="descname">software</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.software" title="Permalink to this definition">¶</a></dt>
+<dd><p>the software details used to generate this segmentationa <a class="reference internal" href="#sfftk.schema.SFFSoftware" title="sfftk.schema.SFFSoftware"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSoftware</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.transforms">
+<code class="descname">transforms</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.transforms" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of transforms; a <a class="reference internal" href="#sfftk.schema.SFFTransformList" title="sfftk.schema.SFFTransformList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFTransformList</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegmentation.version">
+<code class="descname">version</code><a class="headerlink" href="#sfftk.schema.SFFSegmentation.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>EMDB-SFF version</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFSoftware">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSoftware</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSoftware" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class definition for specifying software used to create this segmentation</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFSoftware.name">
@@ -610,12 +662,30 @@ subclass:</p>
 <dd><p>Return an SFFType object given an HDF5 object</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>the software/programme’s name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">processingDetails</code></dt>
+<dd><p>a description of how the data was processed to produce the segmentation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">version</code></dt>
+<dd><p>the version used</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFTransformList">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransformList</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransformList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransformList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransformList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for transforms</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFTransformList.add_transform">
@@ -646,27 +716,50 @@ structured arrays in numpy :’(</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFTransformList.transformationMatrixCount">
 <code class="descname">transformationMatrixCount</code><a class="headerlink" href="#sfftk.schema.SFFTransformList.transformationMatrixCount" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of <a class="reference internal" href="#sfftk.schema.SFFTransformationMatrix" title="sfftk.schema.SFFTransformationMatrix"><code class="xref py py-class docutils literal"><span class="pre">SFFTransformationMatrix</span></code></a> objects in this transform container</p>
+<dd><p>The number of <a class="reference internal" href="#sfftk.schema.SFFTransformationMatrix" title="sfftk.schema.SFFTransformationMatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFTransformationMatrix</span></code></a> objects in this transform container</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="class">
-<dt id="sfftk.schema.SFFTransform">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransform</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
-<p>Transform</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFTransformationMatrix">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransformationMatrix</code><span class="sig-paren">(</span><em>t=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFTransform" title="sfftk.schema.SFFTransform"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFTransform</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFTransformationMatrix</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Transformation matrix transform</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFTransformationMatrix.cols">
+<code class="descname">cols</code><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix.cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>the number of columns in this matrix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFTransformationMatrix.data">
+<code class="descname">data</code><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>the data in this matrix</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFTransformationMatrix.data_array">
+<code class="descname">data_array</code><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix.data_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data in this matrix as an array</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="sfftk.schema.SFFTransformationMatrix.gds_type">
 <code class="descname">gds_type</code><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix.gds_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">transformationMatrixType</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.emdb_sff.transformationMatrixType</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFTransformationMatrix.id">
+<code class="descname">id</code><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>an ID for this transform</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFTransformationMatrix.rows">
+<code class="descname">rows</code><a class="headerlink" href="#sfftk.schema.SFFTransformationMatrix.rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>the number of rows in this matrix</p>
 </dd></dl>
 
 </dd></dl>
@@ -674,7 +767,7 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFBoundingBox">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFBoundingBox</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFBoundingBox" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Dimensions of bounding box</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFBoundingBox.as_hff">
@@ -688,12 +781,48 @@ structured arrays in numpy :’(</p>
 <dd><p>Bounding box from HDF5 group</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBoundingBox.xmax">
+<code class="descname">xmax</code><a class="headerlink" href="#sfftk.schema.SFFBoundingBox.xmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>maximum x co-ordinate value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBoundingBox.xmin">
+<code class="descname">xmin</code><a class="headerlink" href="#sfftk.schema.SFFBoundingBox.xmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimum x co-ordinate value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBoundingBox.ymax">
+<code class="descname">ymax</code><a class="headerlink" href="#sfftk.schema.SFFBoundingBox.ymax" title="Permalink to this definition">¶</a></dt>
+<dd><p>maximum y co-ordinate value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBoundingBox.ymin">
+<code class="descname">ymin</code><a class="headerlink" href="#sfftk.schema.SFFBoundingBox.ymin" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimum y co-ordinate value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBoundingBox.zmax">
+<code class="descname">zmax</code><a class="headerlink" href="#sfftk.schema.SFFBoundingBox.zmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>maximum z co-ordinate value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBoundingBox.zmin">
+<code class="descname">zmin</code><a class="headerlink" href="#sfftk.schema.SFFBoundingBox.zmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimum z co-ordinate value</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFGlobalExternalReferences">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFGlobalExternalReferences</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFGlobalExternalReferences" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for global external references</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFGlobalExternalReferences.add_externalReference">
@@ -703,7 +832,7 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</td>
 </tr>
 </tbody>
 </table>
@@ -718,7 +847,7 @@ structured arrays in numpy :’(</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
+<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
 <li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the index to insert to; bumps all other external references down the list</li>
 </ul>
 </td>
@@ -730,13 +859,13 @@ structured arrays in numpy :’(</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFGlobalExternalReferences.replace_externalReference">
 <code class="descname">replace_externalReference</code><span class="sig-paren">(</span><em>eR</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFGlobalExternalReferences.replace_externalReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace the external reference at <code class="docutils literal"><span class="pre">index</span></code> with the specified external reference</p>
+<dd><p>Replace the external reference at <code class="docutils literal notranslate"><span class="pre">index</span></code> with the specified external reference</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
+<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
 <li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the index to replace at</li>
 </ul>
 </td>
@@ -750,12 +879,24 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFBiologicalAnnotation">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFBiologicalAnnotation</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Biological annotation</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFBiologicalAnnotation.as_hff">
 <code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name='biologicalAnnotation'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation.as_hff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data of this object as an HDF5 group in the given parent group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBiologicalAnnotation.description">
+<code class="descname">description</code><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>a brief description for this segment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBiologicalAnnotation.externalReferences">
+<code class="descname">externalReferences</code><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation.externalReferences" title="Permalink to this definition">¶</a></dt>
+<dd><p>the set of external references</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -764,12 +905,24 @@ structured arrays in numpy :’(</p>
 <dd><p>Return an SFFType object given an HDF5 object</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBiologicalAnnotation.name">
+<code class="descname">name</code><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>the name of this segment</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFBiologicalAnnotation.numberOfInstances">
+<code class="descname">numberOfInstances</code><a class="headerlink" href="#sfftk.schema.SFFBiologicalAnnotation.numberOfInstances" title="Permalink to this definition">¶</a></dt>
+<dd><p>the number of instances of this segment</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFExternalReferences">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFExternalReferences</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFExternalReferences" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for external references</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFExternalReferences.add_externalReference">
@@ -779,7 +932,7 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</td>
 </tr>
 </tbody>
 </table>
@@ -794,7 +947,7 @@ structured arrays in numpy :’(</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
+<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
 <li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the index to insert to; bumps all other external references down the list</li>
 </ul>
 </td>
@@ -806,13 +959,13 @@ structured arrays in numpy :’(</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFExternalReferences.replace_externalReference">
 <code class="descname">replace_externalReference</code><span class="sig-paren">(</span><em>eR</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFExternalReferences.replace_externalReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace the external reference at <code class="docutils literal"><span class="pre">index</span></code> with the specified external reference</p>
+<dd><p>Replace the external reference at <code class="docutils literal notranslate"><span class="pre">index</span></code> with the specified external reference</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
+<li><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</li>
 <li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – the index to replace at</li>
 </ul>
 </td>
@@ -825,20 +978,62 @@ structured arrays in numpy :’(</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFExternalReference">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFExternalReference</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFExternalReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFExternalReference</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFExternalReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates an external reference</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFExternalReference.description">
+<code class="descname">description</code><a class="headerlink" href="#sfftk.schema.SFFExternalReference.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>a long description of this external reference</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFExternalReference.id">
+<code class="descname">id</code><a class="headerlink" href="#sfftk.schema.SFFExternalReference.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>this external reference’s ID</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFExternalReference.label">
+<code class="descname">label</code><a class="headerlink" href="#sfftk.schema.SFFExternalReference.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>a short description of this external reference</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFExternalReference.otherType">
+<code class="descname">otherType</code><a class="headerlink" href="#sfftk.schema.SFFExternalReference.otherType" title="Permalink to this definition">¶</a></dt>
+<dd><p>a URL/IRI where data for this external reference may be obtained</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFExternalReference.type">
+<code class="descname">type</code><a class="headerlink" href="#sfftk.schema.SFFExternalReference.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ontology/archive name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFExternalReference.value">
+<code class="descname">value</code><a class="headerlink" href="#sfftk.schema.SFFExternalReference.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>the accession for this external reference</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFComplexesAndMacromolecules">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFComplexesAndMacromolecules</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFComplexesAndMacromolecules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Complexes and macromolecules</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFComplexesAndMacromolecules.as_hff">
 <code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name='complexesAndMacromolecules'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFComplexesAndMacromolecules.as_hff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data of this object as an HDF5 group in the given parent group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFComplexesAndMacromolecules.complexes">
+<code class="descname">complexes</code><a class="headerlink" href="#sfftk.schema.SFFComplexesAndMacromolecules.complexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of complex accessions</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -850,7 +1045,13 @@ structured arrays in numpy :’(</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFComplexesAndMacromolecules.gds_type">
 <code class="descname">gds_type</code><a class="headerlink" href="#sfftk.schema.SFFComplexesAndMacromolecules.gds_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">macromoleculesAndComplexesType</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.emdb_sff.macromoleculesAndComplexesType</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFComplexesAndMacromolecules.macromolecules">
+<code class="descname">macromolecules</code><a class="headerlink" href="#sfftk.schema.SFFComplexesAndMacromolecules.macromolecules" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of macromolecule accessions</p>
 </dd></dl>
 
 </dd></dl>
@@ -858,7 +1059,7 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFComplexes">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFComplexes</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFComplexes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates complex</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFComplexes.add_complex">
@@ -962,7 +1163,7 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFMacromolecules">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMacromolecules</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMacromolecules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates macromolecule</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFMacromolecules.add_macromolecule">
@@ -1053,12 +1254,24 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFRGBA">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFRGBA</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFRGBA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>RGBA colour</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFRGBA.alpha">
+<code class="descname">alpha</code><a class="headerlink" href="#sfftk.schema.SFFRGBA.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>alpha (opacity) channel</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="sfftk.schema.SFFRGBA.as_hff">
 <code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name='colour'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFRGBA.as_hff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data of this object as an HDF5 group in the given parent group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFRGBA.blue">
+<code class="descname">blue</code><a class="headerlink" href="#sfftk.schema.SFFRGBA.blue" title="Permalink to this definition">¶</a></dt>
+<dd><p>blue channel</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1067,12 +1280,24 @@ structured arrays in numpy :’(</p>
 <dd><p>Return an SFFType object given an HDF5 object</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFRGBA.green">
+<code class="descname">green</code><a class="headerlink" href="#sfftk.schema.SFFRGBA.green" title="Permalink to this definition">¶</a></dt>
+<dd><p>green channel</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFRGBA.red">
+<code class="descname">red</code><a class="headerlink" href="#sfftk.schema.SFFRGBA.red" title="Permalink to this definition">¶</a></dt>
+<dd><p>red channel</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFSegmentList">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegmentList</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegmentList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegmentList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for segments</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFSegmentList.add_segment">
@@ -1082,9 +1307,9 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference internal" href="#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal"><span class="pre">SFFSegment</span></code></a>) – a segment object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference internal" href="#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegment</span></code></a>) – a segment object</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><strong>SFFTypeError</strong></a> – if <code class="docutils literal"><span class="pre">s</span></code> is of the wrong type</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><strong>SFFTypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">s</span></code> is of the wrong type</td>
 </tr>
 </tbody>
 </table>
@@ -1106,13 +1331,31 @@ structured arrays in numpy :’(</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFSegment">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegment</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFSegment</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class that encapsulates segment data</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFSegment.as_hff">
 <code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name='{}'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFSegment.as_hff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data of this object as an HDF5 group in the given parent group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.biologicalAnnotation">
+<code class="descname">biologicalAnnotation</code><a class="headerlink" href="#sfftk.schema.SFFSegment.biologicalAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>the biological annotation for this segment; described using a <a class="reference internal" href="#sfftk.schema.SFFBiologicalAnnotation" title="sfftk.schema.SFFBiologicalAnnotation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFBiologicalAnnotation</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.colour">
+<code class="descname">colour</code><a class="headerlink" href="#sfftk.schema.SFFSegment.colour" title="Permalink to this definition">¶</a></dt>
+<dd><p>this segments colour; described using a <a class="reference internal" href="#sfftk.schema.SFFRGBA" title="sfftk.schema.SFFRGBA"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFRGBA</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.complexesAndMacromolecules">
+<code class="descname">complexesAndMacromolecules</code><a class="headerlink" href="#sfftk.schema.SFFSegment.complexesAndMacromolecules" title="Permalink to this definition">¶</a></dt>
+<dd><p>the complexes and macromolecules associated with this segment; described using a <a class="reference internal" href="#sfftk.schema.SFFComplexesAndMacromolecules" title="sfftk.schema.SFFComplexesAndMacromolecules"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFComplexesAndMacromolecules</span></code></a> object</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1124,15 +1367,45 @@ structured arrays in numpy :’(</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFSegment.gds_type">
 <code class="descname">gds_type</code><a class="headerlink" href="#sfftk.schema.SFFSegment.gds_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">segmentType</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.emdb_sff.segmentType</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.id">
+<code class="descname">id</code><a class="headerlink" href="#sfftk.schema.SFFSegment.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ID for this segment; segment IDs begin at 1 with the value of 0 implying the segmentation i.e. all segments are children of the root segment (the segmentation)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.meshes">
+<code class="descname">meshes</code><a class="headerlink" href="#sfftk.schema.SFFSegment.meshes" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of meshes (if any) that describe this segment; a <a class="reference internal" href="#sfftk.schema.SFFMeshList" title="sfftk.schema.SFFMeshList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFMeshList</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.parentID">
+<code class="descname">parentID</code><a class="headerlink" href="#sfftk.schema.SFFSegment.parentID" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ID for the segment that contains this segment; defaults to 0 (the whole segmentation)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.shapes">
+<code class="descname">shapes</code><a class="headerlink" href="#sfftk.schema.SFFSegment.shapes" title="Permalink to this definition">¶</a></dt>
+<dd><p>the list of shape primitives that describe this segment; a <a class="reference internal" href="#sfftk.schema.SFFShapePrimitiveList" title="sfftk.schema.SFFShapePrimitiveList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFShapePrimitiveList</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFSegment.volume">
+<code class="descname">volume</code><a class="headerlink" href="#sfftk.schema.SFFSegment.volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>the 3D volume (if any) that describes this segment; a <a class="reference internal" href="#sfftk.schema.SFFThreeDVolume" title="sfftk.schema.SFFThreeDVolume"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code></a> object</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFMeshList">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMeshList</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMeshList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMeshList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMeshList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Mesh list representation</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFMeshList.add_mesh">
@@ -1142,7 +1415,7 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>m</strong> (<a class="reference internal" href="#sfftk.schema.SFFMesh" title="sfftk.schema.SFFMesh"><code class="xref py py-class docutils literal"><span class="pre">SFFMesh</span></code></a>) – a mesh object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>m</strong> (<a class="reference internal" href="#sfftk.schema.SFFMesh" title="sfftk.schema.SFFMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFMesh</span></code></a>) – a mesh object</td>
 </tr>
 </tbody>
 </table>
@@ -1164,8 +1437,8 @@ structured arrays in numpy :’(</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFMesh">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMesh</code><span class="sig-paren">(</span><em>m=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMesh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFMesh</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single mesh</p>
 <dl class="classmethod">
 <dt id="sfftk.schema.SFFMesh.from_hff">
@@ -1173,12 +1446,42 @@ structured arrays in numpy :’(</p>
 <dd><p>Return an SFFType object given an HDF5 object</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFMesh.numPolygons">
+<code class="descname">numPolygons</code><a class="headerlink" href="#sfftk.schema.SFFMesh.numPolygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of polygons in this mesh</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFMesh.numVertices">
+<code class="descname">numVertices</code><a class="headerlink" href="#sfftk.schema.SFFMesh.numVertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of vertices in this mesh</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFMesh.polygons">
+<code class="descname">polygons</code><a class="headerlink" href="#sfftk.schema.SFFMesh.polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of derived polygons (object of class <a class="reference internal" href="#sfftk.schema.SFFPolygonList" title="sfftk.schema.SFFPolygonList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFPolygonList</span></code></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFMesh.transformId">
+<code class="descname">transformId</code><a class="headerlink" href="#sfftk.schema.SFFMesh.transformId" title="Permalink to this definition">¶</a></dt>
+<dd><p>a transform applied to the mesh</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFMesh.vertices">
+<code class="descname">vertices</code><a class="headerlink" href="#sfftk.schema.SFFMesh.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>a list of vertices (object of class <a class="reference internal" href="#sfftk.schema.SFFVertexList" title="sfftk.schema.SFFVertexList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFVertexList</span></code></a>)</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFVertexList">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVertexList</code><span class="sig-paren">(</span><em>vL=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVertexList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVertexList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVertexList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>List of vertices</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFVertexList.add_vertex">
@@ -1188,9 +1491,9 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> (<a class="reference internal" href="#sfftk.schema.SFFVertex" title="sfftk.schema.SFFVertex"><code class="xref py py-class docutils literal"><span class="pre">SFFVertex</span></code></a>) – a vertex object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> (<a class="reference internal" href="#sfftk.schema.SFFVertex" title="sfftk.schema.SFFVertex"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFVertex</span></code></a>) – a vertex object</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><strong>SFFTypeError</strong></a> – if <code class="docutils literal"><span class="pre">v</span></code> is of the wrong type</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><strong>SFFTypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">v</span></code> is of the wrong type</td>
 </tr>
 </tbody>
 </table>
@@ -1218,15 +1521,51 @@ structured arrays in numpy :’(</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFVertex">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVertex</code><span class="sig-paren">(</span><em>v=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVertex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVertex</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVertex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single vertex</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVertex.designation">
+<code class="descname">designation</code><a class="headerlink" href="#sfftk.schema.SFFVertex.designation" title="Permalink to this definition">¶</a></dt>
+<dd><p>type of vertex (‘surface’ (default) or ‘normal’)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVertex.point">
+<code class="descname">point</code><a class="headerlink" href="#sfftk.schema.SFFVertex.point" title="Permalink to this definition">¶</a></dt>
+<dd><p>The co-ordinates for this vertex</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVertex.vID">
+<code class="descname">vID</code><a class="headerlink" href="#sfftk.schema.SFFVertex.vID" title="Permalink to this definition">¶</a></dt>
+<dd><p>vertex ID; referenced by polygons</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVertex.x">
+<code class="descname">x</code><a class="headerlink" href="#sfftk.schema.SFFVertex.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>x co-ordinate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVertex.y">
+<code class="descname">y</code><a class="headerlink" href="#sfftk.schema.SFFVertex.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>y co-ordinate</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVertex.z">
+<code class="descname">z</code><a class="headerlink" href="#sfftk.schema.SFFVertex.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>z co-ordinate</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFPolygonList">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFPolygonList</code><span class="sig-paren">(</span><em>pL=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygonList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFPolygonList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygonList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>List of polygons</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFPolygonList.add_polygon">
@@ -1236,7 +1575,7 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>p</strong> (<a class="reference internal" href="#sfftk.schema.SFFPolygon" title="sfftk.schema.SFFPolygon"><code class="xref py py-class docutils literal"><span class="pre">SFFPolygon</span></code></a>) – a polygon object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>p</strong> (<a class="reference internal" href="#sfftk.schema.SFFPolygon" title="sfftk.schema.SFFPolygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFPolygon</span></code></a>) – a polygon object</td>
 </tr>
 </tbody>
 </table>
@@ -1264,9 +1603,15 @@ structured arrays in numpy :’(</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFPolygon">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFPolygon</code><span class="sig-paren">(</span><em>p=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFPolygon</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Single polygon</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFPolygon.PID">
+<code class="descname">PID</code><a class="headerlink" href="#sfftk.schema.SFFPolygon.PID" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ID for this polygon</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="sfftk.schema.SFFPolygon.add_vertex">
 <code class="descname">add_vertex</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFPolygon.add_vertex" title="Permalink to this definition">¶</a></dt>
@@ -1291,8 +1636,8 @@ structured arrays in numpy :’(</p>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFShapePrimitiveList">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFShapePrimitiveList</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFShapePrimitiveList" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFShapePrimitiveList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFShapePrimitiveList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Container for shapes</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFShapePrimitiveList.add_shape">
@@ -1302,9 +1647,9 @@ structured arrays in numpy :’(</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal"><span class="pre">SFFShape</span></code></a>) – a shape object</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFShape</span></code></a>) – a shape object</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><strong>SFFTypeError</strong></a> – if <code class="docutils literal"><span class="pre">s</span></code> is of the wrong type</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#sfftk.schema.SFFTypeError" title="sfftk.schema.SFFTypeError"><strong>SFFTypeError</strong></a> – if <code class="docutils literal notranslate"><span class="pre">s</span></code> is of the wrong type</td>
 </tr>
 </tbody>
 </table>
@@ -1345,46 +1690,124 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFShape">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFShape</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFShape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Base shape class</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFShape.attribute">
+<code class="descname">attribute</code><a class="headerlink" href="#sfftk.schema.SFFShape.attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>extra attribute information e.g. ‘FOM’</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFShape.id">
+<code class="descname">id</code><a class="headerlink" href="#sfftk.schema.SFFShape.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ID of this shape</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFShape.transformId">
+<code class="descname">transformId</code><a class="headerlink" href="#sfftk.schema.SFFShape.transformId" title="Permalink to this definition">¶</a></dt>
+<dd><p>the transform applied to this shape to position it in the space</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFCone">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCone</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCone</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
 <p>Cone shape class</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCone.bottomRadius">
+<code class="descname">bottomRadius</code><a class="headerlink" href="#sfftk.schema.SFFCone.bottomRadius" title="Permalink to this definition">¶</a></dt>
+<dd><p>cone bottom radius</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCone.height">
+<code class="descname">height</code><a class="headerlink" href="#sfftk.schema.SFFCone.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>cone height</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFCuboid">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCuboid</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCuboid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCuboid</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCuboid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
 <p>Cuboid shape class</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFCuboid.gds_type">
 <code class="descname">gds_type</code><a class="headerlink" href="#sfftk.schema.SFFCuboid.gds_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">cuboid</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.emdb_sff.cuboid</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCuboid.x">
+<code class="descname">x</code><a class="headerlink" href="#sfftk.schema.SFFCuboid.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>length in x</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCuboid.y">
+<code class="descname">y</code><a class="headerlink" href="#sfftk.schema.SFFCuboid.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>length in y</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCuboid.z">
+<code class="descname">z</code><a class="headerlink" href="#sfftk.schema.SFFCuboid.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>length in z</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFCylinder">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCylinder</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCylinder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFCylinder</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFCylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
 <p>Cylinder shape class</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCylinder.diameter">
+<code class="descname">diameter</code><a class="headerlink" href="#sfftk.schema.SFFCylinder.diameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>cylinder diameter</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFCylinder.height">
+<code class="descname">height</code><a class="headerlink" href="#sfftk.schema.SFFCylinder.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>cylinder height</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.schema.SFFEllipsoid">
-<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFEllipsoid</code><span class="sig-paren">(</span><em>s=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFEllipsoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFEllipsoid</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFEllipsoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFShape" title="sfftk.schema.SFFShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFShape</span></code></a></p>
 <p>Ellipsoid shape class</p>
 <dl class="attribute">
 <dt id="sfftk.schema.SFFEllipsoid.gds_type">
 <code class="descname">gds_type</code><a class="headerlink" href="#sfftk.schema.SFFEllipsoid.gds_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">ellipsoid</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.emdb_sff.ellipsoid</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFEllipsoid.x">
+<code class="descname">x</code><a class="headerlink" href="#sfftk.schema.SFFEllipsoid.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>length in x</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFEllipsoid.y">
+<code class="descname">y</code><a class="headerlink" href="#sfftk.schema.SFFEllipsoid.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>length in y</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFEllipsoid.z">
+<code class="descname">z</code><a class="headerlink" href="#sfftk.schema.SFFEllipsoid.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>length in z</p>
 </dd></dl>
 
 </dd></dl>
@@ -1392,7 +1815,7 @@ structured arrays in numpy :’(</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFThreeDVolume">
 <em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFThreeDVolume</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFThreeDVolume" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
 <p>Class representing segments described using a 3D volume</p>
 <dl class="method">
 <dt id="sfftk.schema.SFFThreeDVolume.as_hff">
@@ -1406,6 +1829,187 @@ structured arrays in numpy :’(</p>
 <dd><p>Return an SFFType object given an HDF5 object</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="sfftk.schema.SFFThreeDVolume.latticeId">
+<code class="descname">latticeId</code><a class="headerlink" href="#sfftk.schema.SFFThreeDVolume.latticeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ID of the lattice that has the data for this 3D volume</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFThreeDVolume.transformId">
+<code class="descname">transformId</code><a class="headerlink" href="#sfftk.schema.SFFThreeDVolume.transformId" title="Permalink to this definition">¶</a></dt>
+<dd><p>a transform applied to this 3D volume [optional]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFThreeDVolume.value">
+<code class="descname">value</code><a class="headerlink" href="#sfftk.schema.SFFThreeDVolume.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>the voxel values associated with this 3D volume</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.schema.SFFVolume">
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVolume</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVolume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<p>Class for represention 3-space dimension</p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVolume.cols">
+<code class="descname">cols</code><a class="headerlink" href="#sfftk.schema.SFFVolume.cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of columns</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sfftk.schema.SFFVolume.from_hff">
+<em class="property">classmethod </em><code class="descname">from_hff</code><span class="sig-paren">(</span><em>hff_data</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVolume.from_hff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an SFFType object given an HDF5 object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVolume.rows">
+<code class="descname">rows</code><a class="headerlink" href="#sfftk.schema.SFFVolume.rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of rows</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVolume.sections">
+<code class="descname">sections</code><a class="headerlink" href="#sfftk.schema.SFFVolume.sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of sections (sets of congruent row-column collections)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.schema.SFFVolumeStructure">
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVolumeStructure</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVolumeStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFVolume" title="sfftk.schema.SFFVolume"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFVolume</span></code></a></p>
+<dl class="attribute">
+<dt id="sfftk.schema.SFFVolumeStructure.voxelCount">
+<code class="descname">voxelCount</code><a class="headerlink" href="#sfftk.schema.SFFVolumeStructure.voxelCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of voxels in this volume</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.schema.SFFVolumeIndex">
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFVolumeIndex</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFVolumeIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFVolume" title="sfftk.schema.SFFVolume"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFVolume</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.schema.SFFLatticeList">
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFLatticeList</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLatticeList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<p>A container for lattice objects</p>
+<dl class="method">
+<dt id="sfftk.schema.SFFLatticeList.add_lattice">
+<code class="descname">add_lattice</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLatticeList.add_lattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a lattice to the list of lattices</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>l</strong> (<a class="reference internal" href="#sfftk.schema.SFFLattice" title="sfftk.schema.SFFLattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFLattice</span></code></a>) – a lattice object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.schema.SFFLatticeList.as_hff">
+<code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name='lattices'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLatticeList.as_hff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data of this object as an HDF5 group in the given parent group</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sfftk.schema.SFFLatticeList.from_hff">
+<em class="property">classmethod </em><code class="descname">from_hff</code><span class="sig-paren">(</span><em>hff_data</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLatticeList.from_hff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an SFFType object given an HDF5 object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="sfftk.schema.SFFLattice">
+<em class="property">class </em><code class="descclassname">sfftk.schema.</code><code class="descname">SFFLattice</code><span class="sig-paren">(</span><em>var=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFType</span></code></a></p>
+<p>Class representing 3D</p>
+<dl class="method">
+<dt id="sfftk.schema.SFFLattice.as_hff">
+<code class="descname">as_hff</code><span class="sig-paren">(</span><em>parent_group</em>, <em>name='{}'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLattice.as_hff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the data of this object as an HDF5 group in the given parent group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.data">
+<code class="descname">data</code><a class="headerlink" href="#sfftk.schema.SFFLattice.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>data provided by a numpy array; the dimensions should correspond with those specified in the ‘size’ attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.schema.SFFLattice.decode">
+<code class="descname">decode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLattice.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode the data for processing</p>
+<p>Base64 decode -&gt; Unzip -&gt; Unpack -&gt; Reshape</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.schema.SFFLattice.encode">
+<code class="descname">encode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLattice.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode the numpy array provided in the initialiser</p>
+<p>Flatten -&gt; Pack -&gt; Zip -&gt; Base64 encode</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.endianness">
+<code class="descname">endianness</code><a class="headerlink" href="#sfftk.schema.SFFLattice.endianness" title="Permalink to this definition">¶</a></dt>
+<dd><p>endianness; either ‘little’ (default) or ‘big’</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="sfftk.schema.SFFLattice.from_hff">
+<em class="property">classmethod </em><code class="descname">from_hff</code><span class="sig-paren">(</span><em>hff_data</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFLattice.from_hff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an SFFType object given an HDF5 object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.id">
+<code class="descname">id</code><a class="headerlink" href="#sfftk.schema.SFFLattice.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>the ID for this lattice (referenced by 3D volumes)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.is_binary">
+<code class="descname">is_binary</code><a class="headerlink" href="#sfftk.schema.SFFLattice.is_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quick check to see whether the 3D volume is binary or not</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.is_encoded">
+<code class="descname">is_encoded</code><a class="headerlink" href="#sfftk.schema.SFFLattice.is_encoded" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells whether the data in the lattice is encoded or not</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.mode">
+<code class="descname">mode</code><a class="headerlink" href="#sfftk.schema.SFFLattice.mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>type of data for each voxel; valid values are: int8, uint8, int16, uint16, int32, uint32, int64, uint64, float32, float64</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.size">
+<code class="descname">size</code><a class="headerlink" href="#sfftk.schema.SFFLattice.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>size of the lattice described using a <a class="reference internal" href="#sfftk.schema.SFFVolumeStructure" title="sfftk.schema.SFFVolumeStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFVolumeStructure</span></code></a> object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="sfftk.schema.SFFLattice.start">
+<code class="descname">start</code><a class="headerlink" href="#sfftk.schema.SFFLattice.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>starting index of the lattices described using a:py:class:<cite>sfftk.schema.SFFVolumeIndex</cite> object</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1414,9 +2018,7 @@ structured arrays in numpy :’(</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -1438,7 +2040,7 @@ structured arrays in numpy :’(</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1456,7 +2058,8 @@ structured arrays in numpy :’(</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v0.3.0.dev0',
+            VERSION:'v0.3.1.dev0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -1469,19 +2072,13 @@ structured arrays in numpy :’(</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

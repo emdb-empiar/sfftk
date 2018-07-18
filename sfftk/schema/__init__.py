@@ -80,6 +80,7 @@ example, the ``software`` attribute will be of class :py:class:`SFFSoftware`.
 from __future__ import division, print_function
 
 import base64
+import os
 import re
 import struct
 import sys
@@ -439,36 +440,39 @@ class SFFType(object):
         - ``.hff`` - HDF5
         - ``.json`` - JSON
         """
-        fn_ext = fn.split('.')[-1]
-        valid_extensions = ['sff', 'hff', 'json']
-        try:
-            assert fn_ext in valid_extensions
-        except AssertionError:
-            print_date("Invalid filename: extension should be one of {}: {}".format(
-                ", ".join(valid_extensions),
-                fn,
-            ))
-            sys.exit(1)
-        if fn_ext == 'sff':
-            with open(fn, 'w') as f:
-                # write version and encoding
-                version = _kwargs.get('version') if 'version' in _kwargs else "1.0"
-                encoding = _kwargs.get('encoding') if 'encoding' in _kwargs else "UTF-8"
-                f.write('<?xml version="{}" encoding="{}"?>\n'.format(version, encoding))
-                # always export from the root
-                self._local.export(f, 0, *_args, **_kwargs)
-        elif fn_ext == 'hff':
-            with h5py.File(fn, 'w') as f:
-                self.as_hff(f, *_args, **_kwargs)
-        elif fn_ext == 'json':
-            with open(fn, 'w') as f:
-                self.as_json(f, *_args, **_kwargs)
+        if isinstance(fn, str):  # fn is a file name
+            fn_ext = fn.split('.')[-1]
+            valid_extensions = ['sff', 'hff', 'json']
+            try:
+                assert fn_ext in valid_extensions
+            except AssertionError:
+                print_date("Invalid filename: extension should be one of {}: {}".format(
+                    ", ".join(valid_extensions),
+                    fn,
+                ))
+                sys.exit(1)
+            if fn_ext == 'sff':
+                with open(fn, 'w') as f:
+                    # write version and encoding
+                    version = _kwargs.get('version') if 'version' in _kwargs else "1.0"
+                    encoding = _kwargs.get('encoding') if 'encoding' in _kwargs else "UTF-8"
+                    f.write('<?xml version="{}" encoding="{}"?>\n'.format(version, encoding))
+                    # always export from the root
+                    self._local.export(f, 0, *_args, **_kwargs)
+            elif fn_ext == 'hff':
+                with h5py.File(fn, 'w') as f:
+                    self.as_hff(f, *_args, **_kwargs)
+            elif fn_ext == 'json':
+                with open(fn, 'w') as f:
+                    self.as_json(f, *_args, **_kwargs)
+        elif isinstance(fn, file):
+            self._local.export(fn, 0, *_args, **_kwargs)
 
 
 class SFFAttribute(object):
     """Descriptor for SFFType subclass attributes"""
 
-    def __init__(self, name, sff_type=None, get_from=None, set_to=None, del_from=None):
+    def __init__(self, name, sff_type=None, get_from=None, set_to=None, del_from=None, help=""):
         """Initialiser for an attribute
         
         This class acts as an intermediary between ``SFFType`` and ``emdb_sff`` objects. Each ``SFFType``
@@ -488,6 +492,7 @@ class SFFAttribute(object):
         :param str set_to: which ``emdb_sff`` attribute to set the data to
         """
         self._name = name
+        self.__doc__ = help
         self._sff_type = sff_type
         self._get_from = get_from
         self._set_to = set_to
@@ -535,10 +540,10 @@ class SFFRGBA(SFFType):
     repr_args = ('red', 'green', 'blue', 'alpha')
 
     # attributes
-    red = SFFAttribute('red')
-    green = SFFAttribute('green')
-    blue = SFFAttribute('blue')
-    alpha = SFFAttribute('alpha')
+    red = SFFAttribute('red', help="red channel")
+    green = SFFAttribute('green', help="green channel")
+    blue = SFFAttribute('blue', help="blue channel")
+    alpha = SFFAttribute('alpha', help="alpha (opacity) channel")
 
     @property
     def value(self):
@@ -731,8 +736,9 @@ class SFFComplexesAndMacromolecules(SFFType):
     repr_args = ('numComplexes', 'numMacromolecules')
 
     # attributes
-    complexes = SFFAttribute('complex', sff_type=SFFComplexes)
-    macromolecules = SFFAttribute('macromolecule', sff_type=SFFMacromolecules)
+    complexes = SFFAttribute('complex', sff_type=SFFComplexes, help="a list of complex accessions")
+    macromolecules = SFFAttribute('macromolecule', sff_type=SFFMacromolecules,
+                                  help="a list of macromolecule accessions")
 
     @property
     def numComplexes(self):
@@ -777,12 +783,12 @@ class SFFExternalReference(SFFType):
     repr_args = ('type', 'otherType', 'value')
 
     # attributes
-    id = SFFAttribute('id')
-    type = SFFAttribute('type_')
-    otherType = SFFAttribute('otherType')
-    value = SFFAttribute('value')
-    label = SFFAttribute('label')
-    description = SFFAttribute('description')
+    id = SFFAttribute('id', help="this external reference's ID")
+    type = SFFAttribute('type_', help="the ontology/archive name")
+    otherType = SFFAttribute('otherType', help="a URL/IRI where data for this external reference may be obtained")
+    value = SFFAttribute('value', help="the accession for this external reference")
+    label = SFFAttribute('label', help="a short description of this external reference")
+    description = SFFAttribute('description', help="a long description of this external reference")
 
     # methods
     def __init__(self, var=None, *args, **kwargs):
@@ -854,10 +860,11 @@ class SFFBiologicalAnnotation(SFFType):
     repr_args = ('numExternalReferences',)
 
     # attributes
-    name = SFFAttribute('name')
-    description = SFFAttribute('description')
-    externalReferences = SFFAttribute('externalReferences', SFFExternalReferences)
-    numberOfInstances = SFFAttribute('numberOfInstances')
+    name = SFFAttribute('name', help="the name of this segment")
+    description = SFFAttribute('description', help="a brief description for this segment")
+    externalReferences = SFFAttribute('externalReferences', SFFExternalReferences,
+                                      help="the set of external references")
+    numberOfInstances = SFFAttribute('numberOfInstances', help="the number of instances of this segment")
 
     # methods
     def __nonzero__(self):
@@ -923,9 +930,9 @@ class SFFThreeDVolume(SFFType):
     repr_string = "3D formatted segment"
 
     # attributes
-    latticeId = SFFAttribute('latticeId')
-    value = SFFAttribute('value')
-    transformId = SFFAttribute('transformId')
+    latticeId = SFFAttribute('latticeId', help="the ID of the lattice that has the data for this 3D volume")
+    value = SFFAttribute('value', help="the voxel values associated with this 3D volume")
+    transformId = SFFAttribute('transformId', help="a transform applied to this 3D volume [optional]")
 
     def __nonzero__(self):
         if self.value is None:
@@ -958,9 +965,9 @@ class SFFThreeDVolume(SFFType):
 class SFFVolume(SFFType):
     """Class for represention 3-space dimension"""
     # attributes
-    cols = SFFAttribute('cols')
-    rows = SFFAttribute('rows')
-    sections = SFFAttribute('sections')
+    cols = SFFAttribute('cols', help="number of columns")
+    rows = SFFAttribute('rows', help="number of rows")
+    sections = SFFAttribute('sections', help="number of sections (sets of congruent row-column collections)")
 
     @property
     def value(self):
@@ -992,6 +999,7 @@ class SFFVolumeStructure(SFFVolume):
 
     @property
     def voxelCount(self):
+        """The number of voxels in this volume"""
         return self.cols * self.rows * self.sections
 
 
@@ -1002,31 +1010,27 @@ class SFFVolumeIndex(SFFVolume):
     repr_args = ('cols', 'rows', 'sections')
 
 
-def decode_lattice(lattice):
-    """Base64 decode -> Unzip -> Unpack -> Reshape"""
-    binzip = base64.b64decode(lattice.data)
-    binpack = zlib.decompress(binzip)
-    _count = lattice.size.voxelCount
-    bindata = struct.unpack("{}{}{}".format(ENDIANNESS[lattice.endianness], _count, FORMAT_CHARS[lattice.mode]),
-                            binpack)
-    lattice.data = numpy.array(bindata).reshape(*lattice.size.value[::-1])
-    return lattice
-
-
 class SFFLattice(SFFType):
     """Class representing 3D """
     gds_type = sff.latticeType
     ref = "3D lattice"
-    repr_string = "Actual 3D data"
+    repr_string = "Encoded 3D lattice with {}"
+    repr_args = ('size',)
     lattice_id = -1
 
     # attributes
-    id = SFFAttribute('id')
-    mode = SFFAttribute('mode')
-    endianness = SFFAttribute('endianness')
-    size = SFFAttribute('size', sff_type=SFFVolumeStructure)
-    start = SFFAttribute('start', sff_type=SFFVolumeIndex)
-    data = SFFAttribute('data')
+    id = SFFAttribute('id', help="the ID for this lattice (referenced by 3D volumes)")
+    mode = SFFAttribute('mode',
+                        help="type of data for each voxel; valid values are: int8, uint8, int16, uint16, int32, "
+                             "uint32, int64, uint64, float32, float64")
+    endianness = SFFAttribute('endianness', help="endianness; either 'little' (default) or 'big'")
+    # todo: redundant to have size and data when size should be inferred from data
+    size = SFFAttribute('size', sff_type=SFFVolumeStructure, help="size of the lattice described using a "
+                                                                  ":py:class:`sfftk.schema.SFFVolumeStructure` object")
+    start = SFFAttribute('start', sff_type=SFFVolumeIndex, help="starting index of the lattices described using a"
+                                                                ":py:class:`sfftk.schema.SFFVolumeIndex` object")
+    data = SFFAttribute('data', help="data provided by a numpy array; the dimensions should correspond with those "
+                                     "specified in the 'size' attribute")
 
     def __new__(cls, *args, **kwargs):
         cls.lattice_id += 1
@@ -1038,20 +1042,41 @@ class SFFLattice(SFFType):
             self._local.id = kwargs['id']
         elif not var:
             self._local.id = self.lattice_id
+        if not self.is_encoded:
+            # encode on create
+            self.encode()
 
-    @staticmethod
-    def encode(mode, endianness, size, data):
-        """Flatten -> Pack -> Zip -> Base64 encode"""
-        assert isinstance(data, numpy.ndarray)
-        binlist = data.flatten().tolist()
-        format_string = "{}{}{}".format(ENDIANNESS[endianness], size, FORMAT_CHARS[mode])
+    @property
+    def is_encoded(self):
+        """Tells whether the data in the lattice is encoded or not"""
+        if isinstance(self.data, str):
+            return True
+        elif isinstance(self.data, numpy.ndarray):
+            return False
+
+    def encode(self):
+        """Encode the numpy array provided in the initialiser
+
+        Flatten -> Pack -> Zip -> Base64 encode
+        """
+        try:
+            assert isinstance(self.data, numpy.ndarray)
+        except AssertionError as a:
+            print_date("Cannot encode data of type {}".format(type(self.data)))
+            raise a
+            sys.exit(os.EX_DATAERR)
+        binlist = self.data.flatten().tolist()
+        format_string = "{}{}{}".format(ENDIANNESS[self.endianness], self.size.voxelCount, FORMAT_CHARS[self.mode])
         binpack = struct.pack(format_string, *binlist)
         binzip = zlib.compress(binpack)
         bin64 = base64.b64encode(binzip)
-        return bin64
+        self.data = bin64
 
     def decode(self):
-        """Base64 decode -> Unzip -> Unpack -> Reshape"""
+        """Decode the data for processing
+
+        Base64 decode -> Unzip -> Unpack -> Reshape
+        """
         binzip = base64.b64decode(self.data)
         binpack = zlib.decompress(binzip)
         _count = self.size.voxelCount
@@ -1060,6 +1085,7 @@ class SFFLattice(SFFType):
 
     @property
     def is_binary(self):
+        """Quick check to see whether the 3D volume is binary or not"""
         voxel_values = set(self.data.flatten().tolist()).difference(set([0]))
         if len(voxel_values) == 1:
             return True
@@ -1081,12 +1107,13 @@ class SFFLattice(SFFType):
     def from_hff(cls, hff_data):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Group)
-        obj = cls()
-        obj.mode = hff_data['mode'].value
-        obj.endianness = hff_data['endianness'].value
-        obj.size = SFFVolumeStructure.from_hff(hff_data['size'])
-        obj.start = SFFVolumeIndex.from_hff(hff_data['start'])
-        obj.data = hff_data['data'].value
+        obj = cls(
+            mode=hff_data['mode'].value,
+            endianness=hff_data['endianness'].value,
+            size=SFFVolumeStructure.from_hff(hff_data['size']),
+            start=SFFVolumeIndex.from_hff(hff_data['start']),
+            data=hff_data['data'].value,
+        )
         return obj
 
 
@@ -1105,7 +1132,7 @@ class SFFLatticeList(SFFType):
         super(SFFLatticeList, self).__init__(var=var, *args, **kwargs)
 
     def add_lattice(self, l):
-        """Add a lattie to the list of lattices
+        """Add a lattice to the list of lattices
 
         :param l: a lattice object
         :type l: :py:class:`SFFLattice`
@@ -1142,9 +1169,9 @@ class SFFShape(SFFType):
     shape_id = -1
 
     # attributes
-    id = SFFAttribute('id')
-    transformId = SFFAttribute('transformId')
-    attribute = SFFAttribute('attribute')
+    id = SFFAttribute('id', help="the ID of this shape")
+    transformId = SFFAttribute('transformId', help="the transform applied to this shape to position it in the space")
+    attribute = SFFAttribute('attribute', help="extra attribute information e.g. 'FOM'")
 
 
 class SFFCone(SFFShape):
@@ -1153,8 +1180,8 @@ class SFFCone(SFFShape):
     ref = "cone"
 
     # attributes
-    height = SFFAttribute('height')
-    bottomRadius = SFFAttribute('bottomRadius')
+    height = SFFAttribute('height', help="cone height")
+    bottomRadius = SFFAttribute('bottomRadius', help="cone bottom radius")
 
     def __new__(cls, *args, **kwargs):
         cls.shape_id = super(SFFCone, cls).shape_id + 1
@@ -1177,9 +1204,9 @@ class SFFCuboid(SFFShape):
     ref = "cuboid"
 
     # attributes
-    x = SFFAttribute('x')
-    y = SFFAttribute('y')
-    z = SFFAttribute('z')
+    x = SFFAttribute('x', help="length in x")
+    y = SFFAttribute('y', help="length in y")
+    z = SFFAttribute('z', help="length in z")
 
     def __new__(cls, *args, **kwargs):
         cls.shape_id = super(SFFCuboid, cls).shape_id + 1
@@ -1202,8 +1229,8 @@ class SFFCylinder(SFFShape):
     ref = "cylinder"
 
     # attributes
-    height = SFFAttribute('height')
-    diameter = SFFAttribute('diameter')
+    height = SFFAttribute('height', help="cylinder height")
+    diameter = SFFAttribute('diameter', help="cylinder diameter")
 
     def __new__(cls, *args, **kwargs):
         cls.shape_id = super(SFFCylinder, cls).shape_id + 1
@@ -1226,9 +1253,9 @@ class SFFEllipsoid(SFFShape):
     ref = "ellipsoid"
 
     # attributes
-    x = SFFAttribute('x')
-    y = SFFAttribute('y')
-    z = SFFAttribute('z')
+    x = SFFAttribute('x', help="length in x")
+    y = SFFAttribute('y', help="length in y")
+    z = SFFAttribute('z', help="length in z")
 
     def __new__(cls, *args, **kwargs):
         cls.shape_id = super(SFFEllipsoid, cls).shape_id + 1
@@ -1379,11 +1406,11 @@ class SFFVertex(SFFType):
     vertex_id = -1
 
     # attributes
-    vID = SFFAttribute('vID')
-    designation = SFFAttribute('designation')
-    x = SFFAttribute('x')
-    y = SFFAttribute('y')
-    z = SFFAttribute('z')
+    vID = SFFAttribute('vID', help="vertex ID; referenced by polygons")
+    designation = SFFAttribute('designation', help="type of vertex ('surface' (default) or 'normal')")
+    x = SFFAttribute('x', help="x co-ordinate")
+    y = SFFAttribute('y', help="y co-ordinate")
+    z = SFFAttribute('z', help="z co-ordinate")
 
     def __new__(cls, *args, **kwargs):
         cls.vertex_id += 1
@@ -1401,6 +1428,7 @@ class SFFVertex(SFFType):
 
     @property
     def point(self):
+        """The co-ordinates for this vertex"""
         return self.x, self.y, self.z
 
     @point.setter
@@ -1425,7 +1453,7 @@ class SFFPolygon(SFFType):
     iter_dict = dict()
 
     # attributes
-    PID = SFFAttribute('PID')
+    PID = SFFAttribute('PID', help="the ID for this polygon")
 
     def __new__(cls, *args, **kwargs):
         cls.polygon_id += 1
@@ -1588,9 +1616,9 @@ class SFFMesh(SFFType):
 
     # attributes
     id = SFFAttribute('id')
-    polygons = SFFAttribute('polygonList', sff_type=SFFPolygonList)
-    vertices = SFFAttribute('vertexList', sff_type=SFFVertexList)
-    transformId = SFFAttribute('transformId')
+    vertices = SFFAttribute('vertexList', sff_type=SFFVertexList, help="a list of vertices (object of class :py:class:`sfftk.schema.SFFVertexList`)")
+    polygons = SFFAttribute('polygonList', sff_type=SFFPolygonList, help="a list of derived polygons (object of class :py:class:`sfftk.schema.SFFPolygonList`)")
+    transformId = SFFAttribute('transformId', help="a transform applied to the mesh")
 
     def __new__(cls, *args, **kwargs):
         cls.mesh_id += 1
@@ -1605,10 +1633,12 @@ class SFFMesh(SFFType):
 
     @property
     def numVertices(self):
+        """The number of vertices in this mesh"""
         return len(self.vertices)
 
     @property
     def numPolygons(self):
+        """The number of polygons in this mesh"""
         return len(self.polygons)
 
     @classmethod
@@ -1721,17 +1751,15 @@ class SFFSegment(SFFType):
     segment_parentID = 0
 
     # attributes
-    id = SFFAttribute('id')
-    parentID = SFFAttribute('parentID')
-    biologicalAnnotation = SFFAttribute('biologicalAnnotation', sff_type=SFFBiologicalAnnotation)
-    complexesAndMacromolecules = SFFAttribute('complexesAndMacromolecules', sff_type=SFFComplexesAndMacromolecules)
-    colour = SFFAttribute('colour', sff_type=SFFRGBA)
-    meshes = SFFAttribute('meshList', sff_type=SFFMeshList)
+    id = SFFAttribute('id', help="the ID for this segment; segment IDs begin at 1 with the value of 0 implying the segmentation i.e. all segments are children of the root segment (the segmentation)")
+    parentID = SFFAttribute('parentID', help="the ID for the segment that contains this segment; defaults to 0 (the whole segmentation)")
+    biologicalAnnotation = SFFAttribute('biologicalAnnotation', sff_type=SFFBiologicalAnnotation, help="the biological annotation for this segment; described using a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object")
+    complexesAndMacromolecules = SFFAttribute('complexesAndMacromolecules', sff_type=SFFComplexesAndMacromolecules, help="the complexes and macromolecules associated with this segment; described using a :py:class:`sfftk.schema.SFFComplexesAndMacromolecules` object")
+    colour = SFFAttribute('colour', sff_type=SFFRGBA, help="this segments colour; described using a :py:class:`sfftk.schema.SFFRGBA` object")
+    meshes = SFFAttribute('meshList', sff_type=SFFMeshList, help="the list of meshes (if any) that describe this segment; a :py:class:`sfftk.schema.SFFMeshList` object")
     # contours = SFFAttribute('contourList', sff_type=SFFContourList)
-    volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume)
-    shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList)
-
-    # mask = SFFAttribute('mask')  # used in sfftkplus
+    volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume, help="the 3D volume (if any) that describes this segment; a :py:class:`sfftk.schema.SFFThreeDVolume` object ")
+    shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList, help="the list of shape primitives that describe this segment; a :py:class:`sfftk.schema.SFFShapePrimitiveList` object")
 
     def __new__(cls, *args, **kwargs):
         cls.segment_id += 1
@@ -1932,10 +1960,11 @@ class SFFTransformationMatrix(SFFType):
     transform_id = -1
 
     # attributes
-    id = SFFAttribute('id')
-    rows = SFFAttribute('rows')
-    cols = SFFAttribute('cols')
-    data = SFFAttribute('data')
+    id = SFFAttribute('id', help="an ID for this transform")
+    rows = SFFAttribute('rows', help="the number of rows in this matrix")
+    cols = SFFAttribute('cols', help="the number of columns in this matrix")
+    data = SFFAttribute('data', help="the data in this matrix")
+    # todo: work with numpy arrays transparently
 
     def __new__(cls, *args, **kwargs):
         cls.transform_id += 1
@@ -1953,16 +1982,15 @@ class SFFTransformationMatrix(SFFType):
 
     @property
     def data_array(self):
+        """The data in this matrix as an array"""
         data_list = self.data.split(' ')
         data_array = np.array(data_list).reshape(self.rows, self.cols)
         return data_array
+    #TODO: a setter for the above attribute
 
     def __str__(self):
         return (("[" + "{:.4f} " * self.cols + "]\n") * self.rows).format(*map(float, self.data.split(' ')))
 
-    """
-    :TODO: a setter for the above attribute
-    """
 
 
 class SFFTransformList(SFFType):
@@ -2101,9 +2129,9 @@ class SFFSoftware(SFFType):
     repr_string = "Software object"
 
     # attributes
-    name = SFFAttribute('name')
-    version = SFFAttribute('version')
-    processingDetails = SFFAttribute('processingDetails')
+    name = SFFAttribute('name', help="the software/programme's name")
+    version = SFFAttribute('version', help="the version used")
+    processingDetails = SFFAttribute('processingDetails', help="a description of how the data was processed to produce the segmentation")
 
     def as_hff(self, parent_group, name="software"):
         """Return the data of this object as an HDF5 group in the given parent group"""
@@ -2136,12 +2164,12 @@ class SFFBoundingBox(SFFType):
     repr_args = ('xmin', 'xmax', 'ymin', 'ymax', 'zmin', 'zmax')
 
     # attributes
-    xmin = SFFAttribute('xmin')
-    xmax = SFFAttribute('xmax')
-    ymin = SFFAttribute('ymin')
-    ymax = SFFAttribute('ymax')
-    zmin = SFFAttribute('zmin')
-    zmax = SFFAttribute('zmax')
+    xmin = SFFAttribute('xmin', help="minimum x co-ordinate value")
+    xmax = SFFAttribute('xmax', help="maximum x co-ordinate value")
+    ymin = SFFAttribute('ymin', help="minimum y co-ordinate value")
+    ymax = SFFAttribute('ymax', help="maximum y co-ordinate value")
+    zmin = SFFAttribute('zmin', help="minimum z co-ordinate value")
+    zmax = SFFAttribute('zmax', help="maximum z co-ordinate value")
 
     # methods
     def as_hff(self, parent_group, name="boundingBox"):
@@ -2229,16 +2257,16 @@ class SFFSegmentation(SFFType):
     repr_string = ""
 
     # attributes
-    name = SFFAttribute('name')
-    version = SFFAttribute('version')
-    software = SFFAttribute('software', sff_type=SFFSoftware)
-    primaryDescriptor = SFFAttribute('primaryDescriptor')
-    transforms = SFFAttribute('transformList', sff_type=SFFTransformList)
-    boundingBox = SFFAttribute('boundingBox', sff_type=SFFBoundingBox)
-    globalExternalReferences = SFFAttribute('globalExternalReferences', sff_type=SFFGlobalExternalReferences)
-    segments = SFFAttribute('segmentList', sff_type=SFFSegmentList)
-    lattices = SFFAttribute('latticeList', sff_type=SFFLatticeList)
-    details = SFFAttribute('details')
+    name = SFFAttribute('name', help="the name of this segmentation")
+    version = SFFAttribute('version', help="EMDB-SFF version")
+    software = SFFAttribute('software', sff_type=SFFSoftware, help="the software details used to generate this segmentationa :py:class:`sfftk.schema.SFFSoftware` object")
+    primaryDescriptor = SFFAttribute('primaryDescriptor', help="the main type of representation used for this segmentation; can be one of 'meshList', 'shapePrimitiveList' or 'threeDVolume'")
+    transforms = SFFAttribute('transformList', sff_type=SFFTransformList, help="a list of transforms; a :py:class:`sfftk.schema.SFFTransformList` object")
+    boundingBox = SFFAttribute('boundingBox', sff_type=SFFBoundingBox, help="the bounding box in which the segmentation sits; a :py:class:`sfftk.schema.SFFBoundingBox` object")
+    globalExternalReferences = SFFAttribute('globalExternalReferences', sff_type=SFFGlobalExternalReferences, help="a list of external references that apply to the whole segmentation (global); a :py:class:`sfftk.schema.SFFGlobalExternalReferences` object")
+    segments = SFFAttribute('segmentList', sff_type=SFFSegmentList, help="the list of annotated segments; a :py:class:`sfftk.schema.SFFSegmentList` object")
+    lattices = SFFAttribute('latticeList', sff_type=SFFLatticeList, help="the list of lattices (if any) containing 3D volumes referred to; a :py:class:`sfftk.schema.SFFLatticeList` object")
+    details = SFFAttribute('details', help="any other details about this segmentation (free text)")
 
     # properties, methods
     def __init__(self, var=None, *args, **kwargs):

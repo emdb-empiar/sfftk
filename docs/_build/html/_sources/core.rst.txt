@@ -21,3 +21,10 @@ Printing utilities
 .. automodule:: sfftk.core.print_tools
 	:members:
 	:show-inheritance:
+
+Preparation utilities
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: sfftk.core.prep
+	:members:
+	:show-inheritance:

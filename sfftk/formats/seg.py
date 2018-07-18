@@ -238,16 +238,13 @@ class SeggerSegmentation(Segmentation):
         segmentation.segments = segments
         # lattice
         segmentation.lattices = schema.SFFLatticeList()
-        lattice_mode = 'uint32'
-        lattice_endianness = 'little'
         cols, rows, sections = self.header.map_size
-        lattice_size = schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections)
         lattice = schema.SFFLattice(
-            mode=lattice_mode,
-            endianness=lattice_endianness,
-            size=lattice_size,
+            mode='uint32',
+            endianness='little',
+            size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=schema.SFFLattice.encode(lattice_mode, lattice_endianness, lattice_size.voxelCount, self.header.simplified_mask)
+            data=self.header.simplified_mask
         )
         segmentation.lattices.add_lattice(lattice)
         # details

@@ -21,6 +21,23 @@ __date__ = '2017-02-15'
 __updated__ = '2018-02-23'
 
 
+def handle_prep(args, configs):
+    """Handle `prep` subcommand
+
+    :param args: parsed arguments
+    :type args: :py:class:``argparse.Namespace``
+    :param configs: configurations object
+    :type configs: :py:class:``sfftk.core.configs.Configs``
+    :return int exit_status: exit status
+    """
+    if re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
+        from .core.prep import bin_map
+        return bin_map(args, configs)
+    else:
+        print_date("No prep protocol for file type {}".format(args.from_file))
+        return os.EX_DATAERR
+
+
 def handle_convert(args, configs):  # @UnusedVariable
     """
     Handle `convert` subcommand
@@ -32,9 +49,7 @@ def handle_convert(args, configs):  # @UnusedVariable
     :return int status: status
     """
     if args.multi_file:
-        if re.match(r'.*\.map$', args.from_file[0], re.IGNORECASE) or \
-                re.match(r'.*\.mrc$', args.from_file[0], re.IGNORECASE) or \
-                re.match(r'.*\.rec$', args.from_file[0], re.IGNORECASE):
+        if re.match(r'.*\.(map|mrc|rec)$', args.from_file[0], re.IGNORECASE):
             from .formats.map import MapSegmentation
             seg = MapSegmentation(args.from_file)
         else:
@@ -59,9 +74,7 @@ def handle_convert(args, configs):  # @UnusedVariable
         elif re.match(r'.*\.am$', args.from_file, re.IGNORECASE):
             from .formats.am import AmiraMeshSegmentation
             seg = AmiraMeshSegmentation(args.from_file)
-        elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE) or \
-                re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
-                re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):
+        elif re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
             from .formats.map import MapSegmentation
             seg = MapSegmentation([args.from_file])
         elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
@@ -101,7 +114,7 @@ def handle_convert(args, configs):  # @UnusedVariable
     if args.verbose:
         print_date("Done")
 
-    return 0
+    return os.EX_OK
 
 
 def handle_notes_search(args, configs):
@@ -428,7 +441,7 @@ def handle_view(args, configs):  # @UnusedVariable
         print("*" * 50)
     else:
         print("Not implemented view for files of type .{}".format(args.from_file.split('.')[-1]), file=sys.stderr)
-    return 0
+    return os.EX_OK
 
 
 def handle_config(args, configs):
@@ -467,7 +480,7 @@ def _module_test_runner(mod, args):
     import unittest
     suite = unittest.TestLoader().loadTestsFromModule(mod)
     unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
-    return 0
+    return os.EX_OK
 
 
 def _testcase_test_runner(tc, args):
@@ -480,7 +493,7 @@ def _testcase_test_runner(tc, args):
     import unittest
     suite = unittest.TestLoader().loadTestsFromTestCase(tc)
     unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
-    return 0
+    return os.EX_OK
 
 
 def _discover_test_runner(path, args):
@@ -493,7 +506,7 @@ def _discover_test_runner(path, args):
     import unittest
     suite = unittest.TestLoader().discover(path)
     unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
-    return 0
+    return os.EX_OK
 
 
 def handle_tests(args, configs):
@@ -528,7 +541,7 @@ def handle_tests(args, configs):
         if 'notes' in args.tool:
             from .unittests import test_notes
             _module_test_runner(test_notes, args)
-    return 0
+    return os.EX_OK
 
 
 def main():
@@ -539,7 +552,9 @@ def main():
         if not args:
             return 1
         # subcommands
-        if args.subcommand == 'convert':
+        if args.subcommand == 'prep':
+            return handle_prep(args, configs)
+        elif args.subcommand == 'convert':
             return handle_convert(args, configs)
         elif args.subcommand == 'notes':
             return handle_notes(args, configs)
@@ -552,8 +567,8 @@ def main():
 
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
-        return 0
-    return 0
+        return os.EX_OK
+    return os.EX_OK
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.core package &mdash; sfftk v0.3.0.dev0 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.3.1.dev0 documentation</title>
   
 
   
@@ -24,27 +24,18 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk v0.3.0.dev0 documentation" href="index.html"/>
-        <link rel="up" title="sfftk packages" href="sfftk.html"/>
-        <link rel="prev" title="sfftk.notes package" href="notes.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="sfftk.notes package" href="notes.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -91,7 +82,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal"><span class="pre">sfftk</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal notranslate"><span class="pre">sfftk</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
@@ -112,6 +103,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#print-tools-py">print_tools.py</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.prep">Preparation utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -127,7 +119,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">sfftk</a>
@@ -135,9 +127,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -194,14 +187,14 @@ for a complete description of working with configs.</p>
 <dt id="sfftk.core.configs.load_configs">
 <code class="descclassname">sfftk.core.configs.</code><code class="descname">load_configs</code><span class="sig-paren">(</span><em>args</em>, <em>user_folder='.sfftk'</em>, <em>conf_fn='sff.conf'</em>, <em>config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.load_configs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load sfftk configs (persistent arguments)</p>
-<p>It is called in <code class="docutils literal"><span class="pre">sfftk.core.parser.py</span></code> to get configs for the current
+<p>It is called in <code class="docutils literal notranslate"><span class="pre">sfftk.core.parser.py</span></code> to get configs for the current
 command.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
+<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
 <li><strong>user_folder</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the user folder; default is <em>.sfftk</em></li>
 <li><strong>conf_fn</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the config file; default is <em>sff.conf</em></li>
 <li><strong>Configs</strong> (<em>class</em>) – the class defining configs</li>
@@ -329,13 +322,13 @@ command.</p>
 <dl class="class">
 <dt id="sfftk.core.configs.Configs">
 <em class="property">class </em><code class="descclassname">sfftk.core.configs.</code><code class="descname">Configs</code><span class="sig-paren">(</span><em>config_fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/collections.html#collections.OrderedDict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">collections.OrderedDict</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/collections.html#collections.OrderedDict" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.OrderedDict</span></code></a></p>
 <p>Class defining configs</p>
-<p>Configurations are stored in a subclass of <code class="docutils literal"><span class="pre">OrderedDict</span></code> with 
-appended methods for reading (<code class="docutils literal"><span class="pre">read()</span></code>), writing (<code class="docutils literal"><span class="pre">write</span></code>) and 
-clearing (<code class="docutils literal"><span class="pre">clear()</span></code>) configs.</p>
+<p>Configurations are stored in a subclass of <code class="docutils literal notranslate"><span class="pre">OrderedDict</span></code> with 
+appended methods for reading (<code class="docutils literal notranslate"><span class="pre">read()</span></code>), writing (<code class="docutils literal notranslate"><span class="pre">write</span></code>) and 
+clearing (<code class="docutils literal notranslate"><span class="pre">clear()</span></code>) configs.</p>
 <p>Printing an object of this class displays all configs.</p>
-<p>This class is used an argument to <code class="docutils literal"><span class="pre">load_configs()</span></code>.</p>
+<p>This class is used an argument to <code class="docutils literal notranslate"><span class="pre">load_configs()</span></code>.</p>
 <dl class="method">
 <dt id="sfftk.core.configs.Configs.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.clear" title="Permalink to this definition">¶</a></dt>
@@ -368,7 +361,7 @@ clearing (<code class="docutils literal"><span class="pre">clear()</span></code>
 <p>This function does all the heavy lifting in ensuring that commandline
 arguments are properly formatted and checked for sanity. It also 
 extracts configs from the config files.</p>
-<p>In this way command handlers (defined in <code class="docutils literal"><span class="pre">sfftk/sff.py</span></code> e.g. <code class="docutils literal"><span class="pre">handle_convert(...)</span></code>)
+<p>In this way command handlers (defined in <code class="docutils literal notranslate"><span class="pre">sfftk/sff.py</span></code> e.g. <code class="docutils literal notranslate"><span class="pre">handle_convert(...)</span></code>)
 assume correct argument values and can concentrate on functionality.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -378,11 +371,11 @@ assume correct argument values and can concentrate on functionality.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed arguments</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">argparse.Namespace</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">config dict-like object</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">sfftk.core.configs.Config</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Config</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -391,14 +384,14 @@ assume correct argument values and can concentrate on functionality.</p>
 <dl class="function">
 <dt id="sfftk.core.parser.add_args">
 <code class="descclassname">sfftk.core.parser.</code><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em>, <em>the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to add <code class="docutils literal"><span class="pre">the_arg</span></code> to the <code class="docutils literal"><span class="pre">parser</span></code>.</p>
+<dd><p>Convenience function to add <code class="docutils literal notranslate"><span class="pre">the_arg</span></code> to the <code class="docutils literal notranslate"><span class="pre">parser</span></code>.</p>
 <p>This relies on the argument being structured as a dictionary with the keys 
-<code class="docutils literal"><span class="pre">args</span></code> for positional arguments and <code class="docutils literal"><span class="pre">kwargs</span></code> for the keyword
+<code class="docutils literal notranslate"><span class="pre">args</span></code> for positional arguments and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> for the keyword
 arguments. The value of doing this is that arguments that are reused
 in several parsers can be referred to by a variable instead of being 
 redefined.</p>
 <p>Usage:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_arg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-x&#39;</span><span class="p">],</span> <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">}}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_arg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-x&#39;</span><span class="p">],</span> <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">}}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">this_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_args</span><span class="p">(</span><span class="n">this_parser</span><span class="p">,</span> <span class="n">my_arg</span><span class="p">)</span>
 </pre></div>
@@ -408,7 +401,7 @@ redefined.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parser</strong> (<code class="docutils literal"><span class="pre">argparse.Parser</span></code>) – a parser</li>
+<li><strong>parser</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Parser</span></code>) – a parser</li>
 <li><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the argument specified as a dict with keys ‘args’ and ‘kwargs’</li>
 </ul>
 </td>
@@ -416,7 +409,7 @@ redefined.</p>
 <tr class="field-even field"><th class="field-name">Return parser:</th><td class="field-body"><p class="first">a parser</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Rtype parser:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">argparse.Parser</span></code></p>
+<tr class="field-odd field"><th class="field-name">Rtype parser:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">argparse.Parser</span></code></p>
 </td>
 </tr>
 </tbody>
@@ -488,13 +481,36 @@ overwriting any characters.</p>
 
 </div>
 </div>
+<div class="section" id="module-sfftk.core.prep">
+<span id="preparation-utilities"></span><h2>Preparation utilities<a class="headerlink" href="#module-sfftk.core.prep" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="sfftk.core.prep.bin_map">
+<code class="descclassname">sfftk.core.prep.</code><code class="descname">bin_map</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.bin_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bin the CCP4 map</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</li>
+<li><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return int exit_status:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">exit status</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -514,7 +530,7 @@ overwriting any characters.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -532,7 +548,8 @@ overwriting any characters.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v0.3.0.dev0',
+            VERSION:'v0.3.1.dev0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -545,19 +562,13 @@ overwriting any characters.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

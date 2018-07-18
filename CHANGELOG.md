@@ -1,8 +1,13 @@
 #Changes by release
 
-## [Unreleased]
+## [0.3.1.dev0] - 2018-07-18
 
-## [0.3.0.dev0] - 2018-07-18
+- ``sff prep <command>`` to prepare your segmentation
+    - ``sff prep binmap`` to bin a CCP4 map file
+- 
+
+
+## [0.3.0.dev1] - 2018-07-18
 
 - Only works with EMDB-SFF v0.7 files. The main feature of EMDB-SFF v0.7 is that 3D volumes are embedded into the EMDB-SFF file. Previously 3D volumes were only referred to.
 - Other EMDB-SFF changes:

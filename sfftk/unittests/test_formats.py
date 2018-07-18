@@ -174,5 +174,3 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
 
-if __name__ == "__main__":
-    unittest.main()

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.3.0.dev0 documentation</title>
+  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.3.1.dev0 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="sfftk v0.3.0.dev0 documentation" href="index.html"/>
-        <link rel="next" title="Developing with sfftk" href="developing.html"/>
-        <link rel="prev" title="Annotating EMDB-SFF Segmentations" href="annotating.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developing with sfftk" href="developing.html" />
+    <link rel="prev" title="Annotating EMDB-SFF Segmentations" href="annotating.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -91,7 +83,7 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal"><span class="pre">sfftk</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal notranslate"><span class="pre">sfftk</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Miscellaneous Operations Using sfftk</a><ul>
@@ -125,7 +117,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">sfftk</a>
@@ -133,9 +125,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -203,7 +196,7 @@
 </div>
 <div class="section" id="viewing-file-metadata">
 <h2><a class="toc-backref" href="#id2">Viewing File Metadata</a><a class="headerlink" href="#viewing-file-metadata" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">view</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">view</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -211,12 +204,12 @@
 <h2><a class="toc-backref" href="#id3">Settings Configurations</a><a class="headerlink" href="#settings-configurations" title="Permalink to this headline">¶</a></h2>
 <p>Some of the functionality provided by sfftk relies on persistent configurations.
 In the section we outline all you need to know to work with sfftk configurations.</p>
-<p>Configurations are handled using the <code class="docutils literal"><span class="pre">config</span></code> utility with several subcommands.</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="p">[</span><span class="n">subcommand</span><span class="p">]</span>
+<p>Configurations are handled using the <code class="docutils literal notranslate"><span class="pre">config</span></code> utility with several subcommands.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="p">[</span><span class="n">subcommand</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>For example:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span>(sfftk) pkorir@pkorir-tarakimu:docs $ sff config list
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>(sfftk) pkorir@pkorir-tarakimu:docs $ sff config list
 Fri Jan 19 14:03:34 2018        Reading configs from /Users/pkorir/.sfftk/sff.conf
 Fri Jan 19 14:03:34 2018        Listing all 3 configs...
 __TEMP_FILE          = ./temp-annotated.json
@@ -228,74 +221,72 @@ NAME                 = VALUE
 <h3><a class="toc-backref" href="#id4">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="listing-available-configurations">
 <h4><a class="toc-backref" href="#id5">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">list</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">list</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="getting-a-single-configuration-value">
 <h4><a class="toc-backref" href="#id6">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="n">CONFIG_NAME</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="n">CONFIG_NAME</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="setting-a-single-configuration-value">
 <h4><a class="toc-backref" href="#id7">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">CONFIG_NAME</span> <span class="n">CONFIG_VALUE</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">CONFIG_NAME</span> <span class="n">CONFIG_VALUE</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-a-single-configuration">
 <h4><a class="toc-backref" href="#id8">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="k">del</span> <span class="n">CONFIG_NAME</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="k">del</span> <span class="n">CONFIG_NAME</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="clearing-all-configurations">
 <h4><a class="toc-backref" href="#id9">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">clear</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">clear</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="where-configurations-are-stored">
 <span id="configs"></span><h3><a class="toc-backref" href="#id10">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
-<p>sfftk ships with a config file called <code class="docutils literal"><span class="pre">sff.conf</span></code> which is located in the root of the package.
-In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
+<p>sfftk ships with a config file called <code class="docutils literal notranslate"><span class="pre">sff.conf</span></code> which is located in the root of the package.
+In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
 Therefore, default read-only configurations will be obtained from this file.
-However, if the user would like to write new configs they will be written to <code class="docutils literal"><span class="pre">~/sfftk/sff.conf</span></code>.
-Additionally, a user may specify a third location using the <code class="docutils literal"><span class="pre">-p/--config-path</span></code> flag to either read or write a new config.
-Correspondingly, custom configs will only be used if the <code class="docutils literal"><span class="pre">-p/--config-path</span></code> flag is used.</p>
+However, if the user would like to write new configs they will be written to <code class="docutils literal notranslate"><span class="pre">~/sfftk/sff.conf</span></code>.
+Additionally, a user may specify a third location using the <code class="docutils literal notranslate"><span class="pre">-p/--config-path</span></code> flag to either read or write a new config.
+Correspondingly, custom configs will only be used if the <code class="docutils literal notranslate"><span class="pre">-p/--config-path</span></code> flag is used.</p>
 <p>For example</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VAL</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VAL</span>
 </pre></div>
 </div>
-<p>will add the line <code class="docutils literal"><span class="pre">NAME=VAL</span></code> to <code class="docutils literal"><span class="pre">~/.sfftk/sff.conf</span></code> but</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VAL</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span>
+<p>will add the line <code class="docutils literal notranslate"><span class="pre">NAME=VAL</span></code> to <code class="docutils literal notranslate"><span class="pre">~/.sfftk/sff.conf</span></code> but</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VAL</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span>
 </pre></div>
 </div>
-<p>will add it to <code class="docutils literal"><span class="pre">/path/to/sff.conf</span></code> (provided it is writable by the current user).</p>
+<p>will add it to <code class="docutils literal notranslate"><span class="pre">/path/to/sff.conf</span></code> (provided it is writable by the current user).</p>
 <p>The order of precedence, therefore is:</p>
 <ul class="simple">
-<li>custom configs specified with <code class="docutils literal"><span class="pre">-p/--config-path</span></code>;</li>
-<li>user configs in <code class="docutils literal"><span class="pre">~/.sfftk/sff.conf</span></code>; then</li>
-<li>shipped configs (fallback if none of the above are present) which are prioritised using the <code class="docutils literal"><span class="pre">-b/--shipped-configs</span></code> option;</li>
+<li>custom configs specified with <code class="docutils literal notranslate"><span class="pre">-p/--config-path</span></code>;</li>
+<li>user configs in <code class="docutils literal notranslate"><span class="pre">~/.sfftk/sff.conf</span></code>; then</li>
+<li>shipped configs (fallback if none of the above are present) which are prioritised using the <code class="docutils literal notranslate"><span class="pre">-b/--shipped-configs</span></code> option;</li>
 </ul>
 </div>
 </div>
 <div class="section" id="running-unit-tests">
 <h2><a class="toc-backref" href="#id11">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="p">[</span><span class="n">tool</span><span class="p">]</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="p">[</span><span class="n">tool</span><span class="p">]</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">&lt;tool&gt;</span></code> is optional and if left out all tests for all packages are run.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;tool&gt;</span></code> is optional and if left out all tests for all packages are run.</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -317,7 +308,7 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -335,7 +326,8 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'v0.3.0.dev0',
+            VERSION:'v0.3.1.dev0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -348,19 +340,13 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

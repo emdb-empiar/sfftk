@@ -9,11 +9,9 @@ User-facing reader classes for CCP4 masks
 from __future__ import division, print_function
 
 import inspect
-
 import os.path
 import sys
 
-import sfftk.core.utils
 from .base import Segmentation, Header, Segment, Annotation, Volume
 from .. import schema
 from ..core.print_tools import print_date
@@ -112,12 +110,15 @@ class MapAnnotation(Annotation):
 
     @property
     def endianness(self):
-        if (self._machst[0] == '\x44' and self._machst[1] == '\x41' and self._machst[2] == '\x00' and self._machst[3] == '\x00') or \
-            (self._machst[0] == 'D' and self._machst[1] == 'D' and self._machst[2] == '\x00' and self._machst[3] == '\x00') or \
+        if (self._machst[0] == '\x44' and self._machst[1] == '\x41' and self._machst[2] == '\x00' and self._machst[
+            3] == '\x00') or \
+                (self._machst[0] == 'D' and self._machst[1] == 'D' and self._machst[2] == '\x00' and self._machst[
+                    3] == '\x00') or \
                 (self._machst[0] == 'D' and self._machst[1] == 'A' and self._machst[2] == '\x00' and self._machst[
                     3] == '\x00'):
             return 'little'
-        elif self._machst[0] == '\x11' and self._machst[1] == '\x11' and self._machst[2] == '\x00' and self._machst[3] == '\x00':
+        elif self._machst[0] == '\x11' and self._machst[1] == '\x11' and self._machst[2] == '\x00' and self._machst[
+            3] == '\x00':
             return 'big'
         else:
             raise ValueError("MACHST = ", self._machst)
@@ -146,7 +147,6 @@ class MapAnnotation(Annotation):
         annotation.name = self.name
         annotation.numberOfInstances = 1
         import random
-        from warnings import warn
         red, green, blue = random.random(), random.random(), random.random()
         print_date(
             "Colour not defined for mask segments. Setting colour to random RGB value of {}".format((red, green, blue))
@@ -177,26 +177,20 @@ class MapSegment(Segment):
 
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
-        lattice_size = schema.SFFVolumeStructure(
-            cols=self.annotation.cols,
-            rows=self.annotation.rows,
-            sections=self.annotation.sections,
-        )
         lattice = schema.SFFLattice(
             mode=self.annotation.mode,
             endianness=self.annotation.endianness,
-            size=lattice_size,
+            size=schema.SFFVolumeStructure(
+                cols=self.annotation.cols,
+                rows=self.annotation.rows,
+                sections=self.annotation.sections,
+            ),
             start=schema.SFFVolumeIndex(
                 cols=self.annotation.start_cols,
                 rows=self.annotation.start_rows,
                 sections=self.annotation.start_sections,
             ),
-            data=schema.SFFLattice.encode(
-                mode=self.annotation.mode,
-                endianness=self.annotation.endianness,
-                size=lattice_size.voxelCount,
-                data=self._map_obj.voxels,
-            ),
+            data=self._map_obj.voxels,
         )
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
@@ -209,10 +203,11 @@ class MapSegment(Segment):
 
 
 MODE_STRING = {
-    0:  'int8',
-    1:  'int16',
-    2:  'float32',
+    0: 'int8',
+    1: 'int16',
+    2: 'float32',
 }
+
 
 class MapHeader(Header):
     """Class defining the header in a CCP4 file"""
@@ -270,6 +265,8 @@ class MapHeader(Header):
             raise ValueError("Fourier transform instead of segmentation")
         elif 0 <= self._mode <= 2:
             return MODE_STRING[self._mode]
+
+
 #
 #     def convert(self, *args, **kwargs):
 #         """Convert this object into an EMDB-SFF segmentation header
@@ -305,7 +302,8 @@ class MapSegmentation(Segmentation):
             else:
                 if cols != segment_annotation.cols or rows != segment_annotation.rows or sections != segment_annotation.sections:
                     print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
-                        os.path.basename(fn), segment_annotation.cols, segment_annotation.rows, segment_annotation.sections)
+                        os.path.basename(fn), segment_annotation.cols, segment_annotation.rows,
+                        segment_annotation.sections)
                     )
                     print_date("Error: The provided CCP4 masks have different volume dimensions")
                     sys.exit(1)

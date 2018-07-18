@@ -182,7 +182,7 @@ class TestMain_handle_view(unittest.TestCase):
 
     def test_read_mod(self):
         """Test that we can view .mod"""
-        args, configs = parse_args(shlex.split('view {} --config-path --show-chunks {}'.format(
+        args, configs = parse_args(shlex.split('view {} --config-path {} --show-chunks'.format(
             os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
             self.config_fn,
         )))
@@ -238,3 +238,15 @@ class TestMain_handle_notes(unittest.TestCase):
         """Test that we can list notes"""
         args, configs = parse_args(shlex.split('notes search "mitochondria" --config-path {}'.format(self.config_fn)))
         self.assertEqual(0, Main.handle_notes_search(args, configs))
+
+
+class TestMain_handle_prep(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
+        cls.test_data = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map')
+
+    def test_ccp4_binmap(self):
+        """Test that we can prepare a CCP4 map by binning"""
+        args, configs = parse_args(shlex.split('prep binmap -v {}'.format(self.test_data)))
+        self.assertEqual(os.EX_OK, Main.handle_prep(args, configs))

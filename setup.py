@@ -18,7 +18,7 @@ setup(
     license="Apache License",
     keywords="EMDB-SFF, SFF, segmentation",
     install_requires=["ahds", "lxml", "h5py==2.6.0", "requests", "scikit-image", "bitarray", "numpy-stl",
-                      "configparser", "backports.shutil_get_terminal_size", "mock"],
+                      "configparser", "backports.shutil_get_terminal_size", "mock", "mrcfile"],
     classifiers=[
         # maturity
         'Development Status :: 2 - Pre-Alpha',

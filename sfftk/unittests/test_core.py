@@ -5,17 +5,19 @@ from __future__ import division, print_function
 
 import glob
 import os
+import random
 import shlex
 import sys
 import unittest
 
-from . import TEST_DATA_PATH, _random_integer, _random_integers
+from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float
 from .. import BASE_DIR
 from ..core import utils
 from ..core.configs import \
     list_configs, get_configs, set_configs, del_configs, clear_configs
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
+from ..core.prep import bin_map
 from ..notes import RESOURCE_LIST
 
 __author__ = "Paul K. Korir, PhD"
@@ -191,6 +193,63 @@ class TestCore_print_utils(unittest.TestCase):
         data = self.temp_file.readlines()[0]
         _words = data.split(' ')
         self.assertNotIn(_words[0], self._weekdays)  # the first part is a date
+
+
+class TestParser_prep(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentation', 'test_data.map')
+
+    def test_default(self):
+        """Test default params for prep"""
+        args, _ = parse_args(shlex.split('prep binmap file.map'))
+        self.assertEqual(args.from_file, 'file.map')
+        self.assertEqual(args.mask_value, 1)
+        self.assertEqual(args.output, 'file_prep.map')
+        self.assertEqual(args.contour_level, 0)
+        self.assertFalse(args.negate)
+        self.assertEqual(args.bytes_per_voxel, 1)
+        self.assertEqual(args.infix, 'prep')
+        self.assertFalse(args.verbose)
+
+    def test_mask(self):
+        """Test setting mask value"""
+        mask_value = _random_integer()
+        args, _ = parse_args(shlex.split('prep binmap -m {} file.map'.format(mask_value)))
+        self.assertEqual(args.mask_value, mask_value)
+
+    def test_output(self):
+        """Test that we can set the output"""
+        args, _ = parse_args(shlex.split('prep binmap -o my_file.map file.map'))
+        self.assertEqual(args.output, 'my_file.map')
+
+    def test_contour_level(self):
+        """Test that we can set the contour level"""
+        contour_level = _random_float()
+        args, _ = parse_args(shlex.split('prep binmap -c {} file.map'.format(contour_level)))
+        self.assertEqual(round(args.contour_level, 8), round(contour_level, 8))
+
+    def test_negate(self):
+        """Test that we can set negate"""
+        args, _ = parse_args(shlex.split('prep binmap --negate file.map'))
+        self.assertTrue(args.negate)
+
+    def test_bytes_per_voxel(self):
+        """Test that we can set bytes per voxel"""
+        bytes_per_voxel = random.choice([1, 2, 4, 8, 16])
+        args, _ = parse_args(shlex.split('prep binmap -B {} file.map'.format(bytes_per_voxel)))
+        self.assertEqual(args.bytes_per_voxel, bytes_per_voxel)
+
+    def test_infix(self):
+        """Test setting infix"""
+        args, _ = parse_args(shlex.split('prep binmap --infix something file.map'))
+        self.assertEqual(args.infix, 'something')
+        self.assertEqual(args.output, 'file_something.map')
+
+    def test_blank_infix(self):
+        """Test that a blank infix fails"""
+        args, _ = parse_args(shlex.split("prep binmap --infix '' file.map"))
+        self.assertIsNone(args)
 
 
 class TestParser_convert(unittest.TestCase):
@@ -956,5 +1015,17 @@ class TestUtils(unittest.TestCase):
             utils.get_path(D, path)
 
 
-if __name__ == "__main__":
-    unittest.main()
+class TestPrep(unittest.TestCase):
+    def setUp(self):
+        self.test_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
+
+    def tearDown(self):
+        os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
+
+    def test_bin_map_default(self):
+        """Test binarise map"""
+        args, _ = parse_args(shlex.split("prep binmap -v {}".format(self.test_file)))
+        ex_st = bin_map(args, _)
+        self.assertEqual(ex_st, os.EX_OK)
+
+
