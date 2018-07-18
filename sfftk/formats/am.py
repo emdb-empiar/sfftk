@@ -279,17 +279,6 @@ class AmiraMeshSegmentation(Segmentation):
     def convert(self, args, *_args, **_kwargs):
         """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
-
-        # volume mask
-        # make file
-        hdf5_fn = "".join(self._fn.split('.')[:-1]) + '.hdf'
-        # write hdf5 contents file
-        import h5py
-
-        with h5py.File(hdf5_fn, 'w') as f:
-            print_date("Writing volume data to /mask in {}...".format(hdf5_fn))
-            _ = f.create_dataset("mask", data=self._volume)
-
         if 'name' in _kwargs:
             segmentation.name = _kwargs['name']
         else:

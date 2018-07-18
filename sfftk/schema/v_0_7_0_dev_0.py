@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Jul 18 15:56:28 2018 by generateDS.py version 2.29.14.
+# Generated Wed Jul 18 16:48:42 2018 by generateDS.py version 2.29.14.
 # Python 2.7.13 |Continuum Analytics, Inc.| (default, Dec 20 2016, 23:05:08)  [GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)]
 #
 # Command line options:
@@ -1943,7 +1943,7 @@ class latticeType(GeneratedsSuper):
         # Validate type modeType, a restriction on xs:string.
         if value is not None and Validate_simpletypes_:
             value = str(value)
-            enumerations = ['int8', 'int16', 'uint16', 'int32', 'uint32', 'int64', 'uint64', 'float32', 'float64']
+            enumerations = ['int8', 'uint8', 'int16', 'uint16', 'int32', 'uint32', 'int64', 'uint64', 'float32', 'float64']
             enumeration_respectee = False
             for enum in enumerations:
                 if value == enum:

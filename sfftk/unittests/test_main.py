@@ -244,7 +244,12 @@ class TestMain_handle_prep(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        cls.test_data = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map')
+
+    def setUp(self):
+        self.test_data = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map')
+
+    def tearDown(self):
+        os.remove(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
 
     def test_ccp4_binmap(self):
         """Test that we can prepare a CCP4 map by binning"""
