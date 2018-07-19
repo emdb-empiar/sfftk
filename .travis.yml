@@ -9,6 +9,7 @@ before_install:
   - pip -V
   - pip install setuptools
   - pip install coveralls
+  - pip install h5py
 
 install:
   - python setup.py develop
