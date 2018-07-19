@@ -1,3 +1,4 @@
 numpy
 scipy
 backports.shutil_get_terminal_size
+h5py
