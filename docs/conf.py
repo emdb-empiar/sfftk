@@ -15,7 +15,7 @@
 
 import os
 import sys
-
+sys.path.append('..') # to import sfftk
 import mock
 from sfftk import SFFTK_VERSION
 
