@@ -4,3 +4,8 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 
 SFFTK_VERSION = 'v0.3.1.dev2'
+
+# get the schema version
+from schema import SFFSegmentation
+seg = SFFSegmentation()
+EMDB_SFF_VERSION = seg.version
