@@ -87,7 +87,6 @@ import sys
 import zlib
 from warnings import warn
 
-import h5py
 import numpy
 import numpy as np
 
@@ -2276,6 +2275,7 @@ class SFFSegmentation(SFFType):
             if re.match(r'.*\.sff$', var, re.IGNORECASE):
                 self._local = sff.parse(var, silence=True, *args, **kwargs)
             elif re.match(r'.*\.hff$', var, re.IGNORECASE):
+                import h5py
                 with h5py.File(var) as h:
                     self._local = self.__class__.from_hff(h, *args, **kwargs)._local
             elif re.match(r'.*\.json$', var, re.IGNORECASE):
