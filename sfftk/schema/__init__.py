@@ -2283,7 +2283,11 @@ class SFFSegmentation(SFFType):
         if isinstance(var, str) or isinstance(var, unicode):
             # Experimental
             if re.match(r'.*\.sff$', var, re.IGNORECASE):
-                self._local = sff.parse(var, silence=True, *args, **kwargs)
+                try:
+                    self._local = sff.parse(var, silence=True, *args, **kwargs)
+                except IOError:
+                    print_date("File {} not found".format(var))
+                    sys.exit(os.EX_IOERR)
             elif re.match(r'.*\.hff$', var, re.IGNORECASE):
                 with h5py.File(var) as h:
                     self._local = self.__class__.from_hff(h, *args, **kwargs)._local
