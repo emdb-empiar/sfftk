@@ -52,7 +52,7 @@ Parser.add_argument(
     '-V', '--version',
     action='store_true',
     default=False,
-    help='show the sfftk version string',
+    help='show the sfftk version string and the supported EMDB-SFF version string',
 )
 
 subparsers = Parser.add_subparsers(

@@ -268,13 +268,6 @@ class AmiraMeshSegmentation(Segmentation):
             for segment_id in segment_indices:
                 segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
         return segments
-        """
-        segments = list()
-        for stream in self._map_obj.itervalues():
-            for segment_id, segment in stream.iteritems():
-                segments.append(AmiraMeshSegment(self.header, segment_id, segment))
-        return segments
-        """
 
     def convert(self, args, *_args, **_kwargs):
         """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""
@@ -298,7 +291,6 @@ class AmiraMeshSegmentation(Segmentation):
                 data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
             )
         )
-        segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
         segmentation.primaryDescriptor = "threeDVolume"
 
         segments = schema.SFFSegmentList()
@@ -311,7 +303,7 @@ class AmiraMeshSegmentation(Segmentation):
         # lattices
         lattices = schema.SFFLatticeList()
         # the lattice
-        cols, rows, sections = self._volume.shape
+        sections, rows, cols = self._volume.shape
         lattice = schema.SFFLattice(
             mode='uint8',
             endianness='little',

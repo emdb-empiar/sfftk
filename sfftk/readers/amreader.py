@@ -5,6 +5,7 @@ sfftk.readers.amreader
 
 Ad hoc reader for AmiraMesh files
 '''
+from __future__ import print_function
 import ahds
 
 from ..core.print_tools import print_date

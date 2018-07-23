@@ -87,6 +87,7 @@ import sys
 import zlib
 from warnings import warn
 
+import h5py
 import numpy
 import numpy as np
 
@@ -1064,11 +1065,14 @@ class SFFLattice(SFFType):
             print_date("Cannot encode data of type {}".format(type(self.data)))
             raise a
             sys.exit(os.EX_DATAERR)
-        binlist = self.data.flatten().tolist()
         format_string = "{}{}{}".format(ENDIANNESS[self.endianness], self.size.voxelCount, FORMAT_CHARS[self.mode])
-        binpack = struct.pack(format_string, *binlist)
+        binpack = struct.pack(format_string, *self.data.flat)
+        # del binlist
+        self.data = None
         binzip = zlib.compress(binpack)
+        del binpack
         bin64 = base64.b64encode(binzip)
+        del binzip
         self.data = bin64
 
     def decode(self):
@@ -1077,10 +1081,16 @@ class SFFLattice(SFFType):
         Base64 decode -> Unzip -> Unpack -> Reshape
         """
         binzip = base64.b64decode(self.data)
+        self.data = None
         binpack = zlib.decompress(binzip)
+        del binzip
         _count = self.size.voxelCount
         bindata = struct.unpack("{}{}{}".format(ENDIANNESS[self.endianness], _count, FORMAT_CHARS[self.mode]), binpack)
+        del binpack
         self.data = numpy.array(bindata).reshape(*self.size.value[::-1])
+        del bindata
+        # self.data = numpy.frombuffer(zlib.decompress(binzip)).reshape(*self.size.value)
+        # del binzip
 
     @property
     def is_binary(self):
@@ -2275,14 +2285,13 @@ class SFFSegmentation(SFFType):
             if re.match(r'.*\.sff$', var, re.IGNORECASE):
                 self._local = sff.parse(var, silence=True, *args, **kwargs)
             elif re.match(r'.*\.hff$', var, re.IGNORECASE):
-                import h5py
                 with h5py.File(var) as h:
                     self._local = self.__class__.from_hff(h, *args, **kwargs)._local
             elif re.match(r'.*\.json$', var, re.IGNORECASE):
                 self._local = self.__class__.from_json(var, *args, **kwargs)._local
             else:
                 print_date("Invalid EMDB-SFF file name: {}".format(var))
-                sys.exit(1)
+                sys.exit(os.EX_USAGE)
         else:
             super(SFFSegmentation, self).__init__(var, *args, **kwargs)
 

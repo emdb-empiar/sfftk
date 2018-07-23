@@ -444,7 +444,7 @@ Meshes
     for mesh in segment.meshes:
 	    for vertex in mesh.vertices:
 		    vertex.vID
-		    vertex.designation # ‘vertex' or ‘normal'
+		    vertex.designation # ‘surface' or ‘normal'
 		    x, y, z = vertex.x, vertex.y, vertex.z
 	
 	    for polygon in mesh.polygons:

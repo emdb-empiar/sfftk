@@ -28,13 +28,13 @@ class IMODVertex(object):
     """IMOD vertex class"""
 
     def __init__(self, vertex, designation='surface'):
-        assert designation in ['vertex', 'normal']
+        assert designation in ['surface', 'normal']
         self._designation = designation
         self._point = vertex
 
     @property
     def designation(self):
-        """Is this a surface vertex or normal vertex?"""
+        """Is this a surface surface or normal vertex?"""
         return self._designation
 
     @property
@@ -119,7 +119,7 @@ class IMODMesh(Mesh):
                     # surface
                     if s not in vertices:
                         # self._vertex_dict[s] is a tuple
-                        vertices[s] = IMODVertex(self._vertex_dict[s], designation='vertex')
+                        vertices[s] = IMODVertex(self._vertex_dict[s], designation='surface')
                     # normal
                     if normal_indices:
                         if n not in vertices:

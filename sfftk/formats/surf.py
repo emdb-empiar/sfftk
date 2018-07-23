@@ -46,7 +46,7 @@ class AmiraHyperSurfaceMesh(Mesh):
             x, y, z = v
             vertex = schema.SFFVertex(
                 vID=vID,
-                x=x, y=y, z=z
+                x=x, y=y, z=z,
             )
             vertices.add_vertex(vertex)
         # polygons
