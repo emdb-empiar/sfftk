@@ -3,7 +3,7 @@ import os
 
 BASE_DIR = os.path.dirname(__file__)
 
-SFFTK_VERSION = 'v0.3.1.dev4'
+SFFTK_VERSION = 'v0.3.1.dev5'
 
 # get the schema version
 from sfftk.schema import SFFSegmentation
