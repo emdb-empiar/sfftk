@@ -11,7 +11,7 @@ Ad hoc reader for Stereolithography (STL) files
 """
 from __future__ import division
 
-from ..core.print_tools import get_printable_ascii_string
+import os
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -31,6 +31,7 @@ def get_data(fn):
     #     stl_meshes = [mesh.Mesh.from_file(fn)]
     meshes = list()
     stl_meshes = mesh.Mesh.from_multi_file(fn)
+    mesh_id = 0
     for stl_mesh in stl_meshes:
         vertex_ids = dict()
         polygons = dict()
@@ -60,7 +61,7 @@ def get_data(fn):
         vertices = dict(zip(vertex_ids.values(), vertex_ids.keys()))
 
         # name
-        name = get_printable_ascii_string(stl_mesh.name) if get_printable_ascii_string(stl_mesh.name) != "" else None
-
+        # name = get_printable_ascii_string(stl_mesh.name) if get_printable_ascii_string(stl_mesh.name) != "" else None
+        name = "{}#{}".format(os.path.basename(fn), mesh_id)
         meshes.append((name, vertices, polygons))
     return meshes

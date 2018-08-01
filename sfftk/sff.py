@@ -52,6 +52,9 @@ def handle_convert(args, configs):  # @UnusedVariable
         if re.match(r'.*\.(map|mrc|rec)$', args.from_file[0], re.IGNORECASE):
             from .formats.map import MapSegmentation
             seg = MapSegmentation(args.from_file)
+        elif re.match(r'.*\.stl$', args.from_file[0], re.IGNORECASE):
+            from .formats.stl import STLSegmentation
+            seg = STLSegmentation(args.from_file)
         else:
             raise ValueError("Unknown file type %s" % args.from_file)
     else:

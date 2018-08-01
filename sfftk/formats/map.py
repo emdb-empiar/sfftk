@@ -126,7 +126,7 @@ class MapAnnotation(Annotation):
     @property
     def name(self):
         """Segment name (filename since we have a segment per file)"""
-        return self._map_obj._fn
+        return os.path.basename(self._map_obj._fn)
 
     @property
     def description(self):

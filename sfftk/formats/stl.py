@@ -8,11 +8,11 @@ User-facing reader classes for Stereolithography files
 from __future__ import division, print_function
 
 import inspect
-
 import os.path
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
 from .. import schema
+from ..core.print_tools import print_date
 from ..readers import stlreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -76,9 +76,9 @@ class STLAnnotation(Annotation):
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
-        annotation.description = self.name
+        annotation.name = self.name
+        annotation.description = None
         annotation.numberOfInstances = 1
-
         red, green, blue = self.colour
         colour = schema.SFFRGBA(
             red=red,
@@ -157,15 +157,19 @@ class STLSegmentation(Segmentation):
         
     """
 
-    def __init__(self, fn):
-        self._fn = fn
-        self._segmentation = stlreader.get_data(self._fn)
-        self._segments = [STLSegment(name, vertices, polygons) for name, vertices, polygons in self._segmentation]
+    def __init__(self, fns, *args, **kwargs):
+        self._fns = fns
+        self._segments = list()
+        for fn in self._fns:
+            print_date("{}: Stereolithography mesh".format(os.path.basename(fn)))
+            segment = stlreader.get_data(fn, *args, **kwargs)
+            for name, vertices, polygons in segment:
+                self._segments.append(STLSegment(name, vertices, polygons))
 
     @property
     def header(self):
         """The header in the segmentation"""
-        return STLHeader(self._segmentation)
+        return STLHeader(self._segments[0])
 
     @property
     def segments(self):
@@ -189,7 +193,6 @@ class STLSegmentation(Segmentation):
                 data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
             )
         )
-        segmentation.filePath = os.path.abspath(self._fn)
         segmentation.primaryDescriptor = "meshList"
 
         segments = schema.SFFSegmentList()

@@ -2584,12 +2584,14 @@ class SFFSegmentation(SFFType):
             if 'threeDVolume' in s:
                 # fixme: invalid model
                 segment.volume = SFFThreeDVolume()
-                tDV = s['threeDVolume']
-                segment.volume.file = tDV['file']
-                segment.volume.format = tDV['format']
-                segment.volume.objectPath = tDV['objectPath'] if 'objectPath' in tDV else None
-                segment.volume.contourLevel = tDV['contourLevel'] if 'contourLevel' in tDV else None
-                segment.volume.transformId = tDV['transformId'] if 'transformId' in tDV else None
+                # tDV = s['threeDVolume']
+                # segment.volume.latticeId = tDV['latticeId']
+                # segment.volume.value = tDV['value']
+                # # segment.volume.file = tDV['file']
+                # # segment.volume.format = tDV['format']
+                # # segment.volume.objectPath = tDV['objectPath'] if 'objectPath' in tDV else None
+                # # segment.volume.contourLevel = tDV['contourLevel'] if 'contourLevel' in tDV else None
+                # segment.volume.transformId = tDV['transformId'] if 'transformId' in tDV else None
             if 'shapePrimitiveList' in s:
                 segment.shapes = SFFShapePrimitiveList()
                 for _ in xrange(s['shapePrimitiveList']):

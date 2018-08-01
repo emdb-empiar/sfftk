@@ -26,5 +26,5 @@ Preparation utilities
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.prep
-	:members:
+	:members: bin_map
 	:show-inheritance:

@@ -315,7 +315,7 @@ class TestReaders_stlreader(unittest.TestCase):
     def setUp(self):
         self.stl_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.stl')
         self.stl_bin_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_binary.stl')
-        self.stl_mult_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
+        self.stl_multi_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
@@ -324,7 +324,7 @@ class TestReaders_stlreader(unittest.TestCase):
         num_vertices = len(vertices)
         a, b, c = zip(*polygons.values())
         vertex_ids = set(a + b + c)
-        self.assertIsNone(name)
+        self.assertEqual(name, "{}#{}".format(os.path.basename(self.stl_file), 0))
         self.assertGreaterEqual(num_vertices, 1)
         self.assertEqual(min(vertex_ids), min(vertices.keys()))
         self.assertEqual(max(vertex_ids), max(vertices.keys()))
@@ -336,7 +336,7 @@ class TestReaders_stlreader(unittest.TestCase):
         meshes = stlreader.get_data(self.stl_bin_file)
         print(meshes[0][0], file=sys.stderr)
         name, vertices, polygons = meshes[0]
-        self.assertIsNone(name)
+        self.assertEqual(name, "{}#{}".format(os.path.basename(self.stl_bin_file), 0))
         self.assertTrue(len(vertices) > 0)
         self.assertTrue(len(polygons) > 0)
         polygon_ids = list()
@@ -348,9 +348,9 @@ class TestReaders_stlreader(unittest.TestCase):
         """Test that we can read a multi-solid STL file
           
         Only works for ASCII by concatenation"""
-        meshes = stlreader.get_data(self.stl_mult_file)
+        meshes = stlreader.get_data(self.stl_multi_file)
         for name, vertices, polygons in meshes:
-            self.assertIsNone(name)
+            self.assertEqual(name, "{}#{}".format(os.path.basename(self.stl_multi_file), 0))
             self.assertTrue(len(vertices) > 0)
             self.assertTrue(len(polygons) > 0)
             polygon_ids = list()

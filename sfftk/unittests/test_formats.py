@@ -32,8 +32,14 @@ class TestFormats(unittest.TestCase):
         cls.am_file = os.path.join(cls.segmentations_path, 'test_data.am')
         cls.seg_file = os.path.join(cls.segmentations_path, 'test_data.seg')
         cls.map_file = os.path.join(cls.segmentations_path, 'test_data.map')
+        cls.map_multi0_file = os.path.join(cls.segmentations_path, 'test_data_multi0.map')
+        cls.map_multi1_file = os.path.join(cls.segmentations_path, 'test_data_multi1.map')
+        cls.map_multi2_file = os.path.join(cls.segmentations_path, 'test_data_multi2.map')
         cls.mod_file = os.path.join(cls.segmentations_path, 'test_data.mod')
         cls.stl_file = os.path.join(cls.segmentations_path, 'test_data.stl')
+        cls.stl_multi0_file = os.path.join(cls.segmentations_path, 'test_data_multi0.stl')
+        cls.stl_multi1_file = os.path.join(cls.segmentations_path, 'test_data_multi1.stl')
+        cls.stl_multi2_file = os.path.join(cls.segmentations_path, 'test_data_multi2.stl')
         cls.surf_file = os.path.join(cls.segmentations_path, 'test_data.surf')
         # am
         cls.am_segmentation = am.AmiraMeshSegmentation(cls.am_file)
@@ -41,10 +47,14 @@ class TestFormats(unittest.TestCase):
         cls.seg_segmentation = seg.SeggerSegmentation(cls.seg_file)
         # map
         cls.map_segmentation = map.MapSegmentation([cls.map_file])
+        # map multi
+        cls.map_multi_segmentation = map.MapSegmentation([cls.map_multi0_file, cls.map_multi1_file, cls.map_multi2_file])
         # mod
         cls.mod_segmentation = mod.IMODSegmentation(cls.mod_file)
         # stl
-        cls.stl_segmentation = stl.STLSegmentation(cls.stl_file)
+        cls.stl_segmentation = stl.STLSegmentation([cls.stl_file])
+        # stl multi
+        cls.stl_multi_segmentation = stl.STLSegmentation([cls.stl_multi0_file, cls.stl_multi1_file, cls.stl_multi2_file])
         # surf
         cls.surf_segmentation = surf.AmiraHyperSurfaceSegmentation(cls.surf_file)
 
@@ -129,9 +139,23 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.name, 'CCP4 mask segmentation')  # might have an extra space at the end
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Undefined')
-        # self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.map_file)))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'threeDVolume')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
+
+    def test_map_multi_convert(self):
+        """Convert several EMDB Map mask files to a single SFFSegmentation object"""
+        args, configs = parse_args(shlex.split(
+            'convert -m {}'.format(' '.join([self.map_multi0_file, self.map_multi1_file, self.map_multi2_file]))
+        ))
+        sff_segmentation = self.map_multi_segmentation.convert(args, configs)
+        # assertions
+        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
+        self.assertEqual(sff_segmentation.name, 'CCP4 mask segmentation')  # might have an extra space at the end
+        self.assertEqual(sff_segmentation.version, self.schema_version)
+        self.assertEqual(sff_segmentation.software.name, 'Undefined')
+        self.assertEqual(sff_segmentation.primaryDescriptor, 'threeDVolume')
+        self.assertEqual(sff_segmentation.transforms[0].id, 0)
+        self.assertEqual(len(sff_segmentation.segments), 3)
 
     def test_mod_convert(self):
         """Convert a segmentation from an IMOD file to an SFFSegmentation object"""
@@ -155,9 +179,24 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.name, 'STL Segmentation')
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Unknown')
-        # self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.stl_file))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
+
+    def test_stl_multi_convert(self):
+        """Convert several STL files into a single SFFSegmentation object"""
+        args, configs = parse_args(shlex.split(
+            'convert -m {}'.format(' '.join([self.stl_multi0_file, self.stl_multi1_file, self.stl_multi2_file]))
+        ))
+        sff_segmentation = self.stl_multi_segmentation.convert(args, configs)
+        # assertions
+        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
+        self.assertEqual(sff_segmentation.name, 'STL Segmentation')
+        self.assertEqual(sff_segmentation.version, self.schema_version)
+        self.assertEqual(sff_segmentation.software.name, 'Unknown')
+        self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
+        self.assertEqual(sff_segmentation.transforms[0].id, 0)
+        self.assertEqual(len(sff_segmentation.segments), 3)
+
 
     def test_surf_convert(self):
         """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
