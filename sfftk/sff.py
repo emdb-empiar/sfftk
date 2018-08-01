@@ -56,7 +56,7 @@ def handle_convert(args, configs):  # @UnusedVariable
             from .formats.stl import STLSegmentation
             seg = STLSegmentation(args.from_file)
         else:
-            raise ValueError("Unknown file type %s" % args.from_file)
+            raise ValueError("Unknown file type '{}'".format(', '.join(args.from_file)))
     else:
         if re.match(r'.*\.mod$', args.from_file, re.IGNORECASE):
             if args.verbose:
