@@ -936,7 +936,7 @@ def parse_args(_args):
         elif _args[0] == '-V' or _args[0] == '--version':
             from .. import SFFTK_VERSION, EMDB_SFF_VERSION
             print_date("sfftk version: {} for EMDB-SFF version: {}".format(SFFTK_VERSION, EMDB_SFF_VERSION))
-            sys.exit(os.EX_USAGE)
+            sys.exit(os.EX_OK)
         # anytime a new argument is added to the base parser subparsers are bumped down in index
         elif _args[0] in Parser._actions[2].choices.keys():
             exec ('{}_parser.print_help()'.format(_args[0]))

@@ -130,7 +130,10 @@ class SeggerSegmentation(object):
         """
         :TODO: is the I, J, K notation correct?
         """
-        return self._seg_handler.attrs['map_size']
+        try:
+            return self._seg_handler.attrs['map_size']
+        except KeyError:
+            return self._seg_handler['mask'].value.shape
 
     @property
     def region_ids(self):
