@@ -20,7 +20,7 @@ import mock
 from sfftk import SFFTK_VERSION
 
 MOCK_MODULES = ['lxml', 'emdb_sff', 'ahds', 'ahds.data_stream', 'bitarray', 'ahds.header', 'h5py', 'numpy', 'scipy',
-                'backports.shutil_get_terminal_size', 'h5py', 'mrcfile', 'emdb_sff']
+                'backports.shutil_get_terminal_size', 'h5py', 'mrcfile',]
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 
