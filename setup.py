@@ -17,7 +17,7 @@ setup(
     url="http://sfftk.readthedocs.io/en/latest/index.html",
     license="Apache License",
     keywords="EMDB-SFF, SFF, segmentation",
-    install_requires=["ahds", "lxml", "h5py==2.6.0", "requests", "scikit-image", "bitarray", "numpy-stl",
+    install_requires=["ahds", "lxml", "h5py==2.6.0", "requests", "matplotlib<3.0", "scikit-image", "bitarray", "numpy-stl",
                       "configparser", "backports.shutil_get_terminal_size", "mock", "mrcfile"],
     classifiers=[
         # maturity
