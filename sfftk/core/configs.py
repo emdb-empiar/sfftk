@@ -66,7 +66,7 @@ class Configs(OrderedDict):
             for name, value in self.iteritems():
                 f.write('{}={}\n'.format(name, value))
 
-        return 0
+        return os.EX_OK
 
     def __str__(self):
         string = ""
@@ -136,18 +136,6 @@ def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Co
     configs.read()
     return configs
 
-def list_configs(args, configs):
-    """List configs in terminal
-    
-    :param args: parsed arguments
-    :type args: `argparse.Namespace`
-    :param dict configs: configuration options
-    :return int status: status
-    """
-    print_date("Listing all {} configs...".format(len(configs)))
-    # view the config object
-    print(configs, file=sys.stderr)
-    return 0
 
 def get_configs(args, configs):
     """Get the value of the named config
@@ -157,16 +145,21 @@ def get_configs(args, configs):
     :param dict configs: configuration options
     :return int status: status
     """
-    print_date("Getting config {}...".format(args.name))
-    # obtain the named config
-    try:
-        config = configs[args.name]
-    except KeyError:
-        print_date("No config with name {}".format(args.name))
-        return 1
-    # view the config
-    print(config)
-    return 0
+    if args.all:
+        print_date("Listing all {} configs...".format(len(configs)))
+        # view the config object
+        print(configs, file=sys.stderr)
+    else:
+        print_date("Getting config {}...".format(args.name))
+        # obtain the named config
+        try:
+            config = configs[args.name]
+        except KeyError:
+            print_date("No config with name {}".format(args.name))
+            return 1
+        # view the config
+        print(config)
+    return os.EX_OK
 
 def set_configs(args, configs):
     """Set the config of the given name to have the given value
@@ -179,6 +172,8 @@ def set_configs(args, configs):
     print_date("Setting config {} to value {}...".format(args.name, args.value))
     # add the new config
     configs[args.name] = args.value
+    if args.verbose:
+        print(configs)
     # save the configs
     return configs.write()
 
@@ -190,23 +185,21 @@ def del_configs(args, configs):
     :param dict configs: configuration options
     :return int status: status
     """
-    # del the named config
-    print_date("Deleting config {} having value {}...".format(args.name, configs[args.name]))
-    del configs[args.name]
+    if args.all:
+        print_date("Deleting all {} configs...".format(len(configs)))
+        # empty all values
+        configs.clear()
+    else:
+        # del the named config
+        print_date("Deleting config {} having value {}...".format(args.name, configs[args.name]))
+        try:
+            del configs[args.name]
+        except KeyError:
+            print_date("No config with name {}".format(args.name))
+            return 1
+    if args.verbose:
+        print(configs)
     # save the config
     return configs.write()
 
-def clear_configs(args, configs):
-    """Clear all configs
-    
-    :param args: parsed arguments
-    :type args: `argparse.Namespace`
-    :param dict configs: configuration options
-    :return int status: status
-    """
-    print_date("Clearing all {} configs...".format(len(configs)))
-    # empty all values
-    configs.clear()
-    print(configs, file=sys.stderr)
-    # save the configs
-    return configs.write()
+

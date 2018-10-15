@@ -261,7 +261,7 @@ prep_subparsers = prep_parser.add_subparsers(
     metavar='Preparation steps:'
 )
 # =========================================================================
-# prep: bin
+# prep: binmap
 # =========================================================================
 binmap_prep_parser = prep_subparsers.add_parser(
     'binmap',
@@ -330,9 +330,9 @@ convert_parser.add_argument(*details['args'], **details['kwargs'])
 convert_parser.add_argument(
     *primary_descriptor['args'], **primary_descriptor['kwargs'])
 convert_parser.add_argument(*verbose['args'], **verbose['kwargs'])
-convert_parser.add_argument('-s', '--sub-tomogram-average', nargs=2,
-                            help="convert a subtomogram average into an EMDB-SFF file; two arguments are required: the "
-                                 "table file and volume file (in that order)")
+# convert_parser.add_argument('-s', '--sub-tomogram-average', nargs=2,
+#                             help="convert a subtomogram average into an EMDB-SFF file; two arguments are required: the "
+#                                  "table file and volume file (in that order)")
 convert_parser.add_argument(
     '-m', '--multi-file',
     action='store_true',
@@ -363,71 +363,103 @@ config_subparsers = config_parser.add_subparsers(
 )
 
 # =============================================================================
-# config: list
+# config: list -> instead do get --all
 # =============================================================================
-list_configs_parser = config_subparsers.add_parser(
-    'list',
-    description='List sfftk configuration parameters',
-    help='list sfftk configs'
-)
-add_args(list_configs_parser, config_path)
-add_args(list_configs_parser, shipped_configs)
+# list_config_parser = config_subparsers.add_parser(
+#     'list',
+#     description='List sfftk configuration parameters',
+#     help='list sfftk configs'
+# )
+# add_args(list_config_parser, config_path)
+# add_args(list_config_parser, shipped_configs)
 
 # =============================================================================
 # config: get
 # =============================================================================
-get_configs_parser = config_subparsers.add_parser(
+get_config_parser = config_subparsers.add_parser(
     'get',
     description='Get the value of a single configuration parameter',
     help='get single sfftk config'
 )
-get_configs_parser.add_argument(
-    'name', help="the name of the argument to retrieve"
+get_config_parser.add_argument(
+    'name',
+    nargs="?",
+    default=None,
+    help="the name of the argument to retrieve",
 )
-add_args(get_configs_parser, config_path)
-add_args(get_configs_parser, shipped_configs)
+add_args(get_config_parser, config_path)
+add_args(get_config_parser, shipped_configs)
+get_config_parser.add_argument(
+    '-a', '--all',
+    action='store_true',
+    default=False,
+    help='get all configs'
+)
 
 # =============================================================================
 # config: set
 # =============================================================================
-set_configs_parser = config_subparsers.add_parser(
+set_config_parser = config_subparsers.add_parser(
     'set',
     description='Set the value of a single configuration parameter',
     help='set single sfftk config'
 )
-set_configs_parser.add_argument(
+set_config_parser.add_argument(
     'name', help="the name of the argument to set",
 )
-set_configs_parser.add_argument(
+set_config_parser.add_argument(
     'value', help="the value of the argument to set",
 )
-add_args(set_configs_parser, config_path)
-add_args(set_configs_parser, shipped_configs)
+add_args(set_config_parser, config_path)
+add_args(set_config_parser, shipped_configs)
+add_args(set_config_parser, verbose)
+set_config_parser.add_argument(
+    '-f', '--force',
+    action='store_true',
+    default=False,
+    help='force overwriting of an existing config; do not ask to confirm [default: False]'
+)
 
 # =============================================================================
 # config: del
 # =============================================================================
-del_configs_parser = config_subparsers.add_parser(
+del_config_parser = config_subparsers.add_parser(
     'del',
     description='Delete the named configuration parameter',
     help='delete single sfftk config'
 )
-del_configs_parser.add_argument(
-    'name', help="the name of the argument to be deleted"
+del_config_parser.add_argument(
+    'name',
+    nargs='?',
+    default=None,
+    help="the name of the argument to be deleted"
 )
-add_args(del_configs_parser, config_path)
-add_args(del_configs_parser, shipped_configs)
+add_args(del_config_parser, config_path)
+add_args(del_config_parser, shipped_configs)
+del_config_parser.add_argument(
+    '-a', '--all',
+    action='store_true',
+    default=False,
+    help='delete all configs (asks the user to confirm before deleting) [default: False]'
+)
+del_config_parser.add_argument(
+    '-f', '--force',
+    action='store_true',
+    default=False,
+    help='force deletion; do not ask to confirm deletion [default: False]'
+)
+add_args(del_config_parser, verbose)
 
 # =============================================================================
 # config: clear
 # =============================================================================
-clear_configs_parser = config_subparsers.add_parser(
-    'clear',
-    description='Clear all configuration parameters',
-    help='clear all sfftk configs'
-)
-add_args(clear_configs_parser, config_path)
-add_args(clear_configs_parser, shipped_configs)
+# clear_config_parser = config_subparsers.add_parser(
+#     'clear',
+#     description='Clear all configuration parameters',
+#     help='clear all sfftk configs'
+# )
+# add_args(clear_config_parser, config_path)
+# add_args(clear_config_parser, shipped_configs)
 
 # =========================================================================
 # view subparser
@@ -940,18 +972,22 @@ def parse_args(_args):
         # anytime a new argument is added to the base parser subparsers are bumped down in index
         elif _args[0] in Parser._actions[2].choices.keys():
             exec ('{}_parser.print_help()'.format(_args[0]))
-            sys.exit(os.EX_USAGE)
+            sys.exit(os.EX_OK)
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
             if _args[1] in Parser._actions[2].choices['notes']._actions[1].choices.keys():
                 exec ('{}_notes_parser.print_help()'.format(_args[1]))
-                sys.exit(os.EX_USAGE)
+                sys.exit(os.EX_OK)
         elif _args[0] == 'prep':
             if _args[1] in Parser._actions[2].choices['prep']._actions[1].choices.keys():
                 exec ('{}_prep_parser.print_help()'.format(_args[1]))
-                sys.exit(os.EX_USAGE)
+                sys.exit(os.EX_OK)
+        elif _args[0] == 'config':
+            if _args[1] in Parser._actions[2].choices['config']._actions[1].choices.keys():
+                exec ('{}_config_parser.print_help()'.format(_args[1]))
+                sys.exit(os.EX_OK)
     # parse arguments
     args = Parser.parse_args(_args)
     from .configs import load_configs
@@ -961,7 +997,51 @@ def parse_args(_args):
     # config
     if args.subcommand == 'config':
         # handle config-specific argument modifications here
-        pass
+        if args.config_subcommand == 'del':
+            # if force pass
+            if not args.force:
+                default_choice = 'n'
+                # get user choice
+                user_choice = raw_input("Are you sure you want to delete config '{}' [y/N]? ".format(
+                    args.name)).lower()
+                if user_choice == '':
+                    choice = default_choice
+                elif user_choice == 'n' or user_choice == 'N':
+                    choice = 'n'
+                elif user_choice == 'y' or user_choice == 'Y':
+                    choice = 'y'
+                else:
+                    print_date("Invalid choice: '{}'")
+                    return None, configs
+                # act on user choice
+                if choice == 'n':
+                    print_date("You have opted to cancel deletion of '{}'".format(args.name))
+                    return None, configs
+                elif choice == 'y':
+                    pass
+        elif args.config_subcommand == 'set':
+            if args.name in configs:
+                # if force pass
+                if not args.force:
+                    default_choice = 'n'
+                    # get user choice
+                    user_choice = raw_input("Are you sure you want to overwrite config '{}={}' [y/N]? ".format(
+                        args.name, configs[args.name])).lower()
+                    if user_choice == '':
+                        choice = default_choice
+                    elif user_choice == 'n' or user_choice == 'N':
+                        choice = 'n'
+                    elif user_choice == 'y' or user_choice == 'Y':
+                        choice = 'y'
+                    else:
+                        print_date("Invalid choice: '{}'")
+                        return None, configs
+                    # act on user choice
+                    if choice == 'n':
+                        print_date("You have opted to cancel overwriting of '{}'".format(args.name))
+                        return None, configs
+                    elif choice == 'y':
+                        pass
     # prep
     elif args.subcommand == 'prep':
         # binmap
@@ -976,8 +1056,8 @@ def parse_args(_args):
                 else:
                     print_date("Cannot overwrite input file")
                     return None, configs
-                if args.verbose:
-                    print_date("Output will be written to {}".format(args.output))
+            if args.verbose:
+                print_date("Output will be written to {}".format(args.output))
 
     # view
     elif args.subcommand == 'view':

@@ -14,10 +14,10 @@ from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float
 from .. import BASE_DIR
 from ..core import utils
 from ..core.configs import \
-    list_configs, get_configs, set_configs, del_configs, clear_configs
+    get_configs, set_configs, del_configs
 from ..core.parser import parse_args
-from ..core.print_tools import print_date
 from ..core.prep import bin_map
+from ..core.print_tools import print_date
 from ..notes import RESOURCE_LIST
 
 __author__ = "Paul K. Korir, PhD"
@@ -44,7 +44,7 @@ class TestCore_load_config(unittest.TestCase):
     def test_user_config(self):
         """Test that we can read user configs from ~/.sfftk/sff.conf"""
         # set a custom value to ensure it's present in user configs
-        args, configs = parse_args(shlex.split('config set NAME VALUE'))
+        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
         set_configs(args, configs)
         args, configs = parse_args(shlex.split('view file.sff'))
         self.assertEqual(configs['NAME'], 'VALUE')
@@ -52,7 +52,7 @@ class TestCore_load_config(unittest.TestCase):
     def test_precedence_config_path(self):
         """Test that config path takes precendence"""
         # set a custom value to ensure it's present in user configs
-        args, configs = parse_args(shlex.split('config set NAME VALUE'))
+        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
         set_configs(args, configs)
         args, configs = parse_args(
             shlex.split('view --config-path {} --shipped-configs file.sff'.format(self.test_config_fn)))
@@ -61,14 +61,14 @@ class TestCore_load_config(unittest.TestCase):
     def test_precedence_shipped_configs(self):
         """Test that shipped configs, when specified, take precedence over user configs"""
         # set a custom value to ensure it's present in user configs
-        args, configs = parse_args(shlex.split('config set NAME VALUE'))
+        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
         set_configs(args, configs)
         args, configs = parse_args(shlex.split('view file.sff --shipped-configs'))
         self.assertEqual(configs['__TEMP_FILE'], './temp-annotated.json')
         self.assertEqual(configs['__TEMP_FILE_REF'], '@')
 
 
-class TestCore_configs(unittest.TestCase):
+class TestCore_config(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
@@ -94,16 +94,16 @@ class TestCore_configs(unittest.TestCase):
     def tearDown(self):
         self.clear_values()
 
-    def test_list_configs(self):
-        """Test that we can list all configs"""
-        args, configs = parse_args(shlex.split('config list --config-path {}'.format(self.config_fn)))
-        self.assertEqual(list_configs(args, configs), 0)
-        self.assertTrue(len(configs) > 0)
-
     def test_get_configs(self):
         """Test that we can get a config by name"""
         args, configs = parse_args(shlex.split('config get __TEMP_FILE --config-path {}'.format(self.config_fn)))
-        self.assertEqual(get_configs(args, configs), 0)
+        self.assertEqual(get_configs(args, configs), os.EX_OK)
+
+    def test_get_all_configs(self):
+        """Test that we can list all configs"""
+        args, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
+        self.assertEqual(get_configs(args, configs), os.EX_OK)
+        self.assertTrue(len(configs) > 0)
 
     def test_get_absent_configs(self):
         """Test that we are notified when a config is not found"""
@@ -112,7 +112,7 @@ class TestCore_configs(unittest.TestCase):
 
     def test_set_configs(self):
         """Test that we can set configs"""
-        args, configs_before = parse_args(shlex.split('config set NAME VALUE --config-path {}'.format(self.config_fn)))
+        args, configs_before = parse_args(shlex.split('config set --force NAME VALUE --config-path {}'.format(self.config_fn)))
         len_configs_before = len(configs_before)
         self.assertEqual(set_configs(args, configs_before), 0)
         _, configs_after = parse_args(shlex.split('config get alsdjf;laksjflk --config-path {}'.format(self.config_fn)))
@@ -121,36 +121,46 @@ class TestCore_configs(unittest.TestCase):
 
     def test_set_new_configs(self):
         """Test that new configs will by default be written to user configs .i.e. ~/sfftk/sff.conf"""
-        args, configs = parse_args(shlex.split('config set NAME VALUE'))
-        self.assertEqual(set_configs(args, configs), 0)
-        _, configs = parse_args(shlex.split('config list'))
+        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
+        self.assertEqual(set_configs(args, configs), os.EX_OK)
+        _, configs = parse_args(shlex.split('config get --all'))
         self.assertDictContainsSubset({'NAME': 'VALUE'}, configs)
+
+    def test_set_force_configs(self):
+        """Test that forcing works"""
+        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
+        self.assertEqual(set_configs(args, configs), os.EX_OK)
+        self.assertEqual(configs['NAME'], 'VALUE')
+        args, configs_after = parse_args(shlex.split('config set --force NAME VALUE1'))
+        self.assertEqual(set_configs(args, configs_after), os.EX_OK)
+        self.assertEqual(configs_after['NAME'], 'VALUE1')
 
     def test_del_configs(self):
         """Test that we can delete configs"""
         # first we get current configs
-        args, configs = parse_args(shlex.split('config set NAME VALUE --config-path {}'.format(self.config_fn)))
+        args, configs = parse_args(shlex.split('config set --force NAME VALUE --config-path {}'.format(self.config_fn)))
         # then we set an additional config
         self.assertEqual(set_configs(args, configs), 0)
         # then we delete the config
-        args, configs_before = parse_args(shlex.split('config del NAME  --config-path {}'.format(self.config_fn)))
+        args, configs_before = parse_args(
+            shlex.split('config del --force NAME  --config-path {}'.format(self.config_fn)))
         len_configs_before = len(configs_before)
         self.assertEqual(del_configs(args, configs_before), 0)
-        args, configs_after = parse_args(shlex.split('config list --config-path {}'.format(self.config_fn)))
+        args, configs_after = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         len_configs_after = len(configs_after)
         self.assertTrue(len_configs_before > len_configs_after)
 
-    def test_clear_configs(self):
-        """Test that we can clear all configs"""
-        args, configs = parse_args(shlex.split('config clear --config-path {}'.format(self.config_fn)))
-        self.assertEqual(clear_configs(args, configs), 0)
-        _, configs = parse_args(shlex.split('config list --config-path {}'.format(self.config_fn)))
+    def test_del_all_configs(self):
+        """Test that we can delete all configs"""
+        args, configs = parse_args(shlex.split('config del --force --all --config-path {}'.format(self.config_fn)))
+        self.assertEqual(del_configs(args, configs), 0)
+        _, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         self.assertEqual(len(configs), 0)
 
     def test_write_shipped_fails(self):
         """Test that we cannot save to shipped configs"""
         args, configs = parse_args(
-            shlex.split('config set NAME VALUE --config-path {}'.format(os.path.join(BASE_DIR, 'sff.conf'))))
+            shlex.split('config set --force NAME VALUE --config-path {}'.format(os.path.join(BASE_DIR, 'sff.conf'))))
         self.assertEqual(set_configs(args, configs), 1)
 
 
@@ -193,6 +203,57 @@ class TestCore_print_utils(unittest.TestCase):
         data = self.temp_file.readlines()[0]
         _words = data.split(' ')
         self.assertNotIn(_words[0], self._weekdays)  # the first part is a date
+
+
+class TestParser_config(unittest.TestCase):
+    def test_get_default(self):
+        """Test default config get options"""
+        args, _ = parse_args(shlex.split('config get config'))
+        self.assertEqual(args.name, 'config')
+        self.assertFalse(args.all)
+
+    def test_get_all(self):
+        """Test that we can config get --all"""
+        args, __ = parse_args(shlex.split('config get --all'))
+        self.assertIsNone(args.name)
+        self.assertTrue(args.all)
+
+    def test_set_default(self):
+        """Test default config set option"""
+        args, _ = parse_args(shlex.split('config set config value'))
+        self.assertEqual(args.name, 'config')
+        self.assertEqual(args.value, 'value')
+        self.assertFalse(args.verbose)
+        self.assertFalse(args.force)
+
+    def test_set_verbose(self):
+        """Test verbose setting"""
+        args, _ = parse_args(shlex.split('config set --force --verbose config value'))
+        self.assertTrue(args.verbose)
+
+    def test_set_force(self):
+        """Test forcing of setting"""
+        args, _ = parse_args(shlex.split('config set --force --force J 1'))
+        self.assertTrue(args.force)
+
+    def test_del_default(self):
+        """Test default config del options"""
+        args, _ = parse_args(shlex.split('config del --force config'))
+        self.assertEqual(args.name, 'config')
+        self.assertFalse(args.all)
+        self.assertFalse(args.verbose)
+
+    def test_del_all(self):
+        """Test that we can config del -all"""
+        args, _ = parse_args(shlex.split('config del --force --all'))
+        self.assertIsNone(args.name)
+        self.assertTrue(args.all)
+        self.assertFalse(args.verbose)
+
+    def test_del_verbose(self):
+        """Test verbose deleting"""
+        args, _ = parse_args(shlex.split('config del --force --verbose config'))
+        self.assertTrue(args.verbose)
 
 
 class TestParser_prep(unittest.TestCase):
@@ -376,6 +437,7 @@ class TestParser_convert(unittest.TestCase):
         args, _ = parse_args(shlex.split('convert -v -m {}'.format(' '.join(self.empty_segs))))
         # assertions
         self.assertIsNone(args)
+
 
 #     def test_exclude_unannotated_regions(self):
 #         """Test that we set the exclude unannotated regions flag"""
@@ -578,7 +640,7 @@ class TestParser_notes_rw(unittest.TestCase):
 
     def setUp(self):
         unittest.TestCase.setUp(self)
-        _, configs = parse_args(shlex.split('config list --config-path {}'.format(self.config_fn)))
+        _, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         self.temp_file = configs['__TEMP_FILE']
         if os.path.exists(self.temp_file):
             raise ValueError("Unable to run with temp file {} present. \
@@ -1027,5 +1089,3 @@ class TestPrep(unittest.TestCase):
         args, _ = parse_args(shlex.split("prep binmap -v {}".format(self.test_file)))
         ex_st = bin_map(args, _)
         self.assertEqual(ex_st, os.EX_OK)
-
-

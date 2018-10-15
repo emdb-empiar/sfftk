@@ -214,7 +214,7 @@ Colour:
             string = "{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
                 self.id,
                 self.parentID,
-                self.name if len(self.name) <= 40 else self.name[:37] + "...",
+                self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (self.name + "::" + self.description)[:37] + "...",
                 self.numberOfInstances,
                 self.numberOfExternalReferences,
                 self.numberOfComplexes,
@@ -369,7 +369,7 @@ class TableHeaderView(View):
             View.LINE3,
             "id",
             "parId",
-            "segment_name",
+            "name::description",
             "#inst",
             "#exRf",
             "#cplx",

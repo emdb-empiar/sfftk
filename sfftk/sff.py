@@ -456,10 +456,7 @@ def handle_config(args, configs):
     :type configs: ``sfftk.core.configs.Configs``
     :return int status: status
     """
-    if args.config_subcommand == "list":
-        from .core.configs import list_configs
-        return list_configs(args, configs)
-    elif args.config_subcommand == "get":
+    if args.config_subcommand == "get":
         from .core.configs import get_configs
         return get_configs(args, configs)
     elif args.config_subcommand == "set":
@@ -468,9 +465,6 @@ def handle_config(args, configs):
     elif args.config_subcommand == "del":
         from .core.configs import del_configs
         return del_configs(args, configs)
-    elif args.config_subcommand == "clear":
-        from .core.configs import clear_configs
-        return clear_configs(args, configs)
 
 
 def _module_test_runner(mod, args):
