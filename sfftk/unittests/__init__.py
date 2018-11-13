@@ -28,4 +28,8 @@ def _random_integers(count=10, start=1, stop=1000, as_string=False, sep=' '):
 
 
 def _random_floats(count=10, multiplier=1):
-    return [_random_float(multipler=multiplier) for _ in xrange(count)]
+    return [_random_float(multiplier=multiplier) for _ in xrange(count)]
+
+
+def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)

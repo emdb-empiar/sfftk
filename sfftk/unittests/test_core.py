@@ -9,15 +9,17 @@ import random
 import shlex
 import sys
 import unittest
+import numpy
+from stl import Mesh
 
-from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float
+from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose
 from .. import BASE_DIR
 from ..core import utils
 from ..core.configs import \
     get_configs, set_configs, del_configs
 from ..core.parser import parse_args
-from ..core.prep import bin_map
 from ..core.print_tools import print_date
+from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
 from ..notes import RESOURCE_LIST
 
 __author__ = "Paul K. Korir, PhD"
@@ -205,65 +207,11 @@ class TestCore_print_utils(unittest.TestCase):
         self.assertNotIn(_words[0], self._weekdays)  # the first part is a date
 
 
-class TestParser_config(unittest.TestCase):
-    def test_get_default(self):
-        """Test default config get options"""
-        args, _ = parse_args(shlex.split('config get config'))
-        self.assertEqual(args.name, 'config')
-        self.assertFalse(args.all)
-
-    def test_get_all(self):
-        """Test that we can config get --all"""
-        args, __ = parse_args(shlex.split('config get --all'))
-        self.assertIsNone(args.name)
-        self.assertTrue(args.all)
-
-    def test_set_default(self):
-        """Test default config set option"""
-        args, _ = parse_args(shlex.split('config set config value'))
-        self.assertEqual(args.name, 'config')
-        self.assertEqual(args.value, 'value')
-        self.assertFalse(args.verbose)
-        self.assertFalse(args.force)
-
-    def test_set_verbose(self):
-        """Test verbose setting"""
-        args, _ = parse_args(shlex.split('config set --force --verbose config value'))
-        self.assertTrue(args.verbose)
-
-    def test_set_force(self):
-        """Test forcing of setting"""
-        args, _ = parse_args(shlex.split('config set --force --force J 1'))
-        self.assertTrue(args.force)
-
-    def test_del_default(self):
-        """Test default config del options"""
-        args, _ = parse_args(shlex.split('config del --force config'))
-        self.assertEqual(args.name, 'config')
-        self.assertFalse(args.all)
-        self.assertFalse(args.verbose)
-
-    def test_del_all(self):
-        """Test that we can config del -all"""
-        args, _ = parse_args(shlex.split('config del --force --all'))
-        self.assertIsNone(args.name)
-        self.assertTrue(args.all)
-        self.assertFalse(args.verbose)
-
-    def test_del_verbose(self):
-        """Test verbose deleting"""
-        args, _ = parse_args(shlex.split('config del --force --verbose config'))
-        self.assertTrue(args.verbose)
-
-
-class TestParser_prep(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentation', 'test_data.map')
-
+class TestParser_prep_binmap(unittest.TestCase):
     def test_default(self):
-        """Test default params for prep"""
+        """Test default params for prep binmap"""
         args, _ = parse_args(shlex.split('prep binmap file.map'))
+        self.assertEqual(args.prep_subcommand, 'binmap')
         self.assertEqual(args.from_file, 'file.map')
         self.assertEqual(args.mask_value, 1)
         self.assertEqual(args.output, 'file_prep.map')
@@ -311,6 +259,90 @@ class TestParser_prep(unittest.TestCase):
         """Test that a blank infix fails"""
         args, _ = parse_args(shlex.split("prep binmap --infix '' file.map"))
         self.assertIsNone(args)
+
+
+class TestParser_prep_rescale(unittest.TestCase):
+    def test_default(self):
+        """Test default param for prep rescale"""
+        lengths = _random_floats(count=3, multiplier=1000)
+        indices = _random_integers(count=3, start=100, stop=1000)
+        args, _ = parse_args(shlex.split('prep rescale --lengths {lengths} --indices {indices} file.stl'.format(
+            lengths=' '.join(map(str, lengths)),
+            indices=' '.join(map(str, indices)),
+        )))
+        self.assertEqual(args.prep_subcommand, 'rescale')
+        self.assertEqual(args.from_file, 'file.stl')
+        self.assertEqual(args.output, 'file_rescaled.stl')
+        self.assertEqual(args.infix, 'rescaled')
+        # zip values -> compare using isclose() -> a list of booleans
+        l = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
+        i = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
+        # now test that all values in the comparison lists are True using all()
+        self.assertTrue(all(l))
+        self.assertTrue(all(i))
+
+    def test_origin(self):
+        """Test with setting the origin"""
+        lengths = _random_floats(count=3, multiplier=1000)
+        indices = _random_integers(count=3, start=100, stop=1000)
+        origin = _random_floats(count=3, multiplier=10)
+        args, _ = parse_args(
+            shlex.split('prep rescale --lengths {lengths} --indices {indices} --origin {origin} file.stl'.format(
+                lengths=' '.join(map(str, lengths)),
+                indices=' '.join(map(str, indices)),
+                origin=' '.join(map(str, origin)),
+            )))
+        self.assertEqual(args.from_file, 'file.stl')
+        # zip values -> compare using isclose() -> a list of booleans
+        l = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
+        i = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
+        o = map(lambda x: isclose(x[0], x[1]), zip(args.origin, origin))  # origin
+        # now test that all values in the comparison lists are True using all()
+        self.assertTrue(all(l))
+        self.assertTrue(all(i))
+        self.assertTrue(all(o))
+
+    def test_non_stl(self):
+        """Test that it fails for non-STL files"""
+        lengths = _random_floats(count=3, multiplier=1000)
+        indices = _random_integers(count=3, start=100, stop=1000)
+        origin = _random_floats(count=3, multiplier=10)
+        args, _ = parse_args(
+            shlex.split('prep rescale --lengths {lengths} --indices {indices} --origin {origin} file.abc'.format(
+                lengths=' '.join(map(str, lengths)),
+                indices=' '.join(map(str, indices)),
+                origin=' '.join(map(str, origin)),
+            )))
+        self.assertIsNone(args)
+
+    def test_output(self):
+        """Test that we can set the output"""
+        lengths = _random_floats(count=3, multiplier=1000)
+        indices = _random_integers(count=3, start=100, stop=1000)
+        origin = _random_floats(count=3, multiplier=10)
+        args, _ = parse_args(
+            shlex.split(
+                'prep rescale --lengths {lengths} --indices {indices} --origin {origin} -o my_file.stl file.stl'.format(
+                    lengths=' '.join(map(str, lengths)),
+                    indices=' '.join(map(str, indices)),
+                    origin=' '.join(map(str, origin)),
+                )))
+        self.assertEqual(args.output, 'my_file.stl')
+
+    def test_infix(self):
+        """Test setting infix"""
+        lengths = _random_floats(count=3, multiplier=1000)
+        indices = _random_integers(count=3, start=100, stop=1000)
+        origin = _random_floats(count=3, multiplier=10)
+        args, _ = parse_args(
+            shlex.split(
+                'prep rescale --lengths {lengths} --indices {indices} --origin {origin} --infix something file.stl'.format(
+                    lengths=' '.join(map(str, lengths)),
+                    indices=' '.join(map(str, indices)),
+                    origin=' '.join(map(str, origin)),
+                )))
+        self.assertEqual(args.infix, 'something')
+        self.assertEqual(args.output, 'file_something.stl')
 
 
 class TestParser_convert(unittest.TestCase):
@@ -1078,14 +1110,66 @@ class TestUtils(unittest.TestCase):
 
 
 class TestPrep(unittest.TestCase):
-    def setUp(self):
-        self.test_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
-
-    def tearDown(self):
-        os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
-
-    def test_bin_map_default(self):
+    def test_binmap_default(self):
         """Test binarise map"""
-        args, _ = parse_args(shlex.split("prep binmap -v {}".format(self.test_file)))
+        test_map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
+        args, _ = parse_args(shlex.split("prep binmap -v {}".format(test_map_file)))
         ex_st = bin_map(args, _)
         self.assertEqual(ex_st, os.EX_OK)
+        # clean up
+        os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
+
+    def test_transform_stl_default(self):
+        """Test rescale stl"""
+        # the original STL file
+        test_stl_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl')
+        # lengths = _random_floats(count=3, multiplier=1000)
+        # indices = _random_integers(count=3, start=100, stop=1000)
+        # origin = _random_floats(count=3, multiplier=10)
+        lengths = (2000, 2000, 2000)
+        indices = (1000, 1000, 1000)
+        origin = (100, 200, 300)
+        args, _ = parse_args(shlex.split(
+            "prep rescale --lengths {lengths} --indices {indices} --origin {origin} --verbose {file}".format(
+                file=test_stl_file,
+                lengths=' '.join(map(str, lengths)),
+                indices=' '.join(map(str, indices)),
+                origin=' '.join(map(str, origin)),
+            )))
+        # manual_transform
+        lengths = numpy.array(args.lengths, dtype=numpy.float32)
+        indices = numpy.array(args.indices, dtype=numpy.int32)
+        voxel_size = numpy.divide(lengths, indices)
+        origin = numpy.array(args.origin, dtype=numpy.float32)
+        transform_manual = numpy.array([
+            [voxel_size[0], 0, 0, origin[0]],
+            [0, voxel_size[1], 0, origin[1]],
+            [0, 0, voxel_size[2], origin[2]],
+            [0, 0, 0, 1]
+        ], dtype=numpy.float32)
+        # transform from function
+        transform_f = construct_transformation_matrix(args)
+        self.assertTrue(numpy.allclose(transform_manual, transform_f))
+        original_mesh = Mesh.from_file(test_stl_file)
+        # the upper limit for random ints
+        no_verts = original_mesh.v0.shape[0]
+        # random vertices
+        v0_index = _random_integer(start=0, stop=no_verts)
+        v1_index = _random_integer(start=0, stop=no_verts)
+        v2_index = _random_integer(start=0, stop=no_verts)
+        # rescale the mesh
+        rescaled_mesh = transform_stl_mesh(original_mesh, transform_f)
+        # make sure the shapes are identical
+        self.assertEqual(original_mesh.v0.shape, rescaled_mesh.v0.shape)
+        self.assertEqual(original_mesh.v1.shape, rescaled_mesh.v1.shape)
+        self.assertEqual(original_mesh.v2.shape, rescaled_mesh.v2.shape)
+        # now we pick some vertices at random and compare them
+        rescaled_vertex_v0 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v0[v0_index].T).T
+        rescaled_vertex_v0 += transform_f[0:3, 3].T
+        rescaled_vertex_v1 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v1[v1_index].T).T
+        rescaled_vertex_v1 += transform_f[0:3, 3].T
+        rescaled_vertex_v2 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v2[v2_index].T).T
+        rescaled_vertex_v2 += transform_f[0:3, 3].T
+        self.assertTrue(numpy.allclose(rescaled_vertex_v0, rescaled_mesh.v0[v0_index]))
+        self.assertTrue(numpy.allclose(rescaled_vertex_v1, rescaled_mesh.v1[v1_index]))
+        self.assertTrue(numpy.allclose(rescaled_vertex_v2, rescaled_mesh.v2[v2_index]))

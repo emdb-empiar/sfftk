@@ -20,6 +20,7 @@ __updated__ = '2018-02-14'
 verbosity_range = range(4)
 multi_file_formats = ['stl', 'map', 'mrc', 'rec']
 prepable_file_formats = ['mrc', 'map', 'rec']
+rescalable_file_formats = ['stl']
 
 
 def add_args(parser, the_arg):
@@ -314,6 +315,53 @@ binmap_prep_parser.add_argument(
     help="infix to be added to filenames e.g. file.map -> file_<infix>.map [default: 'prep']",
 )
 add_args(binmap_prep_parser, verbose)
+
+# =========================================================================
+# prep: transform
+# =========================================================================
+transform_prep_parser = prep_subparsers.add_parser(
+    'transform',
+    description='Transform the STL mesh vertices by the given values',
+    help='transform an STL mesh',
+)
+# todo: add a new option for the voxel coordinates e.g. --voxel-size <v_x> <v_y> <v_z> which is mutually exclusive with --lengths and --indices
+transform_prep_parser.add_argument(
+    'from_file', help="the name of the segmentation file"
+)
+add_args(transform_prep_parser, config_path)
+add_args(transform_prep_parser, shipped_configs)
+transform_prep_parser.add_argument(
+    '-L', '--lengths',
+    nargs=3, type=float,
+    required=True,
+    help="the X, Y and Z physical lengths (in angstrom) of the space; three (3) space-separated values [required]"
+)
+transform_prep_parser.add_argument(
+    '-I', '--indices',
+    nargs=3, type=int,
+    required=True,
+    help="the I, J, and K image dimensions of the space, corresponding to X, Y and Z, respectively; three (3) "
+         "space-separated integers [required]"
+)
+transform_prep_parser.add_argument(
+    '-O', '--origin',
+    nargs=3, type=float,
+    default=[0.0, 0.0, 0.0],
+    help="the origin position (in angstrom); literally, the distance between the first voxel (lowest indices) and the "
+         "physical origin; three (3) space-separated values [default: 0.0 0.0 0.0]"
+)
+transform_prep_parser.add_argument(
+    '-o', '--output',
+    default=None,
+    help='output file name [default: <infile>_binned.<ext>]'
+)
+transform_prep_parser.add_argument(
+    '--infix',
+    default='transformed',
+    help="infix to be added to filenames e.g. file.stl -> file_<infix>.stl [default: 'transformed']",
+)
+add_args(transform_prep_parser, verbose)
+
 
 # =========================================================================
 # convert subparser
@@ -1056,8 +1104,21 @@ def parse_args(_args):
                 else:
                     print_date("Cannot overwrite input file")
                     return None, configs
-            if args.verbose:
-                print_date("Output will be written to {}".format(args.output))
+                if args.verbose:
+                    print_date("Output will be written to {}".format(args.output))
+        elif args.prep_subcommand == 'transform':
+            ext = args.from_file.split('.')[-1]
+            if ext.lower() not in rescalable_file_formats:
+                print_date("File format {} not available for transforming".format(ext.lower()))
+                return None, configs
+            if args.output is None:
+                if args.infix != '':
+                    args.output = '.'.join(args.from_file.split('.')[:-1]) + '_' + args.infix + '.' + ext
+                else:
+                    print_date("Cannot overwrite input file")
+                    return None, configs
+                if args.verbose:
+                    print_date("Output will be written to {}".format(args.output))
 
     # view
     elif args.subcommand == 'view':

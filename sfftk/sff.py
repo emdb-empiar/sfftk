@@ -33,6 +33,9 @@ def handle_prep(args, configs):
     if re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
         from .core.prep import bin_map
         return bin_map(args, configs)
+    elif re.match(r'.*\.(stl)$', args.from_file, re.IGNORECASE):
+        from .core.prep import transform
+        return transform(args, configs)
     else:
         print_date("No prep protocol for file type {}".format(args.from_file))
         return os.EX_DATAERR
