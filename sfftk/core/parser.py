@@ -272,6 +272,7 @@ binmap_prep_parser = prep_subparsers.add_parser(
 binmap_prep_parser.add_argument(
     'from_file', help='the name of the segmentation file'
 )
+# todo: make config_path and shipped_configs mutexes
 add_args(binmap_prep_parser, config_path)
 add_args(binmap_prep_parser, shipped_configs)
 binmap_prep_parser.add_argument(
@@ -402,24 +403,12 @@ config_parser = subparsers.add_parser(
     description="Configuration utility",
     help="manage sfftk configs"
 )
-
 config_subparsers = config_parser.add_subparsers(
     title='sfftk configurations',
     dest='config_subcommand',
     description='Persistent configurations utility',
     metavar='Commands:'
 )
-
-# =============================================================================
-# config: list -> instead do get --all
-# =============================================================================
-# list_config_parser = config_subparsers.add_parser(
-#     'list',
-#     description='List sfftk configuration parameters',
-#     help='list sfftk configs'
-# )
-# add_args(list_config_parser, config_path)
-# add_args(list_config_parser, shipped_configs)
 
 # =============================================================================
 # config: get
@@ -1038,8 +1027,15 @@ def parse_args(_args):
                 sys.exit(os.EX_OK)
     # parse arguments
     args = Parser.parse_args(_args)
+    from .configs import get_config_file_path
+    # get the file to use for configs given args
+    config_file_path = get_config_file_path(args)
+    if config_file_path is None:
+        print_date("Invalid destination for configs. Omit --shipped-configs to write to user configs.")
+        return None, None
     from .configs import load_configs
-    configs = load_configs(args)
+    # now get configs to use
+    configs = load_configs(config_file_path)
 
     # check values
     # config

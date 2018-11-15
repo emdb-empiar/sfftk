@@ -9,8 +9,9 @@ for a complete description of working with configs.
 """
 from __future__ import print_function
 from collections import OrderedDict
-import os.path
+import os
 import sys
+import shutil
 
 from .. import BASE_DIR
 from .print_tools import print_date
@@ -75,64 +76,126 @@ class Configs(OrderedDict):
         return string[:-1]
 
 
-def load_configs(args, user_folder='.sfftk', conf_fn='sff.conf', config_class=Configs):
-    """Load sfftk configs (persistent arguments)
-    
-    It is called in ``sfftk.core.parser.py`` to get configs for the current
-    command.
-    
-    :param args: parsed arguments
-    :type args: ``argparse.Namespace``
-    :param str user_folder: name of the user folder; default is *.sfftk*
-    :param str conf_fn: name of the config file; default is *sff.conf*
-    :param class Configs: the class defining configs
-    :return dict configs: dictionary of configs
+def get_config_file_path(args, user_folder='.sfftk', user_conf_fn='sff.conf'):
+    """A function that returns the right config path to use depending on the command specified
+
+    The user may specify `sff <cmd> [<sub_cmd>] [--shipped-configs|--config-path] [args...]`
+    and we have to decide which configs to use.
+
+    Example:
+    - View the notes in the file. If user configs are available use them otherwise use shipped configs
+
+    .. code:: bash
+
+        sff notes list file.json
+
+    - View the notes in the file but ONLY use shipped configs.
+
+    .. code:: bash
+
+        sff notes list --shipped-configs file.json
+
+    - View the notes in the file but ONLY use custom configs at path
+
+    .. code:: bash
+
+        sff notes list --config-path /path/to/sff.conf file.json
+
+    - Get available configs. First check for user configs and fall back on shipped configs
+
+    .. code:: bash
+
+        sff config get --all
+
+    - Get configs from the path
+
+    .. code:: bash
+
+        sff config get --config-path /path/to/sff.conf --all
+        # ignore shipped still!
+        sff config get --config-path /path/to/sff.conf --shipped-configs --all
+
+    - Get shipped configs even if user configs exist
+
+    .. code:: bash
+
+        sff config get --shipped-configs --all
+
+    - Set configs to user configs. If user configs don't exist copy shipped and add the new config.
+
+    .. code:: bash
+
+        sff config set NAME VALUE
+
+    - Set configs to config path. Ignore user and shipped configs
+
+    .. code:: bash
+
+        sff config set --config-path /path/to/sff.conf NAME VALUE
+
+    - Fail! Shipped configs are read-only
+
+    .. code:: bash
+
+        sff config set --shipped-configs NAME VALUE
+
+    :param args:
+    :param user_folder:
+    :param user_conf_fn:
+    :return:
     """
-    """
-    :TODO: add individual args to 'if args.config_path' as an OR condition
-    """
-    # path to user folder
-    user_folder_path = os.path.join("~", user_folder)
-    # path to user config file
-    user_conf_path = os.path.join(user_folder_path, conf_fn)
-    # 1 - custom config path
-    if args.config_path:
-        # if it exists
-        if os.path.exists(os.path.dirname(args.config_path)):
-            config_fn = args.config_path
-        # otherwise create it
-        else:
-            os.mkdir(os.path.dirname(args.config_path))
-            config_fn = args.config_path
-    else:
-        # 2 - shipped configs if specified
-        if args.shipped_configs:
-            config_fn = config_class.shipped_configs
-        # 3 - user configs
-        else:
-            # if it exists
-            if os.path.exists(os.path.expanduser(user_folder_path)):
-                config_path = os.path.expanduser(user_conf_path)
-                if not os.path.exists(config_path):
-                    with open(config_path, 'w') as _:
-                        pass
-                config_fn = config_path
-            # otherwise create it
+    shipped_configs = Configs.shipped_configs
+    user_configs = os.path.expanduser("~/.sfftk/sff.conf")
+    config_file_path = None
+    if args.subcommand == 'config':
+        # read-only: get
+        if args.config_subcommand == 'get':
+            if args.config_path is not None:
+                config_file_path = args.config_path
+            elif args.shipped_configs:
+                config_file_path = shipped_configs
+            elif os.path.exists(user_configs):
+                config_file_path = user_configs
             else:
-                config_path = os.path.expanduser(user_conf_path)
-                # create the folder
-                os.mkdir(os.path.dirname(config_path))
-                # create an empty file
-                with open(config_path, 'w') as _:
+                config_file_path = shipped_configs
+        # read-write: set, del
+        else:
+            if args.config_path is not None:
+                config_file_path = args.config_path
+            elif args.shipped_configs:
+                config_file_path = None
+            elif os.path.exists(user_configs):
+                config_file_path = user_configs
+            elif not os.path.exists(user_configs):
+                try:
+                    # make the dir if it doesn't exist
+                    os.mkdir(os.path.dirname(user_configs))
+                except OSError:
                     pass
-                # create the config file
-                config_fn = config_path
+                # copy the shipped configs to user configs
+                shutil.copy(Configs.shipped_configs, user_configs)
+                config_file_path = user_configs
+    else:
+        if args.config_path is not None:
+            config_file_path = args.config_path
+        elif args.shipped_configs:
+            config_file_path = Configs.shipped_configs
+        elif os.path.exists(user_configs):
+            config_file_path = user_configs
+        else:
+            config_file_path = Configs.shipped_configs
+    return config_file_path
 
-    if hasattr(args, 'verbose'):
-        if args.verbose:
-            print_date("Reading configs from {}".format(config_fn))
 
-    configs = config_class(config_fn)
+def load_configs(config_file_path, config_class=Configs):
+    """Load configs from the given file
+
+    :param str config_file_path: a path to a file with configs
+    :param class config_class: the config class; default: Configs
+    :return configs: the configs
+    :rtype configs: Configs
+    """
+    configs = config_class(config_file_path)
     configs.read()
     return configs
 
@@ -161,6 +224,7 @@ def get_configs(args, configs):
         print(config)
     return os.EX_OK
 
+
 def set_configs(args, configs):
     """Set the config of the given name to have the given value
     
@@ -176,6 +240,7 @@ def set_configs(args, configs):
         print(configs)
     # save the configs
     return configs.write()
+
 
 def del_configs(args, configs):
     """Delete the named config
@@ -201,5 +266,3 @@ def del_configs(args, configs):
         print(configs)
     # save the config
     return configs.write()
-
-

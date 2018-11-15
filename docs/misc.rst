@@ -261,19 +261,19 @@ For example:
 Configuration Commands
 ----------------------
 
-Listing available configurations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: bash
-
-	sff config list
-
 Getting a single configuration value
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: bash
 
 	sff config get CONFIG_NAME
+
+Listing available configurations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: bash
+
+	sff config get --all
 
 Setting a single configuration value
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -294,7 +294,7 @@ Clearing all configurations
 
 .. code:: bash
 
-	sff config clear
+	sff config del --all
 
 
 .. _configs:
