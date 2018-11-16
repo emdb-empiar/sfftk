@@ -346,6 +346,7 @@ class TestCoreConfigs(unittest.TestCase):
     def test_del_all_configs(self):
         """Test that we can delete all configs"""
         args, configs = parse_args(shlex.split('config del --force --all --config-path {}'.format(self.config_fn)))
+        print('args = ', args)
         self.assertTrue(del_configs(args, configs) == 0)
         _, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         self.assertTrue(len(configs) == 0)
@@ -452,19 +453,19 @@ class TestParser_prep_binmap(unittest.TestCase):
         self.assertIsNone(args)
 
 
-class TestParser_prep_rescale(unittest.TestCase):
+class TestParserPrepTransform(unittest.TestCase):
     def test_default(self):
-        """Test default param for prep rescale"""
+        """Test default param for prep transform"""
         lengths = _random_floats(count=3, multiplier=1000)
         indices = _random_integers(count=3, start=100, stop=1000)
-        args, _ = parse_args(shlex.split('prep rescale --lengths {lengths} --indices {indices} file.stl'.format(
+        args, _ = parse_args(shlex.split('prep transform --lengths {lengths} --indices {indices} file.stl'.format(
             lengths=' '.join(map(str, lengths)),
             indices=' '.join(map(str, indices)),
         )))
-        self.assertEqual(args.prep_subcommand, 'rescale')
+        self.assertEqual(args.prep_subcommand, 'transform')
         self.assertEqual(args.from_file, 'file.stl')
-        self.assertEqual(args.output, 'file_rescaled.stl')
-        self.assertEqual(args.infix, 'rescaled')
+        self.assertEqual(args.output, 'file_transformed.stl')
+        self.assertEqual(args.infix, 'transformed')
         # zip values -> compare using isclose() -> a list of booleans
         l = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
         i = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
@@ -478,7 +479,7 @@ class TestParser_prep_rescale(unittest.TestCase):
         indices = _random_integers(count=3, start=100, stop=1000)
         origin = _random_floats(count=3, multiplier=10)
         args, _ = parse_args(
-            shlex.split('prep rescale --lengths {lengths} --indices {indices} --origin {origin} file.stl'.format(
+            shlex.split('prep transform --lengths {lengths} --indices {indices} --origin {origin} file.stl'.format(
                 lengths=' '.join(map(str, lengths)),
                 indices=' '.join(map(str, indices)),
                 origin=' '.join(map(str, origin)),
@@ -499,7 +500,7 @@ class TestParser_prep_rescale(unittest.TestCase):
         indices = _random_integers(count=3, start=100, stop=1000)
         origin = _random_floats(count=3, multiplier=10)
         args, _ = parse_args(
-            shlex.split('prep rescale --lengths {lengths} --indices {indices} --origin {origin} file.abc'.format(
+            shlex.split('prep transform --lengths {lengths} --indices {indices} --origin {origin} file.abc'.format(
                 lengths=' '.join(map(str, lengths)),
                 indices=' '.join(map(str, indices)),
                 origin=' '.join(map(str, origin)),
@@ -513,7 +514,7 @@ class TestParser_prep_rescale(unittest.TestCase):
         origin = _random_floats(count=3, multiplier=10)
         args, _ = parse_args(
             shlex.split(
-                'prep rescale --lengths {lengths} --indices {indices} --origin {origin} -o my_file.stl file.stl'.format(
+                'prep transform --lengths {lengths} --indices {indices} --origin {origin} -o my_file.stl file.stl'.format(
                     lengths=' '.join(map(str, lengths)),
                     indices=' '.join(map(str, indices)),
                     origin=' '.join(map(str, origin)),
@@ -527,7 +528,7 @@ class TestParser_prep_rescale(unittest.TestCase):
         origin = _random_floats(count=3, multiplier=10)
         args, _ = parse_args(
             shlex.split(
-                'prep rescale --lengths {lengths} --indices {indices} --origin {origin} --infix something file.stl'.format(
+                'prep transform --lengths {lengths} --indices {indices} --origin {origin} --infix something file.stl'.format(
                     lengths=' '.join(map(str, lengths)),
                     indices=' '.join(map(str, indices)),
                     origin=' '.join(map(str, origin)),
@@ -1311,7 +1312,7 @@ class TestPrep(unittest.TestCase):
         os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
 
     def test_transform_stl_default(self):
-        """Test rescale stl"""
+        """Test transform stl"""
         # the original STL file
         test_stl_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl')
         # lengths = _random_floats(count=3, multiplier=1000)
@@ -1321,7 +1322,7 @@ class TestPrep(unittest.TestCase):
         indices = (1000, 1000, 1000)
         origin = (100, 200, 300)
         args, _ = parse_args(shlex.split(
-            "prep rescale --lengths {lengths} --indices {indices} --origin {origin} --verbose {file}".format(
+            "prep transform --lengths {lengths} --indices {indices} --origin {origin} --verbose {file}".format(
                 file=test_stl_file,
                 lengths=' '.join(map(str, lengths)),
                 indices=' '.join(map(str, indices)),
@@ -1348,19 +1349,19 @@ class TestPrep(unittest.TestCase):
         v0_index = _random_integer(start=0, stop=no_verts)
         v1_index = _random_integer(start=0, stop=no_verts)
         v2_index = _random_integer(start=0, stop=no_verts)
-        # rescale the mesh
-        rescaled_mesh = transform_stl_mesh(original_mesh, transform_f)
+        # transform the mesh
+        transformd_mesh = transform_stl_mesh(original_mesh, transform_f)
         # make sure the shapes are identical
-        self.assertEqual(original_mesh.v0.shape, rescaled_mesh.v0.shape)
-        self.assertEqual(original_mesh.v1.shape, rescaled_mesh.v1.shape)
-        self.assertEqual(original_mesh.v2.shape, rescaled_mesh.v2.shape)
+        self.assertEqual(original_mesh.v0.shape, transformd_mesh.v0.shape)
+        self.assertEqual(original_mesh.v1.shape, transformd_mesh.v1.shape)
+        self.assertEqual(original_mesh.v2.shape, transformd_mesh.v2.shape)
         # now we pick some vertices at random and compare them
-        rescaled_vertex_v0 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v0[v0_index].T).T
-        rescaled_vertex_v0 += transform_f[0:3, 3].T
-        rescaled_vertex_v1 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v1[v1_index].T).T
-        rescaled_vertex_v1 += transform_f[0:3, 3].T
-        rescaled_vertex_v2 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v2[v2_index].T).T
-        rescaled_vertex_v2 += transform_f[0:3, 3].T
-        self.assertTrue(numpy.allclose(rescaled_vertex_v0, rescaled_mesh.v0[v0_index]))
-        self.assertTrue(numpy.allclose(rescaled_vertex_v1, rescaled_mesh.v1[v1_index]))
-        self.assertTrue(numpy.allclose(rescaled_vertex_v2, rescaled_mesh.v2[v2_index]))
+        transformd_vertex_v0 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v0[v0_index].T).T
+        transformd_vertex_v0 += transform_f[0:3, 3].T
+        transformd_vertex_v1 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v1[v1_index].T).T
+        transformd_vertex_v1 += transform_f[0:3, 3].T
+        transformd_vertex_v2 = numpy.dot(transform_f[0:3, 0:3], original_mesh.v2[v2_index].T).T
+        transformd_vertex_v2 += transform_f[0:3, 3].T
+        self.assertTrue(numpy.allclose(transformd_vertex_v0, transformd_mesh.v0[v0_index]))
+        self.assertTrue(numpy.allclose(transformd_vertex_v1, transformd_mesh.v1[v1_index]))
+        self.assertTrue(numpy.allclose(transformd_vertex_v2, transformd_mesh.v2[v2_index]))

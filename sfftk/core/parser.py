@@ -1034,7 +1034,7 @@ def parse_args(_args):
             print_date("Reading configs from {}...".format(config_file_path))
         # handle config-specific argument modifications here
         if args.config_subcommand == 'del':
-            if args.name not in configs:
+            if args.name not in configs and not args.all:
                 print_date("Missing config with name '{}'. Aborting...".format(args.name))
                 return None, configs
             # if force pass
