@@ -30,11 +30,12 @@ __date__ = "2017-05-15"
 
 
 class TestCoreConfigs(unittest.TestCase):
+    user_configs = os.path.expanduser("~/.sfftk/sff.conf")
+    user_configs_hide = os.path.expanduser("~/.sfftk/sff.conf.test")
+    dummy_configs = os.path.expanduser("~/sff.conf.test")
+
     @classmethod
     def setUpClass(cls):
-        cls.user_configs = os.path.expanduser("~/.sfftk/sff.conf")
-        cls.user_configs_hide = os.path.expanduser("~/.sfftk/sff.conf.test")
-        cls.dummy_configs = os.path.expanduser("~/sff.conf.test")
         cls.test_config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'test_sff.conf')
         cls.config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
         cls.config_values = {
@@ -59,39 +60,47 @@ class TestCoreConfigs(unittest.TestCase):
 
     def setUp(self):
         self.load_values()
+        self.move_user_configs()
 
     def tearDown(self):
         self.clear_values()
+        self.return_user_configs()
 
     def move_user_configs(self):
         # when running this test we need to hide ~/.sfftk/sff.conf if it exists
-        # we move ~/.sfftk/sff.conf to ~/.sfftk/sff.conf.orig
+        # we move ~/.sfftk/sff.conf to ~/.sfftk/sff.conf.test
         # then move it back once the test ends
         # if the test does not complete we will have to manually copy it back
-        # ~/.sfftk/sff.conf.orig to ~/.sfftk/sff
+        # ~/.sfftk/sff.conf.test to ~/.sfftk/sff.conf
         if os.path.exists(self.user_configs):
+            print('found user configs and moving them...', file=sys.stderr)
             shutil.move(
                 self.user_configs,
                 self.user_configs_hide,
             )
 
     def return_user_configs(self):
-        # we move back ~/.sfftk/sff.conf.orig to ~/.sfftk/sff.conf
+        # we move back ~/.sfftk/sff.conf.test to ~/.sfftk/sff.conf
         if os.path.exists(self.user_configs_hide):
+            print('found moved user configs and returning them...', file=sys.stderr)
             shutil.move(
                 self.user_configs_hide,
                 self.user_configs,
             )
+        else: # it was never there to begin with
+            try:
+                os.remove(self.user_configs)
+            except OSError:
+                pass
 
     def make_dummy_user_configs(self, param='TEST', value='TEST_VALUE'):
-        if os.path.exists(self.user_configs):
-            self.move_user_configs()
+        if not os.path.exists(os.path.dirname(self.user_configs)):
+            os.mkdir(os.path.dirname(self.user_configs))
         with open(self.user_configs, 'w') as c:
             c.write("{}={}\n".format(param, value))
 
     def remove_dummy_user_configs(self):
         os.remove(self.user_configs)
-        self.return_user_configs()
 
     def make_dummy_configs(self, param='TEST_CONFIG', value='TEST_CONFIG_VALUE'):
         with open(self.dummy_configs, 'w') as c:
@@ -102,11 +111,9 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_default_ro(self):
         """Test that on a fresh install we use shipped configs for get"""
-        self.move_user_configs()
         args = Parser.parse_args(shlex.split("config get --all"))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path == Configs.shipped_configs)
-        self.return_user_configs()
 
     def test_user_configs_ro(self):
         """Test that if we have user configs we get them"""
@@ -118,11 +125,9 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_shipped_default(self):
         """Test that we get shipped and nothing else when we ask for them"""
-        self.move_user_configs()
         args = Parser.parse_args(shlex.split("config get --shipped-configs --all"))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path, Configs.shipped_configs)
-        self.return_user_configs()
 
     def test_shipped_user_configs_exist_ro(self):
         """Test that even if user configs exist we can only get shipped configs"""
@@ -142,23 +147,19 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_config_path_over_shipped_ro(self):
         """Test that we use config path even if shipped specified"""
-        self.move_user_configs()
         self.make_dummy_user_configs()
         args = Parser.parse_args(
             shlex.split("config get --config-path {} --shipped-configs --all".format(self.dummy_configs)))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path, self.dummy_configs)
         self.remove_dummy_user_configs()
-        self.return_user_configs()
 
     def test_default_rw(self):
         """Test that when we try to write configs on a fresh install we get user configs"""
-        self.move_user_configs()
         args = Parser.parse_args(shlex.split("config set A B"))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path == self.user_configs)
         self.assertTrue(os.path.exists(self.user_configs))
-        self.return_user_configs()
 
     def test_user_configs_rw(self):
         """Test that if we have user configs we can set to them"""
@@ -170,11 +171,9 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_shipped_default_rw(self):
         """Test that we cannot write to shipped configs"""
-        self.move_user_configs()
         args = Parser.parse_args(shlex.split("config set --shipped-configs A B"))
         config_file_path = get_config_file_path(args)
         self.assertIsNone(config_file_path)
-        self.return_user_configs()
 
     def test_config_path_default_rw(self):
         """Test that we can get configs from some path"""
@@ -186,23 +185,19 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_config_path_over_shipped_rw(self):
         """Test that we use config path even if shipped specified"""
-        self.move_user_configs()
         self.make_dummy_configs()
         args = Parser.parse_args(
             shlex.split("config set --config-path {} --shipped-configs A B".format(self.dummy_configs)))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path, self.dummy_configs)
         self.remove_dummy_configs()
-        self.return_user_configs()
 
     def test_default_other(self):
         """Test that all non-config commands on a fresh install use shipped configs"""
-        self.move_user_configs()
         args = Parser.parse_args(shlex.split("view file.json"))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path == Configs.shipped_configs)
         self.assertFalse(os.path.exists(self.user_configs))
-        self.return_user_configs()
 
     def test_user_configs_other(self):
         """Test that if we have user configs we can set to them"""
@@ -230,48 +225,50 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_config_path_over_shipped_other(self):
         """Test that we use config path even if shipped specified"""
-        self.move_user_configs()
         self.make_dummy_configs()
         args = Parser.parse_args(
             shlex.split("view --config-path {} --shipped-configs file.json".format(self.dummy_configs)))
         config_file_path = get_config_file_path(args)
         self.assertTrue(config_file_path, self.dummy_configs)
         self.remove_dummy_configs()
-        self.return_user_configs()
 
     def test_load_shipped(self):
         """Test that we actually load shipped configs"""
-        self.move_user_configs()
-        args, configs = parse_args(shlex.split("view file.json"))
+        args = Parser.parse_args(shlex.split("view file.json"))
+        config_file_path = get_config_file_path(args)
+        configs = load_configs(config_file_path)
         # user configs should not exist
         self.assertFalse(os.path.exists(os.path.expanduser("~/.sfftk/sff.conf")))
         self.assertEqual(configs['__TEMP_FILE'], './temp-annotated.json')
         self.assertEqual(configs['__TEMP_FILE_REF'], '@')
-        self.return_user_configs()
 
     def test_config_path(self):
         """Test that we can read configs from config path"""
-        args, configs = parse_args(shlex.split('view --config-path {} file.sff'.format(self.test_config_fn)))
+        args = Parser.parse_args(shlex.split('view --config-path {} file.sff'.format(self.test_config_fn)))
+        config_file_path = get_config_file_path(args)
+        configs = load_configs(config_file_path)
         self.assertEqual(configs['HAPPY'], 'DAYS')
 
     def test_user_config(self):
         """Test that we can read user configs from ~/.sfftk/sff.conf"""
-        self.move_user_configs()
         # no user configs yet
         self.assertFalse(os.path.exists(os.path.expanduser("~/.sfftk/sff.conf")))
         # set a custom value to ensure it's present in user configs
-        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
+        args = Parser.parse_args(shlex.split('config set --force NAME VALUE'))
+        config_file_path = get_config_file_path(args)
+        configs = load_configs(config_file_path)
         set_configs(args, configs)
         # now user configs should exist
         self.assertTrue(os.path.exists(os.path.expanduser("~/.sfftk/sff.conf")))
         args, configs = parse_args(shlex.split('view file.sff'))
         self.assertEqual(configs['NAME'], 'VALUE')
-        self.return_user_configs()
 
     def test_precedence_config_path(self):
         """Test that config path takes precedence"""
         # set a custom value to ensure it's present in user configs
-        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
+        args = Parser.parse_args(shlex.split('config set --force NAME VALUE'))
+        config_file_path = get_config_file_path(args)
+        configs = load_configs(config_file_path)
         set_configs(args, configs)
         args, configs = parse_args(
             shlex.split('view --config-path {} --shipped-configs file.sff'.format(self.test_config_fn)))
@@ -280,7 +277,9 @@ class TestCoreConfigs(unittest.TestCase):
     def test_precedence_shipped_configs(self):
         """Test that shipped configs, when specified, take precedence over user configs"""
         # set a custom value to ensure it's present in user configs
-        args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
+        args = Parser.parse_args(shlex.split('config set --force NAME VALUE'))
+        config_file_path = get_config_file_path(args)
+        configs = load_configs(config_file_path)
         set_configs(args, configs)
         args, configs = parse_args(shlex.split('view file.sff --shipped-configs'))
         self.assertEqual(configs['__TEMP_FILE'], './temp-annotated.json')
@@ -289,30 +288,22 @@ class TestCoreConfigs(unittest.TestCase):
 
     def test_get_configs(self):
         """Test that we can get a config by name"""
-        self.move_user_configs()
         args, configs = parse_args(shlex.split('config get __TEMP_FILE --config-path {}'.format(self.config_fn)))
-        print(configs)
         self.assertTrue(get_configs(args, configs) == os.EX_OK)
-        self.return_user_configs()
 
     def test_get_all_configs(self):
         """Test that we can list all configs"""
-        self.move_user_configs()
         args, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         self.assertTrue(get_configs(args, configs) == os.EX_OK)
         self.assertTrue(len(configs) > 0)
-        self.return_user_configs()
 
     def test_get_absent_configs(self):
         """Test that we are notified when a config is not found"""
-        self.move_user_configs()
         args, configs = parse_args(shlex.split('config get alsdjf;laksjflk --config-path {}'.format(self.config_fn)))
         self.assertTrue(get_configs(args, configs) == 1)
-        self.return_user_configs()
 
     def test_set_configs(self):
         """Test that we can set configs"""
-        self.move_user_configs()
         args, configs_before = parse_args(
             shlex.split('config set --force NAME VALUE --config-path {}'.format(self.config_fn)))
         len_configs_before = len(configs_before)
@@ -320,31 +311,25 @@ class TestCoreConfigs(unittest.TestCase):
         _, configs_after = parse_args(shlex.split('config get alsdjf;laksjflk --config-path {}'.format(self.config_fn)))
         len_configs_after = len(configs_after)
         self.assertTrue(len_configs_before < len_configs_after)
-        self.return_user_configs()
 
     def test_set_new_configs(self):
         """Test that new configs will by default be written to user configs .i.e. ~/sfftk/sff.conf"""
-        self.move_user_configs()
         args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
         self.assertTrue(set_configs(args, configs) == os.EX_OK)
         _, configs = parse_args(shlex.split('config get --all'))
         self.assertDictContainsSubset({'NAME': 'VALUE'}, configs)
-        self.return_user_configs()
 
     def test_set_force_configs(self):
         """Test that forcing works"""
-        self.move_user_configs()
         args, configs = parse_args(shlex.split('config set --force NAME VALUE'))
         self.assertTrue(set_configs(args, configs) == os.EX_OK)
         self.assertTrue(configs['NAME'] == 'VALUE')
         args, configs_after = parse_args(shlex.split('config set --force NAME VALUE1'))
         self.assertTrue(set_configs(args, configs_after) == os.EX_OK)
         self.assertTrue(configs_after['NAME'] == 'VALUE1')
-        self.return_user_configs()
 
     def test_del_configs(self):
         """Test that we can delete configs"""
-        self.move_user_configs()
         # first we get current configs
         args, configs = parse_args(shlex.split('config set --force NAME VALUE --config-path {}'.format(self.config_fn)))
         # then we set an additional config
@@ -357,24 +342,19 @@ class TestCoreConfigs(unittest.TestCase):
         args, configs_after = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         len_configs_after = len(configs_after)
         self.assertTrue(len_configs_before > len_configs_after)
-        self.return_user_configs()
 
     def test_del_all_configs(self):
         """Test that we can delete all configs"""
-        self.move_user_configs()
         args, configs = parse_args(shlex.split('config del --force --all --config-path {}'.format(self.config_fn)))
         self.assertTrue(del_configs(args, configs) == 0)
         _, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         self.assertTrue(len(configs) == 0)
-        self.return_user_configs()
 
     def test_write_shipped_fails(self):
         """Test that we cannot save to shipped configs"""
-        self.move_user_configs()
         args, configs = parse_args(
             shlex.split('config set --force NAME VALUE --config-path {}'.format(os.path.join(BASE_DIR, 'sff.conf'))))
         self.assertTrue(set_configs(args, configs) == 1)
-        self.return_user_configs()
 
 
 class TestCore_print_utils(unittest.TestCase):

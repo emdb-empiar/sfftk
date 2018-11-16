@@ -76,7 +76,7 @@ class Configs(OrderedDict):
         return string[:-1]
 
 
-def get_config_file_path(args, user_folder='.sfftk', user_conf_fn='sff.conf'):
+def get_config_file_path(args, user_folder='~/.sfftk', user_conf_fn='sff.conf', config_class=Configs):
     """A function that returns the right config path to use depending on the command specified
 
     The user may specify `sff <cmd> [<sub_cmd>] [--shipped-configs|--config-path] [args...]`
@@ -144,8 +144,8 @@ def get_config_file_path(args, user_folder='.sfftk', user_conf_fn='sff.conf'):
     :param user_conf_fn:
     :return:
     """
-    shipped_configs = Configs.shipped_configs
-    user_configs = os.path.expanduser("~/.sfftk/sff.conf")
+    shipped_configs = config_class.shipped_configs
+    user_configs = os.path.expanduser(os.path.join(user_folder, user_conf_fn))
     config_file_path = None
     if args.subcommand == 'config':
         # read-only: get
@@ -167,23 +167,27 @@ def get_config_file_path(args, user_folder='.sfftk', user_conf_fn='sff.conf'):
             elif os.path.exists(user_configs):
                 config_file_path = user_configs
             elif not os.path.exists(user_configs):
+                if args.verbose:
+                    print_date("User configs not found")
                 try:
                     # make the dir if it doesn't exist
                     os.mkdir(os.path.dirname(user_configs))
                 except OSError:
                     pass
                 # copy the shipped configs to user configs
-                shutil.copy(Configs.shipped_configs, user_configs)
+                if args.verbose:
+                    print_date("Copying shipped configs to user configs...")
+                shutil.copy(config_class.shipped_configs, user_configs)
                 config_file_path = user_configs
     else:
         if args.config_path is not None:
             config_file_path = args.config_path
         elif args.shipped_configs:
-            config_file_path = Configs.shipped_configs
+            config_file_path = config_class.shipped_configs
         elif os.path.exists(user_configs):
             config_file_path = user_configs
         else:
-            config_file_path = Configs.shipped_configs
+            config_file_path = config_class.shipped_configs
     return config_file_path
 
 

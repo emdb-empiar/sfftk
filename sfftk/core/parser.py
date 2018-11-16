@@ -432,6 +432,7 @@ get_config_parser.add_argument(
     default=False,
     help='get all configs'
 )
+add_args(get_config_parser, verbose)
 
 # =============================================================================
 # config: set
@@ -486,17 +487,6 @@ del_config_parser.add_argument(
     help='force deletion; do not ask to confirm deletion [default: False]'
 )
 add_args(del_config_parser, verbose)
-
-# =============================================================================
-# config: clear
-# =============================================================================
-# clear_config_parser = config_subparsers.add_parser(
-#     'clear',
-#     description='Clear all configuration parameters',
-#     help='clear all sfftk configs'
-# )
-# add_args(clear_config_parser, config_path)
-# add_args(clear_config_parser, shipped_configs)
 
 # =========================================================================
 # view subparser
@@ -1040,8 +1030,13 @@ def parse_args(_args):
     # check values
     # config
     if args.subcommand == 'config':
+        if args.verbose:
+            print_date("Reading configs from {}...".format(config_file_path))
         # handle config-specific argument modifications here
         if args.config_subcommand == 'del':
+            if args.name not in configs:
+                print_date("Missing config with name '{}'. Aborting...".format(args.name))
+                return None, configs
             # if force pass
             if not args.force:
                 default_choice = 'n'
