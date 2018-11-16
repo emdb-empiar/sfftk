@@ -1,0 +1,156 @@
+{
+  "boundingBox": {
+    "xmax": null, 
+    "xmin": 0, 
+    "ymax": null, 
+    "ymin": 0, 
+    "zmax": null, 
+    "zmin": 0
+  }, 
+  "details": null, 
+  "filePath": "/Users/pkorir/Documents/workspace/bioimaging-scripts/trunk/sfftk/sfftk/test_data/sff", 
+  "globalExternalReferences": [], 
+  "name": "Segger Segmentation", 
+  "primaryDescriptor": "threeDVolume", 
+  "segments": [
+    {
+      "biologicalAnnotation": {
+        "description": null, 
+        "externalReferences": [], 
+        "numberOfInstances": null
+      }, 
+      "colour": [
+        0.521576881408691, 
+        0.889867722988129, 
+        0.848475754261017, 
+        1.0
+      ], 
+      "id": 85, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 0.42, 
+        "file": "emd_1832.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "description": null, 
+        "externalReferences": [], 
+        "numberOfInstances": null
+      }, 
+      "colour": [
+        0.504164099693298, 
+        0.644178092479706, 
+        0.78633439540863, 
+        1.0
+      ], 
+      "id": 93, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 0.42, 
+        "file": "emd_1832.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "description": null, 
+        "externalReferences": [], 
+        "numberOfInstances": null
+      }, 
+      "colour": [
+        0.669882595539093, 
+        0.86139714717865, 
+        0.948218941688538, 
+        1.0
+      ], 
+      "id": 97, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 0.42, 
+        "file": "emd_1832.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "description": null, 
+        "externalReferences": [], 
+        "numberOfInstances": null
+      }, 
+      "colour": [
+        0.862361133098602, 
+        0.965298295021057, 
+        0.697644174098969, 
+        1.0
+      ], 
+      "id": 101, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 0.42, 
+        "file": "emd_1832.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "description": null, 
+        "externalReferences": [], 
+        "numberOfInstances": null
+      }, 
+      "colour": [
+        0.706890761852264, 
+        0.626759827136993, 
+        0.604495763778687, 
+        1.0
+      ], 
+      "id": 103, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 0.42, 
+        "file": "emd_1832.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "description": null, 
+        "externalReferences": [], 
+        "numberOfInstances": null
+      }, 
+      "colour": [
+        0.787909328937531, 
+        0.924791157245636, 
+        0.951091408729553, 
+        1.0
+      ], 
+      "id": 104, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 0.42, 
+        "file": "emd_1832.seg", 
+        "format": "Segger", 
+        "objectPath": null, 
+        "transformId": 1
+      }
+    }
+  ], 
+  "software": {
+    "name": "segger", 
+    "processingDetails": null, 
+    "version": "2"
+  }, 
+  "transforms": [], 
+  "version": "0.6.0a4"
+}
