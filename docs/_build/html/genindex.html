@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; sfftk v0.3.1.dev4 documentation</title>
+  <title>Index &mdash; sfftk v0.3.1.dev6 documentation</title>
   
 
   
@@ -341,8 +341,6 @@
 </li>
       <li><a href="schema.html#sfftk.schema.SFFSegmentation.clear_annotation">clear_annotation() (sfftk.schema.SFFSegmentation method)</a>
 </li>
-      <li><a href="core.html#sfftk.core.configs.clear_configs">clear_configs() (in module sfftk.core.configs)</a>
-</li>
       <li><a href="notes.html#sfftk.notes.modify.clear_notes">clear_notes() (in module sfftk.notes.modify)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.CLIP">CLIP (class in sfftk.readers.modreader)</a>
@@ -374,6 +372,8 @@
       <li><a href="schema.html#sfftk.schema.SFFSegment.complexesAndMacromolecules">complexesAndMacromolecules (sfftk.schema.SFFSegment attribute)</a>
 </li>
       <li><a href="core.html#sfftk.core.configs.Configs">Configs (class in sfftk.core.configs)</a>
+</li>
+      <li><a href="core.html#sfftk.core.prep.construct_transformation_matrix">construct_transformation_matrix() (in module sfftk.core.prep)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.CONT">CONT (class in sfftk.readers.modreader)</a>
 </li>
@@ -641,6 +641,8 @@
       </ul></li>
       <li><a href="schema.html#sfftk.schema.SFFType.get_by_id">get_by_id() (sfftk.schema.SFFType method)</a>
 </li>
+      <li><a href="core.html#sfftk.core.configs.get_config_file_path">get_config_file_path() (in module sfftk.core.configs)</a>
+</li>
       <li><a href="core.html#sfftk.core.configs.get_configs">get_configs() (in module sfftk.core.configs)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.amreader.get_data">get_data() (in module sfftk.readers.amreader)</a>
@@ -822,8 +824,6 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="schema.html#sfftk.schema.SFFSegmentation.lattices">lattices (sfftk.schema.SFFSegmentation attribute)</a>
-</li>
-      <li><a href="core.html#sfftk.core.configs.list_configs">list_configs() (in module sfftk.core.configs)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.view.list_notes">list_notes() (in module sfftk.notes.view)</a>
 </li>
@@ -1349,10 +1349,14 @@
 </li>
       <li><a href="formats.html#sfftk.formats.mod.IMODShape.transform">transform (sfftk.formats.mod.IMODShape attribute)</a>
 </li>
-      <li><a href="schema.html#sfftk.schema.SFFTransformList.transformationMatrixCount">transformationMatrixCount (sfftk.schema.SFFTransformList attribute)</a>
+      <li><a href="core.html#sfftk.core.prep.transform">transform() (in module sfftk.core.prep)</a>
+</li>
+      <li><a href="core.html#sfftk.core.prep.transform_stl_mesh">transform_stl_mesh() (in module sfftk.core.prep)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="schema.html#sfftk.schema.SFFTransformList.transformationMatrixCount">transformationMatrixCount (sfftk.schema.SFFTransformList attribute)</a>
+</li>
       <li><a href="schema.html#sfftk.schema.SFFMesh.transformId">transformId (sfftk.schema.SFFMesh attribute)</a>
 
       <ul>
@@ -1526,7 +1530,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, EMBL-EBI.
+        &copy; Copyright 2017, EMBL-EBI
 
     </p>
   </div>
@@ -1545,20 +1549,13 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'v0.3.1.dev4',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
 
   
 

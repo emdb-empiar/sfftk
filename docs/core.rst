@@ -5,7 +5,7 @@ Configuration module
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.configs
-	:members: load_configs, list_configs, get_configs, set_configs, del_configs, clear_configs, Configs
+	:members: get_config_file_path, load_configs, Configs, get_configs, set_configs, del_configs
 	:show-inheritance:
 
 Parser module
@@ -19,12 +19,12 @@ Printing utilities
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.print_tools
-	:members:
+	:members: print_date, get_printable_ascii_string, print_static
 	:show-inheritance:
 
 Preparation utilities
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.prep
-	:members: bin_map
+	:members: bin_map, transform, transform_stl_mesh, construct_transformation_matrix
 	:show-inheritance:

@@ -11,21 +11,52 @@ Annotation of EMDB-SFF segmentations is the second core function of ``sfftk``.
 Here we outline how to perform annotations of EMDB-SFF segmentations via the 
 command-line.
 
+Synopsis
+---------
+
 Annotation is performed using the `notes` utility that is accessed with the 
 ``notes`` subcommand.
 
 .. code:: bash
 
     sff notes
-    
-Annotation Levels: Global vs. Local Notes
------------------------------------------
 
-Annotations can be added at the segmentation (global) or individual segment 
-(local) level. ``sfftk`` distinguishes between both levels of annotations. 
-Global notes are 
+yielding
+
+.. code:: bash
+
+    usage: sff notes [-h] EMDB-SFF annotation tools ...
+
+    The EMDB-SFF Annotation Toolkit
+
+    optional arguments:
+      -h, --help            show this help message and exit
+
+    Annotation tools:
+      The EMDB-SFF Annotation Toolkit provides the following tools:
+
+      EMDB-SFF annotation tools
+        search              search for terms by labels
+        list                list available annotations
+        show                show an annotation by ID
+        add                 add new annotations
+        edit                edit existing annotations
+        del                 delete existing annotations
+        copy                copy notes across segments within the same EMDB-SFF
+                            file
+        clear               clear notes in an EMDB-SFF file
+        merge               merge notes from two EMDB-SFF files
+        save                write all changes made until the last 'save' action
+        trash               discard all changes made since the last the edit
+                            action (add, edit, del)
+    
+Annotation Levels: Global vs. Segment Notes
+--------------------------------------------
+
+Annotations can be added at the segmentation (global) or individual segment level.
+``sfftk`` distinguishes between both levels of annotations. Global notes are
 useful for terms that describe the segmentation as a whole such as the 
-species, the tissue type, disease state and such global references. Local 
+species, the tissue type, disease state and such global references. Segments
 notes refer to individual segments which may be constituted of multiple 
 biological entities of interest. Given the segment relationship specified by 
 `parent_id` to `segment_id`, a hierarchy of segments may also be annotated. 
@@ -110,6 +141,46 @@ coloured yellow.
 
 display available options.
 
+.. code:: bash
+
+    usage: sff notes search [-h] [-p CONFIG_PATH] [-b] [-R {ols,emdb,uniprot,pdb}]
+                            [-s START] [-r ROWS] [-O ONTOLOGY] [-x] [-o] [-L] [-l]
+                            search_term
+
+    Search ontologies for annotation by text labels
+
+    positional arguments:
+      search_term           the term to search; add quotes if spaces are included
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -R {ols,emdb,uniprot,pdb}, --resource {ols,emdb,uniprot,pdb}
+                            the resource to search for terms or accessions; other
+                            valid options are ['ols', 'emdb', 'uniprot', 'pdb']
+                            [default: ols]
+      -s START, --start START
+                            start index [default: 1]
+      -r ROWS, --rows ROWS  number of rows [default: 10]
+
+    EBI Ontology Lookup Service (OLS):
+      The Ontology Lookup Service (OLS) is a repository for biomedical
+      ontologies that aims to provide a single point of access to the latest
+      ontology versions. Searching against OLS can use the following options:
+
+      -O ONTOLOGY, --ontology ONTOLOGY
+                            the ontology to search [default: None]
+      -x, --exact           exact matches? [default: False]
+      -o, --obsoletes       include obsoletes? [default: False]
+      -L, --list-ontologies
+                            list available ontologies [default: False]
+      -l, --short-list-ontologies
+                            short list of available ontologies [default: False]
+
 Specifying Search Terms
 -----------------------
 
@@ -133,7 +204,7 @@ The search results are displayed as a table with the following columns:
 
 -  *short_form*  [1]_ of the result term
 
--  *ontology_name*
+-  *resource_name*
 
 -  *description/IRI* is free text describing the term and IRI refers to a link by which the term in the ontology may be accessed, and
 
@@ -180,8 +251,8 @@ This only applies to searches against the `EBI Ontology Lookup Service <https://
 
 .. code:: bash
 
-    sff notes search -O <ontology_name> “<term>”
-    sff notes search --ontology <ontology_name> “<term>”
+    sff notes search -O <resource_name> “<term>”
+    sff notes search --ontology <resource_name> “<term>”
 
 See `Listing Available Ontologies <#listing-available-ontologies>`__ on how 
 to get an ontology to search.
@@ -240,7 +311,7 @@ the last line of the results:
 
 .. code:: bash
 	
-	Showing: 1 to 10 of 139 results found
+    Showing: 1 to 10 of 139 results found
 
 Specifying The Start Result
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,17 +341,46 @@ Viewing Notes
 =============
 
 ``sfftk`` includes utilities to view annotations (notes) included in EMDB-SFF 
-files. There are two main functionalities:
-
--  `Listing` all notes present using the ``sff notes list`` sub-subcommand, and
-
--  `Showing` global notes or those in a single segment using the ``sff notes show`` sub-command.
-
-As describe in `States <#states-find-view-modify>`__, the teminal text colour 
-when viewing is **WHITE**.
+files.
 
 Listing All Notes
 -----------------
+
+Listing all notes is performed by running
+
+.. code:: bash
+
+    sff notes list
+
+which has the following options:
+
+.. code:: bash
+
+    usage: sff notes list [-h] [-H] [-p CONFIG_PATH] [-b] [-l] [-D] [-r] [-I] [-v]
+                          sff_file
+
+    List all available annotations present in an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -H, --header          show EMDB-SFF header (global) attributes [default:
+                            False]
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -l, --long-format     only show segment ID and description (if present)
+                            [default: False]
+      -D, --sort-by-name    sort listings by segment name [default: False (sorts
+                            by ID)]
+      -r, --reverse         reverse the sort order [default: False]
+      -I, --list-ids        only list the IDs for segments one per line [default:
+                            False]
+      -v, --verbose         verbose output
 
 The **sff notes list** sub-command only lists a summary table of notes 
 available for each segment. 
@@ -692,6 +792,47 @@ which are sorted in ascending order. These can be reversed using the
 Showing Notes In One Or More Segments
 -------------------------------------
 
+To show annotations relating to one or several (or all) segments
+
+type
+
+.. code:: bash
+
+    sff notes show
+
+which has the following options:
+
+.. code:: bash
+
+    usage: sff notes show [-h] [-p CONFIG_PATH] [-b] [-H] [-l] [-v]
+                          [-i SEGMENT_ID]
+                          sff_file
+
+    Show a specific annotations by ID present in an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -H, --header          show EMDB-SFF header (global) attributes [default:
+                            False]
+      -l, --long-format     only show segment ID and description (if present)
+                            [default: False]
+      -v, --verbose         verbose output
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            refer to a segment by its ID; pass more than one ID as
+                            a comma-separated list with no spaces e.g.
+                            'id1,id2,...,idN'
+
+As describe in `States <#states-find-view-modify>`__, the teminal text colour
+when viewing is **WHITE**.
+
 Listing notes from EMDB-SFF files with many segments could clutter the screen. 
 The user can switch between listing all segments to finding segment IDs of 
 interest then displaying one or more segments of interest using the ``sff
@@ -1024,7 +1165,7 @@ Adding Segmentation Details
 	# MODIFY state
 	sff notes add --description "All imaging was done at 17 K" @
 	
-Adding An External Reference (Global Or Local)
+Adding An External Reference (Global Or Segment)
 ``````````````````````````````````````````````````````
 
 The external references flag (``-E/--external-ref``) takes three arguments:
@@ -1062,11 +1203,11 @@ segment. We note down the *ontology name* (``go``), *IRI*
     # MODIFY state
     # more than one reference
     sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
-    # local (per-segment) notes
+    # per-segment notes
     sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
     sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
 
-Adding Local Notes (Single Segment)
+Adding Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Notes are added using the **sff notes add** sub-subcommand.
@@ -1075,7 +1216,17 @@ Notes are added using the **sff notes add** sub-subcommand.
 
     sff notes add -i <segment_id> [options] file.json
 
-Adding A Description
+Adding A Segment Name
+`````````````````````````````
+
+The ``-s/--segment-name`` flag takes a single argument or quoted string to name the segment.
+
+.. code:: bash
+
+    sff notes add -i 9911 -s "Top-most segment" file.sff
+    sff notes add -i 9911 --segment-name "Top-most segment" file.sff
+
+Adding A Segment Description
 ``````````````````````````````````````````````````````
 
 Use the ``-D/--description`` flag to add a description. Multi-word descriptions will need to be quoted.
@@ -1092,6 +1243,19 @@ Adding The Number of Instances
 
     sff notes add -i 9911 -n <int> file.json
     sff notes add --segment-id 9911 --number-of-instances <int> file.json
+
+Adding External References
+``````````````````````````````````
+
+.. code:: bash
+
+    sff notes add -i 9911 -E <resource_name> <iri> <short_form> file.json
+
+or several at once using multiple ``-E/--external-ref`` flags:
+
+.. code:: bash
+
+    sff notes add -i 9911 -E <resource_name> <iri> <short_form> -E <resource_name> <iri> <short_form> -E <resource_name> <iri> <short_form>file.json
 
 
 Adding A Complex (Internal Use)
@@ -1128,18 +1292,26 @@ reference to be edited (``-e/--external-ref-id``).
 
 .. code:: bash
 
-	sff notes edit -e <ref_id> -E <ontology_name> <iri> <short_form> file.json
+    sff notes edit -e <ref_id> -E <resource_name> <iri> <short_form> file.json
 	
-Specifying ``sff notes edit -e 0 -E <ontology_name> <iri> <short_form> file.json`` when there are no external
-references is equivalent to using ``sff notes add -E <ontology_name> <iri> <short_form> file.json``.
+Specifying ``sff notes edit -e 0 -E <resource_name> <iri> <short_form> file.json`` when there are no external
+references is equivalent to using ``sff notes add -E <resource_name> <iri> <short_form> file.json``.
 
-Editing Local Notes (Single Segment)
+Editing Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a segment in an EMDB-SFF file already contains notes then we can edit 
 the notes using the ``sff notes edit`` sub-subcommand. Because some edit 
 options will need to refer to specific entries (e.g. the third external 
 reference) extra arguments are required to specify which item is being edited.
+
+Editing A Segment Name
+```````````````````````````````
+
+.. code:: bash
+
+    sff notes edit -i <segment_id> -s <name> file.json
+    sff notes edit -i <segment_id> --segment-name <name> @ # if editing a just-added name
 
 Editing A Description
 ``````````````````````````````````````````````````````
@@ -1162,10 +1334,10 @@ Editing An External Reference
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <obo_id> file.json
-    sff notes edit -i <segment_id> --external-ref-id <extref_id> -E <ontology> <obo_id> file.json
+    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <iri> <obo_id> file.json
+    sff notes edit -i <segment_id> --external-ref-id <extref_id> -E <ontology> <iri> <obo_id> file.json
     # if editing a just-added description
-    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <obo_id> @
+    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <iri> <obo_id> @
 
 Editing A Complex (Internal Use)
 ``````````````````````````````````````````````````````
@@ -1348,7 +1520,7 @@ As always we can view the full list of options:
       --from-all-segments   clear notes from all segments
 
 
-Clearing Local Notes (Segments)
+Clearing Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One Segment
@@ -1545,8 +1717,17 @@ Deleting External References
 	sff notes del -e <extref_id> file.json
 	sff notes del -e <extref_id> @
 	
-Deleting Local Notes (Single Segment)
+Deleting Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Deleting The Segment Name
+``````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -s file.json
+    sff notes del -i <segment_id> -s @
+
 
 Deleting A Description
 ``````````````````````````````````````````````````````

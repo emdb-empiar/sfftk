@@ -50,14 +50,13 @@ yielding
         trash               discard all changes made since the last the edit
                             action (add, edit, del)
     
-Annotation Levels: Global vs. Local Notes
------------------------------------------
+Annotation Levels: Global vs. Segment Notes
+--------------------------------------------
 
-Annotations can be added at the segmentation (global) or individual segment 
-(local) level. ``sfftk`` distinguishes between both levels of annotations. 
-Global notes are 
+Annotations can be added at the segmentation (global) or individual segment level.
+``sfftk`` distinguishes between both levels of annotations. Global notes are
 useful for terms that describe the segmentation as a whole such as the 
-species, the tissue type, disease state and such global references. Local 
+species, the tissue type, disease state and such global references. Segments
 notes refer to individual segments which may be constituted of multiple 
 biological entities of interest. Given the segment relationship specified by 
 `parent_id` to `segment_id`, a hierarchy of segments may also be annotated. 
@@ -205,7 +204,7 @@ The search results are displayed as a table with the following columns:
 
 -  *short_form*  [1]_ of the result term
 
--  *ontology_name*
+-  *resource_name*
 
 -  *description/IRI* is free text describing the term and IRI refers to a link by which the term in the ontology may be accessed, and
 
@@ -252,8 +251,8 @@ This only applies to searches against the `EBI Ontology Lookup Service <https://
 
 .. code:: bash
 
-    sff notes search -O <ontology_name> “<term>”
-    sff notes search --ontology <ontology_name> “<term>”
+    sff notes search -O <resource_name> “<term>”
+    sff notes search --ontology <resource_name> “<term>”
 
 See `Listing Available Ontologies <#listing-available-ontologies>`__ on how 
 to get an ontology to search.
@@ -312,7 +311,7 @@ the last line of the results:
 
 .. code:: bash
 	
-	Showing: 1 to 10 of 139 results found
+    Showing: 1 to 10 of 139 results found
 
 Specifying The Start Result
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1166,7 +1165,7 @@ Adding Segmentation Details
 	# MODIFY state
 	sff notes add --description "All imaging was done at 17 K" @
 	
-Adding An External Reference (Global Or Local)
+Adding An External Reference (Global Or Segment)
 ``````````````````````````````````````````````````````
 
 The external references flag (``-E/--external-ref``) takes three arguments:
@@ -1204,11 +1203,11 @@ segment. We note down the *ontology name* (``go``), *IRI*
     # MODIFY state
     # more than one reference
     sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
-    # local (per-segment) notes
+    # per-segment notes
     sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
     sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
 
-Adding Local Notes (Single Segment)
+Adding Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Notes are added using the **sff notes add** sub-subcommand.
@@ -1217,7 +1216,17 @@ Notes are added using the **sff notes add** sub-subcommand.
 
     sff notes add -i <segment_id> [options] file.json
 
-Adding A Description
+Adding A Segment Name
+`````````````````````````````
+
+The ``-s/--segment-name`` flag takes a single argument or quoted string to name the segment.
+
+.. code:: bash
+
+    sff notes add -i 9911 -s "Top-most segment" file.sff
+    sff notes add -i 9911 --segment-name "Top-most segment" file.sff
+
+Adding A Segment Description
 ``````````````````````````````````````````````````````
 
 Use the ``-D/--description`` flag to add a description. Multi-word descriptions will need to be quoted.
@@ -1234,6 +1243,19 @@ Adding The Number of Instances
 
     sff notes add -i 9911 -n <int> file.json
     sff notes add --segment-id 9911 --number-of-instances <int> file.json
+
+Adding External References
+``````````````````````````````````
+
+.. code:: bash
+
+    sff notes add -i 9911 -E <resource_name> <iri> <short_form> file.json
+
+or several at once using multiple ``-E/--external-ref`` flags:
+
+.. code:: bash
+
+    sff notes add -i 9911 -E <resource_name> <iri> <short_form> -E <resource_name> <iri> <short_form> -E <resource_name> <iri> <short_form>file.json
 
 
 Adding A Complex (Internal Use)
@@ -1270,18 +1292,26 @@ reference to be edited (``-e/--external-ref-id``).
 
 .. code:: bash
 
-	sff notes edit -e <ref_id> -E <ontology_name> <iri> <short_form> file.json
+    sff notes edit -e <ref_id> -E <resource_name> <iri> <short_form> file.json
 	
-Specifying ``sff notes edit -e 0 -E <ontology_name> <iri> <short_form> file.json`` when there are no external
-references is equivalent to using ``sff notes add -E <ontology_name> <iri> <short_form> file.json``.
+Specifying ``sff notes edit -e 0 -E <resource_name> <iri> <short_form> file.json`` when there are no external
+references is equivalent to using ``sff notes add -E <resource_name> <iri> <short_form> file.json``.
 
-Editing Local Notes (Single Segment)
+Editing Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a segment in an EMDB-SFF file already contains notes then we can edit 
 the notes using the ``sff notes edit`` sub-subcommand. Because some edit 
 options will need to refer to specific entries (e.g. the third external 
 reference) extra arguments are required to specify which item is being edited.
+
+Editing A Segment Name
+```````````````````````````````
+
+.. code:: bash
+
+    sff notes edit -i <segment_id> -s <name> file.json
+    sff notes edit -i <segment_id> --segment-name <name> @ # if editing a just-added name
 
 Editing A Description
 ``````````````````````````````````````````````````````
@@ -1304,10 +1334,10 @@ Editing An External Reference
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <obo_id> file.json
-    sff notes edit -i <segment_id> --external-ref-id <extref_id> -E <ontology> <obo_id> file.json
+    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <iri> <obo_id> file.json
+    sff notes edit -i <segment_id> --external-ref-id <extref_id> -E <ontology> <iri> <obo_id> file.json
     # if editing a just-added description
-    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <obo_id> @
+    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <iri> <obo_id> @
 
 Editing A Complex (Internal Use)
 ``````````````````````````````````````````````````````
@@ -1490,7 +1520,7 @@ As always we can view the full list of options:
       --from-all-segments   clear notes from all segments
 
 
-Clearing Local Notes (Segments)
+Clearing Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One Segment
@@ -1687,8 +1717,17 @@ Deleting External References
 	sff notes del -e <extref_id> file.json
 	sff notes del -e <extref_id> @
 	
-Deleting Local Notes (Single Segment)
+Deleting Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Deleting The Segment Name
+``````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -s file.json
+    sff notes del -i <segment_id> -s @
+
 
 Deleting A Description
 ``````````````````````````````````````````````````````

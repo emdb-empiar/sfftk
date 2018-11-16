@@ -85,7 +85,7 @@ Publications
 The following articles should be cited whenever ``sfftk`` is used in a 
 publication:
 
-.. todo::
+.. note::
 
 	Article to be added
 
@@ -172,7 +172,7 @@ command.
 
 	sff convert file.am -o file.sff
 
-For a full description of how to perform conversion, please see the 
+For a full description of how to perform conversion, please see the
 :doc:`guide to format conversion <converting>`.
 
 Annotation

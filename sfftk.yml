@@ -2,48 +2,91 @@ name: sfftk
 channels:
   - defaults
 dependencies:
+  - appnope=0.1.0=py27hb466136_0
+  - backports=1.0=py27_1
+  - backports.shutil_get_terminal_size=1.0.0=py27_2
   - ca-certificates=2018.03.07=0
   - certifi=2018.10.15=py27_0
+  - decorator=4.3.0=py27_0
+  - enum34=1.1.6=py27_1
+  - ipython=5.8.0=py27_0
+  - ipython_genutils=0.2.0=py27h8b9a179_0
   - libcxx=4.0.1=hcfea43d_1
   - libcxxabi=4.0.1=hcfea43d_1
   - libedit=3.1.20170329=hb402a30_2
   - libffi=3.2.1=h475c297_4
   - ncurses=6.1=h0a44026_0
   - openssl=1.1.1=h1de35cc_0
+  - pathlib2=2.3.2=py27_0
+  - pexpect=4.6.0=py27_0
+  - pickleshare=0.7.5=py27_0
   - pip=18.1=py27_0
+  - prompt_toolkit=1.0.15=py27h4a7b9c2_0
+  - ptyprocess=0.6.0=py27_0
+  - pygments=2.2.0=py27h1a556bb_0
   - python=2.7.15=h8f8e585_2
   - readline=7.0=h1de35cc_5
+  - scandir=1.9.0=py27h1de35cc_0
   - setuptools=40.5.0=py27_0
+  - simplegeneric=0.8.1=py27_2
+  - six=1.11.0=py27_1
   - sqlite=3.25.2=ha441bb4_0
   - tk=8.6.8=ha441bb4_0
+  - traitlets=4.3.2=py27hcf08151_0
+  - wcwidth=0.1.7=py27h817c265_0
   - wheel=0.32.2=py27_0
   - zlib=1.2.11=hf3cbc9b_2
   - pip:
     - ahds==0.1.9
+    - alabaster==0.7.12
+    - apipkg==1.5
+    - atomicwrites==1.2.1
+    - attrs==18.2.0
+    - babel==2.6.0
     - backports.functools-lru-cache==1.5
-    - backports.shutil-get-terminal-size==1.0.0
     - bitarray==0.8.3
     - chardet==3.0.4
     - cloudpickle==0.6.1
     - configparser==3.5.0
+    - cov-core==1.15.0
+    - coverage==4.5.1
     - cycler==0.10.0
+    - cython==0.29
     - dask==0.20.1
-    - decorator==4.3.0
-    - enum34==1.1.6
+    - docutils==0.14
+    - execnet==1.5.0
+    - flake8==3.6.0
     - funcsigs==1.0.2
     - h5py==2.6.0
     - idna==2.7
+    - imagesize==1.1.0
+    - jinja2==2.10
     - kiwisolver==1.0.1
     - lxml==4.2.5
+    - markupsafe==1.1.0
     - matplotlib==2.2.3
+    - mccabe==0.6.1
     - mock==2.0.0
+    - more-itertools==4.3.0
     - mrcfile==1.0.4
     - networkx==2.2
     - numpy==1.15.4
     - numpy-stl==2.7.0
+    - packaging==18.0
     - pbr==5.1.1
+    - pep8==1.7.1
     - pillow==5.3.0
+    - pluggy==0.8.0
+    - psycopg2==2.6
+    - py==1.7.0
+    - pycodestyle==2.4.0
+    - pyflakes==2.0.0
     - pyparsing==2.3.0
+    - pytest==3.10.1
+    - pytest-cache==1.0
+    - pytest-cov==2.6.0
+    - pytest-flakes==4.0.0
+    - pytest-pep8==1.0.6
     - python-dateutil==2.7.5
     - python-utils==2.3.0
     - pytz==2018.7
@@ -52,9 +95,15 @@ dependencies:
     - scikit-image==0.14.1
     - scipy==1.1.0
     - sfftk==0.3.1.dev6
+    - sfftk-plus==0.2.0.dev2
     - simpleparse==2.1.1
-    - six==1.11.0
+    - snowballstemmer==1.2.1
+    - sphinx==1.8.2
+    - sphinx-rtd-theme==0.4.2
+    - sphinxcontrib-websupport==1.1.0
     - subprocess32==3.5.3
     - toolz==0.9.0
+    - typing==3.6.6
     - urllib3==1.24.1
+    - vtk==8.1.1
 prefix: /Users/pkorir/miniconda2/envs/sfftk

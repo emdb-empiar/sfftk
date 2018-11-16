@@ -445,6 +445,10 @@ def handle_view(args, configs):  # @UnusedVariable
         print("*" * 50)
         print(str(seg.segments[0].annotation._map_obj))
         print("*" * 50)
+    elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
+        print("*" * 50)
+        print("STL Segmentation")
+        print("*" * 50)
     else:
         print("Not implemented view for files of type .{}".format(args.from_file.split('.')[-1]), file=sys.stderr)
     return os.EX_OK

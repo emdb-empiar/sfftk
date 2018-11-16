@@ -21,6 +21,66 @@ Viewing File Metadata
 
     sff view <file>
 
+The full list of options is:
+
+.. code:: bash
+
+    sff view
+    usage: sff view [-h] [-p CONFIG_PATH] [-b] [-V] [-C] [-v] from_file
+
+    View a summary of an SFF file
+
+    positional arguments:
+      from_file             any SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -V, --version         show SFF format version
+      -C, --show-chunks     show sequence of chunks in IMOD file; only works with
+                            IMOD model files (.mod) [default: False]
+      -v, --verbose         verbose output
+
+Show IMOD Chunks
+----------------
+
+The IMOD file format documentation describes that the files are partitioned into chunks,
+each commencing with four byte identifier. To view the chunks in an IMOD file run:
+
+.. code:: bash
+
+    sff view -C file.mod
+    sff view --show-chunks file.mod
+
+This can be helpful in checking an IMOD file for meshes (``MESH`` chunks). For example, the file below
+has a single mesh.
+
+.. code:: bash
+
+    sff view --show-chunks sfftk/test_data/segmentations/test_data.mod
+    **************************************************
+    IMOD Segmentation version V1.2
+    Segmentation name: IMOD-NewModel
+    Format: IMOD
+    Primary descriptor: contours
+    Auxiliary descriptors: meshes
+    Pixel size: 1.90680003166
+    Pixel units: nm
+    xmax, ymax, zmax: (512, 512, 150)
+    No. of segments: 1
+    **************************************************
+    IMOD 2
+    OBJT 1
+    MESH 1
+    IMAT 1
+    VIEW 2
+    MINX 1
+    IEOF
+
 Prepping Segmentation Files
 ===========================
 
@@ -51,6 +111,11 @@ compact file, whose data will then be efficiently embedded into the EMDB-SFF fil
 
       Preparation steps:
         binmap            bin a CCP4 map
+        transform         transform an STL mesh
+
+
+Binning Map Files
+--------------------------
 
 The ``binmap`` utility has the following options:
 
@@ -92,7 +157,7 @@ The ``binmap`` utility has the following options:
 
 
 Default Options
----------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``binmap`` utility can be used with default values:
 
@@ -123,7 +188,7 @@ which is a fraction of the original file:
     -rw-r--r--  1 pkorir  staff    96K 12 Oct 11:27 file_prep.mrc
 
 Specify The Number Of Bytes Per Voxel
--------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The most important argument is the number of bytes per voxel to be used in the output file specified using
 ``-B/--bytes-per-voxel`` followed by an integer. By default, this is set to ``1`` (one) but can be
@@ -150,7 +215,7 @@ which will result in file that is roughly twice as big as would be produced by d
     -rw-r--r--  1 pkorir  staff    96K 12 Oct 11:27 file_prep.m
 
 Specify The Contour Level
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The contour level about which binarising should be carried is specified using the ``-c/--contour-level``
 argument. The default contour level is ``0.0`` (zero). Note that this is an exlusive value i.e. all voxels
@@ -162,7 +227,7 @@ with values equal to the contour level will be *excluded*.
     sff prep binmap --contour-level 0.5 -v file.mrc
 
 Specifying A Mask Value
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The voxel value that designates the segment may be set by setting the ``-m/--mask-value`` argument.
 The default value is ``1`` (one).
@@ -173,7 +238,7 @@ The default value is ``1`` (one).
     sff prep binmap --mask-value -v file.mrc
 
 Negate The Mask File
---------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 By default, all values greater than (*not greater than or equal to*) the contour level will be treated
 as being *in* the segment. All other voxels will be *outside* the segment. This can be reversed using
@@ -184,7 +249,7 @@ the ``--negate`` argument.
     sff prep binmap --negate -c 0.5 -v file.mrc
 
 Specify The Output File Infix
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To prevent accidentally overwriting the original file, the default output file has a ``_prep`` infix i.e.
 the file ``file.mrc`` is converted to ``file_prep.mrc``. This infix can be changed using the ``--infix``
@@ -204,7 +269,7 @@ argument.
 
 
 Specifying The Output File
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The output file can be specified using the ``-o/--output`` argument. Be default, the name of the output
 file is determined from the name of the source file *plus* the infix ("prep"). Note that the infix will
@@ -223,7 +288,7 @@ not be used when an output file is specified.
     Fri Oct 12 12:06:41 2018	Binarising complete!
 
 Overwrite The Original File
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to replace the original file (not recommended) you may do so using the ``--overwrite`` argument.
 Be default, trying to overwrite the original file will fail.
@@ -235,7 +300,66 @@ Be default, trying to overwrite the original file will fail.
     Fri Oct 12 11:43:16 2018	Attempting to overwrite without explicit --overwrite argument
 
 
-Settings Configurations
+Transforming STL Meshes
+----------------------------
+
+It is often necessary to transform meshes contained in STL files so as to get better
+alignment with images. To do this we need a 4X4 matrix with the parameters.
+
+``sfftk`` uses two kinds of parameters for this:
+
+- **rotation** parameters, which are the top-left 3X3 sub-matrix;
+
+- **translation** parameters, which are the top-right 3X1 sub-matrix;
+
+Rotation parameters are specified by providing both the physical and
+image dimensions of the bounding box. This is then used to determine
+the voxel dimensions. The physical dimensions of the bounding box are
+specified using the ``-L/--lengths`` argument while the image
+dimensions of the bounding box are specified using the ``-I/--indices``.
+Each of these arguments take three values - one for each of *x*, *y* and
+*z*.
+
+Optionally, the ``-O/--origin`` argument specifies the location of origin
+and similarly take three values for each of *x*, *y* and *z*. The default
+is located at *(0.0, 0.0, 0.0)*.
+
+
+.. code:: bash
+
+    sff prep transform --lengths <x-length> <y-length> <z-length> --indices <x-size> <y-size> <z-size> file.stl
+
+or with a translation
+
+.. code:: bash
+
+    sff prep transform --lengths <x-length> <y-length> <z-length> --indices <x-size> <y-size> <z-size> --origin <x> <y> <z> file.stl
+
+Specifying The Infix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default the output is written to a file with a name composed of the original
+file name with an infix. For example, if the input file name is ``file.stl``,
+then the output filename will be ``file_transformed.stl``. We can change the
+infix with the ``--infix`` argument.
+
+.. code:: bash
+
+    sff prep transform [params] --infix tx file.stl
+    # will write to file_tx.stl
+
+Specifying The Output File
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Alternatively, the name of the output file may be specified using the
+``-o/--output`` argument.
+
+.. code:: bash
+
+    sff prep transform [params] --output tx_file.stl file.stl
+    # will write to tx_file.stl
+
+Setting Configurations
 =======================
 
 Some of the functionality provided by sfftk relies on persistent configurations. 
