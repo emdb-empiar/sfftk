@@ -11,12 +11,44 @@ Annotation of EMDB-SFF segmentations is the second core function of ``sfftk``.
 Here we outline how to perform annotations of EMDB-SFF segmentations via the 
 command-line.
 
+Synopsis
+---------
+
 Annotation is performed using the `notes` utility that is accessed with the 
 ``notes`` subcommand.
 
 .. code:: bash
 
     sff notes
+
+yielding
+
+.. code:: bash
+
+    usage: sff notes [-h] EMDB-SFF annotation tools ...
+
+    The EMDB-SFF Annotation Toolkit
+
+    optional arguments:
+      -h, --help            show this help message and exit
+
+    Annotation tools:
+      The EMDB-SFF Annotation Toolkit provides the following tools:
+
+      EMDB-SFF annotation tools
+        search              search for terms by labels
+        list                list available annotations
+        show                show an annotation by ID
+        add                 add new annotations
+        edit                edit existing annotations
+        del                 delete existing annotations
+        copy                copy notes across segments within the same EMDB-SFF
+                            file
+        clear               clear notes in an EMDB-SFF file
+        merge               merge notes from two EMDB-SFF files
+        save                write all changes made until the last 'save' action
+        trash               discard all changes made since the last the edit
+                            action (add, edit, del)
     
 Annotation Levels: Global vs. Local Notes
 -----------------------------------------
@@ -109,6 +141,46 @@ coloured yellow.
     sff notes search --help
 
 display available options.
+
+.. code:: bash
+
+    usage: sff notes search [-h] [-p CONFIG_PATH] [-b] [-R {ols,emdb,uniprot,pdb}]
+                            [-s START] [-r ROWS] [-O ONTOLOGY] [-x] [-o] [-L] [-l]
+                            search_term
+
+    Search ontologies for annotation by text labels
+
+    positional arguments:
+      search_term           the term to search; add quotes if spaces are included
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -R {ols,emdb,uniprot,pdb}, --resource {ols,emdb,uniprot,pdb}
+                            the resource to search for terms or accessions; other
+                            valid options are ['ols', 'emdb', 'uniprot', 'pdb']
+                            [default: ols]
+      -s START, --start START
+                            start index [default: 1]
+      -r ROWS, --rows ROWS  number of rows [default: 10]
+
+    EBI Ontology Lookup Service (OLS):
+      The Ontology Lookup Service (OLS) is a repository for biomedical
+      ontologies that aims to provide a single point of access to the latest
+      ontology versions. Searching against OLS can use the following options:
+
+      -O ONTOLOGY, --ontology ONTOLOGY
+                            the ontology to search [default: None]
+      -x, --exact           exact matches? [default: False]
+      -o, --obsoletes       include obsoletes? [default: False]
+      -L, --list-ontologies
+                            list available ontologies [default: False]
+      -l, --short-list-ontologies
+                            short list of available ontologies [default: False]
 
 Specifying Search Terms
 -----------------------
@@ -270,17 +342,46 @@ Viewing Notes
 =============
 
 ``sfftk`` includes utilities to view annotations (notes) included in EMDB-SFF 
-files. There are two main functionalities:
-
--  `Listing` all notes present using the ``sff notes list`` sub-subcommand, and
-
--  `Showing` global notes or those in a single segment using the ``sff notes show`` sub-command.
-
-As describe in `States <#states-find-view-modify>`__, the teminal text colour 
-when viewing is **WHITE**.
+files.
 
 Listing All Notes
 -----------------
+
+Listing all notes is performed by running
+
+.. code:: bash
+
+    sff notes list
+
+which has the following options:
+
+.. code:: bash
+
+    usage: sff notes list [-h] [-H] [-p CONFIG_PATH] [-b] [-l] [-D] [-r] [-I] [-v]
+                          sff_file
+
+    List all available annotations present in an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -H, --header          show EMDB-SFF header (global) attributes [default:
+                            False]
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -l, --long-format     only show segment ID and description (if present)
+                            [default: False]
+      -D, --sort-by-name    sort listings by segment name [default: False (sorts
+                            by ID)]
+      -r, --reverse         reverse the sort order [default: False]
+      -I, --list-ids        only list the IDs for segments one per line [default:
+                            False]
+      -v, --verbose         verbose output
 
 The **sff notes list** sub-command only lists a summary table of notes 
 available for each segment. 
@@ -691,6 +792,47 @@ which are sorted in ascending order. These can be reversed using the
 
 Showing Notes In One Or More Segments
 -------------------------------------
+
+To show annotations relating to one or several (or all) segments
+
+type
+
+.. code:: bash
+
+    sff notes show
+
+which has the following options:
+
+.. code:: bash
+
+    usage: sff notes show [-h] [-p CONFIG_PATH] [-b] [-H] [-l] [-v]
+                          [-i SEGMENT_ID]
+                          sff_file
+
+    Show a specific annotations by ID present in an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -H, --header          show EMDB-SFF header (global) attributes [default:
+                            False]
+      -l, --long-format     only show segment ID and description (if present)
+                            [default: False]
+      -v, --verbose         verbose output
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            refer to a segment by its ID; pass more than one ID as
+                            a comma-separated list with no spaces e.g.
+                            'id1,id2,...,idN'
+
+As describe in `States <#states-find-view-modify>`__, the teminal text colour
+when viewing is **WHITE**.
 
 Listing notes from EMDB-SFF files with many segments could clutter the screen. 
 The user can switch between listing all segments to finding segment IDs of 
