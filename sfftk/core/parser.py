@@ -904,7 +904,7 @@ merge_notes_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 save_notes_parser = notes_subparsers.add_parser(
     'save',
     description="Save all changes made to the actual file",
-    help="write all changes made until the last 'save' action"
+    help="write all changes made since the last 'save' action"
 )
 save_notes_parser.add_argument(*sff_file['args'], **sff_file['kwargs'])
 add_args(save_notes_parser, config_path)

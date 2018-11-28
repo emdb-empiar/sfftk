@@ -375,7 +375,7 @@ For example:
 
 .. code:: bash
 
-	(sfftk) pkorir@pkorir-tarakimu:docs $ sff config list
+	sff config get --all
 	Fri Jan 19 14:03:34 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
 	Fri Jan 19 14:03:34 2018	Listing all 3 configs...
 	__TEMP_FILE          = ./temp-annotated.json

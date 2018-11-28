@@ -1,4 +1,4 @@
-scipy
+scipy==1.1.0
 backports.shutil_get_terminal_size
 h5py
 matplotlib<3.0

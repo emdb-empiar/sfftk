@@ -46,7 +46,7 @@ yielding
                             file
         clear               clear notes in an EMDB-SFF file
         merge               merge notes from two EMDB-SFF files
-        save                write all changes made until the last 'save' action
+        save                write all changes made since the last 'save' action
         trash               discard all changes made since the last the edit
                             action (add, edit, del)
     
@@ -993,7 +993,7 @@ file determines the output form.
 	sff config set __TEMP_FILE ./my-annotations.json
 	Mon Jan 22 16:49:27 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
 	Mon Jan 22 16:49:27 2018	Setting config __TEMP_FILE to value ./my-annotations.json...
-	sff config list
+	sff config get -all
 	Mon Jan 22 16:49:31 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
 	Mon Jan 22 16:49:31 2018	Listing all 3 configs...
 	__TEMP_FILE          = ./my-annotations.json
