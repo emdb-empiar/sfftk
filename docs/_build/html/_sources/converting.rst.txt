@@ -98,7 +98,7 @@ EMDB-SFF Format Interconversion
 
     sff convert file.sff --output /path/to/output/file.hff
     sff convert file.hff --format json
-    sff convert file.sff --format sff
+    sff convert file.sff --format sff # reduntant but should work
 
 Verbose Operation
 ~~~~~~~~~~~~~~~~~
@@ -122,7 +122,7 @@ Set Details
 .. code:: bash
 
     sff convert -d "Lorem ipsum dolor..." file.seg
-    sff convert --details "Lorem ipsum dolor..." file.seg file.seg
+    sff convert --details "Lorem ipsum dolor..." file.seg
 
 Change Primary Descriptor
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,7 +136,7 @@ Change Primary Descriptor
 Input Formats
 =============
 
-``sfftk`` can convert several segmentation file formats (see 
+``sfftk`` can convert several segmentation file formats (see
 :ref:`supported_formats`) into EMDB-SFF files.
 
 Output Formats
@@ -145,15 +145,15 @@ Output Formats
 EMDB-SFF files can be output as XML (``.sff``), HDF5 (``.hff``) or JSON 
 (``.json``).
 
--  XML EMDB-SFF files are typically relatively large compared to HDF5 and 
-    JSON equivalents. The compression applied in HDF5 files makes them ideal
-    for large datasets.
+- XML EMDB-SFF files are typically relatively large compared to HDF5 and
+  JSON equivalents. The compression applied in HDF5 files makes them ideal
+  for large datasets.
 
--  JSON EMDB-SFF files do not contain geometric descriptors and are primarily 
-    used as temporary files during annotation.
+- JSON EMDB-SFF files do not contain geometric descriptors and are primarily
+  used as temporary files during annotation.
 
--  Interconversion of the three formats is lossless (with the exception of 
-    geometrical data when converting to JSON - all geometrical data is excluded).
+- Interconversion of the three formats is lossless (with the exception of
+  geometrical data when converting to JSON - all geometrical data is excluded).
 
 There are two ways to perform conversion:
 
@@ -189,14 +189,14 @@ Specifying the output format with ``-f/--format`` flag
 -------------------------------------------------------
 
 The -f/--format options ensures that the output file will be in the same 
-directory as the original segmentation file. The -f flag takes one of three 
+directory as the original segmentation file. The ``-f`` flag takes one of three
 values:
 
--  'sff' for XML files
+-  ``sff`` for XML files
 
--  'hff' for HDF5 files
+-  ``hff`` for HDF5 files
 
--  'json' for JSON files.
+-  ``json`` for JSON files.
 
 Any other value raises an error.
 
@@ -205,7 +205,7 @@ Any other value raises an error.
     sff convert file.seg -f hff
     sff convert file.seg --format hff
 
-The default format (if none is specified) is ‘sff’ (XML).
+The default format (if none is specified) is ``sff`` (XML).
 
 .. code:: bash
 

@@ -303,13 +303,61 @@ Be default, trying to overwrite the original file will fail.
 Transforming STL Meshes
 ----------------------------
 
-It is often necessary to transform meshes contained in STL files so as to get better alignment with images.
+It is often necessary to transform meshes contained in STL files so as to get better
+alignment with images. To do this we need a 4X4 matrix with the parameters.
 
 ``sfftk`` uses two kinds of parameters for this:
 
-- **rotation** parameters;
+- **rotation** parameters, which are the top-left 3X3 sub-matrix;
 
-- **translation** parameters;
+- **translation** parameters, which are the top-right 3X1 sub-matrix;
+
+Rotation parameters are specified by providing both the physical and
+image dimensions of the bounding box. This is then used to determine
+the voxel dimensions. The physical dimensions of the bounding box are
+specified using the ``-L/--lengths`` argument while the image
+dimensions of the bounding box are specified using the ``-I/--indices``.
+Each of these arguments take three values - one for each of *x*, *y* and
+*z*.
+
+Optionally, the ``-O/--origin`` argument specifies the location of origin
+and similarly take three values for each of *x*, *y* and *z*. The default
+is located at *(0.0, 0.0, 0.0)*.
+
+
+.. code:: bash
+
+    sff prep transform --lengths <x-length> <y-length> <z-length> --indices <x-size> <y-size> <z-size> file.stl
+
+or with a translation
+
+.. code:: bash
+
+    sff prep transform --lengths <x-length> <y-length> <z-length> --indices <x-size> <y-size> <z-size> --origin <x> <y> <z> file.stl
+
+Specifying The Infix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default the output is written to a file with a name composed of the original
+file name with an infix. For example, if the input file name is ``file.stl``,
+then the output filename will be ``file_transformed.stl``. We can change the
+infix with the ``--infix`` argument.
+
+.. code:: bash
+
+    sff prep transform [params] --infix tx file.stl
+    # will write to file_tx.stl
+
+Specifying The Output File
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Alternatively, the name of the output file may be specified using the
+``-o/--output`` argument.
+
+.. code:: bash
+
+    sff prep transform [params] --output tx_file.stl file.stl
+    # will write to tx_file.stl
 
 Setting Configurations
 =======================
@@ -327,7 +375,7 @@ For example:
 
 .. code:: bash
 
-	(sfftk) pkorir@pkorir-tarakimu:docs $ sff config list
+	sff config get --all
 	Fri Jan 19 14:03:34 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
 	Fri Jan 19 14:03:34 2018	Listing all 3 configs...
 	__TEMP_FILE          = ./temp-annotated.json
