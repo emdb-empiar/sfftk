@@ -41,3 +41,4 @@ setup(
 )
 
 # matplotlib is not an actual requirement; travis-ci fails by trying to install matplotlib 3.0 which requires python3
+# todo: remove requirements.txt file (it's useless)

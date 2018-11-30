@@ -87,6 +87,7 @@ import sys
 import zlib
 from warnings import warn
 
+print(os.environ)
 import h5py
 import numpy
 import numpy as np
