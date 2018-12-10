@@ -965,7 +965,7 @@ def check_multi_file_formats(file_names):
 
 
 # parser function
-def parse_args(_args):
+def parse_args(_args, use_shlex=False):
     """
     Parse and check command-line arguments and also return configs.
 
@@ -977,15 +977,25 @@ def parse_args(_args):
     assume correct argument values and can concentrate on functionality.
 
     :param list _args: list of arguments
+    :param str _args: string of commands
+    :param bool use_shlex: treat ``_args`` as a string instead for parsing using ``shlex`` lib
     :return: parsed arguments
     :rtype: ``argparse.Namespace``
     :return: config dict-like object
     :rtype: ``sfftk.core.configs.Config``
     """
+    if use_shlex: # if we treat _args as a command string for shlex to process
+        try:
+            assert isinstance(_args, str)
+        except AssertionError:
+            return os.EX_USAGE, None
+        import shlex
+        _args = shlex.split(_args)
+
     # if we have no subcommands then show the available tools
     if len(_args) == 0:
         Parser.print_help()
-        sys.exit(0)
+        return os.EX_OK, None
     # if we only have a subcommand then show that subcommand's help
     elif len(_args) == 1:
         # print(_args[0])
@@ -995,26 +1005,26 @@ def parse_args(_args):
         elif _args[0] == '-V' or _args[0] == '--version':
             from .. import SFFTK_VERSION
             print_date("sfftk version: {}".format(SFFTK_VERSION))
-            sys.exit(os.EX_OK)
+            return os.EX_OK, None
         # anytime a new argument is added to the base parser subparsers are bumped down in index
         elif _args[0] in Parser._actions[2].choices.keys():
             exec ('{}_parser.print_help()'.format(_args[0]))
-            sys.exit(os.EX_OK)
+            return os.EX_OK, None
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
             if _args[1] in Parser._actions[2].choices['notes']._actions[1].choices.keys():
                 exec ('{}_notes_parser.print_help()'.format(_args[1]))
-                sys.exit(os.EX_OK)
+                return os.EX_OK, None
         elif _args[0] == 'prep':
             if _args[1] in Parser._actions[2].choices['prep']._actions[1].choices.keys():
                 exec ('{}_prep_parser.print_help()'.format(_args[1]))
-                sys.exit(os.EX_OK)
+                return os.EX_OK, None
         elif _args[0] == 'config':
             if _args[1] in Parser._actions[2].choices['config']._actions[1].choices.keys():
                 exec ('{}_config_parser.print_help()'.format(_args[1]))
-                sys.exit(os.EX_OK)
+                return os.EX_OK, None
     # parse arguments
     args = Parser.parse_args(_args)
     from .configs import get_config_file_path
@@ -1051,11 +1061,11 @@ def parse_args(_args):
                     choice = 'y'
                 else:
                     print_date("Invalid choice: '{}'")
-                    return None, configs
+                    return os.EX_USAGE, configs
                 # act on user choice
                 if choice == 'n':
                     print_date("You have opted to cancel deletion of '{}'".format(args.name))
-                    return None, configs
+                    return os.EX_USAGE, configs
                 elif choice == 'y':
                     pass
         elif args.config_subcommand == 'set':
@@ -1074,7 +1084,7 @@ def parse_args(_args):
                         choice = 'y'
                     else:
                         print_date("Invalid choice: '{}'")
-                        return None, configs
+                        return os.EX_USAGE, configs
                     # act on user choice
                     if choice == 'n':
                         print_date("You have opted to cancel overwriting of '{}'".format(args.name))
@@ -1088,26 +1098,26 @@ def parse_args(_args):
             ext = args.from_file.split('.')[-1]
             if ext.lower() not in prepable_file_formats:
                 print_date("File format {} not available for prepping".format(ext.lower()))
-                return None, configs
+                return os.EX_USAGE, configs
             if args.output is None:
                 if args.infix != '':
                     args.output = '.'.join(args.from_file.split('.')[:-1]) + '_' + args.infix + '.' + ext
                 else:
                     print_date("Cannot overwrite input file")
-                    return None, configs
+                    return os.EX_USAGE, configs
                 if args.verbose:
                     print_date("Output will be written to {}".format(args.output))
         elif args.prep_subcommand == 'transform':
             ext = args.from_file.split('.')[-1]
             if ext.lower() not in rescalable_file_formats:
                 print_date("File format {} not available for transforming".format(ext.lower()))
-                return None, configs
+                return os.EX_USAGE, configs
             if args.output is None:
                 if args.infix != '':
                     args.output = '.'.join(args.from_file.split('.')[:-1]) + '_' + args.infix + '.' + ext
                 else:
                     print_date("Cannot overwrite input file")
-                    return None, configs
+                    return os.EX_USAGE, configs
                 if args.verbose:
                     print_date("Output will be written to {}".format(args.output))
 
@@ -1116,7 +1126,7 @@ def parse_args(_args):
         if args.show_chunks:
             if not re.match(r".*\.mod$", args.from_file, re.IGNORECASE):
                 print_date("Invalid file type to view chunks. Only works with IMOD files")
-                return None, configs
+                return os.EX_USAGE, configs
     # convert
     elif args.subcommand == 'convert':
         # single vs. multi-file
@@ -1127,7 +1137,7 @@ def parse_args(_args):
                 assert os.path.exists(args.from_file)
             except AssertionError:
                 print_date("File {} was not found".format(args.from_file))
-                return None, configs
+                return os.EX_USAGE, configs
         else:
             if args.multi_file:
                 is_valid_format, file_format, invalid_formats = check_multi_file_formats(args.from_file)
@@ -1140,16 +1150,16 @@ def parse_args(_args):
                             print_date("File {} was not found".format(fn))
                             file_missing = True
                     if file_missing:
-                        return None, configs
+                        return os.EX_USAGE, configs
                 else:
                     print_date("Invalid format(s) for multi-file segmentation: {}; should be only one of: {}".format(
                         ', '.join(invalid_formats),
                         ', '.join(multi_file_formats),
                     ))
-                    return None, configs
+                    return os.EX_USAGE, configs
             else:
                 print_date("Please use -m/--multi-file argument for multi-file segmentations")
-                return None, configs
+                return os.EX_USAGE, configs
         # set the output file
         if args.output is None:
             if args.multi_file:
@@ -1163,7 +1173,7 @@ def parse_args(_args):
                 except AssertionError:
                     print_date("Invalid output format: {}; valid values are: {}".format(
                         args.format, ", ".join(map(lambda x: x[0], FORMAT_LIST))))
-                    return None, configs
+                    return os.EX_USAGE, configs
                 fn = ".".join(os.path.basename(from_file).split(
                     '.')[:-1]) + '.{}'.format(args.format)
                 args.__setattr__('output', os.path.join(dirname, fn))
@@ -1226,7 +1236,7 @@ def parse_args(_args):
         # file that was edited ('add', 'edit', 'del')
         temp_file = configs['__TEMP_FILE']
         temp_file_ref = configs['__TEMP_FILE_REF']
-        if args.notes_subcommand in ['list', 'show', 'add', 'edit', 'del', 'save', 'trash']:
+        if args.notes_subcommand in ['list', 'show', 'add', 'edit', 'del', 'save', 'trash', 'copy', 'clear']:
             # find, view
             if args.notes_subcommand in ['list', 'show', 'search']:
                 if args.sff_file == temp_file_ref:
@@ -1240,7 +1250,7 @@ def parse_args(_args):
                     else:
                         print_date("Temporary file {} does not exist. \
 Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".format(temp_file), stream=sys.stdout)
-                        return None, configs
+                        return os.EX_USAGE, configs
                 else:
                     if args.verbose:
                         print_date(
@@ -1252,7 +1262,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 except AssertionError:
                     print_date(
                         "Save-to file {} not found.".format(args.sff_file))
-                    return None, configs
+                    return os.EX_USAGE, configs
 
         if args.notes_subcommand == "search":
             # ensure start is valid
@@ -1288,7 +1298,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 except AssertionError:
                     print_date(
                         "Nothing specified to add. Use one or more of the following options:\n\t-s <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefValue> \n\t-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
-                    return None, configs
+                    return os.EX_USAGE, configs
 
                 # replace the string in args.complexes with a list
                 if args.complexes:
@@ -1308,7 +1318,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                     print_date("Will not be able to edit an external reference without \
 specifying an external reference ID. Run 'list' or 'show' to see available \
 external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
-                    return None, configs
+                    return os.EX_USAGE, configs
 
                 # consistency of format
                 # todo: check this; doesn't seem right
@@ -1333,7 +1343,7 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                         print_date("Will not be able to edit a complex without specifying \
     a complex ID. Run 'list' or 'show' to see available complex \
     IDs for {}".format(args.segment_id), stream=sys.stdout)
-                        return None, configs
+                        return os.EX_USAGE, configs
 
                 if args.macromolecules:
                     try:
@@ -1342,7 +1352,7 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                         print_date("Will not be able to edit a macromolecule without specifying\
     a macromolecule ID. Run 'list' or 'show' to see available \
     macromolecule IDs for {}".format(args.segment_id), stream=sys.stdout)
-                        return None, configs
+                        return os.EX_USAGE, configs
 
         elif args.notes_subcommand == "del":
             if args.segment_id is not None:
@@ -1351,12 +1361,12 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 except AssertionError:
                     print_date(
                         "Please specify a segment ID", stream=sys.stdout)
-                    return None, configs
+                    return os.EX_USAGE, configs
 
                 args.segment_id = map(int, args.segment_id.split(','))
 
-                # ensure we have at least one item to add
-                assert args.description or args.number_of_instances or \
+                # ensure we have at least one item to del
+                assert args.segment_name or args.description or args.number_of_instances or \
                        (args.external_ref_id is not None) or (args.complex_id is not None) or \
                        (args.macromolecule_id is not None)
 
@@ -1384,7 +1394,7 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                         "the following segment IDs appear in both --segment-id and --to-segment: {}".format(
                             " ".join(map(str, common))
                         ))
-                    return None, configs
+                    return os.EX_USAGE, configs
 
         elif args.notes_subcommand == "clear":
             # where to clear notes from

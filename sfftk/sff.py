@@ -230,6 +230,7 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                 from .core.parser import parse_args  # @Reimport
                 _args, _configs = parse_args(cmd)
                 if not _args:
+                    # todo: fix this (only main() can call sys.exit())
                     sys.exit(os.EX_USAGE)
                 handle_convert(_args, configs)  # convert
                 args.sff_file = temp_file
@@ -553,8 +554,10 @@ def main():
         from .core.parser import parse_args
         args, configs = parse_args(sys.argv[1:])
         # missing args
-        if not args:
-            return 1
+        if args == os.EX_USAGE:
+            return os.EX_USAGE
+        elif args == os.EX_OK: # e.g. show version has no error but has no handler either
+            return os.EX_OK
         # subcommands
         if args.subcommand == 'prep':
             return handle_prep(args, configs)

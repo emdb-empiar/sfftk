@@ -13,7 +13,6 @@ import numpy
 import shutil
 from stl import Mesh
 
-
 from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose
 from .. import BASE_DIR
 from ..core import utils
@@ -27,6 +26,26 @@ from ..notes import RESOURCE_LIST
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
+
+
+class TestParser(unittest.TestCase):
+    def test_default(self):
+        """Test that default operation is OK"""
+        args, configs = parse_args(shlex.split("--version"))
+        self.assertEqual(args, os.EX_OK)
+        self.assertIsNone(configs)
+
+    def test_use_shlex(self):
+        """Test that we can use shlex i.e. treat command as string"""
+        args, configs = parse_args("--version", use_shlex=True)
+        self.assertEqual(args, os.EX_OK)
+        self.assertIsNone(configs)
+
+    def test_fail_use_shlex(self):
+        """Test that we raise an error when use_shlex=True but _args not str"""
+        args, configs = parse_args(shlex.split("--version"), use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        self.assertIsNone(configs)
 
 
 class TestCoreConfigs(unittest.TestCase):
@@ -87,7 +106,7 @@ class TestCoreConfigs(unittest.TestCase):
                 self.user_configs_hide,
                 self.user_configs,
             )
-        else: # it was never there to begin with
+        else:  # it was never there to begin with
             try:
                 os.remove(self.user_configs)
             except OSError:
@@ -450,7 +469,7 @@ class TestParser_prep_binmap(unittest.TestCase):
     def test_blank_infix(self):
         """Test that a blank infix fails"""
         args, _ = parse_args(shlex.split("prep binmap --infix '' file.map"))
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
 
 class TestParserPrepTransform(unittest.TestCase):
@@ -505,7 +524,7 @@ class TestParserPrepTransform(unittest.TestCase):
                 indices=' '.join(map(str, indices)),
                 origin=' '.join(map(str, origin)),
             )))
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_output(self):
         """Test that we can set the output"""
@@ -642,25 +661,25 @@ class TestParser_convert(unittest.TestCase):
         """Test that excluding -m issues a warning for CCP4"""
         args, _ = parse_args(shlex.split('convert -v {}'.format(' '.join(self.empty_maps))))
         # assertions
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_multifile_stl_fail2(self):
         """Test that excluding -m issues a warning for STL"""
         args, _ = parse_args(shlex.split('convert -v {}'.format(' '.join(self.empty_stls))))
         # assertions
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_multifile_xxx_fail3(self):
         """Test that other file format fails for multifile e.g. Segger (.seg)"""
         args, _ = parse_args(shlex.split('convert -v {}'.format(' '.join(self.empty_segs))))
         # assertions
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_multifile_xxx_fail4(self):
         """Test that other file format fails even with -m e.g. Segger (.seg)"""
         args, _ = parse_args(shlex.split('convert -v -m {}'.format(' '.join(self.empty_segs))))
         # assertions
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
 
 #     def test_exclude_unannotated_regions(self):
@@ -709,7 +728,7 @@ class TestParser_view(unittest.TestCase):
     def test_show_chunks_other_fails(self):
         """Test that show chunks only works for .mod files"""
         args, _ = parse_args(shlex.split('view -C file.sff'))
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
 
 class TestParser_notes_ro(unittest.TestCase):
@@ -807,7 +826,7 @@ class TestParser_notes_ro(unittest.TestCase):
         """Test that shortcut fails with list"""
         args, _ = parse_args(shlex.split('notes list @ --config-path {}'.format(self.config_fn)))
         #  assertions
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_list_sort_by_name(self):
         """Test list segments sorted by description"""
@@ -849,7 +868,7 @@ class TestParser_notes_ro(unittest.TestCase):
         args, _ = parse_args(
             shlex.split('notes show -i {},{} @ --config-path {}'.format(segment_id0, segment_id1, self.config_fn)))
         #  assertions
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
 
 class TestParser_notes_rw(unittest.TestCase):
@@ -902,7 +921,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         segment_id = _random_integer()
         args, _ = parse_args(
             shlex.split('notes add -i {} file.sff --config-path {}'.format(segment_id, self.config_fn)))
-        self.assertEqual(args, None)
+        self.assertEqual(args, os.EX_USAGE)
 
     # ===========================================================================
     # notes: edit
@@ -946,23 +965,21 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
                 self.config_fn,
             )))
 
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
         args1, _ = parse_args(shlex.split(
             'notes edit -i {} -D something -n {} -e {} -E abc ABC 123 -C xyz -m {} -M opq @  --config-path {}'.format(
                 segment_id, number_of_instances, external_ref_id, macromolecule_id,
                 self.config_fn,
             )))
-
-        self.assertIsNone(args1)
+        self.assertEqual(args1, os.EX_USAGE)
 
         args2, _ = parse_args(shlex.split(
             'notes edit -i {} -D something -n {} -e {} -E abc ABC 123 -c {} -C xyz -M opq @  --config-path {}'.format(
                 segment_id, number_of_instances, external_ref_id, complex_id,
                 self.config_fn,
             )))
-
-        self.assertIsNone(args2)
+        self.assertEqual(args2, os.EX_USAGE)
 
     # ===========================================================================
     # notes: del
@@ -1054,7 +1071,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, source_id)), config_fn=self.config_fn, )
         args, _ = parse_args(shlex.split(cmd))
         # with self.assertRaises(ValueError):
-        self.assertIsNone(args)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_copy_all(self):
         """Test that we can copy to all others"""

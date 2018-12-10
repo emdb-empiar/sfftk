@@ -764,6 +764,8 @@ def clear_notes(args, configs):
             from_segment.append(-1)
         except NameError:
             from_segment = [-1]
+    # fixme: sff notes clear emd_5625.sff raises UnboundLocalError: local variable
+    #  'from_segment' referenced before assignment
     for f in from_segment:
         sff_seg.clear_annotation(f)
 
