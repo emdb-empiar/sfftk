@@ -19,7 +19,8 @@ setup(
     keywords="EMDB-SFF, SFF, segmentation",
     setup_requires=["numpy"],
     install_requires=["ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
-                      "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile", ],
+                      "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile",
+                      "matplotlib<3.0"],
     classifiers=[
         # maturity
         'Development Status :: 2 - Pre-Alpha',
