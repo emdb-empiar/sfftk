@@ -463,4 +463,4 @@ Running Unit Tests
 
     sff tests [tool]
 
-``<tool>`` is optional and if left out all tests for all packages are run.
+where ``tool`` is one of ``all``, ``core``, ``main``, ``formats``, ``readers``, ``notes`` or ``schema``.

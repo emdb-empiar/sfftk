@@ -272,7 +272,6 @@ binmap_prep_parser = prep_subparsers.add_parser(
 binmap_prep_parser.add_argument(
     'from_file', help='the name of the segmentation file'
 )
-# todo: make config_path and shipped_configs mutexes
 add_args(binmap_prep_parser, config_path)
 add_args(binmap_prep_parser, shipped_configs)
 binmap_prep_parser.add_argument(
@@ -362,7 +361,6 @@ transform_prep_parser.add_argument(
     help="infix to be added to filenames e.g. file.stl -> file_<infix>.stl [default: 'transformed']",
 )
 add_args(transform_prep_parser, verbose)
-
 
 # =========================================================================
 # convert subparser
@@ -526,9 +524,11 @@ search_notes_parser = notes_subparsers.add_parser(
     description="Search ontologies for annotation by text labels",
     help="search for terms by labels",
 )
-# todo: how to make search_term optional for -l/-L?
 search_notes_parser.add_argument(
-    'search_term', help="the term to search; add quotes if spaces are included")
+    'search_term',
+    nargs='?',
+    default='',
+    help="the term to search; add quotes if spaces are included")
 add_args(search_notes_parser, config_path)
 add_args(search_notes_parser, shipped_configs)
 search_notes_parser.add_argument(
@@ -547,8 +547,8 @@ search_notes_parser.add_argument(
 ols_parser = search_notes_parser.add_argument_group(
     title='EBI Ontology Lookup Service (OLS)',
     description='The Ontology Lookup Service (OLS) is a repository for biomedical ontologies that aims to provide a '
-                'single point of access to the latest ontology versions. Searching against OLS can use the following '
-                'options:'
+                'single point of access to the latest ontology versions. You can use the following options to modify '
+                'your search against OLS by ensuring that the -R/--resource flag is set to \'ols\' (default).'
 )
 ols_parser.add_argument(
     '-O', '--ontology', default=None, help="the ontology to search [default: None]")
@@ -925,23 +925,17 @@ add_args(trash_notes_parser, shipped_configs)
 # get the full list of tools from the Parser object
 # tool_list = Parser._actions[1].choices.keys()
 # print(tool_list)
-tool_list = ['core', 'formats', 'notes', 'readers', 'schema', 'main']
+tool_list = ['all', 'core', 'formats', 'notes', 'readers', 'schema', 'main']
 
 # tests
 test_help = "one or none of the following: {}".format(", ".join(tool_list))
 tests_parser = subparsers.add_parser(
     'tests', description="Run unit tests", help="run unit tests")
-tests_parser.add_argument('tool', nargs='*', default='all', help=test_help)
+tests_parser.add_argument('tool', nargs='+', help=test_help)
 add_args(tests_parser, config_path)
 add_args(tests_parser, shipped_configs)
 tests_parser.add_argument('-v', '--verbosity', default=1, type=int,
                           help="set verbosity; valid values: %s [default: 0]" % ", ".join(map(str, verbosity_range)))
-
-
-# test_parser = subparsers.add_parser('test', description="Run unit tests", help="run unit tests")
-# test_parser.add_argument('tool', nargs='*', default='all', help=test_help)
-# add_args(test_parser, config_path)
-# test_parser.add_argument('-v', '--verbosity', default=1, type=int, help="set verbosity; valid values: %s [default: 0]" % ", ".join(map(str, verbosity_range)))
 
 
 def check_multi_file_formats(file_names):
@@ -984,7 +978,7 @@ def parse_args(_args, use_shlex=False):
     :return: config dict-like object
     :rtype: ``sfftk.core.configs.Config``
     """
-    if use_shlex: # if we treat _args as a command string for shlex to process
+    if use_shlex:  # if we treat _args as a command string for shlex to process
         try:
             assert isinstance(_args, str)
         except AssertionError:
@@ -1000,9 +994,9 @@ def parse_args(_args, use_shlex=False):
     elif len(_args) == 1:
         # print(_args[0])
         # print(Parser._actions[2].choices)
-        if _args[0] == 'tests':
-            pass
-        elif _args[0] == '-V' or _args[0] == '--version':
+        # if _args[0] == 'tests':
+        #     pass
+        if _args[0] == '-V' or _args[0] == '--version':
             from .. import SFFTK_VERSION
             print_date("sfftk version: {}".format(SFFTK_VERSION))
             return os.EX_OK, None
@@ -1202,34 +1196,39 @@ def parse_args(_args, use_shlex=False):
             except:
                 if args.verbose:
                     print_date(
-                        "Found invalid primary descriptor: {}".format(args.primary_descriptor))
-                raise ValueError(
-                    'Invalid value for primaryDescriptor: %s' % args.primary_descriptor)
+                        "Invalid value for primary descriptor: {}".format(args.primary_descriptor))
+                return os.EX_USAGE, configs
             if args.verbose:
                 print_date(
-                    "Trying to setting primary descriptor to {}".format(args.primary_descriptor))
+                    "Trying to set primary descriptor to {}".format(args.primary_descriptor))
 
     # tests
     elif args.subcommand == 'tests':
-        if isinstance(args.tool, list):
-            for tool in args.tool:
-                try:
-                    assert tool in tool_list
-                except AssertionError:
-                    print(
-                        "Unknown tool: {}".format(tool),
-                        file=sys.stderr,
-                    )
-                    print(
-                        "Available tools for test: {}".format(", ".join(tool_list)),
-                        file=sys.stderr
-                    )
+        # normalise tool list
+        # if 'all' is specified together with others then it should simply be 'all'
+        if 'all' in args.tool:
+            args.tool = ['all']
+        # if isinstance(args.tool, list):
+        for tool in args.tool:
+            try:
+                assert tool in tool_list
+            except AssertionError:
+                print_date(
+                    "Unknown tool: {}; Available tools for test: {}".format(tool, ", ".join(tool_list))
+                )
+                return os.EX_USAGE, configs
         if args.verbosity:
             try:
                 assert args.verbosity in range(4)
             except:
-                raise ValueError("Verbosity should be in %s-%s: %s given" %
-                                 (verbosity_range[0], verbosity_range[-1], args.verbosity))
+                print_date(
+                    "Verbosity should be in {}-{}: {} given".format(
+                        verbosity_range[0],
+                        verbosity_range[-1],
+                        args.verbosity
+                    )
+                )
+                return os.EX_USAGE, configs
     # notes
     elif args.subcommand == 'notes':
         # convenience: the user can use '@' to refer to an EMDB-SFF file whch is the previous
@@ -1267,25 +1266,22 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
         if args.notes_subcommand == "search":
             # ensure start is valid
             if args.start < 1:
-                raise ValueError(
-                    "Invalid start value: {}; should be greater than 1".format(args.start))
-
+                print_date("Invalid start value: {}; should be greater than 1".format(args.start))
+                return os.EX_USAGE, configs
             # ensure rows is valid
             if args.rows < 1:
-                raise ValueError(
-                    "Invalid rows value: {}; should be greater than 1".format(args.rows))
-
+                print_date("Invalid rows value: {}; should be greater than 1".format(args.rows))
+                return os.EX_USAGE, configs
+            if args.resource != 'ols' and (
+                    args.ontology is not None or args.exact or args.list_ontologies or \
+                    args.short_list_ontologies or args.obsoletes):
+                print_date("Invalid usage: -O, -x, -o, -L, -l can only be used with -R ols")
+                return os.EX_USAGE, None
         elif args.notes_subcommand == "show":
             if args.segment_id is not None:
                 args.segment_id = map(int, args.segment_id.split(','))
 
         elif args.notes_subcommand == "add":
-            # external ref consistency
-            if args.external_ref:
-                # todo: check this; doesn't seem right
-                if len(args.external_ref) == 2 and isinstance(args.external_ref[0], str):
-                    args.external_ref = [args.external_ref]
-
             if args.segment_id is not None:
                 args.segment_id = map(int, args.segment_id.split(','))
 

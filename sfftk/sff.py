@@ -523,7 +523,7 @@ def handle_tests(args, configs):
     :type configs: ``sfftk.core.configs.Configs``
     :return int status: status
     """
-    if isinstance(args.tool, str):
+    if 'all' in args.tool:
         from .unittests import test_main
         _module_test_runner(test_main, args)
         _discover_test_runner("sfftk.unittests", args)

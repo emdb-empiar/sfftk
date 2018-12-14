@@ -18,7 +18,7 @@ from .. import BASE_DIR
 from ..core import utils
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
-from ..core.parser import Parser, parse_args
+from ..core.parser import Parser, parse_args, tool_list
 from ..core.print_tools import print_date
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
 from ..notes import RESOURCE_LIST
@@ -377,7 +377,7 @@ class TestCoreConfigs(unittest.TestCase):
         self.assertTrue(set_configs(args, configs) == 1)
 
 
-class TestCore_print_utils(unittest.TestCase):
+class TestCorePrintUtils(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -418,7 +418,7 @@ class TestCore_print_utils(unittest.TestCase):
         self.assertNotIn(_words[0], self._weekdays)  # the first part is a date
 
 
-class TestParser_prep_binmap(unittest.TestCase):
+class TestParserPrepBinmap(unittest.TestCase):
     def test_default(self):
         """Test default params for prep binmap"""
         args, _ = parse_args(shlex.split('prep binmap file.map'))
@@ -556,7 +556,7 @@ class TestParserPrepTransform(unittest.TestCase):
         self.assertEqual(args.output, 'file_something.stl')
 
 
-class TestParser_convert(unittest.TestCase):
+class TestParserConvert(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("convert tests...", file=sys.stderr)
@@ -633,9 +633,8 @@ class TestParser_convert(unittest.TestCase):
 
     def test_wrong_primary_descriptor_fails(self):
         """Test that we have a check on primary descriptor values"""
-        # assertions
-        with self.assertRaises(ValueError):
-            parse_args(shlex.split('convert -R something {}'.format(self.test_data_file)))
+        args, _ = parse_args('convert -R something {}'.format(self.test_data_file), use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_verbose(self):
         """Test convert parser with verbose"""
@@ -682,14 +681,7 @@ class TestParser_convert(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-#     def test_exclude_unannotated_regions(self):
-#         """Test that we set the exclude unannotated regions flag"""
-#         args, _ = parse_args(shlex.split('convert -x {}'.format(self.test_data_file)))
-#         # assertions
-#         self.assertTrue(args.exclude_unannotated_regions)
-
-
-class TestParser_view(unittest.TestCase):
+class TestParserView(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -731,7 +723,7 @@ class TestParser_view(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParser_notes_ro(unittest.TestCase):
+class TestParserNotesReadOnly(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -759,6 +751,55 @@ class TestParser_notes_ro(unittest.TestCase):
         self.assertEqual(args.config_path, self.config_fn)
         self.assertEqual(args.resource, 'ols')
 
+    def test_search_list_ontologies(self):
+        """Test that we can list ontologies in OLS"""
+        args, _ = parse_args("notes search -L", use_shlex=True)
+        self.assertEqual(args.notes_subcommand, 'search')
+        self.assertEqual(args.search_term, '')
+        self.assertEqual(args.resource, 'ols')
+        self.assertTrue(args.list_ontologies)
+
+    def test_search_short_list_ontologies(self):
+        """Test that we can short-list ontologies in OLS"""
+        args, _ = parse_args("notes search -l", use_shlex=True)
+        self.assertEqual(args.notes_subcommand, 'search')
+        self.assertEqual(args.search_term, '')
+        self.assertEqual(args.resource, 'ols')
+        self.assertTrue(args.short_list_ontologies)
+
+    def test_search_list_ontologies_non_OLS_fail(self):
+        """Test failure for list ontologies for non OLS"""
+        args, _ = parse_args("notes search -l -R emdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -L -R emdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -O go -R emdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -o -R emdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -x -R emdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -l -R pdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -L -R pdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -O go -R pdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -o -R pdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -x -R pdb", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -l -R uniprot", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -L -R uniprot", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -O go -R uniprot", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -o -R uniprot", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        args, _ = parse_args("notes search -x -R uniprot", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+
     def test_search_options(self):
         """Test setting of:
             - number of rows
@@ -772,8 +813,10 @@ class TestParser_notes_ro(unittest.TestCase):
         rows = _random_integer()
         start = _random_integer()
         args, _ = parse_args(shlex.split(
-            "notes search -r {} -s {} -O fma -x -o -L -l 'mitochondria' --config-path {}".format(rows, start,
-                                                                                                 self.config_fn)))
+            "notes search -r {} -s {} -O fma -x -o -L -l 'mitochondria' --config-path {}".format(
+                rows, start, self.config_fn
+            )
+        ))
         self.assertEqual(args.rows, rows)
         self.assertEqual(args.start, start)
         self.assertEqual(args.ontology, 'fma')
@@ -786,14 +829,16 @@ class TestParser_notes_ro(unittest.TestCase):
     def test_search_invalid_start(self):
         """Test that we catch an invalid start"""
         start = -_random_integer()
-        with self.assertRaises(ValueError):
-            parse_args(shlex.split("notes search -s {} 'mitochondria' --config-path {}".format(start, self.config_fn)))
+        args, _ = parse_args("notes search -s {} 'mitochondria' --config-path {}".format(start, self.config_fn),
+                             use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_search_invalid_rows(self):
         """Test that we catch an invalid rows"""
         rows = -_random_integer()
-        with self.assertRaises(ValueError):
-            parse_args(shlex.split("notes search -r {} 'mitochondria' --config-path {}".format(rows, self.config_fn)))
+        args, _ = parse_args("notes search -r {} 'mitochondria' --config-path {}".format(rows, self.config_fn),
+                             use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
 
     def test_search_resource_options(self):
         """Test various values of -R/--resource"""
@@ -871,7 +916,62 @@ class TestParser_notes_ro(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParser_notes_rw(unittest.TestCase):
+class TestParserTests(unittest.TestCase):
+    def test_tests_default(self):
+        """Test that tests can be launched"""
+        args, _ = parse_args("tests all", use_shlex=True)
+        self.assertEqual(args.subcommand, 'tests')
+        self.assertItemsEqual(args.tool, ['all'])
+
+    def test_tests_one_tool(self):
+        """Test that with any tool we get proper tool"""
+        tool = random.choice(tool_list)
+        args, _ = parse_args("tests {}".format(tool), use_shlex=True)
+        self.assertItemsEqual(args.tool, [tool])
+
+    def test_multi_tool(self):
+        """Test that we can specify multiple packages (tools) to test"""
+        tools = set()
+        while len(tools) < 3:
+            tools.add(random.choice(tool_list))
+        tools = list(tools)
+        # normalise
+        if 'all' in tools:
+            tools = ['all']
+        args, _ = parse_args("tests {}".format(' '.join(tools)), use_shlex=True)
+        self.assertItemsEqual(args.tool, tools)
+
+    def test_tool_fail(self):
+        """Test that we catch a wrong tool"""
+        args, _ = parse_args("tests wrong_tool_spec", use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+
+    def test_tests_no_tool(self):
+        """Test that with no tool we simply get usage info"""
+        args, _ = parse_args("tests", use_shlex=True)
+        self.assertEqual(args, os.EX_OK)
+
+    def test_valid_verbosity(self):
+        """Test valid verbosity"""
+        args, _ = parse_args("tests all -v 0", use_shlex=True)
+        self.assertEqual(args.verbosity, 0)
+        args, _ = parse_args("tests all -v 1", use_shlex=True)
+        self.assertEqual(args.verbosity, 1)
+        args, _ = parse_args("tests all -v 2", use_shlex=True)
+        self.assertEqual(args.verbosity, 2)
+        args, _ = parse_args("tests all -v 3", use_shlex=True)
+        self.assertEqual(args.verbosity, 3)
+
+    def test_invalid_verbosity(self):
+        """Test that verbosity is in [0,3]"""
+        v1 = _random_integer(start=4)
+        args, _ = parse_args("tests all -v {}".format(v1), use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+        v2 = -_random_integer(start=0)
+        args, _ = parse_args("tests all -v {}".format(v2), use_shlex=True)
+        self.assertEqual(args, os.EX_USAGE)
+
+class TestParserNotesReadWrite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -1070,7 +1170,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, source_id)), config_fn=self.config_fn, )
         args, _ = parse_args(shlex.split(cmd))
-        # with self.assertRaises(ValueError):
         self.assertEqual(args, os.EX_USAGE)
 
     def test_copy_all(self):
