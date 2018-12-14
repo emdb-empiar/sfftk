@@ -1700,7 +1700,6 @@ class SFFMeshList(SFFType):
                 "vertices",
                 (mesh.numVertices,),
                 dtype=[
-                    # fixme: changed vID from u4 to u8
                     ('vID', 'u8'),
                     ('designation', vlen_str),
                     ('x', 'f4'),
@@ -1712,20 +1711,13 @@ class SFFMeshList(SFFType):
             # load vertex data
             i = 0
             for vertex in mesh.vertices:
-                # fixme: recurrent bug
-                #  RuntimeError: Unable to register datatype id (Can't insert duplicate key)
-                # print_static('vertexID = {}, current vertex = {}'.format(vertex.vID, i))
                 h_v[i] = (vertex.vID, vertex.designation, vertex.x, vertex.y, vertex.z)
                 i += 1
-            print()
-            #         # attempt to avoid RuntimeError
-            #         for mesh in self:
             # /sff/segments/1/meshes/0/polygons
             h_P = h_mesh.create_dataset(
                 "polygons",
                 (mesh.numPolygons,),
                 dtype=[
-                    # fixme: changed vID from u4 to u8
                     ('PID', 'u8'),
                     ('v', vertex_array),
                 ],
