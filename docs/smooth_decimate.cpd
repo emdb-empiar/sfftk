@@ -1,0 +1,55 @@
+<CustomFilterDefinitions>
+  <CustomProxyDefinition name="smooth_decimate" group="filters">
+    <CompoundSourceProxy id="22552" servers="1">
+      <Proxy group="filters" type="DecimatePro" id="11148" servers="1" compound_name="Decimate4">
+        <Property name="BoundaryVertexDeletion" id="11148.BoundaryVertexDeletion" number_of_elements="1">
+          <Element index="0" value="1"/>
+          <Domain name="bool" id="11148.BoundaryVertexDeletion.bool"/>
+        </Property>
+        <Property name="FeatureAngle" id="11148.FeatureAngle" number_of_elements="1">
+          <Element index="0" value="15"/>
+          <Domain name="range" id="11148.FeatureAngle.range"/>
+        </Property>
+        <Property name="Input" id="11148.Input" number_of_elements="1">
+          <Proxy value="10923" output_port="0"/>
+          <Domain name="groups" id="11148.Input.groups"/>
+          <Domain name="input_type" id="11148.Input.input_type"/>
+        </Property>
+        <Property name="PreserveTopology" id="11148.PreserveTopology" number_of_elements="1">
+          <Element index="0" value="1"/>
+          <Domain name="bool" id="11148.PreserveTopology.bool"/>
+        </Property>
+        <Property name="TargetReduction" id="11148.TargetReduction" number_of_elements="1">
+          <Element index="0" value="0.9"/>
+          <Domain name="range" id="11148.TargetReduction.range"/>
+        </Property>
+      </Proxy>
+      <Proxy group="filters" type="SmoothPolyDataFilter" id="10923" servers="1" compound_name="Smooth3">
+        <Property name="Convergence" id="10923.Convergence" number_of_elements="1">
+          <Element index="0" value="0"/>
+          <Domain name="range" id="10923.Convergence.range"/>
+        </Property>
+        <Property name="Input" id="10923.Input" number_of_elements="1">
+          <Domain name="groups" id="10923.Input.groups"/>
+          <Domain name="input_type" id="10923.Input.input_type"/>
+        </Property>
+        <Property name="NumberOfIterations" id="10923.NumberOfIterations" number_of_elements="1">
+          <Element index="0" value="20"/>
+          <Domain name="range" id="10923.NumberOfIterations.range"/>
+        </Property>
+      </Proxy>
+      <ExposedProperties>
+        <Property name="BoundaryVertexDeletion" proxy_name="Decimate4" exposed_name="Boundary Vertex Deletion"/>
+        <Property name="FeatureAngle" proxy_name="Decimate4" exposed_name="Feature Angle"/>
+        <Property name="Input" proxy_name="Smooth3" exposed_name="Input"/>
+        <Property name="NumberOfIterations" proxy_name="Smooth3" exposed_name="Number of Iterations"/>
+        <Property name="PreserveTopology" proxy_name="Decimate4" exposed_name="Preserve Topology"/>
+        <Property name="TargetReduction" proxy_name="Decimate4" exposed_name="Target Reduction"/>
+      </ExposedProperties>
+      <OutputPort name="Output" proxy="Decimate4" port_index="0"/>
+      <Hints>
+        <ShowInMenu/>
+      </Hints>
+    </CompoundSourceProxy>
+  </CustomProxyDefinition>
+</CustomFilterDefinitions>

@@ -359,6 +359,61 @@ Alternatively, the name of the output file may be specified using the
     sff prep transform [params] --output tx_file.stl file.stl
     # will write to tx_file.stl
 
+
+Mesh Reduction
+--------------------
+
+Naive marching cubes typically creates far more surface polygons than required leading to much larger files than
+necessary. Mesh reduction helps to eliminate reduntant polygons and thereby save disk space.
+
+The simplest way to do this on an STL file is to use Paraview, which is a freely-available, powerfully 3D graphics
+application. We have created a :download:`custom filter <smooth_decimate.cpd>` that you can incorporate into your paraview installation to do this using
+the following steps.
+
+1. Launch Paraview.
+
+2. In the *Pipeline Browser*, right-click and select *Open* from the context menu. This will open the file but depending
+on your settings may not seem to do anything. You might need to hit the *Apply* button in the *Properties* dialogue.
+
+.. image:: open.png
+
+The *Statistics Inspector* (available under the *View* menu) shows how much memory the surface occupies.
+
+.. image:: stats_before.png
+
+3. Make sure you have :download:`downloaded the custom filter <smooth_decimate.cpd>` then select *Tools > Manage Custom Filters...*. A new dialogue box
+opens for importing custom filters.
+
+.. image:: open_custom_filters_manager.png
+
+4. Navigate to the location where you downloaded the custom filter the click *OK*.
+
+.. image:: locate_custom_filter.png
+
+It will now be listed in the *Custom Filter Manager*.
+
+.. image:: custom_filter_imported.png
+
+Click *Close* to dismiss this dialogue box.
+
+5. Right-click the STL file in the *Pipeline Browser* then select *Add Filter > Alphabetical > smooth_decimate*. You
+might need to hit the *Apply* button to run this filter.
+
+.. image:: apply_custom_filter.png
+
+You should now see a change in the statistics for this surface.
+
+.. image:: stats_after.png
+
+Your surface now has fewer polygons with little volume distortion.
+
+.. image:: surface_before.png
+
+.. image:: surface_after.png
+
+You can play with the parameters in the *Properties* dialogue to modify how the filters work.
+
+
 Setting Configurations
 =======================
 
@@ -463,4 +518,4 @@ Running Unit Tests
 
     sff tests [tool]
 
-``<tool>`` is optional and if left out all tests for all packages are run.
+where ``tool`` is one of ``all``, ``core``, ``main``, ``formats``, ``readers``, ``notes`` or ``schema``.

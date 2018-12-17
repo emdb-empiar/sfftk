@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.3.1.dev6 documentation</title>
+  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.3.2.dev0 documentation</title>
   
 
   
@@ -109,6 +109,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#id1">Specifying The Output File</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#mesh-reduction">Mesh Reduction</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-configurations">Setting Configurations</a><ul>
@@ -221,21 +222,22 @@
 <li><a class="reference internal" href="#id1" id="id18">Specifying The Output File</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#mesh-reduction" id="id19">Mesh Reduction</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#setting-configurations" id="id19">Setting Configurations</a><ul>
-<li><a class="reference internal" href="#configuration-commands" id="id20">Configuration Commands</a><ul>
-<li><a class="reference internal" href="#getting-a-single-configuration-value" id="id21">Getting a single configuration value</a></li>
-<li><a class="reference internal" href="#listing-available-configurations" id="id22">Listing available configurations</a></li>
-<li><a class="reference internal" href="#setting-a-single-configuration-value" id="id23">Setting a single configuration value</a></li>
-<li><a class="reference internal" href="#deleting-a-single-configuration" id="id24">Deleting a single configuration</a></li>
-<li><a class="reference internal" href="#clearing-all-configurations" id="id25">Clearing all configurations</a></li>
+<li><a class="reference internal" href="#setting-configurations" id="id20">Setting Configurations</a><ul>
+<li><a class="reference internal" href="#configuration-commands" id="id21">Configuration Commands</a><ul>
+<li><a class="reference internal" href="#getting-a-single-configuration-value" id="id22">Getting a single configuration value</a></li>
+<li><a class="reference internal" href="#listing-available-configurations" id="id23">Listing available configurations</a></li>
+<li><a class="reference internal" href="#setting-a-single-configuration-value" id="id24">Setting a single configuration value</a></li>
+<li><a class="reference internal" href="#deleting-a-single-configuration" id="id25">Deleting a single configuration</a></li>
+<li><a class="reference internal" href="#clearing-all-configurations" id="id26">Clearing all configurations</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#where-configurations-are-stored" id="id26">Where Configurations Are Stored</a></li>
+<li><a class="reference internal" href="#where-configurations-are-stored" id="id27">Where Configurations Are Stored</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-unit-tests" id="id27">Running Unit Tests</a></li>
+<li><a class="reference internal" href="#running-unit-tests" id="id28">Running Unit Tests</a></li>
 </ul>
 </li>
 </ul>
@@ -542,9 +544,44 @@ infix with the <code class="docutils literal notranslate"><span class="pre">--in
 </div>
 </div>
 </div>
+<div class="section" id="mesh-reduction">
+<h3><a class="toc-backref" href="#id19">Mesh Reduction</a><a class="headerlink" href="#mesh-reduction" title="Permalink to this headline">¶</a></h3>
+<p>Naive marching cubes typically creates far more surface polygons than required leading to much larger files than
+necessary. Mesh reduction helps to eliminate reduntant polygons and thereby save disk space.</p>
+<p>The simplest way to do this on an STL file is to use Paraview, which is a freely-available, powerfully 3D graphics
+application. We have created a <a class="reference download internal" download="" href="_downloads/d7205a822e6766a6da02af876b973c1e/smooth_decimate.cpd"><code class="xref download docutils literal notranslate"><span class="pre">custom</span> <span class="pre">filter</span></code></a> that you can incorporate into your paraview installation to do this using
+the following steps.</p>
+<ol class="arabic simple">
+<li>Launch Paraview.</li>
+</ol>
+<p>2. In the <em>Pipeline Browser</em>, right-click and select <em>Open</em> from the context menu. This will open the file but depending
+on your settings may not seem to do anything. You might need to hit the <em>Apply</em> button in the <em>Properties</em> dialogue.</p>
+<img alt="_images/open.png" src="_images/open.png" />
+<p>The <em>Statistics Inspector</em> (available under the <em>View</em> menu) shows how much memory the surface occupies.</p>
+<img alt="_images/stats_before.png" src="_images/stats_before.png" />
+<p>3. Make sure you have <a class="reference download internal" download="" href="_downloads/d7205a822e6766a6da02af876b973c1e/smooth_decimate.cpd"><code class="xref download docutils literal notranslate"><span class="pre">downloaded</span> <span class="pre">the</span> <span class="pre">custom</span> <span class="pre">filter</span></code></a> then select <em>Tools &gt; Manage Custom Filters…</em>. A new dialogue box
+opens for importing custom filters.</p>
+<img alt="_images/open_custom_filters_manager.png" src="_images/open_custom_filters_manager.png" />
+<ol class="arabic simple" start="4">
+<li>Navigate to the location where you downloaded the custom filter the click <em>OK</em>.</li>
+</ol>
+<img alt="_images/locate_custom_filter.png" src="_images/locate_custom_filter.png" />
+<p>It will now be listed in the <em>Custom Filter Manager</em>.</p>
+<img alt="_images/custom_filter_imported.png" src="_images/custom_filter_imported.png" />
+<p>Click <em>Close</em> to dismiss this dialogue box.</p>
+<p>5. Right-click the STL file in the <em>Pipeline Browser</em> then select <em>Add Filter &gt; Alphabetical &gt; smooth_decimate</em>. You
+might need to hit the <em>Apply</em> button to run this filter.</p>
+<img alt="_images/apply_custom_filter.png" src="_images/apply_custom_filter.png" />
+<p>You should now see a change in the statistics for this surface.</p>
+<img alt="_images/stats_after.png" src="_images/stats_after.png" />
+<p>Your surface now has fewer polygons with little volume distortion.</p>
+<img alt="_images/surface_before.png" src="_images/surface_before.png" />
+<img alt="_images/surface_after.png" src="_images/surface_after.png" />
+<p>You can play with the parameters in the <em>Properties</em> dialogue to modify how the filters work.</p>
+</div>
 </div>
 <div class="section" id="setting-configurations">
-<h2><a class="toc-backref" href="#id19">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id20">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this headline">¶</a></h2>
 <p>Some of the functionality provided by sfftk relies on persistent configurations.
 In the section we outline all you need to know to work with sfftk configurations.</p>
 <p>Configurations are handled using the <code class="docutils literal notranslate"><span class="pre">config</span></code> utility with several subcommands.</p>
@@ -561,40 +598,40 @@ In the section we outline all you need to know to work with sfftk configurations
 </pre></div>
 </div>
 <div class="section" id="configuration-commands">
-<h3><a class="toc-backref" href="#id20">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id21">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="getting-a-single-configuration-value">
-<h4><a class="toc-backref" href="#id21">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id22">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="n">CONFIG_NAME</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="listing-available-configurations">
-<h4><a class="toc-backref" href="#id22">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id23">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="o">--</span><span class="nb">all</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="setting-a-single-configuration-value">
-<h4><a class="toc-backref" href="#id23">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id24">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">CONFIG_NAME</span> <span class="n">CONFIG_VALUE</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="deleting-a-single-configuration">
-<h4><a class="toc-backref" href="#id24">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id25">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="k">del</span> <span class="n">CONFIG_NAME</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="clearing-all-configurations">
-<h4><a class="toc-backref" href="#id25">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id26">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this headline">¶</a></h4>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="k">del</span> <span class="o">--</span><span class="nb">all</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="where-configurations-are-stored">
-<span id="configs"></span><h3><a class="toc-backref" href="#id26">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
+<span id="configs"></span><h3><a class="toc-backref" href="#id27">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
 <p>sfftk ships with a config file called <code class="docutils literal notranslate"><span class="pre">sff.conf</span></code> which is located in the root of the package.
 In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
 Therefore, default read-only configurations will be obtained from this file.
@@ -619,11 +656,11 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
 </div>
 </div>
 <div class="section" id="running-unit-tests">
-<h2><a class="toc-backref" href="#id27">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id28">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this headline">¶</a></h2>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="p">[</span><span class="n">tool</span><span class="p">]</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">&lt;tool&gt;</span></code> is optional and if left out all tests for all packages are run.</p>
+<p>where <code class="docutils literal notranslate"><span class="pre">tool</span></code> is one of <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">core</span></code>, <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">formats</span></code>, <code class="docutils literal notranslate"><span class="pre">readers</span></code>, <code class="docutils literal notranslate"><span class="pre">notes</span></code> or <code class="docutils literal notranslate"><span class="pre">schema</span></code>.</p>
 </div>
 </div>
 

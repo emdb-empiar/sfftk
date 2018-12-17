@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.core package &mdash; sfftk v0.3.1.dev6 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.3.2.dev0 documentation</title>
   
 
   
@@ -389,7 +389,7 @@ clearing (<code class="docutils literal notranslate"><span class="pre">clear()</
 <p>Parses command-line options</p>
 <dl class="function">
 <dt id="sfftk.core.parser.parse_args">
-<code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em>, <em>use_shlex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse and check command-line arguments and also return configs.</p>
 <p>This function does all the heavy lifting in ensuring that commandline
 arguments are properly formatted and checked for sanity. It also 
@@ -400,15 +400,24 @@ assume correct argument values and can concentrate on functionality.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>_args</strong> (<em>list</em>) – list of arguments</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – list of arguments</li>
+<li><strong>_args</strong> – string of commands</li>
+<li><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed arguments</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">parsed arguments</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">config dict-like object</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">config dict-like object</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Config</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Config</span></code></p>
+</td>
 </tr>
 </tbody>
 </table>
