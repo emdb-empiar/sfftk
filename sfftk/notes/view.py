@@ -308,7 +308,9 @@ Software processing details: \n{}\
     @property
     def details(self):
         if self._segmentation.details:
-            return u"\n".join(textwrap.wrap(self._segmentation.details, self.DISPLAY_WIDTH)).encode('utf-8')
+            return "\n".join(textwrap.wrap(self._segmentation.details, self.DISPLAY_WIDTH))
+            print(type(self._segmentation.details))
+            return "\n".join(textwrap.wrap(self._segmentation.details.encode('utf-8'), self.DISPLAY_WIDTH))
         else:
             return self.NOT_DEFINED
 
