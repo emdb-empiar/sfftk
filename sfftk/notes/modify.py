@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 sfftk.notes.modify
+=======================
 
 Add, edit and delete terms in EMDB-SFF files
 """
@@ -48,7 +49,7 @@ class ExternalReference(object):
         from urllib import urlencode
         urlenc = urlencode({'iri': self.value.encode('idna')})
         urlenc2 = urlencode({'iri': urlenc.split('=')[1]})
-        return urlenc2.split('=')[1]
+        return urlenc2.split('=')[1].decode('utf-8')
 
     # fixme: perhaps the text should exist already instead of being searched for?
     # this seems to be a special case for OLS
@@ -62,9 +63,9 @@ class ExternalReference(object):
         description = None
         # only search for label and description if from OLS
         if self.type.lower() not in RESOURCE_LIST.keys():
-            url = "http://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
+            url = u"https://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
                 ontology=self.type,
-                iri=self.iri
+                iri=self.iri,
             )
             import requests
             R = requests.get(url)
@@ -768,6 +769,14 @@ def clear_notes(args, configs):
     #  'from_segment' referenced before assignment
     for f in from_segment:
         sff_seg.clear_annotation(f)
+    if args.from_global:
+        print(HeaderView(sff_seg))
+    if args.segment_id is not None:
+        for segment in sff_seg.segments:
+            if segment.id in args_segment_id:
+                print(NoteView(segment, _long=True))
+    elif args.from_all_segments:
+        print(NoteView(sff_seg.segment, _long=True))
 
     # export
     sff_seg.export(args.sff_file)

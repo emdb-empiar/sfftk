@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 sfftk.notes.find
+=======================
 
 Search for terms and display ontologies
 """

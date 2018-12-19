@@ -385,7 +385,7 @@ class SFFType(object):
                     self.iter_dict[item.id] = item
                 elif isinstance(item, int):
                     self.iter_dict[item] = item
-                elif isinstance(item, str):
+                elif isinstance(item, basestring):
                     self.iter_dict[item] = item
                 else:
                     raise ValueError("Unknown class {}".format(type(item)))
@@ -440,7 +440,7 @@ class SFFType(object):
         - ``.hff`` - HDF5
         - ``.json`` - JSON
         """
-        if isinstance(fn, str):  # fn is a file name
+        if isinstance(fn, basestring):  # fn is a file name
             fn_ext = fn.split('.')[-1]
             valid_extensions = ['sff', 'hff', 'json']
             try:
@@ -610,10 +610,10 @@ class SFFComplexes(SFFType):
 
         :param str c: a complex accession
         """
-        if isinstance(c, str):
+        if isinstance(c, basestring):
             self._local.add_id(c)
         else:
-            raise SFFTypeError(str)
+            raise SFFTypeError(basestring)
 
     def insert_complex_at(self, index, c):
         """Insert a complex accession at the given index
@@ -622,10 +622,10 @@ class SFFComplexes(SFFType):
         :param str c: a complex accession
         """
         # todo: handle IndexError
-        if isinstance(c, str):
+        if isinstance(c, basestring):
             self._local.insert_id_at(index, c)
         else:
-            raise SFFTypeError(str)
+            raise SFFTypeError(basestring)
 
     def replace_complex_at(self, index, c):
         """Replace a complex accession at the given index
@@ -634,10 +634,10 @@ class SFFComplexes(SFFType):
         :param str c: a complex accession
         """
         # todo: handle IndexError
-        if isinstance(c, str):
+        if isinstance(c, basestring):
             self._local.replace_id_at(index, c)
         else:
-            raise SFFTypeError(str)
+            raise SFFTypeError(basestring)
 
     def delete_at(self, index):
         """Delete the complex accession at the given index
@@ -682,10 +682,10 @@ class SFFMacromolecules(SFFType):
 
         :param str m: a macromolecule accession
         """
-        if isinstance(m, str):
+        if isinstance(m, basestring):
             self._local.add_id(m)
         else:
-            raise SFFTypeError(str)
+            raise SFFTypeError(basestring)
 
     def insert_macromolecule_at(self, index, m):
         """Insert the given macromolecule accession at the specified index bumping all others down the list
@@ -693,10 +693,10 @@ class SFFMacromolecules(SFFType):
         :param int index: the index to insert at
         :param str m: a macromolecule accession
         """
-        if isinstance(m, str):
+        if isinstance(m, basestring):
             self._local.insert_id_at(index, m)
         else:
-            raise SFFTypeError(str)
+            raise SFFTypeError(basestring)
 
     def replace_macromolecule_at(self, index, m):
         """Replace the macromolecule accession at the specified index with the one specified
@@ -704,10 +704,10 @@ class SFFMacromolecules(SFFType):
         :param int index: the index to insert at
         :param str m: a macromolecule accession
         """
-        if isinstance(m, str):
+        if isinstance(m, basestring):
             self._local.replace_id_at(index, m)
         else:
-            raise SFFTypeError(str)
+            raise SFFTypeError(basestring)
 
     def delete_at(self, index):
         """Delete the macromolecule accession at the give index
@@ -1049,7 +1049,7 @@ class SFFLattice(SFFType):
     @property
     def is_encoded(self):
         """Tells whether the data in the lattice is encoded or not"""
-        if isinstance(self.data, str):
+        if isinstance(self.data, basestring):
             return True
         elif isinstance(self.data, numpy.ndarray):
             return False
@@ -2274,7 +2274,7 @@ class SFFSegmentation(SFFType):
     # properties, methods
     def __init__(self, var=None, *args, **kwargs):
         """Initialiser to handle opening from EMDB-SFF files (XML, HDF5, JSON)"""
-        if isinstance(var, str) or isinstance(var, unicode):
+        if isinstance(var, basestring):
             # Experimental
             if re.match(r'.*\.sff$', var, re.IGNORECASE):
                 try:

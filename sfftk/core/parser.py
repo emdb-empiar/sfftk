@@ -723,6 +723,7 @@ add_args(edit_segment_notes_parser, macromolecules)
 # =========================================================================
 # notes: del
 # =========================================================================
+# todo: sff notes del -e 1,3,4,5,6 file.json
 del_notes_parser = notes_subparsers.add_parser(
     'del',
     description="Delete an existing annotation to an EMDB-SFF file",
@@ -1232,7 +1233,7 @@ def parse_args(_args, use_shlex=False):
     # notes
     elif args.subcommand == 'notes':
         # convenience: the user can use '@' to refer to an EMDB-SFF file whch is the previous
-        # file that was edited ('add', 'edit', 'del')
+        # file that was edited ('add', 'edit', 'del', 'copy', 'clear')
         temp_file = configs['__TEMP_FILE']
         temp_file_ref = configs['__TEMP_FILE_REF']
         if args.notes_subcommand in ['list', 'show', 'add', 'edit', 'del', 'save', 'trash', 'copy', 'clear']:
@@ -1282,6 +1283,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 args.segment_id = map(int, args.segment_id.split(','))
 
         elif args.notes_subcommand == "add":
+            # if we want to add to a segment
             if args.segment_id is not None:
                 args.segment_id = map(int, args.segment_id.split(','))
 
@@ -1292,9 +1294,13 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                            (args.external_ref is not None) or (args.complexes is not None) or \
                            (args.macromolecules is not None)
                 except AssertionError:
-                    print_date(
-                        "Nothing specified to add. Use one or more of the following options:\n\t-s <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefValue> \n\t-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
+                    print_date("Nothing specified to add. Use one or more of the following options:\n\t"
+                               "-s <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefOtherType> <extrefValue> \n\t"
+                               "-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
+
                     return os.EX_USAGE, configs
+
+
 
                 # replace the string in args.complexes with a list
                 if args.complexes:
@@ -1303,6 +1309,31 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 # ditto
                 if args.macromolecules:
                     args.macromolecules = args.macromolecules.split(',')
+
+            # unicode conversion
+            if args.name is not None:
+                args.name = args.name.decode('utf-8')
+            if args.details is not None:
+                args.details = args.details.decode('utf-8')
+            if args.software_name is not None:
+                args.software_name = args.software_name.decode('utf-8')
+            if args.software_version is not None:
+                args.software_version = args.software_version.decode('utf-8')
+            if args.software_processing_details is not None:
+                args.software_processing_details = args.software_processing_details.decode('utf-8')
+            if args.external_ref is not None:
+                external_ref = list()
+                for t,o,v in args.external_ref:
+                    external_ref.append([t.decode('utf-8'), o.decode('utf-8'), v.decode('utf-8')])
+                args.external_ref = external_ref
+            if args.segment_name is not None:
+                args.segment_name = args.segment_name.decode('utf-8')
+            if args.description is not None:
+                args.description = args.description.decode('utf-8')
+            if args.complexes is not None:
+                args.complexes = [c.decode('utf-8') for c in args.complexes]
+            if args.macromolecules is not None:
+                args.macromolecules = [m.decode('utf-8') for m in args.macromolecules]
 
         elif args.notes_subcommand == "edit":
             # external references can be added globally (header) or to a
@@ -1349,6 +1380,31 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
     a macromolecule ID. Run 'list' or 'show' to see available \
     macromolecule IDs for {}".format(args.segment_id), stream=sys.stdout)
                         return os.EX_USAGE, configs
+
+            # unicode
+            if args.name is not None:
+                args.name = args.name.decode('utf-8')
+            if args.details is not None:
+                args.details = args.details.decode('utf-8')
+            if args.software_name is not None:
+                args.software_name = args.software_name.decode('utf-8')
+            if args.software_version is not None:
+                args.software_version = args.software_version.decode('utf-8')
+            if args.software_processing_details is not None:
+                args.software_processing_details = args.software_processing_details.decode('utf-8')
+            if args.external_ref is not None:
+                external_ref = list()
+                for t,o,v in args.external_ref:
+                    external_ref.append([t.decode('utf-8'), o.decode('utf-8'), v.decode('utf-8')])
+                args.external_ref = external_ref
+            if args.segment_name is not None:
+                args.segment_name = args.segment_name.decode('utf-8')
+            if args.description is not None:
+                args.description = args.description.decode('utf-8')
+            if args.complexes is not None:
+                args.complexes = [c.decode('utf-8') for c in args.complexes]
+            if args.macromolecules is not None:
+                args.macromolecules = [m.decode('utf-8') for m in args.macromolecules]
 
         elif args.notes_subcommand == "del":
             if args.segment_id is not None:

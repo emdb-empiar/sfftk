@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 sfftk.notes.view
+=============================
 
 Display notes in EMDB-SFF files
 """
 from __future__ import division, print_function
 
+import sys
 import textwrap
 
 from .. import schema
@@ -31,11 +33,11 @@ def _add_index(L, pre="\t"):
 class View(object):
     """View base class"""
     DISPLAY_WIDTH = 110
-    NOT_DEFINED = "-*- NOT DEFINED -*-"
-    NOT_DEFINED_ALT = "N/A"
-    LINE1 = '=' * DISPLAY_WIDTH
-    LINE2 = '-' * DISPLAY_WIDTH
-    LINE3 = '*' * DISPLAY_WIDTH
+    NOT_DEFINED = u"-*- NOT DEFINED -*-"
+    NOT_DEFINED_ALT = u"N/A"
+    LINE1 = (u'=' * DISPLAY_WIDTH)
+    LINE2 = (u'-' * DISPLAY_WIDTH)
+    LINE3 = (u'*' * DISPLAY_WIDTH)
 
 
 class NoteView(View):
@@ -87,25 +89,31 @@ class NoteView(View):
         if self._segment.biologicalAnnotation:
             string_list = list()
             string_list.append(
-                "\t{:<19} {:<56} {:<20} {:1} {:1}".format(
-                    "#  ontology_name",
-                    "iri",
-                    "short_form",
-                    "L",
-                    "D",
+                u"\t{:>3} {:<16} {:<56} {:<20} {:1} {:1}".format(
+                    u"#",
+                    u"resource",
+                    u"iri",
+                    u"short_form",
+                    u"L",
+                    u"D",
                 )
             )
-            string_list.append("\t" + "-" * (self.DISPLAY_WIDTH - len("\t".expandtabs())))
+            string_list.append(u"\t" + u"-" * (self.DISPLAY_WIDTH - len(u"\t".expandtabs())))
             i = 0
             for extRef in self._segment.biologicalAnnotation.externalReferences:
+                type_ = extRef.type
+                otherType = extRef.otherType
+                value = extRef.value
+                label = u"Y" if extRef.label is not None else u"N"
+                description = u"Y" if extRef.description is not None else u"N"
                 string_list.append(
-                    "\t{}: {:<16} {:<56} {:<20} {:1} {:1}".format(
-                        i,
-                        extRef.type,
-                        extRef.otherType if extRef.otherType else '-',
-                        extRef.value,
-                        "Y" if extRef.label else "N",
-                        "Y" if extRef.description else "N"
+                    u"\t{id:>2}: {type:<16} {otherType:<56} {value:<20} {label:1} {description:1}".format(
+                        id=i,
+                        type=type_,
+                        otherType=otherType,
+                        value=value,
+                        label=label,
+                        description=description,
                     )
                 )
                 i += 1
@@ -145,23 +153,21 @@ class NoteView(View):
     @property
     def segmentType(self):
         segment_type = list()
-        # if self._segment.contours:
-        #     segment_type.append("contourList")
         if self._segment.meshes:
-            segment_type.append("meshList")
+            segment_type.append(u"meshList")
         if self._segment.shapes:
-            segment_type.append("shapePrimitiveList")
+            segment_type.append(u"shapePrimitiveList")
         if self._segment.volume:
-            segment_type.append("threeDVolume")
+            segment_type.append(u"threeDVolume")
         # json EMDB-SFF files do not have geometrical data
         if not segment_type:
             return None
         else:
-            return ", ".join(segment_type)
+            return u", ".join(segment_type)
 
     def __str__(self):
         if self._long:
-            string = """\
+            string = u"""\
 {}
 ID:\t\t{}
 PARENT ID:\t{}
@@ -207,21 +213,22 @@ Colour:
                 self.colour,
             )
         elif self.list_ids:
-            string = "{}".format(self.id)
-            return string
+            string = u"{}".format(self.id)
         else:
             colour = self.colour
-            string = "{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
+            string = u"{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
                 self.id,
                 self.parentID,
-                self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (self.name + "::" + self.description)[:37] + "...",
+                self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (
+                                                                                                                   self.name + "::" + self.description)[
+                                                                                                           :37] + "...",
                 self.numberOfInstances,
                 self.numberOfExternalReferences,
                 self.numberOfComplexes,
                 self.numberOfMacromolecules,
-                "(" + ", ".join(map(str, map(lambda c: round(c, 3), colour))) + ")",
+                u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
             )
-        return string
+        return string.encode('utf-8')
 
 
 class HeaderView(View):
@@ -246,23 +253,31 @@ class HeaderView(View):
 
     @property
     def software(self):
-        return u"""\
+        if self._segmentation.software.name is not None:
+            software_name = self._segmentation.software.name
+        else:
+            software_name = self.NOT_DEFINED
+        if self._segmentation.software.version is not None:
+            software_version = self._segmentation.software.version
+        else:
+            software_version = self.NOT_DEFINED
+        if self._segmentation.software.processingDetails is not None:
+            software_processing_details = textwrap.fill(
+                "\t" + self._segmentation.software.processingDetails,
+                self.DISPLAY_WIDTH
+            )
+        else:
+            software_processing_details = u"\t" + self.NOT_DEFINED
+        software = u"""\
 \tSoftware: {}
 \tVersion:  {}
 Software processing details: \n{}\
         """.format(
-            self._segmentation.software.name if self._segmentation.software.name else self.NOT_DEFINED,
-            self._segmentation.software.version if self._segmentation.software.version else self.NOT_DEFINED,
-            textwrap.fill(
-                u"\t" + self._segmentation.software.processingDetails \
-                    if self._segmentation.software.processingDetails else "\t" + self.NOT_DEFINED,
-                self.DISPLAY_WIDTH
-            ),
-        ).encode('utf-8')
-
-    # @property
-    # def filePath(self):
-    #     return self._segmentation.filePath
+            software_name,
+            software_version,
+            software_processing_details
+        )
+        return software
 
     @property
     def primaryDescriptor(self):
@@ -279,25 +294,31 @@ Software processing details: \n{}\
         if self._segmentation.globalExternalReferences:
             string_list = list()
             string_list.append(
-                "{:<19} {:<56} {:<20} {:1} {:1}".format(
-                    "#  ontology_name",
+                u"{:>3} {:<16} {:<56} {:<20} {:1} {:1}".format(
+                    "#",
+                    "resource",
                     "iri",
                     "short_form",
                     "L",
                     "D",
                 )
             )
-            string_list.append("\t" + "-" * (self.DISPLAY_WIDTH - len("\t".expandtabs())))
+            string_list.append(u"\t" + u"-" * (self.DISPLAY_WIDTH - len(u"\t".expandtabs())))
             i = 0
             for gExtRef in self._segmentation.globalExternalReferences:
+                type_ = gExtRef.type
+                otherType = gExtRef.otherType
+                value = gExtRef.value
+                label = u"Y" if gExtRef.label is not None else u"N"
+                description = u"Y" if gExtRef.description is not None else u"N"
                 string_list.append(
-                    "\t{}: {:<16} {:<56} {:<20} {:1} {:1}".format(
-                        i,
-                        gExtRef.type,
-                        gExtRef.otherType if gExtRef.otherType else '-',
-                        gExtRef.value,
-                        "Y" if gExtRef.label else "N",
-                        "Y" if gExtRef.description else "N"
+                    u"\t{id:>2}: {type:<16} {otherType:<56} {value:<20} {label:1} {description:1}".format(
+                        id=i,
+                        type=type_,
+                        otherType=otherType,
+                        value=value,
+                        label=label,
+                        description=description,
                     )
                 )
                 i += 1
@@ -308,14 +329,12 @@ Software processing details: \n{}\
     @property
     def details(self):
         if self._segmentation.details:
-            return "\n".join(textwrap.wrap(self._segmentation.details, self.DISPLAY_WIDTH))
-            print(type(self._segmentation.details))
-            return "\n".join(textwrap.wrap(self._segmentation.details.encode('utf-8'), self.DISPLAY_WIDTH))
+            return u"\n".join(textwrap.wrap(u"\t" + self._segmentation.details, self.DISPLAY_WIDTH))
         else:
-            return self.NOT_DEFINED
+            return u"\t" + self.NOT_DEFINED
 
     def __str__(self):
-        string = """\
+        string = u"""\
 {}
 EMDB-SFF v.{}
 {}
@@ -334,7 +353,7 @@ Global external references:
 \t{}
 {}
 Segmentation details:
-\t{}\
+{}\
         """.format(
             # ===
             self.LINE1,
@@ -356,30 +375,30 @@ Segmentation details:
             self.LINE2,
             self.details,
         )
-        return string
+        return string.encode('utf-8')
 
 
 class TableHeaderView(View):
     """Class defining the view of a table header object"""
 
     def __str__(self):
-        string = """\
+        string = u"""\
 {}
 {:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
 {}\
         """.format(
             View.LINE3,
-            "id",
-            "parId",
-            "name::description",
-            "#inst",
-            "#exRf",
-            "#cplx",
-            "#macr",
-            "colour",
+            u"id",
+            u"parId",
+            u"name::description",
+            u"#inst",
+            u"#exRf",
+            u"#cplx",
+            u"#macr",
+            u"colour",
             View.LINE2
         )
-        return string
+        return string.encode('utf-8')
 
 
 def list_notes(args, configs):
