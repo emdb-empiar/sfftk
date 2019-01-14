@@ -2078,6 +2078,7 @@ class SFFTransformList(SFFType):
                     h_tM[i] = (transform.id, transform.rows, transform.cols, transform.data_array)
                     i += 1
                 else:
+                    rows_, cols_ = transform.data_array.shape
                     tM = h_tM.create_dataset(
                         "{}".format(transform.id),
                         (1,),
@@ -2085,7 +2086,7 @@ class SFFTransformList(SFFType):
                             ('id', 'u4'),
                             ('rows', 'u1'),
                             ('cols', 'u1'),
-                            ('data', 'f4', (rows, cols)),
+                            ('data', 'f4', (rows_, cols_)),
                         ]
                     )
                     tM[0] = (transform.id, transform.rows, transform.cols, transform.data_array)
