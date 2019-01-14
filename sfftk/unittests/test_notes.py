@@ -6,6 +6,7 @@ from __future__ import division, print_function
 
 import os
 import shlex
+import shutil
 import sys
 import unittest
 
@@ -541,22 +542,28 @@ class TestNotes_modify(unittest.TestCase):
         segment = seg.segments.get_by_id(self.segment_id)
         self.assertEqual(len(segment.biologicalAnnotation.externalReferences), 0)
 
-    def _test_copy(self, suffix='sff'):
+    def _test_copy(self):
         """Test that we can copy notes"""
+        # we have an annotated EMDB-SFF file
+        # make a copy of the file for the test
+        annotated_sff_file = os.path.join(os.path.dirname(self.annotated_sff_file), 'temp_' + os.path.basename(self.annotated_sff_file))
+        shutil.copy2(self.annotated_sff_file, annotated_sff_file)
+        # use the file copy
         # before copy
-        seg = schema.SFFSegmentation(self.annotated_sff_file)
+        seg = schema.SFFSegmentation(annotated_sff_file)
         source_segment = seg.segments.get_by_id(15559)
-
         # copy
         cmd = "notes copy -i 15559 -t 15578 {} --config-path {}".format(
-            self.annotated_sff_file,
+            annotated_sff_file,
             self.config_fn
         )
         status1 = modify.copy_notes(*parse_args(cmd, use_shlex=True))
-        view.list_notes(*parse_args("notes list {}".format(self.annotated_sff_file), use_shlex=True))
+        # debug
+        cmd2 = "notes list {} --config-path {}".format(annotated_sff_file, self.config_fn)
+        view.list_notes(*parse_args(cmd2, use_shlex=True))
         self.assertEqual(status1, 0)
 
-        copied_seg = schema.SFFSegmentation(self.annotated_sff_file)
+        copied_seg = schema.SFFSegmentation(annotated_sff_file)
         copied_segment = copied_seg.segments.get_by_id(15578)
         self.assertEqual(len(source_segment.biologicalAnnotation.externalReferences),
                          len(copied_segment.biologicalAnnotation.externalReferences))
@@ -566,10 +573,8 @@ class TestNotes_modify(unittest.TestCase):
                          copied_segment.biologicalAnnotation.externalReferences[0].otherType)
         self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].value,
                          copied_segment.biologicalAnnotation.externalReferences[0].value)
-
-        # clear
-        cmd = "notes clear -i 15578 {}".format(self.annotated_sff_file)
-        modify.clear_notes(*parse_args(cmd, use_shlex=True))
+        # # get rid of the copy
+        os.remove(annotated_sff_file)
 
 
 class TestNotes_modify_sff(TestNotes_modify):
@@ -638,6 +643,7 @@ class TestNotes_modify_hff(TestNotes_modify):
     def test_clear(self):
         super(TestNotes_modify_hff, self)._test_clear()
 
+    # fixme: can't figure out why this fails
     # def test_copy(self):
     #     super(TestNotes_modify_hff, self)._test_copy()
 

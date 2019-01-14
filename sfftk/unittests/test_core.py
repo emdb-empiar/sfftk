@@ -1196,7 +1196,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         macromolecules = rw.random_words(count=4)
         cmd = "notes edit -i {id} -s '{name}' -D '{description}' -n {number_of_instances} " \
               "-e 0 -E {type1} {otherType1} {value1} -e 1 -E {type2} {otherType2} {value2} " \
-              "-c 0 C {complexes} -m 0 -M {macromolecules} " \
+              "-c 0 -C {complexes} -m 0 -M {macromolecules} " \
               "file.sff --config-path {config_path}".format(
             id=segment_id, name=name,
             description=description,

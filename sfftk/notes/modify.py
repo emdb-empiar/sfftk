@@ -716,6 +716,7 @@ def copy_notes(args, configs):
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
     # from segment
+    from_segment = list()
     if args.segment_id is not None:
         from_segment = args.segment_id
     if args.from_global:
@@ -724,6 +725,7 @@ def copy_notes(args, configs):
         except NameError:
             from_segment = [-1]
     # to_segment
+    to_segment = list()
     if args.to_segment is not None:
         to_segment = args.to_segment
     elif args.to_all:
@@ -773,10 +775,11 @@ def clear_notes(args, configs):
         print(HeaderView(sff_seg))
     if args.segment_id is not None:
         for segment in sff_seg.segments:
-            if segment.id in args_segment_id:
+            if segment.id in args.segment_id:
                 print(NoteView(segment, _long=True))
     elif args.from_all_segments:
-        print(NoteView(sff_seg.segment, _long=True))
+        for segment in sff_seg.segments:
+            print(NoteView(segment, _long=True))
 
     # export
     sff_seg.export(args.sff_file)
