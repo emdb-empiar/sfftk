@@ -7,7 +7,7 @@
     "zmax": 150.0, 
     "zmin": 0.0
   }, 
-  "details": "", 
+  "details": null, 
   "globalExternalReferences": [], 
   "name": "IMOD-NewModel", 
   "primaryDescriptor": "meshList", 

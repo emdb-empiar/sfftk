@@ -305,7 +305,7 @@ class TestNotes_modify(unittest.TestCase):
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
         cmd = shlex.split(
-            "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
+            "notes add -i {} -s '{}' -d '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
                 self.segment_id,
                 segment_name,
                 desc,
@@ -363,7 +363,7 @@ class TestNotes_modify(unittest.TestCase):
         num1 = tests._random_integer()
         extref1 = map(lambda e: e[::-1], extref)
         cmd1 = shlex.split(
-            "notes edit -i {} -s '{}' -D '{}' -e 0 -E {} -n {} -c 1 -C {} -m 2 -M {} {} --config-path {}".format(
+            "notes edit -i {} -s '{}' -d '{}' -e 0 -E {} -n {} -c 1 -C {} -m 2 -M {} {} --config-path {}".format(
                 self.segment_id,
                 segment_name1,
                 desc1,
@@ -440,7 +440,7 @@ class TestNotes_modify(unittest.TestCase):
         macromolecules = ['xuidh', '29hf98e', 'ygce']
         # add
         cmd = shlex.split(
-            "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
+            "notes add -i {} -s '{}' -d '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
                 self.segment_id,
                 segment_name,
                 desc,

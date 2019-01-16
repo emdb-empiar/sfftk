@@ -164,7 +164,7 @@ class AbstractGlobalNote(BaseNote):
         if self.softwareProcessingDetails is not None:
             segmentation.software.processingDetails = self.softwareProcessingDetails
         # details
-        if self.details:
+        if self.details is not None:
             segmentation.details = self.details
         # global external references
         if self.externalReferences:
@@ -324,16 +324,16 @@ class AbstractNote(BaseNote):
         """
         # biologicalAnnotation
         bA = segment.biologicalAnnotation
-        if self.name:
+        if self.name is not None:
             bA.name = self.name
-        if self.description:
+        if self.description is not None:
             bA.description = self.description
-        else:
-            bA.description = segment.biologicalAnnotation.description
+        # else:
+        #     bA.description = segment.biologicalAnnotation.description
         if self.numberOfInstances:
             bA.numberOfInstances = self.numberOfInstances
-        else:
-            bA.numberOfInstances = segment.biologicalAnnotation.numberOfInstances
+        # else:
+        #     bA.numberOfInstances = segment.biologicalAnnotation.numberOfInstances
         # copy current external references
         bA.externalReferences = segment.biologicalAnnotation.externalReferences
         if self.externalReferences:
@@ -383,9 +383,9 @@ class AbstractNote(BaseNote):
             print_date("Note: no biological anotation was found. You may edit only after adding with 'sff notes add'.")
         else:
             bA = segment.biologicalAnnotation
-            if self.name:
+            if self.name is not None:
                 bA.name = self.name
-            if self.description:
+            if self.description is not None:
                 bA.description = self.description
             if self.numberOfInstances:
                 bA.numberOfInstances = self.numberOfInstances

@@ -87,16 +87,15 @@ complex_id = {
     }
 }
 description = {
-    'args': ['-D', '--description'],
+    'args': ['-d', '--description'],
     'kwargs': {
         'help': 'the description'
     }
 }
 details = {
-    'args': ['-d', '--details'],
+    'args': ['-D', '--details'],
     'kwargs': {
-        'default': "",
-        'help': "populates <details>...</details> in the XML file [default: '']"
+        'help': "populates <details>...</details> in the XML file"
     }
 }
 external_ref_id = {
@@ -171,8 +170,7 @@ macromolecule_id = {
 name = {
     'args': ['-N', '--name'],
     'kwargs': {
-        'default': None,
-        'help': "the segmentation name [default: '']"
+        'help': "the segmentation name"
     }
 }
 number_of_instances = {
@@ -192,8 +190,7 @@ output = {
 software_proc_details = {
     'args': ['-P', '--software-processing-details'],
     'kwargs': {
-        'default': None,
-        'help': "details of how the segmentation was processed [default: None]"
+        'help': "details of how the segmentation was processed"
     }
 }
 config_path = {
@@ -211,15 +208,13 @@ primary_descriptor = {
 software_name = {
     'args': ['-S', '--software-name'],
     'kwargs': {
-        'default': None,
-        'help': "the name of the software used to create the segmentation [default: None]"
+        'help': "the name of the software used to create the segmentation"
     }
 }
 segment_name = {
     'args': ['-s', '--segment-name'],
     'kwargs': {
-        'default': None,
-        'help': "the name of the segment [default: None]"
+        'help': "the name of the segment"
     }
 }
 shipped_configs = {
@@ -233,8 +228,7 @@ shipped_configs = {
 software_version = {
     'args': ['-V', '--software-version'],
     'kwargs': {
-        'default': None,
-        'help': "the version of software used to create the segmentation [default: None]"
+        'help': "the version of software used to create the segmentation"
     }
 }
 verbose = {

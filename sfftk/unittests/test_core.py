@@ -584,7 +584,7 @@ class TestParserConvert(unittest.TestCase):
         self.assertEqual(args.from_file, self.test_data_file)
         self.assertIsNone(args.config_path)
         self.assertFalse(args.top_level_only)
-        self.assertEqual(args.details, "")
+        self.assertIsNone(args.details)
         self.assertEqual(args.output, os.path.join(os.path.dirname(self.test_data_file), 'test_data.sff'))
         self.assertEqual(args.primary_descriptor, None)
         self.assertFalse(args.verbose)
@@ -598,7 +598,7 @@ class TestParserConvert(unittest.TestCase):
 
     def test_details(self):
         """Test convert parser with details"""
-        args, _ = parse_args(shlex.split('convert -d "Some details" {}'.format(self.test_data_file)))
+        args, _ = parse_args(shlex.split('convert -D "Some details" {}'.format(self.test_data_file)))
         # assertions
         self.assertEqual(args.details, 'Some details')
 
@@ -1018,7 +1018,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         otherType2 = rw.random_word()
         value2 = rw.random_word()
         args, _ = parse_args(
-            "notes add -N '{name}' -d '{details}' -S '{software_name}' -V {software_version} "
+            "notes add -N '{name}' -D '{details}' -S '{software_name}' -V {software_version} "
             "-P '{software_processing_details}' -E {type1} {otherType1} {value1} "
             "-E {type2} {otherType2} {value2} file.sff --config-path {config_path}".format(
                 name=name,
@@ -1070,7 +1070,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         value2 = rw.random_word()
         complexes = rw.random_words(count=5)
         macromolecules = rw.random_words(count=4)
-        cmd = "notes add -i {id} -s '{name}' -D '{description}' -n {number_of_instances} " \
+        cmd = "notes add -i {id} -s '{name}' -d '{description}' -n {number_of_instances} " \
               "-E {type1} {otherType1} {value1} -E {type2} {otherType2} {value2} -C {complexes} " \
               "-M {macromolecules} file.sff --config-path {config_path}".format(
             id=segment_id, name=name,
@@ -1135,7 +1135,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         type2 = rw.random_word()
         otherType2 = rw.random_word()
         value2 = rw.random_word()
-        cmd = "notes edit -N '{name}' -d '{details}' -S '{software_name}' -V {software_version} " \
+        cmd = "notes edit -N '{name}' -D '{details}' -S '{software_name}' -V {software_version} " \
               "-P '{software_processing_details}' file.sff --config-path {config_path} " \
               "-e 0 -E {type1} {otherType1} {value1} -e 1 -E {type2} {otherType2} {value2}".format(
             name=name,
@@ -1265,7 +1265,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         external_ref_id = _random_integer()
         complex_id = _random_integer()
         macromolecule_id = _random_integer()
-        args, _ = parse_args(shlex.split('notes del -i {} -D -n -e {} -c {} -m {} file.sff --config-path {}'.format(
+        args, _ = parse_args(shlex.split('notes del -i {} -d -n -e {} -c {} -m {} file.sff --config-path {}'.format(
             segment_id, external_ref_id, complex_id, macromolecule_id,
             self.config_fn,
         )))
