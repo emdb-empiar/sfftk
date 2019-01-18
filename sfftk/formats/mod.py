@@ -502,13 +502,13 @@ class IMODSegmentation(Segmentation):
         If it only has contours this property is False
         Do not convert segmentations that only have contours
         """
-        status = True
+        status = False
         for segment in self.segments:
             if segment.meshes or segment.shapes:
-                pass
-            else:
-                status = False
+                status = True
                 break
+            else:
+                pass
         return status
 
     @property
