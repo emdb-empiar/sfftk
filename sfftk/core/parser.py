@@ -1118,6 +1118,9 @@ def parse_args(_args, use_shlex=False):
                 return os.EX_USAGE, configs
     # convert
     elif args.subcommand == 'convert':
+        # convert details to unicode
+        if args.details is not None:
+            args.details = args.details.decode('utf-8')
         # single vs. multi-file
         # single vs. multiple file names provided
         if len(args.from_file) == 1:
