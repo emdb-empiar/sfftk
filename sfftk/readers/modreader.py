@@ -953,7 +953,7 @@ def get_data(fn):
             elif chunk_name == 'OGRP':
                 print("OGRP: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
-                f.read(bytes)
+                f.read(num_bytes)
             elif chunk_name == 'OBST':
                 obst = OBST(f)
                 f = obst.read()
@@ -996,7 +996,7 @@ def get_data(fn):
             elif chunk_name == 'SLAN':  # the class exists but has not been integrated; need an example of where it occurs
                 print("SLAN: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
-                f.read(bytes)
+                f.read(num_bytes)
             elif chunk_name == 'MEPA':
                 mepa = MEPA(f)
                 f = mepa.read()
