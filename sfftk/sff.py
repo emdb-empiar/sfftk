@@ -437,8 +437,8 @@ def handle_view(args, configs):  # @UnusedVariable
             from .readers import modreader
             modreader.show_chunks(args.from_file)
     elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE) or \
-                re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
-                re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):
+            re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
+            re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):
         from .formats.map import MapSegmentation
         seg = MapSegmentation([args.from_file], header_only=True)
         print("*" * 50)
@@ -556,7 +556,7 @@ def main():
         # missing args
         if args == os.EX_USAGE:
             return os.EX_USAGE
-        elif args == os.EX_OK: # e.g. show version has no error but has no handler either
+        elif args == os.EX_OK:  # e.g. show version has no error but has no handler either
             return os.EX_OK
         # subcommands
         if args.subcommand == 'prep':
