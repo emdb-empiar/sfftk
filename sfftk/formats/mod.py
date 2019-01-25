@@ -376,6 +376,7 @@ class IMODAnnotation(Annotation):
         """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         # annotation
         annotation = schema.SFFBiologicalAnnotation()
+        annotation.name = self.name
         annotation.description = self.description
         annotation.numberOfInstances = 1
         # colour

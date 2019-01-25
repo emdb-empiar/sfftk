@@ -16,7 +16,7 @@
       "biologicalAnnotation": {
         "description": "Saved isosurface", 
         "externalReferences": [], 
-        "name": null, 
+        "name": "Saved isosurface", 
         "numberOfInstances": 1
       }, 
       "colour": [

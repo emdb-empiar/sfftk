@@ -87,6 +87,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         # annotation
         annotation = schema.SFFBiologicalAnnotation(
+            name=self.name,
             description=self.name,
             numberOfInstances=1,
         )

@@ -28,6 +28,10 @@ class SeggerAnnotation(Annotation):
         self._region_id = region_id
 
     @property
+    def name(self):
+        return ''
+
+    @property
     def description(self):
         return ''
 
@@ -39,6 +43,7 @@ class SeggerAnnotation(Annotation):
     def convert(self, *args, **kwargs):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
+        annotation.name = self.name
         annotation.description = self.description
         annotation.numberOfInstances = 1
         # colour = schema.SFFColour()

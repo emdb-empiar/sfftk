@@ -64,6 +64,14 @@ class AmiraMeshAnnotation(Annotation):
         self._material = material
 
     @property
+    def name(self):
+        """Segment name"""
+        try:
+            return self._material.name
+        except AttributeError:
+            return None
+
+    @property
     def description(self):
         """Segment description"""
         try:
@@ -87,6 +95,7 @@ class AmiraMeshAnnotation(Annotation):
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
+        annotation.name = self.name
         annotation.description = self.description
         annotation.numberOfInstances = 1
         if self.colour:
