@@ -12,6 +12,7 @@ import math
 import os
 import sys
 import textwrap
+from styled import Styled
 
 import backports.shutil_get_terminal_size
 
@@ -54,7 +55,7 @@ __updated__ = '2018-02-14'
 # todo: Retrieve an ontology GET /api/ontologies/{ontology_id}
 
 
-JUSTIFY = ['left', 'right', 'center']
+JUSTIFY = [u'left', u'right', u'center']
 
 
 class SearchResource(object):
@@ -76,23 +77,23 @@ class SearchResource(object):
 
     @property
     def name(self):
-        return self._resource['name']
+        return self._resource[u'name']
 
     @property
     def root_url(self):
-        return self._resource['root_url']
+        return self._resource[u'root_url']
 
     @property
     def format(self):
-        return self._resource['format']
+        return self._resource[u'format']
 
     @property
     def result_path(self):
-        return self._resource['result_path']
+        return self._resource[u'result_path']
 
     @property
     def result_count(self):
-        return self._resource['result_count']
+        return self._resource[u'result_count']
 
     @property
     def response(self):
@@ -102,38 +103,40 @@ class SearchResource(object):
         """Determine the url to search against"""
         url = None
         # ols
-        if self.name == 'OLS':
+        if self.name == u'OLS':
             if self.search_args.list_ontologies or self.search_args.short_list_ontologies:
-                url = self.root_url + "ontologies?size=1000"
+                url = self.root_url + u"ontologies?size=1000"
             else:
-                url = self.root_url + "search?q={}&start={}&rows={}".format(
+                url = self.root_url + u"search?q={}&start={}&rows={}".format(
                     self.search_args.search_term,
                     self.search_args.start - 1,
                     self.search_args.rows,
                 )
                 if self.search_args.ontology:
-                    url += "&ontology={}".format(self.search_args.ontology)
+                    url += u"&ontology={}".format(self.search_args.ontology)
                 if self.search_args.exact:
-                    url += "&exact=on"
+                    url += u"&exact=on"
                 if self.search_args.obsoletes:
-                    url += "&obsoletes=on"
+                    url += u"&obsoletes=on"
         # emdb
-        elif self.name == 'EMDB':
-            url = self.root_url + "?q={}&start={}&rows={}".format(
+        elif self.name == u'EMDB':
+            url = self.root_url + u"?q={}&start={}&rows={}".format(
                 self.search_args.search_term,
                 self.search_args.start,
                 self.search_args.rows,
             )
         # uniprot
-        elif self.name == "UniProt":
-            url = self.root_url + "?query={search_term}&format=tab&offset={start}&limit={rows}&columns=id,entry_name,protein_names,organism".format(
+        elif self.name == u"UniProt":
+            url = self.root_url + u"?query={search_term}&format=tab&offset={start}&limit={rows}&columns=id,entry_name," \
+                                  u"protein_names,organism".format(
                 search_term=self.search_args.search_term,
                 start=self.search_args.start,
                 rows=self.search_args.rows,
             )
         # pdb
-        elif self.name == "PDB":
-            url = self.root_url + "?q={search_term}&wt=json&fl=pdb_id,title,organism_scientific_name&start={start}&rows={rows}".format(
+        elif self.name == u"PDB":
+            url = self.root_url + u"?q={search_term}&wt=json&fl=pdb_id,title,organism_scientific_name&start={start}&" \
+                                  u"rows={rows}".format(
                 search_term=self.search_args.search_term,
                 start=self.search_args.start,
                 rows=self.search_args.rows,
@@ -149,20 +152,32 @@ class SearchResource(object):
             R = requests.get(url)
             if R.status_code == 200:
                 self._response = R.text
-                # return SearchResults(self._results, self.search_args, self._configs, *args, **kwargs)
                 return SearchResults(self)
             else:
-                raise ValueError(R.text)
-                sys.exit(os.EX_DATAERR)
+                print_date(u"Error: server responded with {}".format(R.text))
+                return None
         else:
-            raise ValueError('url is None')
-            sys.exit(os.EX_DATAERR)
+            print_date(u'Error: url is None')
+            return None
+
+    def __unicode__(self):
+        string = Styled(u"""Search Resource:
+        \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
+        \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
+        \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
+        \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
+        \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
+        \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(), **self._resource)
+        return unicode(string)
+
+    def __str__(self):
+        return str(unicode(self))
 
 
 class TableField(object):
     """Class definition for a TableField - single column in a table"""
 
-    def __init__(self, name, key=None, text=None, width=20, pc=None, justify='left', _format=None, is_index=False,
+    def __init__(self, name, key=None, text=None, width=20, pc=None, justify=u'left', _format=None, is_index=False,
                  is_iterable=False, position_in_iterable=0):
         """A single field (column) in a table
 
@@ -185,36 +200,32 @@ class TableField(object):
             assert key is None or text is None
         except AssertionError:
             raise ValueError('key and text are mutually exclusive; only define one or none of them')
-            sys.exit(os.EX_DATAERR)
         # check valid type for width
         try:
             assert isinstance(width, int) or isinstance(width, long)
         except AssertionError:
             raise ValueError('field width must be int or long')
-            sys.exit(os.EX_DATAERR)
         # check valid value for width
         try:
             assert width > 0
         except AssertionError:
             raise ValueError('field width must be greater than 0')
-            sys.exit(os.EX_DATAERR)
         # ensure pc is valid type
         try:
             assert isinstance(pc, int) or isinstance(pc, long) or isinstance(pc, float) or pc is None
         except AssertionError:
             raise ValueError('invalid type for pc (percentage): {}'.format(type(pc)))
-            sys.exit(os.EX_DATAERR)
         # ensure pc is a valid value
         try:
             assert 0 < pc < 100 or pc is None
         except AssertionError:
-            raise ValueError('invalid value for pc (percentage): {}'.format(pc))
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'invalid value for pc (percentage): {}'.format(pc))
+
         # check valid values for justify
         try:
             assert justify in JUSTIFY
         except AssertionError:
-            raise ValueError("invalid value for kwarg justify: {}; should be {}".format(
+            raise ValueError(u"invalid value for kwarg justify: {}; should be {}".format(
                 justify,
                 ', '.join(JUSTIFY),
             ))
@@ -223,21 +234,19 @@ class TableField(object):
             assert _format is None or _format.find("{}") >= 0
         except AssertionError:
             raise ValueError(
-                "invalid value for _format: {}; it should be either None or have one and only one pair of braces".format(
+                u"invalid value for _format: {}; it should be either None or have one and only one pair of braces".format(
                     _format,
                 ))
         # check valid type for position_in_iterable
         try:
             assert isinstance(position_in_iterable, int) or isinstance(position_in_iterable, long)
         except AssertionError:
-            raise ValueError('field position_in_iterable must be int or long')
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'field position_in_iterable must be int or long')
         # check valid value for position_in_iterable
         try:
             assert position_in_iterable >= 0
         except AssertionError:
-            raise ValueError('field position_in_iterable must be greater or equal than 0')
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'field position_in_iterable must be greater or equal than 0')
         self._name = str(name)
         if key is None and text is None:
             self._key = name
@@ -257,11 +266,11 @@ class TableField(object):
 
         :param str text: the text to justify
         """
-        if self._justify == 'left':
+        if self._justify == u'left':
             return text.ljust(self._width)
-        elif self._justify == 'right':
+        elif self._justify == u'right':
             return text.rjust(self._width)
-        elif self._justify == 'center':
+        elif self._justify == u'center':
             return text.center(self._width)
 
     def __unicode__(self):
@@ -282,8 +291,7 @@ class TableField(object):
         try:
             assert isinstance(width, int) or isinstance(width, long)
         except AssertionError:
-            raise ValueError('width must be an int or long')
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'width must be an int or long')
         self._width = width
 
     @property
@@ -373,7 +381,7 @@ class TableRow(Table):
 class ResultsTable(Table):
     """Class that formats search results as a table"""
 
-    def __init__(self, search_results, fields, width='auto', *args, **kwargs):
+    def __init__(self, search_results, fields, width=u'auto', *args, **kwargs):
         """Initialise a ResultsTable object by specifying results and fields
 
         :param search_results: a SearchResults object
@@ -385,42 +393,36 @@ class ResultsTable(Table):
         try:
             assert isinstance(search_results, SearchResults)
         except AssertionError:
-            raise ValueError('search_results must be a SearchResults object')
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'search_results must be a SearchResults object')
         # ensure that we have at least one field
         try:
             assert fields  # nice! an empty list asserts to False
         except AssertionError:
-            raise ValueError('fields kwarg should not be empty')
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'fields kwarg should not be empty')
         # ensure that the fields kwarg is populated with TableField objects
         try:
             assert all(map(lambda f: isinstance(f, TableField), fields))
         except AssertionError:
-            raise ValueError('non-TableField object in iterable fields')
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u'non-TableField object in iterable fields')
         # check valid type for width
         try:
             assert isinstance(width, int) or isinstance(width, long) or width == 'auto'
         except AssertionError:
-            raise ValueError("field width must be instance of int or long or the string 'auto'")
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u"field width must be instance of int or long or the string 'auto'")
         # check valid value for width
         try:
             assert width > 0 or width == 'auto'
         except AssertionError:
-            raise ValueError("field width must be greater than 0 or the string 'auto'")
-            sys.exit(os.EX_DATAERR)
+            raise ValueError(u"field width must be greater than 0 or the string 'auto'")
         # only one index field per table
         try:
             assert len(filter(lambda f: f.is_index, fields)) <= 1
         except AssertionError:
             raise ValueError(
-                'there is more than one field with is_index=True set; only one index field per table supported')
-            sys.exit(os.EX_DATAERR)
+                u'there is more than one field with is_index=True set; only one index field per table supported')
         super(ResultsTable, self).__init__(*args, **kwargs)
         self._search_results = search_results
-        if width == 'auto':
+        if width == u'auto':
             terminal_size = backports.shutil_get_terminal_size.get_terminal_size()  # fallback values
             if terminal_size.columns > 0:
                 self._width = terminal_size.columns
@@ -435,7 +437,8 @@ class ResultsTable(Table):
             assert total_width < self._width
         except AssertionError:
             print_date(
-                'total field widths greater than table width; distortion will occur: table width={}; total field width={}'.format(
+                u'total field widths greater than table width; '
+                u'distortion will occur: table width={}; total field width={}'.format(
                     self._width,
                     total_width,
                 ))
@@ -460,33 +463,33 @@ class ResultsTable(Table):
 
     @property
     def header(self):
-        header = u"=" * self._width + self.row_separator
-        header += u"Search term: {}{}{}".format(
+        header = Styled(u"[[ ''|fg-yellow:no-end ]]")
+        header += u"=" * self._width + self.row_separator
+        header += u"Search term: [[ '{}'|fg-yellow:bold ]]{}{}".format(
             self._search_results.search_args.search_term,
             self.row_separator,
             self.row_separator,
         )
-        # _fields = list()
-        # for f in self._fields:
-        #     _f_unicode = unicode(f)
-        #     if len(_f_unicode) > f.width:
-        #         f_unicode = _f_unicode[:f.width]
-        #     else:
-        #         f_unicode = _f_unicode
-        #     _fields.append(f_unicode)
-        # header += self.column_separator.join(_fields) + self.row_separator
+        header += Styled(u"[[ ''|fg-yellow:bold:no-end ]]")
         header += self.column_separator.join(map(lambda f: unicode(f)[:f.width], self._fields)) + self.row_separator
         header += u"=" * self._width + self.row_separator
+        header += Styled(u"[[ ''|reset ]]")
         return header
 
     @property
     def body(self):
-        body = u''
         index = self._search_results.search_args.start  # index
-        for row_data in self._search_results.results:
-            body += unicode(TableRow(row_data, self._fields, index)) + self.row_separator
+        if self._search_results.results is not None:
+            body = Styled(u"[[ ''|fg-yellow:no-end ]]")
+            for row_data in self._search_results.results:
+                body += unicode(TableRow(row_data, self._fields, index)) + self.row_separator
+                body += u"-" * self._width + self.row_separator
+                index += 1  # increment index
+            body += Styled(u"[[ ''|reset ]]")
+        else:
+            body = u'\nNo data found at this time. Please try again in a few minutes.'.center(self._width) + self.row_separator
+            body += self.row_separator
             body += u"-" * self._width + self.row_separator
-            index += 1  # increment index
         return body
 
     @property
@@ -505,21 +508,16 @@ class ResultsTable(Table):
         return footer
 
     def __unicode__(self):
-        string = u''
+        string = u""
         string += self.header
         string += self.body
         string += self.footer
-        return string
+        return unicode(string)
 
 
 class SearchResults(object):
     """SearchResults class"""
-    # try and get
-    #     try:
-    #         rows, cols = map(int, os.popen('stty size').read().split())
-    #         TTY_WIDTH = cols
-    #     except:
-    TTY_WIDTH = 180  # unreasonable default
+    _width = 180  # unreasonable default
     INDEX_WIDTH = 6
     LABEL_WIDTH = 20
     SHORT_FORM_WIDTH = 20
@@ -528,9 +526,14 @@ class SearchResults(object):
     TYPE_WIDTH = 18
 
     def __init__(self, resource):
-        self._resource = resource
+        self._resource = resource # the resource that was searched
         self._raw_response = resource.response
         self._structured_response = self._structure_response()
+        terminal_size = backports.shutil_get_terminal_size.get_terminal_size()  # fallback values
+        if terminal_size.columns > 0:
+            self._width = terminal_size.columns
+        else:
+            self._width = self._width
 
     @property
     def structured_response(self):
@@ -538,20 +541,27 @@ class SearchResults(object):
 
     def _structure_response(self):
         """Structure the raw result according to the format received"""
-        if self._resource.format == 'json':
+        if self._resource.format == u'json':
             import json
-            structured_results = json.loads(self._raw_response, 'utf-8')
+            try:
+                structured_results = json.loads(self._raw_response, 'utf-8')
+            except ValueError:
+                print_date(u"Unable to search at this time. Please try after a few minutes.")
+                structured_results = None
             return structured_results
-        elif self._resource.format == 'tab':
-            # split rows; split columns; dump first and last rows
-            _structured_results = map(lambda r: r.split('\t'), self._raw_response.split('\n'))[1:-1]
-            # make a list of dicts with the given ids
-            structured_results = map(lambda r: dict(zip(['id', 'name', 'proteins', 'organism'], r)),
-                                     _structured_results)
+        elif self._resource.format == u'tab':
+            try:
+                # split rows; split columns; dump first and last rows
+                _structured_results = map(lambda r: r.split('\t'), self._raw_response.split('\n'))[1:-1]
+                # make a list of dicts with the given ids
+                structured_results = map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
+                                         _structured_results)
+            except ValueError:
+                structured_results = None
             return structured_results
         else:
-            raise ValueError("unsupported format: {}".format(self._resource.format))
-            sys.exit(os.EX_DATAERR)
+            print_date(u"unsupported format: {}".format(self._resource.format))
+            return None
 
     @property
     def search_args(self):
@@ -559,103 +569,99 @@ class SearchResults(object):
 
     @property
     def results(self):
-        if self._resource.result_path is not None:
-            return utils.get_path(self._structured_response, self._resource.result_path)
-        else:
-            return self._structured_response
+        if self.structured_response is not None:
+            if self._resource.result_path is not None:
+                return utils.get_path(self.structured_response, self._resource.result_path)
+        return self.structured_response
+
+    def __unicode__(self):
+        return unicode(self.tabulate())
 
     def __str__(self):
-        # open colour
-        string = u"\033[0;33m\r"
-        string += unicode(self.tabulate())
-        # close colour
-        string += u"\033[0;0m\r"
-        # return encoded
-        return string.encode('utf-8')
+        return str(self.tabulate())
 
     def tabulate(self):
         """Tabulate the search results"""
-        table = ""
-        if self._resource.name == 'OLS':
+        table = Styled(u"[[ ''|fg-yellow:no-end ]]")  # u""
+        if self._resource.name == u'OLS':
             # only list ontologies as short or long lists
             if self.search_args.list_ontologies or self.search_args.short_list_ontologies:
                 if self.search_args.list_ontologies:
-                    table = u""
-                    table += u"\n" + "-" * self.TTY_WIDTH + u"\n"
-                    for ontology in utils.get_path(self.structured_response, ['_embedded', 'ontologies']):
-                        c = ontology['config']
+                    table += u"\n" + "-" * self._width + u"\n"
+                    for ontology in utils.get_path(self.structured_response, [u'_embedded', u'ontologies']):
+                        c = ontology[u'config']
+                        table += u"\n"
                         ont = [
-                            u"Namespace: ".ljust(30) + unicode(c['namespace']),
-                            u"Pref. prefix: ".ljust(30) + unicode(c['preferredPrefix']),
-                            u"Title: ".ljust(30) + unicode(c['title']),
-                            u"Description: ".ljust(30) + unicode(c['description']),
-                            u"Homepage: ".ljust(30) + unicode(c['homepage']),
-                            u"ID: ".ljust(30) + unicode(c['id']),
-                            u"Version :".ljust(30) + unicode(c['version']),
+                            u"Namespace: ".ljust(30) + u"[[ '{}'|bold ]][[ ''|fg-yellow:no-end ]]".format(unicode(c[u'namespace'])),
+                            u"Pref. prefix: ".ljust(30) + unicode(c[u'preferredPrefix']),
+                            u"Title: ".ljust(30) + unicode(c[u'title']),
+                            u"Description: ".ljust(30) + unicode(c[u'description']),
+                            u"Homepage: ".ljust(30) + unicode(c[u'homepage']),
+                            u"ID: ".ljust(30) + unicode(c[u'id']),
+                            u"Version :".ljust(30) + unicode(c[u'version']),
                         ]
                         table += u"\n".join(ont)
-                        table += u"\n" + "-" * self.TTY_WIDTH
+                        table += u"\n" + "-" * self._width
                 elif self.search_args.short_list_ontologies:
                     table += u"List of ontologies\n"
-                    table += u"\n" + "-" * self.TTY_WIDTH + u"\n"
-                    for ontology in utils.get_path(self.structured_response, ['_embedded', 'ontologies']):
-                        c = ontology['config']
+                    table += u"\n" + "-" * self._width + u"\n"
+                    for ontology in utils.get_path(self.structured_response, [u'_embedded', u'ontologies']):
+                        c = ontology[u'config']
                         ont = [
-                            unicode(c['namespace']).ljust(10),
+                            u"[[ '{}'|fg-yellow:bold ]][[ ''|fg-yellow:no-end ]]".format(unicode(c[u'namespace']).ljust(10)),
                             u"-",
-                            unicode(c['description'][:200]) if c['description'] else u'' + u"...",
+                            unicode(c[u'description'][:200]) if c[u'description'] else u'' + u"...",
                         ]
                         table += u"\t".join(ont) + u"\n"
             # list search results
             else:
                 fields = [
-                    TableField('index', key='index', pc=5, is_index=True, justify='right'),
-                    TableField('label', key='label', pc=10),
-                    TableField('short_form', key='short_form', pc=10, justify='center'),
-                    TableField('resource', key='ontology_name', pc=5, justify='center'),
-                    TableField('description', key='description', pc=40, is_iterable=True),
-                    TableField('iri', key='iri', pc=30),
+                    TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
+                    TableField(u'label', key=u'label', pc=10),
+                    TableField(u'short_form', key=u'short_form', pc=10, justify=u'center'),
+                    TableField(u'resource', key=u'ontology_name', pc=5, justify=u'center'),
+                    TableField(u'description', key=u'description', pc=40, is_iterable=True),
+                    TableField(u'iri', key=u'iri', pc=30),
                 ]
-                table = ResultsTable(self, fields=fields)
-        elif self._resource.name == 'EMDB':
+                table += unicode(ResultsTable(self, fields=fields))
+        elif self._resource.name == u'EMDB':
             fields = [
-                TableField('index', key='index', pc=5, is_index=True, justify='right'),
-                TableField('label', text=self._resource.search_args.search_term, pc=10, justify='center'),
-                TableField('short_form', key='EntryID', pc=10, _format='EMD-{}', justify='center'),
-                TableField('resource', text='EMDB', pc=5),
-                TableField('description', key='Title', pc=40),
-                TableField('iri', key='EntryID', _format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
+                TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
+                TableField(u'label', text=self._resource.search_args.search_term, pc=10, justify=u'center'),
+                TableField(u'short_form', key=u'EntryID', pc=10, _format=u'EMD-{}', justify=u'center'),
+                TableField(u'resource', text=u'EMDB', pc=5),
+                TableField(u'description', key=u'Title', pc=40),
+                TableField(u'iri', key=u'EntryID', _format=u'https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
             ]
-            table = ResultsTable(self, fields=fields)
-        elif self._resource.name == "UniProt":
+            table += unicode(ResultsTable(self, fields=fields))
+        elif self._resource.name == u"UniProt":
             fields = [
-                TableField('index', pc=5, is_index=True, justify='right'),
-                TableField('label', key='name', pc=10),
-                TableField('short_form', key='id', pc=10, justify='center'),
-                TableField('resource', text='UniProt', pc=5, justify='center'),
-                TableField('description', key='proteins', pc=40),
+                TableField(u'index', pc=5, is_index=True, justify=u'right'),
+                TableField(u'label', key=u'name', pc=10),
+                TableField(u'short_form', key=u'id', pc=10, justify=u'center'),
+                TableField(u'resource', text=u'UniProt', pc=5, justify=u'center'),
+                TableField(u'description', key=u'proteins', pc=40),
                 # TableField('organism', key='organism', width=40),
-                TableField('iri', key='id', _format='https://www.uniprot.org/uniprot/{}', pc=30),
+                TableField(u'iri', key=u'id', _format=u'https://www.uniprot.org/uniprot/{}', pc=30),
             ]
-            table = ResultsTable(self, fields=fields)
-        elif self._resource.name == "PDB":
+            table += unicode(ResultsTable(self, fields=fields))
+        elif self._resource.name == u"PDB":
             fields = [
-                TableField('index', pc=5, is_index=True, justify='right'),
-                TableField('label', text=self._resource.search_args.search_term, pc=10),
-                TableField('short_form', key='pdb_id', pc=10, justify='center'),
-                TableField('resource', text='PDB', pc=5, justify='center'),
+                TableField(u'index', pc=5, is_index=True, justify=u'right'),
+                TableField(u'label', text=self._resource.search_args.search_term, pc=10),
+                TableField(u'short_form', key=u'pdb_id', pc=10, justify=u'center'),
+                TableField(u'resource', text=u'PDB', pc=5, justify=u'center'),
                 # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
-                TableField('description', key='title', pc=40),
-                TableField('iri', key='pdb_id', _format='https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
+                TableField(u'description', key=u'title', pc=40),
+                TableField('iri', key=u'pdb_id', _format=u'https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
             ]
-            table = ResultsTable(self, fields=fields)
+            table += unicode(ResultsTable(self, fields=fields))
+        # close style
+        table += Styled(u"[[ ''|reset ]]")
         return table
 
-    def __repr__(self):
-        pass
-
     def __len__(self):
-        if self._resource.result_count is not None:
-            return utils.get_path(self._structured_response, self._resource.result_count)
-        else:
-            return 0
+        if self.structured_response is not None:
+            if self._resource.result_count is not None:
+                return utils.get_path(self._structured_response, self._resource.result_count)
+        return 0

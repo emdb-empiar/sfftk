@@ -21,20 +21,27 @@ def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
     """Print the given string with date on the given stream
     
     :param str print_string: the string to be printed
+    :param unicode print_string: the unicode string to be printed
     :param stream: the stream to write to
     :type stream: `sys.stderr` or `sys.stdout`
     :param bool newline: whether (default) or not to add a newline at the end
     """
+    try:
+        assert isinstance(print_string, basestring)
+    except AssertionError:
+        raise ValueError("input should be subclass of basestring: str or unicode")
+    if isinstance(print_string, str):
+        print_string = unicode(print_string)
     if newline:
         if incl_date:
-            print("%s\t%s" % (time.ctime(time.time()), print_string), file=stream)
+            print(u"%s\t%s" % (time.ctime(time.time()), print_string), file=stream)
         else:
-            print("%s" % (print_string), file=stream)
+            print(u"%s" % (print_string), file=stream)
     else:
         if incl_date:
-            print("%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
+            print(u"%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
         else:
-            print("%s" % (print_string), file=stream, end='')
+            print(u"%s" % (print_string), file=stream, end='')
 
 
 def get_printable_ascii_string(s):

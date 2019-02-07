@@ -409,10 +409,8 @@ def list_notes(args, configs):
     :return int status: 0 is OK, else failure
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
-    """
-    :TODO: make this optional
-    :TODO: define the stream to use
-    """
+    #todo: make this optional
+    #todo: define the stream to use
     if args.header:
         print(HeaderView(sff_seg))
     note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]

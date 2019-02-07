@@ -1241,8 +1241,6 @@ def parse_args(_args, use_shlex=False):
                         args.sff_file = temp_file
                         if args.verbose:
                             print_date(
-                                "\033[0;92m", incl_date=False, newline=False)
-                            print_date(
                                 "Working on temp file {}".format(temp_file), stream=sys.stdout)
                     else:
                         print_date("Temporary file {} does not exist. \

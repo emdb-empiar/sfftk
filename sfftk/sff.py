@@ -135,11 +135,14 @@ def handle_notes_search(args, configs):
     from sfftk.notes import find
     # query
     resource = find.SearchResource(args, configs)
+    print(resource)
     # search
-    results = resource.search()
-    # view
-    print(results)
-    return os.EX_OK
+    result = resource.search()
+    if result is not None:
+        print(result)
+        return os.EX_OK
+    else:
+        return os.EX_DATAERR
 
 
 def handle_notes_list(args, configs):
@@ -153,7 +156,6 @@ def handle_notes_list(args, configs):
     """
     from sfftk.notes.view import list_notes
     status = list_notes(args, configs)
-    print_date("\033[0;0m\r", incl_date=False, newline=False)
     return status
 
 
@@ -168,7 +170,6 @@ def handle_notes_show(args, configs):
     """
     from sfftk.notes.view import show_notes
     status = show_notes(args, configs)
-    print_date("\033[0;0m\r", incl_date=False, newline=False)
     return status
 
 
@@ -197,7 +198,6 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
 discard changes before working on another file.".format(temp_file), stream=sys.stdout)
             sys.exit(1)
         else:
-            print_date("\033[92m\r", incl_date=False, newline=False)
             if re.match(r'.*\.sff$', temp_file, re.IGNORECASE):
                 # copy the actual file to the temp file
                 import shutil

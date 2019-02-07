@@ -4,7 +4,7 @@ from __future__ import print_function
 import collections
 
 RESOURCE_LIST = collections.OrderedDict()
-FORMATS = ['json', 'tab']
+FORMATS = [u'json', u'tab']
 """
 Enter a set of resources to search
 Each resource must have the following keys:
@@ -15,42 +15,42 @@ Each resource must have the following keys:
 - result_path: a non-empty iterable of string OR unicode objects
 - result_count: None OR a non-emty iterable of strings or unicode
 """
-RESOURCE_LIST['ols'] = {
-    'name': 'OLS',
-    'root_url': 'https://www.ebi.ac.uk/ols/api/',
-    'format': 'json',
-    'result_path': ['response', 'docs'],
-    'result_count': ['response', 'numFound'],
+RESOURCE_LIST[u'ols'] = {
+    u'name': u'OLS',
+    u'root_url': u'https://www.ebi.ac.uk/ols/api/',
+    u'format': u'json',
+    u'result_path': [u'response', u'docs'],
+    u'result_count': [u'response', u'numFound'],
 }
-RESOURCE_LIST['emdb'] = {
-    'name': 'EMDB',
-    'root_url': 'https://www.ebi.ac.uk/pdbe/emdb/search/',
-    'format': 'json',
-    'result_path': ['ResultSet', 'Result'],
-    'result_count': ['ResultSet', 'totalResultsAvailable'],
+RESOURCE_LIST[u'emdb'] = {
+    u'name': u'EMDB',
+    u'root_url': u'https://www.ebi.ac.uk/pdbe/emdb/search/',
+    u'format': u'json',
+    u'result_path': [u'ResultSet', u'Result'],
+    u'result_count': [u'ResultSet', u'totalResultsAvailable'],
 }
-RESOURCE_LIST['uniprot'] = {
-    'name': 'UniProt',
-    'root_url': 'https://www.uniprot.org/uniprot/',
-    'format': 'tab',
-    'result_path': None,
-    'result_count': None,
+RESOURCE_LIST[u'uniprot'] = {
+    u'name': u'UniProt',
+    u'root_url': u'https://www.uniprot.org/uniprot/',
+    u'format': u'tab',
+    u'result_path': None,
+    u'result_count': None,
 }
-RESOURCE_LIST['pdb'] = {
-    'name': 'PDB',
-    'root_url': 'https://www.ebi.ac.uk/pdbe/search/pdb/select',
-    'format': 'json',
-    'result_path': ['response', 'docs'],
-    'result_count': ['response', 'numFound'],
+RESOURCE_LIST[u'pdb'] = {
+    u'name': u'PDB',
+    u'root_url': u'https://www.ebi.ac.uk/pdbe/search/pdb/select',
+    u'format': u'json',
+    u'result_path': [u'response', u'docs'],
+    u'result_count': [u'response', u'numFound'],
 }
 
 # enforce integrity
 for resource in RESOURCE_LIST:
-    name = RESOURCE_LIST[resource]['name']
-    root_url = RESOURCE_LIST[resource]['root_url']
-    format = RESOURCE_LIST[resource]['format']
-    result_path = RESOURCE_LIST[resource]['result_path']
-    result_count = RESOURCE_LIST[resource]['result_count']
+    name = RESOURCE_LIST[resource][u'name']
+    root_url = RESOURCE_LIST[resource][u'root_url']
+    format = RESOURCE_LIST[resource][u'format']
+    result_path = RESOURCE_LIST[resource][u'result_path']
+    result_count = RESOURCE_LIST[resource][u'result_count']
     assert isinstance(name, str) or isinstance(name, unicode)
     assert isinstance(root_url, str) or isinstance(root_url, unicode)  # fixme: not sufficient assertion
     assert format in FORMATS
