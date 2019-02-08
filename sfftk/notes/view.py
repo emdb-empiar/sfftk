@@ -8,9 +8,9 @@ Display notes in EMDB-SFF files
 """
 from __future__ import division, print_function
 
-import sys
+import os
 import textwrap
-
+from styled import Styled
 from .. import schema
 from ..core.print_tools import print_date
 
@@ -165,31 +165,31 @@ class NoteView(View):
         else:
             return u", ".join(segment_type)
 
-    def __str__(self):
+    def __unicode__(self):
         if self._long:
             string = u"""\
-{}
-ID:\t\t{}
-PARENT ID:\t{}
-Segment Type:\t{}
-{}
-Name:
-\t{}
-Description:
-\t{}
-Number of instances:
-\t{}
-{}
-External references:
-{}
-{}
-Complexes:
-{}
-Macromolecules:
-{}
-{}
-Colour:
-\t{}\
+            \r{}
+            \rID:\t\t{}
+            \rPARENT ID:\t{}
+            \rSegment Type:\t{}
+            \r{}
+            \rName:
+            \r\t{}
+            \rDescription:
+            \r\t{}
+            \rNumber of instances:
+            \r\t{}
+            \r{}
+            \rExternal references:
+            \r{}
+            \r{}
+            \rComplexes:
+            \r{}
+            \rMacromolecules:
+            \r{}
+            \r{}
+            \rColour:
+            \r\t{}\
             """.format(
                 # ****
                 self.LINE3,
@@ -228,6 +228,10 @@ Colour:
                 self.numberOfMacromolecules,
                 u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
             )
+        return string
+
+    def __str__(self):
+        string = unicode(self)
         return string.encode('utf-8')
 
 
@@ -333,27 +337,27 @@ Software processing details: \n{}\
         else:
             return u"\t" + self.NOT_DEFINED
 
-    def __str__(self):
+    def __unicode__(self):
         string = u"""\
-{}
-EMDB-SFF v.{}
-{}
-Segmentation name:
-\t{}
-Segmentation software:
-{}
-{}
-Primary descriptor:
-\t{}
-{}
-Bounding box:
-\t{}
-{}
-Global external references:
-\t{}
-{}
-Segmentation details:
-{}\
+        \r{}
+        \rEMDB-SFF v.{}
+        \r{}
+        \rSegmentation name:
+        \r\t{}
+        \rSegmentation software:
+        \r{}
+        \r{}
+        \rPrimary descriptor [threeDVolume|meshList|shapePrimitiveList]:
+        \r\t{}
+        \r{}
+        \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
+        \r\t{}
+        \r{}
+        \rGlobal external references:
+        \r\t{}
+        \r{}
+        \rSegmentation details:
+        \r{}\
         """.format(
             # ===
             self.LINE1,
@@ -375,17 +379,21 @@ Segmentation details:
             self.LINE2,
             self.details,
         )
+        return string
+
+    def __str__(self):
+        string = unicode(self)
         return string.encode('utf-8')
 
 
 class TableHeaderView(View):
     """Class defining the view of a table header object"""
 
-    def __str__(self):
+    def __unicode__(self):
         string = u"""\
-{}
-{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
-{}\
+        \r{}
+        \r{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
+        \r{}\
         """.format(
             View.LINE3,
             u"id",
@@ -398,6 +406,10 @@ class TableHeaderView(View):
             u"colour",
             View.LINE2
         )
+        return string
+
+    def __str__(self):
+        string = unicode(self)
         return string.encode('utf-8')
 
 
@@ -409,10 +421,13 @@ def list_notes(args, configs):
     :return int status: 0 is OK, else failure
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
-    #todo: make this optional
-    #todo: define the stream to use
+    # todo: make this optional
+    # todo: define the stream to use
     if args.header:
-        print(HeaderView(sff_seg))
+        string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+        string += unicode(HeaderView(sff_seg))
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]
     if args.sort_by_name:
         sorted_note_views = sorted(note_views, key=lambda n: n.name, reverse=args.reverse)
@@ -420,10 +435,16 @@ def list_notes(args, configs):
         sorted_note_views = sorted(note_views, key=lambda n: n.id, reverse=args.reverse)
     # table header
     if not args.list_ids and not args.long_format:
-        print(TableHeaderView())
+        string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+        string += unicode(TableHeaderView())
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     for note_view in sorted_note_views:
-        print(note_view)
-    return 0
+        string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+        string += unicode(note_view)
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
+    return os.EX_OK
 
 
 def show_notes(args, configs):
@@ -435,14 +456,23 @@ def show_notes(args, configs):
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
     if args.header:
-        print(HeaderView(sff_seg))
+        string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+        string += unicode(HeaderView(sff_seg))
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     if args.segment_id is not None:
         if not args.long_format:
-            print(TableHeaderView())
+            string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+            string += unicode(TableHeaderView())
+            string += Styled(u"[[ ''|reset ]]")
+            print(unicode(string))
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                print(NoteView(segment, _long=args.long_format))
+                string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+                string += unicode(NoteView(segment, _long=args.long_format))
+                string += Styled(u"[[ ''|reset ]]")
+                print(unicode(string))
                 found_segment = True
         if not found_segment:
             print_date("No segment with ID(s) {}".format(", ".join(map(str, args.segment_id))))

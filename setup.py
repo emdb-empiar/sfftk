@@ -20,7 +20,7 @@ setup(
     setup_requires=["numpy"],
     install_requires=["ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
                       "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile",
-                      "matplotlib<3.0", "scipy<1.2", "RandomWords"],
+                      "matplotlib<3.0", "scipy<1.2", "RandomWords", "styled"],
     classifiers=[
         # maturity
         'Development Status :: 2 - Pre-Alpha',

@@ -1413,9 +1413,13 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 args.segment_id = map(int, args.segment_id.split(','))
 
                 # ensure we have at least one item to del
-                assert args.segment_name or args.description or args.number_of_instances or \
+                try:
+                    assert args.segment_name or args.description or args.number_of_instances or \
                        (args.external_ref_id is not None) or (args.complex_id is not None) or \
                        (args.macromolecule_id is not None)
+                except AssertionError:
+                    print_date("Incorrect usage; please use -h for help")
+                    return os.EX_USAGE, configs
 
         elif args.notes_subcommand == "copy":
             # convert from and to to lists of ints

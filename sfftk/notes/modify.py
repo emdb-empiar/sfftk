@@ -13,6 +13,8 @@ import re
 import shlex
 import shutil
 
+from styled import Styled
+
 from . import RESOURCE_LIST
 from .. import schema
 from ..core.parser import parse_args
@@ -619,14 +621,20 @@ def add_note(args, configs):
         # add notes to segmentation
         sff_seg = global_note.add_to_segmentation(sff_seg)
         # show the updated header
-        print(HeaderView(sff_seg))
+        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        string += unicode(HeaderView(sff_seg))
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     else:
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.add_to_segment(segment)
-                print(NoteView(sff_seg.segment, _long=True))
+                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string += unicode(NoteView(sff_seg.segment, _long=True))
+                string += Styled(u"[[ ''|reset ]]")
+                print(string)
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -656,14 +664,20 @@ def edit_note(args, configs):
         # any additionally specified external references (-E a b -E x y) are inserted after the edited index
         sff_seg = global_note.edit_in_segmentation(sff_seg)
         #  show the updated header
-        print(HeaderView(sff_seg))
+        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        string += unicode(HeaderView(sff_seg))
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     else:
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.edit_in_segment(segment)
-                print(NoteView(sff_seg.segment, _long=True))
+                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string += unicode(NoteView(sff_seg.segment, _long=True))
+                string += Styled(u"[[ ''|reset ]]")
+                print(unicode(string))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -689,14 +703,20 @@ def del_note(args, configs):
         # delete the notes from segmentation
         sff_seg = global_note.del_from_segmentation(sff_seg)
         #  show the updated header
-        print(HeaderView(sff_seg))
+        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        string += unicode(HeaderView(sff_seg))
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     else:
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.del_from_segment(segment)
-                print(NoteView(sff_seg.segment, _long=True))
+                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string += unicode(NoteView(sff_seg.segment, _long=True))
+                string += Styled(u"[[ ''|reset ]]")
+                print(unicode(string))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -736,28 +756,30 @@ def copy_notes(args, configs):
             to_segment.append(-1)
         except NameError:
             to_segment = [-1]
-    # if args.to_segment is None and not args.to_all:
-    #     to_segment = [-1]
-    # else:
-    #     to_segment.append(-1)
     for f in from_segment:
         for t in to_segment:
             sff_seg.copy_annotation(f, t)
+            string = Styled(u"[[ ''|fg-green:no-end ]]")
+            if t == -1:
+                string += unicode(HeaderView(sff_seg))
+            else:
+                string += unicode(NoteView(sff_seg.segments.get_by_id(t), _long=True))
+            string += Styled(u"[[ ''|reset ]]")
+            print(unicode(string))
     # export
     sff_seg.export(args.sff_file)
     return os.EX_OK
 
 
 def clear_notes(args, configs):
-    """Copy notes across segments
-
-    One or more segments can be chosen for either or both source and destination
+    """Clear notes from segments
 
     :param args: parse arguments
     :param configs: configurations object
     :return: status
     """
     sff_seg = schema.SFFSegmentation(args.sff_file)
+    from_segment = list()
     if args.segment_id is not None:
         from_segment = args.segment_id
     elif args.from_all_segments:
@@ -772,14 +794,23 @@ def clear_notes(args, configs):
     for f in from_segment:
         sff_seg.clear_annotation(f)
     if args.from_global:
-        print(HeaderView(sff_seg))
+        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        string += unicode(HeaderView(sff_seg))
+        string += Styled(u"[[ ''|reset ]]")
+        print(unicode(string))
     if args.segment_id is not None:
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                print(NoteView(segment, _long=True))
+                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string += unicode(NoteView(segment, _long=True))
+                string += Styled(u"[[ ''|reset ]]")
+                print(unicode(string))
     elif args.from_all_segments:
         for segment in sff_seg.segments:
-            print(NoteView(segment, _long=True))
+            string = Styled(u"[[ ''|fg-green:no-end ]]")
+            string += unicode(NoteView(segment, _long=True))
+            string += Styled(u"[[ ''|reset ]]")
+            print(unicode(string))
 
     # export
     sff_seg.export(args.sff_file)
@@ -812,8 +843,7 @@ def merge(args, configs):
     other.export(args.output)
     if args.verbose:
         print_date("Done")
-
-    return 0
+    return os.EX_OK
 
 
 def save(args, configs):
@@ -871,11 +901,13 @@ def save(args, configs):
             assert not os.path.exists(temp_file)
         else:
             print_date("Unknown file type: {}".format(args.sff_file))
+            return os.EX_USAGE
+        return os.EX_OK
     else:
         print_date(
             "Missing temp file {}. First perform some edit actions ('add', 'edit', 'del') before trying to save.".format(
                 temp_file))
-    return 0
+        return os.EX_USAGE
 
 
 def trash(args, configs):
@@ -893,6 +925,7 @@ def trash(args, configs):
         os.remove(temp_file)
         assert not os.path.exists(temp_file)
         print_date("Done", incl_date=False)
+        return os.EX_OK
     else:
         print_date("Unable to discard with missing temp file {}. No changes made.".format(temp_file))
-    return 0
+        return os.EX_DATAERR
