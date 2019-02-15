@@ -578,7 +578,7 @@ class SFFRGBA(SFFType):
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
         # r = SFFRGBA()
-        obj.value = hff_data['colour'][...]
+        obj.value = hff_data['colour'][()]
         # obj.rgba = r
         return obj
 
@@ -1120,7 +1120,7 @@ class SFFLattice(SFFType):
             endianness=hff_data['endianness'][()],
             size=SFFVolumeStructure.from_hff(hff_data['size']),
             start=SFFVolumeIndex.from_hff(hff_data['start']),
-            data=hff_data['data'][...],
+            data=hff_data['data'][()],
         )
         return obj
 
