@@ -579,7 +579,7 @@ class SFFRGBA(SFFType):
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
         # r = SFFRGBA()
-        obj.value = hff_data['colour'].value
+        obj.value = hff_data['colour'][()]
         # obj.rgba = r
         return obj
 
@@ -910,10 +910,10 @@ class SFFBiologicalAnnotation(SFFType):
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
         if 'name' in hff_data:
-            obj.name = hff_data['name'].value
+            obj.name = hff_data['name'][()]
         if 'description' in hff_data:
-            obj.description = hff_data['description'].value
-        obj.numberOfInstances = int(hff_data['numberOfInstances'].value)
+            obj.description = hff_data['description'][()]
+        obj.numberOfInstances = int(hff_data['numberOfInstances'][()])
         if "externalReferences" in hff_data:
             obj.externalReferences = SFFExternalReferences()
             for ref in hff_data['externalReferences']:
@@ -955,10 +955,10 @@ class SFFThreeDVolume(SFFType):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
-        obj.latticeId = hff_data['latticeId'].value
-        obj.value = hff_data['value'].value
+        obj.latticeId = hff_data['latticeId'][()]
+        obj.value = hff_data['value'][()]
         if 'transformId' in hff_data:
-            obj.transformId = hff_data['transformId'].value
+            obj.transformId = hff_data['transformId'][()]
         return obj
 
 
@@ -1117,11 +1117,11 @@ class SFFLattice(SFFType):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Group)
         obj = cls(
-            mode=hff_data['mode'].value,
-            endianness=hff_data['endianness'].value,
+            mode=hff_data['mode'][()],
+            endianness=hff_data['endianness'][()],
             size=SFFVolumeStructure.from_hff(hff_data['size']),
             start=SFFVolumeIndex.from_hff(hff_data['start']),
-            data=hff_data['data'].value,
+            data=hff_data['data'][()],
         )
         return obj
 
@@ -1885,7 +1885,7 @@ class SFFSegment(SFFType):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
-        obj.parentID = int(hff_data['parentID'].value)
+        obj.parentID = int(hff_data['parentID'][()])
         if "biologicalAnnotation" in hff_data:
             obj.biologicalAnnotation = SFFBiologicalAnnotation.from_hff(hff_data["biologicalAnnotation"])
         if "complexesAndMacromolecules" in hff_data:
@@ -2152,10 +2152,10 @@ class SFFSoftware(SFFType):
         """Return an SFFType object given an HDF5 object"""
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
-        obj.name = hff_data['name'].value
-        obj.version = str(hff_data['version'].value)
+        obj.name = hff_data['name'][()]
+        obj.version = str(hff_data['version'][()])
         if 'processingDetails' in hff_data:
-            obj.processingDetails = hff_data['processingDetails'].value
+            obj.processingDetails = hff_data['processingDetails'][()]
         return obj
 
 
@@ -2193,12 +2193,12 @@ class SFFBoundingBox(SFFType):
         """Bounding box from HDF5 group"""
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
-        obj.xmin = hff_data['xmin'].value
-        obj.xmax = hff_data['xmax'].value
-        obj.ymin = hff_data['ymin'].value
-        obj.ymax = hff_data['ymax'].value
-        obj.zmin = hff_data['zmin'].value
-        obj.zmax = hff_data['zmax'].value
+        obj.xmin = hff_data['xmin'][()]
+        obj.xmax = hff_data['xmax'][()]
+        obj.ymin = hff_data['ymin'][()]
+        obj.ymax = hff_data['ymax'][()]
+        obj.zmin = hff_data['zmin'][()]
+        obj.zmax = hff_data['zmax'][()]
         return obj
 
 
@@ -2284,7 +2284,7 @@ class SFFSegmentation(SFFType):
                     print_date("File {} not found".format(var))
                     sys.exit(os.EX_IOERR)
             elif re.match(r'.*\.hff$', var, re.IGNORECASE):
-                with h5py.File(var) as h:
+                with h5py.File(var, 'r') as h:
                     self._local = self.__class__.from_hff(h, *args, **kwargs)._local
             elif re.match(r'.*\.json$', var, re.IGNORECASE):
                 self._local = self.__class__.from_json(var, *args, **kwargs)._local
@@ -2348,17 +2348,17 @@ class SFFSegmentation(SFFType):
         assert isinstance(hff_data, h5py.File)
         obj = cls()
         try:
-            obj.name = hff_data['name'].value
+            obj.name = hff_data['name'][()]
         except KeyError:
             print_date('Segmentation name not found. Please check that {} is a valid EMDB-SFF file'.format(
                 hff_data.filename
             ))
             sys.exit(1)
-        obj.version = str(hff_data['version'].value)
+        obj.version = str(hff_data['version'][()])
         obj.software = SFFSoftware.from_hff(hff_data['software'])
         obj.transforms = SFFTransformList.from_hff(hff_data['transforms'])
-        # obj.filePath = hff_data['filePath'].value
-        obj.primaryDescriptor = hff_data['primaryDescriptor'].value
+        # obj.filePath = hff_data['filePath'][()]
+        obj.primaryDescriptor = hff_data['primaryDescriptor'][()]
         if 'boundingBox' in hff_data:
             obj.boundingBox = SFFBoundingBox.from_hff(hff_data['boundingBox'])
         if "globalExternalReferences" in hff_data:
@@ -2369,7 +2369,7 @@ class SFFSegmentation(SFFType):
                 obj.globalExternalReferences.add_externalReference(g)
         obj.segments = SFFSegmentList.from_hff(hff_data['segments'])
         obj.lattices = SFFLatticeList.from_hff(hff_data['lattices'])
-        obj.details = hff_data['details'].value
+        obj.details = hff_data['details'][()]
         return obj
 
     def as_json(self, f, sort_keys=True, indent_width=2):
