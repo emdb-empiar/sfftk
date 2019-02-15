@@ -48,7 +48,6 @@ Here is an example of how the :py:class:`SFFSegmentation` class is defined using
         name = SFFAttribute('name')
         version = SFFAttribute('version')
         software = SFFAttribute('software', sff_type=SFFSoftware)
-        filePath = SFFAttribute('filePath')
         primaryDescriptor = SFFAttribute('primaryDescriptor')
         transforms = SFFAttribute('transformList', sff_type=SFFTransformList)
         boundingBox = SFFAttribute('boundingBox', sff_type=SFFBoundingBox)
@@ -579,7 +578,7 @@ class SFFRGBA(SFFType):
         assert isinstance(hff_data, h5py.Group)
         obj = cls()
         # r = SFFRGBA()
-        obj.value = hff_data['colour'][()]
+        obj.value = hff_data['colour'][...]
         # obj.rgba = r
         return obj
 
@@ -1121,7 +1120,7 @@ class SFFLattice(SFFType):
             endianness=hff_data['endianness'][()],
             size=SFFVolumeStructure.from_hff(hff_data['size']),
             start=SFFVolumeIndex.from_hff(hff_data['start']),
-            data=hff_data['data'][()],
+            data=hff_data['data'][...],
         )
         return obj
 
@@ -2357,7 +2356,6 @@ class SFFSegmentation(SFFType):
         obj.version = str(hff_data['version'][()])
         obj.software = SFFSoftware.from_hff(hff_data['software'])
         obj.transforms = SFFTransformList.from_hff(hff_data['transforms'])
-        # obj.filePath = hff_data['filePath'][()]
         obj.primaryDescriptor = hff_data['primaryDescriptor'][()]
         if 'boundingBox' in hff_data:
             obj.boundingBox = SFFBoundingBox.from_hff(hff_data['boundingBox'])
@@ -2393,7 +2391,6 @@ class SFFSegmentation(SFFType):
             'processingDetails': self.software.processingDetails if self.software.processingDetails is not None else None,
         }
         sff_data['primaryDescriptor'] = self.primaryDescriptor
-        # sff_data['filePath'] = self.filePath
         sff_data['details'] = self.details
         sff_data['transforms'] = list()
         boundingBox = {
@@ -2610,7 +2607,6 @@ class SFFSegmentation(SFFType):
             sys.exit(1)
         # global data
         self.name = other_seg.name
-        # self.filePath = other_seg.filePath
         self.software = other_seg.software
         self.globalExternalReferences = other_seg.globalExternalReferences
         self.details = other_seg.details
