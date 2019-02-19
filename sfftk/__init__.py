@@ -3,5 +3,5 @@ import os
 
 BASE_DIR = os.path.dirname(__file__)
 
-SFFTK_VERSION = 'v0.3.2.dev4'
+SFFTK_VERSION = 'v0.3.2.dev5'
 

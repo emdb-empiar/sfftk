@@ -52,7 +52,7 @@ for resource in RESOURCE_LIST:
     result_path = RESOURCE_LIST[resource][u'result_path']
     result_count = RESOURCE_LIST[resource][u'result_count']
     assert isinstance(name, str) or isinstance(name, unicode)
-    assert isinstance(root_url, str) or isinstance(root_url, unicode)  # fixme: not sufficient assertion
+    assert isinstance(root_url, basestring)
     assert format in FORMATS
     assert result_path is None or map(hash, result_path)
     assert result_path is None or len(result_path) > 0

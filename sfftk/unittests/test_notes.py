@@ -9,6 +9,7 @@ import shlex
 import shutil
 import sys
 import unittest
+from urllib import urlencode
 
 import __init__ as tests
 from .. import BASE_DIR
@@ -23,6 +24,96 @@ __date__ = "2017-05-15"
 
 
 # :TODO: rewrite to use sfftk.notes.modify.SimpleNote
+
+
+class TestNotesModifyExternalReference(unittest.TestCase):
+    def test_ols(self):
+        """Test that sfftk.notes.modify.ExternalReference object works correctly"""
+        type_ = u'ncit'
+        otherType = u'http://purl.obolibrary.org/obo/NCIT_C62195'
+        value = u'NCIT_C62195'
+        # likely to change
+        label = u'Wild Type'
+        description = u'The naturally-occurring, normal, non-mutated version of a gene or genome.'
+        urlenc = urlencode({u'iri': otherType.encode(u'idna')})
+        urlenc2 = urlencode({u'iri': urlenc.split(u'=')[1]})
+        urlenc3 = urlenc2.split(u'=')[1].decode(u'utf-8')
+        extRef = modify.ExternalReference(
+            type_=type_,
+            otherType=otherType,
+            value=value,
+        )
+        self.assertEqual(extRef.type, type_)
+        self.assertEqual(extRef.otherType, otherType)
+        self.assertEqual(extRef.value, value)
+        self.assertEqual(extRef.label, label)
+        self.assertEqual(extRef.description,
+                         description)
+        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertEqual(extRef.iri, urlenc3)
+
+    def test_emdb(self):
+        """Test that sfftk.notes.modify.ExternalReference object works correctly"""
+        type_ = u'EMDB'
+        otherType = u'https://www.ebi.ac.uk/pdbe/emdb/EMD-8654'
+        value = u'EMD-8654'
+        # likely to change
+        label = u'EMD-8654'
+        description = u'Zika virus-infected Vero E6 cell at 48 hpi: dual-axis tilt series tomogram from 3 serial sections'
+        extRef = modify.ExternalReference(
+            type_=type_,
+            otherType=otherType,
+            value=value,
+        )
+        self.assertEqual(extRef.type, type_)
+        self.assertEqual(extRef.otherType, otherType)
+        self.assertEqual(extRef.value, value)
+        self.assertEqual(extRef.label, label)
+        self.assertEqual(extRef.description,
+                         description)
+        self.assertItemsEqual(extRef._get_text(), [label, description])
+
+    def test_pdb(self):
+        """Test that sfftk.notes.modify.ExternalReference object works correctly"""
+        type_ = u'PDB'
+        otherType = u'https://www.ebi.ac.uk/pdbe/entry/pdb/4gzw'
+        value = u'4gzw'
+        # likely to change
+        label = u'N2 neuraminidase D151G mutant of A/Tanzania/205/2010 H3N2 in complex with avian sialic acid receptor'
+        description = u'H3N2 subtype'
+        extRef = modify.ExternalReference(
+            type_=type_,
+            otherType=otherType,
+            value=value,
+        )
+        self.assertEqual(extRef.type, type_)
+        self.assertEqual(extRef.otherType, otherType)
+        self.assertEqual(extRef.value, value)
+        self.assertEqual(extRef.label, label)
+        self.assertEqual(extRef.description,
+                         description)
+        self.assertItemsEqual(extRef._get_text(), [label, description])
+
+    def test_uniprot(self):
+        """Test that sfftk.notes.modify.ExternalReference object works correctly"""
+        type_ = u'UniProt'
+        otherType = u'https://www.uniprot.org/uniprot/A0A1Q8WSX6'
+        value = u'A0A1Q8WSX6'
+        # likely to change
+        label = u'A0A1Q8WSX6_9ACTO'
+        description = u'Type I-E CRISPR-associated protein Cas5/CasD (Organism: Actinomyces oris)'
+        extRef = modify.ExternalReference(
+            type_=type_,
+            otherType=otherType,
+            value=value,
+        )
+        self.assertEqual(extRef.type, type_)
+        self.assertEqual(extRef.otherType, otherType)
+        self.assertEqual(extRef.value, value)
+        self.assertEqual(extRef.label, label)
+        self.assertEqual(extRef.description,
+                         description)
+        self.assertItemsEqual(extRef._get_text(), [label, description])
 
 
 class TestNotesFindSearchResource(unittest.TestCase):
@@ -175,18 +266,18 @@ class TestNotesFindSearchResource(unittest.TestCase):
         self.assertEqual(resource.get_url(), url)
 
 
-class TestNotesFindSearchResource(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-
-    def test_search_args_attr(self):
-        """Test that search_args attr works"""
-        args, configs = parse_args(shlex.split(
-            "notes search -R emdb mitochondria --config-path {}".format(self.config_fn)
-        ))
-        resource = find.SearchResource(args, configs)
-        self.assertEqual(resource.search_args, args)
+# class TestNotesFindSearchResource(unittest.TestCase):
+#     @classmethod
+#     def setUpClass(cls):
+#         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
+#
+#     def test_search_args_attr(self):
+#         """Test that search_args attr works"""
+#         args, configs = parse_args(shlex.split(
+#             "notes search -R emdb mitochondria --config-path {}".format(self.config_fn)
+#         ))
+#         resource = find.SearchResource(args, configs)
+#         self.assertEqual(resource.search_args, args)
 
 
 class TestNotesFindTableField(unittest.TestCase):
@@ -546,7 +637,8 @@ class TestNotes_modify(unittest.TestCase):
         """Test that we can copy notes"""
         # we have an annotated EMDB-SFF file
         # make a copy of the file for the test
-        annotated_sff_file = os.path.join(os.path.dirname(self.annotated_sff_file), 'temp_' + os.path.basename(self.annotated_sff_file))
+        annotated_sff_file = os.path.join(os.path.dirname(self.annotated_sff_file),
+                                          'temp_' + os.path.basename(self.annotated_sff_file))
         shutil.copy2(self.annotated_sff_file, annotated_sff_file)
         # use the file copy
         # before copy

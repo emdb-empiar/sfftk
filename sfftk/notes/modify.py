@@ -8,11 +8,13 @@ Add, edit and delete terms in EMDB-SFF files
 """
 from __future__ import division, print_function
 
+import json
 import os
 import re
 import shlex
 import shutil
 
+import requests
 from styled import Styled
 
 from . import RESOURCE_LIST
@@ -49,9 +51,9 @@ class ExternalReference(object):
     def iri(self):
         """The IRI value should be *double* url-encoded"""
         from urllib import urlencode
-        urlenc = urlencode({'iri': self.value.encode('idna')})
-        urlenc2 = urlencode({'iri': urlenc.split('=')[1]})
-        return urlenc2.split('=')[1].decode('utf-8')
+        urlenc = urlencode({u'iri': self.otherType.encode(u'idna')})
+        urlenc2 = urlencode({u'iri': urlenc.split(u'=')[1]})
+        return urlenc2.split(u'=')[1].decode(u'utf-8')
 
     # fixme: perhaps the text should exist already instead of being searched for?
     # this seems to be a special case for OLS
@@ -69,23 +71,79 @@ class ExternalReference(object):
                 ontology=self.type,
                 iri=self.iri,
             )
-            import requests
             R = requests.get(url)
             if R.status_code == 200:
-                import json
                 self._result = json.loads(R.text)
                 #  label
                 try:
-                    label = self._result['label']
+                    label = self._result[u'label']
                 except KeyError:
                     label = ''
                 #  description
                 try:
-                    description = self._result['description'][0] if self._result['description'] else None
+                    description = self._result[u'description'][0] if self._result[u'description'] else None
                 except KeyError:
                     description = ''
             else:
-                pass
+                print_date(
+                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
+        elif self.type.lower() == u'emdb':
+            url = u"https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.value)
+            R = requests.get(url)
+            if R.status_code == 200:
+                self._result = json.loads(R.text)
+                # label
+                label = self._result.keys()[0]
+                # description
+                description = self._result[label][0][u'deposition'][u'title']
+            else:
+                print_date(
+                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
+        elif self.type.lower() == u"pdb":
+            url = u"https://www.ebi.ac.uk/pdbe/search/pdb/select?q={}&wt=json".format(self.value)
+            R = requests.get(url)
+            if R.status_code == 200:
+                self._result = json.loads(R.text)
+                try:
+                    # label
+                    label = self._result[u'response'][u'docs'][0][u'title']
+                    # description
+                    description = u"; ".join(self._result[u'response'][u'docs'][0][u'organism_scientific_name'])
+                except IndexError:
+                    print_date(
+                        u"Could not find label and description for external reference {}:{}".format(self.type,
+                                                                                                    self.value))
+            else:
+                print_date(
+                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
+        elif self.type.lower() == u"uniprot":
+            url = u"https://www.uniprot.org/uniprot/" \
+                  u"?query=accession:{search_term}&format=tab&offset=0&limit=1&columns=id,entry_name," \
+                  u"protein_names,organism".format(
+                search_term=self.value,
+            )
+            R = requests.get(url)
+            if R.status_code == 200:
+                self._result = R.text
+                try:
+                    # split rows; split columns; dump first and last rows
+                    _structured_results = map(lambda r: r.split('\t'), self._result.split('\n'))[1:-1]
+                    # make a list of dicts with the given ids
+                    structured_results = map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
+                                             _structured_results)[0]
+                    # label
+                    label = structured_results[u'name']
+                    # description
+                    description = u"{} (Organism: {})".format(structured_results[u'proteins'], structured_results[u'organism'])
+                except ValueError as v:
+                    print_date(u"Unknown exception: {}".format(str(v)))
+                except IndexError:
+                    print_date(
+                        u"Could not find label and description for external reference {}:{}".format(self.type,
+                                                                                                    self.value))
+            else:
+                print_date(
+                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
         return label, description
 
 

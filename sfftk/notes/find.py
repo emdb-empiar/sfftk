@@ -9,12 +9,10 @@ Search for terms and display ontologies
 from __future__ import division, print_function
 
 import math
-import os
-import sys
 import textwrap
-from styled import Styled
 
 import backports.shutil_get_terminal_size
+from styled import Styled
 
 from . import RESOURCE_LIST
 from ..core import utils
@@ -130,6 +128,7 @@ class SearchResource(object):
             url = self.root_url + u"?query={search_term}&format=tab&offset={start}&limit={rows}&columns=id,entry_name," \
                                   u"protein_names,organism".format(
                 search_term=self.search_args.search_term,
+                # search_term2=self.search_args.search_term,
                 start=self.search_args.start,
                 rows=self.search_args.rows,
             )
@@ -487,7 +486,8 @@ class ResultsTable(Table):
                 index += 1  # increment index
             body += Styled(u"[[ ''|reset ]]")
         else:
-            body = u'\nNo data found at this time. Please try again in a few minutes.'.center(self._width) + self.row_separator
+            body = u'\nNo data found at this time. Please try again in a few minutes.'.center(
+                self._width) + self.row_separator
             body += self.row_separator
             body += u"-" * self._width + self.row_separator
         return body
@@ -526,7 +526,7 @@ class SearchResults(object):
     TYPE_WIDTH = 18
 
     def __init__(self, resource):
-        self._resource = resource # the resource that was searched
+        self._resource = resource  # the resource that was searched
         self._raw_response = resource.response
         self._structured_response = self._structure_response()
         terminal_size = backports.shutil_get_terminal_size.get_terminal_size()  # fallback values
@@ -592,7 +592,8 @@ class SearchResults(object):
                         c = ontology[u'config']
                         table += u"\n"
                         ont = [
-                            u"Namespace: ".ljust(30) + u"[[ '{}'|bold ]][[ ''|fg-yellow:no-end ]]".format(unicode(c[u'namespace'])),
+                            u"Namespace: ".ljust(30) + u"[[ '{}'|bold ]][[ ''|fg-yellow:no-end ]]".format(
+                                unicode(c[u'namespace'])),
                             u"Pref. prefix: ".ljust(30) + unicode(c[u'preferredPrefix']),
                             u"Title: ".ljust(30) + unicode(c[u'title']),
                             u"Description: ".ljust(30) + unicode(c[u'description']),
@@ -608,7 +609,8 @@ class SearchResults(object):
                     for ontology in utils.get_path(self.structured_response, [u'_embedded', u'ontologies']):
                         c = ontology[u'config']
                         ont = [
-                            u"[[ '{}'|fg-yellow:bold ]][[ ''|fg-yellow:no-end ]]".format(unicode(c[u'namespace']).ljust(10)),
+                            u"[[ '{}'|fg-yellow:bold ]][[ ''|fg-yellow:no-end ]]".format(
+                                unicode(c[u'namespace']).ljust(10)),
                             u"-",
                             unicode(c[u'description'][:200]) if c[u'description'] else u'' + u"...",
                         ]
