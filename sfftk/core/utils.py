@@ -50,58 +50,58 @@ def printable_substring(the_str):
     return the_pr_str
 
 
-def parallelise(iterable, target=None, args=(), number_of_processes=None):
-    """Parallelise computation of `target` over items in `iterable`
-
-    :param iterable: (usually) a list of items
-    :param target: the function to compute
-    :param args: arguments to target
-    :return: the result of computing iterable in parallel
-    """
-    if target is None:
-        return iterable
-
-    from multiprocessing import Process, Queue, cpu_count
-
-    def worker(input, output):
-        for func, args in iter(input.get, 'STOP'):
-            result = func(*args)
-            output.put(result)
-
-    if number_of_processes is not None:
-        try:
-            assert number_of_processes > 0
-        except AssertionError as a:
-            print_date("Invalid number of processes: {}".format(number_of_processes))
-            print(str(a))
-            return sys.exit(os.EX_DATAERR)
-        NUMBER_OF_PROCESSES = number_of_processes
-    else:
-        NUMBER_OF_PROCESSES = cpu_count()
-
-    # input and output queues
-    input = Queue()
-    output = Queue()
-
-    # load input queue
-    for item in iterable:
-        my_args = tuple([item] + list(args))
-        input.put((target, my_args))
-
-    # start processes
-    for _ in xrange(NUMBER_OF_PROCESSES):
-        Process(target=worker, args=(input, output)).start()
-
-    # read output
-    iterable2 = list()
-    for _ in xrange(len(iterable)):
-        iterable2.append(output.get())
-
-    # kill processes
-    for _ in xrange(NUMBER_OF_PROCESSES):
-        input.put('STOP')
-
-    return iterable2
+# def parallelise(iterable, target=None, args=(), number_of_processes=None):
+#     """Parallelise computation of `target` over items in `iterable`
+#
+#     :param iterable: (usually) a list of items
+#     :param target: the function to compute
+#     :param args: arguments to target
+#     :return: the result of computing iterable in parallel
+#     """
+#     if target is None:
+#         return iterable
+#
+#     from multiprocessing import Process, Queue, cpu_count
+#
+#     def worker(input, output):
+#         for func, args in iter(input.get, 'STOP'):
+#             result = func(*args)
+#             output.put(result)
+#
+#     if number_of_processes is not None:
+#         try:
+#             assert number_of_processes > 0
+#         except AssertionError as a:
+#             print_date("Invalid number of processes: {}".format(number_of_processes))
+#             print(str(a))
+#             return sys.exit(os.EX_DATAERR)
+#         NUMBER_OF_PROCESSES = number_of_processes
+#     else:
+#         NUMBER_OF_PROCESSES = cpu_count()
+#
+#     # input and output queues
+#     input = Queue()
+#     output = Queue()
+#
+#     # load input queue
+#     for item in iterable:
+#         my_args = tuple([item] + list(args))
+#         input.put((target, my_args))
+#
+#     # start processes
+#     for _ in range(NUMBER_OF_PROCESSES):
+#         Process(target=worker, args=(input, output)).start()
+#
+#     # read output
+#     iterable2 = list()
+#     for _ in range(len(iterable)):
+#         iterable2.append(output.get())
+#
+#     # kill processes
+#     for _ in range(NUMBER_OF_PROCESSES):
+#         input.put('STOP')
+#
+#     return iterable2
 
 
 def rgba_to_hex(rgba, channels=3):

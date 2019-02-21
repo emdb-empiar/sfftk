@@ -29,7 +29,7 @@ def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
     try:
         assert isinstance(print_string, basestring)
     except AssertionError:
-        raise ValueError("input should be subclass of basestring: str or unicode")
+        raise ValueError(u"input should be subclass of basestring: str or unicode")
     if isinstance(print_string, str):
         print_string = unicode(print_string)
     if newline:
@@ -77,14 +77,12 @@ def print_static(print_string, stream=sys.stderr, incl_date=True):
     :param bool newline: whether (default) or not to add a newline at the end
     """
     try:
-        assert stream is sys.stderr or stream is sys.stdout
-    except:
-        print(
-            "Invalid stream '{}'; should be Python objects `sys.stderr` or `sys.stdout`".format(stream),
-            file=sys.stderr
-        )
-
+        assert isinstance(print_string, basestring)
+    except AssertionError:
+        raise ValueError(u"input should be subclass of basestring: str or unicode")
+    if isinstance(print_string, str):
+        print_string = unicode(print_string)
     if incl_date:
-        print("\r%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
+        print(u"\r%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
     else:
-        print("\r%s" % (print_string), file=stream, end='')
+        print(u"\r%s" % (print_string), file=stream, end='')

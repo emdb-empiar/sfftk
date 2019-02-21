@@ -28,9 +28,7 @@ def get_data(fn, *args, **kwargs):
     af = ahds.AmiraFile(fn, *args, **kwargs)
     header = af.header
 
-    '''
-    :TODO: handle <hxsurface> from .am files
-    '''
+    # TODO: handle <hxsurface> from .am files
     if header.designation.extra_format == "<hxsurface>":
         return header, None
     else:
@@ -49,24 +47,3 @@ def get_data(fn, *args, **kwargs):
             index = header.data_pointers.data_pointer_1.data_index
             volume = data_streams[index].to_volume()
             return header, volume
-
-        '''
-        images_by_stream = dict()
-        for data_stream in af.data_streams:
-            images = data_stream.to_images()
-            data_stream_index = data_stream.data_pointer.data_index
-            images_by_stream[data_stream_index] = images.data
-        \'''
-        # convert the data into images
-        images_by_stream = dict()
-        for stream in data_streams:
-            stream_id = stream.data_pointer.data_index
-            images_by_stream[stream_id] = stream.to_images()
-        
-        # convert the images into segments
-        segments_by_stream = dict()
-        for stream_id, image_set in images_by_stream.iteritems():
-            segments_by_stream[stream_id] = image_set.segments
-            
-        return header, segments_by_stream
-        '''

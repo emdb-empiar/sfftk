@@ -14,6 +14,8 @@ The following article is useful as it exposes many internals of map files:
 """
 from __future__ import division, print_function
 
+import os
+
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
 __date__ = '2016-07-05'
@@ -70,7 +72,7 @@ class Map(object):
         else:
             string += struct.pack('<i', self._nlabl)
 
-        for i in xrange(self._nlabl):
+        for i in range(self._nlabl):
             len_label = len(self.__getattribute__('_label_%s' % i))
             string += struct.pack('<%sc' % len_label, *self.__getattribute__('_label_%s' % i))
             # pack the remaining space
@@ -80,11 +82,16 @@ class Map(object):
             from datetime import datetime
             d = datetime.now()
             string += "{:<56}{:>24}".format(
-                "mapreader.py: inverted intensities",
+                "sfftk: inverted intensities",
                 d.strftime("%d-%b-%y  %H:%M:%S     ")
             )
 
         # pad up to full header of 1024 bytes
+        try:
+            assert 1024 - len(string) >= 0
+        except AssertionError:
+            raise ValueError("Header is too long")
+
         string += struct.pack(
             '<' + str(1024 - len(string)) + 'x')  # dodgy line because we may need to move one byte forward or back
 
@@ -93,12 +100,13 @@ class Map(object):
         with f:
             f.write(string)
 
-        return 0
+        return os.EX_OK
 
     def read(self, f, header_only=False):
         """Read data from an EMDB Map mask
-        
+
         :param file f: file object
+        :param bool header_only: only read the header [default: False]
         :return int status: 0 on success; fail otherwise
         """
         import struct
@@ -140,7 +148,7 @@ class Map(object):
         # number of labels
         self._nlabl = struct.unpack('<i', f.read(4))[0]
         # Up to 10 user-defined labels
-        for i in xrange(int(self._nlabl)):
+        for i in range(int(self._nlabl)):
             self.__setattr__('_label_%s' % i, "".join(struct.unpack('<80c', f.read(80))).rstrip(' '))
 
         # jump to the beginning of data
@@ -167,7 +175,7 @@ class Map(object):
         if header_only:
             self._voxel_values = set()
             self._voxel_array = None
-            return 0
+            return os.EX_OK
 
         #         import math
 
@@ -197,10 +205,10 @@ class Map(object):
 
         # ensure we are the end
         if current_position != final_position:
-            raise ValueError("There is still some data (%s bytes) to read: current_position = %; end_position = %s" % (
+            raise ValueError("There is still some data (%s bytes) to read: current_position = %s; end_position = %s" % (
                 final_position - current_position, current_position, final_position))
 
-        return 0
+        return os.EX_OK
 
     def __unicode__(self):
         string = u"""\
@@ -278,7 +286,7 @@ class Map(object):
     @property
     def is_mask(self):
         """Determine if this is a mask or not
-        
+
         :return bool status: mask or not
         """
         if len(self._voxel_values) == 2 and 0.0 in self._voxel_values:
@@ -288,12 +296,12 @@ class Map(object):
 
     def fix_mask(self, mask_value=1.0, voxel_values_threshold=3):
         """Try to fix this mask
-        
+
         A mask should have only two voxel values: some non-zero value (usually 1) and zero (0) for masked-out regions.
         Sometimes the process of manipulating the mask (e.g. volume rotation) relies on interpolation, which
         converts a mask to have more than two voxel values. This function attempts to fix that provided that
         the number of voxel values is not greater than `voxel_value_threshold`.
-        
+
         :param float mask_value: the mask value
         :param int voxel_value_threshold: the maxmimum number of voxel values permitted in fixing the mask
         """

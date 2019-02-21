@@ -7,10 +7,12 @@ import glob
 import os
 import random
 import shlex
+import shutil
 import sys
 import unittest
+
 import numpy
-import shutil
+from random_words import RandomWords, LoremIpsum
 from stl import Mesh
 
 from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose
@@ -19,11 +21,9 @@ from ..core import utils
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list
-from ..core.print_tools import print_date
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
+from ..core import print_tools
 from ..notes import RESOURCE_LIST
-
-from random_words import RandomWords, LoremIpsum
 
 rw = RandomWords()
 li = LoremIpsum()
@@ -395,8 +395,8 @@ class TestCorePrintUtils(unittest.TestCase):
         os.remove(self.temp_fn)
 
     def test_print_date_default(self):
-        """Test default arguments for print_date(...)"""
-        print_date("Test", stream=self.temp_file)
+        """Test default arguments for print_tools.print_date(...)"""
+        print_tools.print_date("Test", stream=self.temp_file)
         self.temp_file.flush()  # flush buffers
         self.temp_file.seek(0)  # rewind the files
         data = self.temp_file.readlines()[0]
@@ -404,9 +404,14 @@ class TestCorePrintUtils(unittest.TestCase):
         self.assertIn(_words[0], self._weekdays)  # the first part is a date
         self.assertEqual(_words[-1][-1], '\n')  #  the last letter is a newline
 
+    def test_print_date_non_basestring(self):
+        """Test exception when print_string is not a basestring subclass"""
+        with self.assertRaises(ValueError):
+            print_tools.print_date(3)
+
     def test_print_date_no_newline(self):
         """Test that we lack a newline at the end"""
-        print_date("Test", stream=self.temp_file, newline=False)
+        print_tools.print_date("Test", stream=self.temp_file, newline=False)
         self.temp_file.flush()  # flush buffers
         self.temp_file.seek(0)  # rewind the files
         data = self.temp_file.readlines()[0]
@@ -415,15 +420,90 @@ class TestCorePrintUtils(unittest.TestCase):
 
     def test_print_date_no_date(self):
         """Test that we lack a date at the beginning"""
-        print_date("Test", stream=self.temp_file, incl_date=False)
+        print_tools.print_date("Test", stream=self.temp_file, incl_date=False)
         self.temp_file.flush()  # flush buffers
         self.temp_file.seek(0)  # rewind the files
         data = self.temp_file.readlines()[0]
         _words = data.split(' ')
         self.assertNotIn(_words[0], self._weekdays)  # the first part is a date
 
+    def test_print_date_no_newline_no_date(self):
+        """Test that we can exclude both newline and the date"""
+        print_tools.print_date("Test", stream=self.temp_file, newline=False, incl_date=False)
+        self.temp_file.flush()
+        self.temp_file.seek(0)
+        data = self.temp_file.readline()
+        self.assertEqual(data, 'Test')
 
-class TestParserPrepBinmap(unittest.TestCase):
+    def test_printable_ascii_string(self):
+        """Test whether we can get a printable substring"""
+        s_o = li.get_sentence()
+        unprintables = range(14, 32)
+        s_u = ''.join([chr(random.choice(unprintables)) for _ in range(100)])
+        s = s_o + s_u
+        s_p = print_tools.get_printable_ascii_string(s)
+        self.assertEqual(s_p, s_o)
+        s_pp = print_tools.get_printable_ascii_string(s_u)
+        self.assertEqual(s_pp, '')
+        s_b = print_tools.get_printable_ascii_string('')
+        self.assertEqual(s_b, '')
+
+    def test_print_static(self):
+        """Test that we can print_static
+
+        * write two sentences
+        * only the second one appears because first is overwritten
+        """
+        s = li.get_sentence()
+        print_tools.print_static(s, stream=self.temp_file)
+        self.temp_file.flush()
+        s1 = li.get_sentence()
+        print_tools.print_static(s1, stream=self.temp_file)
+        self.temp_file.seek(0)
+        data = self.temp_file.readlines()[0]
+        self.assertEqual(data[0], '\r')
+        self.assertTrue(len(data) > len(s) + len(s1))
+        r_split = data.split('\r') # split at the carriage reset
+        self.assertTrue(len(r_split), 3) # there should be three items in the list
+        self.assertEqual(r_split[1].split('\t')[1], s) # split the first string and get the actual string (ex. date)
+        self.assertEqual(r_split[2].split('\t')[1], s1) # split the second string and get the actual string (ex. date)
+
+    def test_print_static_no_date(self):
+        """Test print static with no date"""
+        s = li.get_sentence()
+        print_tools.print_static(s, stream=self.temp_file, incl_date=False)
+        self.temp_file.flush()
+        s1 = li.get_sentence()
+        print_tools.print_static(s1, stream=self.temp_file, incl_date=False)
+        self.temp_file.seek(0)
+        data = self.temp_file.readlines()[0]
+        self.assertEqual(data[0], '\r')
+        self.assertTrue(len(data) > len(s) + len(s1))
+        r_split = data.split('\r')  # split at the carriage reset
+        self.assertTrue(len(r_split), 3)  # there should be three items in the list
+        self.assertEqual(r_split[1], s)  # split the first string and get the actual string (ex. date)
+        self.assertEqual(r_split[2], s1)  # split the second string and get the actual string (ex. date)
+
+    def test_print_static_valueerror(self):
+        """Test that we assert print_string type"""
+        with self.assertRaises(ValueError):
+            print_tools.print_static(1)
+
+    def test_print_static_str(self):
+        """Test that we can work with unicode"""
+        s = li.get_sentence()
+        print_tools.print_static(str(s), stream=self.temp_file)
+        self.temp_file.flush()
+        self.temp_file.seek(0)
+        data = self.temp_file.readlines()[0]
+        self.assertEqual(data[0], '\r')
+        r_split = data.split('\r')
+        self.assertEqual(len(r_split), 2)
+        self.assertEqual(r_split[1].split('\t')[1], s)
+
+
+
+class TestCoreParserPrepBinmap(unittest.TestCase):
     def test_default(self):
         """Test default params for prep binmap"""
         args, _ = parse_args(shlex.split('prep binmap file.map'))
@@ -477,7 +557,7 @@ class TestParserPrepBinmap(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParserPrepTransform(unittest.TestCase):
+class TestCoreParserPrepTransform(unittest.TestCase):
     def test_default(self):
         """Test default param for prep transform"""
         lengths = _random_floats(count=3, multiplier=1000)
@@ -561,7 +641,7 @@ class TestParserPrepTransform(unittest.TestCase):
         self.assertEqual(args.output, 'file_something.stl')
 
 
-class TestParserConvert(unittest.TestCase):
+class TestCoreParserConvert(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("convert tests...", file=sys.stderr)
@@ -686,7 +766,7 @@ class TestParserConvert(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParserView(unittest.TestCase):
+class TestCoreParserView(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -728,7 +808,7 @@ class TestParserView(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParserNotesReadOnly(unittest.TestCase):
+class TestCoreParserNotesReadOnly(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -921,7 +1001,7 @@ class TestParserNotesReadOnly(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParserTests(unittest.TestCase):
+class TestCoreParserTests(unittest.TestCase):
     def test_tests_default(self):
         """Test that tests can be launched"""
         args, _ = parse_args("tests all", use_shlex=True)
@@ -977,7 +1057,7 @@ class TestParserTests(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestParserNotesReadWrite(unittest.TestCase):
+class TestCoreParserNotesReadWrite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -1493,7 +1573,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.config_path, self.config_fn)
 
 
-class TestUtils(unittest.TestCase):
+class TestCoreUtils(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("utils tests...", file=sys.stderr)
@@ -1591,8 +1671,42 @@ class TestUtils(unittest.TestCase):
         with self.assertRaises(TypeError):
             utils.get_path(D, path)
 
+    def test_rgba_to_hex(self):
+        """Test converting colours"""
+        hex1 = utils.rgba_to_hex((0, 0, 0, 0))
+        self.assertEqual(hex1, '#000000')
+        hex2 = utils.rgba_to_hex((0, 0, 0, 0), channels=4)
+        self.assertEqual(hex2, '#00000000')
+        hex3 = utils.rgba_to_hex((0, 0, 0))
+        self.assertEqual(hex3, '#000000')
+        hex4 = utils.rgba_to_hex((0, 0, 0), channels=4)
+        self.assertEqual(hex4, '#000000ff')
+        with self.assertRaises(ValueError):
+            utils.rgba_to_hex((2, 2, 2, 0), channels=4)
+        with self.assertRaises(ValueError):
+            utils.rgba_to_hex((0, 0, 0, 0), channels=5)
 
-class TestPrep(unittest.TestCase):
+    def test_printable_substring(self):
+        """Test that we can extract the printable substring of a sequence"""
+        s_o = li.get_sentence()
+        unprintables = range(14, 32)
+        s = s_o + ''.join([chr(random.choice(unprintables)) for _ in range(100)])
+        s_p = utils.printable_substring(s)
+        self.assertEqual(s_p, s_o)
+        s_pp = utils.printable_substring(s_o)
+        self.assertEqual(s_pp, s_o)
+
+    def test_parse_and_split(self):
+        """Test the parser utility"""
+        args, configs = utils.parse_and_split('notes list file.sff')
+        self.assertEqual(args.subcommand, 'notes')
+        self.assertEqual(args.notes_subcommand, 'list')
+        self.assertEqual(args.sff_file, 'file.sff')
+        self.assertEqual(configs['__TEMP_FILE'], './temp-annotated.json')
+        self.assertEqual(configs['__TEMP_FILE_REF'], '@')
+
+
+class TestCorePrep(unittest.TestCase):
     def test_binmap_default(self):
         """Test binarise map"""
         test_map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')

@@ -10,13 +10,15 @@ from __future__ import division, print_function
 
 import glob
 import os
+import struct
 import sys
 import unittest
 
-import ahds
 import numpy
+import random_words
 
 import __init__ as tests
+import ahds
 from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -24,6 +26,8 @@ __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
 __updated__ = '2018-02-14'
 
+
+rw = random_words.RandomWords()
 
 # readers
 class TestReaders_amreader(unittest.TestCase):
@@ -57,6 +61,13 @@ class TestReaders_amreader(unittest.TestCase):
     def test_materials_present(self):
         """test Materials exist in parameters"""
         self.assertIsNotNone('Materials' in self.header.parameters.attrs)
+
+    def test_read_hxsurface(self):
+        """Test handling of AmiraMesh hxsurface files"""
+        am_hxsurface_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_hxsurface.am')
+        header, segments_by_stream = amreader.get_data(am_hxsurface_file)
+        self.assertIsInstance(header, ahds.header.AmiraHeader)
+        self.assertIsNone(segments_by_stream)
 
 
 class TestReaders_mapreader(unittest.TestCase):
@@ -129,6 +140,12 @@ class TestReaders_mapreader(unittest.TestCase):
         self.assertTrue(map_._inverted)
         map_ = mapreader.get_data(self.map_file, inverted=True)
         self.assertTrue(map_._inverted)
+        # check the inversion is complete and that we add a new label
+        with open('rm.map', 'w') as f:
+            map_.write(f)
+        map__ = mapreader.get_data('rm.map')
+        self.assertEqual(map__._nlabl, 2)
+        os.remove('rm.map')
 
     def test_fix_mask(self):
         """Test fix mask for fixable mask"""
@@ -149,6 +166,25 @@ class TestReaders_mapreader(unittest.TestCase):
         """Test that a corrupted file (extra data at end) raises Exception"""
         with self.assertRaises(ValueError):
             mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data1.map'))
+
+    def test_bad_data_fail2(self):
+        """Test that we can raise an exception with a malformed header"""
+        with self.assertRaises(ValueError):
+            mapreader.get_data(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_corrupt_header.map'))
+
+    def test_bad_data_fail3(self):
+        """Test that we can't have too long a header"""
+        with self.assertRaises(ValueError):
+            # create a map file with a header larger than 1024 to see the exception
+            map = mapreader.get_data(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map'))
+            for i in range(map._nlabl):
+                label = getattr(map, '_label_{}'.format(i))
+            y = 11
+            for j in range(1, y):
+                setattr(map, '_label_{}'.format(j), label)
+            map._nlabl = y
+            with open('rm.map', 'w') as f:
+                map.write(f)
 
 
 class TestReaders_modreader(unittest.TestCase):

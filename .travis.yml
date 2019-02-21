@@ -19,12 +19,12 @@ install:
   - sff --help
 
 script:
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" `which sff` tests schema -v 3
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" `which sff` tests readers -v 3
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" `which sff` tests formats -v 3
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" `which sff` tests notes -v 3
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" `which sff` tests core -v 3
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" `which sff` tests main -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests schema -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests readers -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests formats -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests notes -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests core -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests main -v 3
 
 after_success:
   - coveralls
