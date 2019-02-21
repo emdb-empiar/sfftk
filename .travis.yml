@@ -19,7 +19,7 @@ install:
   - sff --help
 
 script:
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests all -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
 #  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests schema -v 3
 #  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests readers -v 3
 #  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/unittests" `which sff` tests formats -v 3
