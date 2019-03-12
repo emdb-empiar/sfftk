@@ -435,7 +435,10 @@ def handle_view(args, configs):  # @UnusedVariable
         print("*" * 50)
         if args.show_chunks:
             from .readers import modreader
-            modreader.show_chunks(args.from_file)
+            if args.verbose:
+                modreader.print_model(args.from_file)
+            else:
+                modreader.show_chunks(args.from_file)
     elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE) or \
             re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
             re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):

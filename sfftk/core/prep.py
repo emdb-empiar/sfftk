@@ -74,7 +74,7 @@ def transform(args, configs):
     # let the reader understand...
     if args.verbose:
         print_date("Transformation matrix: ")
-        print_date(transform, incl_date=False)
+        print_date(unicode(transform), incl_date=False)
     if re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
         # mesh operations
         in_mesh = Mesh.from_file(args.from_file)

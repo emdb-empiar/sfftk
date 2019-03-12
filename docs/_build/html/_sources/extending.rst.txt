@@ -4,49 +4,330 @@ Extending sfftk
 
 .. contents::
 
+.. todo::
+
+    multifile
+    parser
+
+
 Adding A Segmentation File Format
 =================================
 
 There are four (4) steps involved.
 
--  Create a reader
+* Step I: Create a **reader** module
 
--  Create a format adapter
+* Step II: Create a **format** adapter module
 
--  Add test data
+* Step III: Implement a **convert hook** in the :py:func:`sfftk.sff.handle_convert` function
 
--  Write unit tests
+* Step III: Add unit tests in the :py:mod:`sfftk.unittests` module
 
-Step I: Create a reader
------------------------
+* Step IV: Add test data files to the ``sfftk/test_data`` folder
 
-Write a reader module and place it in sfftk.readers package. The reader module may implement a single class that
-provides a simple API to segmentation files. There is not predefined structure on how to handle reading the file.
-However, the reader module must implement a `get_data(fn, *args, **kwargs)` function that takes the name of a file as a
-string. The name of the module should be the extension followed by the word ‘reader’ e.g. for Segger files it is segreader.py.
+.. _step_I:
 
-Step II: Create a format adapter
---------------------------------
+Step I: Create a **reader** module
+------------------------------------
 
-Write a format module and place it in the sfftk.formats package. This module adapts the reader in Step II to the schema
-(EMDB-SFF data model) API. The name of the module must be simply the extension of the file format e.g. for Segger files
-it is seg.py. The module uses the inherited segmentation parts from the classes defined in sfftk.formats.base module
-and have names indicating the segmentation format e.g. for Segger seg.py has a SeggerSegmentation class that inherits
-from the generic Segmentation class which provides a way to hook functionality required of all custom segmentation
-representations. This module will then tie the segmentation file format API defined in readers with the schema
-(EMDB-SFF data model) API.
+The role of the reader module is to be the first point of contact with the application-specific segmentation file.
 
-Step III: Add test data
------------------------
+Each reader module **must** implement a ``get_data(fn, *args, **kwargs)`` function which takes the segmentation file's name as a string together with optional positional and keyword arguments to be passed down the class chain. This function then returns a single *ad hoc* object that encapsulates the segmentation with a simple API faithful to the segmentation's structure to access various attributes of the segmentation e.g. ``headers``, ``segments`` etc.
+
+The reader module **must** then be placed in the :py:mod:`sfftk.readers` package and should be named as the extension followed by the word 'reader' e.g. for Segger files with a ``.seg`` extension this would be ``segreader.py``.
+
+.. _step_II:
+
+Step II: Create a **format** adapter module
+-----------------------------------------------------------
+
+The format adapter is where the *ad hoc* segmentation object is *adapted* to the EMDB-SFF model.
+
+The classes defined in this module represent a hierarchy describing a typical segmentation data structure. For the following discussion, please refer to the diagram below. (You might need to right-click and select an option to view the image in a new tab to see the image details.)
+
+.. image:: segmentation_object_hierarchy.png
+
+.. note::
+
+    Note that all classes are subclasses of :py:class:`sfftk.formats.base.SegmentationType`, which *may* specify attributes and methods that apply to all subclasses. Currently, none are defined but it is envisaged that some may arise.
+
+At the top of the hierarchy is a :py:class:`sfftk.formats.base.Segmentation` subclass which hosts objects of two other classes:
+
+* a :py:class:`sfftk.formats.base.Header` subclass for all header related metadata such as segment colours, names, segmentation space parameters such as the bounding box etc., and
+
+* an iterable attribute called ``segments`` which is a container for :py:class:`sfftk.formats.base.Segment` subclasses, each holding data for a single segment.
+
+Each :py:class:`sfftk.formats.base.Segment` subclass will in turn host objects of the following classes:
+
+* a :py:class:`sfftk.formats.base.Annotation` subclass for segment annotation, and
+
+* one or more segment format subclasses: :py:class:`sfftk.formats.base.Volume` for 3D volumes, :py:class:`sfftk.formats.base.Mesh` for meshes, and/or :py:class:`sfftk.formats.base.Shapes` for shape primitives
+
+Format adapter modules **must** be placed in the :py:mod:`sfftk.formats` package and should be named as the segmentation file format's extension e.g. for Segger files with a ``.seg`` extension this is ``seg.py``.
+
+Conversion is effected within each class by implementing a ``convert()`` method which takes the attributes obtained from the *ad hoc* segmentation object and uses them to populate fields in a corresponding EMDB-SFF attribute object. Given the hierarchy described above, the ``convert()`` method for objects higher up in the hierarchy may then invoke the ``convert()`` method of lower level objects when effecting their conversions. An example will be provided below.
+
+Example:
+~~~~~~~~
+
+To make the above concrete, we outline how the :py:mod:`sfftk.formats.seg` format adapter is implemented.
+
+Segger segmentation files are represented using 3D volumes. Therefore, the :py:mod:`sfftk.formats.seg` module has the following top level structure:
+
+.. code:: python
+
+    from .base import Segmentation, Header, Segment, Annotation, Volume
+    from .. import schema
+    from ..readers import segreader
+
+    class SeggerAnnotation(Annotation):
+        pass
+
+    class SeggerVolume(Volume):
+        pass
+
+    class SeggerSegment(Segment):
+        pass
+
+    class SeggerHeader(Header):
+        pass
+
+    class SeggerSegmentation(Segmentation):
+        pass
+
+
+The :py:class:`sfftk.formats.seg.SeggerSegmentation` class's initialiser does the reading using the :py:mod:`sfftk.readers.segreader` module described in :ref:`step_I`;
+
+.. code:: python
+
+    class SeggerSegmentation(Segmentation):
+        def __init__(self, fn, top_level=False, *args, **kwargs):
+            """Initialise the reader"""
+            self._fn = fn
+            self._segmentation = segreader.get_data(self._fn, *args, **kwargs)
+            self._top_level = top_level
+
+We then reference the ``header`` and ``segments`` attributes using propers to decouple the actual hosted objects from the user-facing attributes.
+
+.. code:: python
+
+    class SeggerSegmentation(Segmentation):
+        # ...
+
+        @property
+        def header(self):
+            """The header for this segmentation"""
+            return SeggerHeader(self._segmentation)
+
+and delegate the :py:class:`sfftk.formats.seg.SeggerHeader` to expose header attributes.
+
+.. code:: python
+
+    class SeggerHeader(Header):
+        """Header class"""
+        def __init__(self, segmentation):
+            self._segmentation = segmentation
+
+        @property
+        def name(self):
+            """The name of segmentation"""
+            return self._segmentation.format
+
+        @property
+        def version(self):
+            """The version of Segger used"""
+            return self._segmentation.format_version
+
+        @property
+        def map_path(self):
+            """The path to the original segmented map"""
+            return self._segmentation.map_path
+
+        @property
+        def ijk_to_xyz_transform(self):
+            """The image-to-physical transform"""
+            return self._segmentation.ijk_to_xyz_transform
+
+        @property
+        def file_path(self):
+            """The path to the .seg file"""
+            return self._segmentation.file_path
+
+        @property
+        def root_parent_ids(self):
+            """Parent IDs for root segments"""
+            return self._segmentation.root_parent_ids
+
+        @property
+        def region_ids(self):
+            """All region IDs"""
+            return self._segmentation.region_ids
+
+        @property
+        def parent_ids(self):
+            """All parent IDs"""
+            return self._segmentation.parent_ids
+
+        @property
+        def map_size(self):
+            """Map dimensions"""
+            return self._segmentation.map_size
+
+        @property
+        def mask(self):
+            return self._segmentation.mask
+
+        @property
+        def simplified_mask(self):
+            return self._segmentation.simplify_mask(self.mask)
+
+Notice that all underlying functionality is obtained from the *ad hoc* reader, which does the heavy lifting. The adapter merely *adapts* the *ad hoc* :py:class:`sfftk.readers.segreader.SeggerSegmentation` class for the EMDB-SFF schema.
+
+Segments are contained in a list and exposed through the ``segments`` property of the :py:class:`sfftk.formats.seg.SeggerSegmentation` class.
+
+.. code:: python
+
+    class SeggerSegmentation(Segmentation):
+        # ...
+
+        @property
+        def segments(self):
+            """The segments in this segmentation"""
+            if self._top_level:
+                segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.root_parent_ids]
+            else:
+                segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.region_ids if
+                            region_id != 0]
+            return segments
+
+To perform a conversion the :py:class:`sfftk.formats.seg.SeggerSegmentation` class implements a :py:meth:`sfftk.formats.seg.SeggerSegmentation.convert()` method that uses the EMDB-SFF schema API as described in :doc:`developing`.
+
+.. code:: python
+
+    class SeggerSegmentation(Segmentation):
+        # ...
+
+        def convert(self, args, *_args, **_kwargs):
+            """Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object"""
+            segmentation = schema.SFFSegmentation()
+            segmentation.name = "Segger Segmentation"
+            segmentation.software = schema.SFFSoftware(
+                name=self.header.name,
+                version=self.header.version,
+            )
+            segmentation.transforms = schema.SFFTransformList()
+            segmentation.transforms.add_transform(
+                schema.SFFTransformationMatrix(
+                    rows=3,
+                    cols=4,
+                    data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+                )
+            )
+            segmentation.transforms.add_transform(
+                schema.SFFTransformationMatrix(
+                    rows=3,
+                    cols=4,
+                    data=" ".join(map(str, self.header.ijk_to_xyz_transform.flatten().tolist()))
+                )
+            )
+            segmentation.primaryDescriptor = "threeDVolume"
+            segments = schema.SFFSegmentList()
+            for s in self.segments:
+                segment = s.convert()
+                segments.add_segment(segment)
+            # finally pack everything together
+            segmentation.segments = segments
+            # lattice
+            segmentation.lattices = schema.SFFLatticeList()
+            cols, rows, sections = self.header.map_size
+            lattice = schema.SFFLattice(
+                mode='uint32',
+                endianness='little',
+                size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
+                start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
+                data=self.header.simplified_mask
+            )
+            segmentation.lattices.add_lattice(lattice)
+            # details
+            if args.details is not None:
+                segmentation.details = args.details
+            elif 'details' in _kwargs:
+                segmentation.details = _kwargs['details']
+            return segmentation
+
+Notice that in the loop for each segment (``for s in self.segments``) we refer to each segment's ``convert()`` method which is implemented as follows:
+
+.. code:: python
+
+    class SeggerSegment(Segment):
+        # ...
+
+        def convert(self, *args, **kwargs):
+            """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+            segment = schema.SFFSegment()
+            segment.id = self.region_id
+            segment.parentID = self.parent_id
+            # annotation
+            segment.annotation, segment.colour = self.annotation.convert()
+            # geometry
+            # segment.volume = self.volume.convert()
+            segment.volume = schema.SFFThreeDVolume()
+            segment.volume.latticeId = 0
+            segment.volume.value = self.region_id
+            return segment
+
+and which in turn calls the ``convert()`` methods on the contained annotation and volume objects.
+
+.. _step_III:
+
+Step III: Implement a **convert hook** in the :py:func:`sfftk.sff.handle_convert` function
+------------------------------------------------------------------------------------------------
+
+In order to perform conversion using the command-line utility, we need to have the ``convert`` utility recognise segmentations by file type. This is simply done by add adding a regular expression match object in the :py:func:`sfftk.sff.handle_convert()` function as follows:
+
+.. code:: python
+
+    def handle_convert(args, configs):  # @UnusedVariable
+        # ...
+        if args.multi_file:
+            # segmentation file formats that support multi-file segmentations will be handled here
+            # ...
+        else:
+            if re.match(r'.*\.mod$', args.from_file, re.IGNORECASE):
+                # handle reading of IMOD files
+            elif re.match(r'.*\.seg$', args.from_file, re.IGNORECASE):
+                from .formats.seg import SeggerSegmentation
+                seg = SeggerSegmentation(args.from_file, top_level=args.top_level_only)
+            # other file formats go here
+            else:
+                raise ValueError("Unknown file type %s" % args.from_file)
+        # export (convert first if needed)
+        # ...
+        sff_seg.export(args.output)
+
+        return os.EX_OK
+
+Once this is done the following should work:
+
+.. code:: bash
+
+    sff convert --top-level-only file.seg --verbose
+
+.. _step_IV:
+
+Step IV: Add unit tests in the :py:mod:`sfftk.unittests` module
+----------------------------------------------------------------------------------------
+
+Write unit tests and add them to the :py:mod:`sfftk.unittests.test_formats` module. Each format that you add should implement a read and convert test method (respectively called ``test_<format>_read`` and ``test_<format>_convert``. See the :py:mod:`sfftk.unittests.test_formats` module for examples.
+
+.. _step_V:
+
+Step V: Add test data files to the ``sfftk/test_data`` folder
+---------------------------------------------------------------------
 
 Provide an example segmentation file in the sfftk.test_data package.
 
-Step IV: Write tests
---------------------
-
-Write unit tests and add them to the sfftk.unittests.test_formats module. Each format that you add should implement a
-read and convert test method (respectively called test_<format>_read and test_<format>_convert. See the
-``sfftk.unittests.test_formats`` module for examples.
+Of course, you are welcome to contact us for help doing the above. Also, if you have any suggestions on how to improve the extension process these are invited.
 
 Once all this components are in place conversion to XML, HDF5 and JSON should be automatic.
 
@@ -61,7 +342,6 @@ Also, tests can be run as follows:
 .. code:: bash
 
     sff tests formats
-    sff test formats
 
 
 Adding A Search Resource

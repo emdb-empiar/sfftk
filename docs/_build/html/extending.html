@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Extending sfftk &mdash; sfftk v0.3.2.dev0 documentation</title>
+  <title>Extending sfftk &mdash; sfftk v0.3.2.dev5 documentation</title>
   
 
   
@@ -87,13 +87,17 @@
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Extending sfftk</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#adding-a-segmentation-file-format">Adding A Segmentation File Format</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#step-i-create-a-reader">Step I: Create a reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-ii-create-a-format-adapter">Step II: Create a format adapter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-iii-add-test-data">Step III: Add test data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-iv-write-tests">Step IV: Write tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-i-create-a-reader-module">Step I: Create a <strong>reader</strong> module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-ii-create-a-format-adapter-module">Step II: Create a <strong>format</strong> adapter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function">Step III: Implement a <strong>convert hook</strong> in the <code class="docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iv-add-unit-tests-in-the-sfftk-unittests-module">Step IV: Add unit tests in the <code class="docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-v-add-test-data-files-to-the-sfftk-test-data-folder">Step V: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-a-search-resource">Adding A Search Resource</a><ul>
@@ -178,59 +182,301 @@
 <ul class="simple">
 <li><a class="reference internal" href="#extending-sfftk" id="id1">Extending sfftk</a><ul>
 <li><a class="reference internal" href="#adding-a-segmentation-file-format" id="id2">Adding A Segmentation File Format</a><ul>
-<li><a class="reference internal" href="#step-i-create-a-reader" id="id3">Step I: Create a reader</a></li>
-<li><a class="reference internal" href="#step-ii-create-a-format-adapter" id="id4">Step II: Create a format adapter</a></li>
-<li><a class="reference internal" href="#step-iii-add-test-data" id="id5">Step III: Add test data</a></li>
-<li><a class="reference internal" href="#step-iv-write-tests" id="id6">Step IV: Write tests</a></li>
+<li><a class="reference internal" href="#step-i-create-a-reader-module" id="id3">Step I: Create a <strong>reader</strong> module</a></li>
+<li><a class="reference internal" href="#step-ii-create-a-format-adapter-module" id="id4">Step II: Create a <strong>format</strong> adapter module</a><ul>
+<li><a class="reference internal" href="#example" id="id5">Example:</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#adding-a-search-resource" id="id7">Adding A Search Resource</a><ul>
-<li><a class="reference internal" href="#step-i-add-the-resource-description" id="id8">Step I: Add the resource description</a></li>
-<li><a class="reference internal" href="#step-ii-add-a-handler-to-return-the-correct-url" id="id9">Step II: Add a handler to return the correct URL</a></li>
-<li><a class="reference internal" href="#step-iii-define-how-the-table-is-formated" id="id10">Step III: Define how the table is formated</a></li>
-<li><a class="reference internal" href="#step-iv-write-tests-and-test" id="id11">Step IV: Write tests and test</a></li>
-<li><a class="reference internal" href="#step-iv-write-documentation-for-the-new-resource" id="id12">Step IV: Write documentation for the new resource</a></li>
+<li><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" id="id6">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a></li>
+<li><a class="reference internal" href="#step-iv-add-unit-tests-in-the-sfftk-unittests-module" id="id7">Step IV: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></li>
+<li><a class="reference internal" href="#step-v-add-test-data-files-to-the-sfftk-test-data-folder" id="id8">Step V: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#adding-a-search-resource" id="id9">Adding A Search Resource</a><ul>
+<li><a class="reference internal" href="#step-i-add-the-resource-description" id="id10">Step I: Add the resource description</a></li>
+<li><a class="reference internal" href="#step-ii-add-a-handler-to-return-the-correct-url" id="id11">Step II: Add a handler to return the correct URL</a></li>
+<li><a class="reference internal" href="#step-iii-define-how-the-table-is-formated" id="id12">Step III: Define how the table is formated</a></li>
+<li><a class="reference internal" href="#step-iv-write-tests-and-test" id="id13">Step IV: Write tests and test</a></li>
+<li><a class="reference internal" href="#step-iv-write-documentation-for-the-new-resource" id="id14">Step IV: Write documentation for the new resource</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">multifile
+parser</p>
 </div>
 <div class="section" id="adding-a-segmentation-file-format">
 <h2><a class="toc-backref" href="#id2">Adding A Segmentation File Format</a><a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this headline">¶</a></h2>
 <p>There are four (4) steps involved.</p>
 <ul class="simple">
-<li>Create a reader</li>
-<li>Create a format adapter</li>
-<li>Add test data</li>
-<li>Write unit tests</li>
+<li>Step I: Create a <strong>reader</strong> module</li>
+<li>Step II: Create a <strong>format</strong> adapter module</li>
+<li>Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</li>
+<li>Step III: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</li>
+<li>Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</li>
 </ul>
-<div class="section" id="step-i-create-a-reader">
-<h3><a class="toc-backref" href="#id3">Step I: Create a reader</a><a class="headerlink" href="#step-i-create-a-reader" title="Permalink to this headline">¶</a></h3>
-<p>Write a reader module and place it in sfftk.readers package. The reader module may implement a single class that
-provides a simple API to segmentation files. There is not predefined structure on how to handle reading the file.
-However, the reader module must implement a <cite>get_data(fn, *args, **kwargs)</cite> function that takes the name of a file as a
-string. The name of the module should be the extension followed by the word ‘reader’ e.g. for Segger files it is segreader.py.</p>
+<div class="section" id="step-i-create-a-reader-module">
+<span id="step-i"></span><h3><a class="toc-backref" href="#id3">Step I: Create a <strong>reader</strong> module</a><a class="headerlink" href="#step-i-create-a-reader-module" title="Permalink to this headline">¶</a></h3>
+<p>The role of the reader module is to be the first point of contact with the application-specific segmentation file.</p>
+<p>Each reader module <strong>must</strong> implement a <code class="docutils literal notranslate"><span class="pre">get_data(fn,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> function which takes the segmentation file’s name as a string together with optional positional and keyword arguments to be passed down the class chain. This function then returns a single <em>ad hoc</em> object that encapsulates the segmentation with a simple API faithful to the segmentation’s structure to access various attributes of the segmentation e.g. <code class="docutils literal notranslate"><span class="pre">headers</span></code>, <code class="docutils literal notranslate"><span class="pre">segments</span></code> etc.</p>
+<p>The reader module <strong>must</strong> then be placed in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers</span></code> package and should be named as the extension followed by the word ‘reader’ e.g. for Segger files with a <code class="docutils literal notranslate"><span class="pre">.seg</span></code> extension this would be <code class="docutils literal notranslate"><span class="pre">segreader.py</span></code>.</p>
 </div>
-<div class="section" id="step-ii-create-a-format-adapter">
-<h3><a class="toc-backref" href="#id4">Step II: Create a format adapter</a><a class="headerlink" href="#step-ii-create-a-format-adapter" title="Permalink to this headline">¶</a></h3>
-<p>Write a format module and place it in the sfftk.formats package. This module adapts the reader in Step II to the schema
-(EMDB-SFF data model) API. The name of the module must be simply the extension of the file format e.g. for Segger files
-it is seg.py. The module uses the inherited segmentation parts from the classes defined in sfftk.formats.base module
-and have names indicating the segmentation format e.g. for Segger seg.py has a SeggerSegmentation class that inherits
-from the generic Segmentation class which provides a way to hook functionality required of all custom segmentation
-representations. This module will then tie the segmentation file format API defined in readers with the schema
-(EMDB-SFF data model) API.</p>
+<div class="section" id="step-ii-create-a-format-adapter-module">
+<span id="step-ii"></span><h3><a class="toc-backref" href="#id4">Step II: Create a <strong>format</strong> adapter module</a><a class="headerlink" href="#step-ii-create-a-format-adapter-module" title="Permalink to this headline">¶</a></h3>
+<p>The format adapter is where the <em>ad hoc</em> segmentation object is <em>adapted</em> to the EMDB-SFF model.</p>
+<p>The classes defined in this module represent a hierarchy describing a typical segmentation data structure. For the following discussion, please refer to the diagram below. (You might need to right-click and select an option to view the image in a new tab to see the image details.)</p>
+<img alt="_images/segmentation_object_hierarchy.png" src="_images/segmentation_object_hierarchy.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that all classes are subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.SegmentationType</span></code>, which <em>may</em> specify attributes and methods that apply to all subclasses. Currently, none are defined but it is envisaged that some may arise.</p>
 </div>
-<div class="section" id="step-iii-add-test-data">
-<h3><a class="toc-backref" href="#id5">Step III: Add test data</a><a class="headerlink" href="#step-iii-add-test-data" title="Permalink to this headline">¶</a></h3>
+<p>At the top of the hierarchy is a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Segmentation</span></code> subclass which hosts objects of two other classes:</p>
+<ul class="simple">
+<li>a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Header</span></code> subclass for all header related metadata such as segment colours, names, segmentation space parameters such as the bounding box etc., and</li>
+<li>an iterable attribute called <code class="docutils literal notranslate"><span class="pre">segments</span></code> which is a container for <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Segment</span></code> subclasses, each holding data for a single segment.</li>
+</ul>
+<p>Each <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Segment</span></code> subclass will in turn host objects of the following classes:</p>
+<ul class="simple">
+<li>a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Annotation</span></code> subclass for segment annotation, and</li>
+<li>one or more segment format subclasses: <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Volume</span></code> for 3D volumes, <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Mesh</span></code> for meshes, and/or <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.base.Shapes</span></code> for shape primitives</li>
+</ul>
+<p>Format adapter modules <strong>must</strong> be placed in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats</span></code> package and should be named as the segmentation file format’s extension e.g. for Segger files with a <code class="docutils literal notranslate"><span class="pre">.seg</span></code> extension this is <code class="docutils literal notranslate"><span class="pre">seg.py</span></code>.</p>
+<p>Conversion is effected within each class by implementing a <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method which takes the attributes obtained from the <em>ad hoc</em> segmentation object and uses them to populate fields in a corresponding EMDB-SFF attribute object. Given the hierarchy described above, the <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method for objects higher up in the hierarchy may then invoke the <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method of lower level objects when effecting their conversions. An example will be provided below.</p>
+<div class="section" id="example">
+<h4><a class="toc-backref" href="#id5">Example:</a><a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<p>To make the above concrete, we outline how the <a class="reference internal" href="formats.html#module-sfftk.formats.seg" title="sfftk.formats.seg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a> format adapter is implemented.</p>
+<p>Segger segmentation files are represented using 3D volumes. Therefore, the <a class="reference internal" href="formats.html#module-sfftk.formats.seg" title="sfftk.formats.seg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a> module has the following top level structure:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">Segmentation</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">Volume</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">schema</span>
+<span class="kn">from</span> <span class="nn">..readers</span> <span class="k">import</span> <span class="n">segreader</span>
+
+<span class="k">class</span> <span class="nc">SeggerAnnotation</span><span class="p">(</span><span class="n">Annotation</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">SeggerVolume</span><span class="p">(</span><span class="n">Volume</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">SeggerSegment</span><span class="p">(</span><span class="n">Segment</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">SeggerHeader</span><span class="p">(</span><span class="n">Header</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">SeggerSegmentation</span><span class="p">(</span><span class="n">Segmentation</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="formats.html#sfftk.formats.seg.SeggerSegmentation" title="sfftk.formats.seg.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.seg.SeggerSegmentation</span></code></a> class’s initialiser does the reading using the <a class="reference internal" href="readers.html#module-sfftk.readers.segreader" title="sfftk.readers.segreader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers.segreader</span></code></a> module described in <a class="reference internal" href="#step-i"><span class="std std-ref">Step I: Create a reader module</span></a>;</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegmentation</span><span class="p">(</span><span class="n">Segmentation</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise the reader&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span> <span class="o">=</span> <span class="n">segreader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_top_level</span> <span class="o">=</span> <span class="n">top_level</span>
+</pre></div>
+</div>
+<p>We then reference the <code class="docutils literal notranslate"><span class="pre">header</span></code> and <code class="docutils literal notranslate"><span class="pre">segments</span></code> attributes using propers to decouple the actual hosted objects from the user-facing attributes.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegmentation</span><span class="p">(</span><span class="n">Segmentation</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The header for this segmentation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SeggerHeader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and delegate the <a class="reference internal" href="formats.html#sfftk.formats.seg.SeggerHeader" title="sfftk.formats.seg.SeggerHeader"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.seg.SeggerHeader</span></code></a> to expose header attributes.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerHeader</span><span class="p">(</span><span class="n">Header</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Header class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segmentation</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span> <span class="o">=</span> <span class="n">segmentation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The name of segmentation&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">format</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The version of Segger used&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">format_version</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">map_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The path to the original segmented map&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">map_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ijk_to_xyz_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The image-to-physical transform&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">ijk_to_xyz_transform</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The path to the .seg file&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">file_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">root_parent_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parent IDs for root segments&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">root_parent_ids</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">region_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;All region IDs&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">region_ids</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parent_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;All parent IDs&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">parent_ids</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">map_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map dimensions&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">map_size</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">mask</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">simplified_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="o">.</span><span class="n">simplify_mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice that all underlying functionality is obtained from the <em>ad hoc</em> reader, which does the heavy lifting. The adapter merely <em>adapts</em> the <em>ad hoc</em> <a class="reference internal" href="readers.html#sfftk.readers.segreader.SeggerSegmentation" title="sfftk.readers.segreader.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.segreader.SeggerSegmentation</span></code></a> class for the EMDB-SFF schema.</p>
+<p>Segments are contained in a list and exposed through the <code class="docutils literal notranslate"><span class="pre">segments</span></code> property of the <a class="reference internal" href="formats.html#sfftk.formats.seg.SeggerSegmentation" title="sfftk.formats.seg.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.seg.SeggerSegmentation</span></code></a> class.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegmentation</span><span class="p">(</span><span class="n">Segmentation</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">segments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The segments in this segmentation&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_top_level</span><span class="p">:</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">SeggerSegment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">region_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">root_parent_ids</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">SeggerSegment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span><span class="p">,</span> <span class="n">region_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">region_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">region_ids</span> <span class="k">if</span>
+                        <span class="n">region_id</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">segments</span>
+</pre></div>
+</div>
+<p>To perform a conversion the <a class="reference internal" href="formats.html#sfftk.formats.seg.SeggerSegmentation" title="sfftk.formats.seg.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.seg.SeggerSegmentation</span></code></a> class implements a <a class="reference internal" href="formats.html#sfftk.formats.seg.SeggerSegmentation.convert" title="sfftk.formats.seg.SeggerSegmentation.convert"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sfftk.formats.seg.SeggerSegmentation.convert()</span></code></a> method that uses the EMDB-SFF schema API as described in <a class="reference internal" href="developing.html"><span class="doc">Developing with sfftk</span></a>.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegmentation</span><span class="p">(</span><span class="n">Segmentation</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object&quot;&quot;&quot;</span>
+        <span class="n">segmentation</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentation</span><span class="p">()</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Segger Segmentation&quot;</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSoftware</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformList</span><span class="p">()</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
+                <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="s1">&#39;1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0&#39;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
+                <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">ijk_to_xyz_transform</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">primaryDescriptor</span> <span class="o">=</span> <span class="s2">&quot;threeDVolume&quot;</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentList</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+            <span class="n">segment</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+            <span class="n">segments</span><span class="o">.</span><span class="n">add_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+        <span class="c1"># finally pack everything together</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="n">segments</span>
+        <span class="c1"># lattice</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">lattices</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFLatticeList</span><span class="p">()</span>
+        <span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">sections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">map_size</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFLattice</span><span class="p">(</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;uint32&#39;</span><span class="p">,</span>
+            <span class="n">endianness</span><span class="o">=</span><span class="s1">&#39;little&#39;</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeStructure</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="n">sections</span><span class="p">),</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeIndex</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">simplified_mask</span>
+        <span class="p">)</span>
+        <span class="n">segmentation</span><span class="o">.</span><span class="n">lattices</span><span class="o">.</span><span class="n">add_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
+        <span class="c1"># details</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">segmentation</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">details</span>
+        <span class="k">elif</span> <span class="s1">&#39;details&#39;</span> <span class="ow">in</span> <span class="n">_kwargs</span><span class="p">:</span>
+            <span class="n">segmentation</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">_kwargs</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">segmentation</span>
+</pre></div>
+</div>
+<p>Notice that in the loop for each segment (<code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">s</span> <span class="pre">in</span> <span class="pre">self.segments</span></code>) we refer to each segment’s <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method which is implemented as follows:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegment</span><span class="p">(</span><span class="n">Segment</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to a :py:class:`sfftk.schema.SFFSegment` object&quot;&quot;&quot;</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">region_id</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">parentID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span>
+        <span class="c1"># annotation</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
+        <span class="c1"># geometry</span>
+        <span class="c1"># segment.volume = self.volume.convert()</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFThreeDVolume</span><span class="p">()</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">latticeId</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">segment</span><span class="o">.</span><span class="n">volume</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">region_id</span>
+        <span class="k">return</span> <span class="n">segment</span>
+</pre></div>
+</div>
+<p>and which in turn calls the <code class="docutils literal notranslate"><span class="pre">convert()</span></code> methods on the contained annotation and volume objects.</p>
+</div>
+</div>
+<div class="section" id="step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function">
+<span id="step-iii"></span><h3><a class="toc-backref" href="#id6">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a><a class="headerlink" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" title="Permalink to this headline">¶</a></h3>
+<p>In order to perform conversion using the command-line utility, we need to have the <code class="docutils literal notranslate"><span class="pre">convert</span></code> utility recognise segmentations by file type. This is simply done by add adding a regular expression match object in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function as follows:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">handle_convert</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>  <span class="c1"># @UnusedVariable</span>
+    <span class="c1"># ...</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multi_file</span><span class="p">:</span>
+        <span class="c1"># segmentation file formats that support multi-file segmentations will be handled here</span>
+        <span class="c1"># ...</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*\.mod$&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">from_file</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+            <span class="c1"># handle reading of IMOD files</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;.*\.seg$&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">from_file</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">.formats.seg</span> <span class="k">import</span> <span class="n">SeggerSegmentation</span>
+            <span class="n">seg</span> <span class="o">=</span> <span class="n">SeggerSegmentation</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">from_file</span><span class="p">,</span> <span class="n">top_level</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">top_level_only</span><span class="p">)</span>
+        <span class="c1"># other file formats go here</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown file type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">from_file</span><span class="p">)</span>
+    <span class="c1"># export (convert first if needed)</span>
+    <span class="c1"># ...</span>
+    <span class="n">sff_seg</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">EX_OK</span>
+</pre></div>
+</div>
+<p>Once this is done the following should work:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="n">only</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">verbose</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-iv-add-unit-tests-in-the-sfftk-unittests-module">
+<span id="step-iv"></span><h3><a class="toc-backref" href="#id7">Step IV: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a><a class="headerlink" href="#step-iv-add-unit-tests-in-the-sfftk-unittests-module" title="Permalink to this headline">¶</a></h3>
+<p>Write unit tests and add them to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module. Each format that you add should implement a read and convert test method (respectively called <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_read</span></code> and <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_convert</span></code>. See the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module for examples.</p>
+</div>
+<div class="section" id="step-v-add-test-data-files-to-the-sfftk-test-data-folder">
+<span id="step-v"></span><h3><a class="toc-backref" href="#id8">Step V: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a><a class="headerlink" href="#step-v-add-test-data-files-to-the-sfftk-test-data-folder" title="Permalink to this headline">¶</a></h3>
 <p>Provide an example segmentation file in the sfftk.test_data package.</p>
-</div>
-<div class="section" id="step-iv-write-tests">
-<h3><a class="toc-backref" href="#id6">Step IV: Write tests</a><a class="headerlink" href="#step-iv-write-tests" title="Permalink to this headline">¶</a></h3>
-<p>Write unit tests and add them to the sfftk.unittests.test_formats module. Each format that you add should implement a
-read and convert test method (respectively called test_&lt;format&gt;_read and test_&lt;format&gt;_convert. See the
-<code class="docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module for examples.</p>
+<p>Of course, you are welcome to contact us for help doing the above. Also, if you have any suggestions on how to improve the extension process these are invited.</p>
 <p>Once all this components are in place conversion to XML, HDF5 and JSON should be automatic.</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.&lt;</span><span class="nb">format</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">f</span> <span class="n">sff</span>
 <span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.&lt;</span><span class="nb">format</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">f</span> <span class="n">hff</span>
@@ -239,20 +485,19 @@ read and convert test method (respectively called test_&lt;format&gt;_read and t
 </div>
 <p>Also, tests can be run as follows:</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">tests</span> <span class="n">formats</span>
-<span class="n">sff</span> <span class="n">test</span> <span class="n">formats</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="adding-a-search-resource">
-<h2><a class="toc-backref" href="#id7">Adding A Search Resource</a><a class="headerlink" href="#adding-a-search-resource" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">Adding A Search Resource</a><a class="headerlink" href="#adding-a-search-resource" title="Permalink to this headline">¶</a></h2>
 <p>The list of search resources is extensible. Any new search results must fulfil the following criteria:</p>
 <ul class="simple">
 <li>Have a A REST API;</li>
 <li>Return the result as either JSON or TAB-delimitted text;</li>
 </ul>
 <div class="section" id="step-i-add-the-resource-description">
-<h3><a class="toc-backref" href="#id8">Step I: Add the resource description</a><a class="headerlink" href="#step-i-add-the-resource-description" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Step I: Add the resource description</a><a class="headerlink" href="#step-i-add-the-resource-description" title="Permalink to this headline">¶</a></h3>
 <p>The resource descriptions are contained in <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.__init__.py</span></code>. For example, the one for
 <a class="reference external" href="https://www.ebi.ac.uk/ols">OLS</a> is:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RESOURCE_LIST</span><span class="p">[</span><span class="s1">&#39;ols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
@@ -279,7 +524,7 @@ present set it to <code class="docutils literal notranslate"><span class="pre">N
 </ul>
 </div>
 <div class="section" id="step-ii-add-a-handler-to-return-the-correct-url">
-<h3><a class="toc-backref" href="#id9">Step II: Add a handler to return the correct URL</a><a class="headerlink" href="#step-ii-add-a-handler-to-return-the-correct-url" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Step II: Add a handler to return the correct URL</a><a class="headerlink" href="#step-ii-add-a-handler-to-return-the-correct-url" title="Permalink to this headline">¶</a></h3>
 <p>Modify the <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.SearchResults.get_url()</span></code> method by adding a conditional handler for
 the resource that returns the complete search URL (i.e. including the search term and additional options allowed on the
 REST API).</p>
@@ -304,7 +549,7 @@ REST API).</p>
 arguments.</p>
 </div>
 <div class="section" id="step-iii-define-how-the-table-is-formated">
-<h3><a class="toc-backref" href="#id10">Step III: Define how the table is formated</a><a class="headerlink" href="#step-iii-define-how-the-table-is-formated" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Step III: Define how the table is formated</a><a class="headerlink" href="#step-iii-define-how-the-table-is-formated" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">sfftk.notes.find.SearchResource.tabulate()</span></code> specifies how to tabulate results from each resource. We use
 two classes: <a class="reference internal" href="notes.html#sfftk.notes.find.TableField" title="sfftk.notes.find.TableField"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.TableField</span></code></a> and <a class="reference internal" href="notes.html#sfftk.notes.find.ResultsTable" title="sfftk.notes.find.ResultsTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.ResultsTable</span></code></a> to do this. Here is
 an example for OLS:</p>
@@ -347,7 +592,7 @@ This is helpful when creating URLs/IRIs to an accession page e.g.</p>
 </ul>
 </div>
 <div class="section" id="step-iv-write-tests-and-test">
-<h3><a class="toc-backref" href="#id11">Step IV: Write tests and test</a><a class="headerlink" href="#step-iv-write-tests-and-test" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id13">Step IV: Write tests and test</a><a class="headerlink" href="#step-iv-write-tests-and-test" title="Permalink to this headline">¶</a></h3>
 <p>You will then need to write at least two tests sfin the <code class="docutils literal notranslate"><span class="pre">sfftk.unittests.test_notes.TestNotesFindSearchResource</span></code> class:</p>
 <ul class="simple">
 <li><em>parser</em> tests that check that the command-line arguments are correct (see the module for other examples);</li>
@@ -355,7 +600,7 @@ This is helpful when creating URLs/IRIs to an accession page e.g.</p>
 </ul>
 </div>
 <div class="section" id="step-iv-write-documentation-for-the-new-resource">
-<h3><a class="toc-backref" href="#id12">Step IV: Write documentation for the new resource</a><a class="headerlink" href="#step-iv-write-documentation-for-the-new-resource" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">Step IV: Write documentation for the new resource</a><a class="headerlink" href="#step-iv-write-documentation-for-the-new-resource" title="Permalink to this headline">¶</a></h3>
 <p>Finally, document the resource in the section <a class="reference internal" href="annotating.html#specifying-the-resource-to-search"><span class="std std-ref">Specifying The Resource To Search</span></a> by describing the following:</p>
 <ul class="simple">
 <li>the <em>name</em> and <em>link to</em> the resource in the list of resources;</li>

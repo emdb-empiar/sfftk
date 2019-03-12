@@ -139,6 +139,9 @@ Input Formats
 ``sfftk`` can convert several segmentation file formats (see
 :ref:`supported_formats`) into EMDB-SFF files.
 
+
+.. _output_formats:
+
 Output Formats
 ==============
 

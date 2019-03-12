@@ -1073,18 +1073,23 @@ def show_chunks(fn):
     return
 
 
-def print_model(mod, output):
+def print_model(fn):
     """Pretty print the IMOD model
     
     Arguments:
-    :param mod: an object of class IMOD containing all data
-    :type mod: :py:class:`sfftk.readers.modreader.IMOD`
-    :param file output: the name of the output to which data should be sent
+    :param str fn: name of IMOD file
+    # :param mod: an object of class IMOD containing all data
+    # :type mod: :py:class:`sfftk.readers.modreader.IMOD`
+    # :param file output: the name of the output to which data should be sent
     """
-    if output is not sys.stdout:
-        output_dest = open(output, 'w')
-    else:
-        output_dest = output
+    # if output is not sys.stdout:
+    #     output_dest = open(output, 'w')
+    # else:
+    #     output_dest = output
+
+
+    mod = get_data(fn)
+    output_dest = sys.stderr
 
     print("***************************************************************************************", file=output_dest)
     print('IMOD', file=output_dest)
@@ -1122,7 +1127,7 @@ def print_model(mod, output):
     print(mod.minx, file=output_dest)
     print("***************************************************************************************", file=output_dest)
 
-    if output is not sys.stdout:
-        output_dest.close()
+    # if output is not sys.stdout:
+    #     output_dest.close()
 
     return

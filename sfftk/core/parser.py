@@ -347,7 +347,7 @@ transform_prep_parser.add_argument(
 transform_prep_parser.add_argument(
     '-o', '--output',
     default=None,
-    help='output file name [default: <infile>_binned.<ext>]'
+    help='output file name [default: <infile>_transformed.<ext>]'
 )
 transform_prep_parser.add_argument(
     '--infix',

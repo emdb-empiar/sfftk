@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.notes package &mdash; sfftk v0.3.2.dev0 documentation</title>
+  <title>sfftk.notes package &mdash; sfftk v0.3.2.dev5 documentation</title>
   
 
   
@@ -186,7 +186,7 @@
 <p>Search for terms and display ontologies</p>
 <dl class="class">
 <dt id="sfftk.notes.find.ResultsTable">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">ResultsTable</code><span class="sig-paren">(</span><em>search_results</em>, <em>fields</em>, <em>width='auto'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">ResultsTable</code><span class="sig-paren">(</span><em>search_results</em>, <em>fields</em>, <em>width=u'auto'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.Table</span></code></a></p>
 <p>Class that formats search results as a table</p>
 </dd></dl>
@@ -232,7 +232,7 @@
 
 <dl class="class">
 <dt id="sfftk.notes.find.TableField">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">TableField</code><span class="sig-paren">(</span><em>name</em>, <em>key=None</em>, <em>text=None</em>, <em>width=20</em>, <em>pc=None</em>, <em>justify='left'</em>, <em>_format=None</em>, <em>is_index=False</em>, <em>is_iterable=False</em>, <em>position_in_iterable=0</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">TableField</code><span class="sig-paren">(</span><em>name</em>, <em>key=None</em>, <em>text=None</em>, <em>width=20</em>, <em>pc=None</em>, <em>justify=u'left'</em>, <em>_format=None</em>, <em>is_index=False</em>, <em>is_iterable=False</em>, <em>position_in_iterable=0</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class definition for a TableField - single column in a table</p>
 <dl class="attribute">
@@ -578,8 +578,7 @@
 <dl class="function">
 <dt id="sfftk.notes.modify.clear_notes">
 <code class="descclassname">sfftk.notes.modify.</code><code class="descname">clear_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.clear_notes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copy notes across segments</p>
-<p>One or more segments can be chosen for either or both source and destination</p>
+<dd><p>Clear notes from segments</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

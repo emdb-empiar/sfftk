@@ -539,12 +539,9 @@ class IMODSegmentation(Segmentation):
             schema.SFFTransformationMatrix(
                 rows=3,
                 cols=4,
-                data='{} 0.0 0.0 {} 0.0 {} 0.0 {} 0.0 0.0 {} {}'.format(
-                    self.header.minx.cscale[0],
+                data='1.0 0.0 0.0 {} 0.0 1.0 0.0 {} 0.0 0.0 1.0 {}'.format(
                     self.header.minx.ctrans[0],
-                    self.header.minx.cscale[1],
                     self.header.minx.ctrans[1],
-                    self.header.minx.cscale[2],
                     self.header.minx.ctrans[2],
                 )
             ),

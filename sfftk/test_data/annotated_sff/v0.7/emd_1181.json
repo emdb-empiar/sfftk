@@ -1,0 +1,928 @@
+{
+  "boundingBox": {
+    "xmax": null, 
+    "xmin": 0, 
+    "ymax": null, 
+    "ymin": 0, 
+    "zmax": null, 
+    "zmin": 0
+  }, 
+  "details": "", 
+  "globalExternalReferences": [
+    {
+      "description": "A common, gram negative gut bacterium that has been studied intensively by geneticists because of its small genome size, normal lack of pathogenicity, and ease of growth in the laboratory.", 
+      "label": "Escherichia coli", 
+      "otherType": "http://purl.obolibrary.org/obo/NCIT_C14206", 
+      "type": "ncit", 
+      "value": "NCIT_C14206"
+    }, 
+    {
+      "description": "", 
+      "label": "Escherichia coli", 
+      "otherType": "http://purl.obolibrary.org/obo/DRON_00018778", 
+      "type": "dron", 
+      "value": "DRON_00018778"
+    }, 
+    {
+      "description": "", 
+      "label": "Escherichia coli", 
+      "otherType": "http://purl.obolibrary.org/obo/OMIT_0006157", 
+      "type": "omit", 
+      "value": "OMIT_0006157"
+    }, 
+    {
+      "description": "", 
+      "label": "Escherichia coli", 
+      "otherType": "http://purl.obolibrary.org/obo/NCBITaxon_562", 
+      "type": "ncbitaxon", 
+      "value": "NCBITaxon_562"
+    }
+  ], 
+  "name": "Segger Segmentation", 
+  "primaryDescriptor": "threeDVolume", 
+  "segments": [
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.800000011920929, 
+        0.9599999785423279, 
+        0.4000000059604645, 
+        1.0
+      ], 
+      "id": 9764, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.800000011920929, 
+        0.47999998927116394, 
+        0.8799999952316284, 
+        1.0
+      ], 
+      "id": 9814, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        1.0, 
+        0.4117647111415863, 
+        0.7058823704719543, 
+        1.0
+      ], 
+      "id": 9815, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.1599999964237213, 
+        0.8399999737739563, 
+        0.47999998927116394, 
+        1.0
+      ], 
+      "id": 9840, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.9200000166893005, 
+        0.8399999737739563, 
+        0.9599999785423279, 
+        1.0
+      ], 
+      "id": 9859, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.0, 
+        0.8399999737739563, 
+        0.7599999904632568, 
+        1.0
+      ], 
+      "id": 9893, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.0, 
+        0.8399999737739563, 
+        0.7599999904632568, 
+        1.0
+      ], 
+      "id": 9897, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.9200000166893005, 
+        0.8399999737739563, 
+        0.9599999785423279, 
+        1.0
+      ], 
+      "id": 9911, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.1599999964237213, 
+        0.8399999737739563, 
+        0.47999998927116394, 
+        1.0
+      ], 
+      "id": 9914, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        1.0, 
+        0.4117647111415863, 
+        0.7058823704719543, 
+        1.0
+      ], 
+      "id": 9952, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.800000011920929, 
+        0.9599999785423279, 
+        0.4000000059604645, 
+        1.0
+      ], 
+      "id": 9955, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }, 
+    {
+      "biologicalAnnotation": {
+        "name": "GroEL",
+        "description": "GroEL", 
+        "externalReferences": [
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3000881348", 
+            "type": "ogg", 
+            "value": "OGG_3000881348"
+          }, 
+          {
+            "description": "", 
+            "label": "groEL", 
+            "otherType": "http://purl.obolibrary.org/obo/OGG_3001198820", 
+            "type": "ogg", 
+            "value": "OGG_3001198820"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "vo", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "vo", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0010998", 
+            "type": "pdro", 
+            "value": "VO_0010998"
+          }, 
+          {
+            "description": "", 
+            "label": "GroEL", 
+            "otherType": "http://purl.obolibrary.org/obo/VO_0011075", 
+            "type": "pdro", 
+            "value": "VO_0011075"
+          }, 
+          {
+            "description": "", 
+            "label": "Adenosine Diphosphate", 
+            "otherType": "http://purl.obolibrary.org/obo/OMIT_0001676", 
+            "type": "omit", 
+            "value": "OMIT_0001676"
+          }
+        ], 
+        "numberOfInstances": 1
+      }, 
+      "colour": [
+        0.800000011920929, 
+        0.47999998927116394, 
+        0.8799999952316284, 
+        1.0
+      ], 
+      "id": 9956, 
+      "parentID": 0, 
+      "threeDVolume": {
+        "contourLevel": 5.0, 
+        "file": "emd_6338.seg", 
+        "format": "Segger", 
+        "objectPath": "0", 
+        "transformId": 1
+      }
+    }
+  ], 
+  "software": {
+    "name": "segger", 
+    "processingDetails": null, 
+    "version": 2
+  }, 
+  "transforms": [], 
+  "version": "0.7.0.dev0"
+}

@@ -1985,7 +1985,7 @@ class SFFTransformationMatrix(SFFType):
     @property
     def data_array(self):
         """The data in this matrix as an array"""
-        data_list = self.data.split(' ')
+        data_list = map(float, self.data.split(' '))
         data_array = np.array(data_list).reshape(self.rows, self.cols)
         return data_array
     #TODO: a setter for the above attribute
