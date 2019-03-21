@@ -850,6 +850,7 @@ clear_notes_parser = notes_subparsers.add_parser(
 add_args(clear_notes_parser, config_path)
 add_args(clear_notes_parser, shipped_configs)
 add_args(clear_notes_parser, sff_file)
+add_args(clear_notes_parser, verbose)
 clear_notes_parser.add_argument(
     '--all',
     action='store_true',
