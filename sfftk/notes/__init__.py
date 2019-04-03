@@ -22,6 +22,13 @@ RESOURCE_LIST[u'ols'] = {
     u'result_path': [u'response', u'docs'],
     u'result_count': [u'response', u'numFound'],
 }
+RESOURCE_LIST[u'go'] = {
+    u'name': u'GO',
+    u'root_url': u'https://www.ebi.ac.uk/ols/api/',
+    u'format': u'json',
+    u'result_path': [u'response', u'docs'],
+    u'result_count': [u'response', u'numFound'],
+}
 RESOURCE_LIST[u'emdb'] = {
     u'name': u'EMDB',
     u'root_url': u'https://www.ebi.ac.uk/pdbe/emdb/search/',
@@ -42,6 +49,13 @@ RESOURCE_LIST[u'pdb'] = {
     u'format': u'json',
     u'result_path': [u'response', u'docs'],
     u'result_count': [u'response', u'numFound'],
+}
+RESOURCE_LIST[u'europmc'] = {
+    u'name': u'Europe PMC',
+    u'root_url': u'https://www.ebi.ac.uk/europepmc/webservices/rest/',
+    u'format': u'json',
+    u'result_path': [u'resultList', u'result'],
+    u'result_count': [u'hitCount'],
 }
 
 # enforce integrity

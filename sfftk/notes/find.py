@@ -105,7 +105,7 @@ class SearchResource(object):
             if self.search_args.list_ontologies or self.search_args.short_list_ontologies:
                 url = self.root_url + u"ontologies?size=1000"
             else:
-                url = self.root_url + u"search?q={}&start={}&rows={}".format(
+                url = self.root_url + u"search?q={}&start={}&rows={}&local=true".format(
                     self.search_args.search_term,
                     self.search_args.start - 1,
                     self.search_args.rows,
@@ -116,6 +116,17 @@ class SearchResource(object):
                     url += u"&exact=on"
                 if self.search_args.obsoletes:
                     url += u"&obsoletes=on"
+        # go
+        elif self.name == u'GO':
+            url = self.root_url + u"search?q={}&start={}&rows={}&ontology=go".format(
+                self.search_args.search_term,
+                self.search_args.start - 1,
+                self.search_args.rows,
+            )
+            if self.search_args.exact:
+                url += u"&exact=on"
+            if self.search_args.obsoletes:
+                url += u"&obsoletes=on"
         # emdb
         elif self.name == u'EMDB':
             url = self.root_url + u"?q={}&start={}&rows={}".format(
@@ -138,6 +149,12 @@ class SearchResource(object):
                                   u"rows={rows}".format(
                 search_term=self.search_args.search_term,
                 start=self.search_args.start,
+                rows=self.search_args.rows,
+            )
+        # europmc
+        elif self.name == u"Europe PMC":
+            url = self.root_url + u"search?query={search_term}&resultType=lite&cursorMark=*&pageSize={rows}&format=json".format(
+                search_term=self.search_args.search_term,
                 rows=self.search_args.rows,
             )
         return url
@@ -471,6 +488,7 @@ class ResultsTable(Table):
         )
         header += Styled(u"[[ ''|fg-yellow:bold:no-end ]]")
         header += self.column_separator.join(map(lambda f: unicode(f)[:f.width], self._fields)) + self.row_separator
+        header += Styled(u"[[ ''|reset ]][[ ''|fg-yellow:no-end ]]")
         header += u"=" * self._width + self.row_separator
         header += Styled(u"[[ ''|reset ]]")
         return header
@@ -626,6 +644,16 @@ class SearchResults(object):
                     TableField(u'iri', key=u'iri', pc=30),
                 ]
                 table += unicode(ResultsTable(self, fields=fields))
+        elif self._resource.name == u'GO':
+            fields = [
+                TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
+                TableField(u'label', key=u'label', pc=10),
+                TableField(u'short_form', key=u'short_form', pc=10, justify=u'center'),
+                TableField(u'resource', key=u'ontology_name', pc=5, justify=u'center'),
+                TableField(u'description', key=u'description', pc=40, is_iterable=True),
+                TableField(u'iri', key=u'iri', pc=30),
+            ]
+            table += unicode(ResultsTable(self, fields=fields))
         elif self._resource.name == u'EMDB':
             fields = [
                 TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
@@ -655,7 +683,17 @@ class SearchResults(object):
                 TableField(u'resource', text=u'PDB', pc=5, justify=u'center'),
                 # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
                 TableField(u'description', key=u'title', pc=40),
-                TableField('iri', key=u'pdb_id', _format=u'https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
+                TableField(u'iri', key=u'pdb_id', _format=u'https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
+            ]
+            table += unicode(ResultsTable(self, fields=fields))
+        elif self._resource.name == u'Europe PMC':
+            fields = [
+                TableField(u'index', pc=5, is_index=True, justify=u'right'),
+                TableField(u'label (authors)', key=u'authorString', pc=20),
+                TableField(u'short_form', key=u'id', pc=10, justify=u'center'),
+                TableField(u'resource', text=u'Europe PMC', pc=10, justify=u'center'),
+                TableField(u'description (title)', key=u'title', pc=25),
+                TableField(u'iri (doi)', key=u'doi', _format=u'https://doi.org/{}', pc=30)
             ]
             table += unicode(ResultsTable(self, fields=fields))
         # close style
