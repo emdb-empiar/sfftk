@@ -659,7 +659,7 @@ class SearchResults(object):
                 TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label', text=self._resource.search_args.search_term, pc=10, justify=u'center'),
                 TableField(u'short_form', key=u'EntryID', pc=10, _format=u'EMD-{}', justify=u'center'),
-                TableField(u'resource', text=u'EMDB', pc=5),
+                TableField(u'resource', text=u'EMDB', pc=5, justify=u'center'),
                 TableField(u'description', key=u'Title', pc=40),
                 TableField(u'iri', key=u'EntryID', _format=u'https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
             ]
