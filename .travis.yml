@@ -7,6 +7,7 @@ sudo: true
 
 before_install:
   - python --version
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
   - sudo apt-get update
   - sudo apt-get install build-essential
   - pip -V
