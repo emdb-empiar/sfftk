@@ -469,7 +469,12 @@ class SFFType(object):
 
 
 class SFFAttribute(object):
-    """Descriptor for SFFType subclass attributes"""
+    """Descriptor for SFFType subclass attributes
+
+    This descriptor acts an adapter and references an attribute on the instance (obj._local).
+    In this way, it guarantees that there is no overwriting of values because every instance will have a new _local
+    instance to refer to.
+    """
 
     def __init__(self, name, sff_type=None, get_from=None, set_to=None, del_from=None, help=""):
         """Initialiser for an attribute

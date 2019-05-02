@@ -1203,6 +1203,11 @@ def parse_args(_args, use_shlex=False):
 
     # tests
     elif args.subcommand == 'tests':
+        # check if we have a temp-annotated file and complain then die if one exists
+        if os.path.exists(configs['__TEMP_FILE']):
+            print_date("Unable to run tests with {} in current path ({})".format(configs['__TEMP_FILE'], os.path.abspath(__file__)))
+            print_date("Run 'sff notes save <file.sff>' or 'sff notes trash @' before proceeding.")
+            return os.EX_USAGE, configs
         # normalise tool list
         # if 'all' is specified together with others then it should simply be 'all'
         if 'all' in args.tool:

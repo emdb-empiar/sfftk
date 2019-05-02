@@ -202,7 +202,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
             ),
         ))
         resource = find.SearchResource(args, configs)
-        url = "{root_url}search?q={search_term}&start={start}&rows={rows}&ontology={ontology}&exact=on&obsoletes=on".format(
+        url = "{root_url}search?q={search_term}&start={start}&rows={rows}&local=true&ontology={ontology}&exact=on&obsoletes=on".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
             search_term=args.search_term,
             start=args.start - 1,
