@@ -143,9 +143,10 @@ display available options.
 
 .. code:: bash
 
-    usage: sff notes search [-h] [-p CONFIG_PATH] [-b] [-R {ols,emdb,uniprot,pdb}]
-                            [-s START] [-r ROWS] [-O ONTOLOGY] [-x] [-o] [-L] [-l]
-                            search_term
+    usage: sff notes search [-h] [-p CONFIG_PATH] [-b]
+                        [-R {ols,go,emdb,uniprot,pdb,europepmc,empiar}]
+                        [-s START] [-r ROWS] [-O ONTOLOGY] [-x] [-o] [-L] [-l]
+                        [search_term]
 
     Search ontologies for annotation by text labels
 
@@ -159,10 +160,10 @@ display available options.
       -b, --shipped-configs
                             use shipped configs only if config path and user
                             configs fail [default: False]
-      -R {ols,emdb,uniprot,pdb}, --resource {ols,emdb,uniprot,pdb}
+      -R {ols,go,emdb,uniprot,pdb,europepmc,empiar}, --resource {ols,go,emdb,uniprot,pdb,europepmc,empiar}
                             the resource to search for terms or accessions; other
-                            valid options are ['ols', 'emdb', 'uniprot', 'pdb']
-                            [default: ols]
+                            valid options are [u'ols', u'go', u'emdb', u'uniprot',
+                            u'pdb', u'europepmc', u'empiar'] [default: ols]
       -s START, --start START
                             start index [default: 1]
       -r ROWS, --rows ROWS  number of rows [default: 10]
@@ -170,7 +171,9 @@ display available options.
     EBI Ontology Lookup Service (OLS):
       The Ontology Lookup Service (OLS) is a repository for biomedical
       ontologies that aims to provide a single point of access to the latest
-      ontology versions. Searching against OLS can use the following options:
+      ontology versions. You can use the following options to modify your search
+      against OLS by ensuring that the -R/--resource flag is set to 'ols'
+      (default).
 
       -O ONTOLOGY, --ontology ONTOLOGY
                             the ontology to search [default: None]
@@ -225,6 +228,10 @@ In addition to the OLS users can also search the follow resources for accessions
 
 -   `The Universal Protein Resource (UniProt) <http://www.uniprot.org/>`_
 
+-   `Europe PubMed Central (Europe PMC) <https://europepmc.org/>`_
+
+-   `The Electron Microscopy Public Image Archive (EMPIAR) <https://empiar.org>`_
+
 The ``-R/--resource`` flag is used to specify the desired resource to search, which takes a string arguments as follows:
 
 -   ``ols`` (default) will search EBI OLS;
@@ -233,7 +240,11 @@ The ``-R/--resource`` flag is used to specify the desired resource to search, wh
 
 -   ``pdb`` will search PDB;
 
--   ``uniprot`` will search UniProt.
+-   ``uniprot`` will search UniProt;
+
+-   ``europepmc`` will search EuropePMC;
+
+-   ``empiar`` will search EMPIAR.
 
 
 For example, to search for *mitochondria* in EMDB the user would type one of the following:

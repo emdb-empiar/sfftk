@@ -134,13 +134,54 @@ class ExternalReference(object):
                     # label
                     label = structured_results[u'name']
                     # description
-                    description = u"{} (Organism: {})".format(structured_results[u'proteins'], structured_results[u'organism'])
+                    description = u"{} (Organism: {})".format(structured_results[u'proteins'],
+                                                              structured_results[u'organism'])
                 except ValueError as v:
                     print_date(u"Unknown exception: {}".format(str(v)))
                 except IndexError:
                     print_date(
                         u"Could not find label and description for external reference {}:{}".format(self.type,
                                                                                                     self.value))
+            else:
+                print_date(
+                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
+        elif self.type.lower() == u'europepmc':
+            url = u"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json".format(self.value)
+            R = requests.get(url)
+            if R.status_code == 200:
+                self._result = json.loads(R.text)
+                try:
+                    # label
+                    label = self._result[u"resultList"][u"result"][0][u"authorString"]
+                    # description
+                    description = self._result[u"resultList"][u"result"][0][u"title"]
+                except IndexError:
+                    print_date(
+                        u"Could not find label and description for external reference {}:{}".format(
+                            self.type,
+                            self.value
+                        )
+                    )
+            else:
+                print_date(
+                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
+        elif self.type.lower() == u'empiar':
+            url = u"https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.value)
+            R = requests.get(url)
+            if R.status_code == 200:
+                self._result = json.loads(R.text)
+                try:
+                    # label
+                    label = self._result[self.value][u"title"]
+                    # description
+                    description = self._result[self.value][u"experiment_type"]
+                except IndexError:
+                    print_date(
+                        u"Could not find label and description for external reference {}:{}".format(
+                            self.type,
+                            self.value
+                        )
+                    )
             else:
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))

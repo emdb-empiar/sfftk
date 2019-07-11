@@ -12,6 +12,7 @@ import unittest
 from urllib import urlencode
 
 import __init__ as tests
+
 from .. import BASE_DIR
 from .. import schema
 from ..core import utils
@@ -115,6 +116,47 @@ class TestNotesModifyExternalReference(unittest.TestCase):
                          description)
         self.assertItemsEqual(extRef._get_text(), [label, description])
 
+    def test_europepmc(self):
+        """Test that sfftk.notes.modify.ExternalReference object works correctly"""
+        type_ = u'EuropePMC'
+        otherType = u'http://europepmc.org/abstract/MED/30932919'
+        value = u'30932919'
+        label = u'Perugi G, De Rossi P, Fagiolini A, Girardi P, Maina G, Sani G, Serretti A.'
+        description = u'Personalized and precision medicine as informants for treatment management of bipolar disorder.'
+        extRef = modify.ExternalReference(
+            type_=type_,
+            otherType=otherType,
+            value=value,
+        )
+        self.assertEqual(extRef.type, type_)
+        self.assertEqual(extRef.otherType, otherType)
+        self.assertEqual(extRef.value, value)
+        self.assertEqual(extRef.label, label)
+        self.assertEqual(extRef.description,
+                         description)
+        self.assertItemsEqual(extRef._get_text(), [label, description])
+
+    def test_empiar(self):
+        """Test that sfftk.notes.modify.ExternalReference object works correctly"""
+        type_ = u'EMPIAR'
+        otherType = u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10087/'
+        value = u'EMPIAR-10087'
+        label = u'Soft X-ray tomography of Plasmodium falciparum infected human erythrocytes stalled in egress by the ' \
+                u'inhibitors Compound 2 and E64'
+        description = u'SXT'
+        extRef = modify.ExternalReference(
+            type_=type_,
+            otherType=otherType,
+            value=value,
+        )
+        self.assertEqual(extRef.type, type_)
+        self.assertEqual(extRef.otherType, otherType)
+        self.assertEqual(extRef.value, value)
+        self.assertEqual(extRef.label, label)
+        self.assertEqual(extRef.description,
+                         description)
+        self.assertItemsEqual(extRef._get_text(), [label, description])
+
 
 class TestNotesFindSearchResource(unittest.TestCase):
     @classmethod
@@ -169,7 +211,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
         self.assertIsNone(resource.response)
         resource.search()
         url = resource.get_url()
-        print('url: ' + url, file=sys.stderr)
+        # print('url: ' + url, file=sys.stderr)
         import requests
         import json
         R = requests.get(url)
@@ -264,6 +306,45 @@ class TestNotesFindSearchResource(unittest.TestCase):
             rows=args.rows,
         )
         self.assertEqual(resource.get_url(), url)
+
+    def test_get_url_europepmc(self):
+        """Test url correctness for Europe PMC"""
+        resource_name = 'europepmc'
+        args, configs = parse_args(
+            "notes search -R {resource_name} 'picked' --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
+            ), use_shlex=True
+        )
+        resource = find.SearchResource(args, configs)
+        url = "{root_url}search?query={search_term}&resultType=lite&cursorMark=*&pageSize={rows}&format=json".format(
+            root_url=RESOURCE_LIST[resource_name]['root_url'],
+            search_term=args.search_term,
+            rows=args.rows,
+        )
+        self.assertEqual(resource.get_url(), url)
+
+    def test_get_url_empiar(self):
+        """Test url correctness for EMPIAR"""
+        resource_name = 'empiar'
+        args, configs = parse_args(
+            "notes search -R {resource_name} 'picked' --config-path {config_fn}".format(
+                resource_name=resource_name,
+                config_fn=self.config_fn,
+            ),
+            use_shlex=True,
+        )
+        resource = find.SearchResource(args, configs)
+        url = "{root_url}?q={search_term}&wt=json&start={start}&rows={rows}".format(
+            root_url=RESOURCE_LIST[resource_name]['root_url'],
+            search_term=args.search_term,
+            start=args.start,
+            rows=args.rows
+        )
+        # the url has an additional random (unpredictable) value that will break the comparison
+        # let's remove it before the equality assertion
+        resource_url = '&'.join(resource.get_url().split('&')[:-1])
+        self.assertEqual(resource_url, url)
 
 
 # class TestNotesFindSearchResource(unittest.TestCase):

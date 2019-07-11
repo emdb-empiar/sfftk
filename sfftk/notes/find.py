@@ -10,6 +10,7 @@ from __future__ import division, print_function
 
 import math
 import textwrap
+import random
 
 import backports.shutil_get_terminal_size
 from styled import Styled
@@ -152,10 +153,18 @@ class SearchResource(object):
                 rows=self.search_args.rows,
             )
         # europmc
-        elif self.name == u"Europe PMC":
+        elif self.name == u"EuropePMC":
             url = self.root_url + u"search?query={search_term}&resultType=lite&cursorMark=*&pageSize={rows}&format=json".format(
                 search_term=self.search_args.search_term,
                 rows=self.search_args.rows,
+            )
+        # EMPIAR
+        elif self.name == u"EMPIAR":
+            url = self.root_url + u"?q={search_term}&wt=json&start={start}&rows={rows}&random={rvalue}".format(
+                search_term=self.search_args.search_term,
+                start=self.search_args.start,
+                rows=self.search_args.rows,
+                rvalue=int(random.random() * 100000),
             )
         return url
 
@@ -693,7 +702,18 @@ class SearchResults(object):
                 TableField(u'short_form', key=u'id', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'Europe PMC', pc=10, justify=u'center'),
                 TableField(u'description (title)', key=u'title', pc=25),
-                TableField(u'iri (doi)', key=u'doi', _format=u'https://doi.org/{}', pc=30)
+                # TableField(u'iri (doi)', key=u'doi', _format=u'https://doi.org/{}', pc=30)
+                TableField(u'iri', key=u'id', _format=u'http://europepmc.org/abstract/MED/{}', pc=30),
+            ]
+            table += unicode(ResultsTable(self, fields=fields))
+        elif self._resource.name == u'EMPIAR':
+            fields = [
+                TableField(u'index', pc=5, is_index=True, justify=u'right'),
+                TableField(u'label', text=self._resource.search_args.search_term, pc=10),
+                TableField(u'short_form', key=u'empiarid', pc=10, justify=u'center'),
+                TableField(u'resource', text=u'EMPIAR', pc=8, justify=u'center'),
+                TableField(u'description', key=u'title', pc=33),
+                TableField(u'iri', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}/', pc=30)
             ]
             table += unicode(ResultsTable(self, fields=fields))
         # close style

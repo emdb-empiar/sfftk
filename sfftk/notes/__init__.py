@@ -50,14 +50,20 @@ RESOURCE_LIST[u'pdb'] = {
     u'result_path': [u'response', u'docs'],
     u'result_count': [u'response', u'numFound'],
 }
-RESOURCE_LIST[u'europmc'] = {
-    u'name': u'Europe PMC',
+RESOURCE_LIST[u'europepmc'] = {
+    u'name': u'EuropePMC',
     u'root_url': u'https://www.ebi.ac.uk/europepmc/webservices/rest/',
     u'format': u'json',
     u'result_path': [u'resultList', u'result'],
     u'result_count': [u'hitCount'],
 }
-
+RESOURCE_LIST[u'empiar'] = {
+    u'name': u'EMPIAR',
+    u'root_url': u'https://www.ebi.ac.uk/pdbe/emdb/empiar/solr/select',
+    u'format': u'json',
+    u'result_path': [u'response', u'docs'],
+    u'result_count': [u'response', u'numFound']
+}
 # enforce integrity
 for resource in RESOURCE_LIST:
     name = RESOURCE_LIST[resource][u'name']
