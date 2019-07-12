@@ -152,8 +152,8 @@ class SearchResource(object):
                 start=self.search_args.start,
                 rows=self.search_args.rows,
             )
-        # europmc
-        elif self.name == u"EuropePMC":
+        # europepmc
+        elif self.name == u"Europe PMC":
             url = self.root_url + u"search?query={search_term}&resultType=lite&cursorMark=*&pageSize={rows}&format=json".format(
                 search_term=self.search_args.search_term,
                 rows=self.search_args.rows,
@@ -703,7 +703,7 @@ class SearchResults(object):
                 TableField(u'resource', text=u'Europe PMC', pc=10, justify=u'center'),
                 TableField(u'description (title)', key=u'title', pc=25),
                 # TableField(u'iri (doi)', key=u'doi', _format=u'https://doi.org/{}', pc=30)
-                TableField(u'iri', key=u'id', _format=u'http://europepmc.org/abstract/MED/{}', pc=30),
+                TableField(u'iri', key=u'id', _format=u'https://europepmc.org/abstract/MED/{}', pc=30),
             ]
             table += unicode(ResultsTable(self, fields=fields))
         elif self._resource.name == u'EMPIAR':
@@ -713,7 +713,7 @@ class SearchResults(object):
                 TableField(u'short_form', key=u'empiarid', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'EMPIAR', pc=8, justify=u'center'),
                 TableField(u'description', key=u'title', pc=33),
-                TableField(u'iri', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}/', pc=30)
+                TableField(u'iri', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}', pc=30)
             ]
             table += unicode(ResultsTable(self, fields=fields))
         # close style

@@ -17,7 +17,7 @@ import shutil
 import requests
 from styled import Styled
 
-from . import RESOURCE_LIST
+from . import RESOURCE_LIST_NAMES
 from .. import schema
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
@@ -66,7 +66,7 @@ class ExternalReference(object):
         label = None
         description = None
         # only search for label and description if from OLS
-        if self.type.lower() not in RESOURCE_LIST.keys():
+        if self.type not in RESOURCE_LIST_NAMES:
             url = u"https://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
                 ontology=self.type,
                 iri=self.iri,
@@ -87,7 +87,7 @@ class ExternalReference(object):
             else:
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type.lower() == u'emdb':
+        elif self.type == u'EMDB':
             url = u"https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.value)
             R = requests.get(url)
             if R.status_code == 200:
@@ -99,7 +99,7 @@ class ExternalReference(object):
             else:
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type.lower() == u"pdb":
+        elif self.type == u"PDB":
             url = u"https://www.ebi.ac.uk/pdbe/search/pdb/select?q={}&wt=json".format(self.value)
             R = requests.get(url)
             if R.status_code == 200:
@@ -116,7 +116,7 @@ class ExternalReference(object):
             else:
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type.lower() == u"uniprot":
+        elif self.type == u"UniProt":
             url = u"https://www.uniprot.org/uniprot/" \
                   u"?query=accession:{search_term}&format=tab&offset=0&limit=1&columns=id,entry_name," \
                   u"protein_names,organism".format(
@@ -145,7 +145,7 @@ class ExternalReference(object):
             else:
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type.lower() == u'europepmc':
+        elif self.type == u'Europe PMC':
             url = u"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json".format(self.value)
             R = requests.get(url)
             if R.status_code == 200:
@@ -165,7 +165,7 @@ class ExternalReference(object):
             else:
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type.lower() == u'empiar':
+        elif self.type == u'EMPIAR':
             url = u"https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.value)
             R = requests.get(url)
             if R.status_code == 200:

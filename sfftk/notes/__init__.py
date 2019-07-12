@@ -51,7 +51,7 @@ RESOURCE_LIST[u'pdb'] = {
     u'result_count': [u'response', u'numFound'],
 }
 RESOURCE_LIST[u'europepmc'] = {
-    u'name': u'EuropePMC',
+    u'name': u'Europe PMC',
     u'root_url': u'https://www.ebi.ac.uk/europepmc/webservices/rest/',
     u'format': u'json',
     u'result_path': [u'resultList', u'result'],
@@ -64,6 +64,7 @@ RESOURCE_LIST[u'empiar'] = {
     u'result_path': [u'response', u'docs'],
     u'result_count': [u'response', u'numFound']
 }
+RESOURCE_LIST_NAMES = [RESOURCE_LIST[k][u'name'] for k in RESOURCE_LIST.keys()]
 # enforce integrity
 for resource in RESOURCE_LIST:
     name = RESOURCE_LIST[resource][u'name']

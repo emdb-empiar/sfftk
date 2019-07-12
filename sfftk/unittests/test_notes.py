@@ -118,7 +118,7 @@ class TestNotesModifyExternalReference(unittest.TestCase):
 
     def test_europepmc(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'EuropePMC'
+        type_ = u'Europe PMC'
         otherType = u'http://europepmc.org/abstract/MED/30932919'
         value = u'30932919'
         label = u'Perugi G, De Rossi P, Fagiolini A, Girardi P, Maina G, Sani G, Serretti A.'
