@@ -110,6 +110,6 @@ def get_data(fn, *args, **kwargs):
         patch_material = getattr(header.parameters.Materials, patch_name)
         patch_vertices, patch_triangles = vertices_for_patches(data_streams['Vertices'], data_streams['Patches'][patch_name])
         # we use the material ID as the key because it is a unique reference to the patch
-        segments[patch_material.Id] = (patch_vertices, patch_triangles)
+        # segments[patch_material.Id] = (patch_vertices, patch_triangles)
         segments[patch_material.Id] = HxSurfSegment(patch_material, patch_vertices, patch_triangles)
     return header, segments
