@@ -8,13 +8,14 @@ configurations. Please see the :doc:`guide to miscellaneous operations <misc>`
 for a complete description of working with configs.
 """
 from __future__ import print_function
-from collections import OrderedDict
-import os
-import sys
-import shutil
 
-from .. import BASE_DIR
+import os
+import shutil
+import sys
+
+from . import _dict, _dict_iter_items
 from .print_tools import print_date
+from .. import BASE_DIR
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -22,7 +23,7 @@ __date__ = '2016-08-23'
 __updated__ = '2018-02-27'
 
 
-class Configs(OrderedDict):
+class Configs(_dict):
     """Class defining configs
     
     Configurations are stored in a subclass of ``OrderedDict`` with 
@@ -41,7 +42,8 @@ class Configs(OrderedDict):
 
     def clear(self):
         """Clear configs"""
-        for item in self:
+        items_to_clear = [item for item in self]
+        for item in items_to_clear:
             del self[item]
 
     def read(self):
@@ -64,14 +66,14 @@ class Configs(OrderedDict):
             return 1
 
         with open(self.config_fn, 'w') as f:
-            for name, value in self.iteritems():
+            for name, value in _dict_iter_items(self):
                 f.write('{}={}\n'.format(name, value))
 
         return os.EX_OK
 
     def __str__(self):
         string = ""
-        for name, value in self.iteritems():
+        for name, value in _dict_iter_items(self):
             string += "{:<20} = {:<20}\n".format(name, value)
         return string[:-1]
 

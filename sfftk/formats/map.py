@@ -9,7 +9,7 @@ User-facing reader classes for CCP4 masks
 from __future__ import division, print_function
 
 import inspect
-import os.path
+import os
 import sys
 
 from .base import Segmentation, Header, Segment, Annotation, Volume
@@ -306,7 +306,7 @@ class MapSegmentation(Segmentation):
                         segment_annotation.sections)
                     )
                     print_date("Error: The provided CCP4 masks have different volume dimensions")
-                    sys.exit(1)
+                    sys.exit(os.EX_DATAERR)
             print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
                 os.path.basename(fn), cols, rows, sections)
             )

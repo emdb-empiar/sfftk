@@ -6,7 +6,8 @@ sfftk.readers.amreader
 Ad hoc reader for AmiraMesh files
 '''
 from __future__ import print_function
-import ahds
+# import ahds
+from ahds import AmiraFile
 
 from ..core.print_tools import print_date
 
@@ -25,10 +26,21 @@ def get_data(fn, *args, **kwargs):
     :return segments_by_stream: segments organised by stream
     :rtype segments_by_stream: ``ahds.data_streams.ImageSet``
     '''
-    af = ahds.AmiraFile(fn, *args, **kwargs)
-    header = af.header
+    # af = ahds.AmiraFile(fn, *args, **kwargs)
+    # header = af.header
+    af = AmiraFile(fn, load_streams=True, *args, **kwargs)
+    if af.header.extra_format == "<hxsurface>":
+        return af.header, None
+    else:
+        if af.header.data_stream_count == 1:
+            return af.header, getattr(af.data_streams, af.data_streams.attrs()[0], None)
+        else:
+            print_date(
+                "Multiple lattices defined. Is this file formatted properly? Trying to work with the first one...")
+            return af.header, getattr(af.data_streams, af.data_streams.attrs()[0], None)
 
     # TODO: handle <hxsurface> from .am files
+    """
     if header.designation.extra_format == "<hxsurface>":
         return header, None
     else:
@@ -47,3 +59,4 @@ def get_data(fn, *args, **kwargs):
             index = header.data_pointers.data_pointer_1.data_index
             volume = data_streams[index].to_volume()
             return header, volume
+    """

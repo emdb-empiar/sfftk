@@ -14,6 +14,7 @@ import sys
 
 from . import schema
 from .core.print_tools import print_date
+from .core import _dict_iter_values
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -65,7 +66,7 @@ def handle_convert(args, configs):  # @UnusedVariable
             if args.verbose:
                 print_date("Converting from IMOD file {}".format(args.from_file))
             from .formats.mod import IMODSegmentation
-            seg = IMODSegmentation(args.from_file, re.IGNORECASE)
+            seg = IMODSegmentation(args.from_file)
             if not seg.has_mesh_or_shapes:
                 print_date("IMOD segmentation missing meshes or shapes. Please add meshes using imodmesh utility")
                 return 1
@@ -191,12 +192,12 @@ def _handle_notes_modify(args, configs):
         else:
             print_date("Temporary file {} does not exist. \
 Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".format(temp_file), stream=sys.stdout)
-            sys.exit(1)
+            sys.exit(os.EX_DATAERR)
     else:
         if os.path.exists(temp_file):
             print_date("Found temp file {}. Either run 'save' or 'trash' to \
 discard changes before working on another file.".format(temp_file), stream=sys.stdout)
-            sys.exit(1)
+            sys.exit(os.EX_DATAERR)
         else:
             if re.match(r'.*\.sff$', temp_file, re.IGNORECASE):
                 # copy the actual file to the temp file
@@ -424,7 +425,7 @@ def handle_view(args, configs):  # @UnusedVariable
         print("Format: IMOD")
         print("Primary descriptor: {}".format('contours'))
         mesh_count = 0
-        for objt in seg.header.objts.itervalues():
+        for objt in _dict_iter_values(seg.header.objts):
             mesh_count += objt.meshsize
         if mesh_count > 0:
             print("Auxiliary descriptors: meshes")
@@ -447,6 +448,7 @@ def handle_view(args, configs):  # @UnusedVariable
         print("*" * 50)
         print("CCP4 Mask Segmentation")
         print("*" * 50)
+        # fixme: use _str
         print(str(seg.segments[0].annotation._map_obj))
         print("*" * 50)
     elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):

@@ -9,14 +9,16 @@ Search for terms and display ontologies
 from __future__ import division, print_function
 
 import math
-import textwrap
+import numbers
 import random
+import sys
+import textwrap
 
 import backports.shutil_get_terminal_size
 from styled import Styled
 
 from . import RESOURCE_LIST
-from ..core import utils
+from ..core import utils, _str, _xrange
 from ..core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
@@ -185,18 +187,33 @@ class SearchResource(object):
             print_date(u'Error: url is None')
             return None
 
-    def __unicode__(self):
-        string = Styled(u"""Search Resource:
-        \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
-        \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
-        \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
-        \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
-        \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
-        \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(), **self._resource)
-        return unicode(string)
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
 
-    def __str__(self):
-        return str(unicode(self))
+        def __str__(self):
+            string = Styled(u"""Search Resource:
+                        \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
+                        \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
+                        \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
+                        \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
+                        \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
+                        \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(),
+                            **self._resource)
+            return str(string)
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            string = Styled(u"""Search Resource:
+            \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
+            \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
+            \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
+            \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
+            \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
+            \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(), **self._resource)
+            return _str(string)
 
 
 class TableField(object):
@@ -227,7 +244,7 @@ class TableField(object):
             raise ValueError('key and text are mutually exclusive; only define one or none of them')
         # check valid type for width
         try:
-            assert isinstance(width, int) or isinstance(width, long)
+            assert isinstance(width, numbers.Integral)
         except AssertionError:
             raise ValueError('field width must be int or long')
         # check valid value for width
@@ -237,12 +254,15 @@ class TableField(object):
             raise ValueError('field width must be greater than 0')
         # ensure pc is valid type
         try:
-            assert isinstance(pc, int) or isinstance(pc, long) or isinstance(pc, float) or pc is None
+            assert isinstance(pc, numbers.Integral) or isinstance(pc, float) or pc is None
         except AssertionError:
             raise ValueError('invalid type for pc (percentage): {}'.format(type(pc)))
         # ensure pc is a valid value
         try:
-            assert 0 < pc < 100 or pc is None
+            if pc is not None:
+                assert 0 < pc < 100
+            else:
+                assert True
         except AssertionError:
             raise ValueError(u'invalid value for pc (percentage): {}'.format(pc))
 
@@ -327,7 +347,7 @@ class TableField(object):
     def render(self, row_data, index):
         """Render this field"""
         if self.is_index:
-            text = unicode(index)
+            text = _str(index)
         elif self._key is not None:
             try:
                 if self._is_iterable:
@@ -346,7 +366,7 @@ class TableField(object):
         if not wrapped_text:  # empty list for empty string
             return [self.justify(u'')]
         else:
-            return map(self.justify, wrapped_text)
+            return list(map(self.justify, wrapped_text))
 
 
 class Table(object):
@@ -380,27 +400,56 @@ class TableRow(Table):
             rendered.append(field.render(self._row_data, self._index))
         return rendered
 
-    def __unicode__(self):
-        string = u''
-        # get the max number of lines in this row
-        no_lines = 0
-        for f in self._rendered:
-            no_lines = max(len(f), no_lines)
-        # build the stack of lines for this row
-        for i in xrange(no_lines):
-            row = list()
-            for j, F in enumerate(self._fields):
-                try:
-                    field = self._rendered[j][i]
-                except IndexError:
-                    field = F.justify(u'')
-                row.append(field)
-            # don't add an extra row separator to the last line
-            if i == no_lines - 1:
-                string += self.column_separator.join(row)
-            else:
-                string += self.column_separator.join(row) + self.row_separator
-        return string
+    if sys.version_info[0]:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
+
+        def __str__(self):
+            string = u''
+            # get the max number of lines in this row
+            no_lines = 0
+            for f in self._rendered:
+                no_lines = max(len(list(f)), no_lines)
+            # build the stack of lines for this row
+            for i in _xrange(no_lines):
+                row = list()
+                for j, F in enumerate(self._fields):
+                    try:
+                        field = self._rendered[j][i]
+                    except IndexError:
+                        field = F.justify(u'')
+                    row.append(field)
+                # don't add an extra row separator to the last line
+                if i == no_lines - 1:
+                    string += self.column_separator.join(row)
+                else:
+                    string += self.column_separator.join(row) + self.row_separator
+            return string
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            string = u''
+            # get the max number of lines in this row
+            no_lines = 0
+            for f in self._rendered:
+                no_lines = max(len(f), no_lines)
+            # build the stack of lines for this row
+            for i in _xrange(no_lines):
+                row = list()
+                for j, F in enumerate(self._fields):
+                    try:
+                        field = self._rendered[j][i]
+                    except IndexError:
+                        field = F.justify(u'')
+                    row.append(field)
+                # don't add an extra row separator to the last line
+                if i == no_lines - 1:
+                    string += self.column_separator.join(row)
+                else:
+                    string += self.column_separator.join(row) + self.row_separator
+            return string
 
 
 class ResultsTable(Table):
@@ -431,17 +480,24 @@ class ResultsTable(Table):
             raise ValueError(u'non-TableField object in iterable fields')
         # check valid type for width
         try:
-            assert isinstance(width, int) or isinstance(width, long) or width == 'auto'
+            assert isinstance(width, numbers.Integral) or width == u'auto'
+            # assert isinstance(width, int) or isinstance(width, long) or width == 'auto'
         except AssertionError:
             raise ValueError(u"field width must be instance of int or long or the string 'auto'")
         # check valid value for width
-        try:
-            assert width > 0 or width == 'auto'
-        except AssertionError:
-            raise ValueError(u"field width must be greater than 0 or the string 'auto'")
+        if isinstance(width, _str):
+            try:
+                assert width == u'auto'
+            except AssertionError:
+                raise ValueError(u"field width must be greater than 0 or the string 'auto'")
+        elif isinstance(width, numbers.Integral):
+            try:
+                assert width > 0
+            except AssertionError:
+                raise ValueError(u"field width must be greater than 0 or the string 'auto'")
         # only one index field per table
         try:
-            assert len(filter(lambda f: f.is_index, fields)) <= 1
+            assert len(list(filter(lambda f: f.is_index, fields))) <= 1
         except AssertionError:
             raise ValueError(
                 u'there is more than one field with is_index=True set; only one index field per table supported')
@@ -496,7 +552,7 @@ class ResultsTable(Table):
             self.row_separator,
         )
         header += Styled(u"[[ ''|fg-yellow:bold:no-end ]]")
-        header += self.column_separator.join(map(lambda f: unicode(f)[:f.width], self._fields)) + self.row_separator
+        header += self.column_separator.join(list(map(lambda f: _str(f)[:f.width], self._fields))) + self.row_separator
         header += Styled(u"[[ ''|reset ]][[ ''|fg-yellow:no-end ]]")
         header += u"=" * self._width + self.row_separator
         header += Styled(u"[[ ''|reset ]]")
@@ -508,7 +564,7 @@ class ResultsTable(Table):
         if self._search_results.results is not None:
             body = Styled(u"[[ ''|fg-yellow:no-end ]]")
             for row_data in self._search_results.results:
-                body += unicode(TableRow(row_data, self._fields, index)) + self.row_separator
+                body += _str(TableRow(row_data, self._fields, index)) + self.row_separator
                 body += u"-" * self._width + self.row_separator
                 index += 1  # increment index
             body += Styled(u"[[ ''|reset ]]")
@@ -534,12 +590,26 @@ class ResultsTable(Table):
             )
         return footer
 
-    def __unicode__(self):
-        string = u""
-        string += self.header
-        string += self.body
-        string += self.footer
-        return unicode(string)
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
+
+        def __str__(self):
+            string = u""
+            string += self.header
+            string += self.body
+            string += self.footer
+            return _str(string)
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            string = u""
+            string += self.header
+            string += self.body
+            string += self.footer
+            return _str(string)
 
 
 class SearchResults(object):
@@ -571,7 +641,7 @@ class SearchResults(object):
         if self._resource.format == u'json':
             import json
             try:
-                structured_results = json.loads(self._raw_response, 'utf-8')
+                structured_results = json.loads(self._raw_response, encoding='utf-8')
             except ValueError:
                 print_date(u"Unable to search at this time. Please try after a few minutes.")
                 structured_results = None
@@ -601,11 +671,18 @@ class SearchResults(object):
                 return utils.get_path(self.structured_response, self._resource.result_path)
         return self.structured_response
 
-    def __unicode__(self):
-        return unicode(self.tabulate())
+    if sys.version_info[0]:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
 
-    def __str__(self):
-        return str(self.tabulate())
+        def __str__(self):
+            return self.tabulate()
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            return self.tabulate()
 
     def tabulate(self):
         """Tabulate the search results"""
@@ -620,13 +697,13 @@ class SearchResults(object):
                         table += u"\n"
                         ont = [
                             u"Namespace: ".ljust(30) + u"[[ '{}'|bold ]][[ ''|fg-yellow:no-end ]]".format(
-                                unicode(c[u'namespace'])),
-                            u"Pref. prefix: ".ljust(30) + unicode(c[u'preferredPrefix']),
-                            u"Title: ".ljust(30) + unicode(c[u'title']),
-                            u"Description: ".ljust(30) + unicode(c[u'description']),
-                            u"Homepage: ".ljust(30) + unicode(c[u'homepage']),
-                            u"ID: ".ljust(30) + unicode(c[u'id']),
-                            u"Version :".ljust(30) + unicode(c[u'version']),
+                                _str(c[u'namespace'])),
+                            u"Pref. prefix: ".ljust(30) + _str(c[u'preferredPrefix']),
+                            u"Title: ".ljust(30) + _str(c[u'title']),
+                            u"Description: ".ljust(30) + _str(c[u'description']),
+                            u"Homepage: ".ljust(30) + _str(c[u'homepage']),
+                            u"ID: ".ljust(30) + _str(c[u'id']),
+                            u"Version :".ljust(30) + _str(c[u'version']),
                         ]
                         table += u"\n".join(ont)
                         table += u"\n" + "-" * self._width
@@ -637,9 +714,9 @@ class SearchResults(object):
                         c = ontology[u'config']
                         ont = [
                             u"[[ '{}'|fg-yellow:bold ]][[ ''|fg-yellow:no-end ]]".format(
-                                unicode(c[u'namespace']).ljust(10)),
+                                _str(c[u'namespace']).ljust(10)),
                             u"-",
-                            unicode(c[u'description'][:200]) if c[u'description'] else u'' + u"...",
+                            _str(c[u'description'][:200]) if c[u'description'] else u'' + u"...",
                         ]
                         table += u"\t".join(ont) + u"\n"
             # list search results
@@ -652,7 +729,7 @@ class SearchResults(object):
                     TableField(u'description', key=u'description', pc=40, is_iterable=True),
                     TableField(u'iri', key=u'iri', pc=30),
                 ]
-                table += unicode(ResultsTable(self, fields=fields))
+                table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'GO':
             fields = [
                 TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
@@ -662,7 +739,7 @@ class SearchResults(object):
                 TableField(u'description', key=u'description', pc=40, is_iterable=True),
                 TableField(u'iri', key=u'iri', pc=30),
             ]
-            table += unicode(ResultsTable(self, fields=fields))
+            table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'EMDB':
             fields = [
                 TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
@@ -672,7 +749,7 @@ class SearchResults(object):
                 TableField(u'description', key=u'Title', pc=40),
                 TableField(u'iri', key=u'EntryID', _format=u'https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
             ]
-            table += unicode(ResultsTable(self, fields=fields))
+            table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u"UniProt":
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
@@ -683,7 +760,7 @@ class SearchResults(object):
                 # TableField('organism', key='organism', width=40),
                 TableField(u'iri', key=u'id', _format=u'https://www.uniprot.org/uniprot/{}', pc=30),
             ]
-            table += unicode(ResultsTable(self, fields=fields))
+            table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u"PDB":
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
@@ -694,7 +771,7 @@ class SearchResults(object):
                 TableField(u'description', key=u'title', pc=40),
                 TableField(u'iri', key=u'pdb_id', _format=u'https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
             ]
-            table += unicode(ResultsTable(self, fields=fields))
+            table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'Europe PMC':
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
@@ -705,7 +782,7 @@ class SearchResults(object):
                 # TableField(u'iri (doi)', key=u'doi', _format=u'https://doi.org/{}', pc=30)
                 TableField(u'iri', key=u'id', _format=u'https://europepmc.org/abstract/MED/{}', pc=30),
             ]
-            table += unicode(ResultsTable(self, fields=fields))
+            table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'EMPIAR':
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
@@ -713,12 +790,13 @@ class SearchResults(object):
                 TableField(u'short_form', key=u'empiarid', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'EMPIAR', pc=8, justify=u'center'),
                 TableField(u'description', key=u'title', pc=33),
-                TableField(u'iri', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}', pc=30)
+                TableField(u'iri', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}',
+                           pc=30)
             ]
-            table += unicode(ResultsTable(self, fields=fields))
+            table += _str(ResultsTable(self, fields=fields))
         # close style
         table += Styled(u"[[ ''|reset ]]")
-        return table
+        return _str(table)
 
     def __len__(self):
         if self.structured_response is not None:

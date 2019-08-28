@@ -10,15 +10,15 @@ from __future__ import division, print_function
 
 import glob
 import os
-import struct
 import sys
 import unittest
 
+import ahds
 import numpy
 import random_words
 
-import __init__ as tests
-import ahds
+from . import TEST_DATA_PATH, Py23FixTestCase
+from ..core import _dict_iter_values, _str
 from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -26,53 +26,53 @@ __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
 __updated__ = '2018-02-14'
 
-
 rw = random_words.RandomWords()
 
+
 # readers
-class TestReaders_amreader(unittest.TestCase):
+class TestReaders_amreader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.am_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.am')
+        cls.am_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.am')
         cls.header, cls.segments_by_stream = amreader.get_data(cls.am_file)
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
         self.assertIsInstance(self.header, ahds.header.AmiraHeader)
-        self.assertIsInstance(self.segments_by_stream, numpy.ndarray)
-        self.assertGreaterEqual(len(self.segments_by_stream), 1)
+        self.assertIsInstance(self.segments_by_stream.data, numpy.ndarray)
+        self.assertGreaterEqual(self.header.data_stream_count, 1)
 
     def test_first_line_amiramesh(self):
         """test that it's declared as an AmiraMesh file"""
-        self.assertEqual(self.header.designation.filetype, 'AmiraMesh')
+        self.assertEqual(self.header.filetype, 'AmiraMesh')
 
     def test_first_line_binary_little_endian(self):
         """test that it is formatted as BINARY-LITTLE-ENDIAN"""
-        self.assertEqual(self.header.designation.format, 'BINARY-LITTLE-ENDIAN')
+        self.assertEqual(self.header.format, 'BINARY')
 
     def test_first_line_version(self):
         """test that it is version 2.1"""
-        self.assertEqual(self.header.designation.version, '2.1')
+        self.assertEqual(self.header.version, '2.1')
 
     def test_lattice_present(self):
         """test Lattice definition exists in definitions"""
-        self.assertTrue('Lattice' in self.header.definitions.attrs)
+        self.assertTrue('Lattice' in self.header.attrs())
 
     def test_materials_present(self):
         """test Materials exist in parameters"""
-        self.assertIsNotNone('Materials' in self.header.parameters.attrs)
+        self.assertTrue(hasattr(self.header.parameters, 'Materials'))
 
     def test_read_hxsurface(self):
         """Test handling of AmiraMesh hxsurface files"""
-        am_hxsurface_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_hxsurface.am')
+        am_hxsurface_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_hxsurface.am')
         header, segments_by_stream = amreader.get_data(am_hxsurface_file)
         self.assertIsInstance(header, ahds.header.AmiraHeader)
         self.assertIsNone(segments_by_stream)
 
 
-class TestReaders_mapreader(unittest.TestCase):
+class TestReaders_mapreader(Py23FixTestCase):
     def setUp(self):
-        self.map_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map')
+        self.map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
@@ -116,16 +116,16 @@ class TestReaders_mapreader(unittest.TestCase):
         self.assertIsInstance(map_._t2, float)
         self.assertIsInstance(map_._t3, float)
         self.assertEqual(map_._map, 'MAP ')
-        self.assertIsInstance(map_._machst, tuple)
+        self.assertIsInstance(map_._machst, _str)
         self.assertGreater(map_._rms, 0)
         self.assertGreater(map_._nlabl, 0)
 
     def test_write(self):
         """Test write map file"""
-        map_to_write = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_write_map.map')
+        map_to_write = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_write_map.map')
         written_maps = glob.glob(map_to_write)
-        self.assertEqual(len(written_maps), 0)
-        with open(map_to_write, 'w') as f:
+        # self.assertEqual(len(written_maps), 0)
+        with open(map_to_write, 'wb') as f:
             map_ = mapreader.get_data(self.map_file)
             map_.write(f)
         written_maps = glob.glob(map_to_write)
@@ -141,7 +141,7 @@ class TestReaders_mapreader(unittest.TestCase):
         map_ = mapreader.get_data(self.map_file, inverted=True)
         self.assertTrue(map_._inverted)
         # check the inversion is complete and that we add a new label
-        with open('rm.map', 'w') as f:
+        with open('rm.map', 'wb') as f:
             map_.write(f)
         map__ = mapreader.get_data('rm.map')
         self.assertEqual(map__._nlabl, 2)
@@ -149,14 +149,14 @@ class TestReaders_mapreader(unittest.TestCase):
 
     def test_fix_mask(self):
         """Test fix mask for fixable mask"""
-        fixable_mask = mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_fixable_mask.map'))
+        fixable_mask = mapreader.Map(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_fixable_mask.map'))
         self.assertFalse(fixable_mask.is_mask)
         fixable_mask.fix_mask()
         self.assertTrue(fixable_mask.is_mask)
 
     def test_unfixable_mask(self):
         """Test exception for unfixable mask"""
-        unfixable_mask = mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_unfixable_mask.map'))
+        unfixable_mask = mapreader.Map(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_unfixable_mask.map'))
         self.assertFalse(unfixable_mask.is_mask)
         with self.assertRaises(ValueError):
             unfixable_mask.fix_mask()
@@ -165,18 +165,18 @@ class TestReaders_mapreader(unittest.TestCase):
     def test_bad_data_fail(self):
         """Test that a corrupted file (extra data at end) raises Exception"""
         with self.assertRaises(ValueError):
-            mapreader.Map(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data1.map'))
+            mapreader.Map(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_bad_data1.map'))
 
     def test_bad_data_fail2(self):
         """Test that we can raise an exception with a malformed header"""
         with self.assertRaises(ValueError):
-            mapreader.get_data(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_corrupt_header.map'))
+            mapreader.get_data(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_corrupt_header.map'))
 
     def test_bad_data_fail3(self):
         """Test that we can't have too long a header"""
         with self.assertRaises(ValueError):
             # create a map file with a header larger than 1024 to see the exception
-            map = mapreader.get_data(os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.map'))
+            map = mapreader.get_data(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map'))
             for i in range(map._nlabl):
                 label = getattr(map, '_label_{}'.format(i))
             y = 11
@@ -187,10 +187,10 @@ class TestReaders_mapreader(unittest.TestCase):
                 map.write(f)
 
 
-class TestReaders_modreader(unittest.TestCase):
+class TestReaders_modreader(Py23FixTestCase):
     @classmethod
     def setUp(cls):
-        cls.mod_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+        cls.mod_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
         cls.mod = modreader.get_data(cls.mod_file)
 
     def test_get_data(self):
@@ -228,13 +228,13 @@ class TestReaders_modreader(unittest.TestCase):
 
     def test_read_fail1(self):
         """Test that file missing 'IMOD' at beginning fails"""
-        mod_fn = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data1.mod')
+        mod_fn = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_bad_data1.mod')
         with self.assertRaises(ValueError):
             modreader.get_data(mod_fn)  # missing 'IMOD' start
 
     def test_read_fail2(self):
         """Test that file missing 'IEOF' at end fails"""
-        mod_fn = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_bad_data2.mod')
+        mod_fn = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_bad_data2.mod')
         with self.assertRaises(ValueError):
             modreader.get_data(mod_fn)  # missing 'IEOF' end
 
@@ -244,29 +244,29 @@ class TestReaders_modreader(unittest.TestCase):
 
     def test_OBJT_pass(self):
         """Test that OBJT chunk read"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             self.assertTrue(O.isset)
 
     def test_CONT_pass(self):
         """Test that CONT chunk read"""
-        for O in self.mod.objts.itervalues():
-            for C in O.conts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
+            for C in _dict_iter_values(O.conts):
                 self.assertTrue(C.isset)
 
     def test_MESH_pass(self):
         """Test that MESH chunk read"""
-        for O in self.mod.objts.itervalues():
-            for M in O.meshes.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
+            for M in _dict_iter_values(O.meshes):
                 self.assertTrue(M.isset)
 
     def test_IMAT_pass(self):
         """Test that IMAT chunk read"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             self.assertTrue(O.imat.isset)
 
     def test_VIEW_pass(self):
         """Test that VIEW chunk read"""
-        for V in self.mod.views.itervalues():
+        for V in _dict_iter_values(self.mod.views):
             self.assertTrue(V.isset)
 
     def test_MINX_pass(self):
@@ -275,7 +275,7 @@ class TestReaders_modreader(unittest.TestCase):
 
     def test_MEPA_pass(self):
         """Test that MEPA chunk read"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             try:
                 self.assertTrue(O.mepa.isset)
             except AttributeError:
@@ -283,7 +283,7 @@ class TestReaders_modreader(unittest.TestCase):
 
     def test_CLIP_pass(self):
         """Test that CLIP chunk read"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             try:
                 self.assertTrue(O.clip.isset)
             except AttributeError:
@@ -295,45 +295,45 @@ class TestReaders_modreader(unittest.TestCase):
 
     def test_number_of_CONT_chunks(self):
         """Test that compares declared and found CONT chunks"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             self.assertEqual(O.contsize, len(O.conts))
 
     def test_number_of_MESH_chunks(self):
         """Test that compares declared and found MESH chunks"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             self.assertEqual(O.meshsize, len(O.meshes))
 
     def test_number_of_surface_objects(self):
         """Test that compares declared and found surface objects"""
-        for O in self.mod.objts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
             no_of_surfaces = 0
-            for C in O.conts.itervalues():
+            for C in _dict_iter_values(O.conts):
                 if C.surf != 0:
                     no_of_surfaces += 1
             self.assertEqual(O.surfsize, no_of_surfaces)
 
     def test_number_of_points_in_CONT_chunk(self):
         """Test that compares declared an found points in CONT chunks"""
-        for O in self.mod.objts.itervalues():
-            for C in O.conts.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
+            for C in _dict_iter_values(O.conts):
                 self.assertEqual(C.psize, len(C.pt))
 
     def test_number_of_vertex_elements_in_MESH_chunk(self):
         """Test that compares declared an found vertices in MESH chunks"""
-        for O in self.mod.objts.itervalues():
-            for M in O.meshes.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
+            for M in _dict_iter_values(O.meshes):
                 self.assertEqual(M.vsize, len(M.vert))
 
     def test_number_of_list_elements_in_MESH_chunk(self):
         """Test that compares declared an found indices in MESH chunks"""
-        for O in self.mod.objts.itervalues():
-            for M in O.meshes.itervalues():
+        for O in _dict_iter_values(self.mod.objts):
+            for M in _dict_iter_values(O.meshes):
                 self.assertEqual(M.lsize, len(M.list))
 
 
-class TestReaders_segreader(unittest.TestCase):
+class TestReaders_segreader(Py23FixTestCase):
     def setUp(self):
-        self.seg_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.seg')
+        self.seg_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.seg')
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
@@ -342,16 +342,16 @@ class TestReaders_segreader(unittest.TestCase):
         self.assertIsInstance(seg, segreader.SeggerSegmentation)
         self.assertEqual(seg.map_level, 0.852)
         self.assertEqual(seg.format_version, 2)
-        self.assertItemsEqual(seg.map_size, [26, 27, 30])
+        self.assertCountEqual(seg.map_size, [26, 27, 30])
         self.assertEqual(seg.format, 'segger')
         self.assertEqual(seg.mask.shape, (30, 27, 26))
 
 
-class TestReaders_stlreader(unittest.TestCase):
+class TestReaders_stlreader(Py23FixTestCase):
     def setUp(self):
-        self.stl_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.stl')
-        self.stl_bin_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_binary.stl')
-        self.stl_multi_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
+        self.stl_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl')
+        self.stl_bin_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_binary.stl')
+        self.stl_multi_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
@@ -376,9 +376,9 @@ class TestReaders_stlreader(unittest.TestCase):
         self.assertTrue(len(vertices) > 0)
         self.assertTrue(len(polygons) > 0)
         polygon_ids = list()
-        for a, b, c in polygons.itervalues():
+        for a, b, c in _dict_iter_values(polygons):
             polygon_ids += [a, b, c]
-        self.assertItemsEqual(set(vertices.keys()), set(polygon_ids))
+        self.assertCountEqual(set(vertices.keys()), set(polygon_ids))
 
     def test_read_multiple(self):
         """Test that we can read a multi-solid STL file
@@ -390,22 +390,22 @@ class TestReaders_stlreader(unittest.TestCase):
             self.assertTrue(len(vertices) > 0)
             self.assertTrue(len(polygons) > 0)
             polygon_ids = list()
-            for a, b, c in polygons.itervalues():
+            for a, b, c in _dict_iter_values(polygons):
                 polygon_ids += [a, b, c]
-            self.assertItemsEqual(set(vertices.keys()), set(polygon_ids))
+            self.assertCountEqual(set(vertices.keys()), set(polygon_ids))
 
 
-class TestReaders_surfreader(unittest.TestCase):
+class TestReaders_surfreader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.surf_file = os.path.join(tests.TEST_DATA_PATH, 'segmentations', 'test_data.surf')
+        cls.surf_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.surf')
         cls.header, cls.segments = surfreader.get_data(cls.surf_file)  #  only one mesh here
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
-        name = self.segments[2].name
-        vertices = self.segments[2].vertices
-        triangles = self.segments[2].triangles
+        name = self.segments[2][0].name
+        vertices = self.segments[2][0].vertices
+        triangles = self.segments[2][0].triangles
         num_vertices = len(vertices)
         a, b, c = zip(*triangles)
         vertex_ids = set(a + b + c)

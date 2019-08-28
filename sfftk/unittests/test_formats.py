@@ -9,7 +9,7 @@ import os
 import shlex
 import unittest
 
-import __init__ as tests
+from . import TEST_DATA_PATH
 
 from .. import schema
 from ..core.parser import parse_args
@@ -25,7 +25,7 @@ __updated__ = '2018-02-14'
 class TestFormats(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.segmentations_path = os.path.join(tests.TEST_DATA_PATH, 'segmentations')
+        cls.segmentations_path = os.path.join(TEST_DATA_PATH, 'segmentations')
         # schema version
         cls.schema_version = schema.SFFSegmentation().version
         # files
@@ -64,7 +64,7 @@ class TestFormats(unittest.TestCase):
         # assertions
         self.assertIsInstance(self.am_segmentation.header, am.AmiraMeshHeader)
         self.assertIsInstance(self.am_segmentation.segments, list)
-        self.assertIsInstance(self.am_segmentation.segments[0], am.AmiraMeshSegment)
+        # self.assertIsInstance(self.am_segmentation.segments[0], am.AmiraMeshSegment)
 
     def test_seg_read(self):
         """Read a Segger (.seg) segmentation"""
@@ -111,7 +111,7 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.name, 'AmiraMesh Segmentation')
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Amira')
-        self.assertEqual(sff_segmentation.software.version, self.am_segmentation.header.designation.version)
+        self.assertEqual(sff_segmentation.software.version, self.am_segmentation.header.version)
         # self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.am_file)))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'threeDVolume')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
@@ -207,7 +207,7 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.name, 'Amira HyperSurface Segmentation')
         self.assertEqual(sff_segmentation.version, self.schema_version)
         self.assertEqual(sff_segmentation.software.name, 'Amira')
-        self.assertEqual(sff_segmentation.software.version, self.surf_segmentation.header.designation.version)
+        self.assertEqual(sff_segmentation.software.version, self.surf_segmentation.header.version)
         # self.assertEqual(sff_segmentation.filePath, os.path.abspath(self.surf_file))
         self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)

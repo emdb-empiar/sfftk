@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # test_schema.py
 """
-Unit tests for schema adapter
+Unit for schema adapter
 """
 from __future__ import print_function
 
@@ -14,17 +14,18 @@ import unittest
 import h5py
 import numpy
 
-import __init__ as tests
+from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase, _random_float, _random_floats, _random_integers
 from .. import schema
+from ..core import _xrange
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-02-20"
 
 
-# todo: add ID tests within each test method
+# todo: add ID within each test method
 
-class TestSFFSegmentation(unittest.TestCase):
+class TestSFFSegmentation(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         # empty segmentation object
@@ -54,9 +55,9 @@ class TestSFFSegmentation(unittest.TestCase):
             )
         )
         # boundingBox
-        xmax = tests._random_integer(start=500)
-        ymax = tests._random_integer(start=500)
-        zmax = tests._random_integer(start=500)
+        xmax = _random_integer(start=500)
+        ymax = _random_integer(start=500)
+        zmax = _random_integer(start=500)
         segmentation.boundingBox = schema.SFFBoundingBox(
             xmax=xmax,
             ymax=ymax,
@@ -65,7 +66,7 @@ class TestSFFSegmentation(unittest.TestCase):
         # lattice container
         lattices = schema.SFFLatticeList()
         # lattice 1
-        binlist = numpy.array([random.randint(0, 5) for i in xrange(20 * 20 * 20)])
+        binlist = numpy.array([random.randint(0, 5) for i in _xrange(20 * 20 * 20)])
         lattice = schema.SFFLattice(
             mode='uint32',
             endianness='little',
@@ -75,7 +76,7 @@ class TestSFFSegmentation(unittest.TestCase):
         )
         lattices.add_lattice(lattice)
         # lattice 2
-        binlist2 = numpy.array([random.random() * 100 for i in xrange(30 * 40 * 50)])
+        binlist2 = numpy.array([random.random() * 100 for i in _xrange(30 * 40 * 50)])
         lattice2 = schema.SFFLattice(
             mode='float32',
             endianness='big',
@@ -148,9 +149,9 @@ class TestSFFSegmentation(unittest.TestCase):
             )
         )
         # boundingBox
-        xmax = tests._random_integer(start=500)
-        ymax = tests._random_integer(start=500)
-        zmax = tests._random_integer(start=500)
+        xmax = _random_integer(start=500)
+        ymax = _random_integer(start=500)
+        zmax = _random_integer(start=500)
         segmentation.boundingBox = schema.SFFBoundingBox(
             xmax=xmax,
             ymax=ymax,
@@ -159,7 +160,7 @@ class TestSFFSegmentation(unittest.TestCase):
         # lattice container
         lattices = schema.SFFLatticeList()
         # lattice 1
-        binlist = numpy.array([random.randint(0, 5) for i in xrange(20 * 20 * 20)])
+        binlist = numpy.array([random.randint(0, 5) for i in _xrange(20 * 20 * 20)])
         lattice = schema.SFFLattice(
             mode='uint32',
             endianness='little',
@@ -169,7 +170,7 @@ class TestSFFSegmentation(unittest.TestCase):
         )
         lattices.add_lattice(lattice)
         # lattice 2
-        binlist2 = numpy.array([random.random() * 100 for i in xrange(30 * 40 * 50)])
+        binlist2 = numpy.array([random.random() * 100 for i in _xrange(30 * 40 * 50)])
         lattice2 = schema.SFFLattice(
             mode='float32',
             endianness='big',
@@ -201,7 +202,7 @@ class TestSFFSegmentation(unittest.TestCase):
         segmentation.segments = segments
         segmentation.lattices = lattices
         # export
-        # segmentation.export(os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'test_3d_segmentation.sff'))
+        # segmentation.export(os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'test_3d_segmentation.sff'))
         # assertions
         self.assertEqual(segmentation.primaryDescriptor, "threeDVolume")
         self.assertEqual(segmentation.boundingBox.xmin, 0)
@@ -214,7 +215,7 @@ class TestSFFSegmentation(unittest.TestCase):
         self.assertEqual(len(segmentation.transforms), 3)
         # test the transform IDs
         t_ids = map(lambda t: t.id, segmentation.transforms)
-        self.assertItemsEqual(t_ids, range(3))
+        self.assertCountEqual(t_ids, range(3))
         # segments
         self.assertEqual(len(segmentation.segments), 2)
         # segment one
@@ -234,13 +235,13 @@ class TestSFFSegmentation(unittest.TestCase):
         lattice1 = lattices.get_by_id(0)
         self.assertEqual(lattice1.mode, 'uint32')
         self.assertEqual(lattice1.endianness, 'little')
-        self.assertItemsEqual(lattice1.size.value, (20, 20, 20))
-        self.assertItemsEqual(lattice1.start.value, (0, 0, 0))
+        self.assertCountEqual(lattice1.size.value, (20, 20, 20))
+        self.assertCountEqual(lattice1.start.value, (0, 0, 0))
         # lattice two
         self.assertEqual(lattice2.mode, 'float32')
         self.assertEqual(lattice2.endianness, 'big')
-        self.assertItemsEqual(lattice2.size.value, (30, 40, 50))
-        self.assertItemsEqual(lattice2.start.value, (-50, -40, 100))
+        self.assertCountEqual(lattice2.size.value, (30, 40, 50))
+        self.assertCountEqual(lattice2.start.value, (-50, -40, 100))
 
     def test_create_shapes(self):
         """Test that we can create a segmentation of shapes programmatically"""
@@ -259,8 +260,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -272,8 +273,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -285,8 +286,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -298,9 +299,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCuboid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -312,9 +313,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCuboid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -326,8 +327,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCylinder(
-                height=tests._random_float() * 100,
-                diameter=tests._random_float() * 100,
+                height=_random_float() * 100,
+                diameter=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -339,9 +340,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFEllipsoid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -353,9 +354,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFEllipsoid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -367,8 +368,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -386,8 +387,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -399,8 +400,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -412,8 +413,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -425,9 +426,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCuboid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -439,9 +440,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCuboid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -453,8 +454,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCylinder(
-                height=tests._random_float() * 100,
-                diameter=tests._random_float() * 100,
+                height=_random_float() * 100,
+                diameter=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -466,9 +467,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFEllipsoid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -480,9 +481,9 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFEllipsoid(
-                x=tests._random_float() * 100,
-                y=tests._random_float() * 100,
-                z=tests._random_float() * 100,
+                x=_random_float() * 100,
+                y=_random_float() * 100,
+                z=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -494,8 +495,8 @@ class TestSFFSegmentation(unittest.TestCase):
         transforms.add_transform(transform)
         shapes.add_shape(
             schema.SFFCone(
-                height=tests._random_float() * 100,
-                bottomRadius=tests._random_float() * 100,
+                height=_random_float() * 100,
+                bottomRadius=_random_float() * 100,
                 transformId=transform.id,
             )
         )
@@ -504,7 +505,7 @@ class TestSFFSegmentation(unittest.TestCase):
         segmentation.segments = segments
         segmentation.transforms = transforms
         # export
-        # segmentation.export(os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'test_shape_segmentation.sff'))
+        # segmentation.export(os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'test_shape_segmentation.sff'))
         # assertions
         self.assertEqual(len(segment.shapes), 9)
         self.assertEqual(segment.shapes.numCones, 4)
@@ -525,41 +526,41 @@ class TestSFFSegmentation(unittest.TestCase):
         # mesh 2
         mesh2 = schema.SFFMesh()
         vertices1 = schema.SFFVertexList()
-        no_vertices1 = tests._random_integer(stop=100)
-        for i in xrange(no_vertices1):
+        no_vertices1 = _random_integer(stop=100)
+        for i in _xrange(no_vertices1):
             vertex = schema.SFFVertex()
             vertex.point = tuple(
                 map(float, (
-                    tests._random_integer(1, 1000),
-                    tests._random_integer(1, 1000),
-                    tests._random_integer(1, 1000)
+                    _random_integer(1, 1000),
+                    _random_integer(1, 1000),
+                    _random_integer(1, 1000)
                 ))
             )
             vertices1.add_vertex(vertex)
         polygons1 = schema.SFFPolygonList()
-        no_polygons1 = tests._random_integer(stop=100)
-        for i in xrange(no_polygons1):
+        no_polygons1 = _random_integer(stop=100)
+        for i in _xrange(no_polygons1):
             polygon = schema.SFFPolygon()
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
             polygons1.add_polygon(polygon)
         mesh.vertices = vertices1
         mesh.polygons = polygons1
         vertices2 = schema.SFFVertexList()
-        no_vertices2 = tests._random_integer(stop=100)
-        for i in xrange(no_vertices2):
+        no_vertices2 = _random_integer(stop=100)
+        for i in _xrange(no_vertices2):
             vertex = schema.SFFVertex()
             vertex.point = tuple(map(float, (
-                tests._random_integer(1, 1000), tests._random_integer(1, 1000), tests._random_integer(1, 1000))))
+                _random_integer(1, 1000), _random_integer(1, 1000), _random_integer(1, 1000))))
             vertices2.add_vertex(vertex)
         polygons2 = schema.SFFPolygonList()
-        no_polygons2 = tests._random_integer(stop=100)
-        for i in xrange(no_polygons2):
+        no_polygons2 = _random_integer(stop=100)
+        for i in _xrange(no_polygons2):
             polygon = schema.SFFPolygon()
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
             polygons2.add_polygon(polygon)
         mesh2.vertices = vertices2
         mesh2.polygons = polygons2
@@ -573,24 +574,24 @@ class TestSFFSegmentation(unittest.TestCase):
         meshes = schema.SFFMeshList()
         mesh = schema.SFFMesh()
         vertices3 = schema.SFFVertexList()
-        no_vertices3 = tests._random_integer(stop=100)
-        for i in xrange(no_vertices3):
+        no_vertices3 = _random_integer(stop=100)
+        for i in _xrange(no_vertices3):
             vertex = schema.SFFVertex()
             vertex.point = tuple(
                 map(float, (
-                    tests._random_integer(1, 1000),
-                    tests._random_integer(1, 1000),
-                    tests._random_integer(1, 1000)
+                    _random_integer(1, 1000),
+                    _random_integer(1, 1000),
+                    _random_integer(1, 1000)
                 ))
             )
             vertices3.add_vertex(vertex)
         polygons3 = schema.SFFPolygonList()
-        no_polygons3 = tests._random_integer(stop=100)
-        for i in xrange(no_polygons3):
+        no_polygons3 = _random_integer(stop=100)
+        for i in _xrange(no_polygons3):
             polygon = schema.SFFPolygon()
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
-            polygon.add_vertex(random.choice(range(tests._random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
+            polygon.add_vertex(random.choice(range(_random_integer())))
             polygons3.add_polygon(polygon)
         mesh.vertices = vertices3
         mesh.polygons = polygons3
@@ -599,7 +600,7 @@ class TestSFFSegmentation(unittest.TestCase):
         segments.add_segment(segment)
         segmentation.segments = segments
         # export
-        # segmentation.export(os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'test_mesh_segmentation.sff'))
+        # segmentation.export(os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'test_mesh_segmentation.sff'))
         # assertions
         # segment one
         segment1 = segmentation.segments.get_by_id(1)
@@ -674,19 +675,19 @@ class TestSFFSegmentation(unittest.TestCase):
         # complexes
         compMac = schema.SFFComplexesAndMacromolecules()
         comp = schema.SFFComplexes()
-        comp.add_complex(str(tests._random_integer(1, 1000)))
-        comp.add_complex(str(tests._random_integer(1, 1000)))
-        comp.add_complex(str(tests._random_integer(1, 1000)))
-        comp.add_complex(str(tests._random_integer(1, 1000)))
-        comp.add_complex(str(tests._random_integer(1, 1000)))
+        comp.add_complex(str(_random_integer(1, 1000)))
+        comp.add_complex(str(_random_integer(1, 1000)))
+        comp.add_complex(str(_random_integer(1, 1000)))
+        comp.add_complex(str(_random_integer(1, 1000)))
+        comp.add_complex(str(_random_integer(1, 1000)))
         # macromolecules
         macr = schema.SFFMacromolecules()
-        macr.add_macromolecule(str(tests._random_integer(1, 1000)))
-        macr.add_macromolecule(str(tests._random_integer(1, 1000)))
-        macr.add_macromolecule(str(tests._random_integer(1, 1000)))
-        macr.add_macromolecule(str(tests._random_integer(1, 1000)))
-        macr.add_macromolecule(str(tests._random_integer(1, 1000)))
-        macr.add_macromolecule(str(tests._random_integer(1, 1000)))
+        macr.add_macromolecule(str(_random_integer(1, 1000)))
+        macr.add_macromolecule(str(_random_integer(1, 1000)))
+        macr.add_macromolecule(str(_random_integer(1, 1000)))
+        macr.add_macromolecule(str(_random_integer(1, 1000)))
+        macr.add_macromolecule(str(_random_integer(1, 1000)))
+        macr.add_macromolecule(str(_random_integer(1, 1000)))
         compMac.complexes = comp
         compMac.macromolecules = macr
         segment.complexesAndMacromolecules = compMac
@@ -699,7 +700,7 @@ class TestSFFSegmentation(unittest.TestCase):
         )
         segmentation.segments.add_segment(segment)
         # export
-        # segmentation.export(os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'test_annotated_segmentation.sff'))
+        # segmentation.export(os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'test_annotated_segmentation.sff'))
         # assertions
         self.assertEqual(segmentation.name, 'name')
         self.assertEqual(segmentation.version, segmentation._local.schemaVersion)  # automatically set
@@ -729,17 +730,17 @@ class TestSFFSegmentation(unittest.TestCase):
         # segment: complexesAndMacromolecules
         # complexes
         self.assertEqual(len(segment.complexesAndMacromolecules.complexes), 5)
-        complexes_bool = map(lambda c: c > 0, segment.complexesAndMacromolecules.complexes)
+        complexes_bool = map(lambda c: isinstance(c, str), segment.complexesAndMacromolecules.complexes)
         self.assertTrue(all(complexes_bool))
         # macromolecules
         self.assertEqual(len(segment.complexesAndMacromolecules.macromolecules), 6)
-        macromolecules_bool = map(lambda c: c > 0, segment.complexesAndMacromolecules.macromolecules)
+        macromolecules_bool = map(lambda c: isinstance(c, str), segment.complexesAndMacromolecules.macromolecules)
         self.assertTrue(all(macromolecules_bool))
         # colour
         self.assertEqual(segment.colour.value, (1, 0, 1, 0))
 
     def test_segment_ids(self):
-        """Tests to ensure IDs are correctly reset"""
+        """to ensure IDs are correctly reset"""
         # segmentation one
         segmentation = schema.SFFSegmentation()
         segmentation.segments = schema.SFFSegmentList()
@@ -777,7 +778,7 @@ class TestSFFSegmentation(unittest.TestCase):
 
     def test_read_sff(self):
         """Read from XML (.sff) file"""
-        sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
+        sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
         segmentation = schema.SFFSegmentation(sff_file)
         transform = segmentation.transforms[1]
         # assertions
@@ -794,7 +795,7 @@ class TestSFFSegmentation(unittest.TestCase):
 
     def test_read_hff(self):
         """Read from HDF5 (.hff) file"""
-        hff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
+        hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
         segmentation = schema.SFFSegmentation(hff_file)
         # assertions
         self.assertEqual(segmentation.name, "Segger Segmentation")
@@ -806,7 +807,7 @@ class TestSFFSegmentation(unittest.TestCase):
 
     def test_read_json(self):
         """Read from JSON (.json) file"""
-        json_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
+        json_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
         segmentation = schema.SFFSegmentation(json_file)
         # assertions
         self.assertEqual(segmentation.name, "Segger Segmentation")
@@ -829,8 +830,9 @@ class TestSFFSegmentation(unittest.TestCase):
         temp_file = tempfile.NamedTemporaryFile()
         self.segmentation.export(temp_file.name + '.hff')
         # assertions
-        with open(temp_file.name + '.hff') as f:
-            self.assertGreaterEqual(f.readline().find('HDF'), 0)
+        with open(temp_file.name + '.hff', 'rb') as f:
+            find = f.readline().find(b'HDF')
+            self.assertGreaterEqual(find, 0)
 
     def test_export_json(self):
         """Export to a JSON file"""
@@ -842,10 +844,10 @@ class TestSFFSegmentation(unittest.TestCase):
             self.assertEqual(J['primaryDescriptor'], u"threeDVolume")
 
 
-class TestSFFRGBA(unittest.TestCase):
+class TestSFFRGBA(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.test_hdf5_fn = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'test.hdf5')
+        cls.test_hdf5_fn = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'test.hdf5')
 
     @classmethod
     def tearDownClass(cls):
@@ -922,7 +924,7 @@ class TestSFFRGBA(unittest.TestCase):
             group = h.create_group("container")
             group = colour.as_hff(group)
             self.assertIn("colour", group)
-            self.assertItemsEqual(group['colour'].value, colour.value)
+            self.assertCountEqual(group['colour'].value, colour.value)
 
     def test_from_hff(self):
         """Test create from HDF5 group"""
@@ -936,52 +938,52 @@ class TestSFFRGBA(unittest.TestCase):
             group = h.create_group("container")
             group = colour.as_hff(group)
             self.assertIn("colour", group)
-            self.assertItemsEqual(group['colour'].value, colour.value)
+            self.assertCountEqual(group['colour'].value, colour.value)
             colour2 = schema.SFFRGBA.from_hff(h['container'])
-            self.assertItemsEqual(colour.value, colour2.value)
+            self.assertCountEqual(colour.value, colour2.value)
 
 
-class TestSFFComplexes(unittest.TestCase):
+class TestSFFComplexes(Py23FixTestCase):
     pass
 
 
-class TestSFFMacromolecules(unittest.TestCase):
+class TestSFFMacromolecules(Py23FixTestCase):
     pass
 
 
-class TestSFFComplexesAndMacromolecules(unittest.TestCase):
+class TestSFFComplexesAndMacromolecules(Py23FixTestCase):
     pass
 
 
-class TestSFFExternalReference(unittest.TestCase):
+class TestSFFExternalReference(Py23FixTestCase):
     pass
 
 
-class TestSFFExternalReferences(unittest.TestCase):
+class TestSFFExternalReferences(Py23FixTestCase):
     pass
 
 
-class TestSFFBiologicalAnnotation(unittest.TestCase):
+class TestSFFBiologicalAnnotation(Py23FixTestCase):
     pass
 
 
-class TestSFFThreeDVolume(unittest.TestCase):
+class TestSFFThreeDVolume(Py23FixTestCase):
     pass
 
 
-class TestSFFVolume(unittest.TestCase):
+class TestSFFVolume(Py23FixTestCase):
     pass
 
 
-class TestSFFVolumeStructure(unittest.TestCase):
+class TestSFFVolumeStructure(Py23FixTestCase):
     pass
 
 
-class TestSFFVolumeIndex(unittest.TestCase):
+class TestSFFVolumeIndex(Py23FixTestCase):
     pass
 
 
-class TestSFFLattice(unittest.TestCase):
+class TestSFFLattice(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.lattice_size = schema.SFFVolumeStructure(
@@ -993,7 +995,7 @@ class TestSFFLattice(unittest.TestCase):
         data_ = numpy.array(range(1000), dtype=numpy.uint32).reshape((10, 10, 10))  # data
         numpy.random.shuffle(data_)  # shuffle in place
         cls.lattice_data = data_
-        lattices = schema.SFFLatticeList() # to reset lattice_id
+        lattices = schema.SFFLatticeList()  # to reset lattice_id
         cls.lattice = schema.SFFLattice(
             mode=cls.lattice_mode,
             endianness=cls.lattice_endianness,
@@ -1012,99 +1014,15 @@ class TestSFFLattice(unittest.TestCase):
         self.assertEqual(self.lattice.id, 0)
         self.assertEqual(self.lattice.mode, self.lattice_mode)
         self.assertEqual(self.lattice.endianness, self.lattice_endianness)
-        self.assertItemsEqual(self.lattice.size.value, self.lattice_data.shape)
-        self.assertItemsEqual(self.lattice.start.value, self.lattice_start.value)
+        self.assertCountEqual(self.lattice.size.value, self.lattice_data.shape)
+        self.assertCountEqual(self.lattice.start.value, self.lattice_start.value)
         self.assertTrue(self.lattice.is_encoded)
 
     def test_decode(self):
         """Test that we can decode a lattice"""
         self.lattice.decode()
-        self.assertItemsEqual(self.lattice.data.flatten(), self.lattice_data.flatten())
+        self.assertCountEqual(self.lattice.data.flatten(), self.lattice_data.flatten())
         self.assertFalse(self.lattice.is_encoded)
-
-
-class TestSFFLatticeList(unittest.TestCase):
-    pass
-
-
-class TestSFFShape(unittest.TestCase):
-    pass
-
-
-class TestSFFCone(unittest.TestCase):
-    pass
-
-
-class TestSFFCuboid(unittest.TestCase):
-    pass
-
-
-class TestSFFCylinder(unittest.TestCase):
-    pass
-
-
-class TestSFFEllipsoid(unittest.TestCase):
-    pass
-
-
-class TestSFFShapePrimitiveList(unittest.TestCase):
-    pass
-
-
-class TestSFFVertex(unittest.TestCase):
-    pass
-
-
-class TestSFFPolygon(unittest.TestCase):
-    pass
-
-
-class TestSFFVertexList(unittest.TestCase):
-    pass
-
-
-class TestSFFPolygonList(unittest.TestCase):
-    pass
-
-
-class TestSFFMesh(unittest.TestCase):
-    pass
-
-
-class TestSFFMeshList(unittest.TestCase):
-    pass
-
-
-class TestSFFSegment(unittest.TestCase):
-    pass
-
-
-class TestSFFSegmentList(unittest.TestCase):
-    pass
-
-
-class TestSFFTransform(unittest.TestCase):
-    pass
-
-
-class TestSFFTransformationMatrix(unittest.TestCase):
-    pass
-
-
-class TestSFFTransformList(unittest.TestCase):
-    pass
-
-
-class TestSFFSoftware(unittest.TestCase):
-    pass
-
-
-class TestSFFBoundingBox(unittest.TestCase):
-    pass
-
-
-class TestSFFGlobalExternalReference(unittest.TestCase):
-    pass
 
 
 if __name__ == "__main__":

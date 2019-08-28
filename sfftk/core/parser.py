@@ -9,8 +9,10 @@ import re
 import sys
 from copy import deepcopy
 
+from ..core import _decode
 from .print_tools import print_date
 from ..notes import RESOURCE_LIST
+from . import _dict_iter_keys, _dict_iter_values, _dict_iter_items
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -115,7 +117,7 @@ and the accession. If you use the sff notes search utility these will
 correspond to the ontology_name, IRI and short_form. The following is a list 
 of valid external references: {}. You can also specify multiple external 
 reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23 
-file.json""".format(', '.join(RESOURCE_LIST.keys())),
+file.json""".format(', '.join(_dict_iter_keys(RESOURCE_LIST))),
     }
 }
 # file_path = {
@@ -526,10 +528,10 @@ search_notes_parser.add_argument(
 add_args(search_notes_parser, config_path)
 add_args(search_notes_parser, shipped_configs)
 search_notes_parser.add_argument(
-    '-R', '--resource', default=RESOURCE_LIST.keys()[0], choices=RESOURCE_LIST.keys(),
+    '-R', '--resource', default=list(_dict_iter_keys(RESOURCE_LIST))[0], choices=_dict_iter_keys(RESOURCE_LIST),
     help='the resource to search for terms or accessions; other valid options are {resources} [default: {default}]'.format(
-        resources=RESOURCE_LIST.keys(),
-        default=RESOURCE_LIST.keys()[0],
+        resources=_dict_iter_keys(RESOURCE_LIST),
+        default=list(_dict_iter_keys(RESOURCE_LIST))[0],
     )
 )
 search_notes_parser.add_argument(
@@ -997,22 +999,22 @@ def parse_args(_args, use_shlex=False):
             print_date("sfftk version: {}".format(SFFTK_VERSION))
             return os.EX_OK, None
         # anytime a new argument is added to the base parser subparsers are bumped down in index
-        elif _args[0] in Parser._actions[2].choices.keys():
+        elif _args[0] in _dict_iter_keys(Parser._actions[2].choices):
             exec ('{}_parser.print_help()'.format(_args[0]))
             return os.EX_OK, None
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
-            if _args[1] in Parser._actions[2].choices['notes']._actions[1].choices.keys():
+            if _args[1] in _dict_iter_keys(Parser._actions[2].choices['notes']._actions[1].choices):
                 exec ('{}_notes_parser.print_help()'.format(_args[1]))
                 return os.EX_OK, None
         elif _args[0] == 'prep':
-            if _args[1] in Parser._actions[2].choices['prep']._actions[1].choices.keys():
+            if _args[1] in _dict_iter_keys(Parser._actions[2].choices['prep']._actions[1].choices):
                 exec ('{}_prep_parser.print_help()'.format(_args[1]))
                 return os.EX_OK, None
         elif _args[0] == 'config':
-            if _args[1] in Parser._actions[2].choices['config']._actions[1].choices.keys():
+            if _args[1] in _dict_iter_keys(Parser._actions[2].choices['config']._actions[1].choices):
                 exec ('{}_config_parser.print_help()'.format(_args[1]))
                 return os.EX_OK, None
     # parse arguments
@@ -1121,7 +1123,7 @@ def parse_args(_args, use_shlex=False):
     elif args.subcommand == 'convert':
         # convert details to unicode
         if args.details is not None:
-            args.details = args.details.decode('utf-8')
+            args.details = _decode(args.details, 'utf-8')
         # single vs. multi-file
         # single vs. multiple file names provided
         if len(args.from_file) == 1:
@@ -1313,28 +1315,28 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
 
             # unicode conversion
             if args.name is not None:
-                args.name = args.name.decode('utf-8')
+                args.name = _decode(args.name, 'utf-8')
             if args.details is not None:
-                args.details = args.details.decode('utf-8')
+                args.details = _decode(args.details, 'utf-8')
             if args.software_name is not None:
-                args.software_name = args.software_name.decode('utf-8')
+                args.software_name = _decode(args.software_name, 'utf-8')
             if args.software_version is not None:
-                args.software_version = args.software_version.decode('utf-8')
+                args.software_version = _decode(args.software_version, 'utf-8')
             if args.software_processing_details is not None:
-                args.software_processing_details = args.software_processing_details.decode('utf-8')
+                args.software_processing_details = _decode(args.software_processing_details, 'utf-8')
             if args.external_ref is not None:
                 external_ref = list()
                 for t,o,v in args.external_ref:
-                    external_ref.append([t.decode('utf-8'), o.decode('utf-8'), v.decode('utf-8')])
+                    external_ref.append([_decode(t, 'utf-8'), _decode(o, 'utf-8'), _decode(v, 'utf-8')])
                 args.external_ref = external_ref
             if args.segment_name is not None:
-                args.segment_name = args.segment_name.decode('utf-8')
+                args.segment_name = _decode(args.segment_name, 'utf-8')
             if args.description is not None:
-                args.description = args.description.decode('utf-8')
+                args.description = _decode(args.description, 'utf-8')
             if args.complexes is not None:
-                args.complexes = [c.decode('utf-8') for c in args.complexes]
+                args.complexes = [_decode(c, 'utf-8') for c in args.complexes]
             if args.macromolecules is not None:
-                args.macromolecules = [m.decode('utf-8') for m in args.macromolecules]
+                args.macromolecules = [_decode(m, 'utf-8') for m in args.macromolecules]
 
         elif args.notes_subcommand == "edit":
             # external references can be added globally (header) or to a
@@ -1384,28 +1386,28 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
 
             # unicode
             if args.name is not None:
-                args.name = args.name.decode('utf-8')
+                args.name = _decode(args.name, 'utf-8')
             if args.details is not None:
-                args.details = args.details.decode('utf-8')
+                args.details = _decode(args.details, 'utf-8')
             if args.software_name is not None:
-                args.software_name = args.software_name.decode('utf-8')
+                args.software_name = _decode(args.software_name, 'utf-8')
             if args.software_version is not None:
-                args.software_version = args.software_version.decode('utf-8')
+                args.software_version = _decode(args.software_version, 'utf-8')
             if args.software_processing_details is not None:
-                args.software_processing_details = args.software_processing_details.decode('utf-8')
+                args.software_processing_details = _decode(args.software_processing_details, 'utf-8')
             if args.external_ref is not None:
                 external_ref = list()
                 for t,o,v in args.external_ref:
-                    external_ref.append([t.decode('utf-8'), o.decode('utf-8'), v.decode('utf-8')])
+                    external_ref.append([_decode(t, 'utf-8'), _decode(o, 'utf-8'), _decode(v, 'utf-8')])
                 args.external_ref = external_ref
             if args.segment_name is not None:
-                args.segment_name = args.segment_name.decode('utf-8')
+                args.segment_name = _decode(args.segment_name, 'utf-8')
             if args.description is not None:
-                args.description = args.description.decode('utf-8')
+                args.description = _decode(args.description, 'utf-8')
             if args.complexes is not None:
-                args.complexes = [c.decode('utf-8') for c in args.complexes]
+                args.complexes = [_decode(c, 'utf-8') for c in args.complexes]
             if args.macromolecules is not None:
-                args.macromolecules = [m.decode('utf-8') for m in args.macromolecules]
+                args.macromolecules = [_decode(m, 'utf-8') for m in args.macromolecules]
 
         elif args.notes_subcommand == "del":
             if args.segment_id is not None:
@@ -1430,13 +1432,13 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
         elif args.notes_subcommand == "copy":
             # convert from and to to lists of ints
             if args.segment_id is not None:
-                from_segment = map(int, args.segment_id.split(','))
+                from_segment = list(map(int, args.segment_id.split(',')))
                 if isinstance(from_segment, int):
                     args.segment_id = [from_segment]
                 else:
                     args.segment_id = from_segment
             if args.to_segment is not None:
-                to_segment = map(int, args.to_segment.split(','))
+                to_segment = list(map(int, args.to_segment.split(',')))
                 if isinstance(to_segment, int):
                     args.to_segment = [to_segment]
                 else:

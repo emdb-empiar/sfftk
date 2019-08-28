@@ -14,6 +14,7 @@ from .base import Segmentation, Header, Segment, Annotation, Mesh
 from .. import schema
 from ..core.print_tools import print_date
 from ..readers import stlreader
+from ..core import _xrange, _dict_iter_values, _dict_iter_items
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -44,7 +45,7 @@ class STLMesh(Mesh):
         # polygon
         polygons = schema.SFFPolygonList()
         schema.SFFPolygon.reset_id()
-        for P in self.polygons.itervalues():
+        for P in _dict_iter_values(self.polygons):
             polygon = schema.SFFPolygon()
 
             v1, v2, v3 = P
@@ -55,7 +56,7 @@ class STLMesh(Mesh):
             polygons.add_polygon(polygon)
         # vertices
         vertices = schema.SFFVertexList()
-        for vertex_id, v in self.vertices.iteritems():
+        for vertex_id, v in _dict_iter_items(self.vertices):
             x, y, z = v
             vertex = schema.SFFVertex(vID=vertex_id, x=x, y=y, z=z)
             vertices.add_vertex(vertex)
@@ -71,7 +72,7 @@ class STLAnnotation(Annotation):
     def __init__(self, name):
         self.name = name
         import random
-        self.colour = tuple([random.random() for _ in xrange(3)])
+        self.colour = tuple([random.random() for _ in _xrange(3)])
 
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""

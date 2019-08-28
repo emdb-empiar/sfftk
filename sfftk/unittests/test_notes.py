@@ -6,18 +6,19 @@ from __future__ import division, print_function
 
 import os
 import shlex
-import shutil
 import sys
 import unittest
-from urllib import urlencode
 
-import __init__ as tests
+import shutil
 
+from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase
 from .. import BASE_DIR
 from .. import schema
+from ..core import _urlencode
 from ..core import utils
 from ..core.parser import parse_args
 from ..notes import find, modify, view, RESOURCE_LIST
+from ..sff import _handle_notes_modify, handle_notes_trash
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -27,7 +28,7 @@ __date__ = "2017-05-15"
 # :TODO: rewrite to use sfftk.notes.modify.SimpleNote
 
 
-class TestNotesModifyExternalReference(unittest.TestCase):
+class TestNotesModifyExternalReference(Py23FixTestCase):
     def test_ols(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
         type_ = u'ncit'
@@ -36,9 +37,9 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         # likely to change
         label = u'Wild Type'
         description = u'The naturally-occurring, normal, non-mutated version of a gene or genome.'
-        urlenc = urlencode({u'iri': otherType.encode(u'idna')})
-        urlenc2 = urlencode({u'iri': urlenc.split(u'=')[1]})
-        urlenc3 = urlenc2.split(u'=')[1].decode(u'utf-8')
+        urlenc = _urlencode({u'iri': otherType.encode(u'idna')})
+        urlenc2 = _urlencode({u'iri': urlenc.split(u'=')[1]})
+        urlenc3 = urlenc2.split(u'=')[1]
         extRef = modify.ExternalReference(
             type_=type_,
             otherType=otherType,
@@ -50,7 +51,7 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         self.assertEqual(extRef.label, label)
         self.assertEqual(extRef.description,
                          description)
-        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(extRef._get_text(), [label, description])
         self.assertEqual(extRef.iri, urlenc3)
 
     def test_emdb(self):
@@ -72,7 +73,7 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         self.assertEqual(extRef.label, label)
         self.assertEqual(extRef.description,
                          description)
-        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(extRef._get_text(), [label, description])
 
     def test_pdb(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
@@ -93,7 +94,7 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         self.assertEqual(extRef.label, label)
         self.assertEqual(extRef.description,
                          description)
-        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(extRef._get_text(), [label, description])
 
     def test_uniprot(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
@@ -114,7 +115,7 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         self.assertEqual(extRef.label, label)
         self.assertEqual(extRef.description,
                          description)
-        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(extRef._get_text(), [label, description])
 
     def test_europepmc(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
@@ -134,7 +135,7 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         self.assertEqual(extRef.label, label)
         self.assertEqual(extRef.description,
                          description)
-        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(extRef._get_text(), [label, description])
 
     def test_empiar(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
@@ -155,10 +156,10 @@ class TestNotesModifyExternalReference(unittest.TestCase):
         self.assertEqual(extRef.label, label)
         self.assertEqual(extRef.description,
                          description)
-        self.assertItemsEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(extRef._get_text(), [label, description])
 
 
-class TestNotesFindSearchResource(unittest.TestCase):
+class TestNotesFindSearchResource(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -217,7 +218,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
         R = requests.get(url)
         resource_results = utils.get_path(json.loads(resource.response), resource.result_path)
         test_results = utils.get_path(json.loads(R.text), resource.result_path)
-        self.assertItemsEqual(resource_results, test_results)
+        self.assertCountEqual(resource_results, test_results)
 
     def test_get_url_ols_list_ontologies(self):
         """Test url correctness for OLS"""
@@ -347,7 +348,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
         self.assertEqual(resource_url, url)
 
 
-# class TestNotesFindSearchResource(unittest.TestCase):
+# class TestNotesFindSearchResource(Py23FixTestCase):
 #     @classmethod
 #     def setUpClass(cls):
 #         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -361,7 +362,7 @@ class TestNotesFindSearchResource(unittest.TestCase):
 #         self.assertEqual(resource.search_args, args)
 
 
-class TestNotesFindTableField(unittest.TestCase):
+class TestNotesFindTableField(Py23FixTestCase):
     def test_init_name(self):
         """Test instantiation of TableField object"""
         with self.assertRaisesRegexp(ValueError,
@@ -406,14 +407,14 @@ class TestNotesFindTableField(unittest.TestCase):
         self.assertIsInstance(find.TableField('my-field', text='t', justify='center'), find.TableField)
 
 
-class TestNotes_view(unittest.TestCase):
+class TestNotes_view(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
         self.segment_id = 15559
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
+        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
 
     def test_list_default(self):
         """Test that we can view the list of segmentations with annotations"""
@@ -456,7 +457,7 @@ class TestNotes_view(unittest.TestCase):
         self.assertEqual(status, 0)
 
 
-class TestNotes_modify(unittest.TestCase):
+class TestNotes_modify(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -466,32 +467,47 @@ class TestNotes_modify(unittest.TestCase):
 
     # test filetypeA to filetypeB
     def setUp(self):
+        # remove any temporary files
+        args, configs = parse_args("notes trash @ --config-path {config}".format(
+            config=self.config_fn), use_shlex=True
+        )
+        handle_notes_trash(args, configs)
         self.segment_id = 15559
+
+    def tearDown(self):
+        # remove any temporary files
+        args, configs = parse_args("notes trash @ --config-path {config}".format(
+            config=self.config_fn), use_shlex=True
+        )
+        handle_notes_trash(args, configs)
 
     def _test_add(self):
         """Test that we can add a note"""
         segment_name = 'the segment name'
         desc = 'a short description'
-        num = tests._random_integer()
+        num = _random_integer()
         extref = ['lsfj', 'sljfs', 'ldjls']
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
-        cmd = shlex.split(
-            "notes add -i {} -s '{}' -d '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-                self.segment_id,
-                segment_name,
-                desc,
-                " ".join(extref),
-                num,
-                ','.join(complexes),
-                ','.join(macromolecules),
-                self.sff_file,
-                self.config_fn,
-            )
+        cmd = "notes add -i {segment_id} -s '{name}' -d '{description}' -E {extref} -n {num} -C {complexes} " \
+              "-M {macromolecules} {sff_file} --config-path {config}".format(
+            segment_id=self.segment_id,
+            name=segment_name,
+            description=desc,
+            extref=" ".join(extref),
+            num=num,
+            complexes=','.join(complexes),
+            macromolecules=','.join(macromolecules),
+            sff_file=self.sff_file,
+            config=self.config_fn,
         )
-        args, configs = parse_args(cmd)
+        # first we get the raw args
+        _args, configs = parse_args(cmd, use_shlex=True)
+        # we intercept them for 'modify' actions
+        args = _handle_notes_modify(_args, configs)
+        # we pass modified args for 'temp-annotated.json'
         status = modify.add_note(args, configs)
-        seg = schema.SFFSegmentation(self.sff_file)
+        seg = schema.SFFSegmentation(args.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
         self.assertEqual(status, 0)
         self.assertEqual(segment.biologicalAnnotation.description, desc)
@@ -510,46 +526,48 @@ class TestNotes_modify(unittest.TestCase):
         """Test that we can edit a note"""
         segment_name = "the segments name"
         desc = 'a short description'
-        num = tests._random_integer()
+        num = _random_integer()
         extref = ['lsfj', 'sljfs', 'ldjss']
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
         # add
-        cmd = shlex.split(
-            "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-                self.segment_id,
-                segment_name,
-                desc,
-                " ".join(extref),
-                num,
-                ','.join(complexes),
-                ','.join(macromolecules),
-                self.sff_file,
-                self.config_fn,
-            )
+        cmd = "notes add -i {segment_id} -s '{name}' -D '{desc}' -E {extref} -n {num} -C {complexes} " \
+              "-M {macromolecules} {sff_file} --config-path {config}".format(
+            segment_id=self.segment_id,
+            name=segment_name,
+            desc=desc,
+            extref=" ".join(extref),
+            num=num,
+            complexes=','.join(complexes),
+            macromolecules=','.join(macromolecules),
+            sff_file=self.sff_file,
+            config=self.config_fn,
         )
-        args, configs = parse_args(cmd)
+        _args, configs = parse_args(cmd, use_shlex=True)
+        args = _handle_notes_modify(_args, configs)
         modify.add_note(args, configs)
         segment_name1 = segment_name[::-1]
         desc1 = desc[::-1]
-        num1 = tests._random_integer()
-        extref1 = map(lambda e: e[::-1], extref)
-        cmd1 = shlex.split(
-            "notes edit -i {} -s '{}' -d '{}' -e 0 -E {} -n {} -c 1 -C {} -m 2 -M {} {} --config-path {}".format(
-                self.segment_id,
-                segment_name1,
-                desc1,
-                " ".join(extref1),
-                num1,
-                complexes[1][::-1],
-                macromolecules[2][::-1],
-                self.sff_file,
-                self.config_fn,
-            ))
-        args1, configs = parse_args(cmd1)
+        num1 = _random_integer()
+        extref1 = list(map(lambda e: e[::-1], extref))
+        cmd1 = "notes edit -i {segment_id} -s '{name}' -d '{description}' " \
+               "-e 0 -E {extref} -n {num} -c 1 -C {complexes} -m 2 -M {macromolecules} " \
+               "@ --config-path {config}".format(
+            segment_id=self.segment_id,
+            name=segment_name1,
+            description=desc1,
+            extref=" ".join(extref1),
+            num=num1,
+            complexes=complexes[1][::-1],
+            macromolecules=macromolecules[2][::-1],
+            config=self.config_fn,
+        )
+        _args1, configs = parse_args(cmd1, use_shlex=True)
+        args1 = _handle_notes_modify(_args1, configs)
         # edit
         status1 = modify.edit_note(args1, configs)
-        seg = schema.SFFSegmentation(self.sff_file)
+        # we have to compare against the temp-annotated.json file!!!
+        seg = schema.SFFSegmentation(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
         self.assertEqual(status1, 0)
         self.assertEqual(segment.biologicalAnnotation.name, segment_name1)
@@ -565,34 +583,34 @@ class TestNotes_modify(unittest.TestCase):
         """Test that we can delete a note"""
         segment_name = 'the segment name'
         desc = 'a short description'
-        num = tests._random_integer()
+        num = _random_integer()
         extref = ['lsfj', 'sljfs', 'dsljfl']
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
-        cmd = shlex.split(
-            "notes add -i {} -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-                self.segment_id,
-                desc,
-                " ".join(extref),
-                num,
-                ','.join(complexes),
-                ','.join(macromolecules),
-                self.sff_file,
-                self.config_fn,
-            )
+        cmd = "notes add -i {segment_id} -D '{description}' -E {extref} -n {num} -C {complexes} -M {macromolecules} " \
+              "{sff_file} --config-path {config}".format(
+            segment_id=self.segment_id,
+            description=desc,
+            extref=" ".join(extref),
+            num=num,
+            complexes=','.join(complexes),
+            macromolecules=','.join(macromolecules),
+            sff_file=self.sff_file,
+            config=self.config_fn,
         )
-        args, configs = parse_args(cmd)
+        _args, configs = parse_args(cmd, use_shlex=True)
+        args = _handle_notes_modify(_args, configs)
         # add
         modify.add_note(args, configs)
         # delete
-        cmd1 = shlex.split("notes del -i {} -D -e 0 -n -c 0 -m 1 {} --config-path {}".format(
-            self.segment_id,
-            self.sff_file,
-            self.config_fn,
-        ))
-        args1, configs = parse_args(cmd1)
+        cmd1 = "notes del -i {segment_id} -D -e 0 -n -c 0 -m 1 @ --config-path {config}".format(
+            segment_id=self.segment_id,
+            config=self.config_fn,
+        )
+        _args1, configs = parse_args(cmd1, use_shlex=True)
+        args1 = _handle_notes_modify(_args1, configs)
         status1 = modify.del_note(args1, configs)
-        seg = schema.SFFSegmentation(self.sff_file)
+        seg = schema.SFFSegmentation(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
         self.assertEqual(status1, 0)
         self.assertIsNone(segment.biologicalAnnotation.name)
@@ -606,7 +624,7 @@ class TestNotes_modify(unittest.TestCase):
         """Test that we can merge notes"""
         segment_name = 'my very nice segment'
         desc = 'a short description'
-        num = tests._random_integer()
+        num = _random_integer()
         extref = ['lsfj', 'sljfs', 'ldjss']
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
@@ -679,7 +697,7 @@ class TestNotes_modify(unittest.TestCase):
         """Test that we can clear notes"""
         segment_name = 'my very nice segment'
         desc = 'a short description'
-        num = tests._random_integer()
+        num = _random_integer()
         extref = ['lsfj', 'sljfs', 'ldjss']
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
@@ -697,20 +715,20 @@ class TestNotes_modify(unittest.TestCase):
                 self.config_fn,
             )
         )
-        args, configs = parse_args(cmd)
+        _args, configs = parse_args(cmd)
+        args = _handle_notes_modify(_args, configs)
         status = modify.add_note(args, configs)
         self.assertEqual(status, 0)
         # clear
-        cmd1 = shlex.split(
-            'notes clear --all {} --config-path {config_fn}'.format(
-                self.sff_file,
-                config_fn=self.config_fn,
-            )
+        cmd1 = 'notes clear --all @ --config-path {config_fn}'.format(
+            # self.sff_file,
+            config_fn=self.config_fn,
         )
-        args1, configs1 = parse_args(cmd1)
+        _args1, configs1 = parse_args(cmd1, use_shlex=True)
+        args1 = _handle_notes_modify(_args1, configs1)
         status1 = modify.clear_notes(args1, configs1)
         self.assertEqual(status1, 0)
-        seg = schema.SFFSegmentation(self.sff_file)
+        seg = schema.SFFSegmentation(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
         self.assertEqual(len(segment.biologicalAnnotation.externalReferences), 0)
 
@@ -726,14 +744,30 @@ class TestNotes_modify(unittest.TestCase):
         seg = schema.SFFSegmentation(annotated_sff_file)
         source_segment = seg.segments.get_by_id(15559)
         # copy
-        cmd = "notes copy -i 15559 -t 15578 {} --config-path {}".format(
-            annotated_sff_file,
-            self.config_fn
+        cmd = "notes copy -i 15559 -t 15578 {ann_sff_file} --config-path {config}".format(
+            ann_sff_file=annotated_sff_file,
+            config=self.config_fn
         )
-        status1 = modify.copy_notes(*parse_args(cmd, use_shlex=True))
+        print(cmd, file=sys.stderr)
+        _args, configs = parse_args(cmd, use_shlex=True)
+        args = _handle_notes_modify(_args, configs)
+        status1 = modify.copy_notes(args, configs)
+        # save
+        cmd1 = "notes save {sff_file} --config-path {config}".format(
+            sff_file=annotated_sff_file,
+            config=self.config_fn,
+        )
+        print(cmd1, file=sys.stderr)
+        args, configs = parse_args(cmd1, use_shlex=True)
+        status3 = modify.save(args, configs)
         # debug
-        cmd2 = "notes list {} --config-path {}".format(annotated_sff_file, self.config_fn)
-        view.list_notes(*parse_args(cmd2, use_shlex=True))
+        cmd2 = "notes list {sff_file} --config-path {config}".format(
+            sff_file=annotated_sff_file,
+            config=self.config_fn
+        )
+        _args1, config = parse_args(cmd2, use_shlex=True)
+        args1 = _handle_notes_modify(_args1, config)
+        view.list_notes(args1, config)
         self.assertEqual(status1, 0)
 
         copied_seg = schema.SFFSegmentation(annotated_sff_file)
@@ -753,12 +787,13 @@ class TestNotes_modify(unittest.TestCase):
 class TestNotes_modify_sff(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_sff, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
-        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.sff')
-        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.sff')
-        self.annotated_sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.sff')
+        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
+        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.sff')
+        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.sff')
+        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.sff')
 
     def tearDown(self):
+        super(TestNotes_modify_sff, self).tearDown()
         seg = schema.SFFSegmentation(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
@@ -785,18 +820,16 @@ class TestNotes_modify_sff(TestNotes_modify):
         super(TestNotes_modify_sff, self)._test_copy()
 
 
-# fixme: hff tests work but quadruple size of file
-
-
 class TestNotes_modify_hff(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_hff, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
-        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.hff')
-        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1014.hff')
-        self.annotated_sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.hff')
+        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
+        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.hff')
+        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1014.hff')
+        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.hff')
 
     def tearDown(self):
+        super(TestNotes_modify_hff, self).tearDown()
         seg = schema.SFFSegmentation(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
@@ -817,19 +850,20 @@ class TestNotes_modify_hff(TestNotes_modify):
         super(TestNotes_modify_hff, self)._test_clear()
 
     # fixme: can't figure out why this fails
-    # def test_copy(self):
-    #     super(TestNotes_modify_hff, self)._test_copy()
+    def test_copy(self):
+        super(TestNotes_modify_hff, self)._test_copy()
 
 
 class TestNotes_modify_json(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_json, self).setUp()
-        self.sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
-        self.other = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.json')
-        self.output = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.json')
-        self.annotated_sff_file = os.path.join(tests.TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.json')
+        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
+        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.json')
+        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.json')
+        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.json')
 
     def tearDown(self):
+        super(TestNotes_modify_json, self).tearDown()
         seg = schema.SFFSegmentation(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
@@ -856,7 +890,7 @@ class TestNotes_modify_json(TestNotes_modify):
         super(TestNotes_modify_json, self)._test_copy()
 
 
-class TestNotes_find(unittest.TestCase):
+class TestNotes_find(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -913,7 +947,7 @@ class TestNotes_find(unittest.TestCase):
     def test_search_from_start(self):
         """Test that we can search from the starting index"""
         # this search usually has close to 1000 results; 100 is a reasonable start
-        random_start = tests._random_integer(1, 970)
+        random_start = _random_integer(1, 970)
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --start {} --config-path {}".format(
             random_start,
             self.config_fn,
@@ -929,7 +963,7 @@ class TestNotes_find(unittest.TestCase):
     def test_search_result_rows(self):
         """Test that we get as many result rows as specified"""
         # this search usually has close to 1000 results; 100 is a reasonable start
-        random_rows = tests._random_integer(10, 100)
+        random_rows = _random_integer(10, 100)
         args, configs = parse_args(shlex.split("notes search 'mitochondria' --rows {} --config-path {}".format(
             random_rows,
             self.config_fn,

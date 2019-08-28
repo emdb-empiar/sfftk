@@ -40,14 +40,13 @@ import sys
 
 from bitarray import bitarray
 
+from ..core import _bytes, _decode, _xrange
 from ..core.print_tools import get_printable_ascii_string
-
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
 __date__ = '2015-10-12'
 __updated__ = '2018-02-14'
-
 
 """
 :TODO: unravel VIEW chunk (email from 3dmod authors unclear)
@@ -56,27 +55,27 @@ __updated__ = '2018-02-14'
 """
 
 KEY_WORDS = [
-    'CLIP',
-    'CONT',
-    'COST',
-    'IMAT',
-    'IMOD',
-    'LABL',
-    'MCLP',
-    'MEPA',
-    'MESH',
-    'MEST',
-    'MINX',
-    'MOST',
-    'OBJT',
-    'OBST',
-    'OGRP',
-    'OLBL',
-    'SIZE',
-    'SKLI',
-    'SLAN',
-    'VIEW',
-    ]
+    b'CLIP',
+    b'CONT',
+    b'COST',
+    b'IMAT',
+    b'IMOD',
+    b'LABL',
+    b'MCLP',
+    b'MEPA',
+    b'MESH',
+    b'MEST',
+    b'MINX',
+    b'MOST',
+    b'OBJT',
+    b'OBST',
+    b'OGRP',
+    b'OLBL',
+    b'SIZE',
+    b'SKLI',
+    b'SLAN',
+    b'VIEW',
+]
 
 # 0 = circle, 1 = none, 2 = square, 3 = triangle, 4 = star
 OBJT_SYMBOLS = {
@@ -85,7 +84,7 @@ OBJT_SYMBOLS = {
     2: 'square',
     3: 'triangle',
     4: 'star',
-    }
+}
 
 UNITS = {
     - 12: 'pm',
@@ -97,7 +96,7 @@ UNITS = {
     0: 'pixels',
     1: 'm',
     3: 'km',
-    }
+}
 
 UPPER_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -116,11 +115,12 @@ def find_chunk_length(f):
     """
     chunk_length = 0
     next_chunk = struct.unpack('>4s', f.read(4))[0]
-    while ((next_chunk[0] not in UPPER_ALPHA) or (next_chunk[1] not in UPPER_ALPHA) or (next_chunk[2] not in UPPER_ALPHA) or (next_chunk[3] not in UPPER_ALPHA)):
+    while ((next_chunk[0] not in UPPER_ALPHA) or (next_chunk[1] not in UPPER_ALPHA) or (
+            next_chunk[2] not in UPPER_ALPHA) or (next_chunk[3] not in UPPER_ALPHA)):
         chunk_length += 1
         f.seek(-3, os.SEEK_CUR)
         next_chunk = struct.unpack('>4s', f.read(4))[0]
-#     f.seek(-4, os.SEEK_CUR)
+    #     f.seek(-4, os.SEEK_CUR)
     return chunk_length, next_chunk, f
 
 
@@ -184,48 +184,56 @@ class FLAGS(object):
 
 class MODEL_FLAGS(FLAGS):
     """Flags in the MODEL chunk"""
+
     def __init__(self, *args, **kwargs):
         super(MODEL_FLAGS, self).__init__(*args, **kwargs)
 
 
 class OBJECT_FLAGS(FLAGS):
     """Flags in the OBJT chunk"""
+
     def __init__(self, *args, **kwargs):
         super(OBJECT_FLAGS, self).__init__(*args, **kwargs)
 
 
 class OBJECT_SYM_FLAGS(FLAGS):
     """Additional flags in the OBJT chunk"""
+
     def __init__(self, *args, **kwargs):
         super(OBJECT_SYM_FLAGS, self).__init__(*args, **kwargs)
 
 
 class CONTOUR_FLAGS(FLAGS):
     """Flags in the CONT chunk"""
+
     def __init__(self, *args, **kwargs):
         super(CONTOUR_FLAGS, self).__init__(*args, **kwargs)
 
 
 class COST_FLAGS(FLAGS):
     """Flags in the COST chunk"""
+
     def __init__(self, *args, **kwargs):
         super(COST_FLAGS, self).__init__(*args, **kwargs)
 
 
 class MESH_FLAGS(FLAGS):
     """Flags in the MESH chunk"""
+
     def __init__(self, *args, **kwargs):
         super(MESH_FLAGS, self).__init__(*args, **kwargs)
 
 
 class CLIP_FLAGS(FLAGS):
     """Flags in the CLIP chunk"""
+
     def __init__(self, *args, **kwargs):
         super(CLIP_FLAGS, self).__init__(*args, **kwargs)
 
 
 class MCLP_FLAGS(FLAGS):
     """Flags in the MCLP chunk"""
+
     def __init__(self, *args, **kwargs):
         super(MCLP_FLAGS, self).__init__(*args, **kwargs)
 
@@ -234,18 +242,21 @@ class IMAT_FLAGS(FLAGS):
     """
     Flags in the IMAT chunk.
     """
+
     def __init__(self, *args, **kwargs):
         super(IMAT_FLAGS, self).__init__(*args, **kwargs)
 
 
 class VIEW_FLAGS(FLAGS):
     """Flags in the VIEW chunk"""
+
     def __init__(self, *args, **kwargs):
         super(VIEW_FLAGS, self).__init__(*args, **kwargs)
 
 
 class MEPA_FLAGS(FLAGS):
     """Flags in the MEPA chunk"""
+
     def __init__(self, *args, **kwargs):
         super(MEPA_FLAGS, self).__init__(*args, **kwargs)
 
@@ -255,6 +266,7 @@ class STORE(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
 
@@ -293,6 +305,7 @@ class IMOD(object):
     
     The top-level of an IMOD file is an IMOD chunk specifying various data members.
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -311,8 +324,8 @@ class IMOD(object):
         :FIXME: use zscale to fix sizes
         """
         f = self.f
-        self.version = struct.unpack('>4s', f.read(4))[0]
-        self.name = get_printable_ascii_string(struct.unpack('>128s', f.read(128))[0])
+        self.version = _decode(struct.unpack('>4s', f.read(4))[0], 'utf-8')
+        self.name = _decode(get_printable_ascii_string(struct.unpack('>128s', f.read(128))[0]), 'utf-8')
         self.xmax, self.ymax, self.zmax = struct.unpack('>iii', f.read(12))
         self.objsize = struct.unpack('>i', f.read(4))[0]
         self.flags = MODEL_FLAGS(struct.unpack('>I', f.read(4))[0], 4)
@@ -370,11 +383,11 @@ beta:          %s
 gamma:         %s
 stored data:
 %s""" % (self.version, self.name, self.xmax, self.ymax, self.zmax, \
-                        self.objsize, self.flags, self.drawmode, self.mousemode, \
-                        self.blacklevel, self.whitelevel, self.xoffset, self.yoffset, \
-                        self.zoffset, self.xscale, self.yscale, self.zscale, self.object, \
-                        self.contour, self.point, self.res, self.thresh, self.pixsize, \
-                        self.units, self.csum, self.alpha, self.beta, self.gamma, self.most)
+         self.objsize, self.flags, self.drawmode, self.mousemode, \
+         self.blacklevel, self.whitelevel, self.xoffset, self.yoffset, \
+         self.zoffset, self.xscale, self.yscale, self.zscale, self.object, \
+         self.contour, self.point, self.res, self.thresh, self.pixsize, \
+         self.units, self.csum, self.alpha, self.beta, self.gamma, self.most)
         return string
 
 
@@ -385,6 +398,7 @@ class MOST(object):
 
     :param file f: file handle of the IMOD segmentation
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -394,7 +408,7 @@ class MOST(object):
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
         self.store = dict()
-        for i in xrange(self.bytes // 12):
+        for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
             self.store[i] = store
@@ -415,6 +429,7 @@ class OBJT(object):
     either as contours (:py:class:`sfftk.readers.modreader.CONT`) or meshes (:py:class:`sfftk.readers.modreader.MESH`). OBJT chunks also 
     contain :py:class:`sfftk.readers.modreader.CLIP`, :py:class:`sfftk.readers.modreader.IMAT`, :py:class:`sfftk.readers.modreader.MEPA` and a :py:class:`sfftk.readers.modreader.OBST` storage chunk. 
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -432,7 +447,7 @@ class OBJT(object):
     def read(self):
         """Read data from the file to the chunk"""
         f = self.f
-        self.name = get_printable_ascii_string(struct.unpack('>64s', f.read(64))[0])
+        self.name = _decode(get_printable_ascii_string(struct.unpack('>64s', f.read(64))[0]), 'utf-8')
         self.extra = struct.unpack('>16I', f.read(64))[0]  # keep an eye on this
         self.contsize = struct.unpack('>i', f.read(4))[0]
         self.flags = OBJECT_FLAGS(struct.unpack('>I', f.read(4))[0], 4)
@@ -481,15 +496,16 @@ meshsize:      %s
 surfsize:      %s
 stored data:
 %s""" % (self.name, self.extra, self.contsize, self.flags, \
-                        self.axis, self.drawmode, self.red, self.green, self.blue, \
-                        self.pdrawsize, self.symbol, self.symsize, self.linewidth2, \
-                        self.linewidth, self.linesty, self.symflags, self.sympad, \
-                        self.trans, self.meshsize, self.surfsize, self.obst)
+         self.axis, self.drawmode, self.red, self.green, self.blue, \
+         self.pdrawsize, self.symbol, self.symsize, self.linewidth2, \
+         self.linewidth, self.linesty, self.symflags, self.sympad, \
+         self.trans, self.meshsize, self.surfsize, self.obst)
         return string
 
 
 class OBST(object):
     """OBST chunk class"""
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -499,7 +515,7 @@ class OBST(object):
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
         self.store = dict()
-        for i in xrange(self.bytes // 12):
+        for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
             self.store[i] = store
@@ -518,6 +534,7 @@ class CONT(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -567,6 +584,7 @@ class COST(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -576,7 +594,7 @@ class COST(object):
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
         self.store = dict()
-        for i in xrange(self.bytes // 12):
+        for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
             self.store[i] = store
@@ -595,6 +613,7 @@ class MESH(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.mest = None
@@ -610,12 +629,12 @@ class MESH(object):
         # first get the array of floats
         # then isolate each frame (0, 1, 2)
         # then zip them all together
-#         print(sys.stderr, 12*self.vsize, file=sys.stderr)
+        #         print(sys.stderr, 12*self.vsize, file=sys.stderr)
         vert = struct.unpack('>' + 'fff' * self.vsize, f.read(12 * self.vsize))
         vert_x = vert[0::3]
         vert_y = vert[1::3]
         vert_z = vert[2::3]
-        self.vert = zip(vert_x, vert_y, vert_z)
+        self.vert = tuple(zip(vert_x, vert_y, vert_z))
         self.list = struct.unpack('>' + 'i' * self.lsize, f.read(4 * self.lsize))
         self.isset = True
         return f
@@ -639,6 +658,7 @@ class MEST(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -647,7 +667,7 @@ class MEST(object):
         """Read the contents of the MEST chunk"""
         f = self.f
         self.store = dict()
-        for i in xrange(self.bytes // 12):
+        for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
             self.store[i] = store
@@ -663,6 +683,7 @@ class MEST(object):
 
 class IMAT(object):
     """IMAT chunk class"""
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -694,8 +715,8 @@ valblack:      %s
 valwhite:      %s
 matflags2:     %s
 mat3b3:        %s""" % (self.bytes, self.ambient, self.diffuse, self.specular, self.shininess, self.fillred, \
-                         self.fillgreen, self.fillblue, self.quality, self.mat2, self.valblack, \
-                         self.valwhite, self.matflags2, self.mat3b3)
+                        self.fillgreen, self.fillblue, self.quality, self.mat2, self.valblack, \
+                        self.valwhite, self.matflags2, self.mat3b3)
         return string
 
 
@@ -704,6 +725,7 @@ class SLAN(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -724,6 +746,7 @@ class VIEW(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f, first_view=False):
         self.f = f
         self.isset = False
@@ -760,6 +783,7 @@ class MINX(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -795,6 +819,7 @@ class CLIP(object):
 
     :param file f: file handler for the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -834,6 +859,7 @@ class MCLP(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -871,6 +897,7 @@ class MEPA(object):
 
     :param file f: file handle of the IMOD segmentation file
     """
+
     def __init__(self, f):
         self.f = f
         self.isset = False
@@ -880,7 +907,8 @@ class MEPA(object):
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
         self.flags = MEPA_FLAGS(struct.unpack('>I', f.read(4))[0], 4)
-        self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz, self.maxz, self.reserved_int = struct.unpack('>8i', f.read(32))
+        self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz, self.maxz, self.reserved_int = struct.unpack(
+            '>8i', f.read(32))
         self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, self.tolHighRes, \
         self.flatCrit, self.reserved_float = struct.unpack('>10f', f.read(40))
         self.isset = True
@@ -907,9 +935,11 @@ ymax:         %s
 tolLowRes:    %s
 tolHighRes:   %s
 flatCrit:     %s
-reserved:     %s""" % (self.bytes, self.flags, self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz, self.maxz, self.reserved_int, \
-                          self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, \
-                          self.tolHighRes, self.flatCrit, self.reserved_float)
+reserved:     %s""" % (
+        self.bytes, self.flags, self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz,
+        self.maxz, self.reserved_int, \
+        self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, \
+        self.tolHighRes, self.flatCrit, self.reserved_float)
         return string
 
 
@@ -921,17 +951,18 @@ def get_data(fn):
     :raises ValueError: if it doesn't start with an IMOD chunk
     :raises ValueError: if the file lacks an IEOF chunk
     """
-    with open(fn, 'rb') as f:
+    with open(fn, 'r+b') as f:
         # make sure the file has a 'IEOF' terminal type ID
         # absence of this will mean non-termination
         f.seek(-4, os.SEEK_END)
-        chunk_name = struct.unpack('>4s', f.read(4))[0]
+        chunk_name = _decode(struct.unpack('>4s', f.read(4))[0], 'utf-8')
+
         if chunk_name == 'IEOF':
             f.seek(0)
         else:
             raise ValueError("Invalid file: missing terminal IEOF; has %s instead" % chunk_name)
 
-        chunk_name = struct.unpack('>4s', f.read(4))[0]
+        chunk_name = _decode(struct.unpack('>4s', f.read(4))[0], 'utf-8')
         if chunk_name == 'IMOD':
             imod = None
             first_view = True
@@ -967,7 +998,8 @@ def get_data(fn):
                 f = cost.read()
                 imod.current_objt.current_cont.cost = cost
             elif chunk_name == 'SIZE':
-                size = struct.unpack('>i' + 'f' * imod.current_objt.current_cont.psize, f.read(4 * (imod.current_objt.current_cont.psize + 1)))
+                size = struct.unpack('>i' + 'f' * imod.current_objt.current_cont.psize,
+                                     f.read(4 * (imod.current_objt.current_cont.psize + 1)))
                 imod.current_objt.current_cont.size = size
             elif chunk_name == 'MESH':
                 mesh = MESH(f)
@@ -1024,7 +1056,12 @@ def get_data(fn):
                 print("It has a length of %(chunk_length)s bytes." % {'chunk_length': chunk_length})
                 print("The next chunk is %(next_chunk)s." % {'next_chunk': next_chunk})
                 raise ValueError("Unknown chunk named '%s'" % chunk_name)
-            chunk_name = struct.unpack('>4s', f.read(4))[0]
+            # next chunk
+            chunk_name = _decode(struct.unpack('>4s', f.read(4))[0], 'utf-8')
+            # if isinstance(_chunk_name, _bytes):
+            #     chunk_name = _chunk_name.decode('utf-8')
+            # else:
+            #     chunk_name = _chunk_name
 
     return imod
 
@@ -1038,15 +1075,15 @@ def show_chunks(fn):
     marker_sequence = list()
     seen_view = False
     view_size = 0
-    byte = ''
+    byte = b''
     with open(fn, 'rb') as f:
-        while byte != 'IEOF':
+        while byte != b'IEOF':
             byte = struct.unpack('>4s', f.read(4))[0]
             if byte in KEY_WORDS:  # or (byte[0] in ALPHA and byte[1] in ALPHA and byte[2] in ALPHA and byte[3] in ALPHA):
                 marker_sequence.append(byte)
-            if byte == 'VIEW':
+            if byte == b'VIEW':
                 seen_view = True
-    #                 print "view size = %s" % view_size
+            #                 print "view size = %s" % view_size
             if seen_view:
                 view_size += 1
 
@@ -1056,8 +1093,8 @@ def show_chunks(fn):
         marker_count = dict(zip(
             KEY_WORDS,
             [0] * len(KEY_WORDS)
-            ))
-        for i in xrange(len(marker_sequence) - 1):
+        ))
+        for i in _xrange(len(marker_sequence) - 1):
             current_marker = marker_sequence[i]
             next_marker = marker_sequence[i + 1]
             if next_marker == current_marker:
@@ -1065,7 +1102,7 @@ def show_chunks(fn):
             elif next_marker != current_marker:
                 marker_count[current_marker] += 1
                 print(current_marker, marker_count[current_marker])
-    #             waiter = raw_input('')
+                #             waiter = raw_input('')
                 marker_count[current_marker] = 0
         # print the last one
         print(next_marker)
@@ -1087,7 +1124,6 @@ def print_model(fn):
     # else:
     #     output_dest = output
 
-
     mod = get_data(fn)
     output_dest = sys.stderr
 
@@ -1099,30 +1135,37 @@ def print_model(fn):
     for o, O in mod.objts.iteritems():
         print('OBJT%s' % o, file=output_dest)
         print(O, file=output_dest)
-        print("***************************************************************************************", file=output_dest)
+        print("***************************************************************************************",
+              file=output_dest)
         for c, C in O.conts.iteritems():
             print('CONT%s' % c, file=output_dest)
             print(C, file=output_dest)
-            print("***************************************************************************************", file=output_dest)
+            print("***************************************************************************************",
+                  file=output_dest)
         for m, M in O.meshes.iteritems():
             print('MESH%s' % m, file=output_dest)
             print(M, file=output_dest)
-            print("***************************************************************************************", file=output_dest)
+            print("***************************************************************************************",
+                  file=output_dest)
         if O.clip is not None:
             print('CLIP', file=output_dest)
             print(O.clip, file=output_dest)
-            print("***************************************************************************************", file=output_dest)
+            print("***************************************************************************************",
+                  file=output_dest)
         print('IMAT', file=output_dest)
         print(O.imat, file=output_dest)
-        print("***************************************************************************************", file=output_dest)
+        print("***************************************************************************************",
+              file=output_dest)
         if O.mepa is not None:
             print('MEPA', file=output_dest)
             print(O.mepa, file=output_dest)
-            print("***************************************************************************************", file=output_dest)
+            print("***************************************************************************************",
+                  file=output_dest)
     for v, V in mod.views.iteritems():
         print('VIEW%s' % v, file=output_dest)
         print(V, file=output_dest)
-        print("***************************************************************************************", file=output_dest)
+        print("***************************************************************************************",
+              file=output_dest)
     print('MINX', file=output_dest)
     print(mod.minx, file=output_dest)
     print("***************************************************************************************", file=output_dest)

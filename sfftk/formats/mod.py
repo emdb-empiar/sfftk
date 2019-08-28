@@ -10,13 +10,14 @@ User-facing reader classes for IMOD files
 from __future__ import division, print_function
 
 import inspect
-from UserList import UserList
+from ..core import _UserList
 
 import os.path
 from numpy import matrix
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
 from .. import schema
+from ..core import _dict_iter_values, _dict_iter_items, _dict_iter_keys
 from ..readers import modreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -49,7 +50,9 @@ class IMODMesh(Mesh):
     def __init__(self, imod_mesh):
         self._mesh = imod_mesh
         # dictionary of indices to vertices
-        self._vertex_dict = dict(zip(range(len(self._mesh.vert)), self._mesh.vert))
+        vertices = list(self._mesh.vert)
+        _zipped = list(zip(range(len(vertices)), vertices))
+        self._vertex_dict = dict(_zipped)
         self._vertices, self._polygons = self._configure()
 
     @property
@@ -70,7 +73,7 @@ class IMODMesh(Mesh):
         # split at ','
         list_of_lists_of_index_strings = map(lambda x: x.split(','), split_index_string)
         # convert to int
-        list_of_lists_of_indices = map(lambda x: map(int, x), list_of_lists_of_index_strings)
+        list_of_lists_of_indices = list(map(lambda x: list(map(int, x)), list_of_lists_of_index_strings))
         # get rid of last list (contains list [-1])
         indices = list_of_lists_of_indices[:-1]
         #  one-line version
@@ -90,14 +93,14 @@ class IMODMesh(Mesh):
         for _indices in split_indices:  # _indices is a list of lists
             index_id, indices = _indices[0], _indices[1:]
             if index_id == -25:
-                surface_indices = [tuple(indices[i:i + 3]) for i in xrange(0, len(indices), 3)]
+                surface_indices = [tuple(indices[i:i + 3]) for i in range(0, len(indices), 3)]
                 normal_indices = [tuple(map(lambda i: i + 1, s)) for s in surface_indices]
             elif index_id == -23:
-                triangles = [tuple(indices[i:i + 6]) for i in xrange(0, len(indices), 6)]
+                triangles = [tuple(indices[i:i + 6]) for i in range(0, len(indices), 6)]
                 normal_indices = map(lambda v: tuple(v[::2]), triangles)
                 surface_indices = map(lambda v: tuple(v[1::2]), triangles)
             elif index_id == -21:
-                surface_indices = [tuple(indices[i:i + 3]) for i in xrange(0, len(indices), 3)]
+                surface_indices = [tuple(indices[i:i + 3]) for i in range(0, len(indices), 3)]
                 normal_indices = list()
             elif index_id == -24:
                 raise NotImplementedError
@@ -105,7 +108,7 @@ class IMODMesh(Mesh):
                 raise NotImplementedError
             # collate vertices and polygons
             # if we have not normals we only have surface
-            for i in xrange(len(surface_indices)):  # surface_indices[i] is a tuple
+            for i in range(len(surface_indices)):  # surface_indices[i] is a tuple
                 if normal_indices:
                     zipped_indices = zip(surface_indices[i], normal_indices[i])
                 else:
@@ -130,7 +133,7 @@ class IMODMesh(Mesh):
         return vertices, polygons
 
 
-class IMODMeshes(UserList):
+class IMODMeshes(_UserList):
     """Container class for IMOD meshes"""
 
     def __init__(self, header, imod_meshes):
@@ -138,7 +141,7 @@ class IMODMeshes(UserList):
         self._meshes = imod_meshes
 
     def __iter__(self):
-        return iter(map(IMODMesh, self._meshes.itervalues()))
+        return iter(map(IMODMesh, _dict_iter_values(self._meshes)))
 
     def __getitem__(self, index):
         return IMODMesh(self._meshes.values()[index])
@@ -154,7 +157,7 @@ class IMODMeshes(UserList):
             mesh = schema.SFFMesh()
             # vertices
             vertices = schema.SFFVertexList()
-            for vID, v in m.vertices.iteritems():
+            for vID, v in _dict_iter_items(m.vertices):
                 x, y, z = v.point
                 vertex = schema.SFFVertex(
                     vID=vID,
@@ -167,7 +170,7 @@ class IMODMeshes(UserList):
             # polygons
             polygons = schema.SFFPolygonList()
             schema.SFFPolygon.reset_id()
-            for p in m.polygons.itervalues():
+            for p in _dict_iter_values(m.polygons):
                 polygon = schema.SFFPolygon()
                 for I in p:
                     if len(I) == 2:  # if there are normals
@@ -492,7 +495,7 @@ class IMODSegmentation(Segmentation):
         self._segmentation = modreader.get_data(self._fn)
         self._header = IMODHeader(self._segmentation)
         self._segments = list()
-        for objt in self._segmentation.objts.itervalues():
+        for objt in _dict_iter_values(self._segmentation.objts):
             segment = IMODSegment(self._header, objt)
             self._segments.append(segment)
 

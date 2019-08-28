@@ -15,6 +15,7 @@ import os.path
 from .base import Segmentation, Header, Segment, Annotation, Mesh
 from .. import schema
 from ..readers import surfreader
+from ..core import _dict_iter_items
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -42,7 +43,7 @@ class AmiraHyperSurfaceMesh(Mesh):
         """Convert to a :py:class:`sfftk.schema.SFFMesh` object"""
         #  vertices
         vertices = schema.SFFVertexList()
-        for vID, v in self.vertices.iteritems():
+        for vID, v in _dict_iter_items(self.vertices):
             x, y, z = v
             vertex = schema.SFFVertex(
                 vID=vID,
@@ -70,8 +71,8 @@ class AmiraHyperSurfaceAnnotation(Annotation):
 
     def __init__(self, segment):
         self._segment = segment
-        self._name = self._segment.name
-        self._colour = self._segment.colour
+        self._name = segment[0].name
+        self._colour = segment[0].colour
 
     @property
     def name(self):
@@ -103,13 +104,12 @@ class AmiraHyperSurfaceAnnotation(Annotation):
 
 class AmiraHyperSurfaceSegment(Segment):
     """Segment class"""
-
     def __init__(self, segment):
         self._segment = segment
-        self._segment_id = self._segment.id
+        self._segment_id = segment[0].id
         self._annotation = AmiraHyperSurfaceAnnotation(segment)
         # meshes
-        self._meshes = [AmiraHyperSurfaceMesh(segment)]
+        self._meshes = [AmiraHyperSurfaceMesh(s) for s in self._segment]
 
     @property
     def id(self):
@@ -146,13 +146,18 @@ class AmiraHyperSurfaceHeader(Header):
         :param header: the raw header obtained as a ``ahds.header.AmiraHeader`` object
         """
         self._header = header
-        for attr in dir(self._header):
-            if attr[:2] == "__" or attr[:1] == "_":
-                continue
-            elif inspect.ismethod(getattr(self._header, attr)):
+        # for attr in dir(self._header):
+        #     if attr[:2] == "__" or attr[:1] == "_":
+        #         continue
+        #     elif inspect.ismethod(getattr(self._header, attr)):
+        #         continue
+        #     else:
+        #         setattr(self, attr, getattr(self._header, attr))
+        for attr in header.attrs():
+            if inspect.ismethod(getattr(header, attr)):
                 continue
             else:
-                setattr(self, attr, getattr(self._header, attr))
+                setattr(self, attr, getattr(header, attr))
 
     def convert(self):
         """Convert to an EMDB-SFF segmentation header object
@@ -177,7 +182,7 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         header, segments = surfreader.get_data(self._fn)
         self._header = AmiraHyperSurfaceHeader(header)
         self._segments = list()
-        for segment in segments.itervalues():
+        for segment_id, segment in _dict_iter_items(segments):
             self._segments.append(AmiraHyperSurfaceSegment(segment))
 
     @property
@@ -196,7 +201,7 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         segmentation.name = "Amira HyperSurface Segmentation"
         segmentation.software = schema.SFFSoftware(
             name="Amira",
-            version=self.header.designation.version,
+            version=self.header.version,
         )
         # transforms
         segmentation.transforms = schema.SFFTransformList()

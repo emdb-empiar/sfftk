@@ -15,6 +15,9 @@ The following article is useful as it exposes many internals of map files:
 from __future__ import division, print_function
 
 import os
+import sys
+
+from ..core import _xrange, _encode, _decode
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
@@ -31,15 +34,10 @@ class Map(object):
         """
         self._fn = fn
         self._inverted = False
-        with open(fn) as f:
+        with open(fn, 'rb') as f:
             status = self.read(f, *args, **kwargs)
         #  0 is good
         assert status == 0
-
-    # @property
-    # def name(self):
-    #     """Name of the map which corresponds to the MAP attribute"""
-    #     return self._map
 
     def write(self, f):
         """Write data to an EMDB Map file
@@ -62,8 +60,10 @@ class Map(object):
                               self._s31, self._s32, self._s33)
         string += struct.pack('<fff', self._t1, self._t2, self._t3)
         string += struct.pack('<15i', *self._extra)
-        string += struct.pack('<4c', *self._map)
-        string += struct.pack('<4c', *self._machst)
+        # string += struct.pack('<4c', self._map)
+        # convert to bytes
+        string += _encode(self._map, 'utf-8')
+        string += _encode(self._machst, 'utf-8')
         string += struct.pack('<f', self._rms)
 
         #  if inverted we will add one more label
@@ -74,17 +74,19 @@ class Map(object):
 
         for i in range(self._nlabl):
             len_label = len(self.__getattribute__('_label_%s' % i))
-            string += struct.pack('<%sc' % len_label, *self.__getattribute__('_label_%s' % i))
+            encoding = _encode(self.__getattribute__('_label_{}'.format(i)), 'utf-8')
+            len_encoding = len(encoding)
+            string += encoding
             # pack the remaining space
-            string += struct.pack('<%sx' % (80 - len_label))
+            string += struct.pack('<{}x'.format(80 - len_label))
 
         if self._inverted:
             from datetime import datetime
             d = datetime.now()
-            string += "{:<56}{:>24}".format(
+            string += _encode("{:<56}{:>24}".format(
                 "sfftk: inverted intensities",
                 d.strftime("%d-%b-%y  %H:%M:%S     ")
-            )
+            ), 'utf-8')
 
         # pad up to full header of 1024 bytes
         try:
@@ -97,8 +99,8 @@ class Map(object):
 
         string += struct.pack('<' + self._voxel_type * self._voxel_count, *tuple(self._voxels))
 
-        with f:
-            f.write(string)
+        f.write(string)
+        f.flush()
 
         return os.EX_OK
 
@@ -140,16 +142,19 @@ class Map(object):
         # user-defined metadata
         self._extra = struct.unpack('<15i', f.read(15 * 4))
         # MRC/CCP4 MAP format identifier
-        self._map = "".join(struct.unpack('<4c', f.read(4)))
+        self._map = struct.unpack('<4s', f.read(4))[0].decode('utf-8')
         # machine stamp
-        self._machst = struct.unpack('<4c', f.read(4))  # [0]
+        self._machst = struct.unpack('<4s', f.read(4))[0].decode('utf-8')
         # Density root-mean-square deviation
         self._rms = struct.unpack('<f', f.read(4))[0]
         # number of labels
         self._nlabl = struct.unpack('<i', f.read(4))[0]
         # Up to 10 user-defined labels
         for i in range(int(self._nlabl)):
-            self.__setattr__('_label_%s' % i, "".join(struct.unpack('<80c', f.read(80))).rstrip(' '))
+            self.__setattr__(
+                '_label_{}'.format(i),
+                struct.unpack('<80s', f.read(80))[0].decode('utf-8').rstrip(' ')
+            )
 
         # jump to the beginning of data
         if f.tell() < 1024:
@@ -210,70 +215,136 @@ class Map(object):
 
         return os.EX_OK
 
-    def __unicode__(self):
-        string = u"""\
-        \rCols, rows, sections: 
-        \r    {0}, {1}, {2}
-        \rMode: {3}
-        \rStart col, row, sections: 
-        \r    {4}, {5}, {6}
-        \rX, Y, Z: 
-        \r    {7}, {8}, {9}
-        \rLengths X, Y, Z (Ångstrom): 
-        \r    {10}, {11}, {12}
-        \r\U000003b1, \U000003b2, \U000003b3: 
-        \r    {13}, {14}, {15}
-        \rMap cols, rows, sections: 
-        \r    {16}, {17}, {18}
-        \rDensity min, max, mean: 
-        \r    {19}, {20}, {21}
-        \rSpace group: {22}
-        \rBytes in symmetry table: {23}
-        \rSkew matrix flag: {24}
-        \rSkew matrix:
-        \r    {25} {26} {27}
-        \r    {28} {29} {30}
-        \r    {31} {32} {33}
-        \rSkew translation:
-        \r    {34}
-        \r    {35}
-        \r    {36}
-        \rExtra: {37}
-        \rMap: {38}
-        \rMach-stamp: {39}
-        \rRMS: {40}
-        \rLabel count: {41}
-        \r""".format(
-            self._nc, self._nr, self._ns,
-            self._mode,
-            self._ncstart, self._nrstart, self._nsstart,
-            self._nx, self._ny, self._nz,
-            self._x_length, self._y_length, self._z_length,
-            self._alpha, self._beta, self._gamma,
-            self._mapc, self._mapr, self._maps,
-            self._amin, self._amax, self._amean,
-            self._ispg,
-            self._nsymbt,
-            self._lskflg,
-            self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33,
-            self._t1, self._t2, self._t3,
-            self._extra,
-            self._map,
-            self._machst,
-            self._rms,
-            self._nlabl
-        )
-        if int(self._nlabl) > 0:
-            for i in xrange(int(self._nlabl)):
-                string += """\
-                \rLabel {0}:\
-                \r    {1}
-                \r""".format(i, self.__getattribute__('_label_%s' % i))
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
 
-        return string.encode('utf-8')
+        def __str__(self):
+            string = u"""\
+            \rCols, rows, sections: 
+            \r    {0}, {1}, {2}
+            \rMode: {3}
+            \rStart col, row, sections: 
+            \r    {4}, {5}, {6}
+            \rX, Y, Z: 
+            \r    {7}, {8}, {9}
+            \rLengths X, Y, Z (Ångstrom): 
+            \r    {10}, {11}, {12}
+            \r\U000003b1, \U000003b2, \U000003b3: 
+            \r    {13}, {14}, {15}
+            \rMap cols, rows, sections: 
+            \r    {16}, {17}, {18}
+            \rDensity min, max, mean: 
+            \r    {19}, {20}, {21}
+            \rSpace group: {22}
+            \rBytes in symmetry table: {23}
+            \rSkew matrix flag: {24}
+            \rSkew matrix:
+            \r    {25} {26} {27}
+            \r    {28} {29} {30}
+            \r    {31} {32} {33}
+            \rSkew translation:
+            \r    {34}
+            \r    {35}
+            \r    {36}
+            \rExtra: {37}
+            \rMap: {38}
+            \rMach-stamp: {39}
+            \rRMS: {40}
+            \rLabel count: {41}
+            \r""".format(
+                self._nc, self._nr, self._ns,
+                self._mode,
+                self._ncstart, self._nrstart, self._nsstart,
+                self._nx, self._ny, self._nz,
+                self._x_length, self._y_length, self._z_length,
+                self._alpha, self._beta, self._gamma,
+                self._mapc, self._mapr, self._maps,
+                self._amin, self._amax, self._amean,
+                self._ispg,
+                self._nsymbt,
+                self._lskflg,
+                self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33,
+                self._t1, self._t2, self._t3,
+                self._extra,
+                self._map,
+                self._machst,
+                self._rms,
+                self._nlabl
+            )
+            if int(self._nlabl) > 0:
+                for i in _xrange(int(self._nlabl)):
+                    string += """\
+                    \rLabel {0}:\
+                    \r    {1}
+                    \r""".format(i, self.__getattribute__('_label_%s' % i))
 
-    def __str__(self):
-        return self.__unicode__()
+            return string
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            string = u"""\
+            \rCols, rows, sections: 
+            \r    {0}, {1}, {2}
+            \rMode: {3}
+            \rStart col, row, sections: 
+            \r    {4}, {5}, {6}
+            \rX, Y, Z: 
+            \r    {7}, {8}, {9}
+            \rLengths X, Y, Z (Ångstrom): 
+            \r    {10}, {11}, {12}
+            \r\U000003b1, \U000003b2, \U000003b3: 
+            \r    {13}, {14}, {15}
+            \rMap cols, rows, sections: 
+            \r    {16}, {17}, {18}
+            \rDensity min, max, mean: 
+            \r    {19}, {20}, {21}
+            \rSpace group: {22}
+            \rBytes in symmetry table: {23}
+            \rSkew matrix flag: {24}
+            \rSkew matrix:
+            \r    {25} {26} {27}
+            \r    {28} {29} {30}
+            \r    {31} {32} {33}
+            \rSkew translation:
+            \r    {34}
+            \r    {35}
+            \r    {36}
+            \rExtra: {37}
+            \rMap: {38}
+            \rMach-stamp: {39}
+            \rRMS: {40}
+            \rLabel count: {41}
+            \r""".format(
+                self._nc, self._nr, self._ns,
+                self._mode,
+                self._ncstart, self._nrstart, self._nsstart,
+                self._nx, self._ny, self._nz,
+                self._x_length, self._y_length, self._z_length,
+                self._alpha, self._beta, self._gamma,
+                self._mapc, self._mapr, self._maps,
+                self._amin, self._amax, self._amean,
+                self._ispg,
+                self._nsymbt,
+                self._lskflg,
+                self._s11, self._s12, self._s13, self._s21, self._s22, self._s23, self._s31, self._s32, self._s33,
+                self._t1, self._t2, self._t3,
+                self._extra,
+                self._map,
+                self._machst,
+                self._rms,
+                self._nlabl
+            )
+            if int(self._nlabl) > 0:
+                for i in _xrange(int(self._nlabl)):
+                    string += """\
+                    \rLabel {0}:\
+                    \r    {1}
+                    \r""".format(i, self.__getattribute__('_label_%s' % i))
+
+            return string
 
     def __repr__(self):
         return "<class '%s'>" % self.__class__
@@ -341,7 +412,7 @@ class Map(object):
     def labels(self):
         """A string of labels found in the CCP4 mask file"""
         label_list = list()
-        for i in xrange(self._nlabl):
+        for i in _xrange(self._nlabl):
             label_list.append(getattr(self, "_label_{}".format(i)))
         return "\n".join(label_list)
 

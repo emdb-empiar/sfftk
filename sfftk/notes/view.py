@@ -9,9 +9,13 @@ Display notes in EMDB-SFF files
 from __future__ import division, print_function
 
 import os
+import sys
 import textwrap
+
 from styled import Styled
+
 from .. import schema
+from ..core import _str
 from ..core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
@@ -165,74 +169,142 @@ class NoteView(View):
         else:
             return u", ".join(segment_type)
 
-    def __unicode__(self):
-        if self._long:
-            string = u"""\
-            \r{}
-            \rID:\t\t{}
-            \rPARENT ID:\t{}
-            \rSegment Type:\t{}
-            \r{}
-            \rName:
-            \r\t{}
-            \rDescription:
-            \r\t{}
-            \rNumber of instances:
-            \r\t{}
-            \r{}
-            \rExternal references:
-            \r{}
-            \r{}
-            \rComplexes:
-            \r{}
-            \rMacromolecules:
-            \r{}
-            \r{}
-            \rColour:
-            \r\t{}\
-            """.format(
-                # ****
-                self.LINE3,
-                self.id,
-                self.parentID,
-                self.segmentType,
-                # ---
-                self.LINE2,
-                self.name,
-                self.description,
-                self.numberOfInstances,
-                # -----
-                self.LINE2,
-                self.externalReferences,
-                # ----
-                self.LINE2,
-                self.complexes,
-                self.macromolecules,
-                # ----
-                self.LINE2,
-                self.colour,
-            )
-        elif self.list_ids:
-            string = u"{}".format(self.id)
-        else:
-            colour = self.colour
-            string = u"{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
-                self.id,
-                self.parentID,
-                self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (
-                                                                                                                   self.name + "::" + self.description)[
-                                                                                                           :37] + "...",
-                self.numberOfInstances,
-                self.numberOfExternalReferences,
-                self.numberOfComplexes,
-                self.numberOfMacromolecules,
-                u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
-            )
-        return string
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
 
-    def __str__(self):
-        string = unicode(self)
-        return string.encode('utf-8')
+        def __str__(self):
+            if self._long:
+                string = u"""\
+                \r{}
+                \rID:\t\t{}
+                \rPARENT ID:\t{}
+                \rSegment Type:\t{}
+                \r{}
+                \rName:
+                \r\t{}
+                \rDescription:
+                \r\t{}
+                \rNumber of instances:
+                \r\t{}
+                \r{}
+                \rExternal references:
+                \r{}
+                \r{}
+                \rComplexes:
+                \r{}
+                \rMacromolecules:
+                \r{}
+                \r{}
+                \rColour:
+                \r\t{}\
+                """.format(
+                    # ****
+                    self.LINE3,
+                    self.id,
+                    self.parentID,
+                    self.segmentType,
+                    # ---
+                    self.LINE2,
+                    self.name,
+                    self.description,
+                    self.numberOfInstances,
+                    # -----
+                    self.LINE2,
+                    self.externalReferences,
+                    # ----
+                    self.LINE2,
+                    self.complexes,
+                    self.macromolecules,
+                    # ----
+                    self.LINE2,
+                    self.colour,
+                )
+            elif self.list_ids:
+                string = u"{}".format(self.id)
+            else:
+                colour = self.colour
+                string = u"{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
+                    self.id,
+                    self.parentID,
+                    self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (
+                                                                                                                       self.name + "::" + self.description)[
+                                                                                                               :37] + "...",
+                    self.numberOfInstances,
+                    self.numberOfExternalReferences,
+                    self.numberOfComplexes,
+                    self.numberOfMacromolecules,
+                    u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
+                )
+            return string
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            if self._long:
+                string = u"""\
+                \r{}
+                \rID:\t\t{}
+                \rPARENT ID:\t{}
+                \rSegment Type:\t{}
+                \r{}
+                \rName:
+                \r\t{}
+                \rDescription:
+                \r\t{}
+                \rNumber of instances:
+                \r\t{}
+                \r{}
+                \rExternal references:
+                \r{}
+                \r{}
+                \rComplexes:
+                \r{}
+                \rMacromolecules:
+                \r{}
+                \r{}
+                \rColour:
+                \r\t{}\
+                """.format(
+                    # ****
+                    self.LINE3,
+                    self.id,
+                    self.parentID,
+                    self.segmentType,
+                    # ---
+                    self.LINE2,
+                    self.name,
+                    self.description,
+                    self.numberOfInstances,
+                    # -----
+                    self.LINE2,
+                    self.externalReferences,
+                    # ----
+                    self.LINE2,
+                    self.complexes,
+                    self.macromolecules,
+                    # ----
+                    self.LINE2,
+                    self.colour,
+                )
+            elif self.list_ids:
+                string = u"{}".format(self.id)
+            else:
+                colour = self.colour
+                string = u"{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
+                    self.id,
+                    self.parentID,
+                    self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (
+                                                                                                                       self.name + "::" + self.description)[
+                                                                                                               :37] + "...",
+                    self.numberOfInstances,
+                    self.numberOfExternalReferences,
+                    self.numberOfComplexes,
+                    self.numberOfMacromolecules,
+                    u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
+                )
+            return string
 
 
 class HeaderView(View):
@@ -337,59 +409,119 @@ Software processing details: \n{}\
         else:
             return u"\t" + self.NOT_DEFINED
 
-    def __unicode__(self):
-        string = u"""\
-        \r{}
-        \rEMDB-SFF v.{}
-        \r{}
-        \rSegmentation name:
-        \r\t{}
-        \rSegmentation software:
-        \r{}
-        \r{}
-        \rPrimary descriptor [threeDVolume|meshList|shapePrimitiveList]:
-        \r\t{}
-        \r{}
-        \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
-        \r\t{}
-        \r{}
-        \rGlobal external references:
-        \r\t{}
-        \r{}
-        \rSegmentation details:
-        \r{}\
-        """.format(
-            # ===
-            self.LINE1,
-            self.version,
-            # ---
-            self.LINE2,
-            self.name,
-            self.software,
-            # ---
-            self.LINE2,
-            self.primaryDescriptor,
-            # ---
-            self.LINE2,
-            self.boundingBox,
-            # ---
-            self.LINE2,
-            self.globalExternalReferences,
-            # ----
-            self.LINE2,
-            self.details,
-        )
-        return string
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
 
-    def __str__(self):
-        string = unicode(self)
-        return string.encode('utf-8')
+        def __str__(self):
+            string = u"""\
+                    \r{}
+                    \rEMDB-SFF v.{}
+                    \r{}
+                    \rSegmentation name:
+                    \r\t{}
+                    \rSegmentation software:
+                    \r{}
+                    \r{}
+                    \rPrimary descriptor [threeDVolume|meshList|shapePrimitiveList]:
+                    \r\t{}
+                    \r{}
+                    \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
+                    \r\t{}
+                    \r{}
+                    \rGlobal external references:
+                    \r\t{}
+                    \r{}
+                    \rSegmentation details:
+                    \r{}\
+                    """.format(
+                # ===
+                self.LINE1,
+                self.version,
+                # ---
+                self.LINE2,
+                self.name,
+                self.software,
+                # ---
+                self.LINE2,
+                self.primaryDescriptor,
+                # ---
+                self.LINE2,
+                self.boundingBox,
+                # ---
+                self.LINE2,
+                self.globalExternalReferences,
+                # ----
+                self.LINE2,
+                self.details,
+            )
+            return string
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            string = u"""\
+            \r{}
+            \rEMDB-SFF v.{}
+            \r{}
+            \rSegmentation name:
+            \r\t{}
+            \rSegmentation software:
+            \r{}
+            \r{}
+            \rPrimary descriptor [threeDVolume|meshList|shapePrimitiveList]:
+            \r\t{}
+            \r{}
+            \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
+            \r\t{}
+            \r{}
+            \rGlobal external references:
+            \r\t{}
+            \r{}
+            \rSegmentation details:
+            \r{}\
+            """.format(
+                # ===
+                self.LINE1,
+                self.version,
+                # ---
+                self.LINE2,
+                self.name,
+                self.software,
+                # ---
+                self.LINE2,
+                self.primaryDescriptor,
+                # ---
+                self.LINE2,
+                self.boundingBox,
+                # ---
+                self.LINE2,
+                self.globalExternalReferences,
+                # ----
+                self.LINE2,
+                self.details,
+            )
+            return string
 
 
 class TableHeaderView(View):
     """Class defining the view of a table header object"""
 
-    def __unicode__(self):
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
+
+        def __str__(self):
+            return self._unicode()
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            return self._unicode()
+
+    def _unicode(self):
         string = u"""\
         \r{}
         \r{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
@@ -408,10 +540,6 @@ class TableHeaderView(View):
         )
         return string
 
-    def __str__(self):
-        string = unicode(self)
-        return string.encode('utf-8')
-
 
 def list_notes(args, configs):
     """List all notes in an EMDB-SFF file
@@ -425,9 +553,9 @@ def list_notes(args, configs):
     # todo: define the stream to use
     if args.header:
         string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-        string += unicode(HeaderView(sff_seg))
+        string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     note_views = [NoteView(segment, _long=args.long_format, list_ids=args.list_ids) for segment in sff_seg.segments]
     if args.sort_by_name:
         sorted_note_views = sorted(note_views, key=lambda n: n.name, reverse=args.reverse)
@@ -436,14 +564,14 @@ def list_notes(args, configs):
     # table header
     if not args.list_ids and not args.long_format:
         string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-        string += unicode(TableHeaderView())
+        string += _str(TableHeaderView())
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     for note_view in sorted_note_views:
         string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-        string += unicode(note_view)
+        string += _str(note_view)
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     return os.EX_OK
 
 
@@ -457,23 +585,23 @@ def show_notes(args, configs):
     sff_seg = schema.SFFSegmentation(args.sff_file)
     if args.header:
         string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-        string += unicode(HeaderView(sff_seg))
+        string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     if args.segment_id is not None:
         if not args.long_format:
             string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-            string += unicode(TableHeaderView())
+            string += _str(TableHeaderView())
             string += Styled(u"[[ ''|reset ]]")
-            print(unicode(string))
+            print(_str(string))
         found_segment = False
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-                string += unicode(NoteView(segment, _long=args.long_format))
+                string += _str(NoteView(segment, _long=args.long_format))
                 string += Styled(u"[[ ''|reset ]]")
-                print(unicode(string))
+                print(_str(string))
                 found_segment = True
         if not found_segment:
             print_date("No segment with ID(s) {}".format(", ".join(map(str, args.segment_id))))
-    return 0
+    return os.EX_OK

@@ -227,13 +227,11 @@ class AmiraMeshHeader(Header):
         """
         self._header = header
 
-        for attr in dir(header):
-            if attr[:2] == "__":
-                continue
-            elif inspect.ismethod(getattr(self._header, attr)):
+        for attr in header.attrs():
+            if inspect.ismethod(getattr(header, attr)):
                 continue
             else:
-                setattr(self, attr, getattr(self._header, attr))
+                setattr(self, attr, getattr(header, attr))
 
     def convert(self, *args, **kwargs):
         """Convert an AmiraMeshHeader object into an EMDB-SFF segmentation header
@@ -255,6 +253,7 @@ class AmiraMeshSegmentation(Segmentation):
     def __init__(self, fn, *args, **kwargs):
         self._fn = fn
         self._header, self._volume = amreader.get_data(self._fn, *args, **kwargs)
+        pass
 
     @property
     def header(self):
@@ -285,11 +284,10 @@ class AmiraMeshSegmentation(Segmentation):
             segmentation.name = _kwargs['name']
         else:
             segmentation.name = "AmiraMesh Segmentation"
-        #         segmentation.version = segmentation.version # strange but this is how it works!
         segmentation.software = schema.SFFSoftware(
             name="Amira",
             version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(
-                self.header.designation.version),
+                self.header.version),
             processingDetails=_kwargs['processingDetails'] if 'processingDetails' in _kwargs else "None",
         )
         segmentation.transforms = schema.SFFTransformList()
@@ -318,7 +316,7 @@ class AmiraMeshSegmentation(Segmentation):
             endianness='little',
             size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=sections),
-            data=self._volume,
+            data=self._volume.data, # the numpy data is on the .data attribute
         )
         lattices.add_lattice(lattice)
         segmentation.lattices = lattices

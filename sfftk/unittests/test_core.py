@@ -9,20 +9,19 @@ import random
 import shlex
 import shutil
 import sys
-import unittest
 
 import numpy
 from random_words import RandomWords, LoremIpsum
 from stl import Mesh
 
-from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose
+from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose, Py23FixTestCase
 from .. import BASE_DIR
-from ..core import utils
+from ..core import print_tools
+from ..core import utils, _dict_iter_items, _str
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
-from ..core import print_tools
 from ..notes import RESOURCE_LIST
 
 rw = RandomWords()
@@ -33,7 +32,7 @@ __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-05-15"
 
 
-class TestParser(unittest.TestCase):
+class TestParser(Py23FixTestCase):
     def test_default(self):
         """Test that default operation is OK"""
         args, configs = parse_args(shlex.split("--version"))
@@ -53,7 +52,7 @@ class TestParser(unittest.TestCase):
         self.assertIsNone(configs)
 
 
-class TestCoreConfigs(unittest.TestCase):
+class TestCoreConfigs(Py23FixTestCase):
     user_configs = os.path.expanduser("~/.sfftk/sff.conf")
     user_configs_hide = os.path.expanduser("~/.sfftk/sff.conf.test")
     dummy_configs = os.path.expanduser("~/sff.conf.test")
@@ -74,7 +73,7 @@ class TestCoreConfigs(unittest.TestCase):
     def load_values(self):
         """Load config values into test config file"""
         with open(self.config_fn, 'w') as f:
-            for n, v in self.config_values.iteritems():
+            for n, v in _dict_iter_items(self.config_values):
                 f.write('{}={}\n'.format(n, v))
 
     def clear_values(self):
@@ -382,14 +381,14 @@ class TestCoreConfigs(unittest.TestCase):
         self.assertTrue(set_configs(args, configs) == 1)
 
 
-class TestCorePrintUtils(unittest.TestCase):
+class TestCorePrintUtils(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls._weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     def setUp(self):
         self.temp_fn = 'temp_file.txt'
-        self.temp_file = open(self.temp_fn, 'w+')
+        self.temp_file = open(self.temp_fn, 'w+', newline='\r\n')
 
     def tearDown(self):
         os.remove(self.temp_fn)
@@ -437,16 +436,16 @@ class TestCorePrintUtils(unittest.TestCase):
 
     def test_printable_ascii_string(self):
         """Test whether we can get a printable substring"""
-        s_o = li.get_sentence()
-        unprintables = range(14, 32)
-        s_u = ''.join([chr(random.choice(unprintables)) for _ in range(100)])
+        s_o = li.get_sentence().encode('utf-8')
+        unprintables = list(range(14, 32))
+        s_u = b''.join([chr(random.choice(unprintables)).encode('utf-8') for _ in range(100)])
         s = s_o + s_u
         s_p = print_tools.get_printable_ascii_string(s)
         self.assertEqual(s_p, s_o)
         s_pp = print_tools.get_printable_ascii_string(s_u)
-        self.assertEqual(s_pp, '')
+        self.assertEqual(s_pp, b'')
         s_b = print_tools.get_printable_ascii_string('')
-        self.assertEqual(s_b, '')
+        self.assertEqual(s_b, b'')
 
     def test_print_static(self):
         """Test that we can print_static
@@ -459,14 +458,16 @@ class TestCorePrintUtils(unittest.TestCase):
         self.temp_file.flush()
         s1 = li.get_sentence()
         print_tools.print_static(s1, stream=self.temp_file)
+        self.temp_file.flush()
         self.temp_file.seek(0)
-        data = self.temp_file.readlines()[0]
+        _data = self.temp_file.read()
+        data = _data[0]
         self.assertEqual(data[0], '\r')
-        self.assertTrue(len(data) > len(s) + len(s1))
-        r_split = data.split('\r') # split at the carriage reset
-        self.assertTrue(len(r_split), 3) # there should be three items in the list
-        self.assertEqual(r_split[1].split('\t')[1], s) # split the first string and get the actual string (ex. date)
-        self.assertEqual(r_split[2].split('\t')[1], s1) # split the second string and get the actual string (ex. date)
+        self.assertTrue(len(_data) > len(s) + len(s1))
+        r_split = _data.split('\r')  # split at the carriage reset
+        self.assertTrue(len(r_split), 3)  # there should be three items in the list
+        self.assertEqual(r_split[1].split('\t')[1], s)  # split the first string and get the actual string (ex. date)
+        self.assertEqual(r_split[2].split('\t')[1], s1)  # split the second string and get the actual string (ex. date)
 
     def test_print_static_no_date(self):
         """Test print static with no date"""
@@ -502,8 +503,7 @@ class TestCorePrintUtils(unittest.TestCase):
         self.assertEqual(r_split[1].split('\t')[1], s)
 
 
-
-class TestCoreParserPrepBinmap(unittest.TestCase):
+class TestCoreParserPrepBinmap(Py23FixTestCase):
     def test_default(self):
         """Test default params for prep binmap"""
         args, _ = parse_args(shlex.split('prep binmap file.map'))
@@ -557,7 +557,7 @@ class TestCoreParserPrepBinmap(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestCoreParserPrepTransform(unittest.TestCase):
+class TestCoreParserPrepTransform(Py23FixTestCase):
     def test_default(self):
         """Test default param for prep transform"""
         lengths = _random_floats(count=3, multiplier=1000)
@@ -641,7 +641,7 @@ class TestCoreParserPrepTransform(unittest.TestCase):
         self.assertEqual(args.output, 'file_something.stl')
 
 
-class TestCoreParserConvert(unittest.TestCase):
+class TestCoreParserConvert(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         print("convert tests...", file=sys.stderr)
@@ -732,14 +732,14 @@ class TestCoreParserConvert(unittest.TestCase):
         args, _ = utils.parse_and_split('convert -v -m {}'.format(' '.join(self.empty_maps)))
         # assertions
         self.assertTrue(args.multi_file)
-        self.assertItemsEqual(args.from_file, self.empty_maps)
+        self.assertCountEqual(args.from_file, self.empty_maps)
 
     def test_multifile_stl(self):
         """Test that multi-file works for STLs"""
         args, _ = utils.parse_and_split('convert -v -m {}'.format(' '.join(self.empty_stls)))
         # assertions
         self.assertTrue(args.multi_file)
-        self.assertItemsEqual(args.from_file, self.empty_stls)
+        self.assertCountEqual(args.from_file, self.empty_stls)
 
     def test_multifile_map_fail1(self):
         """Test that excluding -m issues a warning for CCP4"""
@@ -766,7 +766,7 @@ class TestCoreParserConvert(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestCoreParserView(unittest.TestCase):
+class TestCoreParserView(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -808,7 +808,7 @@ class TestCoreParserView(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestCoreParserNotesReadOnly(unittest.TestCase):
+class TestCoreParserNotesReadOnly(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -998,7 +998,7 @@ class TestCoreParserNotesReadOnly(unittest.TestCase):
             'notes show -i {},{} file.sff --config-path {}'.format(segment_id0, segment_id1, self.config_fn)))
         #  assertions
         self.assertEqual(args.notes_subcommand, 'show')
-        self.assertItemsEqual(args.segment_id, [segment_id0, segment_id1])
+        self.assertCountEqual(args.segment_id, [segment_id0, segment_id1])
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertFalse(args.long_format)
 
@@ -1021,18 +1021,18 @@ class TestCoreParserNotesReadOnly(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestCoreParserTests(unittest.TestCase):
+class TestCoreParserTests(Py23FixTestCase):
     def test_tests_default(self):
         """Test that tests can be launched"""
         args, _ = parse_args("tests all", use_shlex=True)
         self.assertEqual(args.subcommand, 'tests')
-        self.assertItemsEqual(args.tool, ['all'])
+        self.assertCountEqual(args.tool, ['all'])
 
     def test_tests_one_tool(self):
         """Test that with any tool we get proper tool"""
         tool = random.choice(tool_list)
         args, _ = parse_args("tests {}".format(tool), use_shlex=True)
-        self.assertItemsEqual(args.tool, [tool])
+        self.assertCountEqual(args.tool, [tool])
 
     def test_multi_tool(self):
         """Test that we can specify multiple packages (tools) to test"""
@@ -1044,7 +1044,7 @@ class TestCoreParserTests(unittest.TestCase):
         if 'all' in tools:
             tools = ['all']
         args, _ = parse_args("tests {}".format(' '.join(tools)), use_shlex=True)
-        self.assertItemsEqual(args.tool, tools)
+        self.assertCountEqual(args.tool, tools)
 
     def test_tool_fail(self):
         """Test that we catch a wrong tool"""
@@ -1077,7 +1077,7 @@ class TestCoreParserTests(unittest.TestCase):
         self.assertEqual(args, os.EX_USAGE)
 
 
-class TestCoreParserNotesReadWrite(unittest.TestCase):
+class TestCoreParserNotesReadWrite(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -1088,7 +1088,7 @@ class TestCoreParserNotesReadWrite(unittest.TestCase):
         print("", file=sys.stderr)
 
     def setUp(self):
-        unittest.TestCase.setUp(self)
+        Py23FixTestCase.setUp(self)
         _, configs = parse_args(shlex.split('config get --all --config-path {}'.format(self.config_fn)))
         self.temp_file = configs['__TEMP_FILE']
         if os.path.exists(self.temp_file):
@@ -1099,7 +1099,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         if os.path.exists(self.temp_file):
             os.remove(self.temp_file)
             assert not os.path.exists(self.temp_file)
-        unittest.TestCase.tearDown(self)
+        Py23FixTestCase.tearDown(self)
 
     # ===========================================================================
     # notes: add
@@ -1142,19 +1142,19 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.software_version, software_version)
         self.assertEqual(args.software_processing_details, software_processing_details)
         self.assertEqual(args.details, details)
-        self.assertIsInstance(args.name, unicode)
-        self.assertIsInstance(args.details, unicode)
-        self.assertIsInstance(args.software_name, unicode)
-        self.assertIsInstance(args.software_version, unicode)
-        self.assertIsInstance(args.software_processing_details, unicode)
+        self.assertIsInstance(args.name, _str)
+        self.assertIsInstance(args.details, _str)
+        self.assertIsInstance(args.software_name, _str)
+        self.assertIsInstance(args.software_version, _str)
+        self.assertIsInstance(args.software_processing_details, _str)
         for i, tov in enumerate(args.external_ref):
             t, o, v = tov  # type, otherType, value
             self.assertEqual(args.external_ref[i][0], t)
             self.assertEqual(args.external_ref[i][1], o)
             self.assertEqual(args.external_ref[i][2], v)
-            self.assertIsInstance(t, unicode)
-            self.assertIsInstance(o, unicode)
-            self.assertIsInstance(v, unicode)
+            self.assertIsInstance(t, _str)
+            self.assertIsInstance(o, _str)
+            self.assertIsInstance(v, _str)
 
     def test_add_to_segment(self):
         """Test add segment notes"""
@@ -1188,29 +1188,29 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         args, _ = parse_args(cmd, use_shlex=True)
         #  assertions
         self.assertEqual(args.notes_subcommand, 'add')
-        self.assertItemsEqual(args.segment_id, [segment_id])
+        self.assertCountEqual(args.segment_id, [segment_id])
         self.assertEqual(args.segment_name, name)
         self.assertEqual(args.description, description)
         self.assertEqual(args.number_of_instances, number_of_instances)
-        self.assertItemsEqual(args.complexes, complexes)
-        self.assertItemsEqual(args.macromolecules, macromolecules)
+        self.assertCountEqual(args.complexes, complexes)
+        self.assertCountEqual(args.macromolecules, macromolecules)
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
         # unicode
-        self.assertIsInstance(args.segment_name, unicode)
-        self.assertIsInstance(args.description, unicode)
+        self.assertIsInstance(args.segment_name, _str)
+        self.assertIsInstance(args.description, _str)
         for c in args.complexes:
-            self.assertIsInstance(c, unicode)
+            self.assertIsInstance(c, _str)
         for m in args.macromolecules:
-            self.assertIsInstance(m, unicode)
+            self.assertIsInstance(m, _str)
         for i, tov in enumerate(args.external_ref):
             t, o, v = tov  # type, otherType, value
             self.assertEqual(args.external_ref[i][0], t)
             self.assertEqual(args.external_ref[i][1], o)
             self.assertEqual(args.external_ref[i][2], v)
-            self.assertIsInstance(t, unicode)
-            self.assertIsInstance(o, unicode)
-            self.assertIsInstance(v, unicode)
+            self.assertIsInstance(t, _str)
+            self.assertIsInstance(o, _str)
+            self.assertIsInstance(v, _str)
 
     def test_add_addendum_missing(self):
         """Test assertion fails if addendum is missing"""
@@ -1258,19 +1258,19 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.software_name, software_name)
         self.assertEqual(args.software_version, software_version)
         self.assertEqual(args.software_processing_details, software_processing_details)
-        self.assertIsInstance(args.name, unicode)
-        self.assertIsInstance(args.details, unicode)
-        self.assertIsInstance(args.software_name, unicode)
-        self.assertIsInstance(args.software_version, unicode)
-        self.assertIsInstance(args.software_processing_details, unicode)
+        self.assertIsInstance(args.name, _str)
+        self.assertIsInstance(args.details, _str)
+        self.assertIsInstance(args.software_name, _str)
+        self.assertIsInstance(args.software_version, _str)
+        self.assertIsInstance(args.software_processing_details, _str)
         for i, tov in enumerate(args.external_ref):
             t, o, v = tov  # type, otherType, value
             self.assertEqual(args.external_ref[i][0], t)
             self.assertEqual(args.external_ref[i][1], o)
             self.assertEqual(args.external_ref[i][2], v)
-            self.assertIsInstance(t, unicode)
-            self.assertIsInstance(o, unicode)
-            self.assertIsInstance(v, unicode)
+            self.assertIsInstance(t, _str)
+            self.assertIsInstance(o, _str)
+            self.assertIsInstance(v, _str)
 
     def test_edit_in_segment(self):
         """Test edit segment notes"""
@@ -1371,7 +1371,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         )))
 
         self.assertEqual(args.notes_subcommand, 'del')
-        self.assertItemsEqual(args.segment_id, [segment_id])
+        self.assertCountEqual(args.segment_id, [segment_id])
         self.assertTrue(args.description)
         self.assertTrue(args.number_of_instances)
         self.assertEqual(args.external_ref_id, external_ref_id)
@@ -1392,8 +1392,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         print(cmd, file=sys.stderr)
         args, _ = parse_args(shlex.split(cmd))
         self.assertEqual(args.notes_subcommand, 'copy')
-        self.assertItemsEqual(args.segment_id, [source_id])
-        self.assertItemsEqual(args.to_segment, [other_id])
+        self.assertCountEqual(args.segment_id, [source_id])
+        self.assertCountEqual(args.to_segment, [other_id])
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
 
@@ -1406,8 +1406,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         print(cmd, file=sys.stderr)
         args, _ = parse_args(shlex.split(cmd))
         self.assertEqual(args.notes_subcommand, 'copy')
-        self.assertItemsEqual(args.segment_id, [source_id])
-        self.assertItemsEqual(args.to_segment, other_id)
+        self.assertCountEqual(args.segment_id, [source_id])
+        self.assertCountEqual(args.to_segment, other_id)
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
 
@@ -1420,8 +1420,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         print(cmd, file=sys.stderr)
         args, _ = parse_args(shlex.split(cmd))
         self.assertEqual(args.notes_subcommand, 'copy')
-        self.assertItemsEqual(args.segment_id, source_id)
-        self.assertItemsEqual(args.to_segment, [other_id])
+        self.assertCountEqual(args.segment_id, source_id)
+        self.assertCountEqual(args.to_segment, [other_id])
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
 
@@ -1434,8 +1434,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         print('source_id: ', source_id, file=sys.stderr)
         args, _ = parse_args(shlex.split(cmd))
         self.assertEqual(args.notes_subcommand, 'copy')
-        self.assertItemsEqual(args.segment_id, source_id)
-        self.assertItemsEqual(args.to_segment, other_id)
+        self.assertCountEqual(args.segment_id, source_id)
+        self.assertCountEqual(args.to_segment, other_id)
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
 
@@ -1503,7 +1503,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         )
         args, _ = parse_args(shlex.split(cmd))
         self.assertEqual(args.notes_subcommand, 'clear')
-        self.assertEqual(args.segment_id, [source_id])
+        self.assertEqual(list(args.segment_id), [source_id])
         self.assertFalse(args.from_all_segments)
 
     def test_clear_multiple(self):
@@ -1514,7 +1514,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             config_fn=self.config_fn,
         )
         args, _ = parse_args(shlex.split(cmd))
-        self.assertEqual(args.segment_id, source_id)
+        self.assertEqual(list(args.segment_id), source_id)
 
     def test_clear_all_except_global(self):
         """Test that we can clear all except global"""
@@ -1593,7 +1593,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.config_path, self.config_fn)
 
 
-class TestCoreUtils(unittest.TestCase):
+class TestCoreUtils(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         print("utils tests...", file=sys.stderr)
@@ -1726,7 +1726,7 @@ class TestCoreUtils(unittest.TestCase):
         self.assertEqual(configs['__TEMP_FILE_REF'], '@')
 
 
-class TestCorePrep(unittest.TestCase):
+class TestCorePrep(Py23FixTestCase):
     def test_binmap_default(self):
         """Test binarise map"""
         test_map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')

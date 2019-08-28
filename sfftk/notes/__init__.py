@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # notes
 from __future__ import print_function
+import sys
 import collections
+from ..core import _dict
 
-RESOURCE_LIST = collections.OrderedDict()
+# RESOURCE_LIST = collections.OrderedDict()
+RESOURCE_LIST = _dict()
 FORMATS = [u'json', u'tab']
 """
 Enter a set of resources to search
@@ -73,7 +76,10 @@ for resource in RESOURCE_LIST:
     result_path = RESOURCE_LIST[resource][u'result_path']
     result_count = RESOURCE_LIST[resource][u'result_count']
     assert isinstance(name, str) or isinstance(name, unicode)
-    assert isinstance(root_url, basestring)
+    if sys.version_info[0] > 2:
+        assert isinstance(root_url, str)
+    else:
+        assert isinstance(root_url, basestring)
     assert format in FORMATS
     assert result_path is None or map(hash, result_path)
     assert result_path is None or len(result_path) > 0

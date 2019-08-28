@@ -8,8 +8,11 @@ Utilities for printing stuff to the screen.
 """
 from __future__ import division, print_function
 
+import string
 import sys
 import time
+
+from ..core import _basestring, _str, _bytes, _decode, _encode
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
@@ -27,11 +30,11 @@ def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
     :param bool newline: whether (default) or not to add a newline at the end
     """
     try:
-        assert isinstance(print_string, basestring)
+        assert isinstance(print_string, _basestring)
     except AssertionError:
         raise ValueError(u"input should be subclass of basestring: str or unicode")
-    if isinstance(print_string, str):
-        print_string = unicode(print_string)
+    if isinstance(print_string, _bytes):
+        print_string = _decode(print_string, 'utf-8')
     if newline:
         if incl_date:
             print(u"%s\t%s" % (time.ctime(time.time()), print_string), file=stream)
@@ -44,25 +47,21 @@ def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
             print(u"%s" % (print_string), file=stream, end='')
 
 
-def get_printable_ascii_string(s):
-    """Given a string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.
+def get_printable_ascii_string(B):
+    """Given a bytes string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.
     
-    :param str s: the string to search
-    :return str ascii_s: the minimal ASCII string
+    :param bytes B: the bytes string to search
+    :return bytes ascii_b: the minimal ASCII string
     """
-    # get the list of ordinals
-    s_ord = map(ord, s)
-    # ASCII have ordinals on 0-127
-    # get the first non-printable ASCII i.e. 32 < ord > 127
-    try:
-        non_ascii = filter(lambda x: x < 32 or x > 127, s_ord)[0]
-    except IndexError:
-        return ''
-    # get the index along the string where this character exists
-    non_ascii_index = s_ord.index(non_ascii)
-    # return the prefix upto and excluding the first non-ASCII
-    ascii_s = s[:non_ascii_index]
-    return ascii_s
+    B = _encode(B, 'utf-8')
+    printables = list(map(ord, string.printable))
+    index = len(B) - 1
+    for i, b in enumerate(B):  # for each byte
+        if b not in printables:
+            index = i  # the previous
+            break
+    ascii_b = B[:index]
+    return ascii_b
 
 
 def print_static(print_string, stream=sys.stderr, incl_date=True):
@@ -77,12 +76,11 @@ def print_static(print_string, stream=sys.stderr, incl_date=True):
     :param bool newline: whether (default) or not to add a newline at the end
     """
     try:
-        assert isinstance(print_string, basestring)
+        assert isinstance(print_string, _basestring)
     except AssertionError:
         raise ValueError(u"input should be subclass of basestring: str or unicode")
-    if isinstance(print_string, str):
-        print_string = unicode(print_string)
+    print_string = _decode(print_string, 'utf-8')
     if incl_date:
-        print(u"\r%s\t%s" % (time.ctime(time.time()), print_string), file=stream, end='')
+        print(u"\r{}\t{}".format(time.ctime(time.time()), print_string), file=stream, end='')
     else:
-        print(u"\r%s" % (print_string), file=stream, end='')
+        print(u"\r{}".format(print_string), file=stream, end='')

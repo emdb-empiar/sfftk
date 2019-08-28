@@ -9,6 +9,7 @@ from __future__ import division
 
 import os
 import numpy
+from ..core import _decode
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -52,7 +53,7 @@ class SeggerSegmentation(object):
         """
         :TODO: args and kwargs
         """
-        self._seg_handler = h5py.File(fn, *args, **kwargs)
+        self._seg_handler = h5py.File(fn, 'r', *args, **kwargs)
         # region/parent ids
         self._region_ids = self._seg_handler['region_ids'].value
         self._parent_ids = self._seg_handler['parent_ids'].value
@@ -94,12 +95,12 @@ class SeggerSegmentation(object):
     @property
     def name(self):
         """Name of the segmentation"""
-        return self._seg_handler.attrs['name']
+        return _decode(self._seg_handler.attrs['name'], 'utf-8')
 
     @property
     def format(self):
         """Format of the segmentation"""
-        return self._seg_handler.attrs['format']
+        return _decode(self._seg_handler.attrs['format'], 'utf-8')
 
     @property
     def format_version(self):

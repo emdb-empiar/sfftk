@@ -13,6 +13,7 @@ import os
 import re
 import shlex
 import shutil
+import sys
 
 import requests
 from styled import Styled
@@ -22,6 +23,7 @@ from .. import schema
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes.view import HeaderView, NoteView
+from ..core import _str, _decode, _xrange
 from ..sff import handle_convert
 
 __author__ = "Paul K. Korir, PhD"
@@ -50,10 +52,13 @@ class ExternalReference(object):
     @property
     def iri(self):
         """The IRI value should be *double* url-encoded"""
-        from urllib import urlencode
+        if sys.version_info[0] > 2:
+            from urllib.parse import urlencode
+        else:
+            from urllib import urlencode
         urlenc = urlencode({u'iri': self.otherType.encode(u'idna')})
         urlenc2 = urlencode({u'iri': urlenc.split(u'=')[1]})
-        return urlenc2.split(u'=')[1].decode(u'utf-8')
+        return _decode(urlenc2.split(u'=')[1], 'utf-8')
 
     # fixme: perhaps the text should exist already instead of being searched for?
     # this seems to be a special case for OLS
@@ -93,7 +98,7 @@ class ExternalReference(object):
             if R.status_code == 200:
                 self._result = json.loads(R.text)
                 # label
-                label = self._result.keys()[0]
+                label = list(self._result.keys())[0]
                 # description
                 description = self._result[label][0][u'deposition'][u'title']
             else:
@@ -127,10 +132,10 @@ class ExternalReference(object):
                 self._result = R.text
                 try:
                     # split rows; split columns; dump first and last rows
-                    _structured_results = map(lambda r: r.split('\t'), self._result.split('\n'))[1:-1]
+                    _structured_results = list(map(lambda r: r.split('\t'), self._result.split('\n')))[1:-1]
                     # make a list of dicts with the given ids
-                    structured_results = map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
-                                             _structured_results)[0]
+                    structured_results = list(map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
+                                             _structured_results))[0]
                     # label
                     label = structured_results[u'name']
                     # description
@@ -534,7 +539,7 @@ class AbstractNote(BaseNote):
             # complexes
             if self.complexes:
                 if cAM.complexes:  # complexes already present
-                    for i in xrange(len(self.complexes)):
+                    for i in _xrange(len(self.complexes)):
                         if i == 0:  # there are complexes but editing the first item mentioned
                             try:
                                 cAM.complexes.replace_complex_at(self.complexId + i, self.complexes[i])
@@ -553,7 +558,7 @@ class AbstractNote(BaseNote):
             # macromolecules
             if self.macromolecules:
                 if cAM.macromolecules:  # macromolecules already present
-                    for i in xrange(len(self.macromolecules)):
+                    for i in _xrange(len(self.macromolecules)):
                         if i == 0:  # there are macromolecules but editing the first item mentioned
                             try:
                                 cAM.macromolecules.replace_macromolecule_at(self.macromoleculeId + i,
@@ -721,9 +726,9 @@ def add_note(args, configs):
         sff_seg = global_note.add_to_segmentation(sff_seg)
         # show the updated header
         string = Styled(u"[[ ''|fg-green:no-end ]]")
-        string += unicode(HeaderView(sff_seg))
+        string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     else:
         found_segment = False
         for segment in sff_seg.segments:
@@ -731,7 +736,7 @@ def add_note(args, configs):
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.add_to_segment(segment)
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
-                string += unicode(NoteView(sff_seg.segment, _long=True))
+                string += _str(NoteView(sff_seg.segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
                 print(string)
                 found_segment = True
@@ -764,9 +769,9 @@ def edit_note(args, configs):
         sff_seg = global_note.edit_in_segmentation(sff_seg)
         #  show the updated header
         string = Styled(u"[[ ''|fg-green:no-end ]]")
-        string += unicode(HeaderView(sff_seg))
+        string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     else:
         found_segment = False
         for segment in sff_seg.segments:
@@ -774,9 +779,9 @@ def edit_note(args, configs):
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.edit_in_segment(segment)
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
-                string += unicode(NoteView(sff_seg.segment, _long=True))
+                string += _str(NoteView(sff_seg.segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
-                print(unicode(string))
+                print(_str(string))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -803,9 +808,9 @@ def del_note(args, configs):
         sff_seg = global_note.del_from_segmentation(sff_seg)
         #  show the updated header
         string = Styled(u"[[ ''|fg-green:no-end ]]")
-        string += unicode(HeaderView(sff_seg))
+        string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     else:
         found_segment = False
         for segment in sff_seg.segments:
@@ -813,9 +818,9 @@ def del_note(args, configs):
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.del_from_segment(segment)
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
-                string += unicode(NoteView(sff_seg.segment, _long=True))
+                string += _str(NoteView(sff_seg.segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
-                print(unicode(string))
+                print(_str(string))
                 found_segment = True
         if not found_segment:
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
@@ -860,11 +865,11 @@ def copy_notes(args, configs):
             sff_seg.copy_annotation(f, t)
             string = Styled(u"[[ ''|fg-green:no-end ]]")
             if t == -1:
-                string += unicode(HeaderView(sff_seg))
+                string += _str(HeaderView(sff_seg))
             else:
-                string += unicode(NoteView(sff_seg.segments.get_by_id(t), _long=True))
+                string += _str(NoteView(sff_seg.segments.get_by_id(t), _long=True))
             string += Styled(u"[[ ''|reset ]]")
-            print(unicode(string))
+            print(_str(string))
     # export
     sff_seg.export(args.sff_file)
     return os.EX_OK
@@ -882,7 +887,7 @@ def clear_notes(args, configs):
     if args.segment_id is not None:
         from_segment = args.segment_id
     elif args.from_all_segments:
-        from_segment = sff_seg.segments.get_ids()
+        from_segment = list(sff_seg.segments.get_ids())
     if args.from_global:
         try:
             from_segment.append(-1)
@@ -894,22 +899,22 @@ def clear_notes(args, configs):
         sff_seg.clear_annotation(f)
     if args.from_global:
         string = Styled(u"[[ ''|fg-green:no-end ]]")
-        string += unicode(HeaderView(sff_seg))
+        string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
-        print(unicode(string))
+        print(_str(string))
     if args.segment_id is not None:
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
-                string += unicode(NoteView(segment, _long=True))
+                string += _str(NoteView(segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
-                print(unicode(string))
+                print(_str(string))
     elif args.from_all_segments:
         for segment in sff_seg.segments:
             string = Styled(u"[[ ''|fg-green:no-end ]]")
-            string += unicode(NoteView(segment, _long=True))
+            string += _str(NoteView(segment, _long=True))
             string += Styled(u"[[ ''|reset ]]")
-            print(unicode(string))
+            print(_str(string))
 
     # export
     sff_seg.export(args.sff_file)
