@@ -10,15 +10,19 @@ import sys
 import unittest
 
 import shutil
+from random_words import RandomWords, LoremIpsum
 
-from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase
+from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase, _random_integers
 from .. import BASE_DIR
 from .. import schema
-from ..core import _urlencode
+from ..core import _urlencode, _xrange, _str
 from ..core import utils
 from ..core.parser import parse_args
 from ..notes import find, modify, view, RESOURCE_LIST
 from ..sff import _handle_notes_modify, handle_notes_trash
+
+rw = RandomWords()
+li = LoremIpsum()
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -888,6 +892,272 @@ class TestNotes_modify_json(TestNotes_modify):
 
     def test_copy(self):
         super(TestNotes_modify_json, self)._test_copy()
+
+
+class TestNotesClasses(Py23FixTestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
+
+    def test_SimpleNote(self):
+        """Test SimpleNote class"""
+        name = li.get_sentence()
+        description = li.get_sentences(5)
+        num = _random_integer(1)
+        numExtRefs = _random_integer(2)
+        extRefs = [rw.random_words(count=3) for _ in _xrange(3)]
+        complexId = _random_integer(1)
+        complexes = rw.random_words(count=_random_integer(2, 7))
+        macromoleculeId = _random_integer(1)
+        macromolecules = rw.random_words(count=_random_integer(2, 7))
+        sn = modify.SimpleNote(
+            name=name,
+            description=description,
+            numberOfInstances=num,
+            externalReferenceId=numExtRefs,
+            externalReferences=extRefs,
+            complexId=complexId,
+            complexes=complexes,
+            macromoleculeId=macromoleculeId,
+            macromolecules=macromolecules,
+        )
+        self.assertEqual(sn.name, name)
+        self.assertEqual(sn.description, description)
+        self.assertEqual(sn.numberOfInstances, num)
+        self.assertEqual(sn.complexId, complexId)
+        self.assertEqual(sn.macromoleculeId, macromoleculeId)
+        for idx, extRef_ in enumerate(sn.externalReferences):
+            self.assertCountEqual(
+                [extRef_.type, extRef_.otherType, extRef_.value],
+                extRefs[idx],
+            )
+            self.assertIsInstance(extRef_, modify.ExternalReference)
+        self.assertCountEqual(sn.complexes, complexes)
+        self.assertCountEqual(sn.macromolecules, macromolecules)
+        # direct assigment of external references
+        eRefs = [rw.random_words(count=3) for _ in _xrange(3)]
+        sn.externalReferences = eRefs
+        for idx, extRef_ in enumerate(sn.externalReferences):
+            self.assertCountEqual(
+                [extRef_.type, extRef_.otherType, extRef_.value],
+                eRefs[idx],
+            )
+            self.assertIsInstance(extRef_, modify.ExternalReference)
+
+    def test_GlobalArgsNote(self):
+        """Test GlobalArgsNote (construct global notes from command-line arguments)"""
+        name = li.get_sentence()
+        details = li.get_sentences(sentences=10)
+        sw_name = rw.random_word()
+        sw_version = rw.random_word()
+        sw_proc = li.get_sentences(sentences=5)
+        extRefs = [rw.random_words(count=3) for _ in _xrange(3)]
+        cmd = "notes add -N '{name}' -D '{details}' -S '{sw_name}' -V '{sw_version}' -P '{sw_proc}' file.sff " \
+              "--config-path {config}".format(
+            name=name,
+            details=details,
+            sw_name=sw_name,
+            sw_version=sw_version,
+            sw_proc=sw_proc,
+            config=self.config_fn,
+        )
+        for e in extRefs:
+            cmd += ' -E {} '.format(' '.join(e))
+        args, configs = parse_args(cmd, use_shlex=True)
+        gan = modify.GlobalArgsNote(args, configs)
+        self.assertEqual(gan.name, name)
+        self.assertEqual(gan.details, details)
+        self.assertEqual(gan.softwareName, sw_name)
+        self.assertEqual(gan.softwareVersion, sw_version)
+        self.assertEqual(gan.softwareProcessingDetails, sw_proc)
+        for idx, extRef_ in enumerate(gan.externalReferences):
+            self.assertCountEqual(
+                [extRef_.type, extRef_.otherType, extRef_.value],
+                extRefs[idx],
+            )
+            self.assertIsInstance(extRef_, modify.ExternalReference)
+        # add to segmentation
+        seg_in = schema.SFFSegmentation()
+        seg_out = gan.add_to_segmentation(seg_in)
+        self.assertEqual(seg_out.name, name)
+        self.assertEqual(seg_out.details, details)
+        for idx, extRef_ in enumerate(seg_out.globalExternalReferences):
+            self.assertCountEqual(
+                [extRef_.type, extRef_.otherType, extRef_.value],
+                extRefs[idx]
+            )
+            self.assertIsInstance(extRef_, schema.SFFExternalReference)
+        self.assertEqual(seg_out.software.name, sw_name)
+        self.assertEqual(seg_out.software.version, sw_version)
+        self.assertEqual(seg_out.software.processingDetails, sw_proc)
+        self.assertEqual(seg_out.details, details)
+        # edit in segmentation
+        name = li.get_sentence()
+        sw_name = rw.random_word()
+        sw_version = rw.random_word()
+        sw_proc = li.get_sentences(sentences=5)
+        details = li.get_sentences(sentences=10)
+        extRefs = rw.random_words(count=3)
+        extRefs1 = rw.random_words(count=3)
+        extRefs2 = rw.random_words(count=3)
+        cmd_edit = "notes edit -N '{name}' -S '{sw_name}' -V '{sw_version}' -P '{sw_proc}' -D '{details}' -e 2 " \
+                   "-E {extRefs} -E {extRefs1} -E {extRefs2} file.sff --config-path {config}".format(
+            name=name,
+            sw_name=sw_name,
+            sw_version=sw_version,
+            sw_proc=sw_proc,
+            details=details,
+            extRefs=' '.join(extRefs),
+            extRefs1=' '.join(extRefs1),
+            extRefs2=' '.join(extRefs2),
+            config=self.config_fn,
+        )
+        args, configs = parse_args(cmd_edit, use_shlex=True)
+        gan_edit = modify.GlobalArgsNote(args, configs)
+        seg_out_edit = gan_edit.edit_in_segmentation(seg_out)
+        # we have edited the last extref
+        self.assertEqual(seg_out_edit.name, name)
+        self.assertEqual(seg_out_edit.software.name, sw_name)
+        self.assertEqual(seg_out_edit.software.version, sw_version)
+        self.assertEqual(seg_out_edit.software.processingDetails, sw_proc)
+        self.assertEqual(seg_out_edit.details, details)
+        self.assertEqual(
+            [seg_out_edit.globalExternalReferences[2].type, seg_out_edit.globalExternalReferences[2].otherType,
+             seg_out_edit.globalExternalReferences[2].value],
+            extRefs,
+        )
+        self.assertEqual(
+            [seg_out_edit.globalExternalReferences[3].type, seg_out_edit.globalExternalReferences[3].otherType,
+             seg_out_edit.globalExternalReferences[3].value],
+            extRefs1
+        )
+        self.assertEqual(
+            [seg_out_edit.globalExternalReferences[4].type, seg_out_edit.globalExternalReferences[4].otherType,
+             seg_out_edit.globalExternalReferences[4].value],
+            extRefs2
+        )
+        # delete from segmentation
+        cmd_del = "notes del -N -S -V -P -D -e 0,1,2,3,4,5 file.sff --config-path {config}".format(
+            config=self.config_fn,
+        )
+        args, configs = parse_args(cmd_del, use_shlex=True)
+        gan_del = modify.GlobalArgsNote(args, configs)
+        seg_out_del = gan_del.del_from_segmentation(seg_out_edit)
+        self.assertIsNone(seg_out_del.name)
+        self.assertIsNone(seg_out_del.software.name)
+        self.assertIsNone(seg_out_del.software.version)
+        self.assertIsNone(seg_out_del.software.processingDetails)
+        self.assertIsNone(seg_out_del.details)
+        self.assertEqual(seg_out_del.numGlobalExternalReferences, 0)
+
+    def test_ArgsNote(self):
+        """Test ArgsNote (construct local notes from command-line arguments)"""
+        segment_id = _random_integers(count=1, start=1)
+        name = li.get_sentence()
+        description = li.get_sentences(sentences=4)
+        num = _random_integer(start=1)
+        extRefs = [rw.random_words(count=3) for _ in _xrange(3)]
+        comps = rw.random_words(count=5)
+        macrs = rw.random_words(count=5)
+        cmd_add = "notes add -i {segment_id} -s '{name}' -d '{description}' -n {num} -C {comps} -M {macrs} file.sff --config-path {config}".format(
+            segment_id=','.join(map(_str, segment_id)),
+            name=name,
+            description=description,
+            num=num,
+            comps=','.join(comps),
+            macrs=','.join(macrs),
+            config=self.config_fn,
+        )
+        for e in extRefs:
+            cmd_add += ' -E {} '.format(' '.join(e))
+        args, configs = parse_args(cmd_add, use_shlex=True)
+        # add notes
+        an_add = modify.ArgsNote(args, configs)
+        segment = schema.SFFSegment()
+        segment_add = an_add.add_to_segment(segment)
+        self.assertEqual(segment_add.biologicalAnnotation.name, name)
+        self.assertEqual(segment_add.biologicalAnnotation.description, description)
+        self.assertEqual(segment_add.biologicalAnnotation.numberOfInstances, num)
+        for idx, extRef_ in enumerate(an_add.externalReferences):
+            self.assertCountEqual(
+                [extRef_.type, extRef_.otherType, extRef_.value],
+                extRefs[idx],
+            )
+            self.assertIsInstance(extRef_, modify.ExternalReference)
+        self.assertCountEqual(segment_add.complexesAndMacromolecules.complexes, comps)
+        self.assertIsInstance(segment_add.complexesAndMacromolecules.complexes, schema.SFFComplexes)
+        self.assertCountEqual(segment_add.complexesAndMacromolecules.macromolecules, macrs)
+        self.assertIsInstance(segment_add.complexesAndMacromolecules.macromolecules, schema.SFFMacromolecules)
+        # edit notes
+        name = li.get_sentence()
+        desc = li.get_sentences(sentences=10)
+        num = _random_integer(start=1)
+        extRefs = rw.random_words(count=3)
+        extRefs1 = rw.random_words(count=3)
+        extRefs2 = rw.random_words(count=3)
+        comp = rw.random_word()
+        macr = rw.random_word()
+        cmd_edit = "notes edit -i {segment_id} -s '{name}' -d '{desc}' -n {num} " \
+                   "-e 4 -E {extRefs} -E {extRefs1} -E {extRefs2} -c 2 -C {comp} " \
+                   "-m 5 -M {macr} file.sff --config-path {config}".format(
+            segment_id=','.join(map(_str, segment_id)),
+            name=name,
+            desc=desc,
+            num=num,
+            extRefs=' '.join(extRefs),
+            extRefs1=' '.join(extRefs1),
+            extRefs2=' '.join(extRefs2),
+            comp=comp,
+            macr=macr,
+            config=self.config_fn,
+        )
+        args, configs = parse_args(cmd_edit, use_shlex=True)
+        an_edit = modify.ArgsNote(args, configs)
+        segment_edit = an_edit.edit_in_segment(segment_add)
+        self.assertEqual(segment_edit.biologicalAnnotation.name, name)
+        self.assertEqual(segment_edit.biologicalAnnotation.description, desc)
+        self.assertEqual(segment_edit.biologicalAnnotation.numberOfInstances, num)
+        self.assertEqual(
+            [
+                segment_edit.biologicalAnnotation.externalReferences[-3].type,
+                segment_edit.biologicalAnnotation.externalReferences[-3].otherType,
+                segment_edit.biologicalAnnotation.externalReferences[-3].value
+            ],
+            extRefs
+        )
+        self.assertEqual(
+            [
+                segment_edit.biologicalAnnotation.externalReferences[-2].type,
+                segment_edit.biologicalAnnotation.externalReferences[-2].otherType,
+                segment_edit.biologicalAnnotation.externalReferences[-2].value
+            ],
+            extRefs1
+        )
+        self.assertEqual(
+            [
+                segment_edit.biologicalAnnotation.externalReferences[-1].type,
+                segment_edit.biologicalAnnotation.externalReferences[-1].otherType,
+                segment_edit.biologicalAnnotation.externalReferences[-1].value
+            ],
+            extRefs2
+        )
+        self.assertEqual(segment_edit.complexesAndMacromolecules.complexes[2], comp)
+        self.assertEqual(segment_edit.complexesAndMacromolecules.macromolecules[5], macr)
+        # del notes
+        cmd_del = "notes del -i {segment_id} -s -d -n -e 0,1,2,3,4,5 -c 0,1,2,3,4 -m 0,1,2,3,4,5 " \
+                  "file.sff --config-path {config}".format(
+            segment_id=','.join(map(_str, segment_id)),
+            config=self.config_fn,
+        )
+        args, configs = parse_args(cmd_del, use_shlex=True)
+        an_del = modify.ArgsNote(args, configs)
+        segment_del = an_del.del_from_segment(segment_edit)
+        self.assertIsNone(segment_del.biologicalAnnotation.name)
+        self.assertIsNone(segment_del.biologicalAnnotation.description)
+        self.assertIsNone(segment_del.biologicalAnnotation.numberOfInstances)
+        self.assertEqual(segment_del.biologicalAnnotation.numExternalReferences, 0)
+        self.assertEqual(segment_del.complexesAndMacromolecules.numComplexes, 0)
+        self.assertEqual(segment_del.complexesAndMacromolecules.numMacromolecules, 0)
 
 
 class TestNotes_find(Py23FixTestCase):

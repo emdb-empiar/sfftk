@@ -516,6 +516,14 @@ class TestCoreParserPrepBinmap(Py23FixTestCase):
         self.assertEqual(args.bytes_per_voxel, 1)
         self.assertEqual(args.infix, 'prep')
         self.assertFalse(args.verbose)
+        args, _ = parse_args('prep binmap -B 2 file.map', use_shlex=True)
+        self.assertEqual(args.bytes_per_voxel, 2)
+        args, _ = parse_args('prep binmap -B 4 file.map', use_shlex=True)
+        self.assertEqual(args.bytes_per_voxel, 4)
+        args, _ = parse_args('prep binmap -B 8 file.map', use_shlex=True)
+        self.assertEqual(args.bytes_per_voxel, 8)
+        args, _ = parse_args('prep binmap -B 16 file.map', use_shlex=True)
+        self.assertEqual(args.bytes_per_voxel, 16)
 
     def test_mask(self):
         """Test setting mask value"""
@@ -1362,11 +1370,14 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
     def test_del_default(self):
         """Test del notes"""
         segment_id = _random_integer()
-        external_ref_id = _random_integer()
-        complex_id = _random_integer()
-        macromolecule_id = _random_integer()
+        external_ref_id = _random_integers(count=5, start=0)
+        complex_id = _random_integers(count=7, start=0)
+        macromolecule_id = _random_integers(count=7, start=0)
         args, _ = parse_args(shlex.split('notes del -i {} -d -n -e {} -c {} -m {} file.sff --config-path {}'.format(
-            segment_id, external_ref_id, complex_id, macromolecule_id,
+            segment_id,
+            ','.join(map(_str, external_ref_id)),
+            ','.join(map(_str, complex_id)),
+            ','.join(map(_str, macromolecule_id)),
             self.config_fn,
         )))
 
@@ -1374,9 +1385,10 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertCountEqual(args.segment_id, [segment_id])
         self.assertTrue(args.description)
         self.assertTrue(args.number_of_instances)
-        self.assertEqual(args.external_ref_id, external_ref_id)
-        self.assertEqual(args.complex_id, complex_id)
-        self.assertEqual(args.macromolecule_id, macromolecule_id)
+        # self.assertEqual(args.external_ref_id, external_ref_id)
+        self.assertCountEqual(args.external_ref_id, external_ref_id)
+        self.assertCountEqual(args.complex_id, complex_id)
+        self.assertCountEqual(args.macromolecule_id, macromolecule_id)
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
 

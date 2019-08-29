@@ -728,7 +728,11 @@ del_notes_parser = notes_subparsers.add_parser(
 add_args(del_notes_parser, sff_file)
 add_args(del_notes_parser, config_path)
 add_args(del_notes_parser, shipped_configs)
+# for deleting notes we handle external refs as a comma'd string e.g. 1,2,3,4 therefore not an 'int'
+del external_ref_id['kwargs']['type']
 add_args(del_notes_parser, external_ref_id)
+# put it back
+external_ref_id['kwargs']['type'] = int
 # global notes
 del_global_notes_parser = del_notes_parser.add_argument_group(
     title="delete global notes",
@@ -795,8 +799,14 @@ number_of_instances['kwargs'] = {
     'help': 'delete the number of instances [default: False]',
 }
 add_args(del_segment_notes_parser, number_of_instances)
+# modify for del: we need a string of comma'd values
+del complex_id['kwargs']['type']
 add_args(del_segment_notes_parser, complex_id)
+# restore it
+complex_id['kwargs']['type'] = int
+del macromolecule_id['kwargs']['type']
 add_args(del_segment_notes_parser, macromolecule_id)
+macromolecule_id['kwargs']['type'] = int
 
 # =============================================================================
 # notes: copy
@@ -1288,7 +1298,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
         elif args.notes_subcommand == "add":
             # if we want to add to a segment
             if args.segment_id is not None:
-                args.segment_id = map(int, args.segment_id.split(','))
+                args.segment_id = list(map(int, args.segment_id.split(',')))
 
                 # ensure we have at least one item to add
                 try:
@@ -1428,6 +1438,16 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 except AssertionError:
                     print_date("Incorrect usage; please use -h for help")
                     return os.EX_USAGE, configs
+            # convert from string to list of ints
+            if args.external_ref_id is not None:
+                ext_ref_ids = list(map(int, args.external_ref_id.split(',')))
+                args.external_ref_id = ext_ref_ids
+            if args.complex_id is not None:
+                complex_ids = list(map(int, args.complex_id.split(',')))
+                args.complex_id = complex_ids
+            if args.macromolecule_id is not None:
+                macromolecule_ids = list(map(int, args.macromolecule_id.split(',')))
+                args.macromolecule_id = macromolecule_ids
 
         elif args.notes_subcommand == "copy":
             # convert from and to to lists of ints

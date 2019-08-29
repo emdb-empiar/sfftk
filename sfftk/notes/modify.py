@@ -12,18 +12,18 @@ import json
 import os
 import re
 import shlex
-import shutil
 import sys
 
 import requests
+import shutil
 from styled import Styled
 
 from . import RESOURCE_LIST_NAMES
 from .. import schema
+from ..core import _str, _decode, _xrange
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes.view import HeaderView, NoteView
-from ..core import _str, _decode, _xrange
 from ..sff import handle_convert
 
 __author__ = "Paul K. Korir, PhD"
@@ -135,7 +135,7 @@ class ExternalReference(object):
                     _structured_results = list(map(lambda r: r.split('\t'), self._result.split('\n')))[1:-1]
                     # make a list of dicts with the given ids
                     structured_results = list(map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
-                                             _structured_results))[0]
+                                                  _structured_results))[0]
                     # label
                     label = structured_results[u'name']
                     # description
@@ -151,7 +151,8 @@ class ExternalReference(object):
                 print_date(
                     u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
         elif self.type == u'Europe PMC':
-            url = u"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json".format(self.value)
+            url = u"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json".format(
+                self.value)
             R = requests.get(url)
             if R.status_code == 200:
                 self._result = json.loads(R.text)
@@ -226,8 +227,13 @@ class BaseNote(object):
 
     @externalReferences.setter
     def externalReferences(self, value):
+        """Assigne directly; must all be ExternalReference objects or lists of strings"""
+        self._extRefList = list()  # empty the present list
         for v in value:
-            self._extRefList.append(v)
+            if isinstance(v, ExternalReference):
+                self._extRefList.append(v)
+            elif isinstance(v, list) or isinstance(v, tuple):
+                self._extRefList.append(ExternalReference(*v))
 
 
 class AbstractGlobalNote(BaseNote):
@@ -260,6 +266,7 @@ class AbstractGlobalNote(BaseNote):
         #  name
         if self.name is not None:
             segmentation.name = self.name
+        segmentation.software = schema.SFFSoftware()
         # software name
         if self.softwareName is not None:
             segmentation.software.name = self.softwareName
@@ -312,15 +319,15 @@ class AbstractGlobalNote(BaseNote):
         if self.details is not None:
             segmentation.details = self.details
         # external references
-        if not segmentation.globalExternalReferences:
-            segmentation.globalExternalReferences = schema.SFFGlobalExternalReferences()
         start_index = self.externalReferenceId
-        # first replace
-        # then insert any additional
-        replaced = False
+        # editing globalExternalReferences starting at index 'start_index'
+        # this will result in all subsequent globalExternalReferences being replaced
+        # once it gets to the end of the list of gER any additional ones will be appended
+        # e.g. if we have 5 gERs and we want to add another 5 but starting at index 4 (the fifth)
+        # then we will replace index 4 then keep adding the other new 4 gERs
+        # to add new ones use 'notes add -E <extref>'
         for gExtRef in self.externalReferences:
-            # replace
-            if not replaced and segmentation.globalExternalReferences:
+            try:
                 segmentation.globalExternalReferences.replace_externalReference(
                     schema.SFFExternalReference(
                         type=gExtRef.type,
@@ -331,18 +338,15 @@ class AbstractGlobalNote(BaseNote):
                     ),
                     start_index,
                 )
-                replaced = True
-            # insert
-            else:
-                segmentation.globalExternalReferences.insert_externalReference(
+            except IndexError:
+                segmentation.globalExternalReferences.add_externalReference(
                     schema.SFFExternalReference(
                         type=gExtRef.type,
                         otherType=gExtRef.otherType,
                         value=gExtRef.value,
                         label=gExtRef.label,
                         description=gExtRef.description
-                    ),
-                    start_index,
+                    )
                 )
             start_index += 1
         return segmentation
@@ -371,14 +375,24 @@ class AbstractGlobalNote(BaseNote):
         if self.details:
             segmentation.details = None
         # external references
-        if self.externalReferenceId is not None:
+        if self.externalReferenceId:
             if segmentation.globalExternalReferences:
-                try:
-                    del segmentation.globalExternalReferences[self.externalReferenceId]
-                except IndexError:
-                    print_date("Failed to delete global external reference ID {}".format(self.externalReferenceId))
+                # current globalExtRefs
+                refs = list(segmentation.globalExternalReferences)
+                # extract the items to be removed
+                to_remove = list()
+                for i in self.externalReferenceId:
+                    try:
+                        to_remove.append(refs[i])
+                    except IndexError:
+                        print_date(_str(
+                            Styled("[[ '{}'|fg-red ]]", "Failed to delete global external reference ID {}".format(i))))
+                # now remove them
+                for t in to_remove:
+                    refs.remove(t)
+                segmentation.globalExternalReferences = schema.SFFGlobalExternalReferences(refs)
             else:
-                print_date("No global external references to delete from.")
+                print_date("No global external references to delete from!")
         return segmentation
 
 
@@ -456,7 +470,7 @@ class AbstractNote(BaseNote):
                         description=extRef.description
                     )
                 )
-            segment.biologicalAnnotation = bA
+        segment.biologicalAnnotation = bA
         # complexesAndMacromolecules
         # copy current cAM
         cAM = segment.complexesAndMacromolecules
@@ -486,49 +500,51 @@ class AbstractNote(BaseNote):
         """
         # biologicalAnnotation
         if not segment.biologicalAnnotation:
-            print_date("Note: no biological anotation was found. You may edit only after adding with 'sff notes add'.")
+            print_date("Note: no biological annotation was found. You may edit only after adding with 'sff notes add'.")
         else:
             bA = segment.biologicalAnnotation
+            # name
             if self.name is not None:
                 bA.name = self.name
+            # description
             if self.description is not None:
                 bA.description = self.description
+            # number of instances
             if self.numberOfInstances:
                 bA.numberOfInstances = self.numberOfInstances
-            if self.externalReferences:
+            # external references
+            # editing externalReferences starting at index 'start_index'
+            # this will result in all subsequent externalReferences being replaced
+            # once it gets to the end of the list of eR any additional ones will be appended
+            # e.g. if we have 5 eRs and we want to add another 5 but starting at index 4 (the fifth)
+            # then we will replace index 4 then keep adding the other new 4 eRs
+            # to add new ones use 'notes add -i <segment_id> -E <extref>'
+            start_index = self.externalReferenceId
+            for extRef in self.externalReferences:
                 if not bA.externalReferences:
                     bA.externalReferences = schema.SFFExternalReferences()
-                start_index = self.externalReferenceId
-                # first replace
-                # then insert any additional
-                replaced = False
-                for extRef in self.externalReferences:
-                    # replace
-                    if not replaced and bA.externalReferences:
-                        bA.externalReferences.replace_externalReference(
-                            schema.SFFExternalReference(
-                                type_=extRef.type,
-                                otherType=extRef.otherType,
-                                value=extRef.value,
-                                label=extRef.label,
-                                description=extRef.description
-                            ),
-                            start_index,
+                try:
+                    bA.externalReferences.replace_externalReference(
+                        schema.SFFExternalReference(
+                            type_=extRef.type,
+                            otherType=extRef.otherType,
+                            value=extRef.value,
+                            label=extRef.label,
+                            description=extRef.description
+                        ),
+                        start_index
+                    )
+                except IndexError:
+                    bA.externalReferences.add_externalReference(
+                        schema.SFFExternalReference(
+                            type_=extRef.type,
+                            otherType=extRef.otherType,
+                            value=extRef.value,
+                            label=extRef.label,
+                            description=extRef.description
                         )
-                        replaced = True
-                    # insert
-                    else:
-                        bA.externalReferences.insert_externalReference(
-                            schema.SFFExternalReference(
-                                type_=extRef.type,
-                                otherType=extRef.otherType,
-                                value=extRef.value,
-                                label=extRef.label,
-                                description=extRef.description
-                            ),
-                            start_index,
-                        )
-                    start_index += 1
+                    )
+                start_index += 1
             segment.biologicalAnnotation = bA
         # complexesAndMacromolecules
         if not segment.complexesAndMacromolecules:
@@ -538,44 +554,44 @@ class AbstractNote(BaseNote):
             cAM = segment.complexesAndMacromolecules
             # complexes
             if self.complexes:
-                if cAM.complexes:  # complexes already present
-                    for i in _xrange(len(self.complexes)):
-                        if i == 0:  # there are complexes but editing the first item mentioned
-                            try:
-                                cAM.complexes.replace_complex_at(self.complexId + i, self.complexes[i])
-                            except IndexError:
-                                cAM.complexes.add_complex(self.complexes[i])
-                        else:  # all other new complexes are inserted after pushing others down
-                            try:
-                                cAM.complexes.insert_complex_at(self.complexId + i, self.complexes[i])
-                            except IndexError:
-                                cAM.complexes.add_complex(self.complexes[i])
-                else:  # no complexes
-                    complexes = schema.SFFComplexes()
-                    for c in self.complexes:
-                        complexes.add_complex(c)
-                    cAM.complexes = complexes
+                for i in _xrange(len(self.complexes)):
+                    if i == 0:  # there are complexes but editing the first item mentioned
+                        try:
+                            cAM.complexes.replace_complex_at(self.complexId + i, self.complexes[i])
+                        except IndexError:
+                            cAM.complexes.add_complex(self.complexes[i])
+                    else:  # all other new complexes are inserted after pushing others down
+                        try:
+                            cAM.complexes.insert_complex_at(self.complexId + i, self.complexes[i])
+                        except IndexError:
+                            cAM.complexes.add_complex(self.complexes[i])
+                # if cAM.complexes:  # complexes already present
+                # else:  # no complexes
+                #     complexes = schema.SFFComplexes()
+                #     for c in self.complexes:
+                #         complexes.add_complex(c)
+                #     cAM.complexes = complexes
             # macromolecules
             if self.macromolecules:
-                if cAM.macromolecules:  # macromolecules already present
-                    for i in _xrange(len(self.macromolecules)):
-                        if i == 0:  # there are macromolecules but editing the first item mentioned
-                            try:
-                                cAM.macromolecules.replace_macromolecule_at(self.macromoleculeId + i,
-                                                                            self.macromolecules[i])
-                            except IndexError:
-                                cAM.macromolecules.add_macromolecule(self.macromolecules[i])
-                        else:  # all other new macromolecules are inserted after pushing others down
-                            try:
-                                cAM.macromolecules.insert_macromolecule_at(self.macromoleculeId + i,
-                                                                           self.macromolecules[i])
-                            except IndexError:
-                                cAM.macromolecules.add_macromolecule(self.macromolecules[i])
-                else:  # no macromolecules
-                    macromolecules = schema.SFFMacromolecules()
-                    for m in self.macromolecules:
-                        macromolecules.add_macromolecule(m)
-                    cAM.macromolecules = macromolecules
+                for i in _xrange(len(self.macromolecules)):
+                    if i == 0:  # there are macromolecules but editing the first item mentioned
+                        try:
+                            cAM.macromolecules.replace_macromolecule_at(self.macromoleculeId + i,
+                                                                        self.macromolecules[i])
+                        except IndexError:
+                            cAM.macromolecules.add_macromolecule(self.macromolecules[i])
+                    else:  # all other new macromolecules are inserted after pushing others down
+                        try:
+                            cAM.macromolecules.insert_macromolecule_at(self.macromoleculeId + i,
+                                                                       self.macromolecules[i])
+                        except IndexError:
+                            cAM.macromolecules.add_macromolecule(self.macromolecules[i])
+                # if cAM.macromolecules:  # macromolecules already present
+                # else:  # no macromolecules
+                #     macromolecules = schema.SFFMacromolecules()
+                #     for m in self.macromolecules:
+                #         macromolecules.add_macromolecule(m)
+                #     cAM.macromolecules = macromolecules
             segment.complexesAndMacromolecules = cAM
         return segment
 
@@ -596,14 +612,32 @@ class AbstractNote(BaseNote):
                 bA.description = None
             if self.numberOfInstances:
                 bA.numberOfInstances = None
-            if self.externalReferenceId is not None:  # it could be 0, which is valid but False
+            if self.externalReferenceId:
                 if bA.externalReferences:
-                    try:
-                        del bA.externalReferences[self.externalReferenceId]  # externalReferences is a list
-                    except IndexError:
-                        print_date("Failed to delete external reference of ID {}".format(self.externalReferenceId))
+                    # current extRefs
+                    refs = list(bA.externalReferences)
+                    # extract the items to be removed
+                    to_remove = list()
+                    for i in self.externalReferenceId:
+                        try:
+                            to_remove.append(refs[i])
+                        except IndexError:
+                            print_date(
+                                _str(Styled("[[ '{}|fg-red ]]", "Failed to delete external reference ID {}".format(i))))
+                    # now remove them
+                    for t in to_remove:
+                        refs.remove(t)
+                    bA.externalReferences = schema.SFFExternalReferences(refs)
                 else:
-                    print_date("No external references to delete from.")
+                    print_date("No external references to delete from!")
+            # if self.externalReferenceId is not None:  # it could be 0, which is valid but False
+            #     if bA.externalReferences:
+            #         try:
+            #             del bA.externalReferences[self.externalReferenceId]  # externalReferences is a list
+            #         except IndexError:
+            #             print_date("Failed to delete external reference of ID {}".format(self.externalReferenceId))
+            #     else:
+            #         print_date("No external references to delete from.")
             segment.biologicalAnnotation = bA
         # complexesAndMacromolecules
         if not segment.complexesAndMacromolecules:
@@ -612,23 +646,55 @@ class AbstractNote(BaseNote):
             cAM = segment.complexesAndMacromolecules
             # complexes
             if self.complexId is not None:
-                if cAM.complexes:
+                comps = list(cAM.complexes)
+                # extract the ones to remove
+                to_remove = list()
+                for i in self.complexId:
                     try:
-                        cAM.complexes.delete_at(self.complexId)
+                        to_remove.append(comps[i])
                     except IndexError:
-                        print_date("Failed to delete macromolecule of ID {}".format(self.complexId))
-                else:
-                    print_date("No complexes to delete from.")
+                        print_date(_str(Styled("[[ '{}'|fg-red ]]", "Failed to delete complex ID {}".format(i))))
+                # now remove them
+                for t in to_remove:
+                    comps.remove(t)
+                new_macromolecules = schema.SFFComplexes()
+                new_macromolecules.set_complexes(comps)
+                cAM.complexes = new_macromolecules
+            segment.complexesAndMacromolecules = cAM
+            # if self.complexId is not None:
+            #     if cAM.complexes:
+            #         try:
+            #             cAM.complexes.delete_at(self.complexId)
+            #         except IndexError:
+            #             print_date("Failed to delete macromolecule of ID {}".format(self.complexId))
+            #     else:
+            #         print_date("No complexes to delete from.")
             # macromolecules
             if self.macromoleculeId is not None:
-                if cAM.macromolecules:
+                macrs = list(cAM.macromolecules)
+                # extract the ones to remove
+                to_remove = list()
+                for i in self.macromoleculeId:
                     try:
-                        cAM.macromolecules.delete_at(self.macromoleculeId)
+                        to_remove.append(macrs[i])
                     except IndexError:
-                        print_date("Failed to delete macromolecule of ID {}".format(self.macromoleculeId))
-                else:
-                    print_date("No macromolecules to delete from.")
+                        print_date(_str(Styled("[[ '{}'|fg-red ]]", "Failed to delete macromolecule ID {}".format(i))))
+                # now remove them
+                for t in to_remove:
+                    macrs.remove(t)
+                new_macromolecules = schema.SFFMacromolecules()
+                new_macromolecules.set_macromolecules(macrs)
+                cAM.macromolecules = new_macromolecules
             segment.complexesAndMacromolecules = cAM
+            # if self.macromoleculeId is not None:
+            #     if cAM.macromolecules:
+            #         try:
+            #             cAM.macromolecules.delete_at(self.macromoleculeId)
+            #         except IndexError:
+            #             print_date("Failed to delete macromolecule of ID {}".format(self.macromoleculeId))
+            #     else:
+            #         print_date("No macromolecules to delete from.")
+            # segment.complexesAndMacromolecules = cAM
         return segment
 
 
@@ -695,13 +761,7 @@ class SimpleNote(AbstractNote):
         # externalReferences
         if externalReferences:
             for _type, _otherType, _value in externalReferences:
-                self._extRefList.append(
-                    ExternalReference(
-                        type_=_type,
-                        otherType=_otherType,
-                        value=_value
-                    )
-                )
+                self._extRefList.append(ExternalReference(type_=_type, otherType=_otherType, value=_value))
         self.complexId = complexId
         self.complexes = complexes
         self.macromoleculeId = macromoleculeId
