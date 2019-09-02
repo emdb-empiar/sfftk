@@ -56,10 +56,17 @@ def get_printable_ascii_string(B):
     B = _encode(B, 'utf-8')
     printables = list(map(ord, string.printable))
     index = len(B) - 1
-    for i, b in enumerate(B):  # for each byte
-        if ord(b) not in printables:
-            index = i  # the previous
-            break
+    if sys.version_info[0] > 2:
+        for i, b in enumerate(B): # for each byte
+            if b not in printables:
+                index = i
+                break
+    else:
+        for i, b in enumerate(B): # for each byte
+            _b = ord(b)
+            if _b not in printables:
+                index = i
+                break
     ascii_b = B[:index]
     return ascii_b
 

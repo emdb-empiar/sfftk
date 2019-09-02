@@ -14,8 +14,7 @@ import sys
 
 from .base import Segmentation, Header, Segment, Annotation, Volume
 from .. import schema
-from ..core.print_tools import print_date
-from ..core.utils import printable_substring
+from ..core.print_tools import print_date, get_printable_ascii_string
 from ..readers import mapreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -133,7 +132,7 @@ class MapAnnotation(Annotation):
         """Segment description (concat all labels)"""
         desc = ''
         for i in xrange(self._nlabl):
-            desc += printable_substring(getattr(self, '_label_{}'.format(i)))
+            desc += get_printable_ascii_string(getattr(self, '_label_{}'.format(i)))
         return desc
 
     @property

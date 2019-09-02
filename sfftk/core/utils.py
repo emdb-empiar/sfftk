@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, division
 
-import os
-import sys
-
-from .print_tools import print_date
-
 
 def get_path(D, path):
     """Get a path from a dictionary
@@ -24,84 +19,6 @@ def get_path(D, path):
     for p in path:
         item = item[p]
     return item
-
-
-def parse_and_split(cmd):
-    from .parser import parse_args
-    from shlex import split
-    return parse_args(split(cmd))
-
-
-def printable_substring(the_str):
-    """Returns the printable subset of the_str
-
-    :param str the_str: a putative string
-    :return str the_pr_str: the portion of the_str from index 0 that is printable
-    """
-    import string
-    i = 0
-    the_pr_str = ''
-    while i < len(the_str):
-        if the_str[i] in string.printable:
-            the_pr_str += the_str[i]
-            i += 1
-        else:
-            return the_pr_str
-    return the_pr_str
-
-
-# def parallelise(iterable, target=None, args=(), number_of_processes=None):
-#     """Parallelise computation of `target` over items in `iterable`
-#
-#     :param iterable: (usually) a list of items
-#     :param target: the function to compute
-#     :param args: arguments to target
-#     :return: the result of computing iterable in parallel
-#     """
-#     if target is None:
-#         return iterable
-#
-#     from multiprocessing import Process, Queue, cpu_count
-#
-#     def worker(input, output):
-#         for func, args in iter(input.get, 'STOP'):
-#             result = func(*args)
-#             output.put(result)
-#
-#     if number_of_processes is not None:
-#         try:
-#             assert number_of_processes > 0
-#         except AssertionError as a:
-#             print_date("Invalid number of processes: {}".format(number_of_processes))
-#             print(str(a))
-#             return sys.exit(os.EX_DATAERR)
-#         NUMBER_OF_PROCESSES = number_of_processes
-#     else:
-#         NUMBER_OF_PROCESSES = cpu_count()
-#
-#     # input and output queues
-#     input = Queue()
-#     output = Queue()
-#
-#     # load input queue
-#     for item in iterable:
-#         my_args = tuple([item] + list(args))
-#         input.put((target, my_args))
-#
-#     # start processes
-#     for _ in range(NUMBER_OF_PROCESSES):
-#         Process(target=worker, args=(input, output)).start()
-#
-#     # read output
-#     iterable2 = list()
-#     for _ in range(len(iterable)):
-#         iterable2.append(output.get())
-#
-#     # kill processes
-#     for _ in range(NUMBER_OF_PROCESSES):
-#         input.put('STOP')
-#
-#     return iterable2
 
 
 def rgba_to_hex(rgba, channels=3):

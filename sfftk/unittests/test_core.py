@@ -739,14 +739,16 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     def test_multifile_map(self):
         """Test that multi-file works for CCP4 masks"""
-        args, _ = utils.parse_and_split('convert -v -m {}'.format(' '.join(self.empty_maps)))
+        cmd = 'convert -v -m {}'.format(' '.join(self.empty_maps))
+        args, _ = parse_args(cmd, use_shlex=True)
         # assertions
         self.assertTrue(args.multi_file)
         self.assertCountEqual(args.from_file, self.empty_maps)
 
     def test_multifile_stl(self):
         """Test that multi-file works for STLs"""
-        args, _ = utils.parse_and_split('convert -v -m {}'.format(' '.join(self.empty_stls)))
+        cmd = 'convert -v -m {}'.format(' '.join(self.empty_stls))
+        args, _ = parse_args(cmd, use_shlex=True)
         # assertions
         self.assertTrue(args.multi_file)
         self.assertCountEqual(args.from_file, self.empty_stls)
@@ -1721,19 +1723,10 @@ class TestCoreUtils(Py23FixTestCase):
         with self.assertRaises(ValueError):
             utils.rgba_to_hex((0, 0, 0, 0), channels=5)
 
-    def test_printable_substring(self):
-        """Test that we can extract the printable substring of a sequence"""
-        s_o = li.get_sentence()
-        unprintables = range(14, 32)
-        s = s_o + ''.join([chr(random.choice(unprintables)) for _ in range(100)])
-        s_p = utils.printable_substring(s)
-        self.assertEqual(s_p, s_o)
-        s_pp = utils.printable_substring(s_o)
-        self.assertEqual(s_pp, s_o)
-
     def test_parse_and_split(self):
         """Test the parser utility"""
-        args, configs = utils.parse_and_split('notes list file.sff')
+        cmd = 'notes list file.sff'
+        args, configs = parse_args(cmd, use_shlex=True)
         self.assertEqual(args.subcommand, 'notes')
         self.assertEqual(args.notes_subcommand, 'list')
         self.assertEqual(args.sff_file, 'file.sff')
