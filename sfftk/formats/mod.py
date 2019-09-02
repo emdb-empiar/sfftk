@@ -10,14 +10,14 @@ User-facing reader classes for IMOD files
 from __future__ import division, print_function
 
 import inspect
-from ..core import _UserList
-
 import os.path
+
 from numpy import matrix
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
 from .. import schema
-from ..core import _dict_iter_values, _dict_iter_items, _dict_iter_keys
+from ..core import _UserList
+from ..core import _dict_iter_values, _dict_iter_items, _dict
 from ..readers import modreader
 
 __author__ = "Paul K. Korir, PhD"

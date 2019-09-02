@@ -57,7 +57,7 @@ def get_printable_ascii_string(B):
     printables = list(map(ord, string.printable))
     index = len(B) - 1
     for i, b in enumerate(B):  # for each byte
-        if b not in printables:
+        if ord(b) not in printables:
             index = i  # the previous
             break
     ascii_b = B[:index]

@@ -65,14 +65,17 @@ else:
 
     # xrange
     _xrange = __builtin__.xrange
+
     # iter* methods on dictionaries
     _dict_iter_keys = dict.iterkeys
     _dict_iter_values = dict.itervalues
     _dict_iter_items = dict.iteritems
+
     # for order preservation in dicts user OrderedDict
     from collections import OrderedDict
 
     _dict = OrderedDict
+
     from UserList import UserList
 
     _UserList = UserList

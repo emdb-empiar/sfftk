@@ -17,7 +17,7 @@ from stl import Mesh
 from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose, Py23FixTestCase
 from .. import BASE_DIR
 from ..core import print_tools
-from ..core import utils, _dict_iter_items, _str
+from ..core import utils, _dict_iter_items, _str, _dict
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list
@@ -61,10 +61,9 @@ class TestCoreConfigs(Py23FixTestCase):
     def setUpClass(cls):
         cls.test_config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'test_sff.conf')
         cls.config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
-        cls.config_values = {
-            '__TEMP_FILE': './temp-annotated.json',
-            '__TEMP_FILE_REF': '@',
-        }
+        cls.config_values = _dict()
+        cls.config_values['__TEMP_FILE'] = './temp-annotated.json'
+        cls.config_values['__TEMP_FILE_REF'] ='@'
 
     @classmethod
     def tearDownClass(cls):
@@ -388,7 +387,10 @@ class TestCorePrintUtils(Py23FixTestCase):
 
     def setUp(self):
         self.temp_fn = 'temp_file.txt'
-        self.temp_file = open(self.temp_fn, 'w+', newline='\r\n')
+        if sys.version_info[0] > 2:
+            self.temp_file = open(self.temp_fn, 'w+', newline='\r\n')
+        else:
+            self.temp_file = open(self.temp_fn, 'w+')
 
     def tearDown(self):
         os.remove(self.temp_fn)
@@ -831,7 +833,8 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     # =========================================================================
     def test_search_default(self):
         """Test default find parameters"""
-        args, _ = parse_args(shlex.split("notes search 'mitochondria' --config-path {}".format(self.config_fn)))
+        cmd = "notes search 'mitochondria' --config-path {}".format(self.config_fn)
+        args, _ = parse_args(cmd, use_shlex=True)
         self.assertEqual(args.notes_subcommand, 'search')
         self.assertEqual(args.search_term, 'mitochondria')
         self.assertEqual(args.rows, 10)
@@ -1742,7 +1745,8 @@ class TestCorePrep(Py23FixTestCase):
     def test_binmap_default(self):
         """Test binarise map"""
         test_map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
-        args, _ = parse_args(shlex.split("prep binmap -v {}".format(test_map_file)))
+        cmd = "prep binmap -v {}".format(test_map_file)
+        args, _ = parse_args(cmd, use_shlex=True)
         ex_st = bin_map(args, _)
         self.assertEqual(ex_st, os.EX_OK)
         # clean up

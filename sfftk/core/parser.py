@@ -527,11 +527,15 @@ search_notes_parser.add_argument(
     help="the term to search; add quotes if spaces are included")
 add_args(search_notes_parser, config_path)
 add_args(search_notes_parser, shipped_configs)
+if sys.version_info[0] > 2:
+    l = list(_dict_iter_keys(RESOURCE_LIST))
+else:
+    l = list(RESOURCE_LIST.iterkeys())
 search_notes_parser.add_argument(
-    '-R', '--resource', default=list(_dict_iter_keys(RESOURCE_LIST))[0], choices=_dict_iter_keys(RESOURCE_LIST),
+    '-R', '--resource', default=l[0], choices=l,
     help='the resource to search for terms or accessions; other valid options are {resources} [default: {default}]'.format(
-        resources=_dict_iter_keys(RESOURCE_LIST),
-        default=list(_dict_iter_keys(RESOURCE_LIST))[0],
+        resources=l,
+        default=l[0],
     )
 )
 search_notes_parser.add_argument(

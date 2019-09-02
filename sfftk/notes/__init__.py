@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # notes
 from __future__ import print_function
+
 import sys
-import collections
+
 from ..core import _dict
 
 # RESOURCE_LIST = collections.OrderedDict()

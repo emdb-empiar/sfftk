@@ -40,7 +40,7 @@ import sys
 
 from bitarray import bitarray
 
-from ..core import _bytes, _decode, _xrange
+from ..core import _decode, _xrange, _dict
 from ..core.print_tools import get_printable_ascii_string
 
 __author__ = 'Paul K. Korir, PhD'
@@ -936,10 +936,10 @@ tolLowRes:    %s
 tolHighRes:   %s
 flatCrit:     %s
 reserved:     %s""" % (
-        self.bytes, self.flags, self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz,
-        self.maxz, self.reserved_int, \
-        self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, \
-        self.tolHighRes, self.flatCrit, self.reserved_float)
+            self.bytes, self.flags, self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz,
+            self.maxz, self.reserved_int, \
+            self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, \
+            self.tolHighRes, self.flatCrit, self.reserved_float)
         return string
 
 
