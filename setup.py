@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 # setup.py
-from setuptools import setup, find_packages
-from sfftk import SFFTK_VERSION
 import sys
+
+from setuptools import setup, find_packages
+
+from sfftk import SFFTK_VERSION
 
 with open('README.rst') as f:
     long_description = f.read()
@@ -21,10 +23,8 @@ if sys.version_info[0] > 2:
         license="Apache License",
         keywords="EMDB-SFF, SFF, segmentation",
         setup_requires=["numpy"],
-        install_requires=["ahds", "h5py", "RandomWords", "styled", "mrcfile"],
-        # install_requires=["ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
-        #                   "numpy-stl", "mock", "mrcfile",
-        #                   "matplotlib<3.0", "scipy<=1.2", "RandomWords", "styled", "networkx<2.3", "scikit-image"],
+        install_requires=["ahds", "lxml", "h5py>2.7.0", "RandomWords", "styled", "mrcfile", "bitarray", "requests", "mock",
+                          "numpy-stl", "styled"],
         classifiers=[
             # maturity
             'Development Status :: 2 - Pre-Alpha',
@@ -57,7 +57,7 @@ else:
         url="http://sfftk.readthedocs.io/en/latest/index.html",
         license="Apache License",
         keywords="EMDB-SFF, SFF, segmentation",
-        setup_requires=["numpy"],
+        setup_requires=["numpy<1.17"],
         install_requires=["ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
                           "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile",
                           "matplotlib<3.0", "scipy<=1.2", "RandomWords", "styled", "networkx<2.3", "scikit-image"],
