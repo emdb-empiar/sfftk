@@ -2,8 +2,8 @@ language: python
 
 python:
   - "2.7"
-  - "3.6"
   - "3.7"
+#  - "3.6"
 
 sudo: true
 
@@ -25,8 +25,8 @@ install:
 #  - sff --help
 
 script:
-  - pytest --cov=./sfftk sfftk/unittests
-#  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
+#  - pytest --cov=./sfftk sfftk/unittests
 
 after_success:
   - coveralls
