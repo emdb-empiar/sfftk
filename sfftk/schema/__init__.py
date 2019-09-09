@@ -1099,14 +1099,18 @@ class SFFLattice(SFFType):
             print_date("Cannot encode data of type {}".format(type(self.data)))
             sys.exit(os.EX_DATAERR)
         format_string = "{}{}{}".format(ENDIANNESS[self.endianness], self.size.voxelCount, FORMAT_CHARS[self.mode])
-        binpack = struct.pack(format_string, *self.data.flat)
-        # del binlist
-        self.data = None
-        binzip = zlib.compress(binpack)
-        del binpack
-        bin64 = base64.b64encode(binzip)
-        del binzip
-        self.data = bin64
+        try:
+            binpack = struct.pack(format_string, *self.data.flat)
+            # del binlist
+            self.data = None
+            binzip = zlib.compress(binpack)
+            del binpack
+            bin64 = base64.b64encode(binzip)
+            del binzip
+            self.data = bin64
+        except MemoryError:
+            print_date("Out of memory exception. Please rerun with more memory.")
+            self.data = None
 
     def decode(self):
         """Decode the data for processing
