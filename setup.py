@@ -23,7 +23,8 @@ if sys.version_info[0] > 2:
         license="Apache License",
         keywords="EMDB-SFF, SFF, segmentation",
         setup_requires=["numpy"],
-        install_requires=["ahds", "lxml", "h5py>2.7.0", "RandomWords", "styled", "mrcfile", "bitarray", "requests", "mock",
+        install_requires=["ahds==0.2.0.dev0", "lxml", "h5py>2.7.0", "RandomWords", "styled", "mrcfile", "bitarray", "requests",
+                          "mock",
                           "numpy-stl", "styled"],
         classifiers=[
             # maturity
@@ -58,7 +59,7 @@ else:
         license="Apache License",
         keywords="EMDB-SFF, SFF, segmentation",
         setup_requires=["numpy<1.17"],
-        install_requires=["ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
+        install_requires=["ahds==0.2.0.dev0", "lxml", "h5py>2.7.0", "requests", "bitarray",
                           "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile",
                           "matplotlib<3.0", "scipy<=1.2", "RandomWords", "styled", "networkx<2.3", "scikit-image"],
         classifiers=[

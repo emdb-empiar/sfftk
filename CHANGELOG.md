@@ -1,5 +1,12 @@
 #Changes by release
 
+## [0.4.0.dev0] - 2019-09-09
+
+Python3 support
+
+- now depends on ``ahds v0.2.0.dev0`` which is Python3 compatible
+
+
 ## [0.3.1.dev5] - 2018-08-01
 
 Documentation
@@ -18,6 +25,10 @@ Multi-file support for STL files
 Bugfixes
 
 - read JSON SFF file for 3D volume correctly
+
+
+## [0.3.1.dev3] - 2018-07-23
+
 
 ## [0.3.1.dev0] - 2018-07-18
 

@@ -185,11 +185,21 @@ class AmiraMeshSegment(Segment):
     @property
     def material(self):
         """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
-        try:  # assume that we have materials defined
-            material = self._header.parameters.Materials[
-                self.segment_id]  # Ids are 1-based but in the images are 0-based
-        except AttributeError:
-            material = None
+        # try:  # assume that we have materials defined
+        #     material = self._header.Parameters.Materials[self.segment_id - 1]  # Ids are 1-based but in the images are 0-based
+        # except AttributeError:
+        #     material = None
+        # return material
+        material = None
+        for m in self._header.Parameters.Materials:
+            try:
+                m_id = m.Id
+            except AttributeError:
+                continue
+            if self.segment_id == m_id:
+                material = m
+                break
+
         return material
 
     @property
@@ -267,8 +277,8 @@ class AmiraMeshSegmentation(Segmentation):
     def segments(self):
         """Segments in this segmentation"""
         segments = list()
-        if hasattr(self.header.parameters, 'Materials') or hasattr(self.header.parameters, 'materials'):
-            for segment_id in self.header.parameters.Materials.ids:
+        if hasattr(self.header.Parameters, 'Materials') or hasattr(self.header.Parameters, 'materials'):
+            for segment_id in self.header.Parameters.Materials.ids:
                 segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
         else:
             indices_set = set(self._volume.flatten().tolist())

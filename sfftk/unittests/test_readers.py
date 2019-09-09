@@ -60,7 +60,7 @@ class TestReaders_amreader(Py23FixTestCase):
 
     def test_materials_present(self):
         """test Materials exist in parameters"""
-        self.assertTrue(hasattr(self.header.parameters, 'Materials'))
+        self.assertTrue(hasattr(self.header.Parameters, 'Materials'))
 
     def test_read_hxsurface(self):
         """Test handling of AmiraMesh hxsurface files"""

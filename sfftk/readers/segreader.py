@@ -55,12 +55,12 @@ class SeggerSegmentation(object):
         """
         self._seg_handler = h5py.File(fn, 'r', *args, **kwargs)
         # region/parent ids
-        self._region_ids = self._seg_handler['region_ids'].value
-        self._parent_ids = self._seg_handler['parent_ids'].value
+        self._region_ids = self._seg_handler['region_ids'][()]
+        self._parent_ids = self._seg_handler['parent_ids'][()]
         self._zipped_region_parent_ids = zip(self._region_ids, self._parent_ids)
         self._region_parent_dict = dict(self._zipped_region_parent_ids)
         # colours
-        self._region_colours = self._seg_handler['region_colors'].value
+        self._region_colours = self._seg_handler['region_colors'][()]
         self._region_colours_dict = dict(zip(self._region_ids, self._region_colours))
         self._parent_region_dict = dict()
         for r, p in self._zipped_region_parent_ids:
@@ -134,7 +134,7 @@ class SeggerSegmentation(object):
         try:
             return self._seg_handler.attrs['map_size']
         except KeyError:
-            return self._seg_handler['mask'].value.shape
+            return self._seg_handler['mask'][()].shape
 
     @property
     def region_ids(self):
@@ -174,7 +174,7 @@ class SeggerSegmentation(object):
     @property
     def mask(self):
         """The mask (TM)"""
-        return self._seg_handler['mask'].value
+        return self._seg_handler['mask'][()]
 
     def simplify_mask(self, mask, replace=True):
         """Simplify the mask by replacing all `region_ids` with their `root_parent_id`

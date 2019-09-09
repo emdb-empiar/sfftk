@@ -924,7 +924,7 @@ class TestSFFRGBA(Py23FixTestCase):
             group = h.create_group("container")
             group = colour.as_hff(group)
             self.assertIn("colour", group)
-            self.assertCountEqual(group['colour'].value, colour.value)
+            self.assertCountEqual(group['colour'][()], colour.value)
 
     def test_from_hff(self):
         """Test create from HDF5 group"""
@@ -938,7 +938,7 @@ class TestSFFRGBA(Py23FixTestCase):
             group = h.create_group("container")
             group = colour.as_hff(group)
             self.assertIn("colour", group)
-            self.assertCountEqual(group['colour'].value, colour.value)
+            self.assertCountEqual(group['colour'][()], colour.value)
             colour2 = schema.SFFRGBA.from_hff(h['container'])
             self.assertCountEqual(colour.value, colour2.value)
 

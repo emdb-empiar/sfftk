@@ -195,7 +195,7 @@ def extract_segments(af, *args, **kwargs):
     vertices_dict = dict(zip(range(1, len(vertices_list) + 1), vertices_list))
     # then we repack the vertices and patches into vertices and triangles (collate triangles from all patches)
     for patch in af.data_streams.Data.Vertices.Patches:
-        material = af.header.parameters.Materials.material_dict[patch.InnerRegion]
+        material = af.header.Parameters.Materials.material_dict[patch.InnerRegion]
         patch_id = material.Id
         # sanity check
         if patch_id is None:
@@ -226,7 +226,7 @@ def get_data(fn, *args, **kwargs):
     data_streams = ahds.data_stream.DataStreams(fn, *args, **kwargs)
     segments = dict()
     for patch_name in data_streams['Patches']:
-        patch_material = getattr(header.parameters.Materials, patch_name)
+        patch_material = getattr(header.Parameters.Materials, patch_name)
         patch_vertices, patch_triangles = vertices_for_patches(data_streams['Vertices'], data_streams['Patches'][patch_name])
         # we use the material ID as the key because it is a unique reference to the patch
         # segments[patch_material.Id] = (patch_vertices, patch_triangles)

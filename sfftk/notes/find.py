@@ -14,7 +14,13 @@ import random
 import sys
 import textwrap
 
-import backports.shutil_get_terminal_size
+if sys.version_info[0] > 2:
+    from shutil import get_terminal_size
+    _get_terminal_size = get_terminal_size
+else:
+    from backports.shutil_get_terminal_size import get_terminal_size
+    _get_terminal_size = get_terminal_size
+
 from styled import Styled
 
 from . import RESOURCE_LIST
@@ -504,7 +510,7 @@ class ResultsTable(Table):
         super(ResultsTable, self).__init__(*args, **kwargs)
         self._search_results = search_results
         if width == u'auto':
-            terminal_size = backports.shutil_get_terminal_size.get_terminal_size()  # fallback values
+            terminal_size = _get_terminal_size()  # fallback values
             if terminal_size.columns > 0:
                 self._width = terminal_size.columns
             else:
@@ -626,7 +632,7 @@ class SearchResults(object):
         self._resource = resource  # the resource that was searched
         self._raw_response = resource.response
         self._structured_response = self._structure_response()
-        terminal_size = backports.shutil_get_terminal_size.get_terminal_size()  # fallback values
+        terminal_size = _get_terminal_size()  # fallback values
         if terminal_size.columns > 0:
             self._width = terminal_size.columns
         else:
