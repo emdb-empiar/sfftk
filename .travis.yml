@@ -22,7 +22,7 @@ before_install:
 
 install:
   - python setup.py develop
-  - sff --help
+#  - sff --help
 
 script:
   - pytest --cov=./sfftk sfftk/unittests

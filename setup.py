@@ -61,7 +61,7 @@ else:
         setup_requires=["numpy<1.17"],
         install_requires=["ahds==0.2.0.dev0", "lxml", "h5py>2.7.0", "requests", "bitarray",
                           "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile",
-                          "matplotlib<3.0", "scipy<=1.2", "RandomWords", "styled", "networkx<2.3", "scikit-image"],
+                          "matplotlib<3.0", "scipy<=1.2", "RandomWords", "styled", "networkx<2.3", "scikit-image<0.15"],
         classifiers=[
             # maturity
             'Development Status :: 2 - Pre-Alpha',
