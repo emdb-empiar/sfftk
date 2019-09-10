@@ -5,6 +5,9 @@ EMDB-SFF Toolkit (``sfftk``)
 .. image:: https://badge.fury.io/py/sfftk.svg
     :target: https://badge.fury.io/py/sfftk
 
+.. image:: https://img.shields.io/pypi/pyversions/sfftk
+    :alt: PyPI - Python Version
+
 .. image:: https://travis-ci.org/emdb-empiar/sfftk.svg?branch=master
     :target: https://travis-ci.org/emdb-empiar/sfftk
 

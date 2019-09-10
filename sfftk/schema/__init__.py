@@ -93,7 +93,7 @@ import numpy as np
 
 # import emdb_sff as sff
 from . import emdb_sff as sff
-from ..core import _basestring, _xrange, _bytes, _decode, _str
+from ..core import _basestring, _xrange, _bytes, _decode, _str, _encode
 from ..core.print_tools import print_date, print_static
 
 __author__ = "Paul K. Korir, PhD"
@@ -1076,6 +1076,10 @@ class SFFLattice(SFFType):
             self._local.id = kwargs['id']
         elif not var:
             self._local.id = self.lattice_id
+        # ensure that data is bytes, not string
+        if isinstance(self.data, _str): # for python2: unicode, for python3: str
+            # we should decode it using ASCII
+            self.data = _encode(self.data, 'ASCII')
         if not self.is_encoded:
             # encode on create
             self.encode()
