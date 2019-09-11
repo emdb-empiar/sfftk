@@ -506,7 +506,7 @@ def _testcase_test_runner(tc, args):
     return os.EX_OK
 
 
-def _discover_test_runner(path, args):
+def _discover_test_runner(path, args, top_level_dir=None):
     """Test runner that looks for tests in *path*
     
     :param str path: path to search for tests
@@ -514,7 +514,7 @@ def _discover_test_runner(path, args):
     :type args: `argparse.Namespace`
     """
     import unittest
-    suite = unittest.TestLoader().discover(path)
+    suite = unittest.TestLoader().discover(path, top_level_dir=top_level_dir)
     unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
     return os.EX_OK
 
