@@ -48,8 +48,7 @@ if sys.version_info[0] > 2:
             return data
         elif isinstance(data, bytes):
             return data.decode(encoding)
-        else:
-            raise ValueError("invalid type '{}' to decode".format(type(data)))
+        return data
 
 
     # encoding
@@ -58,8 +57,9 @@ if sys.version_info[0] > 2:
             return data.encode(encoding)
         elif isinstance(data, bytes):
             return data
-        else:
-            raise ValueError("invalid type '{}' to encode".format(type(data)))
+        return data
+
+    _input = input
 else:
     import __builtin__
 
@@ -102,8 +102,7 @@ else:
             return data.decode(encoding)
         elif isinstance(data, unicode):
             return data
-        else:
-            raise ValueError("invalid type '{}' to decode".format(type(data)))
+        return data
 
 
     # encoding
@@ -112,5 +111,6 @@ else:
             return data
         elif isinstance(data, unicode):
             return data.encode(encoding)
-        else:
-            raise ValueError("invalid type '{}' to encode".format(type(data)))
+        return data
+
+    _input = __builtin__.raw_input

@@ -9,7 +9,7 @@ import re
 import sys
 from copy import deepcopy
 
-from ..core import _decode
+from ..core import _decode, _input
 from .print_tools import print_date
 from ..notes import RESOURCE_LIST
 from . import _dict_iter_keys, _dict_iter_values, _dict_iter_items
@@ -1057,7 +1057,7 @@ def parse_args(_args, use_shlex=False):
             if not args.force:
                 default_choice = 'n'
                 # get user choice
-                user_choice = raw_input("Are you sure you want to delete config '{}' [y/N]? ".format(
+                user_choice = _input("Are you sure you want to delete config '{}' [y/N]? ".format(
                     args.name)).lower()
                 if user_choice == '':
                     choice = default_choice
@@ -1080,7 +1080,7 @@ def parse_args(_args, use_shlex=False):
                 if not args.force:
                     default_choice = 'n'
                     # get user choice
-                    user_choice = raw_input("Are you sure you want to overwrite config '{}={}' [y/N]? ".format(
+                    user_choice = _input("Are you sure you want to overwrite config '{}={}' [y/N]? ".format(
                         args.name, configs[args.name])).lower()
                     if user_choice == '':
                         choice = default_choice

@@ -40,7 +40,7 @@ import sys
 
 from bitarray import bitarray
 
-from ..core import _decode, _xrange, _dict
+from ..core import _decode, _xrange, _dict_iter_items
 from ..core.print_tools import get_printable_ascii_string
 
 __author__ = 'Paul K. Korir, PhD'
@@ -1132,17 +1132,17 @@ def print_model(fn):
     print(mod, file=output_dest)
     print("***************************************************************************************", file=output_dest)
 
-    for o, O in mod.objts.iteritems():
+    for o, O in _dict_iter_items(mod.objts):
         print('OBJT%s' % o, file=output_dest)
         print(O, file=output_dest)
         print("***************************************************************************************",
               file=output_dest)
-        for c, C in O.conts.iteritems():
+        for c, C in _dict_iter_items(O.conts):
             print('CONT%s' % c, file=output_dest)
             print(C, file=output_dest)
             print("***************************************************************************************",
                   file=output_dest)
-        for m, M in O.meshes.iteritems():
+        for m, M in _dict_iter_items(O.meshes):
             print('MESH%s' % m, file=output_dest)
             print(M, file=output_dest)
             print("***************************************************************************************",
@@ -1161,7 +1161,7 @@ def print_model(fn):
             print(O.mepa, file=output_dest)
             print("***************************************************************************************",
                   file=output_dest)
-    for v, V in mod.views.iteritems():
+    for v, V in _dict_iter_items(mod.views):
         print('VIEW%s' % v, file=output_dest)
         print(V, file=output_dest)
         print("***************************************************************************************",

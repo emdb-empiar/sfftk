@@ -110,7 +110,7 @@ class IMODMesh(Mesh):
             # if we have not normals we only have surface
             for i in range(len(surface_indices)):  # surface_indices[i] is a tuple
                 if normal_indices:
-                    zipped_indices = zip(surface_indices[i], normal_indices[i])
+                    zipped_indices = list(zip(surface_indices[i], normal_indices[i]))
                 else:
                     zipped_indices = surface_indices[i]
                 # vertices
@@ -209,7 +209,7 @@ class IMODContours(Contours):
         """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
         contours = schema.SFFContourList()
         schema.SFFContour.reset_id()
-        for cont in self._conts.itervalues():
+        for cont in _dict_iter_values(self._conts):
             contour = schema.SFFContour()
             for x, y, z in cont.pt:
                 contour.add_point(
@@ -329,13 +329,13 @@ class IMODShapes(Shapes):
         shapes = list()
         if self._objt.pdrawsize > 0:
             radius = self._objt.pdrawsize
-            for contour in self._objt.conts.itervalues():
+            for contour in _dict_iter_values(self._objt.conts):
                 for x, y, z in contour.pt:
                     shapes.append(IMODEllipsoid(radius, x, y, z))
         elif modreader.OBJT_SYMBOLS[self._objt.symbol] == 'circle':
             diameter = 2 * self._objt.symsize
             height = 0
-            for contour in self._objt.conts.itervalues():
+            for contour in _dict_iter_values(self._objt.conts):
                 for x, y, z in contour.pt:
                     shapes.append(IMODCylinder(diameter, height, x, y, z))
         return shapes

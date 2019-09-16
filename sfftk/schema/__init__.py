@@ -1163,7 +1163,7 @@ class SFFLattice(SFFType):
             endianness=_decode(hff_data['endianness'][()], 'utf-8'),
             size=SFFVolumeStructure.from_hff(hff_data['size']),
             start=SFFVolumeIndex.from_hff(hff_data['start']),
-            data=hff_data['data'][()],
+            data=_decode(hff_data['data'][()], 'utf-8'),
         )
         return obj
 
@@ -1185,10 +1185,14 @@ class SFFLatticeList(SFFType):
     def add_lattice(self, l):
         """Add a lattice to the list of lattices
 
+        Convert the data from bytes to unicode before adding
+
         :param l: a lattice object
         :type l: :py:class:`SFFLattice`
         """
         if isinstance(l, SFFLattice):
+            # convert data from bytes to unicode
+            l.data = _decode(l.data, 'utf-8')
             self._local.add_lattice(l._local)
         else:
             raise SFFTypeError(SFFLattice)
@@ -1605,7 +1609,7 @@ class SFFPolygonList(SFFType):
         # reset id
         SFFPolygon.reset_id()
         super(SFFPolygonList, self).__init__(var=var, *args, **kwargs)
-        self._polygon_dict = {P.PID: P for P in map(SFFPolygon, self._local.P)}
+        self._polygon_dict = {P.PID: P for P in list(map(SFFPolygon, self._local.P))}
 
     @property
     def numPolygons(self):

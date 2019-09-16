@@ -57,7 +57,7 @@ class SeggerSegmentation(object):
         # region/parent ids
         self._region_ids = self._seg_handler['region_ids'][()]
         self._parent_ids = self._seg_handler['parent_ids'][()]
-        self._zipped_region_parent_ids = zip(self._region_ids, self._parent_ids)
+        self._zipped_region_parent_ids = list(zip(self._region_ids, self._parent_ids))
         self._region_parent_dict = dict(self._zipped_region_parent_ids)
         # colours
         self._region_colours = self._seg_handler['region_colors'][()]
@@ -150,7 +150,7 @@ class SeggerSegmentation(object):
     def root_parent_ids(self):
         """The """
         _root_parent_ids = filter(lambda r: r[1] == 0, self._zipped_region_parent_ids)
-        return map(lambda r: r[0], _root_parent_ids)
+        return list(map(lambda r: r[0], _root_parent_ids))
 
     @property
     def region_colours(self):

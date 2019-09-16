@@ -13,6 +13,7 @@ from .base import Annotation, Volume, Segment, Header, \
     Segmentation
 from .. import schema
 from ..readers import segreader
+from ..core import _str
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -133,7 +134,7 @@ class SeggerHeader(Header):
     @property
     def version(self):
         """The version of Segger used"""
-        return self._segmentation.format_version
+        return _str(self._segmentation.format_version)
 
     @property
     def map_path(self):
