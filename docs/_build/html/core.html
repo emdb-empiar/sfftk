@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.core package &mdash; sfftk v0.3.2.dev5 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.4.0.dev2 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="sfftk.notes package" href="notes.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                v0.3
+                v0.4
               </div>
             
           
@@ -86,7 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="schema.html">sfftk.schema package</a></li>
@@ -185,111 +187,103 @@ configurations. Please see the <a class="reference internal" href="misc.html"><s
 for a complete description of working with configs.</p>
 <dl class="function">
 <dt id="sfftk.core.configs.get_config_file_path">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">get_config_file_path</code><span class="sig-paren">(</span><em>args</em>, <em>user_folder='~/.sfftk'</em>, <em>user_conf_fn='sff.conf'</em>, <em>config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_config_file_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">get_config_file_path</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">user_folder='~/.sfftk'</em>, <em class="sig-param">user_conf_fn='sff.conf'</em>, <em class="sig-param">config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_config_file_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function that returns the right config path to use depending on the command specified</p>
 <p>The user may specify <cite>sff &lt;cmd&gt; [&lt;sub_cmd&gt;] [–shipped-configs|–config-path] [args…]</cite>
 and we have to decide which configs to use.</p>
 <p>Example:
 - View the notes in the file. If user configs are available use them otherwise use shipped configs</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff notes list file.json
 </pre></div>
 </div>
 <ul class="simple">
-<li>View the notes in the file but ONLY use shipped configs.</li>
+<li><p>View the notes in the file but ONLY use shipped configs.</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">shipped</span><span class="o">-</span><span class="n">configs</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff notes list --shipped-configs file.json
 </pre></div>
 </div>
 <ul class="simple">
-<li>View the notes in the file but ONLY use custom configs at path</li>
+<li><p>View the notes in the file but ONLY use custom configs at path</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">notes</span> <span class="nb">list</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff notes list --config-path /path/to/sff.conf file.json
 </pre></div>
 </div>
 <ul class="simple">
-<li>Get available configs. First check for user configs and fall back on shipped configs</li>
+<li><p>Get available configs. First check for user configs and fall back on shipped configs</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="o">--</span><span class="nb">all</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get --all
 </pre></div>
 </div>
 <ul class="simple">
-<li>Get configs from the path</li>
+<li><p>Get configs from the path</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span> <span class="o">--</span><span class="nb">all</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get --config-path /path/to/sff.conf --all
 <span class="c1"># ignore shipped still!</span>
-<span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span> <span class="o">--</span><span class="n">shipped</span><span class="o">-</span><span class="n">configs</span> <span class="o">--</span><span class="nb">all</span>
+sff config get --config-path /path/to/sff.conf --shipped-configs --all
 </pre></div>
 </div>
 <ul class="simple">
-<li>Get shipped configs even if user configs exist</li>
+<li><p>Get shipped configs even if user configs exist</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="n">get</span> <span class="o">--</span><span class="n">shipped</span><span class="o">-</span><span class="n">configs</span> <span class="o">--</span><span class="nb">all</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get --shipped-configs --all
 </pre></div>
 </div>
 <ul class="simple">
-<li>Set configs to user configs. If user configs don’t exist copy shipped and add the new config.</li>
+<li><p>Set configs to user configs. If user configs don’t exist copy shipped and add the new config.</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">NAME</span> <span class="n">VALUE</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config <span class="nb">set</span> NAME VALUE
 </pre></div>
 </div>
 <ul class="simple">
-<li>Set configs to config path. Ignore user and shipped configs</li>
+<li><p>Set configs to config path. Ignore user and shipped configs</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">sff</span><span class="o">.</span><span class="n">conf</span> <span class="n">NAME</span> <span class="n">VALUE</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config <span class="nb">set</span> --config-path /path/to/sff.conf NAME VALUE
 </pre></div>
 </div>
 <ul class="simple">
-<li>Fail! Shipped configs are read-only</li>
+<li><p>Fail! Shipped configs are read-only</p></li>
 </ul>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">config</span> <span class="nb">set</span> <span class="o">--</span><span class="n">shipped</span><span class="o">-</span><span class="n">configs</span> <span class="n">NAME</span> <span class="n">VALUE</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config <span class="nb">set</span> --shipped-configs NAME VALUE
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> – </li>
-<li><strong>user_folder</strong> – </li>
-<li><strong>user_conf_fn</strong> – </li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – </p></li>
+<li><p><strong>user_folder</strong> – </p></li>
+<li><p><strong>user_conf_fn</strong> – </p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.configs.load_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">load_configs</code><span class="sig-paren">(</span><em>config_file_path</em>, <em>config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.load_configs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">load_configs</code><span class="sig-paren">(</span><em class="sig-param">config_file_path</em>, <em class="sig-param">config_class=&lt;class 'sfftk.core.configs.Configs'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.load_configs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load configs from the given file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>config_file_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – a path to a file with configs</li>
-<li><strong>config_class</strong> (<em>class</em>) – the config class; default: Configs</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_file_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – a path to a file with configs</p></li>
+<li><p><strong>config_class</strong> (<em>class</em>) – the config class; default: Configs</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return configs:</th><td class="field-body"><p class="first">the configs</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Rtype configs:</th><td class="field-body"><p class="first last">Configs</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return configs</dt>
+<dd class="field-even"><p>the configs</p>
+</dd>
+<dt class="field-odd">Rtype configs</dt>
+<dd class="field-odd"><p>Configs</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.core.configs.Configs">
-<em class="property">class </em><code class="descclassname">sfftk.core.configs.</code><code class="descname">Configs</code><span class="sig-paren">(</span><em>config_fn</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/collections.html#collections.OrderedDict" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.OrderedDict</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">Configs</code><span class="sig-paren">(</span><em class="sig-param">config_fn</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <p>Class defining configs</p>
 <p>Configurations are stored in a subclass of <code class="docutils literal notranslate"><span class="pre">OrderedDict</span></code> with 
 appended methods for reading (<code class="docutils literal notranslate"><span class="pre">read()</span></code>), writing (<code class="docutils literal notranslate"><span class="pre">write</span></code>) and 
@@ -298,19 +292,19 @@ clearing (<code class="docutils literal notranslate"><span class="pre">clear()</
 <p>This class is used an argument to <code class="docutils literal notranslate"><span class="pre">load_configs()</span></code>.</p>
 <dl class="method">
 <dt id="sfftk.core.configs.Configs.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.clear" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear configs</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.core.configs.Configs.read">
-<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read configs from file</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.core.configs.Configs.write">
-<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.write" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write configs to file</p>
 </dd></dl>
 
@@ -318,68 +312,53 @@ clearing (<code class="docutils literal notranslate"><span class="pre">clear()</
 
 <dl class="function">
 <dt id="sfftk.core.configs.get_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">get_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_configs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">get_configs</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.get_configs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the value of the named config</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.configs.set_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">set_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.set_configs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">set_configs</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.set_configs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the config of the given name to have the given value</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.configs.del_configs">
-<code class="descclassname">sfftk.core.configs.</code><code class="descname">del_configs</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.del_configs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">del_configs</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.del_configs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the named config</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</li>
-<li><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -389,43 +368,39 @@ clearing (<code class="docutils literal notranslate"><span class="pre">clear()</
 <p>Parses command-line options</p>
 <dl class="function">
 <dt id="sfftk.core.parser.parse_args">
-<code class="descclassname">sfftk.core.parser.</code><code class="descname">parse_args</code><span class="sig-paren">(</span><em>_args</em>, <em>use_shlex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.parser.</code><code class="sig-name descname">parse_args</code><span class="sig-paren">(</span><em class="sig-param">_args</em>, <em class="sig-param">use_shlex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse and check command-line arguments and also return configs.</p>
 <p>This function does all the heavy lifting in ensuring that commandline
 arguments are properly formatted and checked for sanity. It also 
 extracts configs from the config files.</p>
 <p>In this way command handlers (defined in <code class="docutils literal notranslate"><span class="pre">sfftk/sff.py</span></code> e.g. <code class="docutils literal notranslate"><span class="pre">handle_convert(...)</span></code>)
 assume correct argument values and can concentrate on functionality.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – list of arguments</li>
-<li><strong>_args</strong> – string of commands</li>
-<li><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – list of arguments</p></li>
+<li><p><strong>_args</strong> – string of commands</p></li>
+<li><p><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">parsed arguments</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">config dict-like object</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Config</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>parsed arguments</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>config dict-like object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Config</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.parser.add_args">
-<code class="descclassname">sfftk.core.parser.</code><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em>, <em>the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.parser.</code><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em>, <em class="sig-param">the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience function to add <code class="docutils literal notranslate"><span class="pre">the_arg</span></code> to the <code class="docutils literal notranslate"><span class="pre">parser</span></code>.</p>
 <p>This relies on the argument being structured as a dictionary with the keys 
 <code class="docutils literal notranslate"><span class="pre">args</span></code> for positional arguments and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> for the keyword
@@ -438,24 +413,20 @@ redefined.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_args</span><span class="p">(</span><span class="n">this_parser</span><span class="p">,</span> <span class="n">my_arg</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parser</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Parser</span></code>) – a parser</li>
-<li><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the argument specified as a dict with keys ‘args’ and ‘kwargs’</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parser</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Parser</span></code>) – a parser</p></li>
+<li><p><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – the argument specified as a dict with keys ‘args’ and ‘kwargs’</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return parser:</th><td class="field-body"><p class="first">a parser</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Rtype parser:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">argparse.Parser</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return parser</dt>
+<dd class="field-even"><p>a parser</p>
+</dd>
+<dt class="field-odd">Rtype parser</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">argparse.Parser</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -466,60 +437,49 @@ redefined.</p>
 <p>Utilities for printing stuff to the screen.</p>
 <dl class="function">
 <dt id="sfftk.core.print_tools.print_date">
-<code class="descclassname">sfftk.core.print_tools.</code><code class="descname">print_date</code><span class="sig-paren">(</span><em>print_string</em>, <em>stream=&lt;open file '&lt;stderr&gt;'</em>, <em>mode 'w'&gt;</em>, <em>newline=True</em>, <em>incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_date" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.print_tools.</code><code class="sig-name descname">print_date</code><span class="sig-paren">(</span><em class="sig-param">print_string</em>, <em class="sig-param">stream=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em>, <em class="sig-param">newline=True</em>, <em class="sig-param">incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_date" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print the given string with date on the given stream</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>print_string</strong> (<em>unicode</em>) – the string to be printed</li>
-<li><strong>print_string</strong> – the unicode string to be printed</li>
-<li><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</li>
-<li><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>print_string</strong> (<em>unicode</em>) – the string to be printed</p></li>
+<li><p><strong>print_string</strong> – the unicode string to be printed</p></li>
+<li><p><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</p></li>
+<li><p><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.print_tools.get_printable_ascii_string">
-<code class="descclassname">sfftk.core.print_tools.</code><code class="descname">get_printable_ascii_string</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.get_printable_ascii_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the string to search</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return str ascii_s:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">the minimal ASCII string</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-prename descclassname">sfftk.core.print_tools.</code><code class="sig-name descname">get_printable_ascii_string</code><span class="sig-paren">(</span><em class="sig-param">B</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.get_printable_ascii_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a bytes string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>B</strong> (<em>bytes</em>) – the bytes string to search</p>
+</dd>
+<dt class="field-even">Return bytes ascii_b</dt>
+<dd class="field-even"><p>the minimal ASCII string</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.print_tools.print_static">
-<code class="descclassname">sfftk.core.print_tools.</code><code class="descname">print_static</code><span class="sig-paren">(</span><em>print_string</em>, <em>stream=&lt;open file '&lt;stderr&gt;'</em>, <em>mode 'w'&gt;</em>, <em>incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_static" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.print_tools.</code><code class="sig-name descname">print_static</code><span class="sig-paren">(</span><em class="sig-param">print_string</em>, <em class="sig-param">stream=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em>, <em class="sig-param">incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_static" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print the given string with date on the given stream from the first position 
 overwriting any characters.</p>
 <p>This is a useful way to display progress without overcrowding the screen.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the string to be printed</li>
-<li><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</li>
-<li><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the string to be printed</p></li>
+<li><p><strong>stream</strong> (<cite>sys.stderr</cite> or <cite>sys.stdout</cite>) – the stream to write to</p></li>
+<li><p><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -528,83 +488,67 @@ overwriting any characters.</p>
 <span id="preparation-utilities"></span><h2>Preparation utilities<a class="headerlink" href="#module-sfftk.core.prep" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="sfftk.core.prep.bin_map">
-<code class="descclassname">sfftk.core.prep.</code><code class="descname">bin_map</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.bin_map" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.prep.</code><code class="sig-name descname">bin_map</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.bin_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bin the CCP4 map</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</li>
-<li><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int exit_status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">exit status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int exit_status</dt>
+<dd class="field-even"><p>exit status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.prep.transform">
-<code class="descclassname">sfftk.core.prep.</code><code class="descname">transform</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.prep.</code><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rescale the STL mesh using the params in the arguments namespace</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</li>
-<li><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int exit_status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">exit status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int exit_status</dt>
+<dd class="field-even"><p>exit status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.prep.transform_stl_mesh">
-<code class="descclassname">sfftk.core.prep.</code><code class="descname">transform_stl_mesh</code><span class="sig-paren">(</span><em>mesh</em>, <em>transform</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.transform_stl_mesh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.prep.</code><code class="sig-name descname">transform_stl_mesh</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">transform</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.transform_stl_mesh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rescale the given STL mesh by the given transform</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mesh</strong> – an STL mesh</li>
-<li><strong>transform</strong> – 4x4 numpy array</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> – an STL mesh</p></li>
+<li><p><strong>transform</strong> – 4x4 numpy array</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an STL mesh transformed</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an STL mesh transformed</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.core.prep.construct_transformation_matrix">
-<code class="descclassname">sfftk.core.prep.</code><code class="descname">construct_transformation_matrix</code><span class="sig-paren">(</span><em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.construct_transformation_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.core.prep.</code><code class="sig-name descname">construct_transformation_matrix</code><span class="sig-paren">(</span><em class="sig-param">args</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.prep.construct_transformation_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the transformation matrix</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> – parsed arguments</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">transform</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – parsed arguments</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>transform</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -619,7 +563,7 @@ overwriting any characters.</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="notes.html" class="btn btn-neutral" title="sfftk.notes package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="notes.html" class="btn btn-neutral float-left" title="sfftk.notes package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -645,25 +589,16 @@ overwriting any characters.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

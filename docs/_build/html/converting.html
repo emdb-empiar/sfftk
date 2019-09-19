@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Converting Files To EMDB-SFF &mdash; sfftk v0.3.2.dev5 documentation</title>
+  <title>Converting Files To EMDB-SFF &mdash; sfftk v0.4.0.dev2 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Annotating EMDB-SFF Segmentations" href="annotating.html" />
     <link rel="prev" title="EMDB-SFF Toolkit (sfftk)" href="toolkit.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                v0.3
+                v0.4
               </div>
             
           
@@ -117,7 +119,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sfftk.html">sfftk packages</a></li>
 </ul>
@@ -185,232 +187,236 @@
            <div itemprop="articleBody">
             
   <div class="section" id="converting-files-to-emdb-sff">
-<h1><a class="toc-backref" href="#id4">Converting Files To EMDB-SFF</a><a class="headerlink" href="#converting-files-to-emdb-sff" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id5">Converting Files To EMDB-SFF</a><a class="headerlink" href="#converting-files-to-emdb-sff" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#converting-files-to-emdb-sff" id="id4">Converting Files To EMDB-SFF</a><ul>
-<li><a class="reference internal" href="#introduction" id="id5">Introduction</a><ul>
-<li><a class="reference internal" href="#synopsis" id="id6">Synopsis</a></li>
-<li><a class="reference internal" href="#quick-start" id="id7">Quick Start</a><ul>
-<li><a class="reference internal" href="#output-to-xml-default" id="id8">Output to XML (Default)</a></li>
-<li><a class="reference internal" href="#specify-output-file" id="id9">Specify Output File</a></li>
-<li><a class="reference internal" href="#specify-output-format" id="id10">Specify Output Format</a></li>
-<li><a class="reference internal" href="#emdb-sff-format-interconversion" id="id11">EMDB-SFF Format Interconversion</a></li>
-<li><a class="reference internal" href="#verbose-operation" id="id12">Verbose Operation</a></li>
-<li><a class="reference internal" href="#truncate-segments-segger-only" id="id13">Truncate Segments (Segger Only)</a></li>
-<li><a class="reference internal" href="#set-details" id="id14">Set Details</a></li>
-<li><a class="reference internal" href="#change-primary-descriptor" id="id15">Change Primary Descriptor</a></li>
+<li><p><a class="reference internal" href="#converting-files-to-emdb-sff" id="id5">Converting Files To EMDB-SFF</a></p>
+<ul>
+<li><p><a class="reference internal" href="#introduction" id="id6">Introduction</a></p>
+<ul>
+<li><p><a class="reference internal" href="#synopsis" id="id7">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#quick-start" id="id8">Quick Start</a></p>
+<ul>
+<li><p><a class="reference internal" href="#output-to-xml-default" id="id9">Output to XML (Default)</a></p></li>
+<li><p><a class="reference internal" href="#specify-output-file" id="id10">Specify Output File</a></p></li>
+<li><p><a class="reference internal" href="#specify-output-format" id="id11">Specify Output Format</a></p></li>
+<li><p><a class="reference internal" href="#emdb-sff-format-interconversion" id="id12">EMDB-SFF Format Interconversion</a></p></li>
+<li><p><a class="reference internal" href="#verbose-operation" id="id13">Verbose Operation</a></p></li>
+<li><p><a class="reference internal" href="#truncate-segments-segger-only" id="id14">Truncate Segments (Segger Only)</a></p></li>
+<li><p><a class="reference internal" href="#set-details" id="id15">Set Details</a></p></li>
+<li><p><a class="reference internal" href="#change-primary-descriptor" id="id16">Change Primary Descriptor</a></p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#input-formats" id="id16">Input Formats</a></li>
-<li><a class="reference internal" href="#output-formats" id="id17">Output Formats</a><ul>
-<li><a class="reference internal" href="#specifying-the-output-path-with-o-output-flag" id="id18">Specifying the output path with <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> flag</a></li>
-<li><a class="reference internal" href="#specifying-the-output-format-with-f-format-flag" id="id19">Specifying the output format with <code class="docutils literal notranslate"><span class="pre">-f/--format</span></code> flag</a></li>
-<li><a class="reference internal" href="#id2" id="id20">EMDB-SFF Format Interconversion</a></li>
+<li><p><a class="reference internal" href="#input-formats" id="id17">Input Formats</a></p></li>
+<li><p><a class="reference internal" href="#output-formats" id="id18">Output Formats</a></p>
+<ul>
+<li><p><a class="reference internal" href="#specifying-the-output-path-with-o-output-flag" id="id19">Specifying the output path with <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> flag</a></p></li>
+<li><p><a class="reference internal" href="#specifying-the-output-format-with-f-format-flag" id="id20">Specifying the output format with <code class="docutils literal notranslate"><span class="pre">-f/--format</span></code> flag</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id21">EMDB-SFF Format Interconversion</a></p></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id3" id="id21">Verbose Operation</a></li>
-<li><a class="reference internal" href="#truncating-segments-segger-only" id="id22">Truncating Segments (Segger Only)</a></li>
-<li><a class="reference internal" href="#specify-details" id="id23">Specify Details</a></li>
-<li><a class="reference internal" href="#changing-the-primary-descriptor" id="id24">Changing The Primary Descriptor</a></li>
-<li><a class="reference internal" href="#specifying-configurations-to-use" id="id25">Specifying Configurations To Use</a></li>
-<li><a class="reference internal" href="#working-with-multifile-segmentations" id="id26">Working with Multifile Segmentations</a></li>
+<li><p><a class="reference internal" href="#id3" id="id22">Verbose Operation</a></p></li>
+<li><p><a class="reference internal" href="#truncating-segments-segger-only" id="id23">Truncating Segments (Segger Only)</a></p></li>
+<li><p><a class="reference internal" href="#specify-details" id="id24">Specify Details</a></p></li>
+<li><p><a class="reference internal" href="#changing-the-primary-descriptor" id="id25">Changing The Primary Descriptor</a></p></li>
+<li><p><a class="reference internal" href="#specifying-configurations-to-use" id="id26">Specifying Configurations To Use</a></p></li>
+<li><p><a class="reference internal" href="#working-with-multifile-segmentations" id="id27">Working with Multifile Segmentations</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="introduction">
-<h2><a class="toc-backref" href="#id5">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Converting files to use the EMDB-SFF data model is one of the core functions
 of <code class="docutils literal notranslate"><span class="pre">sfftk</span></code>. This guide describes in detail how to accomplish conversions.</p>
 <div class="section" id="synopsis">
-<h3><a class="toc-backref" href="#id6">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h3>
 <p>Running</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">h</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">help</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert
+sff convert -h
+sff convert --help
 </pre></div>
 </div>
 <p>displays all conversion options.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span>
-<span class="n">usage</span><span class="p">:</span> <span class="n">sff</span> <span class="n">convert</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">CONFIG_PATH</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="n">DETAILS</span><span class="p">]</span>
-                   <span class="p">[</span><span class="o">-</span><span class="n">R</span> <span class="n">PRIMARY_DESCRIPTOR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span> <span class="o">|</span> <span class="o">-</span><span class="n">f</span> <span class="n">FORMAT</span><span class="p">]</span>
-                   <span class="p">[</span><span class="n">from_file</span> <span class="p">[</span><span class="n">from_file</span> <span class="o">...</span><span class="p">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert
+usage: sff convert <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-d DETAILS<span class="o">]</span>
+                   <span class="o">[</span>-R PRIMARY_DESCRIPTOR<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span> <span class="o">[</span>-o OUTPUT <span class="p">|</span> -f FORMAT<span class="o">]</span>
+                   <span class="o">[</span>from_file <span class="o">[</span>from_file ...<span class="o">]]</span>
 
-<span class="n">Perform</span> <span class="n">conversions</span> <span class="n">to</span> <span class="n">EMDB</span><span class="o">-</span><span class="n">SFF</span>
+Perform conversions to EMDB-SFF
 
-<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
-  <span class="n">from_file</span>             <span class="n">file</span> <span class="n">to</span> <span class="n">convert</span> <span class="kn">from</span>
+positional arguments:
+  from_file             file to convert from
 
-<span class="nn">optional</span> <span class="n">arguments</span><span class="p">:</span>
-  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
-  <span class="o">-</span><span class="n">p</span> <span class="n">CONFIG_PATH</span><span class="p">,</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="n">CONFIG_PATH</span>
-                        <span class="n">path</span> <span class="n">to</span> <span class="n">configs</span> <span class="n">file</span>
-  <span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="o">--</span><span class="n">shipped</span><span class="o">-</span><span class="n">configs</span>
-                        <span class="n">use</span> <span class="n">shipped</span> <span class="n">configs</span> <span class="n">only</span> <span class="k">if</span> <span class="n">config</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">user</span>
-                        <span class="n">configs</span> <span class="n">fail</span> <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">False</span><span class="p">]</span>
-  <span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="n">only</span>  <span class="n">convert</span> <span class="n">only</span> <span class="n">the</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">segments</span> <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">False</span><span class="p">]</span>
-  <span class="o">-</span><span class="n">d</span> <span class="n">DETAILS</span><span class="p">,</span> <span class="o">--</span><span class="n">details</span> <span class="n">DETAILS</span>
-                        <span class="n">populates</span> <span class="o">&lt;</span><span class="n">details</span><span class="o">&gt;...&lt;/</span><span class="n">details</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">XML</span> <span class="n">file</span>
-                        <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
-  <span class="o">-</span><span class="n">R</span> <span class="n">PRIMARY_DESCRIPTOR</span><span class="p">,</span> <span class="o">--</span><span class="n">primary</span><span class="o">-</span><span class="n">descriptor</span> <span class="n">PRIMARY_DESCRIPTOR</span>
-                        <span class="n">populates</span> <span class="n">the</span>
-                        <span class="o">&lt;</span><span class="n">primaryDescriptor</span><span class="o">&gt;...&lt;/</span><span class="n">primaryDescriptor</span><span class="o">&gt;</span> <span class="n">to</span> <span class="n">this</span>
-                        <span class="n">value</span> <span class="p">[</span><span class="n">valid</span> <span class="n">values</span><span class="p">:</span> <span class="n">threeDVolume</span><span class="p">,</span> <span class="n">meshList</span><span class="p">,</span>
-                        <span class="n">shapePrimitiveList</span><span class="p">]</span>
-  <span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">--</span><span class="n">verbose</span>         <span class="n">verbose</span> <span class="n">output</span>
-  <span class="o">-</span><span class="n">m</span><span class="p">,</span> <span class="o">--</span><span class="n">multi</span><span class="o">-</span><span class="n">file</span>      <span class="n">enables</span> <span class="n">convert</span> <span class="n">to</span> <span class="n">treat</span> <span class="n">multiple</span> <span class="n">files</span> <span class="k">as</span> <span class="n">individual</span>
-                        <span class="n">segments</span> <span class="n">of</span> <span class="n">a</span> <span class="n">single</span> <span class="n">segmentation</span><span class="p">;</span> <span class="n">only</span> <span class="n">works</span> <span class="k">for</span> <span class="n">the</span>
-                        <span class="n">following</span> <span class="n">filetypes</span><span class="p">:</span> <span class="n">stl</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="n">mrc</span><span class="p">,</span> <span class="n">rec</span> <span class="p">[</span><span class="n">default</span><span class="p">:</span>
-                        <span class="kc">False</span><span class="p">]</span>
-  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span> <span class="n">OUTPUT</span>
-                        <span class="n">file</span> <span class="n">to</span> <span class="n">convert</span> <span class="n">to</span><span class="p">;</span> <span class="n">the</span> <span class="n">extension</span> <span class="p">(</span><span class="o">.</span><span class="n">sff</span><span class="p">,</span> <span class="o">.</span><span class="n">hff</span><span class="p">,</span> <span class="o">.</span><span class="n">json</span><span class="p">)</span>
-                        <span class="n">determines</span> <span class="n">the</span> <span class="n">output</span> <span class="nb">format</span> <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">None</span><span class="p">]</span>
-  <span class="o">-</span><span class="n">f</span> <span class="n">FORMAT</span><span class="p">,</span> <span class="o">--</span><span class="nb">format</span> <span class="n">FORMAT</span>
-                        <span class="n">output</span> <span class="n">file</span> <span class="nb">format</span><span class="p">;</span> <span class="n">valid</span> <span class="n">options</span> <span class="n">are</span><span class="p">:</span> <span class="n">sff</span> <span class="p">(</span><span class="n">XML</span><span class="p">),</span> <span class="n">hff</span>
-                        <span class="p">(</span><span class="n">HDF5</span><span class="p">),</span> <span class="n">json</span> <span class="p">(</span><span class="n">JSON</span><span class="p">)</span> <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">sff</span><span class="p">]</span>
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -p CONFIG_PATH, --config-path CONFIG_PATH
+                        path to configs file
+  -b, --shipped-configs
+                        use shipped configs only <span class="k">if</span> config path and user
+                        configs fail <span class="o">[</span>default: False<span class="o">]</span>
+  -t, --top-level-only  convert only the top-level segments <span class="o">[</span>default: False<span class="o">]</span>
+  -d DETAILS, --details DETAILS
+                        populates &lt;details&gt;...&lt;/details&gt; in the XML file
+                        <span class="o">[</span>default: <span class="s1">&#39;&#39;</span><span class="o">]</span>
+  -R PRIMARY_DESCRIPTOR, --primary-descriptor PRIMARY_DESCRIPTOR
+                        populates the
+                        &lt;primaryDescriptor&gt;...&lt;/primaryDescriptor&gt; to this
+                        value <span class="o">[</span>valid values: threeDVolume, meshList,
+                        shapePrimitiveList<span class="o">]</span>
+  -v, --verbose         verbose output
+  -m, --multi-file      enables convert to treat multiple files as individual
+                        segments of a single segmentation<span class="p">;</span> only works <span class="k">for</span> the
+                        following filetypes: stl, map, mrc, rec <span class="o">[</span>default:
+                        False<span class="o">]</span>
+  -o OUTPUT, --output OUTPUT
+                        file to convert to<span class="p">;</span> the extension <span class="o">(</span>.sff, .hff, .json<span class="o">)</span>
+                        determines the output format <span class="o">[</span>default: None<span class="o">]</span>
+  -f FORMAT, --format FORMAT
+                        output file format<span class="p">;</span> valid options are: sff <span class="o">(</span>XML<span class="o">)</span>, hff
+                        <span class="o">(</span>HDF5<span class="o">)</span>, json <span class="o">(</span>JSON<span class="o">)</span> <span class="o">[</span>default: sff<span class="o">]</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="quick-start">
-<h3><a class="toc-backref" href="#id7">Quick Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Quick Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="output-to-xml-default">
-<h4><a class="toc-backref" href="#id8">Output to XML (Default)</a><a class="headerlink" href="#output-to-xml-default" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<h4><a class="toc-backref" href="#id9">Output to XML (Default)</a><a class="headerlink" href="#output-to-xml-default" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg
 </pre></div>
 </div>
 </div>
 <div class="section" id="specify-output-file">
-<h4><a class="toc-backref" href="#id9">Specify Output File</a><a class="headerlink" href="#specify-output-file" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span> <span class="c1"># only metadata; no geometrical data</span>
+<h4><a class="toc-backref" href="#id10">Specify Output File</a><a class="headerlink" href="#specify-output-file" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg -o file.sff
+sff convert file.seg --output /path/to/output/file.sff
+sff convert file.seg -o file.hff
+sff convert file.seg -o file.json <span class="c1"># only metadata; no geometrical data</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="specify-output-format">
-<h4><a class="toc-backref" href="#id10">Specify Output Format</a><a class="headerlink" href="#specify-output-format" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">f</span> <span class="n">hff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="nb">format</span> <span class="n">hff</span>
+<h4><a class="toc-backref" href="#id11">Specify Output Format</a><a class="headerlink" href="#specify-output-format" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg -f hff
+sff convert file.seg --format hff
 </pre></div>
 </div>
 </div>
 <div class="section" id="emdb-sff-format-interconversion">
-<h4><a class="toc-backref" href="#id11">EMDB-SFF Format Interconversion</a><a class="headerlink" href="#emdb-sff-format-interconversion" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">hff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">json</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">sff</span> <span class="c1"># reduntant but should work</span>
+<h4><a class="toc-backref" href="#id12">EMDB-SFF Format Interconversion</a><a class="headerlink" href="#emdb-sff-format-interconversion" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.sff --output /path/to/output/file.hff
+sff convert file.hff --format json
+sff convert file.sff --format sff <span class="c1"># reduntant but should work</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="verbose-operation">
-<h4><a class="toc-backref" href="#id12">Verbose Operation</a><a class="headerlink" href="#verbose-operation" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">v</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">verbose</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
+<h4><a class="toc-backref" href="#id13">Verbose Operation</a><a class="headerlink" href="#verbose-operation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -v file.hff
+sff convert --verbose file.hff
 </pre></div>
 </div>
 </div>
 <div class="section" id="truncate-segments-segger-only">
-<h4><a class="toc-backref" href="#id13">Truncate Segments (Segger Only)</a><a class="headerlink" href="#truncate-segments-segger-only" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">t</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="n">only</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<h4><a class="toc-backref" href="#id14">Truncate Segments (Segger Only)</a><a class="headerlink" href="#truncate-segments-segger-only" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -t file.seg
+sff convert --top-level-only file.seg
 </pre></div>
 </div>
 </div>
 <div class="section" id="set-details">
-<h4><a class="toc-backref" href="#id14">Set Details</a><a class="headerlink" href="#set-details" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">details</span> <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<h4><a class="toc-backref" href="#id15">Set Details</a><a class="headerlink" href="#set-details" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -d <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> file.seg
+sff convert --details <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> file.seg
 </pre></div>
 </div>
 </div>
 <div class="section" id="change-primary-descriptor">
-<h4><a class="toc-backref" href="#id15">Change Primary Descriptor</a><a class="headerlink" href="#change-primary-descriptor" title="Permalink to this headline">¶</a></h4>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">R</span> <span class="n">contourList</span> <span class="n">file</span><span class="o">.</span><span class="n">surf</span> <span class="c1"># AmiraHxSurface file</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">primary</span><span class="o">-</span><span class="n">descriptor</span> <span class="n">contourList</span> <span class="n">file</span><span class="o">.</span><span class="n">surf</span> <span class="c1"># AmiraHxSurface file</span>
+<h4><a class="toc-backref" href="#id16">Change Primary Descriptor</a><a class="headerlink" href="#change-primary-descriptor" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -R contourList file.surf <span class="c1"># AmiraHxSurface file</span>
+sff convert --primary-descriptor contourList file.surf <span class="c1"># AmiraHxSurface file</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="input-formats">
-<h2><a class="toc-backref" href="#id16">Input Formats</a><a class="headerlink" href="#input-formats" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17">Input Formats</a><a class="headerlink" href="#input-formats" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> can convert several segmentation file formats (see
 <a class="reference internal" href="toolkit.html#supported-formats"><span class="std std-ref">Supported Formats</span></a>) into EMDB-SFF files.</p>
 </div>
 <div class="section" id="output-formats">
-<span id="id1"></span><h2><a class="toc-backref" href="#id17">Output Formats</a><a class="headerlink" href="#output-formats" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2><a class="toc-backref" href="#id18">Output Formats</a><a class="headerlink" href="#output-formats" title="Permalink to this headline">¶</a></h2>
 <p>EMDB-SFF files can be output as XML (<code class="docutils literal notranslate"><span class="pre">.sff</span></code>), HDF5 (<code class="docutils literal notranslate"><span class="pre">.hff</span></code>) or JSON
 (<code class="docutils literal notranslate"><span class="pre">.json</span></code>).</p>
 <ul class="simple">
-<li>XML EMDB-SFF files are typically relatively large compared to HDF5 and
+<li><p>XML EMDB-SFF files are typically relatively large compared to HDF5 and
 JSON equivalents. The compression applied in HDF5 files makes them ideal
-for large datasets.</li>
-<li>JSON EMDB-SFF files do not contain geometric descriptors and are primarily
-used as temporary files during annotation.</li>
-<li>Interconversion of the three formats is lossless (with the exception of
-geometrical data when converting to JSON - all geometrical data is excluded).</li>
+for large datasets.</p></li>
+<li><p>JSON EMDB-SFF files do not contain geometric descriptors and are primarily
+used as temporary files during annotation.</p></li>
+<li><p>Interconversion of the three formats is lossless (with the exception of
+geometrical data when converting to JSON - all geometrical data is excluded).</p></li>
 </ul>
 <p>There are two ways to perform conversion:</p>
 <ul class="simple">
-<li>Specifying the output path with <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> flag</li>
-<li>Specifying the output format with <code class="docutils literal notranslate"><span class="pre">-f/--format</span></code> flag</li>
+<li><p>Specifying the output path with <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> flag</p></li>
+<li><p>Specifying the output format with <code class="docutils literal notranslate"><span class="pre">-f/--format</span></code> flag</p></li>
 </ul>
 <div class="section" id="specifying-the-output-path-with-o-output-flag">
-<h3><a class="toc-backref" href="#id18">Specifying the output path with <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> flag</a><a class="headerlink" href="#specifying-the-output-path-with-o-output-flag" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id19">Specifying the output path with <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> flag</a><a class="headerlink" href="#specifying-the-output-path-with-o-output-flag" title="Permalink to this headline">¶</a></h3>
 <p>Conversion is performed as follows:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg -o file.sff
+sff convert file.seg --output /path/to/output/file.sff
 </pre></div>
 </div>
 <p>The output file extension determines the output format i.e.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg -o file.hff
 </pre></div>
 </div>
 <p>will result in an HDF5 file while</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="n">output</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg --output file.json
 </pre></div>
 </div>
 <p>will be a JSON file.</p>
 </div>
 <div class="section" id="specifying-the-output-format-with-f-format-flag">
-<h3><a class="toc-backref" href="#id19">Specifying the output format with <code class="docutils literal notranslate"><span class="pre">-f/--format</span></code> flag</a><a class="headerlink" href="#specifying-the-output-format-with-f-format-flag" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">Specifying the output format with <code class="docutils literal notranslate"><span class="pre">-f/--format</span></code> flag</a><a class="headerlink" href="#specifying-the-output-format-with-f-format-flag" title="Permalink to this headline">¶</a></h3>
 <p>The -f/–format options ensures that the output file will be in the same
 directory as the original segmentation file. The <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag takes one of three
 values:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">sff</span></code> for XML files</li>
-<li><code class="docutils literal notranslate"><span class="pre">hff</span></code> for HDF5 files</li>
-<li><code class="docutils literal notranslate"><span class="pre">json</span></code> for JSON files.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sff</span></code> for XML files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hff</span></code> for HDF5 files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">json</span></code> for JSON files.</p></li>
 </ul>
 <p>Any other value raises an error.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">-</span><span class="n">f</span> <span class="n">hff</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span> <span class="o">--</span><span class="nb">format</span> <span class="n">hff</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg -f hff
+sff convert file.seg --format hff
 </pre></div>
 </div>
 <p>The default format (if none is specified) is <code class="docutils literal notranslate"><span class="pre">sff</span></code> (XML).</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg
 </pre></div>
 </div>
 <p>results in file.sff as output.</p>
 </div>
 <div class="section" id="id2">
-<h3><a class="toc-backref" href="#id20">EMDB-SFF Format Interconversion</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id21">EMDB-SFF Format Interconversion</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to perform interconversions between XML, HDF5 and JSON
 EMDB-SFF files.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="n">output</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">file</span><span class="o">.</span><span class="n">hff</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.sff --output /path/to/output/file.hff
 </pre></div>
 </div>
 <p>or using –format</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">json</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.hff --format json
 </pre></div>
 </div>
 <p>Even null conversions are possible:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span> <span class="o">--</span><span class="nb">format</span> <span class="n">sff</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.sff --format sff
 </pre></div>
 </div>
 <p>As stated previously, conversion to JSON drops all geometrical descriptions.
@@ -419,20 +425,20 @@ description information.</p>
 </div>
 </div>
 <div class="section" id="id3">
-<h2><a class="toc-backref" href="#id21">Verbose Operation</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id22">Verbose Operation</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>As with many Linux shell programs the <code class="docutils literal notranslate"><span class="pre">-v/--verbose</span></code> option prints status
 information on the terminal.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">verbose</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
-<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">18</span> <span class="mi">2017</span> <span class="n">Seting</span> <span class="n">output</span> <span class="n">file</span> <span class="n">to</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">18</span> <span class="mi">2017</span> <span class="n">Converting</span> <span class="kn">from</span> <span class="nn">EMDB</span><span class="o">-</span><span class="n">SFF</span> <span class="p">(</span><span class="n">HDF5</span><span class="p">)</span> <span class="n">file</span> <span class="n">file</span><span class="o">.</span><span class="n">hff</span>
-<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">03</span> <span class="mi">2017</span> <span class="n">Created</span> <span class="n">SFFSegmentation</span> <span class="nb">object</span>
-<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">03</span> <span class="mi">2017</span> <span class="n">Exporting</span> <span class="n">to</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
-<span class="n">Tue</span> <span class="n">Sep</span> <span class="mi">12</span> <span class="mi">15</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">07</span> <span class="mi">2017</span> <span class="n">Done</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert --verbose file.hff
+Tue Sep <span class="m">12</span> <span class="m">15</span>:29:18 <span class="m">2017</span> Seting output file to file.sff
+Tue Sep <span class="m">12</span> <span class="m">15</span>:29:18 <span class="m">2017</span> Converting from EMDB-SFF <span class="o">(</span>HDF5<span class="o">)</span> file file.hff
+Tue Sep <span class="m">12</span> <span class="m">15</span>:30:03 <span class="m">2017</span> Created SFFSegmentation object
+Tue Sep <span class="m">12</span> <span class="m">15</span>:30:03 <span class="m">2017</span> Exporting to file.sff
+Tue Sep <span class="m">12</span> <span class="m">15</span>:30:07 <span class="m">2017</span> Done
 </pre></div>
 </div>
 </div>
 <div class="section" id="truncating-segments-segger-only">
-<h2><a class="toc-backref" href="#id22">Truncating Segments (Segger Only)</a><a class="headerlink" href="#truncating-segments-segger-only" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id23">Truncating Segments (Segger Only)</a><a class="headerlink" href="#truncating-segments-segger-only" title="Permalink to this headline">¶</a></h2>
 <p>Segger segmentations include hundreds to thousands of sub-segmentations due to
 how the algorithm it uses (watershed algorithm) to segment the volume.
 The segmentations thus form a tree with the root having an ID of zero.
@@ -445,27 +451,27 @@ children of the global root into the EMDB-SFF file.</p>
 children segments <em>contained within</em> parent segments. Specifying
 <code class="docutils literal notranslate"><span class="pre">-t/--top-level-only</span></code> treats only children of the <em>root</em> as segments and
 excludes all others. Therefore, running</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">top</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="n">only</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert --top-level-only file.seg
 </pre></div>
 </div>
 <p>on the above will produce an EMDB-SFF file with only three segments. Excluding
 this option means that the resulting EMDB-SFF file will be relatively large.</p>
 </div>
 <div class="section" id="specify-details">
-<h2><a class="toc-backref" href="#id23">Specify Details</a><a class="headerlink" href="#specify-details" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id24">Specify Details</a><a class="headerlink" href="#specify-details" title="Permalink to this headline">¶</a></h2>
 <p>The EMDB-SFF data model provides for an optional <code class="docutils literal notranslate"><span class="pre">&lt;details/&gt;</span></code> tag for
 auxilliary information. The contents of this option will be put into
 <code class="docutils literal notranslate"><span class="pre">&lt;details/&gt;.</span></code></p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">details</span> <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert --details <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> file.seg
 </pre></div>
 </div>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Allow a user to pass a <strong>file</strong> whose contents will be inserted into <code class="docutils literal notranslate"><span class="pre">&lt;details/&gt;</span></code>.</p>
+<div class="admonition-todo admonition" id="id4">
+<p class="admonition-title">Todo</p>
+<p>Allow a user to pass a <strong>file</strong> whose contents will be inserted into <code class="docutils literal notranslate"><span class="pre">&lt;details/&gt;</span></code>.</p>
 </div>
 </div>
 <div class="section" id="changing-the-primary-descriptor">
-<h2><a class="toc-backref" href="#id24">Changing The Primary Descriptor</a><a class="headerlink" href="#changing-the-primary-descriptor" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id25">Changing The Primary Descriptor</a><a class="headerlink" href="#changing-the-primary-descriptor" title="Permalink to this headline">¶</a></h2>
 <p>The EMDB-SFF data model provides for three possible geometrical descriptors:
 <cite>meshes (meshList), shape primitives (shapePrimitiveList)</cite> and
 <cite>3D volumes (threeDVolume)</cite>.</p>
@@ -475,40 +481,40 @@ descriptor may have been specified for the same segmentations.</p>
 descriptor to be used when performing conversions and other processing tasks.
 Only valid values are allowed; otherwise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised.</p>
 <p>The table below shows valid primary descriptors by file type.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="26%" />
-<col width="74%" />
+<col style="width: 26%" />
+<col style="width: 74%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head"><strong>File format</strong></th>
-<th class="head"><strong>Valid primary descriptors</strong></th>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>File format</strong></p></th>
+<th class="head"><p><strong>Valid primary descriptors</strong></p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>AmiraMesh</td>
-<td>threeDVolume</td>
+<tbody>
+<tr class="row-even"><td><p>AmiraMesh</p></td>
+<td><p>threeDVolume</p></td>
 </tr>
-<tr class="row-odd"><td>AmiraHxSurface</td>
-<td>meshList</td>
+<tr class="row-odd"><td><p>AmiraHxSurface</p></td>
+<td><p>meshList</p></td>
 </tr>
-<tr class="row-even"><td>CCP4 masks</td>
-<td>threeDVolume</td>
+<tr class="row-even"><td><p>CCP4 masks</p></td>
+<td><p>threeDVolume</p></td>
 </tr>
-<tr class="row-odd"><td>IMOD</td>
-<td>meshList (default), shapePrimitiveList</td>
+<tr class="row-odd"><td><p>IMOD</p></td>
+<td><p>meshList (default), shapePrimitiveList</p></td>
 </tr>
-<tr class="row-even"><td>Segger</td>
-<td>threeDVolume</td>
+<tr class="row-even"><td><p>Segger</p></td>
+<td><p>threeDVolume</p></td>
 </tr>
-<tr class="row-odd"><td>STL</td>
-<td>meshList</td>
+<tr class="row-odd"><td><p>STL</p></td>
+<td><p>meshList</p></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">IMOD files must have a mesh generated using <code class="docutils literal notranslate"><span class="pre">imodmesh</span></code> command.</p>
+<p class="admonition-title">Note</p>
+<p>IMOD files must have a mesh generated using <code class="docutils literal notranslate"><span class="pre">imodmesh</span></code> command.</p>
 </div>
 <p>Note that the primary descriptor should only be changed to a value of a
 geometrical descriptor that is <em>actually</em> present in the EMDB-SFF file.</p>
@@ -517,48 +523,48 @@ Also, if the primary descriptor is changed, it tries to ensure that a change
 corresponds to the actual file contents.</p>
 </div>
 <div class="section" id="specifying-configurations-to-use">
-<h2><a class="toc-backref" href="#id25">Specifying Configurations To Use</a><a class="headerlink" href="#specifying-configurations-to-use" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id26">Specifying Configurations To Use</a><a class="headerlink" href="#specifying-configurations-to-use" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> makes use of persistent configurations which affect how certain operations
 are performed. There are three types of configurations detailed in the dedicated
 documentation on configs (see <a class="reference internal" href="misc.html#configs"><span class="std std-ref">Where Configurations Are Stored</span></a>) in decreasing order of priority:</p>
 <ul class="simple">
-<li>custom configs defined in a <code class="docutils literal notranslate"><span class="pre">path/to/sff.conf</span></code> file;</li>
-<li>user configs stored in <code class="docutils literal notranslate"><span class="pre">~/.sfftk/sff.conf</span></code>;</li>
-<li>shipped configs which will sit with the installed <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> package.</li>
+<li><p>custom configs defined in a <code class="docutils literal notranslate"><span class="pre">path/to/sff.conf</span></code> file;</p></li>
+<li><p>user configs stored in <code class="docutils literal notranslate"><span class="pre">~/.sfftk/sff.conf</span></code>;</p></li>
+<li><p>shipped configs which will sit with the installed <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> package.</p></li>
 </ul>
 <p>Custom configs are invoked using the <code class="docutils literal notranslate"><span class="pre">-p/--config-path</span></code> option:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">p</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">configs</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">path</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">configs</span> <span class="n">file</span><span class="o">.</span><span class="n">seg</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -p path/to/configs file.seg
+sff convert --config-path path/to/configs file.seg
 </pre></div>
 </div>
 <p>User configs are default and require no special flags.</p>
 <p>Shipped configs use the <code class="docutils literal notranslate"><span class="pre">-b/--shipped-configs</span></code> flag with no arguments:</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">b</span> <span class="n">file</span><span class="o">.</span><span class="n">am</span>
-<span class="n">sff</span> <span class="n">convert</span> <span class="o">--</span><span class="n">shipped</span><span class="o">-</span><span class="n">configs</span> <span class="n">file</span><span class="o">.</span><span class="n">am</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -b file.am
+sff convert --shipped-configs file.am
 </pre></div>
 </div>
 </div>
 <div class="section" id="working-with-multifile-segmentations">
-<h2><a class="toc-backref" href="#id26">Working with Multifile Segmentations</a><a class="headerlink" href="#working-with-multifile-segmentations" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id27">Working with Multifile Segmentations</a><a class="headerlink" href="#working-with-multifile-segmentations" title="Permalink to this headline">¶</a></h2>
 <p>Some of the segmentation file formats supported are designed to hold one segment per file.
 Therefore, representating a complete segmentation will require multiple files.</p>
 <p>Currently the following file formats are multifile by design:</p>
 <ul class="simple">
-<li><strong>CCP4 and related files</strong> - these files store segments as a 3D volume with segment region marked by
+<li><p><strong>CCP4 and related files</strong> - these files store segments as a 3D volume with segment region marked by
 specific voxel values (e.g. <code class="docutils literal notranslate"><span class="pre">1</span></code> for <em>in</em> segment voxels and <code class="docutils literal notranslate"><span class="pre">0</span></code> for the background. Specific file
-formats have <code class="docutils literal notranslate"><span class="pre">.mrc</span></code>, <code class="docutils literal notranslate"><span class="pre">.map</span></code> and <code class="docutils literal notranslate"><span class="pre">.rec</span></code>.</li>
-<li><strong>Stereolithography files</strong> - while it is possible to concatenate several STL files into one,
+formats have <code class="docutils literal notranslate"><span class="pre">.mrc</span></code>, <code class="docutils literal notranslate"><span class="pre">.map</span></code> and <code class="docutils literal notranslate"><span class="pre">.rec</span></code>.</p></li>
+<li><p><strong>Stereolithography files</strong> - while it is possible to concatenate several STL files into one,
 STL files do not contain metadata such as segment colour. Therefore, it is best to handle them as
-multifiles. STL files have a <code class="docutils literal notranslate"><span class="pre">.stl</span></code> extension.</li>
+multifiles. STL files have a <code class="docutils literal notranslate"><span class="pre">.stl</span></code> extension.</p></li>
 </ul>
 <p>Multifiles utilise the <code class="docutils literal notranslate"><span class="pre">-m/--multi-file</span></code> argument followed by all the files each of which should
 specify a single segment.</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">m</span> <span class="n">file1</span><span class="o">.</span><span class="n">map</span> <span class="n">file2</span><span class="o">.</span><span class="n">map</span> <span class="n">file3</span><span class="o">.</span><span class="n">map</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -m file1.map file2.map file3.map
 </pre></div>
 </div>
 <p>The above command will use default options and write an EMDB-SFF file to <code class="docutils literal notranslate"><span class="pre">file1.sff</span></code>. Alternatively,
 the user should specify the output file</p>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sff</span> <span class="n">convert</span> <span class="o">-</span><span class="n">m</span> <span class="n">file1</span><span class="o">.</span><span class="n">map</span> <span class="n">file2</span><span class="o">.</span><span class="n">map</span> <span class="n">file3</span><span class="o">.</span><span class="n">map</span> <span class="o">--</span><span class="n">output</span> <span class="n">file</span><span class="o">.</span><span class="n">sff</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -m file1.map file2.map file3.map --output file.sff
 </pre></div>
 </div>
 </div>
@@ -575,7 +581,7 @@ the user should specify the output file</p>
         <a href="annotating.html" class="btn btn-neutral float-right" title="Annotating EMDB-SFF Segmentations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="toolkit.html" class="btn btn-neutral" title="EMDB-SFF Toolkit (sfftk)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="toolkit.html" class="btn btn-neutral float-left" title="EMDB-SFF Toolkit (sfftk)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -601,25 +607,16 @@ the user should specify the output file</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

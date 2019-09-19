@@ -18,8 +18,17 @@ Welcome to sfftk's documentation!
 .. image:: https://readthedocs.org/projects/sfftk/badge/?version=latest
 	:target: http://sfftk.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
-	
-Contents:
+
+.. |sat_link| raw:: html
+
+   <a href="https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/" target="_blank">Segmentation Annotation Tool</a>
+
+.. note::
+
+   Looking for a graphical aid to using ``sfftk``? Try out the online version: the |sat_link|.
+
+Contents
+==========
 
 .. toctree::
    :maxdepth: 2

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.notes package &mdash; sfftk v0.3.2.dev5 documentation</title>
+  <title>sfftk.notes package &mdash; sfftk v0.4.0.dev2 documentation</title>
   
 
   
@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="sfftk.core package" href="core.html" />
     <link rel="prev" title="sfftk.readers package" href="readers.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -58,7 +60,7 @@
             
             
               <div class="version">
-                v0.3
+                v0.4
               </div>
             
           
@@ -87,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with sfftk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="schema.html">sfftk.schema package</a></li>
@@ -186,25 +188,25 @@
 <p>Search for terms and display ontologies</p>
 <dl class="class">
 <dt id="sfftk.notes.find.ResultsTable">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">ResultsTable</code><span class="sig-paren">(</span><em>search_results</em>, <em>fields</em>, <em>width=u'auto'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.find.</code><code class="sig-name descname">ResultsTable</code><span class="sig-paren">(</span><em class="sig-param">search_results</em>, <em class="sig-param">fields</em>, <em class="sig-param">width='auto'</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.Table</span></code></a></p>
 <p>Class that formats search results as a table</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.find.SearchResource">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResource</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.find.</code><code class="sig-name descname">SearchResource</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A resource against which to look for accessions or terms</p>
 <dl class="method">
 <dt id="sfftk.notes.find.SearchResource.get_url">
-<code class="descname">get_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource.get_url" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource.get_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the url to search against</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.find.SearchResource.search">
-<code class="descname">search</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource.search" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResource.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a search against this resource</p>
 </dd></dl>
 
@@ -212,12 +214,12 @@
 
 <dl class="class">
 <dt id="sfftk.notes.find.SearchResults">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">SearchResults</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.find.</code><code class="sig-name descname">SearchResults</code><span class="sig-paren">(</span><em class="sig-param">resource</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>SearchResults class</p>
 <dl class="method">
 <dt id="sfftk.notes.find.SearchResults.tabulate">
-<code class="descname">tabulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults.tabulate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">tabulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.SearchResults.tabulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tabulate the search results</p>
 </dd></dl>
 
@@ -225,51 +227,48 @@
 
 <dl class="class">
 <dt id="sfftk.notes.find.Table">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">Table</code><a class="headerlink" href="#sfftk.notes.find.Table" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.find.</code><code class="sig-name descname">Table</code><a class="headerlink" href="#sfftk.notes.find.Table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Table superclass</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.find.TableField">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">TableField</code><span class="sig-paren">(</span><em>name</em>, <em>key=None</em>, <em>text=None</em>, <em>width=20</em>, <em>pc=None</em>, <em>justify=u'left'</em>, <em>_format=None</em>, <em>is_index=False</em>, <em>is_iterable=False</em>, <em>position_in_iterable=0</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.find.</code><code class="sig-name descname">TableField</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">key=None</em>, <em class="sig-param">text=None</em>, <em class="sig-param">width=20</em>, <em class="sig-param">pc=None</em>, <em class="sig-param">justify='left'</em>, <em class="sig-param">_format=None</em>, <em class="sig-param">is_index=False</em>, <em class="sig-param">is_iterable=False</em>, <em class="sig-param">position_in_iterable=0</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class definition for a TableField - single column in a table</p>
-<dl class="attribute">
+<dl class="method">
 <dt id="sfftk.notes.find.TableField.is_index">
-<code class="descname">is_index</code><a class="headerlink" href="#sfftk.notes.find.TableField.is_index" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">is_index</code><a class="headerlink" href="#sfftk.notes.find.TableField.is_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this field an index (numbered) field?</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.find.TableField.justify">
-<code class="descname">justify</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField.justify" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">justify</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField.justify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Justify the given text</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the text to justify</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the text to justify</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="sfftk.notes.find.TableField.pc">
-<code class="descname">pc</code><a class="headerlink" href="#sfftk.notes.find.TableField.pc" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">pc</code><a class="headerlink" href="#sfftk.notes.find.TableField.pc" title="Permalink to this definition">¶</a></dt>
 <dd><p>The width of the field in percent; resolves to a character width</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.find.TableField.render">
-<code class="descname">render</code><span class="sig-paren">(</span><em>row_data</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField.render" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">render</code><span class="sig-paren">(</span><em class="sig-param">row_data</em>, <em class="sig-param">index</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableField.render" title="Permalink to this definition">¶</a></dt>
 <dd><p>Render this field</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="sfftk.notes.find.TableField.width">
-<code class="descname">width</code><a class="headerlink" href="#sfftk.notes.find.TableField.width" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">width</code><a class="headerlink" href="#sfftk.notes.find.TableField.width" title="Permalink to this definition">¶</a></dt>
 <dd><p>The width of the field in characters</p>
 </dd></dl>
 
@@ -277,7 +276,7 @@
 
 <dl class="class">
 <dt id="sfftk.notes.find.TableRow">
-<em class="property">class </em><code class="descclassname">sfftk.notes.find.</code><code class="descname">TableRow</code><span class="sig-paren">(</span><em>row_data</em>, <em>fields</em>, <em>index</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableRow" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.find.</code><code class="sig-name descname">TableRow</code><span class="sig-paren">(</span><em class="sig-param">row_data</em>, <em class="sig-param">fields</em>, <em class="sig-param">index</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.find.TableRow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.Table</span></code></a></p>
 <p>Class definition for a single row in the table</p>
 <p>Wrapping is automatically handled</p>
@@ -292,7 +291,7 @@
 <p>Display notes in EMDB-SFF files</p>
 <dl class="class">
 <dt id="sfftk.notes.view.HeaderView">
-<em class="property">class </em><code class="descclassname">sfftk.notes.view.</code><code class="descname">HeaderView</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.HeaderView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.view.</code><code class="sig-name descname">HeaderView</code><span class="sig-paren">(</span><em class="sig-param">segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.HeaderView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.view.View" title="sfftk.notes.view.View"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.view.View</span></code></a></p>
 <p>HeaverView class</p>
 <p>Display EMDB-SFF header</p>
@@ -300,7 +299,7 @@
 
 <dl class="class">
 <dt id="sfftk.notes.view.NoteView">
-<em class="property">class </em><code class="descclassname">sfftk.notes.view.</code><code class="descname">NoteView</code><span class="sig-paren">(</span><em>segment</em>, <em>_long=False</em>, <em>list_ids=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.NoteView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.view.</code><code class="sig-name descname">NoteView</code><span class="sig-paren">(</span><em class="sig-param">segment</em>, <em class="sig-param">_long=False</em>, <em class="sig-param">list_ids=False</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.NoteView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.view.View" title="sfftk.notes.view.View"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.view.View</span></code></a></p>
 <p>NoteView class</p>
 <p>Display annotation for a single segment</p>
@@ -308,50 +307,44 @@
 
 <dl class="class">
 <dt id="sfftk.notes.view.TableHeaderView">
-<em class="property">class </em><code class="descclassname">sfftk.notes.view.</code><code class="descname">TableHeaderView</code><a class="headerlink" href="#sfftk.notes.view.TableHeaderView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.view.</code><code class="sig-name descname">TableHeaderView</code><a class="headerlink" href="#sfftk.notes.view.TableHeaderView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.view.View" title="sfftk.notes.view.View"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.view.View</span></code></a></p>
 <p>Class defining the view of a table header object</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.view.View">
-<em class="property">class </em><code class="descclassname">sfftk.notes.view.</code><code class="descname">View</code><a class="headerlink" href="#sfftk.notes.view.View" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.view.</code><code class="sig-name descname">View</code><a class="headerlink" href="#sfftk.notes.view.View" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>View base class</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.view.list_notes">
-<code class="descclassname">sfftk.notes.view.</code><code class="descname">list_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.list_notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.view.</code><code class="sig-name descname">list_notes</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.list_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all notes in an EMDB-SFF file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">0 is OK, else failure</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>0 is OK, else failure</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.view.show_notes">
-<code class="descclassname">sfftk.notes.view.</code><code class="descname">show_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.show_notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.view.</code><code class="sig-name descname">show_notes</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.view.show_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Show notes in an EMDB-SFF file for the specified segment IDs</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">0 is OK, else failure</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>0 is OK, else failure</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -363,146 +356,128 @@
 <p>Add, edit and delete terms in EMDB-SFF files</p>
 <dl class="class">
 <dt id="sfftk.notes.modify.AbstractGlobalNote">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">AbstractGlobalNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">AbstractGlobalNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.BaseNote" title="sfftk.notes.modify.BaseNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.BaseNote</span></code></a></p>
 <p>Abstract class definition for global annotations</p>
 <p>Defines attributes of global annotation.</p>
 <p>Also defines three methods that effect the annotation to a segmentation object:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation" title="sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_to_segmentation()</span></code></a></li>
-<li><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation" title="sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">edit_in_segmentation()</span></code></a></li>
-<li><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation" title="sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">del_from_segmentation()</span></code></a></li>
+<li><p><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation" title="sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_to_segmentation()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation" title="sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">edit_in_segmentation()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation" title="sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation"><code class="xref py py-func docutils literal notranslate"><span class="pre">del_from_segmentation()</span></code></a></p></li>
 </ul>
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation">
-<code class="descname">add_to_segmentation</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_to_segmentation</code><span class="sig-paren">(</span><em class="sig-param">segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.add_to_segmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds this note to the given segmentation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segmentation</strong> (<a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return segmentation:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">the EMDB-SFF segmentation with the annotation added</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>segmentation</strong> (<a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</p>
+</dd>
+<dt class="field-even">Return segmentation</dt>
+<dd class="field-even"><p>the EMDB-SFF segmentation with the annotation added</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation">
-<code class="descname">del_from_segmentation</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">del_from_segmentation</code><span class="sig-paren">(</span><em class="sig-param">segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete attributes from a segmentation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segmentation</strong> (<a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return segmentation:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">the EMDB-SFF segmentation with annotation deleted</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">Rtype segmentation:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>segmentation</strong> (<a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</p>
+</dd>
+<dt class="field-even">Return segmentation</dt>
+<dd class="field-even"><p>the EMDB-SFF segmentation with annotation deleted</p>
+</dd>
+<dt class="field-odd">Rtype segmentation</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation">
-<code class="descname">edit_in_segmentation</code><span class="sig-paren">(</span><em>segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">edit_in_segmentation</code><span class="sig-paren">(</span><em class="sig-param">segmentation</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote.edit_in_segmentation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modify the global annotation of the given segmentation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segmentation</strong> (<a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return segmentation:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">the EMDB-SFF segmentation with annotated edited</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">Rtype segmentation:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>segmentation</strong> (<a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</p>
+</dd>
+<dt class="field-even">Return segmentation</dt>
+<dd class="field-even"><p>the EMDB-SFF segmentation with annotated edited</p>
+</dd>
+<dt class="field-odd">Rtype segmentation</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.modify.AbstractNote">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">AbstractNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractNote" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">AbstractNote</code><a class="headerlink" href="#sfftk.notes.modify.AbstractNote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.BaseNote" title="sfftk.notes.modify.BaseNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.BaseNote</span></code></a></p>
 <p>Note ‘abstact’ class that defines private attributes and main methods</p>
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractNote.add_to_segment">
-<code class="descname">add_to_segment</code><span class="sig-paren">(</span><em>segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.add_to_segment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_to_segment</code><span class="sig-paren">(</span><em class="sig-param">segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.add_to_segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <code class="docutils literal notranslate"><span class="pre">schema.SFFSegment</span></code> object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code>) – single segment in EMDB-SFF</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>segment</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code>) – single segment in EMDB-SFF</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractNote.del_from_segment">
-<code class="descname">del_from_segment</code><span class="sig-paren">(</span><em>segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.del_from_segment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">del_from_segment</code><span class="sig-paren">(</span><em class="sig-param">segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.del_from_segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <code class="docutils literal notranslate"><span class="pre">schema.SFFSegment</span></code> object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code>) – single segment in EMDB-SFF</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>segment</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code>) – single segment in EMDB-SFF</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="sfftk.notes.modify.AbstractNote.edit_in_segment">
-<code class="descname">edit_in_segment</code><span class="sig-paren">(</span><em>segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.edit_in_segment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">edit_in_segment</code><span class="sig-paren">(</span><em class="sig-param">segment</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.edit_in_segment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <code class="docutils literal notranslate"><span class="pre">schema.SFFSegment</span></code> object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code>) – single segment in EMDB-SFF</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>segment</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code>) – single segment in EMDB-SFF</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.modify.ArgsNote">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">ArgsNote</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em>, <em>*args_</em>, <em>**kwargs_</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.ArgsNote" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">ArgsNote</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em>, <em class="sig-param">*args_</em>, <em class="sig-param">**kwargs_</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.ArgsNote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.AbstractNote" title="sfftk.notes.modify.AbstractNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.AbstractNote</span></code></a></p>
 <p>Class definition for an ArgsNote object</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.modify.BaseNote">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">BaseNote</code><a class="headerlink" href="#sfftk.notes.modify.BaseNote" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">BaseNote</code><a class="headerlink" href="#sfftk.notes.modify.BaseNote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Note base class</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.modify.ExternalReference">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">ExternalReference</code><span class="sig-paren">(</span><em>type_=None</em>, <em>otherType=None</em>, <em>value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.ExternalReference" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">ExternalReference</code><span class="sig-paren">(</span><em class="sig-param">type_=None</em>, <em class="sig-param">otherType=None</em>, <em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.ExternalReference" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class definition for a <a class="reference internal" href="#sfftk.notes.modify.ExternalReference" title="sfftk.notes.modify.ExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExternalReference</span></code></a> object</p>
-<dl class="attribute">
+<dl class="method">
 <dt id="sfftk.notes.modify.ExternalReference.iri">
-<code class="descname">iri</code><a class="headerlink" href="#sfftk.notes.modify.ExternalReference.iri" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">iri</code><a class="headerlink" href="#sfftk.notes.modify.ExternalReference.iri" title="Permalink to this definition">¶</a></dt>
 <dd><p>The IRI value should be <em>double</em> url-encoded</p>
 </dd></dl>
 
@@ -510,223 +485,177 @@
 
 <dl class="class">
 <dt id="sfftk.notes.modify.GlobalArgsNote">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">GlobalArgsNote</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em>, <em>*args_</em>, <em>**kwargs_</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.GlobalArgsNote" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">GlobalArgsNote</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em>, <em class="sig-param">*args_</em>, <em class="sig-param">**kwargs_</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.GlobalArgsNote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote" title="sfftk.notes.modify.AbstractGlobalNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.AbstractGlobalNote</span></code></a></p>
 <p>Class defining segmentation (global) annotation based on command-line arguments</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>args</strong> – an <a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a> object</li>
-<li><strong>configs</strong> – persistent configurations for <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – an <a class="reference external" href="https://docs.python.org/2/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a> object</p></li>
+<li><p><strong>configs</strong> – persistent configurations for <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.modify.NoteAttr">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">NoteAttr</code><span class="sig-paren">(</span><em>initval=None</em>, <em>name='var'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.NoteAttr" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">NoteAttr</code><span class="sig-paren">(</span><em class="sig-param">initval=None</em>, <em class="sig-param">name='var'</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.NoteAttr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Descriptor class for note attributes</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>initval</strong> – the initial value of the attribute (default: <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code>)</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the variable (default: ‘var’)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initval</strong> – the initial value of the attribute (default: <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the name of the variable (default: ‘var’)</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="sfftk.notes.modify.SimpleNote">
-<em class="property">class </em><code class="descclassname">sfftk.notes.modify.</code><code class="descname">SimpleNote</code><span class="sig-paren">(</span><em>name=None</em>, <em>description=None</em>, <em>numberOfInstances=None</em>, <em>externalReferenceId=None</em>, <em>externalReferences=None</em>, <em>complexId=None</em>, <em>complexes=None</em>, <em>macromoleculeId=None</em>, <em>macromolecules=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.SimpleNote" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">SimpleNote</code><span class="sig-paren">(</span><em class="sig-param">name=None</em>, <em class="sig-param">description=None</em>, <em class="sig-param">numberOfInstances=None</em>, <em class="sig-param">externalReferenceId=None</em>, <em class="sig-param">externalReferences=None</em>, <em class="sig-param">complexId=None</em>, <em class="sig-param">complexes=None</em>, <em class="sig-param">macromoleculeId=None</em>, <em class="sig-param">macromolecules=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.SimpleNote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.modify.AbstractNote" title="sfftk.notes.modify.AbstractNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.AbstractNote</span></code></a></p>
 <p>Class definition for a <a class="reference internal" href="#sfftk.notes.modify.SimpleNote" title="sfftk.notes.modify.SimpleNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleNote</span></code></a> object</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.add_note">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">add_note</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.add_note" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">add_note</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.add_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add annotation to a segment specified in args</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.clear_notes">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">clear_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.clear_notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">clear_notes</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.clear_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear notes from segments</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> – parse arguments</li>
-<li><strong>configs</strong> – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – parse arguments</p></li>
+<li><p><strong>configs</strong> – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.copy_notes">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">copy_notes</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.copy_notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">copy_notes</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.copy_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy notes across segments</p>
 <p>One or more segments can be chosen for either or both source and destination</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> – parse arguments</li>
-<li><strong>configs</strong> – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – parse arguments</p></li>
+<li><p><strong>configs</strong> – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.del_note">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">del_note</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.del_note" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">del_note</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.del_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete annotation to a segment specified in args</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.edit_note">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">edit_note</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.edit_note" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">edit_note</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.edit_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit annotation to a segment specified in args</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.merge">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">merge</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.merge" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">merge</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.merge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge two EMDB-SFF files</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.save">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">save</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.save" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save changes made</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code>) – configurations object</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="sfftk.notes.modify.trash">
-<code class="descclassname">sfftk.notes.modify.</code><code class="descname">trash</code><span class="sig-paren">(</span><em>args</em>, <em>configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.trash" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sfftk.notes.modify.</code><code class="sig-name descname">trash</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">configs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.notes.modify.trash" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trash changes made</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</li>
-<li><strong>configs</strong> – configurations object
-:type configs: <code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> – configurations object
+:type configs: <code class="docutils literal notranslate"><span class="pre">sfftk.core.configs.Congif</span></code></p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return int status:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">status</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Return int status</dt>
+<dd class="field-even"><p>status</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -744,7 +673,7 @@
         <a href="core.html" class="btn btn-neutral float-right" title="sfftk.core package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="readers.html" class="btn btn-neutral" title="sfftk.readers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="readers.html" class="btn btn-neutral float-left" title="sfftk.readers package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -770,25 +699,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

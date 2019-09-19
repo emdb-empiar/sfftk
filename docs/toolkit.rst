@@ -18,6 +18,14 @@ EMDB-SFF Toolkit (``sfftk``)
     :target: http://sfftk.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. |sat_link| raw:: html
+
+   <a href="https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/" target="_blank">Segmentation Annotation Tool</a>
+
+.. note::
+
+   Looking for a graphical aid to using ``sfftk``? Try out the online version: the |sat_link|.
+
 .. contents::
 
 Introduction
@@ -41,8 +49,8 @@ microscopists and developers of image segmentation software.
 License
 -------
 
-``sfftk`` is released under an Apache License, Version 2.0 and is copyright of
-EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.
+``sfftk`` is free and open source software released under the terms of the Apache License, Version 2.0. Source code is
+copyright EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.
 
 Data Model
 ----------
@@ -109,32 +117,12 @@ Obtaining and Installing ``sfftk``
 Dependencies
 ~~~~~~~~~~~~
 
-We highly recommend installing ``sfftk`` in an anaconda environment because
-this makes it easy to obtain some of the dependencies. You can find out more
-about installing anaconda at `https://www.anaconda.com/download/
-<https://www.anaconda.com/download/>`_.
+As with any Python software, we recommend installing it in a virtual environment (of your choice). The only dependency
+that may be needed is ``numpy`` which can be installed with
 
-The following dependencies are required and will be automatically installed
-when using PyPI:
+.. code:: bash
 
--  `ahds <http://ahds.readthedocs.io/en/latest/>`_ (v.0.1.6 or greater)
-
--  lxml
-
--  h5py
-
--  requests
-
--  scikit-image
-
--  bitarray
-
--  numpy
-
--  scipy
-
-These packages should automatically be installed during installation of ``sfftk``.
-
+    pip install numpy
 
 PyPI
 ~~~~
@@ -148,19 +136,18 @@ PyPI
 Source
 ~~~~~~
 
-The ``sfftk`` source is available from Github `https://github.com/emdb-empiar/sfftk
-<https://github.com/emdb-empiar/sfftk>`_
-or from CCP-EM Gitlab repository
-`https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk
-<https://gitlab.com/ccpem/ccpem/tree/master/src/ccpem_progs/emdb_sfftk>`_.
+.. |sfftk_source| raw:: html
+
+    <a href="https://github.com/emdb-empiar/sfftk" target="_blank">https://github.com/emdb-empiar/sfftk</a>
+
+The ``sfftk`` source is available from Github |sfftk_source|.
 
 Features
 ========
 
 ``sfftk`` has two principal functions:
 
-- `convert` application-specific segmentation file format (AS-SFF) files to \
-	EMDB-SFF;
+- `convert` application-specific segmentation file format (AS-SFF) files to EMDB-SFF;
 
 - `annotate` EMDB-SFF files against known ontologies.
 
@@ -199,11 +186,21 @@ Miscellaneous
 
 ``sfftk`` may also be used for several miscellaneous operations such as:
 
--  Viewing segmentation metadata
+-  `Viewing segmentation metadata <https://sfftk.readthedocs.io/en/latest/misc.html#viewing-file-metadata>`_
 
--  Setting configurations that affect how ``sfftk`` works
+-  `Prepping segmentations before conversion to EMDB-SFF <https://sfftk.readthedocs.io/en/latest/misc.html#prepping-segmentation-files>`_
 
--  Running unit tests with the ``tests`` command
+-  |config_link|
+
+-  |tests_link|
+
+.. |config_link| raw:: html
+
+    <a href="https://sfftk.readthedocs.io/en/latest/misc.html#setting-configurations">Setting configurations that affect how ``sfftk`` works</a>
+
+.. |tests_link| raw:: html
+
+    <a href="https://sfftk.readthedocs.io/en/latest/misc.html#running-unit-tests">Running unit tests with the ``tests`` command</a>
 
 More information on this can be found in the `guide to miscellaneous operations <https://sfftk.readthedocs.io/en/latest/misc.html>`_.
 
