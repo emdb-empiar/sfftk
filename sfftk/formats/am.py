@@ -262,30 +262,30 @@ class AmiraMeshSegmentation(Segmentation):
 
     def __init__(self, fn, *args, **kwargs):
         self._fn = fn
-        self._header, self._volume = amreader.get_data(self._fn, *args, **kwargs)
-        pass
+        _header, self._volume = amreader.get_data(self._fn, *args, **kwargs)
+        self._header = AmiraMeshHeader(_header)
+        self._segments = list()
+        if hasattr(self.header.Parameters, 'Materials') or hasattr(self.header.Parameters, 'materials'):
+            for segment_id in self.header.Parameters.Materials.ids:
+                self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
+        else:
+            indices_set = set(self._volume.flatten().tolist())
+            segment_indices = indices_set.difference({0})
+            for segment_id in segment_indices:
+                self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
 
     @property
     def header(self):
         """The AmiraMesh header obtained using the ``ahds`` package
-        
-        The header is wrapped with a generic AmiraMeshHeader class 
+
+        The header is wrapped with a generic AmiraMeshHeader class
         """
-        return AmiraMeshHeader(self._header)
+        return self._header
 
     @property
     def segments(self):
         """Segments in this segmentation"""
-        segments = list()
-        if hasattr(self.header.Parameters, 'Materials') or hasattr(self.header.Parameters, 'materials'):
-            for segment_id in self.header.Parameters.Materials.ids:
-                segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
-        else:
-            indices_set = set(self._volume.flatten().tolist())
-            segment_indices = indices_set.difference(set([0]))
-            for segment_id in segment_indices:
-                segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
-        return segments
+        return self._segments
 
     def convert(self, args, *_args, **_kwargs):
         """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""

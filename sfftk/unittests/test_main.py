@@ -69,7 +69,7 @@ class TestMain_handle_convert(unittest.TestCase):
             os.path.join(TEST_DATA_PATH, 'test_data.sff'),
             os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.am'),
             self.config_fn,
-            )))
+        )))
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
@@ -81,6 +81,17 @@ class TestMain_handle_convert(unittest.TestCase):
             os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.surf'),
             self.config_fn,
         )))
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(len(sff_files), 1)
+
+    def test_survos(self):
+        """Test that we can convert SuRVoS (.h5) files"""
+        args, configs = parse_args('convert -o {} {} --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'test_data.sff'),
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
+            self.config_fn,
+        ), use_shlex=True)
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)

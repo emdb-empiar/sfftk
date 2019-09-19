@@ -5,16 +5,15 @@ sfftk.formats modules unit tests
 """
 from __future__ import division
 
+import numbers
 import os
 import shlex
 import unittest
 
 from . import TEST_DATA_PATH
-
 from .. import schema
 from ..core.parser import parse_args
-from ..formats import am, seg, map, mod, stl, surf
-
+from ..formats import am, seg, map, mod, stl, surf, survos
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -41,6 +40,7 @@ class TestFormats(unittest.TestCase):
         cls.stl_multi1_file = os.path.join(cls.segmentations_path, 'test_data_multi1.stl')
         cls.stl_multi2_file = os.path.join(cls.segmentations_path, 'test_data_multi2.stl')
         cls.surf_file = os.path.join(cls.segmentations_path, 'test_data.surf')
+        cls.survos_file = os.path.join(cls.segmentations_path, 'test_data.h5')
         # am
         cls.am_segmentation = am.AmiraMeshSegmentation(cls.am_file)
         # seg
@@ -48,15 +48,19 @@ class TestFormats(unittest.TestCase):
         # map
         cls.map_segmentation = map.MapSegmentation([cls.map_file])
         # map multi
-        cls.map_multi_segmentation = map.MapSegmentation([cls.map_multi0_file, cls.map_multi1_file, cls.map_multi2_file])
+        cls.map_multi_segmentation = map.MapSegmentation(
+            [cls.map_multi0_file, cls.map_multi1_file, cls.map_multi2_file])
         # mod
         cls.mod_segmentation = mod.IMODSegmentation(cls.mod_file)
         # stl
         cls.stl_segmentation = stl.STLSegmentation([cls.stl_file])
         # stl multi
-        cls.stl_multi_segmentation = stl.STLSegmentation([cls.stl_multi0_file, cls.stl_multi1_file, cls.stl_multi2_file])
+        cls.stl_multi_segmentation = stl.STLSegmentation(
+            [cls.stl_multi0_file, cls.stl_multi1_file, cls.stl_multi2_file])
         # surf
         cls.surf_segmentation = surf.AmiraHyperSurfaceSegmentation(cls.surf_file)
+        # survos
+        cls.survos_segmentation = survos.SuRVoSSegmentation(cls.survos_file)
 
     # read
     def test_am_read(self):
@@ -100,6 +104,14 @@ class TestFormats(unittest.TestCase):
         self.assertIsInstance(self.surf_segmentation.header, surf.AmiraHyperSurfaceHeader)
         self.assertIsInstance(self.surf_segmentation.segments, list)
         self.assertIsInstance(self.surf_segmentation.segments[0], surf.AmiraHyperSurfaceSegment)
+
+    def test_survos_read(self):
+        """Read a SuRVoS (.h5) segmentation"""
+        segmentation = self.survos_segmentation
+        self.assertIsInstance(segmentation, survos.SuRVoSSegmentation)
+        self.assertIsInstance(segmentation.segments, list)
+        self.assertIsInstance(segmentation.segments[0], survos.SuRVoSSegment)
+        self.assertIsInstance(segmentation.segments[0].segment_id, int)
 
     # convert
     def test_am_convert(self):
@@ -197,7 +209,6 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
         self.assertEqual(len(sff_segmentation.segments), 3)
 
-
     def test_surf_convert(self):
         """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
         args, configs = parse_args(shlex.split('convert {}'.format(self.surf_file)))
@@ -212,4 +223,31 @@ class TestFormats(unittest.TestCase):
         self.assertEqual(sff_segmentation.primaryDescriptor, 'meshList')
         self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
-
+    def test_survos_convert(self):
+        """Convert a segmentation from SuRVoS to SFFSegmentation object"""
+        args, configs = parse_args('convert {}'.format(self.survos_file), use_shlex=True)
+        seg = self.survos_segmentation.convert(args, configs)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, "SuRVoS Segmentation")
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software.name, "SuRVoS")
+        self.assertEqual(seg.software.version, "1.0")
+        self.assertEqual(seg.primaryDescriptor, "threeDVolume")
+        self.assertTrue(len(seg.segments) > 0)
+        segment = seg.segments.get_by_id(1)
+        self.assertEqual(segment.biologicalAnnotation.name, "SuRVoS Segment #1")
+        self.assertTrue(0 <= segment.colour.red <= 1)
+        self.assertTrue(0 <= segment.colour.green <= 1)
+        self.assertTrue(0 <= segment.colour.blue <= 1)
+        self.assertTrue(0 <= segment.colour.alpha <= 1)
+        lattice = seg.lattices.get_by_id(0)
+        self.assertEqual(lattice.mode, 'int8')
+        self.assertEqual(lattice.endianness, 'little')
+        self.assertIsInstance(lattice.size, schema.SFFVolumeStructure)
+        self.assertIsInstance(lattice.start, schema.SFFVolumeIndex)
+        self.assertTrue(lattice.size.cols > 0)
+        self.assertTrue(lattice.size.rows > 0)
+        self.assertTrue(lattice.size.sections > 0)
+        self.assertIsInstance(lattice.start.cols, numbers.Integral)
+        self.assertIsInstance(lattice.start.rows, numbers.Integral)
+        self.assertIsInstance(lattice.start.sections, numbers.Integral)

@@ -79,12 +79,13 @@ example, the ``software`` attribute will be of class :py:class:`SFFSoftware`.
 from __future__ import division, print_function
 
 import base64
+import numbers
 import os
+import random
 import re
 import struct
 import sys
 import zlib
-import numbers
 from warnings import warn
 
 import h5py
@@ -94,7 +95,7 @@ import numpy as np
 # import emdb_sff as sff
 from . import emdb_sff as sff
 from ..core import _basestring, _xrange, _bytes, _decode, _str, _encode
-from ..core.print_tools import print_date, print_static
+from ..core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -552,6 +553,11 @@ class SFFRGBA(SFFType):
     blue = SFFAttribute('blue', help="blue channel")
     alpha = SFFAttribute('alpha', help="alpha (opacity) channel")
 
+    def __init__(self, var=None, random_colour=False, *args, **kwargs):
+        super(SFFRGBA, self).__init__(var=var, *args, **kwargs)
+        if random_colour:
+            self.value = random.random(), random.random(), random.random()
+
     @property
     def value(self):
         return self.red, self.green, self.blue, self.alpha
@@ -578,7 +584,6 @@ class SFFRGBA(SFFType):
     else:
         def __nonzero__(self):
             return self._boolean_test()
-
 
     def as_hff(self, parent_group, name="colour"):
         """Return the data of this object as an HDF5 group in the given parent group"""
@@ -1077,7 +1082,7 @@ class SFFLattice(SFFType):
         elif not var:
             self._local.id = self.lattice_id
         # ensure that data is bytes, not string
-        if isinstance(self.data, _str): # for python2: unicode, for python3: str
+        if isinstance(self.data, _str):  # for python2: unicode, for python3: str
             # we should decode it using ASCII
             self.data = _encode(self.data, 'ASCII')
         if not self.is_encoded:
@@ -1090,7 +1095,6 @@ class SFFLattice(SFFType):
         if isinstance(self.data, _bytes):
             return True
         return False
-
 
     def encode(self):
         """Encode the numpy array provided in the initialiser
@@ -1668,8 +1672,10 @@ class SFFMesh(SFFType):
 
     # attributes
     id = SFFAttribute('id')
-    vertices = SFFAttribute('vertexList', sff_type=SFFVertexList, help="a list of vertices (object of class :py:class:`sfftk.schema.SFFVertexList`)")
-    polygons = SFFAttribute('polygonList', sff_type=SFFPolygonList, help="a list of derived polygons (object of class :py:class:`sfftk.schema.SFFPolygonList`)")
+    vertices = SFFAttribute('vertexList', sff_type=SFFVertexList,
+                            help="a list of vertices (object of class :py:class:`sfftk.schema.SFFVertexList`)")
+    polygons = SFFAttribute('polygonList', sff_type=SFFPolygonList,
+                            help="a list of derived polygons (object of class :py:class:`sfftk.schema.SFFPolygonList`)")
     transformId = SFFAttribute('transformId', help="a transform applied to the mesh")
 
     def __new__(cls, *args, **kwargs):
@@ -1797,15 +1803,23 @@ class SFFSegment(SFFType):
     segment_parentID = 0
 
     # attributes
-    id = SFFAttribute('id', help="the ID for this segment; segment IDs begin at 1 with the value of 0 implying the segmentation i.e. all segments are children of the root segment (the segmentation)")
-    parentID = SFFAttribute('parentID', help="the ID for the segment that contains this segment; defaults to 0 (the whole segmentation)")
-    biologicalAnnotation = SFFAttribute('biologicalAnnotation', sff_type=SFFBiologicalAnnotation, help="the biological annotation for this segment; described using a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object")
-    complexesAndMacromolecules = SFFAttribute('complexesAndMacromolecules', sff_type=SFFComplexesAndMacromolecules, help="the complexes and macromolecules associated with this segment; described using a :py:class:`sfftk.schema.SFFComplexesAndMacromolecules` object")
-    colour = SFFAttribute('colour', sff_type=SFFRGBA, help="this segments colour; described using a :py:class:`sfftk.schema.SFFRGBA` object")
-    meshes = SFFAttribute('meshList', sff_type=SFFMeshList, help="the list of meshes (if any) that describe this segment; a :py:class:`sfftk.schema.SFFMeshList` object")
+    id = SFFAttribute('id',
+                      help="the ID for this segment; segment IDs begin at 1 with the value of 0 implying the segmentation i.e. all segments are children of the root segment (the segmentation)")
+    parentID = SFFAttribute('parentID',
+                            help="the ID for the segment that contains this segment; defaults to 0 (the whole segmentation)")
+    biologicalAnnotation = SFFAttribute('biologicalAnnotation', sff_type=SFFBiologicalAnnotation,
+                                        help="the biological annotation for this segment; described using a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object")
+    complexesAndMacromolecules = SFFAttribute('complexesAndMacromolecules', sff_type=SFFComplexesAndMacromolecules,
+                                              help="the complexes and macromolecules associated with this segment; described using a :py:class:`sfftk.schema.SFFComplexesAndMacromolecules` object")
+    colour = SFFAttribute('colour', sff_type=SFFRGBA,
+                          help="this segments colour; described using a :py:class:`sfftk.schema.SFFRGBA` object")
+    meshes = SFFAttribute('meshList', sff_type=SFFMeshList,
+                          help="the list of meshes (if any) that describe this segment; a :py:class:`sfftk.schema.SFFMeshList` object")
     # contours = SFFAttribute('contourList', sff_type=SFFContourList)
-    volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume, help="the 3D volume (if any) that describes this segment; a :py:class:`sfftk.schema.SFFThreeDVolume` object ")
-    shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList, help="the list of shape primitives that describe this segment; a :py:class:`sfftk.schema.SFFShapePrimitiveList` object")
+    volume = SFFAttribute('threeDVolume', sff_type=SFFThreeDVolume,
+                          help="the 3D volume (if any) that describes this segment; a :py:class:`sfftk.schema.SFFThreeDVolume` object ")
+    shapes = SFFAttribute('shapePrimitiveList', sff_type=SFFShapePrimitiveList,
+                          help="the list of shape primitives that describe this segment; a :py:class:`sfftk.schema.SFFShapePrimitiveList` object")
 
     def __new__(cls, *args, **kwargs):
         cls.segment_id += 1
@@ -2010,6 +2024,7 @@ class SFFTransformationMatrix(SFFType):
     rows = SFFAttribute('rows', help="the number of rows in this matrix")
     cols = SFFAttribute('cols', help="the number of columns in this matrix")
     data = SFFAttribute('data', help="the data in this matrix")
+
     # todo: work with numpy arrays transparently
 
     def __new__(cls, *args, **kwargs):
@@ -2032,11 +2047,11 @@ class SFFTransformationMatrix(SFFType):
         data_list = list(map(float, self.data.split(' ')))
         data_array = np.array(data_list).reshape(self.rows, self.cols)
         return data_array
-    #TODO: a setter for the above attribute
+
+    # TODO: a setter for the above attribute
 
     def __str__(self):
         return (("[" + "{:.4f} " * self.cols + "]\n") * self.rows).format(*map(float, self.data.split(' ')))
-
 
 
 class SFFTransformList(SFFType):
@@ -2178,7 +2193,8 @@ class SFFSoftware(SFFType):
     # attributes
     name = SFFAttribute('name', help="the software/programme's name")
     version = SFFAttribute('version', help="the version used")
-    processingDetails = SFFAttribute('processingDetails', help="a description of how the data was processed to produce the segmentation")
+    processingDetails = SFFAttribute('processingDetails',
+                                     help="a description of how the data was processed to produce the segmentation")
 
     def as_hff(self, parent_group, name="software"):
         """Return the data of this object as an HDF5 group in the given parent group"""
@@ -2306,13 +2322,20 @@ class SFFSegmentation(SFFType):
     # attributes
     name = SFFAttribute('name', help="the name of this segmentation")
     version = SFFAttribute('version', help="EMDB-SFF version")
-    software = SFFAttribute('software', sff_type=SFFSoftware, help="the software details used to generate this segmentationa :py:class:`sfftk.schema.SFFSoftware` object")
-    primaryDescriptor = SFFAttribute('primaryDescriptor', help="the main type of representation used for this segmentation; can be one of 'meshList', 'shapePrimitiveList' or 'threeDVolume'")
-    transforms = SFFAttribute('transformList', sff_type=SFFTransformList, help="a list of transforms; a :py:class:`sfftk.schema.SFFTransformList` object")
-    boundingBox = SFFAttribute('boundingBox', sff_type=SFFBoundingBox, help="the bounding box in which the segmentation sits; a :py:class:`sfftk.schema.SFFBoundingBox` object")
-    globalExternalReferences = SFFAttribute('globalExternalReferences', sff_type=SFFGlobalExternalReferences, help="a list of external references that apply to the whole segmentation (global); a :py:class:`sfftk.schema.SFFGlobalExternalReferences` object")
-    segments = SFFAttribute('segmentList', sff_type=SFFSegmentList, help="the list of annotated segments; a :py:class:`sfftk.schema.SFFSegmentList` object")
-    lattices = SFFAttribute('latticeList', sff_type=SFFLatticeList, help="the list of lattices (if any) containing 3D volumes referred to; a :py:class:`sfftk.schema.SFFLatticeList` object")
+    software = SFFAttribute('software', sff_type=SFFSoftware,
+                            help="the software details used to generate this segmentationa :py:class:`sfftk.schema.SFFSoftware` object")
+    primaryDescriptor = SFFAttribute('primaryDescriptor',
+                                     help="the main type of representation used for this segmentation; can be one of 'meshList', 'shapePrimitiveList' or 'threeDVolume'")
+    transforms = SFFAttribute('transformList', sff_type=SFFTransformList,
+                              help="a list of transforms; a :py:class:`sfftk.schema.SFFTransformList` object")
+    boundingBox = SFFAttribute('boundingBox', sff_type=SFFBoundingBox,
+                               help="the bounding box in which the segmentation sits; a :py:class:`sfftk.schema.SFFBoundingBox` object")
+    globalExternalReferences = SFFAttribute('globalExternalReferences', sff_type=SFFGlobalExternalReferences,
+                                            help="a list of external references that apply to the whole segmentation (global); a :py:class:`sfftk.schema.SFFGlobalExternalReferences` object")
+    segments = SFFAttribute('segmentList', sff_type=SFFSegmentList,
+                            help="the list of annotated segments; a :py:class:`sfftk.schema.SFFSegmentList` object")
+    lattices = SFFAttribute('latticeList', sff_type=SFFLatticeList,
+                            help="the list of lattices (if any) containing 3D volumes referred to; a :py:class:`sfftk.schema.SFFLatticeList` object")
     details = SFFAttribute('details', help="any other details about this segmentation (free text)")
 
     # properties, methods

@@ -19,7 +19,7 @@ import random_words
 
 from . import TEST_DATA_PATH, Py23FixTestCase
 from ..core import _dict_iter_values, _str
-from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader
+from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -418,6 +418,45 @@ class TestReaders_surfreader(Py23FixTestCase):
         self.assertEqual(max(vertex_ids), max(vertices.keys()))
         self.assertEqual(sum(set(vertex_ids)), sum(vertices.keys()))
         self.assertEqual(set(vertex_ids), set(vertices.keys()))
+
+
+class TestReaders_survosreader(Py23FixTestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.survos_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5')
+
+    def test_get_data(self):
+        """Test the main entry point"""
+        result = survosreader.get_data(self.survos_file)
+        self.assertIsInstance(result, survosreader.SuRVoSSegmentation)
+        self.assertIsInstance(result.data, numpy.ndarray)
+        ids = result.segment_ids()
+        self.assertIsInstance(ids, frozenset)
+        self.assertFalse(-1 in ids) # 0 is an invalid segment marker
+
+    def test_SuRVoSSegmentation(self):
+        """Tests for the SuRVoSSegmentation class"""
+        surv = survosreader.SuRVoSSegmentation(self.survos_file)
+        with self.assertRaises(KeyError):
+            surv2 = survosreader.SuRVoSSegmentation(self.survos_file, dataset='/something')
+        with self.assertRaises(ValueError):
+            _ = surv['a']
+        with self.assertRaises(ValueError):
+            _ = surv[0.1]
+        with self.assertRaises(IndexError):
+            _ = surv[10]
+        self.assertIsInstance(surv.shape, tuple)
+        ids = list(surv.segment_ids())
+        # let's get a portion from the 66-th z at the bottom-right corner
+        _s = 66, slice(125, 140), slice(125, 140)
+        print(surv.data[_s], file=sys.stderr)
+        seg1 = surv[ids[0]]
+        print(seg1[_s], file=sys.stderr)
+        seg2 = surv[ids[1]]
+        print(seg2[_s], file=sys.stderr)
+        self.assertEqual(seg1.shape, surv.shape)
+        self.assertEqual(seg2.shape, surv.shape)
+
 
 
 if __name__ == "__main__":

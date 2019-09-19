@@ -14,7 +14,7 @@ import unittest
 import h5py
 import numpy
 
-from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase, _random_float, _random_floats, _random_integers
+from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase, _random_float
 from .. import schema
 from ..core import _xrange
 
@@ -851,7 +851,10 @@ class TestSFFRGBA(Py23FixTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.remove(cls.test_hdf5_fn)
+        try:
+            os.remove(cls.test_hdf5_fn)
+        except FileNotFoundError:
+            pass
 
     def setUp(self):
         self.red = random.random()
@@ -941,6 +944,14 @@ class TestSFFRGBA(Py23FixTestCase):
             self.assertCountEqual(group['colour'][()], colour.value)
             colour2 = schema.SFFRGBA.from_hff(h['container'])
             self.assertCountEqual(colour.value, colour2.value)
+
+    def test_native_random_colour(self):
+        """Test that using a kwarg random_colour will set random colours"""
+        colour = schema.SFFRGBA(random_colour=True)
+        self.assertTrue(0 <= colour.red <= 1)
+        self.assertTrue(0 <= colour.green <= 1)
+        self.assertTrue(0 <= colour.blue <= 1)
+        self.assertTrue(0 <= colour.alpha <= 1)
 
 
 class TestSFFComplexes(Py23FixTestCase):

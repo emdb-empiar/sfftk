@@ -87,6 +87,9 @@ def handle_convert(args, configs):  # @UnusedVariable
         elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
             from .formats.stl import STLSegmentation
             seg = STLSegmentation([args.from_file])
+        elif re.match(r'.*\.h5$', args.from_file, re.IGNORECASE):
+            from .formats.survos import SuRVoSSegmentation
+            seg = SuRVoSSegmentation(args.from_file)
         elif re.match(r'.*\.sff$', args.from_file, re.IGNORECASE):
             if args.verbose:
                 print_date("Converting from EMDB-SFf (XML) file {}".format(args.from_file))
