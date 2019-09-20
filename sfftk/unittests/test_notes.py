@@ -5,11 +5,10 @@
 from __future__ import division, print_function
 
 import os
-import shlex
+import shutil
 import sys
 import unittest
 
-import shutil
 from random_words import RandomWords, LoremIpsum
 
 from . import TEST_DATA_PATH, _random_integer, Py23FixTestCase, _random_integers
@@ -171,47 +170,43 @@ class TestNotesFindSearchResource(Py23FixTestCase):
     def test_unknown_resource(self):
         """Test exception raised formed unknown resource"""
         with self.assertRaises(SystemExit):
-            args, config = parse_args(shlex.split(
-                'notes search --resource xxx "something" --config-path {}'.format(self.config_fn)
-            ))
+            args, config = parse_args(
+                'notes search --resource xxx "something" --config-path {}'.format(self.config_fn),
+                use_shlex=True
+            )
 
     def test_configs_attribute(self):
         """Test the value of the configs attribute"""
-        args, configs = parse_args(shlex.split(
-            'notes search --resource ols "mitochondria" --config-path {}'.format(self.config_fn)
-        ))
+        args, configs = parse_args(
+            'notes search --resource ols "mitochondria" --config-path {}'.format(self.config_fn), use_shlex=True)
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.configs, configs)
 
     def test_result_path(self):
         """Test result path attr"""
-        args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
-        ))
+        args, configs = parse_args("notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn),
+                                   use_shlex=True)
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.result_path, RESOURCE_LIST['ols']['result_path'])
 
     def test_result_count(self):
         """Test result_count attr"""
-        args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
-        ))
+        args, configs = parse_args(
+            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn), use_shlex=True)
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.result_count, RESOURCE_LIST['ols']['result_count'])
 
     def test_format(self):
         """Test format attr"""
-        args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
-        ))
+        args, configs = parse_args("notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn),
+                                   use_shlex=True)
         resource = find.SearchResource(args, configs)
         self.assertEqual(resource.format, RESOURCE_LIST['ols']['format'])
 
     def test_response(self):
         """Test response attr"""
-        args, configs = parse_args(shlex.split(
-            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn)
-        ))
+        args, configs = parse_args(
+            "notes search -R ols 'mitochondria' --config-path {}".format(self.config_fn), use_shlex=True)
         resource = find.SearchResource(args, configs)
         self.assertIsNone(resource.response)
         resource.search()
@@ -227,12 +222,10 @@ class TestNotesFindSearchResource(Py23FixTestCase):
     def test_get_url_ols_list_ontologies(self):
         """Test url correctness for OLS"""
         resource_name = 'ols'
-        args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria' -L --config-path {config_fn}".format(
-                resource_name=resource_name,
-                config_fn=self.config_fn,
-            ),
-        ))
+        args, configs = parse_args("notes search -R {resource_name} 'mitochondria' -L --config-path {config_fn}".format(
+            resource_name=resource_name,
+            config_fn=self.config_fn,
+        ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         url = "{root_url}ontologies?size=1000".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
@@ -242,12 +235,11 @@ class TestNotesFindSearchResource(Py23FixTestCase):
     def test_get_url_ols(self):
         """Test url correctness for OLS"""
         resource_name = 'ols'
-        args, configs = parse_args(shlex.split(
+        args, configs = parse_args(
             "notes search -R {resource_name} 'mitochondria' -O go -x -o --config-path {config_fn}".format(
                 resource_name=resource_name,
                 config_fn=self.config_fn,
-            ),
-        ))
+            ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         url = "{root_url}search?q={search_term}&start={start}&rows={rows}&local=true&ontology={ontology}&exact=on&obsoletes=on".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
@@ -261,12 +253,10 @@ class TestNotesFindSearchResource(Py23FixTestCase):
     def test_get_url_emdb(self):
         """Test url correctness for EMDB"""
         resource_name = 'emdb'
-        args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
-                resource_name=resource_name,
-                config_fn=self.config_fn,
-            ),
-        ))
+        args, configs = parse_args("notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
+            resource_name=resource_name,
+            config_fn=self.config_fn,
+        ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         url = "{root_url}?q={search_term}&start={start}&rows={rows}".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
@@ -279,12 +269,11 @@ class TestNotesFindSearchResource(Py23FixTestCase):
     def test_get_url_uniprot(self):
         """Test url correctness for UniProt"""
         resource_name = 'uniprot'
-        args, configs = parse_args(shlex.split(
+        args, configs = parse_args(
             "notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
                 resource_name=resource_name,
                 config_fn=self.config_fn,
-            ),
-        ))
+            ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         url = "{root_url}?query={search_term}&format=tab&offset={start}&limit={rows}&columns=id,entry_name,protein_names,organism".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
@@ -297,12 +286,10 @@ class TestNotesFindSearchResource(Py23FixTestCase):
     def test_get_url_pdb(self):
         """Test url correctness for PDB"""
         resource_name = 'pdb'
-        args, configs = parse_args(shlex.split(
-            "notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
-                resource_name=resource_name,
-                config_fn=self.config_fn,
-            ),
-        ))
+        args, configs = parse_args("notes search -R {resource_name} 'mitochondria' --config-path {config_fn}".format(
+            resource_name=resource_name,
+            config_fn=self.config_fn,
+        ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         url = "{root_url}?q={search_term}&wt=json&fl=pdb_id,title,organism_scientific_name&start={start}&rows={rows}".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
@@ -359,9 +346,8 @@ class TestNotesFindSearchResource(Py23FixTestCase):
 #
 #     def test_search_args_attr(self):
 #         """Test that search_args attr works"""
-#         args, configs = parse_args(shlex.split(
-#             "notes search -R emdb mitochondria --config-path {}".format(self.config_fn)
-#         ))
+#         args, configs = parse_args(
+#             "notes search -R emdb mitochondria --config-path {}".format(self.config_fn), use_shlex=True)
 #         resource = find.SearchResource(args, configs)
 #         self.assertEqual(resource.search_args, args)
 
@@ -422,41 +408,41 @@ class TestNotes_view(Py23FixTestCase):
 
     def test_list_default(self):
         """Test that we can view the list of segmentations with annotations"""
-        args, configs = parse_args(shlex.split("notes list {} --config-path {}".format(
+        args, configs = parse_args("notes list {} --config-path {}".format(
             self.sff_file,
             self.config_fn,
-        )))
+        ), use_shlex=True)
         status = view.list_notes(args, configs)
         # assertions
         self.assertEqual(status, 0)
 
     def test_long_list(self):
         """Test that we can long list (-l) the list of segmentations with annotations"""
-        args, configs = parse_args(shlex.split("notes list -l {} --config-path {}".format(
+        args, configs = parse_args("notes list -l {} --config-path {}".format(
             self.sff_file,
             self.config_fn,
-        )))
+        ), use_shlex=True)
         status = view.list_notes(args, configs)
         # assertions
         self.assertEqual(status, 0)
 
     def test_show_default(self):
         """Test that we can show annotations in a single segment"""
-        args, configs = parse_args(shlex.split("notes show -i {} {} --config-path {}".format(
+        args, configs = parse_args("notes show -i {} {} --config-path {}".format(
             self.segment_id,
             self.sff_file,
             self.config_fn,
-        )))
+        ), use_shlex=True)
         status = view.show_notes(args, configs)
         self.assertEqual(status, 0)
 
     def test_long_show(self):
         """Test that we can show in long format annotations in a single segment"""
-        args, configs = parse_args(shlex.split("notes show -l -i {} {} --config-path {}".format(
+        args, configs = parse_args("notes show -l -i {} {} --config-path {}".format(
             self.segment_id,
             self.sff_file,
             self.config_fn,
-        )))
+        ), use_shlex=True)
         status = view.show_notes(args, configs)
         self.assertEqual(status, 0)
 
@@ -633,32 +619,28 @@ class TestNotes_modify(Py23FixTestCase):
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
         # add
-        cmd = shlex.split(
-            "notes add -i {} -s '{}' -d '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-                self.segment_id,
-                segment_name,
-                desc,
-                " ".join(extref),
-                num,
-                ','.join(complexes),
-                ','.join(macromolecules),
-                self.sff_file,
-                self.config_fn,
-            )
+        cmd = "notes add -i {} -s '{}' -d '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
+            self.segment_id,
+            segment_name,
+            desc,
+            " ".join(extref),
+            num,
+            ','.join(complexes),
+            ','.join(macromolecules),
+            self.sff_file,
+            self.config_fn,
         )
-        args, configs = parse_args(cmd)
+        args, configs = parse_args(cmd, use_shlex=True)
         status = modify.add_note(args, configs)
         self.assertEqual(status, 0)
         # merge
-        cmd1 = shlex.split(
-            'notes merge --source {source} {other} --output {output} --config-path {config_fn}'.format(
-                source=self.sff_file,
-                other=self.other,
-                output=self.output,
-                config_fn=self.config_fn,
-            )
+        cmd1 = 'notes merge --source {source} {other} --output {output} --config-path {config_fn}'.format(
+            source=self.sff_file,
+            other=self.other,
+            output=self.output,
+            config_fn=self.config_fn,
         )
-        args1, configs1 = parse_args(cmd1)
+        args1, configs1 = parse_args(cmd1, use_shlex=True)
         status1 = modify.merge(args1, configs1)
         self.assertEqual(status1, 0)
         source_seg = schema.SFFSegmentation(self.sff_file)
@@ -706,20 +688,18 @@ class TestNotes_modify(Py23FixTestCase):
         complexes = ['09ej', 'euoisd', 'busdif']
         macromolecules = ['xuidh', '29hf98e', 'ygce']
         # add
-        cmd = shlex.split(
-            "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-                self.segment_id,
-                segment_name,
-                desc,
-                " ".join(extref),
-                num,
-                ','.join(complexes),
-                ','.join(macromolecules),
-                self.sff_file,
-                self.config_fn,
-            )
+        cmd = "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
+            self.segment_id,
+            segment_name,
+            desc,
+            " ".join(extref),
+            num,
+            ','.join(complexes),
+            ','.join(macromolecules),
+            self.sff_file,
+            self.config_fn,
         )
-        _args, configs = parse_args(cmd)
+        _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
         status = modify.add_note(args, configs)
         self.assertEqual(status, 0)
@@ -1167,7 +1147,8 @@ class TestNotes_find(Py23FixTestCase):
 
     def test_search_default(self):
         """Test default search parameters"""
-        args, configs = parse_args(shlex.split("notes search 'mitochondria' --config-path {}".format(self.config_fn)))
+        args, configs = parse_args("notes search 'mitochondria' --config-path {}".format(self.config_fn),
+                                   use_shlex=True)
         resource = find.SearchResource(args, configs)
         try:
             results = resource.search()
@@ -1180,7 +1161,7 @@ class TestNotes_find(Py23FixTestCase):
         """Test search that returns no results"""
         # I'm not sure when some biological entity with such a name will be discovered!
         args, configs = parse_args(
-            shlex.split("notes search 'nothing' --exact --config-path {}".format(self.config_fn)))
+            "notes search 'nothing' --exact --config-path {}".format(self.config_fn), use_shlex=True)
         resource = find.SearchResource(args, configs)
         try:
             results = resource.search()
@@ -1195,8 +1176,9 @@ class TestNotes_find(Py23FixTestCase):
         NOTE: this test is likely to break as the ontologies get updated
         """
         # this usually returns a single result
-        args, configs = parse_args(shlex.split(
-            "notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn)))
+        args, configs = parse_args(
+            "notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn),
+            use_shlex=True)
         resource = find.SearchResource(args, configs)
         results = resource.search()
         self.assertEqual(len(results), 2)  # funny!
@@ -1205,7 +1187,7 @@ class TestNotes_find(Py23FixTestCase):
         """Test that we can search an ontology"""
         #  this search should bring at least one result
         args, configs = parse_args(
-            shlex.split("notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn)))
+            "notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn), use_shlex=True)
         resource = find.SearchResource(args, configs)
         try:
             results = resource.search()
@@ -1218,10 +1200,10 @@ class TestNotes_find(Py23FixTestCase):
         """Test that we can search from the starting index"""
         # this search usually has close to 1000 results; 100 is a reasonable start
         random_start = _random_integer(1, 970)
-        args, configs = parse_args(shlex.split("notes search 'mitochondria' --start {} --config-path {}".format(
+        args, configs = parse_args("notes search 'mitochondria' --start {} --config-path {}".format(
             random_start,
             self.config_fn,
-        )))
+        ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         try:
             results = resource.search()
@@ -1234,10 +1216,10 @@ class TestNotes_find(Py23FixTestCase):
         """Test that we get as many result rows as specified"""
         # this search usually has close to 1000 results; 100 is a reasonable start
         random_rows = _random_integer(10, 100)
-        args, configs = parse_args(shlex.split("notes search 'mitochondria' --rows {} --config-path {}".format(
+        args, configs = parse_args("notes search 'mitochondria' --rows {} --config-path {}".format(
             random_rows,
             self.config_fn,
-        )))
+        ), use_shlex=True)
         resource = find.SearchResource(args, configs)
         try:
             results = resource.search()

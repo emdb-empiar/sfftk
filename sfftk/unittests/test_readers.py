@@ -432,13 +432,13 @@ class TestReaders_survosreader(Py23FixTestCase):
         self.assertIsInstance(result.data, numpy.ndarray)
         ids = result.segment_ids()
         self.assertIsInstance(ids, frozenset)
-        self.assertFalse(-1 in ids) # 0 is an invalid segment marker
+        self.assertFalse(-1 in ids)  # 0 is an invalid segment marker
 
     def test_SuRVoSSegmentation(self):
         """Tests for the SuRVoSSegmentation class"""
         surv = survosreader.SuRVoSSegmentation(self.survos_file)
         with self.assertRaises(KeyError):
-            surv2 = survosreader.SuRVoSSegmentation(self.survos_file, dataset='/something')
+            _ = survosreader.SuRVoSSegmentation(self.survos_file, dataset='/something')
         with self.assertRaises(ValueError):
             _ = surv['a']
         with self.assertRaises(ValueError):
@@ -456,7 +456,6 @@ class TestReaders_survosreader(Py23FixTestCase):
         print(seg2[_s], file=sys.stderr)
         self.assertEqual(seg1.shape, surv.shape)
         self.assertEqual(seg2.shape, surv.shape)
-
 
 
 if __name__ == "__main__":

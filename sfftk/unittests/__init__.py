@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 import random
+import sys
 from unittest import TestCase
 
 from .. import BASE_DIR
