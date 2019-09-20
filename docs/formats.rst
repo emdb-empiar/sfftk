@@ -12,7 +12,7 @@ CCP4 mask module
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.map
-	:members: MapSegmentation, MapHeader, MapSegment, MapAnnotation, MapVolume
+	:members: MapSegmentation, MapHeader, MapSegment, MapAnnotation
 	:show-inheritance:
 
 IMOD module

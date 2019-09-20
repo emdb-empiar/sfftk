@@ -18,13 +18,9 @@ EMDB-SFF Toolkit (``sfftk``)
     :target: http://sfftk.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. |sat_link| raw:: html
-
-   <a href="https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/" target="_blank">Segmentation Annotation Tool</a>
-
 .. note::
 
-   Looking for a graphical aid to using ``sfftk``? Try out the online version: the |sat_link|.
+   Looking for a graphical aid to using ``sfftk``? Try out the online version: the `Segmentation Annotation Tool <https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/>`_.
 
 .. contents::
 
@@ -49,8 +45,8 @@ microscopists and developers of image segmentation software.
 License
 -------
 
-``sfftk`` is released under an Apache License, Version 2.0 and is copyright of
-EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.
+``sfftk`` is free and open source software released under the terms of the Apache License, Version 2.0. Source code is
+copyright EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.
 
 Data Model
 ----------
@@ -136,11 +132,7 @@ PyPI
 Source
 ~~~~~~
 
-.. |sfftk_source| raw:: html
-
-    <a href="https://github.com/emdb-empiar/sfftk" target="_blank">https://github.com/emdb-empiar/sfftk</a>
-
-The ``sfftk`` source is available from Github |sfftk_source|.
+The ``sfftk`` source is available from Github `https://github.com/emdb-empiar/sfftk <https://github.com/emdb-empiar/sfftk>`_.
 
 Features
 ========
@@ -188,19 +180,11 @@ Miscellaneous
 
 -  `Viewing segmentation metadata <https://sfftk.readthedocs.io/en/latest/misc.html#viewing-file-metadata>`_
 
--  `Prepping segmentations before conversion to EMDB-SFF <https://sfftk.readthedocs.io/en/latest/misc.html#prepping-segmentation-files>`_
+-  `Prepping segmentations <https://sfftk.readthedocs.io/en/latest/misc.html#prepping-segmentation-files>`_ before conversion to EMDB-SFF
 
--  |config_link|
+-  `Setting configurations <https://sfftk.readthedocs.io/en/latest/misc.html#setting-configurations>`_ that affect how ``sfftk`` works
 
--  |tests_link|
-
-.. |config_link| raw:: html
-
-    <a href="https://sfftk.readthedocs.io/en/latest/misc.html#setting-configurations">Setting configurations that affect how ``sfftk`` works</a>
-
-.. |tests_link| raw:: html
-
-    <a href="https://sfftk.readthedocs.io/en/latest/misc.html#running-unit-tests">Running unit tests with the ``tests`` command</a>
+-  `Running unit tests <https://sfftk.readthedocs.io/en/latest/misc.html#running-unit-tests>`_  with the ``tests`` command
 
 More information on this can be found in the `guide to miscellaneous operations <https://sfftk.readthedocs.io/en/latest/misc.html>`_.
 
