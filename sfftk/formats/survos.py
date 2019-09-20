@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from  ..core.print_tools import print_date
 from .base import Segmentation, Segment
-from ..readers import survosreader
 from .. import schema
-
-
+from ..core.print_tools import print_date
+from ..readers import survosreader
 
 
 class SuRVoSSegment(Segment):
@@ -29,14 +27,14 @@ class SuRVoSSegment(Segment):
             name="SuRVoS Segment #{}".format(self.segment_id)
         )
         segment.colour = schema.SFFRGBA(random_colour=True)
-        print_date("Colour not defined for SuRVoS segments. Setting colour to random RGBA value of {}".format(segment.colour))
+        print_date(
+            "Colour not defined for SuRVoS segments. Setting colour to random RGBA value of {}".format(segment.colour))
         segment.volume = schema.SFFThreeDVolume(
             latticeId=0,
             value=self.segment_id,
         )
 
         return segment
-
 
 
 class SuRVoSSegmentation(Segmentation):
@@ -89,7 +87,7 @@ class SuRVoSSegmentation(Segmentation):
         sections, rows, cols = self._segmentation.data.shape
         # there is only one lattice
         lattice = schema.SFFLattice(
-            mode='int8', # we make it as small as practically possible; filled values are negative
+            mode='int8',  # we make it as small as practically possible; filled values are negative
             endianness='little',
             size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=sections),

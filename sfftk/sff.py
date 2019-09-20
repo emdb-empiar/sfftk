@@ -7,14 +7,14 @@ sfftk.sff -- Toolkit to handle operations for EMDB-SFF files
 sfftk.sff is the main entry point for performing command-line operations.
 """
 from __future__ import division, print_function
+
 import os
 import re
-import shlex
 import sys
 
 from . import schema
-from .core.print_tools import print_date
 from .core import _dict_iter_values
+from .core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -211,28 +211,26 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                 args.sff_file = temp_file
             elif re.match(r'.*\.json$', temp_file, re.IGNORECASE):
                 if args.config_path:
-                    cmd = shlex.split(
-                        "convert -v {} -o {} --config-path {}".format(args.sff_file, temp_file, args.config_path))
+                    cmd = "convert -v {} -o {} --config-path {}".format(args.sff_file, temp_file, args.config_path)
                 elif args.shipped_configs:
-                    cmd = shlex.split("convert -v {} -o {} --shipped-configs".format(args.sff_file, temp_file))
+                    cmd = "convert -v {} -o {} --shipped-configs".format(args.sff_file, temp_file)
                 else:
-                    cmd = shlex.split("convert -v {} -o {}".format(args.sff_file, temp_file))
+                    cmd = "convert -v {} -o {}".format(args.sff_file, temp_file)
                 from .core.parser import parse_args
-                _args, _configs = parse_args(cmd)
+                _args, _configs = parse_args(cmd, use_shlex=True)
                 if not _args:
                     sys.exit(os.EX_USAGE)
                 handle_convert(_args, configs)  # convert
                 args.sff_file = temp_file
             elif re.match(r'.*\.hff$', temp_file, re.IGNORECASE):
                 if args.config_path:
-                    cmd = shlex.split(
-                        "convert -v {} -o {} --config-path {}".format(args.sff_file, temp_file, args.config_path))
+                    cmd = "convert -v {} -o {} --config-path {}".format(args.sff_file, temp_file, args.config_path)
                 elif args.shipped_configs:
-                    cmd = shlex.split("convert -v {} -o {} --shipped-configs".format(args.sff_file, temp_file))
+                    cmd = "convert -v {} -o {} --shipped-configs".format(args.sff_file, temp_file)
                 else:
-                    cmd = shlex.split("convert -v {} -o {}".format(args.sff_file, temp_file))
+                    cmd = "convert -v {} -o {}".format(args.sff_file, temp_file)
                 from .core.parser import parse_args  # @Reimport
-                _args, _configs = parse_args(cmd)
+                _args, _configs = parse_args(cmd, use_shlex=True)
                 if not _args:
                     # todo: fix this (only main() can call sys.exit())
                     sys.exit(os.EX_USAGE)

@@ -8,7 +8,9 @@ Ad hoc reader for Segger files
 from __future__ import division
 
 import os
+
 import numpy
+
 from ..core import _decode
 
 __author__ = "Paul K. Korir, PhD"

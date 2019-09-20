@@ -9,13 +9,12 @@ User-facing reader classes for Amira HxSurface files
 from __future__ import division, print_function
 
 import inspect
-
 import os.path
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
 from .. import schema
-from ..readers import surfreader
 from ..core import _dict_iter_items
+from ..readers import surfreader
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"

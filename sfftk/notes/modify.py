@@ -11,11 +11,10 @@ from __future__ import division, print_function
 import json
 import os
 import re
-import shlex
+import shutil
 import sys
 
 import requests
-import shutil
 from styled import Styled
 
 from . import RESOURCE_LIST_NAMES
@@ -1044,8 +1043,8 @@ def save(args, configs):
                 (re.match(r'.*\.hff$', temp_file, re.IGNORECASE) and (
                         re.match(r'.*\.json$', args.sff_file, re.IGNORECASE) or re.match(r'.*\.sff$', args.sff_file,
                                                                                          re.IGNORECASE))):
-            cmd = shlex.split("convert -v {} -o {}".format(temp_file, args.sff_file))
-            _args = parse_args(cmd)
+            cmd = "convert -v {} -o {}".format(temp_file, args.sff_file)
+            _args = parse_args(cmd, use_shlex=True)
             handle_convert(_args)  #  convert
             print_date("Deleting temp file {}...".format(temp_file))
             os.remove(temp_file)

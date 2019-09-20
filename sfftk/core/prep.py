@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function
 
-import re
 import os
+import re
+
 import mrcfile
 import numpy
 from stl import Mesh

@@ -12,9 +12,9 @@ import os.path
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
 from .. import schema
+from ..core import _xrange, _dict_iter_values, _dict_iter_items
 from ..core.print_tools import print_date
 from ..readers import stlreader
-from ..core import _xrange, _dict_iter_values, _dict_iter_items
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"

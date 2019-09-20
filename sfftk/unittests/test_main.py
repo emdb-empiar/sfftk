@@ -33,12 +33,11 @@ class TestMain_handle_convert(unittest.TestCase):
 
     def setUp(self):
         unittest.TestCase.setUp(self)
-        #  clear all
-        map(os.remove, glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')))
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)
-        map(os.remove, glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')))
+        for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')):
+            os.remove(s)
 
     def test_seg(self):
         """Test that we can convert .seg"""

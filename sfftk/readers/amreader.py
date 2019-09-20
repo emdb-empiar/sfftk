@@ -6,11 +6,10 @@ sfftk.readers.amreader
 Ad hoc reader for AmiraMesh files
 '''
 from __future__ import print_function
-# import ahds
+
 from ahds import AmiraFile
 
 from ..core.print_tools import print_date
-
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'

@@ -12,8 +12,9 @@ import inspect
 import os
 import sys
 
-from .base import Segmentation, Header, Segment, Annotation, Volume
+from .base import Segmentation, Header, Segment, Annotation
 from .. import schema
+from ..core import _xrange
 from ..core.print_tools import print_date, get_printable_ascii_string
 from ..readers import mapreader
 
@@ -21,33 +22,6 @@ __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-11-09"
 __updated__ = '2018-02-23'
-
-
-class MapVolume(Volume):
-    """Volume class"""
-
-    def __init__(self, segmentation, *args, **kwargs):
-        self._segmentation = segmentation
-        self.voxels = segmentation._segmentation.voxels
-
-    def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object"""
-        volume = schema.SFFThreeDVolume()
-
-        #  make file
-        hdf5_fn = "".join(self._segmentation._fn.split('.')[:-1]) + '.hdf'
-
-        volume.file = os.path.basename(os.path.abspath(hdf5_fn))
-        volume.format = "MRC"
-
-        # write hdf5 contents file
-        import h5py
-
-        with h5py.File(hdf5_fn, 'w') as f:
-            # mask dataset in root group
-            _ = f.create_dataset("mask", data=self.voxels)
-
-        return volume
 
 
 class MapAnnotation(Annotation):
@@ -131,7 +105,7 @@ class MapAnnotation(Annotation):
     def description(self):
         """Segment description (concat all labels)"""
         desc = ''
-        for i in xrange(self._nlabl):
+        for i in _xrange(self._nlabl):
             desc += get_printable_ascii_string(getattr(self, '_label_{}'.format(i)))
         return desc
 

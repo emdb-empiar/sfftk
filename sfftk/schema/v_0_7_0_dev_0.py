@@ -18,11 +18,12 @@
 #   sfftk
 #
 
-import sys
-import re as re_
 import base64
 import datetime as datetime_
+import re as re_
+import sys
 import warnings as warnings_
+
 try:
     from lxml import etree as etree_
 except ImportError:

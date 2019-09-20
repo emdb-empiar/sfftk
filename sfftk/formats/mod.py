@@ -16,8 +16,7 @@ from numpy import matrix
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
 from .. import schema
-from ..core import _UserList
-from ..core import _dict_iter_values, _dict_iter_items, _dict
+from ..core import _UserList, _dict_iter_values, _dict_iter_items
 from ..readers import modreader
 
 __author__ = "Paul K. Korir, PhD"

@@ -9,10 +9,10 @@ import re
 import sys
 from copy import deepcopy
 
-from ..core import _decode, _input
+from . import _dict_iter_keys
 from .print_tools import print_date
+from ..core import _decode, _input
 from ..notes import RESOURCE_LIST
-from . import _dict_iter_keys, _dict_iter_values, _dict_iter_items
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -36,9 +36,9 @@ def add_args(parser, the_arg):
 
     Usage::
 
-    >>> my_arg = {'arg': ['-x'], 'kwargs': {'help': 'help'}}
-    >>> this_parser = argparse.ArgumentParser()
-    >>> add_args(this_parser, my_arg)
+        >>> my_arg = {'arg': ['-x'], 'kwargs': {'help': 'help'}}
+        >>> this_parser = argparse.ArgumentParser()
+        >>> add_args(this_parser, my_arg)
 
     :param parser: a parser
     :type parser: ``argparse.Parser``

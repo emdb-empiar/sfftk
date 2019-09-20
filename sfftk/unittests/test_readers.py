@@ -124,13 +124,14 @@ class TestReaders_mapreader(Py23FixTestCase):
         """Test write map file"""
         map_to_write = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_write_map.map')
         written_maps = glob.glob(map_to_write)
-        # self.assertEqual(len(written_maps), 0)
+        self.assertEqual(len(written_maps), 0)
         with open(map_to_write, 'wb') as f:
             map_ = mapreader.get_data(self.map_file)
             map_.write(f)
         written_maps = glob.glob(map_to_write)
         self.assertEqual(len(written_maps), 1)
-        map(os.remove, written_maps)
+        for m in written_maps:
+            os.remove(m)
 
     def test_invert(self):
         """Test invert map intensities"""

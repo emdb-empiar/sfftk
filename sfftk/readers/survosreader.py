@@ -2,10 +2,8 @@
 from __future__ import print_function
 
 import numbers
-from functools import lru_cache
 
 import h5py
-import numpy
 
 
 class SuRVoSSegmentation(object):
@@ -21,7 +19,7 @@ class SuRVoSSegmentation(object):
         self._mask_value = mask_value
         with h5py.File(fn) as s:
             self._data = s[self._dataset][()]
-            self._labels = s[self._dataset].attrs["labels"]
+            self._labels = list(map(int, s[self._dataset].attrs["labels"]))
 
     @property
     def data(self):

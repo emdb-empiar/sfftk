@@ -14,7 +14,6 @@ import sys
 # import ahds.header
 from ahds import AmiraFile
 
-
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-04-06"

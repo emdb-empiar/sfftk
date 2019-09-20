@@ -17,13 +17,13 @@
 #   sfftk
 #
 
-import sys
-import re as re_
 import base64
 import datetime as datetime_
+import re as re_
+import sys
 import warnings as warnings_
-from lxml import etree as etree_
 
+from lxml import etree as etree_
 
 Validate_simpletypes_ = True
 if sys.version_info.major == 2:

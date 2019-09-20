@@ -17,7 +17,7 @@ from __future__ import division, print_function
 import os
 import sys
 
-from ..core import _xrange, _encode, _decode
+from ..core import _xrange, _encode
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'

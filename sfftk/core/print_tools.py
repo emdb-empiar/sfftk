@@ -12,7 +12,7 @@ import string
 import sys
 import time
 
-from ..core import _basestring, _str, _bytes, _decode, _encode
+from ..core import _basestring, _bytes, _decode, _encode
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'

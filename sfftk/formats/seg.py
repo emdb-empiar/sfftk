@@ -12,8 +12,8 @@ from __future__ import division
 from .base import Annotation, Volume, Segment, Header, \
     Segmentation
 from .. import schema
-from ..readers import segreader
 from ..core import _str
+from ..readers import segreader
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
