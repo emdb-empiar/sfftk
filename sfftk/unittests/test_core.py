@@ -1420,6 +1420,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         """Test that we can copy from one to multiple"""
         source_id = _random_integer(start=1)
         other_id = _random_integers(start=1)
+        # make sure that source_id does not exist in other_id
+        other_id = list(set(other_id).difference({source_id}))
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=source_id, other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
         print(cmd, file=sys.stderr)
