@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+# prep.py
+"""
+prep.py
+========
+
+This module consists of preparation utilities to condition segmentation files prior to conversion.
+"""
 from __future__ import division, print_function
 
 import os
@@ -19,7 +26,8 @@ def bin_map(args, configs):
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int exit_status: exit status
+    :return: exit status
+    :rtype: int
     """
     if args.verbose:
         print_date('Reading in data from {}...'.format(args.from_file))
@@ -69,7 +77,8 @@ def transform(args, configs):
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int exit_status: exit status
+    :return: exit status
+    :rtype: int
     """
     # we now constitute the transformation matrix
     transform = construct_transformation_matrix(args)
@@ -99,7 +108,9 @@ def construct_transformation_matrix(args):
     """Construct the transformation matrix
 
     :param args: parsed arguments
+    :type args: :py:class:`argparse.ArgumentParser`
     :return: transform
+    :rtype: :py:class:`numpy.ndarray`
     """
     # original params
     lengths = numpy.array(args.lengths, dtype=numpy.float32)
@@ -120,8 +131,11 @@ def transform_stl_mesh(mesh, transform):
     """Rescale the given STL mesh by the given transform
 
     :param mesh: an STL mesh
-    :param transform: 4x4 numpy array
+    :type mesh: :py:class:`numpy.ndarray`
+    :param transform: numpy array with ``shape = (4, 4)``
+    :type transform: :py:class:`numpy.ndarray`
     :return: an STL mesh transformed
+    :rtype: :py:class:`numpy.ndarray`
     """
     # the rotation sub-matrix of the transformation matrix
     rotation = transform[0:3, 0:3]

@@ -59,6 +59,7 @@ if sys.version_info[0] > 2:
             return data
         return data
 
+
     _input = input
 else:
     import __builtin__
@@ -100,7 +101,7 @@ else:
     def _decode(data, encoding):
         if isinstance(data, str):
             return data.decode(encoding)
-        elif isinstance(data, unicode):
+        elif isinstance(data, __builtin__.unicode):
             return data
         return data
 
@@ -109,8 +110,9 @@ else:
     def _encode(data, encoding):
         if isinstance(data, str):
             return data
-        elif isinstance(data, unicode):
+        elif isinstance(data, __builtin__.unicode):
             return data.encode(encoding)
         return data
+
 
     _input = __builtin__.raw_input

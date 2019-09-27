@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 # parser.py
-"""Parses command-line options"""
+"""
+parser.py
+=========
+
+A large number of functions in ``sfftk`` consume only two arguments: ``args``, which is the direct output of Python's
+:py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which consists of all persistent configs. This
+module includes both the parser object ``Parser`` as well as a :py:func:`sfftk.core.parser.parse_args` function
+which does sanity checking of all command line arguments.
+"""
 from __future__ import print_function
 
 import argparse
@@ -40,11 +48,11 @@ def add_args(parser, the_arg):
         >>> this_parser = argparse.ArgumentParser()
         >>> add_args(this_parser, my_arg)
 
-    :param parser: a parser
-    :type parser: ``argparse.Parser``
-    :param dict the_arg: the argument specified as a dict with keys 'args' and 'kwargs'
-    :return parser: a parser
-    :rtype parser: ``argparse.Parser``
+    :param parser: the parser to be modified
+    :type parser: :py:class:`argparse.ArgumentParser`
+    :param dict the_arg: the argument specified as a dict with keys ``args`` and ``kwargs``
+    :return: a modified parser object
+    :rtype: :py:class:`argparse.ArgumentParser`
     """
     return parser.add_argument(*the_arg['args'], **the_arg['kwargs'])
 
@@ -951,7 +959,15 @@ tests_parser.add_argument('-v', '--verbosity', default=1, type=int,
 
 
 def check_multi_file_formats(file_names):
-    """Check file names for file formats"""
+    """Check file names for file formats
+
+    When working with multifile segmentations, this function checks that all files are consistent
+
+    :param list file_names: a list of file names
+    :return: a tuple consisting of whether or not the set of file formats if valid, the set of file formats observed
+        and the set of invalid file formats
+    :rtype: tuple[bool, set, set]
+    """
     is_valid_format = True
     file_formats = set()
     invalid_formats = set()
@@ -982,13 +998,11 @@ def parse_args(_args, use_shlex=False):
     In this way command handlers (defined in ``sfftk/sff.py`` e.g. ``handle_convert(...)``)
     assume correct argument values and can concentrate on functionality.
 
-    :param list _args: list of arguments
-    :param str _args: string of commands
+    :param list _args: list of arguments (``use_shlex=False``); string of arguments (``use_shlex=True``)
+    :type list: list or str
     :param bool use_shlex: treat ``_args`` as a string instead for parsing using ``shlex`` lib
     :return: parsed arguments
-    :rtype: ``argparse.Namespace``
-    :return: config dict-like object
-    :rtype: ``sfftk.core.configs.Config``
+    :rtype: tuple[:py:class:`argparse.Namespace`, :py:class:`sfftk.core.configs.Configs`]
     """
     if use_shlex:  # if we treat _args as a command string for shlex to process
         try:
@@ -1014,22 +1028,22 @@ def parse_args(_args, use_shlex=False):
             return os.EX_OK, None
         # anytime a new argument is added to the base parser subparsers are bumped down in index
         elif _args[0] in _dict_iter_keys(Parser._actions[2].choices):
-            exec ('{}_parser.print_help()'.format(_args[0]))
+            exec('{}_parser.print_help()'.format(_args[0]))
             return os.EX_OK, None
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
             if _args[1] in _dict_iter_keys(Parser._actions[2].choices['notes']._actions[1].choices):
-                exec ('{}_notes_parser.print_help()'.format(_args[1]))
+                exec('{}_notes_parser.print_help()'.format(_args[1]))
                 return os.EX_OK, None
         elif _args[0] == 'prep':
             if _args[1] in _dict_iter_keys(Parser._actions[2].choices['prep']._actions[1].choices):
-                exec ('{}_prep_parser.print_help()'.format(_args[1]))
+                exec('{}_prep_parser.print_help()'.format(_args[1]))
                 return os.EX_OK, None
         elif _args[0] == 'config':
             if _args[1] in _dict_iter_keys(Parser._actions[2].choices['config']._actions[1].choices):
-                exec ('{}_config_parser.print_help()'.format(_args[1]))
+                exec('{}_config_parser.print_help()'.format(_args[1]))
                 return os.EX_OK, None
     # parse arguments
     args = Parser.parse_args(_args)
@@ -1221,7 +1235,8 @@ def parse_args(_args, use_shlex=False):
     elif args.subcommand == 'tests':
         # check if we have a temp-annotated file and complain then die if one exists
         if os.path.exists(configs['__TEMP_FILE']):
-            print_date("Unable to run tests with {} in current path ({})".format(configs['__TEMP_FILE'], os.path.abspath(__file__)))
+            print_date("Unable to run tests with {} in current path ({})".format(configs['__TEMP_FILE'],
+                                                                                 os.path.abspath(__file__)))
             print_date("Run 'sff notes save <file.sff>' or 'sff notes trash @' before proceeding.")
             return os.EX_USAGE, configs
         # normalise tool list
@@ -1317,8 +1332,6 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
 
                     return os.EX_USAGE, configs
 
-
-
                 # replace the string in args.complexes with a list
                 if args.complexes:
                     args.complexes = args.complexes.split(',')
@@ -1340,7 +1353,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 args.software_processing_details = _decode(args.software_processing_details, 'utf-8')
             if args.external_ref is not None:
                 external_ref = list()
-                for t,o,v in args.external_ref:
+                for t, o, v in args.external_ref:
                     external_ref.append([_decode(t, 'utf-8'), _decode(o, 'utf-8'), _decode(v, 'utf-8')])
                 args.external_ref = external_ref
             if args.segment_name is not None:
@@ -1411,7 +1424,7 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 args.software_processing_details = _decode(args.software_processing_details, 'utf-8')
             if args.external_ref is not None:
                 external_ref = list()
-                for t,o,v in args.external_ref:
+                for t, o, v in args.external_ref:
                     external_ref.append([_decode(t, 'utf-8'), _decode(o, 'utf-8'), _decode(v, 'utf-8')])
                 args.external_ref = external_ref
             if args.segment_name is not None:
@@ -1437,8 +1450,8 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 # ensure we have at least one item to del
                 try:
                     assert args.segment_name or args.description or args.number_of_instances or \
-                       (args.external_ref_id is not None) or (args.complex_id is not None) or \
-                       (args.macromolecule_id is not None)
+                           (args.external_ref_id is not None) or (args.complex_id is not None) or \
+                           (args.macromolecule_id is not None)
                 except AssertionError:
                     print_date("Incorrect usage; please use -h for help")
                     return os.EX_USAGE, configs

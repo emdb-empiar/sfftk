@@ -23,11 +23,12 @@ __updated__ = '2018-02-14'
 def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
     """Print the given string with date on the given stream
     
-    :param str print_string: the string to be printed
-    :param unicode print_string: the unicode string to be printed
-    :param stream: the stream to write to
-    :type stream: `sys.stderr` or `sys.stdout`
+    :param print_string: the bytes/str to be printed
+    :type print_string: bytes or str
+    :param stream: the stream/file to write to
+    :type stream: :py:obj:`sys.stderr` or :py:obj:`sys.stdout`
     :param bool newline: whether (default) or not to add a newline at the end
+    :param bool incl_date: whether (default) or not to include the date at the beginning
     """
     try:
         assert isinstance(print_string, _basestring)
@@ -48,10 +49,11 @@ def print_date(print_string, stream=sys.stderr, newline=True, incl_date=True):
 
 
 def get_printable_ascii_string(B):
-    """Given a bytes string of ASCII and non-ASCII return the maximal substring with a printable ASCII prefix.
+    """Given a bytes string of ASCII and non-ASCII return the maximal printable prefix
     
     :param bytes B: the bytes string to search
-    :return bytes ascii_b: the minimal ASCII string
+    :return ascii_b: the maximal ASCII prefix
+    :rtype: bytes
     """
     B = _encode(B, 'utf-8')
     printables = list(map(ord, string.printable))
@@ -77,10 +79,11 @@ def print_static(print_string, stream=sys.stderr, incl_date=True):
     
     This is a useful way to display progress without overcrowding the screen.
     
-    :param str print_string: the string to be printed
-    :param stream: the stream to write to
-    :type stream: `sys.stderr` or `sys.stdout`
-    :param bool newline: whether (default) or not to add a newline at the end
+    :param print_string: the bytes/str to be printed
+    :type print_string: bytes or str
+    :param stream: the stream/file to write to
+    :type stream: :py:obj:`sys.stderr` or :py:obj:`sys.stdout`
+    :param bool incl_date: whether (default) or not to include the date at the beginning
     """
     try:
         assert isinstance(print_string, _basestring)

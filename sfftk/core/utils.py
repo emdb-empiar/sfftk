@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+# utils.py
+"""
+utils.py
+========
+
+A collection of helpful utilities
+"""
 from __future__ import print_function, division
 
 
@@ -7,7 +14,7 @@ def get_path(D, path):
 
     :param dict D: a dictionary
     :param list path: an iterable of hashables
-    :return item: an item at the path from the dictionary
+    :return: the item at the path from the dictionary
     """
     assert isinstance(D, dict)
     try:
@@ -24,9 +31,11 @@ def get_path(D, path):
 def rgba_to_hex(rgba, channels=3):
     """Convert RGB(A) iterable to a hex string (e.g. #aabbcc(dd)
 
-    :param rgba: an iterable (list, tuple) with normalised ([0-1]) colour channel values
-    :param channels: the number of channels (3 or 4); default 3
+    :param rgba: an iterable with normalised (values in the closed interval ``[0-1]``) colour channel values
+    :type rgba: list or tuple
+    :param int channels: the number of channels (3 or 4); default 3
     :return: a hex string
+    :rtype: str
     """
     try:
         assert channels in [3, 4]  # you can only return 3 or 4 channels
