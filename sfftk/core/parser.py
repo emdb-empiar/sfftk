@@ -999,7 +999,7 @@ def parse_args(_args, use_shlex=False):
     assume correct argument values and can concentrate on functionality.
 
     :param list _args: list of arguments (``use_shlex=False``); string of arguments (``use_shlex=True``)
-    :type list: list or str
+    :type _args: list or str
     :param bool use_shlex: treat ``_args`` as a string instead for parsing using ``shlex`` lib
     :return: parsed arguments
     :rtype: tuple[:py:class:`argparse.Namespace`, :py:class:`sfftk.core.configs.Configs`]

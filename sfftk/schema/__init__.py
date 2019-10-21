@@ -2201,7 +2201,7 @@ class SFFSoftware(SFFType):
         assert isinstance(parent_group, h5py.Group)
         group = parent_group.create_group(name)
         group['name'] = self.name if self.name else ''
-        group['version'] = self.version if self.version else ''
+        group['version'] = _str(self.version) if self.version else '' # versions are a string, not number
         if self.processingDetails:
             group['processingDetails'] = self.processingDetails
         return parent_group

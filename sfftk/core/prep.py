@@ -45,13 +45,13 @@ def bin_map(args, configs):
         if args.verbose:
             print_date('Voxels will be of type {}'.format(out_type))
             print_date('Binarising to {} about contour-level of {}'.format(args.mask_value, args.contour_level))
-            if args.negate:
-                print_date('Negating...')
-                data = ((mrc.data < args.contour_level) * args.mask_value).astype(
-                    out_type)  # only need a byte per voxel
-            else:
-                data = ((mrc.data > args.contour_level) * args.mask_value).astype(
-                    out_type)  # only need a byte per voxel
+        if args.negate:
+            print_date('Negating...')
+            data = ((mrc.data < args.contour_level) * args.mask_value).astype(
+                out_type)  # only need a byte per voxel
+        else:
+            data = ((mrc.data > args.contour_level) * args.mask_value).astype(
+                out_type)  # only need a byte per voxel
         if args.verbose:
             print_date('Creating output file...')
         try:
