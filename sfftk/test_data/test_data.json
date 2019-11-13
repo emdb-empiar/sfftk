@@ -1,40 +1,40 @@
 {
   "boundingBox": {
-    "xmax": 512.0, 
-    "xmin": 0.0, 
-    "ymax": 512.0, 
-    "ymin": 0.0, 
-    "zmax": 150.0, 
+    "xmax": 512.0,
+    "xmin": 0.0,
+    "ymax": 512.0,
+    "ymin": 0.0,
+    "zmax": 150.0,
     "zmin": 0.0
-  }, 
-  "details": null, 
-  "globalExternalReferences": [], 
-  "name": "IMOD-NewModel", 
-  "primaryDescriptor": "meshList", 
+  },
+  "details": null,
+  "globalExternalReferences": [],
+  "name": "IMOD-NewModel",
+  "primaryDescriptor": "meshList",
   "segments": [
     {
       "biologicalAnnotation": {
-        "description": "Saved isosurface", 
-        "externalReferences": [], 
-        "name": "Saved isosurface", 
+        "description": "Saved isosurface",
+        "externalReferences": [],
+        "name": "Saved isosurface",
         "numberOfInstances": 1
-      }, 
+      },
       "colour": [
-        1.0, 
-        0.0, 
-        0.0, 
+        1.0,
+        0.0,
+        0.0,
         1.0
-      ], 
-      "id": 1, 
-      "meshList": 1, 
+      ],
+      "id": 1,
+      "meshList": 1,
       "parentID": 0
     }
-  ], 
+  ],
   "software": {
-    "name": "IMOD", 
-    "processingDetails": "None", 
+    "name": "IMOD",
+    "processingDetails": "None",
     "version": "V1.2"
-  }, 
-  "transforms": [], 
+  },
+  "transforms": [],
   "version": "0.7.0.dev0"
 }

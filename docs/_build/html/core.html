@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.core package &mdash; sfftk v0.4.1.dev0 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.4.2.dev0 documentation</title>
   
 
   
@@ -198,7 +198,7 @@ for a complete description of working with configs.</p>
 <dl class="class">
 <dt id="sfftk.core.configs.Configs">
 <em class="property">class </em><code class="sig-prename descclassname">sfftk.core.configs.</code><code class="sig-name descname">Configs</code><span class="sig-paren">(</span><em class="sig-param">config_fn</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <p>Class defining configs</p>
 <p>Configurations are stored in a subclass of <code class="docutils literal notranslate"><span class="pre">OrderedDict</span></code> with 
 appended methods for reading (<code class="docutils literal notranslate"><span class="pre">read()</span></code>), writing (<code class="docutils literal notranslate"><span class="pre">write</span></code>) and 
@@ -233,7 +233,7 @@ clearing (<code class="docutils literal notranslate"><span class="pre">clear()</
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – configuration options</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return int status</dt>
@@ -325,7 +325,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – configuration options</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return int status</dt>
@@ -341,7 +341,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>config_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a path to a file with configs</p></li>
+<li><p><strong>config_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a path to a file with configs</p></li>
 <li><p><strong>config_class</strong> (<em>class</em>) – the config class; default: Configs</p></li>
 </ul>
 </dd>
@@ -362,7 +362,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – configuration options</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return int status</dt>
@@ -378,7 +378,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <div class="section" id="parser-py">
 <h3>parser.py<a class="headerlink" href="#parser-py" title="Permalink to this headline">¶</a></h3>
 <p>A large number of functions in <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> consume only two arguments: <code class="docutils literal notranslate"><span class="pre">args</span></code>, which is the direct output of Python’s
-<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">configs</span></code> dictionary, which consists of all persistent configs. This
+<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">configs</span></code> dictionary, which consists of all persistent configs. This
 module includes both the parser object <code class="docutils literal notranslate"><span class="pre">Parser</span></code> as well as a <a class="reference internal" href="#sfftk.core.parser.parse_args" title="sfftk.core.parser.parse_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.core.parser.parse_args()</span></code></a> function
 which does sanity checking of all command line arguments.</p>
 <dl class="function">
@@ -399,15 +399,15 @@ redefined.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – the parser to be modified</p></li>
-<li><p><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – the argument specified as a dict with keys <code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code></p></li>
+<li><p><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – the parser to be modified</p></li>
+<li><p><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – the argument specified as a dict with keys <code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a modified parser object</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -419,14 +419,14 @@ redefined.</p>
 <p>When working with multifile segmentations, this function checks that all files are consistent</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – a list of file names</p>
+<dd class="field-odd"><p><strong>file_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – a list of file names</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a tuple consisting of whether or not the set of file formats if valid, the set of file formats observed
 and the set of invalid file formats</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.7)">set</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.7)">set</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.8)">set</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.8)">set</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -443,15 +443,15 @@ assume correct argument values and can concentrate on functionality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – list of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=False</span></code>); string of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=True</span></code>)</p></li>
-<li><p><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</p></li>
+<li><p><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – list of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=False</span></code>); string of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=True</span></code>)</p></li>
+<li><p><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>parsed arguments</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>]</p>
+<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -469,13 +469,13 @@ assume correct argument values and can concentrate on functionality.</p>
 <dd><p>Given a bytes string of ASCII and non-ASCII return the maximal printable prefix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>B</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a>) – the bytes string to search</p>
+<dd class="field-odd"><p><strong>B</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a>) – the bytes string to search</p>
 </dd>
 <dt class="field-even">Return ascii_b</dt>
 <dd class="field-even"><p>the maximal ASCII prefix</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)">bytes</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)">bytes</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -487,10 +487,10 @@ assume correct argument values and can concentrate on functionality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the bytes/str to be printed</p></li>
-<li><p><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stderr</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stdout" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stdout</span></code></a>) – the stream/file to write to</p></li>
-<li><p><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</p></li>
-<li><p><strong>incl_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – whether (default) or not to include the date at the beginning</p></li>
+<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – the bytes/str to be printed</p></li>
+<li><p><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stderr</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stdout" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stdout</span></code></a>) – the stream/file to write to</p></li>
+<li><p><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</p></li>
+<li><p><strong>incl_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to include the date at the beginning</p></li>
 </ul>
 </dd>
 </dl>
@@ -505,9 +505,9 @@ overwriting any characters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.7)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – the bytes/str to be printed</p></li>
-<li><p><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stderr</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stdout" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stdout</span></code></a>) – the stream/file to write to</p></li>
-<li><p><strong>incl_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – whether (default) or not to include the date at the beginning</p></li>
+<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – the bytes/str to be printed</p></li>
+<li><p><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stderr</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stdout" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stdout</span></code></a>) – the stream/file to write to</p></li>
+<li><p><strong>incl_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to include the date at the beginning</p></li>
 </ul>
 </dd>
 </dl>
@@ -527,7 +527,7 @@ overwriting any characters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -535,7 +535,7 @@ overwriting any characters.</p>
 <dd class="field-even"><p>exit status</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -546,7 +546,7 @@ overwriting any characters.</p>
 <dd><p>Construct the transformation matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – parsed arguments</p>
+<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – parsed arguments</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>transform</p>
@@ -564,7 +564,7 @@ overwriting any characters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -572,7 +572,7 @@ overwriting any characters.</p>
 <dd class="field-even"><p>exit status</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -611,8 +611,8 @@ overwriting any characters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>D</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – a dictionary</p></li>
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – an iterable of hashables</p></li>
+<li><p><strong>D</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – a dictionary</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – an iterable of hashables</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -628,15 +628,15 @@ overwriting any characters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rgba</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – an iterable with normalised (values in the closed interval <code class="docutils literal notranslate"><span class="pre">[0-1]</span></code>) colour channel values</p></li>
-<li><p><strong>channels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the number of channels (3 or 4); default 3</p></li>
+<li><p><strong>rgba</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – an iterable with normalised (values in the closed interval <code class="docutils literal notranslate"><span class="pre">[0-1]</span></code>) colour channel values</p></li>
+<li><p><strong>channels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the number of channels (3 or 4); default 3</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a hex string</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.schema package &mdash; sfftk v0.4.1.dev0 documentation</title>
+  <title>sfftk.schema package &mdash; sfftk v0.4.2.dev0 documentation</title>
   
 
   
@@ -236,7 +236,7 @@ example, the <code class="docutils literal notranslate"><span class="pre">softwa
 <dl class="class">
 <dt id="sfftk.schema.SFFType">
 <em class="property">class </em><code class="sig-prename descclassname">sfftk.schema.</code><code class="sig-name descname">SFFType</code><span class="sig-paren">(</span><em class="sig-param">var=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class for all EMDB-SFF adapter classes</p>
 <p>This class reads and configures any subclass using the subclass’ definition.</p>
 <p>Subclasses of <a class="reference internal" href="#sfftk.schema.SFFType" title="sfftk.schema.SFFType"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFType</span></code></a> should define class attributes from the following list depending on whether
@@ -248,13 +248,13 @@ are a <em>list</em> of objects of some type. For example, the <a class="referenc
 <dd class="field-odd"><p><strong>var</strong> – argument value determines what the subclass does</p>
 </dd>
 </dl>
-<p>The <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a> of <code class="docutils literal notranslate"><span class="pre">var</span></code> determines what the subclass does.</p>
+<p>The <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></a> of <code class="docutils literal notranslate"><span class="pre">var</span></code> determines what the subclass does.</p>
 <ul class="simple">
 <li><p>If the subclass is <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> then if <code class="docutils literal notranslate"><span class="pre">var</span></code> is:</p>
 <ul>
 <li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code> it will produce an empty <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> object</p></li>
 <li><p>an <code class="docutils literal notranslate"><span class="pre">emdb_sff.segmentation</span></code> object it will produce a populated <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> object;</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> it will try to treat <code class="docutils literal notranslate"><span class="pre">var</span></code> as a filename containing data to populate an
+<li><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> it will try to treat <code class="docutils literal notranslate"><span class="pre">var</span></code> as a filename containing data to populate an
 <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFSegmentation</span></code></a> object; the extension of the filename determines the format to be read:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">*.sff</span></code> will read as XML</p></li>
@@ -286,7 +286,7 @@ the keyword data;</p></li>
 <dt id="sfftk.schema.SFFType.repr_str">
 <code class="sig-name descname">repr_str</code><a class="headerlink" href="#sfftk.schema.SFFType.repr_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <em>string representation</em> for objects of the subclass that can be formatted. This string will be produced
-for calls to the <a class="reference external" href="https://docs.python.org/3/library/functions.html#print" title="(in Python v3.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">print()</span></code></a> function. Formatting is accomplished by included empty format delimiters
+for calls to the <a class="reference external" href="https://docs.python.org/3/library/functions.html#print" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">print()</span></code></a> function. Formatting is accomplished by included empty format delimiters
 (<code class="docutils literal notranslate"><span class="pre">{}</span></code>) which will be populated with values from the <a class="reference internal" href="#sfftk.schema.SFFType.repr_args" title="sfftk.schema.SFFType.repr_args"><code class="xref py py-attr docutils literal notranslate"><span class="pre">repr_args</span></code></a> specified below otherwise
 literal braces will be displayed.</p>
 </dd></dl>
@@ -368,7 +368,7 @@ subclass:</p>
 <dd><p>Export to a file on disc</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – filename to export to; the output format is determined by the extension:</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – filename to export to; the output format is determined by the extension:</p>
 </dd>
 </dl>
 <ul class="simple">
@@ -384,7 +384,7 @@ subclass:</p>
 <dd><p>If the subclass is a container class, returns the object of the specified ID</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>item_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the ID whose item is required</p>
+<dd class="field-odd"><p><strong>item_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the ID whose item is required</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a contained object</p>
@@ -393,7 +393,7 @@ subclass:</p>
 <dd class="field-odd"><p>depends on the container class</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – if the item is not found</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – if the item is not found</p>
 </dd>
 </dl>
 </dd></dl>
@@ -407,7 +407,7 @@ subclass:</p>
 <dd class="field-odd"><p>a list of IDs</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -423,7 +423,7 @@ subclass:</p>
 <dl class="class">
 <dt id="sfftk.schema.SFFAttribute">
 <em class="property">class </em><code class="sig-prename descclassname">sfftk.schema.</code><code class="sig-name descname">SFFAttribute</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">sff_type=None</em>, <em class="sig-param">get_from=None</em>, <em class="sig-param">set_to=None</em>, <em class="sig-param">del_from=None</em>, <em class="sig-param">help=''</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFAttribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Descriptor for SFFType subclass attributes</p>
 <p>This descriptor acts an adapter and references an attribute on the instance (obj._local).
 In this way, it guarantees that there is no overwriting of values because every instance will have a new _local
@@ -433,7 +433,7 @@ instance to refer to.</p>
 <dl class="exception">
 <dt id="sfftk.schema.SFFTypeError">
 <em class="property">exception </em><code class="sig-prename descclassname">sfftk.schema.</code><code class="sig-name descname">SFFTypeError</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">message=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.schema.SFFTypeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>SFF type error</p>
 </dd></dl>
 
@@ -456,9 +456,9 @@ instance to refer to.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>f</strong> (<em>file</em>) – open file handle</p></li>
-<li><p><strong>annotation_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – only extract annotation information and do not render geometric data</p></li>
-<li><p><strong>sort_keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – whether (default) or not to sort keys in the dictionaries</p></li>
-<li><p><strong>indent_width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – indent width (default: 2)</p></li>
+<li><p><strong>annotation_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – only extract annotation information and do not render geometric data</p></li>
+<li><p><strong>sort_keys</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to sort keys in the dictionaries</p></li>
+<li><p><strong>indent_width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – indent width (default: 2)</p></li>
 </ul>
 </dd>
 </dl>
@@ -527,7 +527,7 @@ instance to refer to.</p>
 <dd><p>Create an <a class="reference internal" href="#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> object from JSON formatted data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>json_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – name of a JSON-formatted file</p>
+<dd class="field-odd"><p><strong>json_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – name of a JSON-formatted file</p>
 </dd>
 <dt class="field-even">Return sff_seg</dt>
 <dd class="field-even"><p>an EMDB-SFF segmentation</p>
@@ -827,7 +827,7 @@ structured arrays in numpy :’(</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</p></li>
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index to insert to; bumps all other external references down the list</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index to insert to; bumps all other external references down the list</p></li>
 </ul>
 </dd>
 </dl>
@@ -841,7 +841,7 @@ structured arrays in numpy :’(</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</p></li>
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index to replace at</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index to replace at</p></li>
 </ul>
 </dd>
 </dl>
@@ -916,7 +916,7 @@ structured arrays in numpy :’(</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</p></li>
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index to insert to; bumps all other external references down the list</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index to insert to; bumps all other external references down the list</p></li>
 </ul>
 </dd>
 </dl>
@@ -930,7 +930,7 @@ structured arrays in numpy :’(</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eR</strong> (<a class="reference internal" href="#sfftk.schema.SFFExternalReference" title="sfftk.schema.SFFExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SFFExternalReference</span></code></a>) – an external reference object</p></li>
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index to replace at</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index to replace at</p></li>
 </ul>
 </dd>
 </dl>
@@ -1029,7 +1029,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Add a complex accession to the available complexes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a complex accession</p>
+<dd class="field-odd"><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a complex accession</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1040,7 +1040,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Delete the complex accession at the given index</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – index from which to delete the complex accession</p>
+<dd class="field-odd"><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – index from which to delete the complex accession</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1058,8 +1058,8 @@ structured arrays in numpy :’(</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index in the iterable of complexes at which to add the new complex accession</p></li>
-<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a complex accession</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index in the iterable of complexes at which to add the new complex accession</p></li>
+<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a complex accession</p></li>
 </ul>
 </dd>
 </dl>
@@ -1072,8 +1072,8 @@ structured arrays in numpy :’(</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index in the iterable of complexes at which to replace the complex accession</p></li>
-<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a complex accession</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index in the iterable of complexes at which to replace the complex accession</p></li>
+<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a complex accession</p></li>
 </ul>
 </dd>
 </dl>
@@ -1095,7 +1095,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Set value to the iterable of complexes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – an iterable of complex accessions</p>
+<dd class="field-odd"><p><strong>cs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – an iterable of complex accessions</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1113,7 +1113,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Add the given macromolecule accession to this container</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a macromolecule accession</p>
+<dd class="field-odd"><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a macromolecule accession</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1124,7 +1124,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Delete the macromolecule accession at the give index</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – index of macromolecule accession to delete</p>
+<dd class="field-odd"><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – index of macromolecule accession to delete</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1142,8 +1142,8 @@ structured arrays in numpy :’(</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index to insert at</p></li>
-<li><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a macromolecule accession</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index to insert at</p></li>
+<li><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a macromolecule accession</p></li>
 </ul>
 </dd>
 </dl>
@@ -1156,8 +1156,8 @@ structured arrays in numpy :’(</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – the index to insert at</p></li>
-<li><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – a macromolecule accession</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the index to insert at</p></li>
+<li><p><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – a macromolecule accession</p></li>
 </ul>
 </dd>
 </dl>
@@ -1169,7 +1169,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Set the value of macromoleclues to the provided list of macromolecule accessions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – a list of macromolecule accessions</p>
+<dd class="field-odd"><p><strong>ms</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – a list of macromolecule accessions</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1533,7 +1533,7 @@ structured arrays in numpy :’(</p>
 <dd><p>Add the vertex ID to this polygon</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – a vertex ID</p>
+<dd class="field-odd"><p><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – a vertex ID</p>
 </dd>
 </dl>
 </dd></dl>
