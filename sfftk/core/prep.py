@@ -139,13 +139,6 @@ def transform_stl_mesh(mesh, transform):
     """
     # the rotation sub-matrix of the transformation matrix
     rotation = transform[0:3, 0:3]
-    # check that the rotation matrix is valid
-    try:
-        assert not numpy.allclose(numpy.linalg.det(rotation), 1.0)
-    except AssertionError:
-        # todo: find out why it is not kosher to have det ~ 1.0
-        print_date("Unit determinant invalid")
-        return None
     # output mesh
     # we need to copy the data out
     out_mesh = Mesh(numpy.copy(mesh.data), remove_empty_areas=False)

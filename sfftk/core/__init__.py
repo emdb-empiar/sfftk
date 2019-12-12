@@ -4,7 +4,12 @@
 Convenience utilities
 
 """
+from __future__ import print_function
+
+import functools as ft
 import sys
+
+_print = ft.partial(print, file=sys.stderr)
 
 # redefinitions used globally
 if sys.version_info[0] > 2:

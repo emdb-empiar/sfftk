@@ -55,7 +55,7 @@ if sys.version_info[0] > 2:
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy"],
-        install_requires=["ahds==0.2.1.dev1", "lxml", "h5py>2.7.0", "RandomWords", "styled", "mrcfile", "bitarray", "requests",
+        install_requires=["ahds", "lxml", "h5py>2.7.0", "RandomWords", "styled", "mrcfile", "bitarray", "requests",
                           "mock",
                           "numpy-stl", "styled"],
         classifiers=SFFTK_CLASSIFIERS,
@@ -64,6 +64,9 @@ if sys.version_info[0] > 2:
                 'sff = sfftk.sff:main',
             ]
         },
+        package_data={
+            'sfftk': ['sff.conf'],
+        }
     )
 else:
     setup(
@@ -79,7 +82,7 @@ else:
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy<1.17"],
-        install_requires=["ahds==0.2.1.dev1", "lxml", "h5py>2.7.0", "requests", "bitarray",
+        install_requires=["ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
                           "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile",
                           "matplotlib<3.0", "scipy<1.2", "RandomWords", "styled", "networkx<2.3", "PyWavelets<1.1.0"],
         classifiers=SFFTK_CLASSIFIERS,
@@ -88,4 +91,7 @@ else:
                 'sff = sfftk.sff:main',
             ]
         },
+        package_data={
+            'sfftk': ['sff.conf'],
+        }
     )

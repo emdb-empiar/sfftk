@@ -12,9 +12,12 @@ from __future__ import division, print_function
 import inspect
 import os.path
 
+import numpy
+
 from .base import Segmentation, Header, Segment, Annotation, Contours, Mesh, Volume
 from .. import schema
 from ..core.print_tools import print_date
+from ..core import _print
 from ..readers import amreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -182,21 +185,12 @@ class AmiraMeshSegment(Segment):
     @property
     def material(self):
         """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
-        # try:  # assume that we have materials defined
-        #     material = self._header.Parameters.Materials[self.segment_id - 1]  # Ids are 1-based but in the images are 0-based
-        # except AttributeError:
-        #     material = None
-        # return material
-        material = None
-        for m in self._header.Parameters.Materials:
-            try:
-                m_id = m.Id
-            except AttributeError:
-                continue
-            if self.segment_id == m_id:
-                material = m
-                break
-
+        try:  # assume that we have materials defined
+            material = self._header.Parameters.Materials[self.segment_id]  # Ids are 1-based but in the images are 0-based
+        except AttributeError:
+            material = None
+        except IndexError:
+            material = None
         return material
 
     @property
@@ -262,14 +256,27 @@ class AmiraMeshSegmentation(Segmentation):
         _header, self._volume = amreader.get_data(self._fn, *args, **kwargs)
         self._header = AmiraMeshHeader(_header)
         self._segments = list()
+        indices_set = set(numpy.unique(self._volume.data))
+        segment_indices = indices_set.difference({0})  # do not include '0' as a label
+        for segment_id in segment_indices:
+            self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
+        """
         if hasattr(self.header.Parameters, 'Materials') or hasattr(self.header.Parameters, 'materials'):
-            for segment_id in self.header.Parameters.Materials.ids:
-                self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
-        else:
-            indices_set = set(self._volume.flatten().tolist())
-            segment_indices = indices_set.difference({0})
+            # it appears that the one-to-one correspondence between voxel values and material IDs is not reliable
+            # instead of relying on material IDs we should just use voxel values and check whether a
+            # corresponding material exists
+            indices_set = set(numpy.unique(self._volume))
+            segment_indices = indices_set.difference({0}) # do not include '0' as a label
+            # now check whether these label correspond to materials
             for segment_id in segment_indices:
                 self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
+            # for segment_id in self.header.Parameters.Materials.ids:
+        else:
+            indices_set = set(self._volume.flatten().tolist())
+            segment_indices = indices_set.difference({0}) # do not include '0' as a label
+            for segment_id in segment_indices:
+                self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
+        """
 
     @property
     def header(self):
@@ -317,14 +324,18 @@ class AmiraMeshSegmentation(Segmentation):
         # lattices
         lattices = schema.SFFLatticeList()
         # the lattice
-        sections, rows, cols = self._volume.shape
+        cols, rows, sections = self._volume.shape[::-1]
+        if args.verbose:
+            print_date('creating lattice...')
         lattice = schema.SFFLattice(
             mode='uint8',
             endianness='little',
             size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
-            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=sections),
+            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
             data=self._volume.data, # the numpy data is on the .data attribute
         )
+        if args.verbose:
+            print_date('adding lattice...')
         lattices.add_lattice(lattice)
         segmentation.lattices = lattices
 
