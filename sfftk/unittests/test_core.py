@@ -340,7 +340,7 @@ class TestCoreConfigs(Py23FixTestCase):
         args, configs = parse_args('config set --force NAME VALUE', use_shlex=True)
         self.assertTrue(set_configs(args, configs) == os.EX_OK)
         _, configs = parse_args('config get --all', use_shlex=True)
-        self.assertDictContainsSubset({'NAME': 'VALUE'}, configs)
+        self.assertLessEqual({'NAME': 'VALUE'}.items(), configs.items())
 
     def test_set_force_configs(self):
         """Test that forcing works"""
@@ -1434,8 +1434,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
 
     def test_copy_from_multiple(self):
         """Test that we can copy from multiple to one"""
-        source_id = _random_integers(start=1)
-        other_id = _random_integer(start=1)
+        source_id = _random_integers(start=1, stop=200)
+        other_id = _random_integer(start=201, stop=400)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=other_id, config_fn=self.config_fn, )
         print(cmd, file=sys.stderr)

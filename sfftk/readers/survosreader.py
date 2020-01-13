@@ -17,7 +17,7 @@ class SuRVoSSegmentation(object):
         self._fn = fn
         self._dataset = dataset
         self._mask_value = mask_value
-        with h5py.File(fn) as s:
+        with h5py.File(fn, 'r') as s:
             self._data = s[self._dataset][()]
             self._labels = list(map(int, s[self._dataset].attrs["labels"]))
 

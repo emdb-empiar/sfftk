@@ -355,18 +355,18 @@ class TestNotesFindSearchResource(Py23FixTestCase):
 class TestNotesFindTableField(Py23FixTestCase):
     def test_init_name(self):
         """Test instantiation of TableField object"""
-        with self.assertRaisesRegexp(ValueError,
+        with self.assertRaisesRegex(ValueError,
                                      "key and text are mutually exclusive; only define one or none of them"):
             find.TableField('my-field', key='k', text='t')
 
     def test_init_width_type(self):
         """Test check on width type"""
-        with self.assertRaisesRegexp(ValueError, "field width must be int or long"):
+        with self.assertRaisesRegex(ValueError, "field width must be int or long"):
             find.TableField('my-field', width=1.3)
 
     def test_init_width_value(self):
         """Test check on width value"""
-        with self.assertRaisesRegexp(ValueError, "field width must be greater than 0"):
+        with self.assertRaisesRegex(ValueError, "field width must be greater than 0"):
             find.TableField('my-field', width=0)
 
     def test_init_pc_type(self):
