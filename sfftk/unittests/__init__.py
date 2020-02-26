@@ -45,6 +45,8 @@ class Py23Fix(object):
         else:
             # new names for assert methods
             self.assertCountEqual = self.assertItemsEqual
+            self.assertRegex = self.assertRegexpMatches
+            self.assertRaisesRegex = self.assertRaisesRegexp
         super(Py23Fix, self).__init__(*args, **kwargs)
 
 

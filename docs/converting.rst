@@ -333,7 +333,18 @@ The table below shows valid primary descriptors by file type.
 
 .. note::
 
-    IMOD files must have a mesh generated using ``imodmesh`` command.
+    IMOD files must have a mesh generated using ``imodmesh`` command. Open contours will need to be converted to
+    tubes using the ``-t <obj_list>`` option. For example, for an IMOD file ``file.mod`` with three objects all of
+    which are open contours we can run:
+
+    .. code-block:: bash
+
+        ~$ imodmesh -t 1,2,3 -d 10 -E -Z 1.0 file.mod
+
+    which convert to tubes objects 1, 2 and 3 (``-t 1,2,3``), cap ends (``-E``) with domes at a scale of 1.0
+    (``-Z 1.0``) and a diameter of 10 pixels (``-d 10``).
+
+    You can find out much more about using ``imodmesh`` at `its documentation page <https://bio3d.colorado.edu/imod/doc/man/imodmesh.html>`_.
 
 Note that the primary descriptor should only be changed to a value of a 
 geometrical descriptor that is *actually* present in the EMDB-SFF file.
