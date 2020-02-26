@@ -1113,7 +1113,7 @@ references:
         The ``-F/--file-path`` option has been used to link to external files holding geometrical data. This will
         be deprecated in favour of hosting all geometrical data within the EMDB-SFF file (HDF5 and XML).
 
-- ``d/--details``: a quoted string of additional *details* pertaining to this segmentation;
+- ``-d/--details``: a quoted string of additional *details* pertaining to this segmentation;
 
 - ``-E/--external-ref`` for *global* or *segment external references*;
 

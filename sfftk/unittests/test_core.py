@@ -340,7 +340,7 @@ class TestCoreConfigs(Py23FixTestCase):
         args, configs = parse_args('config set --force NAME VALUE', use_shlex=True)
         self.assertTrue(set_configs(args, configs) == os.EX_OK)
         _, configs = parse_args('config get --all', use_shlex=True)
-        self.assertLessEqual({'NAME': 'VALUE'}.items(), configs.items())
+        self.assertLessEqual(list(_dict_iter_items({'NAME': 'VALUE'})), list(_dict_iter_items(configs)))
 
     def test_set_force_configs(self):
         """Test that forcing works"""
