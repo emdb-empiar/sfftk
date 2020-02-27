@@ -424,16 +424,17 @@ def handle_view(args, configs):  # @UnusedVariable
         print("IMOD Segmentation version {}".format(seg.header.version))
         print("Segmentation name: {}".format(seg.header.name))
         print("Format: IMOD")
-        print("Primary descriptor: {}".format('contours'))
         mesh_count = 0
         for objt in _dict_iter_values(seg.header.objts):
             mesh_count += objt.meshsize
         if mesh_count > 0:
             print("Auxiliary descriptors: meshes")
         print("Pixel size: {}".format(seg.header.pixsize))
-        print("Pixel units: {}".format(seg.header.units))
+        print("Pixel units: {}".format(seg.header.named_units))
         print("xmax, ymax, zmax: {}".format((seg.header.xmax, seg.header.ymax, seg.header.zmax)))
         print("No. of segments: {}".format(len(seg.segments)))
+        print("*" * 50)
+        print(seg)
         print("*" * 50)
         if args.show_chunks:
             from .readers import modreader

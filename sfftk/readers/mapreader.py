@@ -17,6 +17,8 @@ from __future__ import division, print_function
 import os
 import sys
 
+import numpy
+
 from ..core import _xrange, _encode
 
 __author__ = 'Paul K. Korir, PhD'
@@ -418,8 +420,8 @@ class Map(object):
 
     @property
     def skew_matrix_data(self):
-        """Skew matrix data"""
-        return " ".join(map(str,
+        """Skew matrix data as a space-separated string"""
+        return " ".join(map(repr,
                             [
                                 self._s11, self._s12, self._s13,
                                 self._s21, self._s22, self._s23,
@@ -428,8 +430,45 @@ class Map(object):
                         )
 
     @property
+    def skew_matrix(self):
+        """Skew matrix as a numpy array"""
+        return numpy.array([
+            self._s11, self._s12, self._s13,
+            self._s21, self._s22, self._s23,
+            self._s31, self._s32, self._s33,
+        ]).reshape(3, 3)
+
+    @property
     def skew_translation_data(self):
-        return " ".join(map(str, [self._t1, self._t2, self._t3]))
+        """Skew translation as a space-separated string"""
+        return " ".join(map(repr, [self._t1, self._t2, self._t3]))
+
+    @property
+    def skew_translation(self):
+        """Skew translation as a numpy array"""
+        return numpy.array([self._t1, self._t2, self._t3]).reshape(3, 1)
+
+    @property
+    def ijk_to_xyz_transform_data(self):
+        x_size = self._x_length / self._nc
+        y_size = self._y_length / self._nr
+        z_size = self._z_length / self._ns
+        return " ".join(map(repr, [
+            x_size, 0., 0., self._ncstart * self._x_length / self._nc,
+            0., y_size, 0., self._nrstart * self._y_length / self._nr,
+            0., 0., z_size, self._nsstart * self._z_length / self._ns,
+        ]))
+
+    @property
+    def ijk_to_xyz_transform(self):
+        x_size = self._x_length / self._nc
+        y_size = self._y_length / self._nr
+        z_size = self._z_length / self._ns
+        return numpy.array([
+            x_size, 0., 0., self._ncstart * self._x_length / self._nc,
+            0., y_size, 0., self._nrstart * self._y_length / self._nr,
+            0., 0., z_size, self._nsstart * self._z_length / self._ns,
+        ]).reshape(3, 4)
 
 
 def get_data(fn, inverted=False, *args, **kwargs):

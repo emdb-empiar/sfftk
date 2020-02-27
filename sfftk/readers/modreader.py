@@ -40,8 +40,10 @@ import sys
 
 from bitarray import bitarray
 
-from ..core import _decode, _xrange, _dict_iter_items
+from ..core import _decode, _xrange, _dict_iter_items, _dict_iter_keys
 from ..core.print_tools import get_printable_ascii_string
+
+import numpy
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
@@ -99,6 +101,34 @@ UNITS = {
 }
 
 UPPER_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+def angstrom_multiplier(units):
+    """
+    1Å = 10^(-10) m -> 1m = 10^(10)Å
+    Consider some generic unit U with a power of 10 x
+    1U = 10^x m     -> 1m = 10^(-x)U
+    We need a unit factor that relates Å to U
+    Dividing both expressions for 1m
+    1 = [10^(10)] / [10^(-x)] Å per U (Å/U)
+      = 10^(10 + x) Å/U
+    To convert U to Å we multiply by 10^(10 + x) Å/U
+    Example:
+    To convert 3 nm to Å we consider that x = -9 for nm
+    So 3 nm = 3 nm * 10^(10 + (-9)) Å/nm
+            = 3 nm * 10^(10 - 9) Å/nm
+            = 3 nm * 10 Å/nm
+            = 30 Å
+
+    :param units:
+    :return:
+    """
+    try:
+        assert units in list(_dict_iter_keys(UNITS))
+    except AssertionError:
+        raise ValueError(u"invalid units value '{units}'".format(units=units))
+    return 10 ** (10 + units)
+
 
 
 def find_chunk_length(f):
@@ -334,7 +364,8 @@ class IMOD(object):
         self.xscale, self.yscale, self.zscale = struct.unpack('>fff', f.read(12))
         self.object, self.contour, self.point, self.res, self.thresh = struct.unpack('>iiiii', f.read(20))
         self.pixsize = struct.unpack('>f', f.read(4))[0]
-        self.units = UNITS[struct.unpack('>i', f.read(4))[0]]
+        self.units = struct.unpack('>i', f.read(4))[0]
+        self.named_units = UNITS[self.units]
         self.csum = struct.unpack('>i', f.read(4))[0]
         self.alpha, self.beta, self.gamma = struct.unpack('>fff', f.read(12))
         self.isset = True
@@ -350,6 +381,32 @@ class IMOD(object):
         """Add a VIEW chunk object to this IMOD object"""
         self.views[self.view_count] = view
         self.view_count += 1
+
+    @property
+    def ijk_to_xyz_transform(self):
+        return numpy.array([
+            self.pixsize * self.xscale * angstrom_multiplier(self.units), 0., 0., 0.,
+            0., self.pixsize * self.yscale * angstrom_multiplier(self.units), 0., 0.,
+            0., 0., self.pixsize * self.zscale * angstrom_multiplier(self.units), 0.,
+        ]).reshape(3, 4)
+
+    @property
+    def x_length(self):
+        """The length of X side of the image in angstrom"""
+        return self.xmax * self.pixsize * self.xscale * angstrom_multiplier(self.units)
+
+    @property
+    def y_length(self):
+        """The length of Y side of the image in angstrom"""
+        return self.ymax * self.pixsize * self.yscale * angstrom_multiplier(self.units)
+
+    @property
+    def z_length(self):
+        """The length of Z side of the image in angstrom"""
+        return self.zmax * self.pixsize * self.zscale * angstrom_multiplier(self.units)
+
+    def __str__(self):
+        return repr(self)
 
     def __repr__(self):
         string = """\

@@ -12,11 +12,12 @@ from __future__ import division, print_function
 import inspect
 import os.path
 
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from numpy import matrix
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
-from .. import schema
-from ..core import _UserList, _dict_iter_values, _dict_iter_items
+# from .. import schema
+from ..core import _UserList, _dict_iter_values, _dict_iter_items, _str
 from ..readers import modreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -498,6 +499,9 @@ class IMODSegmentation(Segmentation):
             segment = IMODSegment(self._header, objt)
             self._segments.append(segment)
 
+    def __str__(self):
+        return _str(self._segmentation)
+
     @property
     def has_mesh_or_shapes(self):
         """Check whether the segmentation has meshes or shapes
@@ -529,57 +533,60 @@ class IMODSegmentation(Segmentation):
         segmentation = schema.SFFSegmentation()
         segmentation.name = self.header.name
         # software
-        segmentation.software = schema.SFFSoftware(
-            name="IMOD",
-            version=self.header.version,
-            processingDetails='None'
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name="IMOD",
+                version=self.header.version,
+                processingDetails='None'
+            )
         )
-        segmentation.filePath = os.path.abspath(self._fn)
         # transforms
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=4,
-                data='1.0 0.0 0.0 {} 0.0 1.0 0.0 {} 0.0 0.0 1.0 {}'.format(
-                    self.header.minx.ctrans[0],
-                    self.header.minx.ctrans[1],
-                    self.header.minx.ctrans[2],
-                )
-            ),
+        segmentation.transform_list = schema.SFFTransformList()
+        segmentation.transform_list.append(
+            schema.SFFTransformationMatrix.from_array(self._segmentation.ijk_to_xyz_transform)
+            # schema.SFFTransformationMatrix(
+            #     rows=3,
+            #     cols=4,
+            #     data='1.0 0.0 0.0 {} 0.0 1.0 0.0 {} 0.0 0.0 1.0 {}'.format(
+            #         self.header.minx.ctrans[0],
+            #         self.header.minx.ctrans[1],
+            #         self.header.minx.ctrans[2],
+            #     )
+            # ),
         )
-        segmentation.boundingBox = schema.SFFBoundingBox(
-            xmax=self.header.xmax,
-            ymax=self.header.ymax,
-            zmax=self.header.zmax
+        segmentation.bounding_box = schema.SFFBoundingBox(
+            xmax=self.header.x_length,
+            ymax=self.header.y_length,
+            zmax=self.header.z_length,
         )
-        segments = schema.SFFSegmentList()
-        transforms = list()
-        schema.SFFSegment.reset_id()
-        no_contours = 0
-        no_meshes = 0
-        for s in self.segments:
-            segment, _transforms = s.convert()
-            if s.contours is not None:
-                if len(s.contours) > 0:
-                    no_contours += 1
-            elif s.meshes is not None:
-                if len(s.meshes) > 0:
-                    no_meshes += 1
-            #             if len(s.contours) > 0:
-            #                 no_contours += 1
-            #             elif len(s.meshes) > 0:
-            #                 no_meshes += 1
-            transforms += _transforms
-            segments.add_segment(segment)
-        # if we have additional transforms from shapes
-        if transforms:
-            _ = [segmentation.transforms.add_transform(T) for T in transforms]
-        # finally pack everything together
-        segmentation.segments = segments
+        # segments = schema.SFFSegmentList()
+        # transforms = list()
+        # # schema.SFFSegment.reset_id()
+        # no_contours = 0
+        # no_meshes = 0
+        # for s in self.segment:
+        #     segment, _transforms = s.convert()
+        #     if s.contours is not None:
+        #         if len(s.contours) > 0:
+        #             no_contours += 1
+        #     elif s.meshes is not None:
+        #         if len(s.meshes) > 0:
+        #             no_meshes += 1
+        #     #             if len(s.contours) > 0:
+        #     #                 no_contours += 1
+        #     #             elif len(s.meshes) > 0:
+        #     #                 no_meshes += 1
+        #     transforms += _transforms
+        #     segments.append(segment)
+        # # if we have additional transforms from shapes
+        # if transforms:
+        #     _ = [segmentation.transform_list.append(T) for T in transforms]
+        # # finally pack everything together
+        # segmentation.segment_list = segments
         # now is the right time to set the primary descriptor attribute
         # if there are at least as many segments as descriptors then set that
-        segmentation.primaryDescriptor = "meshList"
+        segmentation.primary_descriptor = "mesh_list"
         """
         if len(segmentation.segments) <= no_contours:
             segmentation.primaryDescriptor = "contourList"

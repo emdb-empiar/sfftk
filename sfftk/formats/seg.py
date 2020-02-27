@@ -9,9 +9,11 @@ User-facing reader classes for Segger files
 """
 from __future__ import division
 
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+
 from .base import Annotation, Volume, Segment, Header, \
     Segmentation
-from .. import schema
+# from .. import schema
 from ..core import _str
 from ..readers import segreader
 
@@ -215,35 +217,33 @@ class SeggerSegmentation(Segmentation):
         """Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Segger Segmentation"
-        segmentation.software = schema.SFFSoftware(
-            name=self.header.name,
-            version=self.header.version,
-        )
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=4,
-                data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name=self.header.name,
+                version=self.header.version,
             )
         )
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=4,
-                data=" ".join(map(str, self.header.ijk_to_xyz_transform.flatten().tolist()))
-            )
+        segmentation.transform_list = schema.SFFTransformList()
+        segmentation.transform_list.append(
+            schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
+            # schema.SFFTransformationMatrix(
+                # rows=3,
+                # cols=4,
+                # data=" ".join(map(str, self.header.ijk_to_xyz_transform.flatten().tolist()))
+            # ).from_array(self.header.ijk_to_xyz_transform)
         )
-        # segmentation.filePath = self.header.file_path
-        segmentation.primaryDescriptor = "threeDVolume"
+        # # segmentation.filePath = self.header.file_path
+        segmentation.primary_descriptor = "three_d_volume"
         segments = schema.SFFSegmentList()
         for s in self.segments:
             segment = s.convert()
-            segments.add_segment(segment)
+            segments.append(segment)
         # finally pack everything together
-        segmentation.segments = segments
+        segmentation.segment_list = segments
         # lattice
         segmentation.lattices = schema.SFFLatticeList()
+        # check the order: c,r,s or r,c,s???
         cols, rows, sections = self.header.map_size
         lattice = schema.SFFLattice(
             mode='uint32',
@@ -252,7 +252,7 @@ class SeggerSegmentation(Segmentation):
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
             data=self.header.simplified_mask
         )
-        segmentation.lattices.add_lattice(lattice)
+        segmentation.lattice_list.append(lattice)
         # details
         if args.details is not None:
             segmentation.details = args.details

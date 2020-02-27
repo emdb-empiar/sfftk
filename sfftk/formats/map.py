@@ -12,8 +12,10 @@ import inspect
 import os
 import sys
 
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+
 from .base import Segmentation, Header, Segment, Annotation
-from .. import schema
+# from .. import schema
 from ..core import _xrange
 from ..core.print_tools import print_date, get_printable_ascii_string
 from ..readers import mapreader
@@ -118,7 +120,7 @@ class MapAnnotation(Annotation):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
-        annotation.numberOfInstances = 1
+        annotation.number_of_instances = 1
         import random
         red, green, blue = random.random(), random.random(), random.random()
         print_date(
@@ -166,10 +168,10 @@ class MapSegment(Segment):
             data=self._map_obj.voxels,
         )
         segment = schema.SFFSegment()
-        segment.biologicalAnnotation, segment.colour = self.annotation.convert()
+        segment.biological_annotation, segment.colour = self.annotation.convert()
         # segment.volume = self.volume.convert()
         segment.volume = schema.SFFThreeDVolume(
-            latticeId=lattice.id,
+            lattice_id=lattice.id,
             value=1.0,
         )
         return segment, lattice
@@ -309,39 +311,45 @@ class MapSegmentation(Segmentation):
         segmentation.name = "CCP4 mask segmentation"
 
         # software
-        segmentation.software = schema.SFFSoftware(
-            name="Undefined",
-            version="Undefined",
-            processingDetails='None'
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name="Undefined",
+                version="Undefined",
+            )
         )
         # segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
-        segmentation.primaryDescriptor = "threeDVolume"
+        segmentation.primary_descriptor = "three_d_volume"
 
-        segmentation.boundingBox = schema.SFFBoundingBox(
+        segmentation.bounding_box = schema.SFFBoundingBox(
             xmax=self.header.x_length,
             ymax=self.header.y_length,
             zmax=self.header.z_length,
         )
 
         # transforms
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(rows=3, cols=3, data=self.header.skew_matrix_data, )
+        segmentation.transform_list = schema.SFFTransformList()
+
+        segmentation.transform_list.append(
+            schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
         )
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(rows=3, cols=1, data=self.header.skew_translation_data, )
+        segmentation.transform_list.append(
+            schema.SFFTransformationMatrix.from_array(self.header.skew_matrix)
+        )
+        segmentation.transform_list.append(
+            schema.SFFTransformationMatrix.from_array(self.header.skew_translation)
         )
 
-        segments = schema.SFFSegmentList()
-        lattices = schema.SFFLatticeList()
+        segment_list = schema.SFFSegmentList()
+        lattice_list = schema.SFFLatticeList()
         for s in self.segments:
             segment, lattice = s.convert()
-            segments.add_segment(segment)
-            lattices.add_lattice(lattice)
+            segment_list.append(segment)
+            lattice_list.append(lattice)
 
         # finally pack everything together
-        segmentation.segments = segments
-        segmentation.lattices = lattices
+        segmentation.segment_list = segment_list
+        segmentation.lattice_list = lattice_list
 
         if args.details is not None:
             segmentation.details = args.details

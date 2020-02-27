@@ -55,7 +55,7 @@ if sys.version_info[0] > 2:
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy"],
-        install_requires=["ahds", "lxml", "h5py>2.7.0", "RandomWords", "styled", "mrcfile", "bitarray", "requests",
+        install_requires=["sfftk-rw", "ahds", "styled", "mrcfile", "bitarray", "requests",
                           "mock",
                           "numpy-stl", "styled"],
         classifiers=SFFTK_CLASSIFIERS,

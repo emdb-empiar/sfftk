@@ -119,6 +119,19 @@ class TestReaders_mapreader(Py23FixTestCase):
         self.assertIsInstance(map_._machst, _str)
         self.assertGreater(map_._rms, 0)
         self.assertGreater(map_._nlabl, 0)
+        ijk_to_xyz_transform = map_.ijk_to_xyz_transform
+        skew_matrix = map_.skew_matrix
+        skew_translation = map_.skew_translation
+        self.assertIsInstance(ijk_to_xyz_transform, numpy.ndarray)
+        # transforms
+        self.assertEqual(numpy.prod(ijk_to_xyz_transform.shape), 12)
+        # check the transformation matrix is non-zero on the diagonal
+        self.assertTrue(ijk_to_xyz_transform[0, 0] * ijk_to_xyz_transform[1, 1] * ijk_to_xyz_transform[2, 2] != 0)
+        self.assertEqual(numpy.prod(skew_matrix.shape), 9)
+        self.assertEqual(numpy.prod(skew_translation.shape), 3)
+        self.assertEqual(map_.ijk_to_xyz_transform_data, " ".join(map(repr, ijk_to_xyz_transform.flatten().tolist())))
+        self.assertEqual(map_.skew_matrix_data, " ".join(map(repr, skew_matrix.flatten().tolist())))
+        self.assertEqual(map_.skew_translation_data, " ".join(map(repr, skew_translation.flatten().tolist())))
 
     def test_write(self):
         """Test write map file"""
@@ -227,6 +240,14 @@ class TestReaders_modreader(Py23FixTestCase):
         self.assertEqual(self.mod.beta, 0)
         self.assertEqual(self.mod.gamma, 0)
 
+    def test_to_angstrom(self):
+        """Test function that converts to angstrom"""
+        with self.assertRaises(ValueError):
+            modreader.angstrom_multiplier(-11)
+        self.assertEqual(modreader.angstrom_multiplier(-10), 1)  # angstroms
+        self.assertEqual(modreader.angstrom_multiplier(-9), 10)  # nm
+        self.assertEqual(modreader.angstrom_multiplier(3), 10 ** 13)  # km
+
     def test_read_fail1(self):
         """Test that file missing 'IMOD' at beginning fails"""
         mod_fn = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_bad_data1.mod')
@@ -242,6 +263,18 @@ class TestReaders_modreader(Py23FixTestCase):
     def test_IMOD_pass(self):
         """Test that IMOD chunk read"""
         self.assertTrue(self.mod.isset)
+        ijk_to_xyz_transform = self.mod.ijk_to_xyz_transform
+        self.assertTrue(ijk_to_xyz_transform[0, 0] * ijk_to_xyz_transform[1, 1] * ijk_to_xyz_transform[2, 2] != 0.0)
+        print(self.mod.x_length)
+        self.assertEqual(self.mod.x_length,
+                         self.mod.xmax * self.mod.pixsize * self.mod.xscale * modreader.angstrom_multiplier(
+                             self.mod.units))
+        self.assertEqual(self.mod.y_length,
+                         self.mod.ymax * self.mod.pixsize * self.mod.yscale * modreader.angstrom_multiplier(
+                             self.mod.units))
+        self.assertEqual(self.mod.z_length,
+                         self.mod.zmax * self.mod.pixsize * self.mod.zscale * modreader.angstrom_multiplier(
+                             self.mod.units))
 
     def test_OBJT_pass(self):
         """Test that OBJT chunk read"""
