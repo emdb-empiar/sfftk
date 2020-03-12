@@ -19,7 +19,7 @@ from copy import deepcopy
 
 from . import _dict_iter_keys
 from .print_tools import print_date
-from ..core import _decode, _input
+from ..core import _decode, _input, _str
 from ..notes import RESOURCE_LIST
 
 __author__ = 'Paul K. Korir, PhD'
@@ -48,8 +48,8 @@ def add_args(parser, the_arg):
         >>> this_parser = argparse.ArgumentParser()
         >>> add_args(this_parser, my_arg)
 
-    :param parser: the parser to be modified
-    :type parser: :py:class:`argparse.ArgumentParser`
+    :param parser: the parser to be modified[
+    :type parser: :py:class:`argparse.ArgumentParser` or :py:class:`argparse._ArgumentGroup`
     :param dict the_arg: the argument specified as a dict with keys ``args`` and ``kwargs``
     :return: a modified parser object
     :rtype: :py:class:`argparse.ArgumentParser`
@@ -80,20 +80,6 @@ sff_file = {
     'args': ['sff_file'],
     'kwargs': {
         'help': 'path (rel/abs) to an EMDB-SFF file',
-    }
-}
-complexes = {
-    'args': ['-C', '--complexes'],
-    'kwargs': {
-        'help': "PDBe accession for complexes separated by commas without spaces \
-between e.g. 'comp1,comp2,...,compN'",
-    }
-}
-complex_id = {
-    'args': ['-c', '--complex-id'],
-    'kwargs': {
-        'type': int,
-        'help': "the complex ID as shown with the 'list' command",
     }
 }
 description = {
@@ -128,13 +114,6 @@ reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23
 file.json""".format(', '.join(_dict_iter_keys(RESOURCE_LIST))),
     }
 }
-# file_path = {
-#     'args': ['-F', '--file-path'],
-#     'kwargs': {
-#         'default': None,
-#         'help': "file path [default: '.']"
-#     }
-# }
 FORMAT_LIST = [
     ('sff', 'XML'),
     ('hff', 'HDF5'),
@@ -143,7 +122,6 @@ FORMAT_LIST = [
 format_ = {
     'args': ['-f', '--format'],
     'kwargs': {
-        # 'default': 'sff',
         'help': "output file format; valid options are: {} [default: sff]".format(
             ", ".join(map(lambda x: "{} ({})".format(x[0], x[1]), FORMAT_LIST))
         ),
@@ -157,37 +135,23 @@ header = {
         'help': 'show EMDB-SFF header (global) attributes [default: False]'
     }
 }
+number_of_instances = {
+    'args': ['-I', '--number-of-instances'],
+    'kwargs': {
+        'type': int,
+        'help': 'the number of instances',
+    }
+}
 segment_id = {
     'args': ['-i', '--segment-id'],
     'kwargs': {
         'help': 'refer to a segment by its ID'
     }
 }
-macromolecules = {
-    'args': ['-M', '--macromolecules'],
-    'kwargs': {
-        'help': "PDBe accession for macromolecules separated by commas without \
-spaces between e.g. 'macr1,macr2,...,macrN'",
-    }
-}
-macromolecule_id = {
-    'args': ['-m', '--macromolecule-id'],
-    'kwargs': {
-        'type': int,
-        'help': "the macromolecule ID as shown with the 'list' command",
-    }
-}
 name = {
     'args': ['-N', '--name'],
     'kwargs': {
         'help': "the segmentation name"
-    }
-}
-number_of_instances = {
-    'args': ['-n', '--number-of-instances'],
-    'kwargs': {
-        'type': int,
-        'help': 'the number of instances',
     }
 }
 output = {
@@ -212,7 +176,7 @@ config_path = {
 primary_descriptor = {
     'args': ['-R', '--primary-descriptor'],
     'kwargs': {
-        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  threeDVolume, meshList, shapePrimitiveList]"
+        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  three_d_volume, mesh_list, shape_primitive_list]"
     }
 }
 software_name = {
@@ -221,8 +185,15 @@ software_name = {
         'help': "the name of the software used to create the segmentation"
     }
 }
+software_id = {
+    'args': ['-s', '--software-id'],
+    'kwargs': {
+        'type': int,
+        'help': "the software to edit",
+    }
+}
 segment_name = {
-    'args': ['-s', '--segment-name'],
+    'args': ['-n', '--segment-name'],
     'kwargs': {
         'help': "the name of the segment"
     }
@@ -236,7 +207,7 @@ shipped_configs = {
     }
 }
 software_version = {
-    'args': ['-V', '--software-version'],
+    'args': ['-T', '--software-version'],
     'kwargs': {
         'help': "the version of software used to create the segmentation"
     }
@@ -374,8 +345,15 @@ convert_parser = subparsers.add_parser(
 convert_parser.add_argument('from_file', nargs='*', help="file to convert from")
 add_args(convert_parser, config_path)
 add_args(convert_parser, shipped_configs)
-convert_parser.add_argument('-t', '--top-level-only', default=False,
-                            action='store_true', help="convert only the top-level segments [default: False]")
+# convert_parser.add_argument('-t', '--top-level-only', default=False,
+#                             action='store_true', help="convert only the top-level segments [default: False]")
+convert_parser.add_argument(
+    '-a', '--all-levels',
+    default=False,
+    action='store_true',
+    help="for segments structured hierarchically (e.g. Segger from UCSF Chimera and Chimera X) "
+         "convert all segment leves in the hierarchy [default: False]"
+)
 # convert_parser.add_argument('-M', '--contours-to-mesh', default=False, action='store_true', help="convert an 'contourList' EMDB-SFF to a 'meshList' EMDB-SFF")
 convert_parser.add_argument(*details['args'], **details['kwargs'])
 convert_parser.add_argument(
@@ -499,7 +477,7 @@ view_parser.add_argument('from_file', help="any SFF file")
 add_args(view_parser, config_path)
 add_args(view_parser, shipped_configs)
 view_parser.add_argument(
-    '-V', '--version', action='store_true', help="show SFF format version")
+    '--sff-version', action='store_true', help="show SFF format version")
 view_parser.add_argument('-C', '--show-chunks', action='store_true',
                          help="show sequence of chunks in IMOD file; only works with IMOD model files (.mod) [default: False]")
 view_parser.add_argument(*verbose['args'], **verbose['kwargs'])
@@ -547,10 +525,10 @@ search_notes_parser.add_argument(
     )
 )
 search_notes_parser.add_argument(
-    '-s', '--start', type=int, default=1, help="start index [default: 1]"
+    '--start', type=int, default=1, help="start index [default: 1]"
 )
 search_notes_parser.add_argument(
-    '-r', '--rows', type=int, default=10, help="number of rows [default: 10]"
+    '--rows', type=int, default=10, help="number of rows [default: 10]"
 )
 ols_parser = search_notes_parser.add_argument_group(
     title='EBI Ontology Lookup Service (OLS)',
@@ -674,7 +652,6 @@ add_args(add_global_notes_parser, name)
 add_args(add_global_notes_parser, software_name)
 add_args(add_global_notes_parser, software_version)
 add_args(add_global_notes_parser, software_proc_details)
-# add_args(add_global_notes_parser, file_path)
 add_args(add_global_notes_parser, details)
 # segment notes
 add_segment_notes_parser = add_notes_parser.add_argument_group(
@@ -685,8 +662,6 @@ add_args(add_segment_notes_parser, segment_id)
 add_args(add_segment_notes_parser, segment_name)
 add_args(add_segment_notes_parser, description)
 add_args(add_segment_notes_parser, number_of_instances)
-add_args(add_segment_notes_parser, complexes)
-add_args(add_segment_notes_parser, macromolecules)
 
 # =========================================================================
 # notes: edit
@@ -709,10 +684,10 @@ edit_global_notes_parser = edit_notes_parser.add_argument_group(
     description="edit global attributes to an EMDB-SFF file"
 )
 add_args(edit_global_notes_parser, name)
+add_args(edit_global_notes_parser, software_id)
 add_args(edit_global_notes_parser, software_name)
 add_args(edit_global_notes_parser, software_version)
 add_args(edit_global_notes_parser, software_proc_details)
-# add_args(edit_global_notes_parser, file_path)
 add_args(edit_global_notes_parser, details)
 # segment notes
 edit_segment_notes_parser = edit_notes_parser.add_argument_group(
@@ -723,10 +698,6 @@ add_args(edit_segment_notes_parser, segment_id)
 add_args(edit_segment_notes_parser, segment_name)
 add_args(edit_segment_notes_parser, description)
 add_args(edit_segment_notes_parser, number_of_instances)
-add_args(edit_segment_notes_parser, complex_id)
-add_args(edit_segment_notes_parser, complexes)
-add_args(edit_segment_notes_parser, macromolecule_id)
-add_args(edit_segment_notes_parser, macromolecules)
 
 # =========================================================================
 # notes: del
@@ -756,30 +727,31 @@ name['kwargs'] = {
     'help': 'delete the name [default: False]',
 }
 add_args(del_global_notes_parser, name)
+# we need a way to identify which software entity in the list is to be acted up
+# remove type so that we can store a list of comma-sep'd ints
+del software_id['kwargs']['type']
+# add it to the parser
+add_args(del_global_notes_parser, software_id)
+# return things to the way you found them
+software_id['kwargs']['type'] = int
 software_name['kwargs'] = {
     'action': 'store_true',
     'default': False,
-    'help': 'delete the software name [default: False]'
+    'help': 'delete the software name for the specified software id(s) [default: False]'
 }
 add_args(del_global_notes_parser, software_name)
 software_version['kwargs'] = {
     'action': 'store_true',
     'default': False,
-    'help': 'delete the software version [default: False]'
+    'help': 'delete the software version for the specified software id(s) [default: False]'
 }
 add_args(del_global_notes_parser, software_version)
 software_proc_details['kwargs'] = {
     'action': 'store_true',
     'default': False,
-    'help': 'delete the software processing details [default: False]'
+    'help': 'delete the software processing details for the specified software id(s) [default: False]'
 }
 add_args(del_global_notes_parser, software_proc_details)
-# file_path['kwargs'] = {
-#     'action': 'store_true',
-#     'default': False,
-#     'help': 'delete the file path [default: False]'
-# }
-# add_args(del_global_notes_parser, file_path)
 details['kwargs'] = {
     'action': 'store_true',
     'default': False,
@@ -811,14 +783,6 @@ number_of_instances['kwargs'] = {
     'help': 'delete the number of instances [default: False]',
 }
 add_args(del_segment_notes_parser, number_of_instances)
-# modify for del: we need a string of comma'd values
-del complex_id['kwargs']['type']
-add_args(del_segment_notes_parser, complex_id)
-# restore it
-complex_id['kwargs']['type'] = int
-del macromolecule_id['kwargs']['type']
-add_args(del_segment_notes_parser, macromolecule_id)
-macromolecule_id['kwargs']['type'] = int
 
 # =============================================================================
 # notes: copy
@@ -1216,12 +1180,14 @@ def parse_args(_args, use_shlex=False):
                 args.__setattr__('output', os.path.join(dirname, fn))
             if args.verbose:
                 print_date("Setting output file to {}".format(args.output))
+        else:
+            print_date("Writing output to {}".format(args.output))
 
         # ensure valid primary_descriptor
         if args.primary_descriptor:
             try:
                 assert args.primary_descriptor in [
-                    'threeDVolume', 'meshList', 'shapePrimitive']
+                    'three_d_volume', 'mesh_list', 'shape_primitive_list']
             except:
                 if args.verbose:
                     print_date(
@@ -1230,6 +1196,10 @@ def parse_args(_args, use_shlex=False):
             if args.verbose:
                 print_date(
                     "Trying to set primary descriptor to {}".format(args.primary_descriptor))
+        # using -a/--all-levels
+        if args.all_levels:
+            if args.verbose:
+                print_date("Writing out all levels of segment hierarchy")
 
     # tests
     elif args.subcommand == 'tests':
@@ -1323,22 +1293,13 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 try:
                     assert (args.segment_name is not None) or (args.description is not None) or \
                            (args.number_of_instances is not None) or \
-                           (args.external_ref is not None) or (args.complexes is not None) or \
-                           (args.macromolecules is not None)
+                           (args.external_ref is not None)
                 except AssertionError:
                     print_date("Nothing specified to add. Use one or more of the following options:\n\t"
-                               "-s <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefOtherType> <extrefValue> \n\t"
-                               "-C cmplx1,cmplx2,...,cmplxN \n\t-M macr1,macr2,...,macrN \n\t-n <int>")
+                               "-n <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefOtherType> <extrefValue> \n\t"
+                               "-I <int>")
 
                     return os.EX_USAGE, configs
-
-                # replace the string in args.complexes with a list
-                if args.complexes:
-                    args.complexes = args.complexes.split(',')
-
-                # ditto
-                if args.macromolecules:
-                    args.macromolecules = args.macromolecules.split(',')
 
             # unicode conversion
             if args.name is not None:
@@ -1360,10 +1321,6 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 args.segment_name = _decode(args.segment_name, 'utf-8')
             if args.description is not None:
                 args.description = _decode(args.description, 'utf-8')
-            if args.complexes is not None:
-                args.complexes = [_decode(c, 'utf-8') for c in args.complexes]
-            if args.macromolecules is not None:
-                args.macromolecules = [_decode(m, 'utf-8') for m in args.macromolecules]
 
         elif args.notes_subcommand == "edit":
             # external references can be added globally (header) or to a
@@ -1374,42 +1331,26 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 except AssertionError:
                     print_date("Will not be able to edit an external reference without \
 specifying an external reference ID. Run 'list' or 'show' to see available \
-external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
+external reference IDs for segment {}".format(args.segment_id), stream=sys.stdout)
                     return os.EX_USAGE, configs
 
                 # consistency of format
                 # todo: check this; doesn't seem right
-                if len(args.external_ref) == 0 and isinstance(args.external_ref[0], str):
+                if len(args.external_ref) == 0 and isinstance(args.external_ref[0], _str):
                     args.external_ref = [args.external_ref]
 
+            # software
+            if args.software_name or args.software_version or args.software_processing_details:
+                try:
+                    assert args.software_id is not None
+                except AssertionError:
+                    print_date("Will not be able to edit a software intance without specifying an software ID. "
+                               "Run 'show' to see the available software IDs.")
+                    return os.EX_USAGE, configs
+
             if args.segment_id is not None:
-                args.segment_id = map(int, args.segment_id.split(','))
+                args.segment_id = list(map(int, args.segment_id.split(',')))
 
-                # replace the string in args.complexes with a list
-                if args.complexes:
-                    args.complexes = args.complexes.split(',')
-
-                # ditto
-                if args.macromolecules:
-                    args.macromolecules = args.macromolecules.split(',')
-
-                if args.complexes:
-                    try:
-                        assert args.complex_id is not None
-                    except AssertionError:
-                        print_date("Will not be able to edit a complex without specifying \
-    a complex ID. Run 'list' or 'show' to see available complex \
-    IDs for {}".format(args.segment_id), stream=sys.stdout)
-                        return os.EX_USAGE, configs
-
-                if args.macromolecules:
-                    try:
-                        assert args.macromolecule_id is not None
-                    except AssertionError:
-                        print_date("Will not be able to edit a macromolecule without specifying\
-    a macromolecule ID. Run 'list' or 'show' to see available \
-    macromolecule IDs for {}".format(args.segment_id), stream=sys.stdout)
-                        return os.EX_USAGE, configs
 
             # unicode
             if args.name is not None:
@@ -1431,10 +1372,6 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                 args.segment_name = _decode(args.segment_name, 'utf-8')
             if args.description is not None:
                 args.description = _decode(args.description, 'utf-8')
-            if args.complexes is not None:
-                args.complexes = [_decode(c, 'utf-8') for c in args.complexes]
-            if args.macromolecules is not None:
-                args.macromolecules = [_decode(m, 'utf-8') for m in args.macromolecules]
 
         elif args.notes_subcommand == "del":
             if args.segment_id is not None:
@@ -1445,13 +1382,12 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
                         "Please specify a segment ID", stream=sys.stdout)
                     return os.EX_USAGE, configs
 
-                args.segment_id = map(int, args.segment_id.split(','))
+                args.segment_id = list(map(int, args.segment_id.split(',')))
 
                 # ensure we have at least one item to del
                 try:
                     assert args.segment_name or args.description or args.number_of_instances or \
-                           (args.external_ref_id is not None) or (args.complex_id is not None) or \
-                           (args.macromolecule_id is not None)
+                           (args.external_ref_id is not None)
                 except AssertionError:
                     print_date("Incorrect usage; please use -h for help")
                     return os.EX_USAGE, configs
@@ -1459,12 +1395,17 @@ external reference IDs for {}".format(args.segment_id), stream=sys.stdout)
             if args.external_ref_id is not None:
                 ext_ref_ids = list(map(int, args.external_ref_id.split(',')))
                 args.external_ref_id = ext_ref_ids
-            if args.complex_id is not None:
-                complex_ids = list(map(int, args.complex_id.split(',')))
-                args.complex_id = complex_ids
-            if args.macromolecule_id is not None:
-                macromolecule_ids = list(map(int, args.macromolecule_id.split(',')))
-                args.macromolecule_id = macromolecule_ids
+            # convert from string to list of ints for software
+            if args.software_id is not None:
+                software_ids = list(map(int, args.software_id.split(',')))
+                args.software_id = software_ids
+
+                # if missing -S, -T, and -P then set them since we have -s set
+                if not args.software_name and not args.software_version and not args.software_processing_details:
+                    args.software_name = True
+                    args.software_version = True
+                    args.software_processing_details = True
+
 
         elif args.notes_subcommand == "copy":
             # convert from and to to lists of ints

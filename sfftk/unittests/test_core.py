@@ -12,9 +12,10 @@ import sys
 
 import numpy
 from random_words import RandomWords, LoremIpsum
+from sfftkrw.unittests import Py23FixTestCase, _random_integer, _random_integers, _random_float, _random_floats, isclose
 from stl import Mesh
 
-from . import TEST_DATA_PATH, _random_integer, _random_integers, _random_float, _random_floats, isclose, Py23FixTestCase
+from . import TEST_DATA_PATH
 from .. import BASE_DIR
 from ..core import print_tools
 from ..core import utils, _dict_iter_items, _str, _dict
@@ -385,9 +386,11 @@ class TestCoreConfigs(Py23FixTestCase):
 class TestCorePrintUtils(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestCorePrintUtils, cls).setUpClass()
         cls._weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     def setUp(self):
+        super(TestCorePrintUtils, self).setUp()
         self.temp_fn = 'temp_file.txt'
         if sys.version_info[0] > 2:
             self.temp_file = open(self.temp_fn, 'w+', newline='\r\n')
@@ -395,6 +398,7 @@ class TestCorePrintUtils(Py23FixTestCase):
             self.temp_file = open(self.temp_fn, 'w+')
 
     def tearDown(self):
+        super(TestCorePrintUtils, self).tearDown()
         os.remove(self.temp_fn)
 
     def test_print_date_default(self):
@@ -662,6 +666,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         cls.empty_maps = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.map'))
         cls.empty_stls = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.stl'))
         cls.empty_segs = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.seg'))
+        cls.test_seg_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'emd_1014.seg')
 
     @classmethod
     def tearDownClass(cls):
@@ -674,7 +679,8 @@ class TestCoreParserConvert(Py23FixTestCase):
         self.assertEqual(args.subcommand, 'convert')
         self.assertEqual(args.from_file, self.test_data_file)
         self.assertIsNone(args.config_path)
-        self.assertFalse(args.top_level_only)
+        # self.assertFalse(args.top_level_only)
+        self.assertFalse(args.all_levels)
         self.assertIsNone(args.details)
         self.assertEqual(args.output, os.path.join(os.path.dirname(self.test_data_file), 'test_data.sff'))
         self.assertEqual(args.primary_descriptor, None)
@@ -723,9 +729,9 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     def test_primary_descriptor(self):
         """Test convert parser with primary_descriptor"""
-        args, _ = parse_args('convert -R threeDVolume {}'.format(self.test_data_file), use_shlex=True)
+        args, _ = parse_args('convert -R three_d_volume {}'.format(self.test_data_file), use_shlex=True)
         # assertions
-        self.assertEqual(args.primary_descriptor, 'threeDVolume')
+        self.assertEqual(args.primary_descriptor, 'three_d_volume')
 
     def test_wrong_primary_descriptor_fails(self):
         """Test that we have a check on primary descriptor values"""
@@ -778,6 +784,11 @@ class TestCoreParserConvert(Py23FixTestCase):
         # assertions
         self.assertEqual(args, os.EX_USAGE)
 
+    def test_all_levels(self):
+        """Test that we can set the -a/--all-levels flag for Segger segmentations"""
+        args, _ = parse_args('convert -v -a {}'.format(self.test_seg_file), use_shlex=True)
+        print(args)
+
 
 class TestCoreParserView(Py23FixTestCase):
     @classmethod
@@ -800,9 +811,9 @@ class TestCoreParserView(Py23FixTestCase):
 
     def test_version(self):
         """Test view version"""
-        args, _ = parse_args('view -V file.sff', use_shlex=True)
+        args, _ = parse_args('view --sff-version file.sff', use_shlex=True)
 
-        self.assertTrue(args.version)
+        self.assertTrue(args.sff_version)
 
     def test_config_path(self):
         """Test setting of arg config_path"""
@@ -932,7 +943,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         rows = _random_integer()
         start = _random_integer()
         args, _ = parse_args(
-            "notes search -r {} -s {} -O fma -x -o -L -l 'mitochondria' --config-path {}".format(
+            "notes search --rows {} --start {} -O fma -x -o -L -l 'mitochondria' --config-path {}".format(
                 rows, start, self.config_fn
             ), use_shlex=True)
         self.assertEqual(args.rows, rows)
@@ -947,14 +958,14 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     def test_search_invalid_start(self):
         """Test that we catch an invalid start"""
         start = -_random_integer()
-        args, _ = parse_args("notes search -s {} 'mitochondria' --config-path {}".format(start, self.config_fn),
+        args, _ = parse_args("notes search --start {} 'mitochondria' --config-path {}".format(start, self.config_fn),
                              use_shlex=True)
         self.assertEqual(args, os.EX_USAGE)
 
     def test_search_invalid_rows(self):
         """Test that we catch an invalid rows"""
         rows = -_random_integer()
-        args, _ = parse_args("notes search -r {} 'mitochondria' --config-path {}".format(rows, self.config_fn),
+        args, _ = parse_args("notes search --rows {} 'mitochondria' --config-path {}".format(rows, self.config_fn),
                              use_shlex=True)
         self.assertEqual(args, os.EX_USAGE)
 
@@ -1126,27 +1137,27 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         software_name = rw.random_word()
         software_version = 'v{}.{}.{}'.format(_random_integer(), _random_integer(), _random_integer())
         software_processing_details = li.get_sentences(4)
-        type1 = rw.random_word()
-        otherType1 = rw.random_word()
-        value1 = rw.random_word()
-        type2 = rw.random_word()
-        otherType2 = rw.random_word()
-        value2 = rw.random_word()
+        resource1 = rw.random_word()
+        url1 = rw.random_word()
+        accession1 = rw.random_word()
+        resource2 = rw.random_word()
+        url2 = rw.random_word()
+        accession2 = rw.random_word()
         args, _ = parse_args(
-            "notes add -N '{name}' -D '{details}' -S '{software_name}' -V {software_version} "
-            "-P '{software_processing_details}' -E {type1} {otherType1} {value1} "
-            "-E {type2} {otherType2} {value2} file.sff --config-path {config_path}".format(
+            "notes add -N '{name}' -D '{details}' -S '{software_name}' -T {software_version} "
+            "-P '{software_processing_details}' -E {resource1} {url1} {accession1} "
+            "-E {resource2} {url2} {accession2} file.sff --config-path {config_path}".format(
                 name=name,
                 details=details,
                 software_name=software_name,
                 software_version=software_version,
                 software_processing_details=software_processing_details,
-                type1=type1,
-                otherType1=otherType1,
-                value1=value1,
-                type2=type2,
-                otherType2=otherType2,
-                value2=value2,
+                resource1=resource1,
+                url1=url1,
+                accession1=accession1,
+                resource2=resource2,
+                url2=url2,
+                accession2=accession2,
                 config_path=self.config_fn,
             ),
             use_shlex=True
@@ -1163,7 +1174,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertIsInstance(args.software_version, _str)
         self.assertIsInstance(args.software_processing_details, _str)
         for i, tov in enumerate(args.external_ref):
-            t, o, v = tov  # type, otherType, value
+            t, o, v = tov  # resource, url, accession
             self.assertEqual(args.external_ref[i][0], t)
             self.assertEqual(args.external_ref[i][1], o)
             self.assertEqual(args.external_ref[i][2], v)
@@ -1177,27 +1188,24 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         description = li.get_sentences(3)
         segment_id = _random_integer()
         number_of_instances = _random_integer()
-        type1 = rw.random_word()
-        otherType1 = rw.random_word()
-        value1 = rw.random_word()
-        type2 = rw.random_word()
-        otherType2 = rw.random_word()
-        value2 = rw.random_word()
-        complexes = rw.random_words(count=5)
-        macromolecules = rw.random_words(count=4)
-        cmd = "notes add -i {id} -s '{name}' -d '{description}' -n {number_of_instances} " \
-              "-E {type1} {otherType1} {value1} -E {type2} {otherType2} {value2} -C {complexes} " \
-              "-M {macromolecules} file.sff --config-path {config_path}".format(
+        resource1 = rw.random_word()
+        url1 = rw.random_word()
+        accession1 = rw.random_word()
+        resource2 = rw.random_word()
+        url2 = rw.random_word()
+        accession2 = rw.random_word()
+        cmd = "notes add -i {id} -n '{name}' -d '{description}' -I {number_of_instances} " \
+              "-E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} " \
+              "file.sff --config-path {config_path}".format(
             id=segment_id, name=name,
             description=description,
             number_of_instances=number_of_instances,
-            type1=type1,
-            otherType1=otherType1,
-            value1=value1, type2=type2,
-            otherType2=otherType2,
-            value2=value2,
-            complexes=",".join(complexes),
-            macromolecules=",".join(macromolecules),
+            resource1=resource1,
+            url1=url1,
+            accession1=accession1,
+            resource2=resource2,
+            url2=url2,
+            accession2=accession2,
             config_path=self.config_fn
         )
         args, _ = parse_args(cmd, use_shlex=True)
@@ -1207,25 +1215,19 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.segment_name, name)
         self.assertEqual(args.description, description)
         self.assertEqual(args.number_of_instances, number_of_instances)
-        self.assertCountEqual(args.complexes, complexes)
-        self.assertCountEqual(args.macromolecules, macromolecules)
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
         # unicode
         self.assertIsInstance(args.segment_name, _str)
         self.assertIsInstance(args.description, _str)
-        for c in args.complexes:
-            self.assertIsInstance(c, _str)
-        for m in args.macromolecules:
-            self.assertIsInstance(m, _str)
-        for i, tov in enumerate(args.external_ref):
-            t, o, v = tov  # type, otherType, value
-            self.assertEqual(args.external_ref[i][0], t)
-            self.assertEqual(args.external_ref[i][1], o)
-            self.assertEqual(args.external_ref[i][2], v)
-            self.assertIsInstance(t, _str)
-            self.assertIsInstance(o, _str)
-            self.assertIsInstance(v, _str)
+        for i, rua in enumerate(args.external_ref):
+            r, u, a = rua  # resource, url, accession
+            self.assertEqual(args.external_ref[i][0], r)
+            self.assertEqual(args.external_ref[i][1], u)
+            self.assertEqual(args.external_ref[i][2], a)
+            self.assertIsInstance(r, _str)
+            self.assertIsInstance(u, _str)
+            self.assertIsInstance(a, _str)
 
     def test_add_addendum_missing(self):
         """Test assertion fails if addendum is missing"""
@@ -1241,35 +1243,41 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         """Test edit global notes"""
         name = ' '.join(rw.random_words(count=3)).title()
         details = li.get_sentences(5)
+        software_id = _random_integer(start=0)
         software_name = rw.random_word()
         software_version = 'v{}.{}.{}'.format(_random_integer(), _random_integer(), _random_integer())
         software_processing_details = li.get_sentences(4)
-        type1 = rw.random_word()
-        otherType1 = rw.random_word()
-        value1 = rw.random_word()
-        type2 = rw.random_word()
-        otherType2 = rw.random_word()
-        value2 = rw.random_word()
-        cmd = "notes edit -N '{name}' -D '{details}' -S '{software_name}' -V {software_version} " \
+        resource1 = rw.random_word()
+        url1 = rw.random_word()
+        accession1 = rw.random_word()
+        resource2 = rw.random_word()
+        url2 = rw.random_word()
+        accession2 = rw.random_word()
+        external_ref_id = _random_integer(start=0)
+        cmd = "notes edit -N '{name}' -D '{details}' -s {software_id} -S '{software_name}' -T {software_version} " \
               "-P '{software_processing_details}' file.sff --config-path {config_path} " \
-              "-e 0 -E {type1} {otherType1} {value1} -e 1 -E {type2} {otherType2} {value2}".format(
+              "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2}".format(
             name=name,
             details=details,
+            software_id=software_id,
             software_name=software_name,
             software_version=software_version,
             software_processing_details=software_processing_details,
+            external_ref_id=external_ref_id,
             config_path=self.config_fn,
-            type1=type1,
-            otherType1=otherType1,
-            value1=value1,
-            type2=type2,
-            otherType2=otherType2,
-            value2=value2
+            resource1=resource1,
+            url1=url1,
+            accession1=accession1,
+            resource2=resource2,
+            url2=url2,
+            accession2=accession2
         )
         args, _ = parse_args(cmd, use_shlex=True)
+        self.stderr(args)
         self.assertEqual(args.notes_subcommand, 'edit')
         self.assertEqual(args.name, name)
         self.assertEqual(args.details, details)
+        self.assertEqual(args.software_id, software_id)
         self.assertEqual(args.software_name, software_name)
         self.assertEqual(args.software_version, software_version)
         self.assertEqual(args.software_processing_details, software_processing_details)
@@ -1278,8 +1286,9 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertIsInstance(args.software_name, _str)
         self.assertIsInstance(args.software_version, _str)
         self.assertIsInstance(args.software_processing_details, _str)
+        self.assertEqual(args.external_ref_id, external_ref_id)
         for i, tov in enumerate(args.external_ref):
-            t, o, v = tov  # type, otherType, value
+            t, o, v = tov  # resource, url, accession
             self.assertEqual(args.external_ref[i][0], t)
             self.assertEqual(args.external_ref[i][1], o)
             self.assertEqual(args.external_ref[i][2], v)
@@ -1289,115 +1298,163 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
 
     def test_edit_in_segment(self):
         """Test edit segment notes"""
-        # segment_id = _random_integer()
-        # number_of_instances = _random_integer()
-        # external_ref_id = _random_integer()
-        # complex_id = _random_integer()
-        # macromolecule_id = _random_integer()
-        # cmd = "notes edit -i {} -D something -n {} -e {} -E abc ABC 123 -c {} -C xyz -m {} -M opq file.sff --config-path {}".format(
-        #     segment_id, number_of_instances, external_ref_id, complex_id, macromolecule_id, self.config_fn, )
-        #
         name = " ".join(rw.random_words(count=3)).title()
         description = li.get_sentences(3)
         segment_id = _random_integer()
         number_of_instances = _random_integer()
-        type1 = rw.random_word()
-        otherType1 = rw.random_word()
-        value1 = rw.random_word()
-        type2 = rw.random_word()
-        otherType2 = rw.random_word()
-        value2 = rw.random_word()
-        complexes = rw.random_words(count=5)
-        macromolecules = rw.random_words(count=4)
-        cmd = "notes edit -i {id} -s '{name}' -D '{description}' -n {number_of_instances} " \
-              "-e 0 -E {type1} {otherType1} {value1} -e 1 -E {type2} {otherType2} {value2} " \
-              "-c 0 -C {complexes} -m 0 -M {macromolecules} " \
+        external_ref_id = _random_integer(start=0)
+        resource1 = rw.random_word()
+        url1 = rw.random_word()
+        accession1 = rw.random_word()
+        resource2 = rw.random_word()
+        url2 = rw.random_word()
+        accession2 = rw.random_word()
+        cmd = "notes edit -i {id} -n '{name}' -d '{description}' -I {number_of_instances} " \
+              "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} " \
               "file.sff --config-path {config_path}".format(
-            id=segment_id, name=name,
+            id=segment_id,
+            name=name,
             description=description,
             number_of_instances=number_of_instances,
-            type1=type1,
-            otherType1=otherType1,
-            value1=value1, type2=type2,
-            otherType2=otherType2,
-            value2=value2,
-            complexes=",".join(complexes),
-            macromolecules=",".join(macromolecules),
+            external_ref_id=external_ref_id,
+            resource1=resource1,
+            url1=url1,
+            accession1=accession1,
+            resource2=resource2,
+            url2=url2,
+            accession2=accession2,
             config_path=self.config_fn
         )
-        print(cmd)
         args, _ = parse_args(cmd, use_shlex=True)
-        print(args)
-
-        # self.assertEqual(args.notes_subcommand, 'edit')
-        # self.assertItemsEqual(args.segment_id, [segment_id])
-        # self.assertEqual(args.description, 'something')
-        # self.assertEqual(args.number_of_instances, number_of_instances)
-        # self.assertEqual(args.external_ref_id, external_ref_id)
-        # self.assertItemsEqual(args.external_ref, [['abc', 'ABC', '123']])
-        # self.assertEqual(args.complex_id, complex_id)
-        # self.assertItemsEqual(args.complexes, ['xyz'])
-        # self.assertEqual(args.macromolecule_id, macromolecule_id)
-        # self.assertItemsEqual(args.macromolecules, ['opq'])
-        # self.assertEqual(args.sff_file, 'file.sff')
-        # self.assertEqual(args.config_path, self.config_fn)
+        self.assertEqual(args.notes_subcommand, 'edit')
+        self.assertCountEqual(args.segment_id, [segment_id])
+        self.assertEqual(args.description, description)
+        self.assertEqual(args.number_of_instances, number_of_instances)
+        self.assertEqual(args.external_ref_id, external_ref_id)
+        self.assertCountEqual(args.external_ref, [[resource1, url1, accession1], [resource2, url2, accession2]])
+        self.assertEqual(args.sff_file, 'file.sff')
+        self.assertEqual(args.config_path, self.config_fn)
 
     def test_edit_failure_on_missing_ids(self):
         """Test handling of missing IDs"""
         segment_id = _random_integer()
         number_of_instances = _random_integer()
         external_ref_id = _random_integer()
-        complex_id = _random_integer()
-        macromolecule_id = _random_integer()
         args, _ = parse_args(
-            'notes edit -i {} -D something -n {} -E abc ABC 123 -c {} -C xyz -m {} -M opq file.sff --config-path {}'.format(
-                segment_id, number_of_instances, complex_id, macromolecule_id,
+            'notes edit -i {} -d something -I {} -E abc ABC 123 file.sff --config-path {}'.format(
+                segment_id, number_of_instances,
                 self.config_fn,
             ), use_shlex=True)
 
         self.assertEqual(args, os.EX_USAGE)
 
-        args1, _ = parse_args(
-            'notes edit -i {} -D something -n {} -e {} -E abc ABC 123 -C xyz -m {} -M opq @  --config-path {}'.format(
-                segment_id, number_of_instances, external_ref_id, macromolecule_id,
+        args, _ = parse_args(
+            "notes edit -S new -T 1.3 -P 'we added one piece to another' @ --config-path {}".format(
                 self.config_fn,
-            ), use_shlex=True)
-        self.assertEqual(args1, os.EX_USAGE)
-
-        args2, _ = parse_args(
-            'notes edit -i {} -D something -n {} -e {} -E abc ABC 123 -c {} -C xyz -M opq @  --config-path {}'.format(
-                segment_id, number_of_instances, external_ref_id, complex_id,
-                self.config_fn,
-            ), use_shlex=True)
-        self.assertEqual(args2, os.EX_USAGE)
+            ),
+            use_shlex=True
+        )
+        self.assertEqual(args, os.EX_USAGE)
 
     # ===========================================================================
     # notes: del
     # ===========================================================================
     def test_del_default(self):
         """Test del notes"""
+        software_id = _random_integers(count=3, start=0)
         segment_id = _random_integer()
         external_ref_id = _random_integers(count=5, start=0)
-        complex_id = _random_integers(count=7, start=0)
-        macromolecule_id = _random_integers(count=7, start=0)
-        args, _ = parse_args('notes del -i {} -d -n -e {} -c {} -m {} file.sff --config-path {}'.format(
+        args, _ = parse_args('notes del -s {} -i {} -d -I -e {} file.sff --config-path {}'.format(
+            ','.join(map(_str, software_id)),
             segment_id,
             ','.join(map(_str, external_ref_id)),
-            ','.join(map(_str, complex_id)),
-            ','.join(map(_str, macromolecule_id)),
             self.config_fn,
         ), use_shlex=True)
-
         self.assertEqual(args.notes_subcommand, 'del')
         self.assertCountEqual(args.segment_id, [segment_id])
         self.assertTrue(args.description)
         self.assertTrue(args.number_of_instances)
-        # self.assertEqual(args.external_ref_id, external_ref_id)
+        self.assertEqual(args.software_id, software_id)
         self.assertCountEqual(args.external_ref_id, external_ref_id)
-        self.assertCountEqual(args.complex_id, complex_id)
-        self.assertCountEqual(args.macromolecule_id, macromolecule_id)
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
+
+    def test_del_software(self):
+        """Test software delete scenarios"""
+        ids = _random_integers(count=5, start=0)
+        # if -s <id_list> only then delete the whole software entity for all ids
+        args, _ = parse_args(
+            'notes del -s {} file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.stderr(args)
+        self.assertCountEqual(args.software_id, ids)
+        self.assertTrue(args.software_name)
+        self.assertTrue(args.software_version)
+        self.assertTrue(args.software_processing_details)
+        # if -s <id_list> -S the delete only the software name for the s/w ids
+        args, _ = parse_args(
+            'notes del -s {} -S file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.assertCountEqual(args.software_id, ids)
+        self.assertTrue(args.software_name)
+        self.assertFalse(args.software_version)
+        self.assertFalse(args.software_processing_details)
+        # if -s <id_list> -T the delete only the software version for the s/w ids
+        args, _ = parse_args(
+            'notes del -s {} -T file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.assertCountEqual(args.software_id, ids)
+        self.assertFalse(args.software_name)
+        self.assertTrue(args.software_version)
+        self.assertFalse(args.software_processing_details)
+        # if -s <id_list> -P the delete only the software processing details for the s/w ids
+        args, _ = parse_args(
+            'notes del -s {} -P file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.assertCountEqual(args.software_id, ids)
+        self.assertFalse(args.software_name)
+        self.assertFalse(args.software_version)
+        self.assertTrue(args.software_processing_details)
+        # if -s <id_list> -S -T the delete only the software name and version for the s/w ids
+        args, _ = parse_args(
+            'notes del -s {} -S -T file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.assertCountEqual(args.software_id, ids)
+        self.assertTrue(args.software_name)
+        self.assertTrue(args.software_version)
+        self.assertFalse(args.software_processing_details)
+        # if -s <id_list> -S -P the delete only the software name and proc. details for the s/w ids
+        args, _ = parse_args(
+            'notes del -s {} -S -P file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.assertCountEqual(args.software_id, ids)
+        self.assertTrue(args.software_name)
+        self.assertFalse(args.software_version)
+        self.assertTrue(args.software_processing_details)
+        # if -s <id_list> -T -P the delete only the software version and proc. details for the s/w ids
+        args, _ = parse_args(
+            'notes del -s {} -T -P file.sff --config-path {}'.format(','.join(map(_str, ids)), self.config_fn),
+            use_shlex=True
+        )
+        self.assertCountEqual(args.software_id, ids)
+        self.assertFalse(args.software_name)
+        self.assertTrue(args.software_version)
+        self.assertTrue(args.software_processing_details)
+        # otherwise all are False
+        args, _ = parse_args(
+            'notes del file.sff --config-path {}'.format(self.config_fn),
+            use_shlex=True
+        )
+        self.assertIsNone(args.software_id)
+        self.assertFalse(args.software_name)
+        self.assertFalse(args.software_version)
+        self.assertFalse(args.software_processing_details)
 
     # =========================================================================
     # notes: copy
@@ -1408,7 +1465,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = _random_integer(start=1)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=source_id, other_id=other_id, config_fn=self.config_fn, )
-        print(cmd, file=sys.stderr)
         args, _ = parse_args(cmd, use_shlex=True)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, [source_id])
@@ -1424,7 +1480,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = list(set(other_id).difference({source_id}))
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=source_id, other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
-        print(cmd, file=sys.stderr)
         args, _ = parse_args(cmd, use_shlex=True)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, [source_id])
@@ -1438,7 +1493,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = _random_integer(start=201, stop=400)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=other_id, config_fn=self.config_fn, )
-        print(cmd, file=sys.stderr)
         args, _ = parse_args(cmd, use_shlex=True)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, source_id)
@@ -1570,7 +1624,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         """Test save edits"""
         segment_id = _random_integer()
         args, _ = parse_args(
-            "notes edit -i {} -D something file.sff --config-path {}".format(segment_id, self.config_fn),
+            "notes edit -i {} -d something file.sff --config-path {}".format(segment_id, self.config_fn),
             use_shlex=True)
         self.assertEqual(args.sff_file, 'file.sff')
         #  can only save to an existing file
@@ -1587,7 +1641,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         """Test trash notes"""
         segment_id = _random_integer()
         args, _ = parse_args(
-            "notes edit -i {} -D something file.sff --config-path {}".format(segment_id, self.config_fn),
+            "notes edit -i {} -d something file.sff --config-path {}".format(segment_id, self.config_fn),
             use_shlex=True)
         self.assertEqual(args.sff_file, 'file.sff')
         args1, _ = parse_args("notes trash @ --config-path {}".format(self.config_fn), use_shlex=True)
@@ -1620,6 +1674,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
 class TestCoreUtils(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestCoreUtils, cls).setUpClass()
         print("utils tests...", file=sys.stderr)
 
     def test_get_path_one_level(self):
