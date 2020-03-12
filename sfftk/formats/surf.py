@@ -10,10 +10,13 @@ from __future__ import division, print_function
 
 import inspect
 import os.path
+import numpy
+
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
-from .. import schema
-from ..core import _dict_iter_items
+# from .. import schema
+from ..core import _dict_iter_items, _xrange
 from ..readers import surfreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -38,31 +41,42 @@ class AmiraHyperSurfaceMesh(Mesh):
         """List of (v1, v2, v3) (triangles)"""
         return self._triangles
 
-    def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFMesh` object"""
-        #  vertices
-        vertices = schema.SFFVertexList()
-        for vID, v in _dict_iter_items(self.vertices):
-            x, y, z = v
-            vertex = schema.SFFVertex(
-                vID=vID,
-                x=x, y=y, z=z,
-            )
-            vertices.add_vertex(vertex)
-        # polygons
-        polygons = schema.SFFPolygonList()
-        for P in self.polygons:
-            polygon = schema.SFFPolygon()
-            v1, v2, v3 = P
-            polygon.add_vertex(v1)
-            polygon.add_vertex(v2)
-            polygon.add_vertex(v3)
-            polygons.add_polygon(polygon)
-        # finally...
-        mesh = schema.SFFMesh()
-        mesh.vertices = vertices
-        mesh.polygons = polygons
+    # fixme: consider moving this to the superclass
+    @staticmethod
+    def translate_indexes(triangle_list, lut):
+        """Translate the values of the list of 3-tuples according to the provided look-up table
+
+        Is a generator.
+
+        :param list triangle_list: a list of 3-tuples of integers
+        :param dict lut: a dictionary mapping current to new values
+        """
+        for t0, t1, t2 in triangle_list:
+            yield lut[t0], lut[t1], lut[t2]
+
+    def convert(self, *args, **kwargs):
+        """Convert to a :py:class:`sfftkrw.SFFMesh` object"""
+        indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in _dict_iter_items(self.vertices)),
+                                  key=lambda v: v[0])
+        vertex_keys = sorted(self.vertices.keys())
+        # a look-up table to remap indices to start from 0
+        # some vertex ids will be missing hence the translation
+        lut = dict(zip(vertex_keys, _xrange(len(vertex_keys))))
+        _original_triangles = list(self.polygons)
+        _triangles = list(self.translate_indexes(_original_triangles, lut))
+        triangles = numpy.array(_triangles)
+        # create vertices
+        # we do not perform validation because by selecting vertices in sequence we impose order
+        # furthermore, the translation above guarantees only valid indices exist
+        _vertices = numpy.array(indexed_vertices)
+        # indexed vertices had an extra column of the index value; now we delete that column
+        vertices = numpy.delete(_vertices, 0, axis=1)
+        mesh = schema.SFFMesh(
+            vertices=schema.SFFVertices.from_array(vertices),
+            triangles=schema.SFFTriangles.from_array(triangles)
+        )
         return mesh
+
 
 
 class AmiraHyperSurfaceAnnotation(Annotation):
@@ -103,6 +117,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
 
 class AmiraHyperSurfaceSegment(Segment):
     """Segment class"""
+
     def __init__(self, segment):
         self._segment = segment
         self._segment_id = segment[0].id
@@ -130,9 +145,9 @@ class AmiraHyperSurfaceSegment(Segment):
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
-        for mesh in self.meshes:
-            meshes.add_mesh(mesh.convert())
-        segment.meshes = meshes
+        for i, mesh in enumerate(self.meshes):
+            meshes.append(mesh.convert())
+        segment.mesh_list = meshes
         return segment
 
 
@@ -198,26 +213,27 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Amira HyperSurface Segmentation"
-        segmentation.software = schema.SFFSoftware(
-            name="Amira",
-            version=self.header.version,
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name="Amira",
+                version=self.header.version,
+            )
         )
         # transforms
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
+        segmentation.transform_list = schema.SFFTransformList()
+        segmentation.transform_list.append(
             schema.SFFTransformationMatrix(
                 rows=3,
                 cols=4,
                 data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
             )
         )
-        segmentation.filePath = os.path.abspath(self._fn)
-        segmentation.primaryDescriptor = "meshList"
+        segmentation.primary_descriptor = "mesh_list"
         # segments
-        segments = schema.SFFSegmentList()
-        for s in self.segments:
-            segments.add_segment(s.convert())
-        segmentation.segments = segments
+        segmentation.segment_list = schema.SFFSegmentList()
+        for i, s in enumerate(self.segments):
+            segmentation.segment_list.append(s.convert())
         # details
         if args.details is not None:
             segmentation.details = args.details

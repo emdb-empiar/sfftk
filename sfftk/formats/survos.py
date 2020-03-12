@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+
 from .base import Segmentation, Segment
-from .. import schema
+# from .. import schema
 from ..core.print_tools import print_date
 from ..readers import survosreader
 
@@ -23,17 +25,16 @@ class SuRVoSSegment(Segment):
         """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.segment_id = self.segment_id
-        segment.biologicalAnnotation = schema.SFFBiologicalAnnotation(
+        segment.biological_annotation = schema.SFFBiologicalAnnotation(
             name="SuRVoS Segment #{}".format(self.segment_id)
         )
         segment.colour = schema.SFFRGBA(random_colour=True)
         print_date(
             "Colour not defined for SuRVoS segments. Setting colour to random RGBA value of {}".format(segment.colour))
-        segment.volume = schema.SFFThreeDVolume(
-            latticeId=0,
+        segment.three_d_volume = schema.SFFThreeDVolume(
+            lattice_id=0,
             value=self.segment_id,
         )
-
         return segment
 
 
@@ -62,25 +63,28 @@ class SuRVoSSegmentation(Segmentation):
         # header
         segmentation = schema.SFFSegmentation()
         segmentation.name = "SuRVoS Segmentation"
-        segmentation.software = schema.SFFSoftware(
-            name="SuRVoS",
-            version="1.0",
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name="SuRVoS",
+                version="1.0",
+            )
         )
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
+        segmentation.transform_list = schema.SFFTransformList()
+        segmentation.transform_list.append(
             schema.SFFTransformationMatrix(
                 rows=3,
                 cols=4,
                 data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
             )
         )
-        segmentation.primaryDescriptor = "threeDVolume"
+        segmentation.primary_descriptor = "three_d_volume"
         # segments
         segments = schema.SFFSegmentList()
         for s in self.segments:
             segment = s.convert()
-            segments.add_segment(segment)
-        segmentation.segments = segments
+            segments.append(segment)
+        segmentation.segment_list = segments
         # lattices
         lattices = schema.SFFLatticeList()
         # the lattice
@@ -90,11 +94,11 @@ class SuRVoSSegmentation(Segmentation):
             mode='int8',  # we make it as small as practically possible; filled values are negative
             endianness='little',
             size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
-            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=sections),
+            start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
             data=self._segmentation.data,  # the numpy data is on the .data attribute
         )
-        lattices.add_lattice(lattice)
-        segmentation.lattices = lattices
+        lattices.append(lattice)
+        segmentation.lattice_list = lattices
         if args.details is not None:
             segmentation.details = args.details
         elif 'details' in _kwargs:

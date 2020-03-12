@@ -13,11 +13,11 @@ import inspect
 import os.path
 
 import numpy
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 
-from .base import Segmentation, Header, Segment, Annotation, Contours, Mesh, Volume
-from .. import schema
+from .base import Segmentation, Segment, Annotation
+# from .. import schema
 from ..core.print_tools import print_date
-from ..core import _print
 from ..readers import amreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -30,7 +30,7 @@ __updated__ = '2018-02-23'
 """
 
 
-class AmiraMeshMesh(Mesh):
+class AmiraMeshMesh(object):
     """Mesh class"""
 
     def __init__(self):
@@ -90,14 +90,12 @@ class AmiraMeshAnnotation(Annotation):
             colour = None
         return colour
 
-    #         self.colour_to_material = colour_to_material
-
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
         annotation.description = self.description
-        annotation.numberOfInstances = 1
+        annotation.number_of_instances = 1
         if self.colour:
             red, green, blue = self.colour
         else:
@@ -113,37 +111,7 @@ class AmiraMeshAnnotation(Annotation):
         return annotation, colour
 
 
-class AmiraMeshContours(Contours):
-    """Contour container class
-
-    .. warning::
-
-        .. deprecated:: 0.6.0a4
-            AmiraMesh segments are now represented as 3D volumes
-    """
-
-    def __init__(self, z_segment):
-        self.z_segment = z_segment
-
-    def __iter__(self):
-        return iter(self.z_segment)
-
-    def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
-        contours = schema.SFFContourList()
-        for z, cs in self.z_segment.iteritems():  # for each contour_set at this value of z
-            for c in cs:  # for each contour in the contour set (at this value of z)
-                contour = schema.SFFContour()
-                for x, y in c:  # for each point (x,y) in the contour (at this value of z)
-                    # add the point as an SFFContourPoint to the contour (as an SFFContour)
-                    contour.add_point(
-                        schema.SFFContourPoint(x=x, y=y, z=z)
-                    )
-                contours.add_contour(contour)  # add the contour to the list of contours (as an SFFContourList)
-        return contours
-
-
-class AmiraMeshVolume(Volume):
+class AmiraMeshVolume(object):
     """Class defining the 3D volume of an AmiraMesh segmentation file
 
     :param str fn: name of the AmiraMesh segmentation file
@@ -186,7 +154,8 @@ class AmiraMeshSegment(Segment):
     def material(self):
         """Material may or may not exist. Return None if it doesn't and the caller will determine what to do"""
         try:  # assume that we have materials defined
-            material = self._header.Parameters.Materials[self.segment_id]  # Ids are 1-based but in the images are 0-based
+            material = self._header.Parameters.Materials[
+                self.segment_id]  # Ids are 1-based but in the images are 0-based
         except AttributeError:
             material = None
         except IndexError:
@@ -206,16 +175,16 @@ class AmiraMeshSegment(Segment):
     def convert(self):
         """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
-        segment.biologicalAnnotation, segment.colour = self.annotation.convert()
+        segment.biological_annotation, segment.colour = self.annotation.convert()
         # segment.volume = self.volume.convert()
-        segment.volume = schema.SFFThreeDVolume(
-            latticeId=0,
+        segment.three_d_volume = schema.SFFThreeDVolume(
+            lattice_id=0,
             value=self.segment_id,
         )
         return segment
 
 
-class AmiraMeshHeader(Header):
+class AmiraMeshHeader(object):
     """Class defining the header of an AmiraMesh segmentation file"""
 
     def __init__(self, header):
@@ -298,49 +267,73 @@ class AmiraMeshSegmentation(Segmentation):
             segmentation.name = _kwargs['name']
         else:
             segmentation.name = "AmiraMesh Segmentation"
-        segmentation.software = schema.SFFSoftware(
-            name="Amira",
-            version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(
-                self.header.version),
-            processingDetails=_kwargs['processingDetails'] if 'processingDetails' in _kwargs else "None",
-        )
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=4,
-                data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name="Amira",
+                version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(
+                    self.header.version),
+                processing_details=_kwargs['processingDetails'] if 'processingDetails' in _kwargs else "None",
             )
         )
-        segmentation.primaryDescriptor = "threeDVolume"
+        segmentation.transform_list = schema.SFFTransformList()
+        # fixme: use proper values for image-to-physical transform
+        segmentation.primary_descriptor = "three_d_volume"
+        if self.header.Parameters.BoundingBox:
+            x0, x1, y0, y1, z0, z1 = self.header.Parameters.BoundingBox
+            segmentation.bounding_box = schema.SFFBoundingBox(
+                xmin=x0, xmax=x1,
+                ymin=y0, ymax=y1,
+                zmin=z0, zmax=z1,
+            )
+            c, r, s = self.header.Lattice.length
+            # compute the image-to-physical transform from the bounding box and image size
+            arr = numpy.array(
+                [[(x1 - x0) / c, 0.0, 0.0, 0.0],
+                 [0.0, (y1 - y0) / r, 0.0, 0.0],
+                 [0.0, 0.0, (z1 - z0) / s, 0.0]]
+            )
+            segmentation.transform_list.append(schema.SFFTransformationMatrix.from_array(arr))
+        else:
+            segmentation.transform_list.append(
+                schema.SFFTransformationMatrix(
+                    rows=3,
+                    cols=4,
+                    data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+                )
+            )
 
         segments = schema.SFFSegmentList()
         for s in self.segments:
             segment = s.convert()
-            segments.add_segment(segment)
+        segments.append(segment)
 
         # finally pack everything together
-        segmentation.segments = segments
+        segmentation.segment_list = segments
+        # """
         # lattices
         lattices = schema.SFFLatticeList()
         # the lattice
         cols, rows, sections = self._volume.shape[::-1]
         if args.verbose:
             print_date('creating lattice...')
+        # print('type of data:', type(self._volume.data))
         lattice = schema.SFFLattice(
             mode='uint8',
             endianness='little',
             size=schema.SFFVolumeStructure(cols=cols, rows=rows, sections=sections),
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
-            data=self._volume.data, # the numpy data is on the .data attribute
+            data=self._volume.data,  # the numpy data is on the .data attribute
         )
         if args.verbose:
             print_date('adding lattice...')
-        lattices.add_lattice(lattice)
-        segmentation.lattices = lattices
+        lattices.append(lattice)
+        segmentation.lattice_list = lattices
+        # """
 
         if args.details is not None:
             segmentation.details = args.details
         elif 'details' in _kwargs:
             segmentation.details = _kwargs['details']
+
         return segmentation

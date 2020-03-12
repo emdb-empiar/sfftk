@@ -433,7 +433,7 @@ point:         %s
 res:           %s
 thresh:        %s
 pixsize:       %s
-units:         %s
+units:         %s (%s)
 csum:          %s
 alpha:         %s
 beta:          %s
@@ -444,7 +444,7 @@ stored data:
          self.blacklevel, self.whitelevel, self.xoffset, self.yoffset, \
          self.zoffset, self.xscale, self.yscale, self.zscale, self.object, \
          self.contour, self.point, self.res, self.thresh, self.pixsize, \
-         self.units, self.csum, self.alpha, self.beta, self.gamma, self.most)
+         self.units, self.named_units, self.csum, self.alpha, self.beta, self.gamma, self.most)
         return string
 
 
@@ -612,7 +612,7 @@ class CONT(object):
         pt_x = pt[0::3]
         pt_y = pt[1::3]
         pt_z = pt[2::3]
-        self.pt = zip(pt_x, pt_y, pt_z)
+        self.pt = list(zip(pt_x, pt_y, pt_z))
         self.isset = True
         return f
 

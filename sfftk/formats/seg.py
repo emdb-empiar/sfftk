@@ -192,7 +192,7 @@ class SeggerSegmentation(Segmentation):
         
     """
 
-    def __init__(self, fn, top_level=False, *args, **kwargs):
+    def __init__(self, fn, top_level=True, *args, **kwargs):
         """Initialise the reader"""
         self._fn = fn
         self._segmentation = segreader.get_data(self._fn, *args, **kwargs)

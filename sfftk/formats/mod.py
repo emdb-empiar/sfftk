@@ -10,14 +10,14 @@ User-facing reader classes for IMOD files
 from __future__ import division, print_function
 
 import inspect
-import os.path
 
+import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
-from numpy import matrix
 
-from .base import Segmentation, Header, Segment, Annotation, Mesh, Contours, Shapes
+from .base import Segmentation, Header, Annotation
 # from .. import schema
-from ..core import _UserList, _dict_iter_values, _dict_iter_items, _str
+from ..core import _UserList, _dict_iter_values, _str
+from ..core.print_tools import print_date
 from ..readers import modreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -25,228 +25,114 @@ __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2016-09-28"
 
 
-class IMODVertex(object):
-    """IMOD vertex class"""
-
-    def __init__(self, vertex, designation='surface'):
-        assert designation in ['surface', 'normal']
-        self._designation = designation
-        self._point = vertex
-
-    @property
-    def designation(self):
-        """Is this a surface surface or normal vertex?"""
-        return self._designation
-
-    @property
-    def point(self):
-        """The vertex"""
-        return self._point
-
-
-class IMODMesh(Mesh):
+class IMODMesh(object):
     """Mesh class"""
 
     def __init__(self, imod_mesh):
         self._mesh = imod_mesh
         # dictionary of indices to vertices
-        vertices = list(self._mesh.vert)
-        _zipped = list(zip(range(len(vertices)), vertices))
-        self._vertex_dict = dict(_zipped)
-        self._vertices, self._polygons = self._configure()
+        # the type is the value first value
+        # -25: only surface vertex ids provided; normal vertex ids implied from surface vertices
+        # actual: s00, s01, s02, s11, s12, s20, s21, s22, ...
+        # -23: both surface and normal vertex ids provided
+        # actual: n00, s00, n01, s01, n02, s02, n10, s10, n11, s11, n12, s12, ...
+        # -21: only surface vertex ids provided
+        _id_type = self._mesh.list[0]
+        if _id_type == -25:
+            # remove negative values
+            _triangles = list(filter(lambda i: i >= 0, self._mesh.list))
+            surface_vertices = self._mesh.vert[::2]
+            normal_vertices = self._mesh.vert[1::2]
+            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3)
+            self._surface_vertices = numpy.array(surface_vertices)
+            self._normal_vertices = numpy.array(normal_vertices)
+        elif _id_type == -23:
+            # we have both surface and normal indices
+            mixed_indices = list(filter(lambda i: i >= 0, self._mesh.list))
+            # every other second one is a surface vertex id
+            _triangles = mixed_indices[1::2]
+            surface_vertices = self._mesh.vert[::2]
+            normal_vertices = self._mesh.vert[1::2]
+            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3)
+            self._surface_vertices = numpy.array(surface_vertices)
+            self._normal_vertices = numpy.array(normal_vertices)
+        elif _id_type == -21:
+            _triangles = list(filter(lambda i: i >= 0, self._mesh.list))
+            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3)
+            surface_vertices = self._mesh.vert[::2]
+            self._surface_vertices = numpy.array(surface_vertices)
+            self._normal_vertices = numpy.array([])
+
+    def is_empty(self):
+        if numpy.prod(self._surface_vertices.shape) == 0:
+            return True
+        return False
 
     @property
     def vertices(self):
-        """The vertices constituting this mesh"""
-        return self._vertices
+        """The surface vertices defining this mesh's geometry"""
+        return self._surface_vertices
+
+    @property
+    def normals(self):
+        """The normal vertices defining surface smoothness for shading"""
+        return self._normal_vertices
 
     @property
     def polygons(self):
         """The polygons constituting this mesh"""
-        return self._polygons
+        return self._triangles
 
-    def _split_indices(self):
-        # convert list of vertices to a csv string
-        index_string = ",".join(map(str, self._mesh.list))  # string
-        # split at ',-22,'
-        split_index_string = index_string.split(',-22,')  # list of strings
-        # split at ','
-        list_of_lists_of_index_strings = map(lambda x: x.split(','), split_index_string)
-        # convert to int
-        list_of_lists_of_indices = list(map(lambda x: list(map(int, x)), list_of_lists_of_index_strings))
-        # get rid of last list (contains list [-1])
-        indices = list_of_lists_of_indices[:-1]
-        #  one-line version
-        #         split_indices = map(
-        #             lambda x: map(int, x.split(',')),
-        #             ",".join(map(str, objt.meshes[0].list)).split(',-22,')
-        #             )[:-1]
-        return indices
+    @property
+    def triangles(self):
+        """Polygons are triangles"""
+        return self._triangles
 
-    def _configure(self):
-        # get the vertix indices split
-        split_indices = self._split_indices()
-        # for each set of split indices
-        polygon_id = 0
-        polygons = dict()
-        vertices = dict()
-        for _indices in split_indices:  # _indices is a list of lists
-            index_id, indices = _indices[0], _indices[1:]
-            if index_id == -25:
-                surface_indices = [tuple(indices[i:i + 3]) for i in range(0, len(indices), 3)]
-                normal_indices = [tuple(map(lambda i: i + 1, s)) for s in surface_indices]
-            elif index_id == -23:
-                triangles = [tuple(indices[i:i + 6]) for i in range(0, len(indices), 6)]
-                normal_indices = map(lambda v: tuple(v[::2]), triangles)
-                surface_indices = map(lambda v: tuple(v[1::2]), triangles)
-            elif index_id == -21:
-                surface_indices = [tuple(indices[i:i + 3]) for i in range(0, len(indices), 3)]
-                normal_indices = list()
-            elif index_id == -24:
-                raise NotImplementedError
-            elif index_id == -20:
-                raise NotImplementedError
-            # collate vertices and polygons
-            # if we have not normals we only have surface
-            for i in range(len(surface_indices)):  # surface_indices[i] is a tuple
-                if normal_indices:
-                    zipped_indices = list(zip(surface_indices[i], normal_indices[i]))
-                else:
-                    zipped_indices = surface_indices[i]
-                # vertices
-                for I in zipped_indices:
-                    if normal_indices:
-                        s, n = I
-                    else:
-                        s = I
-                    # surface
-                    if s not in vertices:
-                        # self._vertex_dict[s] is a tuple
-                        vertices[s] = IMODVertex(self._vertex_dict[s], designation='surface')
-                    # normal
-                    if normal_indices:
-                        if n not in vertices:
-                            vertices[n] = IMODVertex(self._vertex_dict[n], designation='normal')
-                # polygons
-                polygons[polygon_id] = zipped_indices
-                polygon_id += 1
-        return vertices, polygons
+    def convert(self, *args, **kwargs):
+        """Convert this to an EMDB-SFF object"""
+        mesh = schema.SFFMesh(
+            vertices=schema.SFFVertices.from_array(self.vertices),
+            normals=schema.SFFNormals.from_array(self.normals),
+            triangles=schema.SFFTriangles.from_array(self.triangles)
+        )
+        return mesh
 
 
 class IMODMeshes(_UserList):
     """Container class for IMOD meshes"""
 
-    def __init__(self, header, imod_meshes):
+    def __init__(self, header, imod_meshes, args=None, *_args, **_kwargs):
+        super(IMODMeshes, self).__init__(*_args, **_kwargs)
         self._header = header
-        self._meshes = imod_meshes
+        self._meshes = self._configure(imod_meshes)
+
+    @staticmethod
+    def _configure(imod_meshes, include_empty=False):
+        """Exclude any meshes that have no vertices"""
+        return list(_dict_iter_values(imod_meshes))
+        # if include_empty:
+        # return [mesh for mesh in _dict_iter_values(imod_meshes) if mesh.vsize > 0]
 
     def __iter__(self):
-        return iter(map(IMODMesh, _dict_iter_values(self._meshes)))
+        return map(IMODMesh, self._meshes)
 
     def __getitem__(self, index):
-        return IMODMesh(self._meshes.values()[index])
+        return IMODMesh(self._meshes[index])
 
     def __len__(self):
         return len(self._meshes)
 
     def convert(self, *args, **kwargs):
-        """Convert to :py:class:`sfftk.schema.SFFMeshList` object"""
-        meshes = schema.SFFMeshList()
-        schema.SFFMesh.reset_id()
-        for m in self:
-            mesh = schema.SFFMesh()
-            # vertices
-            vertices = schema.SFFVertexList()
-            for vID, v in _dict_iter_items(m.vertices):
-                x, y, z = v.point
-                vertex = schema.SFFVertex(
-                    vID=vID,
-                    x=x,
-                    y=y,
-                    z=z,
-                    designation=v.designation
-                )
-                vertices.add_vertex(vertex)
-            # polygons
-            polygons = schema.SFFPolygonList()
-            schema.SFFPolygon.reset_id()
-            for p in _dict_iter_values(m.polygons):
-                polygon = schema.SFFPolygon()
-                for I in p:
-                    if len(I) == 2:  # if there are normals
-                        s, n = I
-                        polygon.add_vertex(s)
-                        polygon.add_vertex(n)
-                    else:
-                        s = I
-                        polygon.add_vertex(s)
-                polygons.add_polygon(polygon)
-            # set vertices and polygons on mesh
-            mesh.vertices = vertices
-            mesh.polygons = polygons
-            meshes.add_mesh(mesh)
-        return meshes
+        """Convert the set of meshes for this segment into a container of mesh objects"""
+        mesh_list = schema.SFFMeshList()
+        for mesh in self:
+            if mesh.is_empty():
+                continue
+            mesh_list.append(mesh.convert(*args, **kwargs))
+        return mesh_list
 
 
-class IMODContours(Contours):
-    """Contours class
-
-    .. warning::
-
-        .. deprecated:: 0.6.0a4
-            IMOD contour segments should be converted to meshes using
-
-        .. code:: bash
-
-            ~$ imodmesh [options] file.mod
-    """
-
-    def __init__(self, header, conts):
-        self._header = header
-        self._conts = conts
-
-    def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFContourList` object"""
-        contours = schema.SFFContourList()
-        schema.SFFContour.reset_id()
-        for cont in _dict_iter_values(self._conts):
-            contour = schema.SFFContour()
-            for x, y, z in cont.pt:
-                contour.add_point(
-                    schema.SFFContourPoint(x=x, y=y, z=z)
-                )
-            contours.add_contour(contour)
-        return contours
-
-    def __len__(self):
-        return len(self._conts)
-
-
-"""
-:TODO: *args, **kwargs???
-"""
-
-
-class IMODShape(object):
-    """Base class for IMOD shapes"""
-    x = 0
-    y = 0
-    z = 0
-
-    @property
-    def transform(self):
-        """The transform associated with the shape
-
-        Is used to place (transform) the shape in the volume
-        """
-        return matrix('[1 0 0 {}; 0 1 0 {}; 0 0 1 {}'.format(self.x, self.y, self.z))
-
-    def convert(self, *args, **kwargs):
-        """Convert this shape into an EMDB-SFF shape object"""
-        pass
-
-
-class IMODEllipsoid(IMODShape):
+class IMODEllipsoid(object):
     """Class definition fo an ellipsoid shape primitive"""
 
     def __init__(self, radius, x, y, z):
@@ -260,61 +146,31 @@ class IMODEllipsoid(IMODShape):
         """Ellipsoid radius"""
         return self._radius
 
+    @property
+    def transform(self):
+        """A (3,4) transformation matrix that locates the shape in the space from the origin"""
+        return numpy.matrix('[1 0 0 {}; 0 1 0 {}; 0 0 1 {}'.format(self.x, self.y, self.z))
+
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFEllipsoid` object"""
+        """Convert to :py:class:`sfftkrw.SFFEllipsoid` object"""
         # shape
-        ellipsoid = schema.SFFEllipsoid()
-        ellipsoid.x = self.radius
-        ellipsoid.y = self.radius
-        ellipsoid.z = self.radius
+        ellipsoid = schema.SFFEllipsoid(
+            x=self.radius, y=self.radius, z=self.radius
+        )
         # transform
-        transform = schema.SFFTransformationMatrix()
-        transform.cols = 4
-        transform.rows = 3
-        transform.data = " ".join(map(str, self.transform.flatten().tolist()[0]))
-        ellipsoid.transformId = transform.id
+        transform = schema.SFFTransformationMatrix(
+            rows=3, cols=4,
+            data=" ".join(map(repr, self.transform.flatten().tolist()[0]))
+        )
+        ellipsoid.transform_id = transform.id
         return ellipsoid, transform
 
 
-class IMODCylinder(IMODShape):
-    """Cylinder class"""
-
-    def __init__(self, diameter, height, x, y, z):
-        self._diameter = diameter
-        self._height = height
-        self.x = x
-        self.y = y
-        self.z = z
-
-    @property
-    def diameter(self):
-        """The diameter"""
-        return self._diameter
-
-    @property
-    def height(self):
-        """The height"""
-        return self._height
-
-    def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFCylinder` object"""
-        # shape
-        cylinder = schema.SFFCylinder()
-        cylinder.diameter = self.diameter
-        cylinder.height = self.height
-        # transform
-        transform = schema.SFFTransformationMatrix()
-        transform.cols = 4
-        transform.rows = 3
-        transform.data = " ".join(map(str, self.transform.flatten().tolist()[0]))
-        cylinder.transformId = transform.id
-        return cylinder, transform
-
-
-class IMODShapes(Shapes):
+class IMODShapes(_UserList):
     """Container class for shapes"""
 
-    def __init__(self, header, objt):
+    def __init__(self, header, objt, *args, **kwargs):
+        super(IMODShapes, self).__init__(*args, **kwargs)
         self._header = header
         self._objt = objt
         self._shapes = self._configure()
@@ -332,22 +188,15 @@ class IMODShapes(Shapes):
             for contour in _dict_iter_values(self._objt.conts):
                 for x, y, z in contour.pt:
                     shapes.append(IMODEllipsoid(radius, x, y, z))
-        elif modreader.OBJT_SYMBOLS[self._objt.symbol] == 'circle':
-            diameter = 2 * self._objt.symsize
-            height = 0
-            for contour in _dict_iter_values(self._objt.conts):
-                for x, y, z in contour.pt:
-                    shapes.append(IMODCylinder(diameter, height, x, y, z))
         return shapes
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFShapePrimitiveList` object"""
+        """Convert to :py:class:`sfftkrw.SFFShapePrimitiveList` object"""
         shapes = schema.SFFShapePrimitiveList()
-        schema.SFFShape.reset_id()
         transforms = list()
         for s in self:
             shape, transform = s.convert()
-            shapes.add_shape(shape)
+            shapes.append(shape)
             transforms.append(transform)
         return shapes, transforms
 
@@ -379,9 +228,9 @@ class IMODAnnotation(Annotation):
         """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
         # annotation
         annotation = schema.SFFBiologicalAnnotation()
-        annotation.name = self.name
-        annotation.description = self.description
-        annotation.numberOfInstances = 1
+        annotation.name = self.name.strip(' ')
+        annotation.description = self.description.strip(' ')
+        annotation.number_of_instances = 1
         # colour
         colour = schema.SFFRGBA(
             red=self.red,
@@ -416,7 +265,7 @@ class IMODHeader(Header):
         pass
 
 
-class IMODSegment(Segment):
+class IMODSegment(object):
     """Segment class"""
 
     def __init__(self, header, objt):
@@ -429,21 +278,15 @@ class IMODSegment(Segment):
                 continue
             setattr(self, 'mod_' + attr, getattr(objt, attr))
 
+    def is_empty(self):
+        if self.meshes or self.shapes:
+            return False
+        return True
+
     @property
     def annotation(self):
         """The annotation for this segment"""
         return IMODAnnotation(self._header, self._objt)
-
-    @property
-    def contours(self):
-        """The contours in this segment"""
-        if self._objt.pdrawsize > 0:
-            return None
-        else:
-            if self._objt.symbol == 1:
-                return IMODContours(self._header, self._objt.conts)
-            else:
-                return None
 
     @property
     def meshes(self):
@@ -455,24 +298,21 @@ class IMODSegment(Segment):
         """The shapes in this segment"""
         if self._objt.pdrawsize > 0:
             return IMODShapes(self._header, self._objt)
-        elif self._objt.symbol != 1:
-            return IMODShapes(self._header, self._objt)
         else:
-            return None
+            return []
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         transforms = list()
         # text
-        segment.biologicalAnnotation, segment.colour = self.annotation.convert()
+        segment.biological_annotation, segment.colour = self.annotation.convert()
         # geometry
-        # ignore contours
-        #         if self.contours:
-        #             segment.contours = self.contours.convert()
         if self.shapes:
-            segment.shapes, transforms = self.shapes.convert()
-        segment.meshes = self.meshes.convert()
+            segment.shape_primitive_list, transforms = self.shapes.convert()
+        # meshes
+        if self.meshes:
+            segment.mesh_list = self.meshes.convert()
         return segment, transforms
 
 
@@ -531,89 +371,44 @@ class IMODSegmentation(Segmentation):
     def convert(self, args, *_args, **_kwargs):
         """Method to convert an IMOD file to a :py:class:`sfftk.schema.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
-        segmentation.name = self.header.name
+        segmentation.name = self.header.name.strip(' ')
         # software
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
                 name="IMOD",
                 version=self.header.version,
-                processingDetails='None'
             )
         )
         # transforms
         segmentation.transform_list = schema.SFFTransformList()
         segmentation.transform_list.append(
             schema.SFFTransformationMatrix.from_array(self._segmentation.ijk_to_xyz_transform)
-            # schema.SFFTransformationMatrix(
-            #     rows=3,
-            #     cols=4,
-            #     data='1.0 0.0 0.0 {} 0.0 1.0 0.0 {} 0.0 0.0 1.0 {}'.format(
-            #         self.header.minx.ctrans[0],
-            #         self.header.minx.ctrans[1],
-            #         self.header.minx.ctrans[2],
-            #     )
-            # ),
         )
         segmentation.bounding_box = schema.SFFBoundingBox(
             xmax=self.header.x_length,
             ymax=self.header.y_length,
             zmax=self.header.z_length,
         )
-        # segments = schema.SFFSegmentList()
-        # transforms = list()
-        # # schema.SFFSegment.reset_id()
-        # no_contours = 0
-        # no_meshes = 0
-        # for s in self.segment:
-        #     segment, _transforms = s.convert()
-        #     if s.contours is not None:
-        #         if len(s.contours) > 0:
-        #             no_contours += 1
-        #     elif s.meshes is not None:
-        #         if len(s.meshes) > 0:
-        #             no_meshes += 1
-        #     #             if len(s.contours) > 0:
-        #     #                 no_contours += 1
-        #     #             elif len(s.meshes) > 0:
-        #     #                 no_meshes += 1
-        #     transforms += _transforms
-        #     segments.append(segment)
+        segments = schema.SFFSegmentList()
+        transforms = list()
+        no_meshes = 0
+        for s in self.segments:
+            if s.is_empty():
+                continue
+            segment, _transforms = s.convert()
+            if s.meshes: # is not None:
+                # if len(s.meshes) > 0:
+                no_meshes += 1
+            transforms += _transforms
+            segments.append(segment)
         # # if we have additional transforms from shapes
-        # if transforms:
-        #     _ = [segmentation.transform_list.append(T) for T in transforms]
+        if transforms:
+            _ = [segmentation.transform_list.append(T) for T in transforms]
         # # finally pack everything together
-        # segmentation.segment_list = segments
+        segmentation.segment_list = segments
         # now is the right time to set the primary descriptor attribute
-        # if there are at least as many segments as descriptors then set that
         segmentation.primary_descriptor = "mesh_list"
-        """
-        if len(segmentation.segments) <= no_contours:
-            segmentation.primaryDescriptor = "contourList"
-        elif len(segmentation.segments) <= no_meshes:
-            segmentation.primaryDescriptor = "meshList"
-        else:
-            segmentation.primaryDescriptor = "shapePrimitiveList"
-        # custom set primary_descriptor
-        if args.primary_descriptor is not None:
-            if args.verbose:
-                print_date("Setting primaryDescriptor to {}".format(args.primary_descriptor))
-            if args.primary_descriptor == 'contourList':
-                if len(segmentation.segments) <= no_contours:
-                    segmentation.primaryDescriptor = "contourList"
-            elif args.primary_descriptor == 'meshList':
-                if len(segmentation.segments) <= no_meshes:
-                    segmentation.primaryDescriptor = "meshList"
-            elif args.primary_descriptor == "shapePrimitiveList":
-                if not len(segmentation.segments) <= no_contours or not len(segmentation.segments) <= no_meshes:
-                    segmentation.primaryDescriptor = "shapePrimitiveList"
-            else:
-                print_date("Invalid primary descriptor for IMOD file {}".format(args.primary_descriptor))
-                print_date("Retaining detected primary descriptor")
-#         if args.verbose:
-#             print_date("Set primaryDescriptor to {}".format(segmentation.primaryDescriptor))
-        """
-
         # details
         if args.details is not None:
             segmentation.details = args.details

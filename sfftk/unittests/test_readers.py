@@ -16,8 +16,9 @@ import unittest
 import ahds
 import numpy
 import random_words
+from sfftkrw.unittests import Py23FixTestCase
 
-from . import TEST_DATA_PATH, Py23FixTestCase
+from . import TEST_DATA_PATH
 from ..core import _dict_iter_values, _str
 from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader
 
@@ -234,7 +235,8 @@ class TestReaders_modreader(Py23FixTestCase):
         self.assertGreaterEqual(self.mod.res, 0)
         self.assertIn(self.mod.thresh, range(256))
         self.assertGreater(self.mod.pixsize, 0)
-        self.assertIn(self.mod.units, ['pm', 'Angstroms', 'nm', 'microns', 'mm', 'cm', 'm', 'pixels', 'km'])
+        self.assertIn(modreader.UNITS[self.mod.units],
+                      ['pm', 'Angstroms', 'nm', 'microns', 'mm', 'cm', 'm', 'pixels', 'km'])
         self.assertIsInstance(self.mod.csum, int)
         self.assertEqual(self.mod.alpha, 0)
         self.assertEqual(self.mod.beta, 0)
@@ -263,9 +265,9 @@ class TestReaders_modreader(Py23FixTestCase):
     def test_IMOD_pass(self):
         """Test that IMOD chunk read"""
         self.assertTrue(self.mod.isset)
+        print(self.mod.objts[0].meshes[0].list)
         ijk_to_xyz_transform = self.mod.ijk_to_xyz_transform
         self.assertTrue(ijk_to_xyz_transform[0, 0] * ijk_to_xyz_transform[1, 1] * ijk_to_xyz_transform[2, 2] != 0.0)
-        print(self.mod.x_length)
         self.assertEqual(self.mod.x_length,
                          self.mod.xmax * self.mod.pixsize * self.mod.xscale * modreader.angstrom_multiplier(
                              self.mod.units))

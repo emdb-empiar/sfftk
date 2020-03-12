@@ -71,13 +71,6 @@ class Mesh(SegmentFormat):
         super(Mesh, self).__init__(*args, **kwargs)
 
 
-class Contours(SegmentFormat):
-    """``contourList`` segmentation"""
-    format = 'contours'
-
-    def __init__(self, *args, **kwargs):
-        super(Contours, self).__init__(*args, **kwargs)
-
 
 class Shapes(SegmentFormat):
     """``shapePrimitiveList`` segmentation"""
@@ -103,13 +96,7 @@ class Segment(SegmentationType):
     volume = None
     shapes = None
 
-    def __repr__(self):
-        formats = list()
-        if self.meshes: formats.append(self.meshes.format)
-        if self.contours: formats.append(self.contours.format)
-        if self.volume: formats.append(self.volume.format)
-        if self.shapes: formats.append(self.shapes.format)
-        return "Segment of format(s): {}".format(', '.join(formats))
+
 
 
 class Annotation(SegmentationType):

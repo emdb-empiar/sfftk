@@ -10,9 +10,12 @@ from __future__ import division, print_function
 import inspect
 import os.path
 
+import numpy
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+
 from .base import Segmentation, Header, Segment, Annotation, Mesh
-from .. import schema
-from ..core import _xrange, _dict_iter_values, _dict_iter_items
+# from .. import schema
+from ..core import _dict_iter_items
 from ..core.print_tools import print_date
 from ..readers import stlreader
 
@@ -39,30 +42,40 @@ class STLMesh(Mesh):
         return self._polygons
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFMesh` object"""
-        schema.SFFMesh.reset_id()
-        mesh = schema.SFFMesh()
-        # polygon
-        polygons = schema.SFFPolygonList()
-        schema.SFFPolygon.reset_id()
-        for P in _dict_iter_values(self.polygons):
-            polygon = schema.SFFPolygon()
-
-            v1, v2, v3 = P
-            polygon.add_vertex(v1)
-            polygon.add_vertex(v2)
-            polygon.add_vertex(v3)
-
-            polygons.add_polygon(polygon)
-        # vertices
-        vertices = schema.SFFVertexList()
-        for vertex_id, v in _dict_iter_items(self.vertices):
-            x, y, z = v
-            vertex = schema.SFFVertex(vID=vertex_id, x=x, y=y, z=z)
-            vertices.add_vertex(vertex)
-        # final tying
-        mesh.vertices = vertices
-        mesh.polygons = polygons
+        """Convert to a :py:class:`sfftkrw.SFFMesh` object"""
+        # convert the dict to a list of 4-tuples where the first item is the key
+        indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in _dict_iter_items(self.vertices)),
+                                  key=lambda v: v[0])
+        # validate vertices
+        # vertices are valid if len(vertices) == last_index + 1
+        # meaning? all vertices from 0 to last_index exist; no holes
+        try:
+            assert indexed_vertices[0][0] == 0 and len(indexed_vertices) == indexed_vertices[-1][0] + 1
+        except AssertionError:
+            raise ValueError(u"missing one or more vertices")
+        # validate polygons/triangles
+        # now we know that all vertex indexes exist
+        _triangles = list(self.polygons.values())
+        # create triangles
+        triangles = numpy.array(_triangles)
+        vertex_ids = set(self.vertices.keys())
+        polygon_vertex_ids = set(triangles.flatten().tolist())
+        # validate polygons
+        # polygons are valid if all vertex IDs exists in the vertices dict
+        try:
+            assert vertex_ids == polygon_vertex_ids
+        except AssertionError:
+            raise ValueError(
+                u"incompatible vertices and triangles due to reference(s) to non-existent vertex/vertices")
+        # create vertices
+        _vertices = numpy.array(indexed_vertices)
+        # indexed vertices had an extra column of the index value; now we delete that column
+        vertices = numpy.delete(_vertices, 0, axis=1)
+        # now we can create the mesh
+        mesh = schema.SFFMesh(
+            vertices=schema.SFFVertices.from_array(vertices),
+            triangles=schema.SFFTriangles.from_array(triangles)
+        )
         return mesh
 
 
@@ -71,21 +84,15 @@ class STLAnnotation(Annotation):
 
     def __init__(self, name):
         self.name = name
-        import random
-        self.colour = tuple([random.random() for _ in _xrange(3)])
+        # import random
+        # self.colour = tuple([random.random() for _ in _xrange(3)])
 
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
-        annotation = schema.SFFBiologicalAnnotation()
-        annotation.name = self.name
-        annotation.description = None
-        annotation.numberOfInstances = 1
-        red, green, blue = self.colour
-        colour = schema.SFFRGBA(
-            red=red,
-            green=green,
-            blue=blue,
+        annotation = schema.SFFBiologicalAnnotation(
+            name=self.name,
         )
+        colour = schema.SFFRGBA(random_colour=True)
         return annotation, colour
 
 
@@ -115,11 +122,11 @@ class STLSegment(Segment):
     def convert(self):
         """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
         segment = schema.SFFSegment()
-        segment.biologicalAnnotation, segment.colour = self.annotation.convert()
+        segment.biological_annotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
         for mesh in self.meshes:
-            meshes.add_mesh(mesh.convert())
-        segment.meshes = meshes
+            meshes.append(mesh.convert())
+        segment.mesh_list = meshes
         return segment
 
 
@@ -162,7 +169,7 @@ class STLSegmentation(Segmentation):
         self._fns = fns
         self._segments = list()
         for fn in self._fns:
-            print_date("{}: Stereolithography mesh".format(os.path.basename(fn)))
+            print_date(u"{}: Stereolithography mesh".format(os.path.basename(fn)))
             segment = stlreader.get_data(fn, *args, **kwargs)
             for name, vertices, polygons in segment:
                 self._segments.append(STLSegment(name, vertices, polygons))
@@ -182,25 +189,29 @@ class STLSegmentation(Segmentation):
         segmentation = schema.SFFSegmentation()
 
         segmentation.name = "STL Segmentation"
-        segmentation.software = schema.SFFSoftware(
-            name="Unknown",
-            version="Unknown",
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name="Unknown",
+                version="Unknown",
+            )
         )
-        segmentation.transforms = schema.SFFTransformList()
-        segmentation.transforms.add_transform(
+        segmentation.transform_list = schema.SFFTransformList()
+        # todo: ask user for a reference .map/.mrc/.rec file for the bounding box and image-to-physical transform
+        segmentation.transform_list.append(
             schema.SFFTransformationMatrix(
                 rows=3,
                 cols=4,
                 data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
             )
         )
-        segmentation.primaryDescriptor = "meshList"
+        segmentation.primary_descriptor = "mesh_list"
 
         segments = schema.SFFSegmentList()
         for s in self.segments:
-            segments.add_segment(s.convert())
+            segments.append(s.convert())
 
-        segmentation.segments = segments
+        segmentation.segment_list = segments
         # details
         if args.details is not None:
             segmentation.details = args.details
