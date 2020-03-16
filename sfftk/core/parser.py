@@ -22,6 +22,9 @@ from .print_tools import print_date
 from ..core import _decode, _input, _str
 from ..notes import RESOURCE_LIST
 
+# extend the sfftkrw Parser object
+from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, add_args
+
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-06-10'
@@ -33,45 +36,22 @@ prepable_file_formats = ['mrc', 'map', 'rec']
 rescalable_file_formats = ['stl']
 
 
-def add_args(parser, the_arg):
-    """Convenience function to add ``the_arg`` to the ``parser``.
+Parser.description = u"The EMDB-SFF Toolkit (sfftk)"
+# Parser = argparse.ArgumentParser(
+#     prog='sff', description="The EMDB-SFF Toolkit (sfftk)")
+# Parser.add_argument(
+#     '-V', '--version',
+#     action='store_true',
+#     default=False,
+#     help='show the sfftk version string and the supported EMDB-SFF version string',
+# )
 
-    This relies on the argument being structured as a dictionary with the keys 
-    ``args`` for positional arguments and ``kwargs`` for the keyword
-    arguments. The value of doing this is that arguments that are reused
-    in several parsers can be referred to by a variable instead of being 
-    redefined. 
-
-    Usage::
-
-        >>> my_arg = {'arg': ['-x'], 'kwargs': {'help': 'help'}}
-        >>> this_parser = argparse.ArgumentParser()
-        >>> add_args(this_parser, my_arg)
-
-    :param parser: the parser to be modified[
-    :type parser: :py:class:`argparse.ArgumentParser` or :py:class:`argparse._ArgumentGroup`
-    :param dict the_arg: the argument specified as a dict with keys ``args`` and ``kwargs``
-    :return: a modified parser object
-    :rtype: :py:class:`argparse.ArgumentParser`
-    """
-    return parser.add_argument(*the_arg['args'], **the_arg['kwargs'])
-
-
-Parser = argparse.ArgumentParser(
-    prog='sff', description="The EMDB-SFF Toolkit (sfftk)")
-Parser.add_argument(
-    '-V', '--version',
-    action='store_true',
-    default=False,
-    help='show the sfftk version string and the supported EMDB-SFF version string',
-)
-
-subparsers = Parser.add_subparsers(
-    title='Tools',
-    dest='subcommand',
-    description='The EMDB-SFF Toolkit (sfftk) provides the following tools:',
-    metavar="EMDB-SFF tools"
-)
+# subparsers = Parser.add_subparsers(
+#     title='Tools',
+#     dest='subcommand',
+#     description='The EMDB-SFF Toolkit (sfftk) provides the following tools:',
+#     metavar="EMDB-SFF tools"
+# )
 
 # =========================================================================
 # common arguments
@@ -340,13 +320,11 @@ add_args(transform_prep_parser, verbose)
 # =========================================================================
 # convert subparser
 # =========================================================================
-convert_parser = subparsers.add_parser(
-    'convert', description="Perform conversions to EMDB-SFF", help="converts from/to EMDB-SFF")
-convert_parser.add_argument('from_file', nargs='*', help="file to convert from")
+# extend the sfftk-rw convert parser
+convert_parser.description = "Perform conversions to EMDB-SFF"
+convert_parser.help="converts to EMDB-SFF"
 add_args(convert_parser, config_path)
 add_args(convert_parser, shipped_configs)
-# convert_parser.add_argument('-t', '--top-level-only', default=False,
-#                             action='store_true', help="convert only the top-level segments [default: False]")
 convert_parser.add_argument(
     '-a', '--all-levels',
     default=False,
@@ -354,14 +332,6 @@ convert_parser.add_argument(
     help="for segments structured hierarchically (e.g. Segger from UCSF Chimera and Chimera X) "
          "convert all segment leves in the hierarchy [default: False]"
 )
-# convert_parser.add_argument('-M', '--contours-to-mesh', default=False, action='store_true', help="convert an 'contourList' EMDB-SFF to a 'meshList' EMDB-SFF")
-convert_parser.add_argument(*details['args'], **details['kwargs'])
-convert_parser.add_argument(
-    *primary_descriptor['args'], **primary_descriptor['kwargs'])
-convert_parser.add_argument(*verbose['args'], **verbose['kwargs'])
-# convert_parser.add_argument('-s', '--sub-tomogram-average', nargs=2,
-#                             help="convert a subtomogram average into an EMDB-SFF file; two arguments are required: the "
-#                                  "table file and volume file (in that order)")
 convert_parser.add_argument(
     '-m', '--multi-file',
     action='store_true',
@@ -371,9 +341,6 @@ convert_parser.add_argument(
         ', '.join(multi_file_formats),
     )
 )
-group = convert_parser.add_mutually_exclusive_group()
-group.add_argument(*output['args'], **output['kwargs'])
-group.add_argument(*format_['args'], **format_['kwargs'])
 
 # =========================================================================
 # config subparser
@@ -471,16 +438,12 @@ add_args(del_config_parser, verbose)
 # =========================================================================
 # view subparser
 # =========================================================================
-view_parser = subparsers.add_parser(
-    'view', description="View a summary of an SFF file", help="view file summary")
-view_parser.add_argument('from_file', help="any SFF file")
+# extend the sfftk-rw view parser
+# handle configs
 add_args(view_parser, config_path)
 add_args(view_parser, shipped_configs)
-view_parser.add_argument(
-    '--sff-version', action='store_true', help="show SFF format version")
 view_parser.add_argument('-C', '--show-chunks', action='store_true',
                          help="show sequence of chunks in IMOD file; only works with IMOD model files (.mod) [default: False]")
-view_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 
 # =============================================================================
 # notes parser
@@ -677,6 +640,7 @@ add_args(edit_notes_parser, shipped_configs)
 add_args(edit_notes_parser, external_ref_id)
 external_ref['kwargs']['action'] = 'append'
 add_args(edit_notes_parser, external_ref)
+add_args(edit_notes_parser, verbose)
 del external_ref['kwargs']['action']
 #  global notes
 edit_global_notes_parser = edit_notes_parser.add_argument_group(
@@ -711,6 +675,7 @@ del_notes_parser = notes_subparsers.add_parser(
 add_args(del_notes_parser, sff_file)
 add_args(del_notes_parser, config_path)
 add_args(del_notes_parser, shipped_configs)
+add_args(del_notes_parser, verbose)
 # for deleting notes we handle external refs as a comma'd string e.g. 1,2,3,4 therefore not an 'int'
 del external_ref_id['kwargs']['type']
 add_args(del_notes_parser, external_ref_id)

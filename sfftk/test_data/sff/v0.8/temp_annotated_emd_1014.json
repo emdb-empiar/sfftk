@@ -1,0 +1,437 @@
+{
+  "version": "0.8.0.dev1",
+  "name": "Segger Segmentation",
+  "details": "",
+  "software_list": [
+    {
+      "id": 0,
+      "name": "segger",
+      "version": "2",
+      "processing_details": ""
+    }
+  ],
+  "primary_descriptor": "three_d_volume",
+  "transform_list": [
+    {
+      "id": 0,
+      "rows": 3,
+      "cols": 4,
+      "data": "1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0"
+    },
+    {
+      "id": 1,
+      "rows": 3,
+      "cols": 4,
+      "data": "3.3900001049 0.0 0.0 -430.529998779 0.0 3.3900001049 0.0 -430.529998779 0.0 0.0 3.3900001049 -430.529998779"
+    }
+  ],
+  "bounding_box": null,
+  "global_external_references": [],
+  "segment_list": [
+    {
+      "id": 15559,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 2,
+            "resource": "fypo",
+            "url": "http://purl.obolibrary.org/obo/GO_0005739",
+            "accession": "GO_0005739",
+            "label": null,
+            "description": null
+          },
+          {
+            "id": 3,
+            "resource": "omit",
+            "url": "http://purl.obolibrary.org/obo/OMIT_0009979",
+            "accession": "OMIT_0009979",
+            "label": null,
+            "description": null
+          },
+          {
+            "id": 4,
+            "resource": "go",
+            "url": "http://purl.obolibrary.org/obo/GO_0005739",
+            "accession": "GO_0005739",
+            "label": null,
+            "description": null
+          }
+        ]
+      },
+      "colour": [
+        0.921817600727081,
+        0.931041955947876,
+        0.71287328004837,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15560,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.5660200715065,
+        0.790880382061005,
+        0.671353757381439,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15561,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.786771178245544,
+        0.566025853157043,
+        0.6353360414505,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15562,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.795820534229279,
+        0.603736102581024,
+        0.695636034011841,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15563,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.945388078689575,
+        0.960578083992004,
+        0.895303726196289,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15564,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.997010350227356,
+        0.883732438087463,
+        0.798247754573822,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15565,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.810978293418884,
+        0.710047245025635,
+        0.938420295715332,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15566,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.506448566913605,
+        0.636659622192383,
+        0.950494408607483,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15567,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.795838892459869,
+        0.848971366882324,
+        0.898833751678467,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15568,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.795708417892456,
+        0.598218858242035,
+        0.769633829593658,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15569,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.543090283870697,
+        0.926712691783905,
+        0.578470706939697,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15570,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.544089019298553,
+        0.970614612102509,
+        0.698472082614899,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15571,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.687262952327728,
+        0.585415244102478,
+        0.992594540119171,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15572,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.547603487968445,
+        0.651105284690857,
+        0.942572236061096,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15573,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.860836505889893,
+        0.567978024482727,
+        0.721250355243683,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15574,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.511655807495117,
+        0.563025772571564,
+        0.816533744335175,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15575,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.74264669418335,
+        0.766704499721527,
+        0.626766085624695,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15576,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.936005651950836,
+        0.737228572368622,
+        0.807985961437225,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15577,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.505707859992981,
+        0.992025196552277,
+        0.623720347881317,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 15578,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": null,
+        "description": null,
+        "number_of_instances": 1,
+        "external_references": []
+      },
+      "colour": [
+        0.985998213291168,
+        0.971223950386047,
+        0.712830126285553,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    }
+  ]
+}

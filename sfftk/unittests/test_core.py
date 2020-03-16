@@ -691,6 +691,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         """Test setting of arg config_path"""
         config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
         args, _ = parse_args('convert --config-path {} {}'.format(config_fn, self.test_data_file), use_shlex=True)
+        self.stderr(args)
         self.assertEqual(args.config_path, config_fn)
 
     def test_details(self):

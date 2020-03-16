@@ -12,9 +12,10 @@ import os
 import sys
 import textwrap
 
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from styled import Styled
 
-from .. import schema
+# from .. import schema
 from ..core import _str
 from ..core.print_tools import print_date
 
@@ -60,90 +61,68 @@ class NoteView(View):
         return self._segment.id
 
     @property
-    def parentID(self):
-        return self._segment.parentID
+    def parent_id(self):
+        return self._segment.parent_id
 
     @property
     def name(self):
-        if self._segment.biologicalAnnotation.name:
-            return self._segment.biologicalAnnotation.name
+        if self._segment.biological_annotation.name:
+            return self._segment.biological_annotation.name
         else:
             return self.NOT_DEFINED
 
     @property
     def description(self):
-        if self._segment.biologicalAnnotation.description:
-            return textwrap.fill(self._segment.biologicalAnnotation.description, self.DISPLAY_WIDTH)
+        if self._segment.biological_annotation.description:
+            return textwrap.fill(self._segment.biological_annotation.description, self.DISPLAY_WIDTH)
         else:
             return self.NOT_DEFINED
 
     @property
-    def numberOfInstances(self):
-        if self._segment.biologicalAnnotation.numberOfInstances:
-            return self._segment.biologicalAnnotation.numberOfInstances
+    def number_of_instances(self):
+        if self._segment.biological_annotation.number_of_instances:
+            return self._segment.biological_annotation.number_of_instances
         else:
             return self.NOT_DEFINED_ALT
 
     @property
-    def numberOfExternalReferences(self):
-        return self._segment.biologicalAnnotation.numExternalReferences
+    def number_of_external_references(self):
+        return self._segment.biological_annotation.num_external_references
 
     @property
-    def externalReferences(self):
-        if self._segment.biologicalAnnotation:
+    def external_references(self):
+        if self._segment.biological_annotation:
             string_list = list()
             string_list.append(
                 u"\t{:>3} {:<16} {:<56} {:<20} {:1} {:1}".format(
                     u"#",
                     u"resource",
-                    u"iri",
-                    u"short_form",
+                    u"url",
+                    u"accession",
                     u"L",
                     u"D",
                 )
             )
             string_list.append(u"\t" + u"-" * (self.DISPLAY_WIDTH - len(u"\t".expandtabs())))
             i = 0
-            for extRef in self._segment.biologicalAnnotation.externalReferences:
-                type_ = extRef.type
-                otherType = extRef.otherType
-                value = extRef.value
-                label = u"Y" if extRef.label is not None else u"N"
-                description = u"Y" if extRef.description is not None else u"N"
+            for ext_ref in self._segment.biological_annotation.external_references:
+                resource = ext_ref.resource
+                url = ext_ref.url
+                accession = ext_ref.accession
+                label = u"Y" if ext_ref.label is not None else u"N"
+                description = u"Y" if ext_ref.description is not None else u"N"
                 string_list.append(
-                    u"\t{id:>2}: {type:<16} {otherType:<56} {value:<20} {label:1} {description:1}".format(
+                    u"\t{id:>2}: {resource:<16} {url:<56} {accession:<20} {label:1} {description:1}".format(
                         id=i,
-                        type=type_,
-                        otherType=otherType,
-                        value=value,
+                        resource=resource,
+                        url=url,
+                        accession=accession,
                         label=label,
                         description=description,
                     )
                 )
                 i += 1
             return "\n".join(string_list)
-        else:
-            return "\t" + self.NOT_DEFINED
-
-    @property
-    def numberOfComplexes(self):
-        return self._segment.complexesAndMacromolecules.numComplexes
-
-    @property
-    def complexes(self):
-        if self._segment.complexesAndMacromolecules:
-            return "\n".join(_add_index(self._segment.complexesAndMacromolecules.complexes))
-        else:
-            return "\t" + self.NOT_DEFINED
-
-    @property
-    def numberOfMacromolecules(self):
-        return self._segment.complexesAndMacromolecules.numMacromolecules
-
-    @property
-    def macromolecules(self):
-        if self._segment.complexesAndMacromolecules:
-            return "\n".join(_add_index(self._segment.complexesAndMacromolecules.macromolecules))
         else:
             return "\t" + self.NOT_DEFINED
 
@@ -157,12 +136,12 @@ class NoteView(View):
     @property
     def segmentType(self):
         segment_type = list()
-        if self._segment.meshes:
-            segment_type.append(u"meshList")
-        if self._segment.shapes:
-            segment_type.append(u"shapePrimitiveList")
-        if self._segment.volume:
-            segment_type.append(u"threeDVolume")
+        if self._segment.mesh_list:
+            segment_type.append(u"mesh_list")
+        if self._segment.shape_primitive_list:
+            segment_type.append(u"shape_primitive_list")
+        if self._segment.three_d_volume:
+            segment_type.append(u"three_d_volume")
         # json EMDB-SFF files do not have geometrical data
         if not segment_type:
             return None
@@ -191,31 +170,23 @@ class NoteView(View):
                 \rExternal references:
                 \r{}
                 \r{}
-                \rComplexes:
-                \r{}
-                \rMacromolecules:
-                \r{}
-                \r{}
                 \rColour:
                 \r\t{}\
                 """.format(
                     # ****
                     self.LINE3,
                     self.id,
-                    self.parentID,
+                    self.parent_id,
                     self.segmentType,
                     # ---
                     self.LINE2,
                     self.name,
                     self.description,
-                    self.numberOfInstances,
+                    self.number_of_instances,
                     # -----
                     self.LINE2,
-                    self.externalReferences,
+                    self.external_references,
                     # ----
-                    self.LINE2,
-                    self.complexes,
-                    self.macromolecules,
                     # ----
                     self.LINE2,
                     self.colour,
@@ -224,16 +195,14 @@ class NoteView(View):
                 string = u"{}".format(self.id)
             else:
                 colour = self.colour
-                string = u"{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
+                string = u"{:<7} {:<7} {:<50} {:>5} {:>5} {:^30}".format(
                     self.id,
-                    self.parentID,
+                    self.parent_id,
                     self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (
                                                                                                                        self.name + "::" + self.description)[
                                                                                                                :37] + "...",
-                    self.numberOfInstances,
-                    self.numberOfExternalReferences,
-                    self.numberOfComplexes,
-                    self.numberOfMacromolecules,
+                    self.number_of_instances,
+                    self.number_of_external_references,
                     u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
                 )
             return string
@@ -259,31 +228,22 @@ class NoteView(View):
                 \rExternal references:
                 \r{}
                 \r{}
-                \rComplexes:
-                \r{}
-                \rMacromolecules:
-                \r{}
-                \r{}
                 \rColour:
                 \r\t{}\
                 """.format(
                     # ****
                     self.LINE3,
                     self.id,
-                    self.parentID,
+                    self.parent_id,
                     self.segmentType,
                     # ---
                     self.LINE2,
                     self.name,
                     self.description,
-                    self.numberOfInstances,
+                    self.number_of_instances,
                     # -----
                     self.LINE2,
-                    self.externalReferences,
-                    # ----
-                    self.LINE2,
-                    self.complexes,
-                    self.macromolecules,
+                    self.external_references,
                     # ----
                     self.LINE2,
                     self.colour,
@@ -292,16 +252,14 @@ class NoteView(View):
                 string = u"{}".format(self.id)
             else:
                 colour = self.colour
-                string = u"{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^30}".format(
+                string = u"{:<7} {:<7} {:<50} {:>5} {:>5} {:^30}".format(
                     self.id,
-                    self.parentID,
+                    self.parent_id,
                     self.name + "::" + self.description if len(self.name + "::" + self.description) <= 40 else (
                                                                                                                        self.name + "::" + self.description)[
                                                                                                                :37] + "...",
-                    self.numberOfInstances,
-                    self.numberOfExternalReferences,
-                    self.numberOfComplexes,
-                    self.numberOfMacromolecules,
+                    self.number_of_instances,
+                    self.number_of_external_references,
                     u"(" + u", ".join(map(str, map(lambda c: round(c, 3), colour))) + u")",
                 )
             return string
@@ -326,6 +284,30 @@ class HeaderView(View):
     @property
     def version(self):
         return self._segmentation.version
+
+    @property
+    def software_list(self):
+        software = u""
+        for i, sw in enumerate(self._segmentation.software_list):
+            if sw.name is not None:
+                sw_name = sw.name
+            else:
+                sw_name = u"\t" + self.NOT_DEFINED
+            if sw.version is not None:
+                sw_version = sw.version
+            else:
+                sw_version = u"\t" + self.NOT_DEFINED
+            if sw.processing_details is not None:
+                sw_proc_det = textwrap.fill(u"\tproc/det: " + sw.processing_details, self.DISPLAY_WIDTH)
+            else:
+                sw_proc_det = u"\tproc/det: " + self.NOT_DEFINED
+            software += u"\t{id} {name}/{version}\n{proc_det}\n".format(
+                id=i,
+                name=sw_name,
+                version=sw_version,
+                proc_det=sw_proc_det,
+            )
+        return software
 
     @property
     def software(self):
@@ -356,43 +338,44 @@ Software processing details: \n{}\
         return software
 
     @property
-    def primaryDescriptor(self):
-        return self._segmentation.primaryDescriptor
+    def primary_descriptor(self):
+        return self._segmentation.primary_descriptor
 
     @property
-    def boundingBox(self):
-        return self._segmentation.boundingBox.xmin, self._segmentation.boundingBox.xmax, \
-               self._segmentation.boundingBox.ymin, self._segmentation.boundingBox.ymax, \
-               self._segmentation.boundingBox.zmin, self._segmentation.boundingBox.zmax
+    def bounding_box(self):
+        if self._segmentation.bounding_box is not None:
+            return self._segmentation.bounding_box.xmin, self._segmentation.bounding_box.xmax, \
+                   self._segmentation.bounding_box.ymin, self._segmentation.bounding_box.ymax, \
+                   self._segmentation.bounding_box.zmin, self._segmentation.bounding_box.zmax
 
     @property
-    def globalExternalReferences(self):
-        if self._segmentation.globalExternalReferences:
+    def global_external_references(self):
+        if self._segmentation.global_external_references:
             string_list = list()
             string_list.append(
                 u"{:>3} {:<16} {:<56} {:<20} {:1} {:1}".format(
                     "#",
                     "resource",
-                    "iri",
-                    "short_form",
+                    "url",
+                    "accession",
                     "L",
                     "D",
                 )
             )
             string_list.append(u"\t" + u"-" * (self.DISPLAY_WIDTH - len(u"\t".expandtabs())))
             i = 0
-            for gExtRef in self._segmentation.globalExternalReferences:
-                type_ = gExtRef.type
-                otherType = gExtRef.otherType
-                value = gExtRef.value
-                label = u"Y" if gExtRef.label is not None else u"N"
-                description = u"Y" if gExtRef.description is not None else u"N"
+            for g_ext_ref in self._segmentation.global_external_references:
+                resource = g_ext_ref.resource
+                url = g_ext_ref.url
+                accession = g_ext_ref.accession
+                label = u"Y" if g_ext_ref.label is not None else u"N"
+                description = u"Y" if g_ext_ref.description is not None else u"N"
                 string_list.append(
-                    u"\t{id:>2}: {type:<16} {otherType:<56} {value:<20} {label:1} {description:1}".format(
+                    u"\t{id:>2}: {resource:<16} {url:<56} {accession:<20} {label:1} {description:1}".format(
                         id=i,
-                        type=type_,
-                        otherType=otherType,
-                        value=value,
+                        resource=resource,
+                        url=url,
+                        accession=accession,
                         label=label,
                         description=description,
                     )
@@ -423,7 +406,7 @@ Software processing details: \n{}\
                     \rSegmentation software:
                     \r{}
                     \r{}
-                    \rPrimary descriptor [threeDVolume|meshList|shapePrimitiveList]:
+                    \rPrimary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
                     \r\t{}
                     \r{}
                     \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
@@ -441,16 +424,16 @@ Software processing details: \n{}\
                 # ---
                 self.LINE2,
                 self.name,
-                self.software,
+                self.software_list,
                 # ---
                 self.LINE2,
-                self.primaryDescriptor,
+                self.primary_descriptor,
                 # ---
                 self.LINE2,
-                self.boundingBox,
+                self.bounding_box,
                 # ---
                 self.LINE2,
-                self.globalExternalReferences,
+                self.global_external_references,
                 # ----
                 self.LINE2,
                 self.details,
@@ -470,7 +453,7 @@ Software processing details: \n{}\
             \rSegmentation software:
             \r{}
             \r{}
-            \rPrimary descriptor [threeDVolume|meshList|shapePrimitiveList]:
+            \rPrimary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
             \r\t{}
             \r{}
             \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
@@ -491,13 +474,13 @@ Software processing details: \n{}\
                 self.software,
                 # ---
                 self.LINE2,
-                self.primaryDescriptor,
+                self.primary_descriptor,
                 # ---
                 self.LINE2,
-                self.boundingBox,
+                self.bounding_box,
                 # ---
                 self.LINE2,
-                self.globalExternalReferences,
+                self.global_external_references,
                 # ----
                 self.LINE2,
                 self.details,
@@ -524,17 +507,15 @@ class TableHeaderView(View):
     def _unicode(self):
         string = u"""\
         \r{}
-        \r{:<7} {:<7} {:<40} {:>5} {:>5} {:>5} {:>5} {:^26}
+        \r{:<7} {:<7} {:<50} {:>5} {:>5} {:^26}
         \r{}\
         """.format(
             View.LINE3,
             u"id",
-            u"parId",
+            u"par_id",
             u"name::description",
             u"#inst",
-            u"#exRf",
-            u"#cplx",
-            u"#macr",
+            u"#ext_ref",
             u"colour",
             View.LINE2
         )
@@ -548,7 +529,7 @@ def list_notes(args, configs):
     :type args: ``argparse.Namespace``
     :return int status: 0 is OK, else failure
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # todo: make this optional
     # todo: define the stream to use
     if args.header:
@@ -582,7 +563,7 @@ def show_notes(args, configs):
     :type args: ``argparse.Namespace``
     :return int status: 0 is OK, else failure
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     if args.header:
         string = Styled(u"[[ ''|fg-cyan:no-end ]]")
         string += _str(HeaderView(sff_seg))

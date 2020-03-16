@@ -15,10 +15,11 @@ import shutil
 import sys
 
 import requests
+import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from styled import Styled
 
 from . import RESOURCE_LIST_NAMES
-from .. import schema
+# from .. import schema
 from ..core import _str, _decode, _xrange
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
@@ -36,16 +37,16 @@ __date__ = "2017-04-07"
 class ExternalReference(object):
     """Class definition for a :py:class:`ExternalReference` object"""
 
-    def __init__(self, type_=None, otherType=None, value=None):
+    def __init__(self, resource=None, url=None, accession=None):
         """Initialise an object of class :py:class:`ExternalReference`
 
         :param type_: the name of the resource
         :param otherType: the IRI at which the resource may be reached
         :param value: the external reference accession code
         """
-        self.type = type_
-        self.otherType = otherType
-        self.value = value
+        self.resource = resource
+        self.url = url
+        self.accession = accession
         self.label, self.description = self._get_text()
 
     @property
@@ -55,7 +56,7 @@ class ExternalReference(object):
             from urllib.parse import urlencode
         else:
             from urllib import urlencode
-        urlenc = urlencode({u'iri': self.otherType.encode(u'idna')})
+        urlenc = urlencode({u'iri': self.url.encode(u'idna')})
         urlenc2 = urlencode({u'iri': urlenc.split(u'=')[1]})
         return _decode(urlenc2.split(u'=')[1], 'utf-8')
 
@@ -70,9 +71,9 @@ class ExternalReference(object):
         label = None
         description = None
         # only search for label and description if from OLS
-        if self.type not in RESOURCE_LIST_NAMES:
+        if self.resource not in RESOURCE_LIST_NAMES:
             url = u"https://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
-                ontology=self.type,
+                ontology=self.resource,
                 iri=self.iri,
             )
             R = requests.get(url)
@@ -90,9 +91,10 @@ class ExternalReference(object):
                     description = ''
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type == u'EMDB':
-            url = u"https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.value)
+                    u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                self.accession))
+        elif self.resource == u'EMDB':
+            url = u"https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.accession)
             R = requests.get(url)
             if R.status_code == 200:
                 self._result = json.loads(R.text)
@@ -102,9 +104,10 @@ class ExternalReference(object):
                 description = self._result[label][0][u'deposition'][u'title']
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type == u"PDB":
-            url = u"https://www.ebi.ac.uk/pdbe/search/pdb/select?q={}&wt=json".format(self.value)
+                    u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                self.accession))
+        elif self.resource == u"PDB":
+            url = u"https://www.ebi.ac.uk/pdbe/search/pdb/select?q={}&wt=json".format(self.accession)
             R = requests.get(url)
             if R.status_code == 200:
                 self._result = json.loads(R.text)
@@ -115,16 +118,17 @@ class ExternalReference(object):
                     description = u"; ".join(self._result[u'response'][u'docs'][0][u'organism_scientific_name'])
                 except IndexError:
                     print_date(
-                        u"Could not find label and description for external reference {}:{}".format(self.type,
-                                                                                                    self.value))
+                        u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                    self.accession))
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type == u"UniProt":
+                    u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                self.accession))
+        elif self.resource == u"UniProt":
             url = u"https://www.uniprot.org/uniprot/" \
                   u"?query=accession:{search_term}&format=tab&offset=0&limit=1&columns=id,entry_name," \
                   u"protein_names,organism".format(
-                search_term=self.value,
+                search_term=self.accession,
             )
             R = requests.get(url)
             if R.status_code == 200:
@@ -144,14 +148,15 @@ class ExternalReference(object):
                     print_date(u"Unknown exception: {}".format(str(v)))
                 except IndexError:
                     print_date(
-                        u"Could not find label and description for external reference {}:{}".format(self.type,
-                                                                                                    self.value))
+                        u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                    self.accession))
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type == u'Europe PMC':
+                    u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                self.accession))
+        elif self.resource == u'Europe PMC':
             url = u"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json".format(
-                self.value)
+                self.accession)
             R = requests.get(url)
             if R.status_code == 200:
                 self._result = json.loads(R.text)
@@ -163,33 +168,35 @@ class ExternalReference(object):
                 except IndexError:
                     print_date(
                         u"Could not find label and description for external reference {}:{}".format(
-                            self.type,
-                            self.value
+                            self.resource,
+                            self.accession
                         )
                     )
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
-        elif self.type == u'EMPIAR':
-            url = u"https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.value)
+                    u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                self.accession))
+        elif self.resource == u'EMPIAR':
+            url = u"https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.accession)
             R = requests.get(url)
             if R.status_code == 200:
                 self._result = json.loads(R.text)
                 try:
                     # label
-                    label = self._result[self.value][u"title"]
+                    label = self._result[self.accession][u"title"]
                     # description
-                    description = self._result[self.value][u"experiment_type"]
+                    description = self._result[self.accession][u"experiment_type"]
                 except IndexError:
                     print_date(
                         u"Could not find label and description for external reference {}:{}".format(
-                            self.type,
-                            self.value
+                            self.resource,
+                            self.accession
                         )
                     )
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.type, self.value))
+                    u"Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                self.accession))
         return label, description
 
 
@@ -218,21 +225,21 @@ class BaseNote(object):
     """Note base class"""
 
     def __init__(self):
-        self._extRefList = list()
+        self._ext_ref_list = list()
 
     @property
-    def externalReferences(self):
-        return self._extRefList
+    def external_references(self):
+        return self._ext_ref_list
 
-    @externalReferences.setter
-    def externalReferences(self, value):
+    @external_references.setter
+    def external_references(self, value):
         """Assigne directly; must all be ExternalReference objects or lists of strings"""
-        self._extRefList = list()  # empty the present list
+        self._ext_ref_list = list()  # empty the present list
         for v in value:
             if isinstance(v, ExternalReference):
-                self._extRefList.append(v)
+                self._ext_ref_list.append(v)
             elif isinstance(v, list) or isinstance(v, tuple):
-                self._extRefList.append(ExternalReference(*v))
+                self._ext_ref_list.append(ExternalReference(*v))
 
 
 class AbstractGlobalNote(BaseNote):
@@ -249,11 +256,11 @@ class AbstractGlobalNote(BaseNote):
     - :py:func:`del_from_segmentation`
     """
     name = NoteAttr('name')
-    softwareName = NoteAttr('softwareName')
-    softwareVersion = NoteAttr('sofwareVersion')
-    softwareProcessingDetails = NoteAttr('softwareProcessingDetails')
+    software_name = NoteAttr('software_name')
+    software_version = NoteAttr('sofwareVersion')
+    software_processing_details = NoteAttr('software_processing_details')
     details = NoteAttr('details')
-    externalReferenceId = NoteAttr('externalReferenceId')
+    external_reference_id = NoteAttr('external_reference_id')
 
     def add_to_segmentation(self, segmentation):
         """Adds this note to the given segmentation
@@ -265,31 +272,34 @@ class AbstractGlobalNote(BaseNote):
         #  name
         if self.name is not None:
             segmentation.name = self.name
-        segmentation.software = schema.SFFSoftware()
+        # to ensure we don't have any id collisions
+        max_id = max(list(segmentation.software_list.get_ids()))
+        software = schema.SFFSoftware(id=max_id + 1)
         # software name
-        if self.softwareName is not None:
-            segmentation.software.name = self.softwareName
+        if self.software_name is not None:
+            software.name = self.software_name
         # software version
-        if self.softwareVersion is not None:
-            segmentation.software.version = self.softwareVersion
+        if self.software_version is not None:
+            software.version = self.software_version
         #  software processing details
-        if self.softwareProcessingDetails is not None:
-            segmentation.software.processingDetails = self.softwareProcessingDetails
+        if self.software_processing_details is not None:
+            software.processing_details = self.software_processing_details
+        segmentation.software_list.append(software)
         # details
         if self.details is not None:
             segmentation.details = self.details
         # global external references
-        if self.externalReferences:
-            if not segmentation.globalExternalReferences:
-                segmentation.globalExternalReferences = schema.SFFGlobalExternalReferences()
-            for gExtRef in self.externalReferences:
-                segmentation.globalExternalReferences.add_externalReference(
+        if self.external_references:
+            if not segmentation.global_external_references:
+                segmentation.global_external_references = schema.SFFGlobalExternalReferenceList()
+            for g_ext_ref in self.external_references:
+                segmentation.global_external_references.append(
                     schema.SFFExternalReference(
-                        type=gExtRef.type,
-                        otherType=gExtRef.otherType,
-                        value=gExtRef.value,
-                        label=gExtRef.label,
-                        description=gExtRef.description
+                        resource=g_ext_ref.resource,
+                        url=g_ext_ref.url,
+                        accession=g_ext_ref.accession,
+                        label=g_ext_ref.label,
+                        description=g_ext_ref.description
                     )
                 )
         return segmentation
@@ -305,47 +315,48 @@ class AbstractGlobalNote(BaseNote):
         #  name
         if self.name is not None:
             segmentation.name = self.name
-        # software name
-        if self.softwareName is not None:
-            segmentation.software.name = self.softwareName
-        # software version
-        if self.softwareVersion is not None:
-            segmentation.software.version = self.softwareVersion
-        #  software processing details
-        if self.softwareProcessingDetails is not None:
-            segmentation.software.processingDetails = self.softwareProcessingDetails
+        # get the software to be edited
+        try:
+            software = segmentation.software_list.get_by_id(self.software_id)
+        except KeyError:
+            software = None
+        if software is not None:
+            # software name
+            if self.software_name is not None:
+                software.name = self.software_name
+            # software version
+            if self.software_version is not None:
+                software.version = self.software_version
+            #  software processing details
+            if self.software_processing_details is not None:
+                software.processing_details = self.software_processing_details
         # details
         if self.details is not None:
             segmentation.details = self.details
         # external references
-        start_index = self.externalReferenceId
-        # editing globalExternalReferences starting at index 'start_index'
-        # this will result in all subsequent globalExternalReferences being replaced
+        start_index = self.external_reference_id
+        # editing global_external_references starting at index 'start_index'
+        # this will result in all subsequent global_external_references being replaced
         # once it gets to the end of the list of gER any additional ones will be appended
         # e.g. if we have 5 gERs and we want to add another 5 but starting at index 4 (the fifth)
         # then we will replace index 4 then keep adding the other new 4 gERs
         # to add new ones use 'notes add -E <extref>'
-        for gExtRef in self.externalReferences:
+        for g_ext_ref in self.external_references:
+            ext_ref = schema.SFFExternalReference(
+                resource=g_ext_ref.resource,
+                url=g_ext_ref.url,
+                accession=g_ext_ref.accession,
+                label=g_ext_ref.label,
+                description=g_ext_ref.description
+            )
             try:
-                segmentation.globalExternalReferences.replace_externalReference(
-                    schema.SFFExternalReference(
-                        type=gExtRef.type,
-                        otherType=gExtRef.otherType,
-                        value=gExtRef.value,
-                        label=gExtRef.label,
-                        description=gExtRef.description
-                    ),
+                segmentation.global_external_references.insert(
                     start_index,
+                    ext_ref,
                 )
             except IndexError:
-                segmentation.globalExternalReferences.add_externalReference(
-                    schema.SFFExternalReference(
-                        type=gExtRef.type,
-                        otherType=gExtRef.otherType,
-                        value=gExtRef.value,
-                        label=gExtRef.label,
-                        description=gExtRef.description
-                    )
+                segmentation.global_external_references.append(
+                    ext_ref
                 )
             start_index += 1
         return segmentation
@@ -361,26 +372,34 @@ class AbstractGlobalNote(BaseNote):
         #  name
         if self.name:
             segmentation.name = None
-        # software name
-        if self.softwareName:
-            segmentation.software.name = None
-        # software version
-        if self.softwareVersion:
-            segmentation.software.version = None
-        # sofware processing details
-        if self.softwareProcessingDetails:
-            segmentation.software.processingDetails = None
+        # software
+        for software_id in self.software_id:
+            try:
+                software = segmentation.software_list.get_by_id(software_id)
+            except KeyError:
+                software = None
+            if software is not None:
+                # software name
+                if self.software_name:
+                    software.name = None
+                # software version
+                if self.software_version:
+                    software.version = None
+                # sofware processing details
+                if self.software_processing_details:
+                    software.processing_details = None
         # details
         if self.details:
             segmentation.details = None
         # external references
-        if self.externalReferenceId:
-            if segmentation.globalExternalReferences:
+        if self.external_reference_id:
+            if segmentation.global_external_references:
                 # current globalExtRefs
-                refs = list(segmentation.globalExternalReferences)
+                # fixme: should not cast!!!
+                refs = list(segmentation.global_external_references)
                 # extract the items to be removed
                 to_remove = list()
-                for i in self.externalReferenceId:
+                for i in self.external_reference_id:
                     try:
                         to_remove.append(refs[i])
                     except IndexError:
@@ -389,10 +408,22 @@ class AbstractGlobalNote(BaseNote):
                 # now remove them
                 for t in to_remove:
                     refs.remove(t)
-                segmentation.globalExternalReferences = schema.SFFGlobalExternalReferences(refs)
+                segmentation.global_external_references = schema.SFFGlobalExternalReferenceList(refs)
             else:
                 print_date("No global external references to delete from!")
         return segmentation
+
+    def __repr__(self):
+        return u"{class_name}(name={name}, software_name={software_name}, software_version={software_version}, " \
+               u"software_processing_details={software_processing_details}, details={details}, external_ref_id={external_ref_id})".format(
+            class_name=self.__class__,
+            name=self.name,
+            software_name=self.software_name,
+            software_version=self.software_version,
+            software_processing_details=self.software_processing_details,
+            details=self.details,
+            external_ref_id=self.external_reference_id,
+        )
 
 
 class GlobalArgsNote(AbstractGlobalNote):
@@ -406,20 +437,21 @@ class GlobalArgsNote(AbstractGlobalNote):
         super(GlobalArgsNote, self).__init__(*args_, **kwargs_)
         self.name = args.name
         self.configs = configs
-        self.softwareName = args.software_name
-        self.softwareVersion = args.software_version
-        self.softwareProcessingDetails = args.software_processing_details
+        self.software_id = args.software_id if hasattr(args, 'software_id') else None
+        self.software_name = args.software_name
+        self.software_version = args.software_version
+        self.software_processing_details = args.software_processing_details
         self.details = args.details
         if hasattr(args, 'external_ref_id'):
-            self.externalReferenceId = args.external_ref_id
+            self.external_reference_id = args.external_ref_id
         if hasattr(args, 'external_ref'):
             if args.external_ref:
-                for _type, _otherType, _value in args.external_ref:
-                    self._extRefList.append(
+                for resource, url, accession in args.external_ref:
+                    self._ext_ref_list.append(
                         ExternalReference(
-                            type_=_type,
-                            otherType=_otherType,
-                            value=_value
+                            resource=resource,
+                            url=url,
+                            accession=accession
                         )
                     )
 
@@ -428,8 +460,8 @@ class AbstractNote(BaseNote):
     """Note 'abstact' class that defines private attributes and main methods"""
     name = NoteAttr('name')
     description = NoteAttr('description')
-    numberOfInstances = NoteAttr('numberOfInstances')
-    externalReferenceId = NoteAttr('externalReferenceId')
+    number_of_instances = NoteAttr('number_of_instances')
+    external_reference_id = NoteAttr('external_reference_id')
     complexId = NoteAttr('complexId')
     complexes = NoteAttr('complexes')
     macromoleculeId = NoteAttr('macromoleculeId')
@@ -442,53 +474,34 @@ class AbstractNote(BaseNote):
         :type segment: ``sfftk.schema.SFFSegment``
         """
         # biologicalAnnotation
-        bA = segment.biologicalAnnotation
+        bA = segment.biological_annotation
         if self.name is not None:
             bA.name = self.name
         if self.description is not None:
             bA.description = self.description
         # else:
         #     bA.description = segment.biologicalAnnotation.description
-        if self.numberOfInstances:
-            bA.numberOfInstances = self.numberOfInstances
+        if self.number_of_instances:
+            bA.number_of_instances = self.number_of_instances
         # else:
         #     bA.numberOfInstances = segment.biologicalAnnotation.numberOfInstances
         # copy current external references
-        bA.externalReferences = segment.biologicalAnnotation.externalReferences
-        if self.externalReferences:
-            if not bA.externalReferences:
-                bA.externalReferences = schema.SFFExternalReferences()
-            for extRef in self.externalReferences:
-                extRef._get_text()
-                bA.externalReferences.add_externalReference(
+        bA.externalReferences = segment.biological_annotation.external_references
+        if self.external_references:
+            if not bA.external_references:
+                bA.external_references = schema.SFFExternalReferenceList()
+            for ext_ref in self.external_references:
+                ext_ref._get_text()
+                bA.external_references.append(
                     schema.SFFExternalReference(
-                        type_=extRef.type,
-                        otherType=extRef.otherType,
-                        value=extRef.value,
-                        label=extRef.label,
-                        description=extRef.description
+                        resource=ext_ref.resource,
+                        url=ext_ref.url,
+                        accession=ext_ref.accession,
+                        label=ext_ref.label,
+                        description=ext_ref.description
                     )
                 )
-        segment.biologicalAnnotation = bA
-        # complexesAndMacromolecules
-        # copy current cAM
-        cAM = segment.complexesAndMacromolecules
-        #         cAM = schema.SFFComplexesAndMacromolecules()
-        if self.complexes:
-            complexes = schema.SFFComplexes()
-            for c in self.complexes:
-                complexes.add_complex(c)
-            cAM.complexes = complexes
-        else:
-            cAM.complexes = segment.complexesAndMacromolecules.complexes
-        if self.macromolecules:
-            macromolecules = schema.SFFMacromolecules()
-            for m in self.macromolecules:
-                macromolecules.add_macromolecule(m)
-            cAM.macromolecules = macromolecules
-        else:
-            cAM.macromolecules = segment.complexesAndMacromolecules.macromolecules
-        segment.complexesAndMacromolecules = cAM
+        segment.biological_annotation = bA
         return segment
 
     def edit_in_segment(self, segment):
@@ -498,10 +511,10 @@ class AbstractNote(BaseNote):
         :type segment: ``sfftk.schema.SFFSegment``
         """
         # biologicalAnnotation
-        if not segment.biologicalAnnotation:
+        if not segment.biological_annotation:
             print_date("Note: no biological annotation was found. You may edit only after adding with 'sff notes add'.")
         else:
-            bA = segment.biologicalAnnotation
+            bA = segment.biological_annotation
             # name
             if self.name is not None:
                 bA.name = self.name
@@ -509,8 +522,8 @@ class AbstractNote(BaseNote):
             if self.description is not None:
                 bA.description = self.description
             # number of instances
-            if self.numberOfInstances:
-                bA.numberOfInstances = self.numberOfInstances
+            if self.number_of_instances:
+                bA.number_of_instances = self.number_of_instances
             # external references
             # editing externalReferences starting at index 'start_index'
             # this will result in all subsequent externalReferences being replaced
@@ -518,80 +531,28 @@ class AbstractNote(BaseNote):
             # e.g. if we have 5 eRs and we want to add another 5 but starting at index 4 (the fifth)
             # then we will replace index 4 then keep adding the other new 4 eRs
             # to add new ones use 'notes add -i <segment_id> -E <extref>'
-            start_index = self.externalReferenceId
-            for extRef in self.externalReferences:
-                if not bA.externalReferences:
-                    bA.externalReferences = schema.SFFExternalReferences()
+            start_index = self.external_reference_id
+            for ext_ref in self.external_references:
+                if not bA.external_references:
+                    bA.external_references = schema.SFFExternalReferenceList()
+                reference = schema.SFFExternalReference(
+                    resource=ext_ref.resource,
+                    url=ext_ref.url,
+                    accession=ext_ref.accession,
+                    label=ext_ref.label,
+                    description=ext_ref.description
+                )
                 try:
-                    bA.externalReferences.replace_externalReference(
-                        schema.SFFExternalReference(
-                            type_=extRef.type,
-                            otherType=extRef.otherType,
-                            value=extRef.value,
-                            label=extRef.label,
-                            description=extRef.description
-                        ),
-                        start_index
+                    bA.external_references.insert(
+                        start_index,
+                        reference,
                     )
                 except IndexError:
-                    bA.externalReferences.add_externalReference(
-                        schema.SFFExternalReference(
-                            type_=extRef.type,
-                            otherType=extRef.otherType,
-                            value=extRef.value,
-                            label=extRef.label,
-                            description=extRef.description
-                        )
+                    bA.external_references.append(
+                        reference
                     )
                 start_index += 1
-            segment.biologicalAnnotation = bA
-        # complexesAndMacromolecules
-        if not segment.complexesAndMacromolecules:
-            print_date(
-                "Note: no complexes and macromolecules were found. You may edit only after adding with 'sff notes add'.")
-        else:
-            cAM = segment.complexesAndMacromolecules
-            # complexes
-            if self.complexes:
-                for i in _xrange(len(self.complexes)):
-                    if i == 0:  # there are complexes but editing the first item mentioned
-                        try:
-                            cAM.complexes.replace_complex_at(self.complexId + i, self.complexes[i])
-                        except IndexError:
-                            cAM.complexes.add_complex(self.complexes[i])
-                    else:  # all other new complexes are inserted after pushing others down
-                        try:
-                            cAM.complexes.insert_complex_at(self.complexId + i, self.complexes[i])
-                        except IndexError:
-                            cAM.complexes.add_complex(self.complexes[i])
-                # if cAM.complexes:  # complexes already present
-                # else:  # no complexes
-                #     complexes = schema.SFFComplexes()
-                #     for c in self.complexes:
-                #         complexes.add_complex(c)
-                #     cAM.complexes = complexes
-            # macromolecules
-            if self.macromolecules:
-                for i in _xrange(len(self.macromolecules)):
-                    if i == 0:  # there are macromolecules but editing the first item mentioned
-                        try:
-                            cAM.macromolecules.replace_macromolecule_at(self.macromoleculeId + i,
-                                                                        self.macromolecules[i])
-                        except IndexError:
-                            cAM.macromolecules.add_macromolecule(self.macromolecules[i])
-                    else:  # all other new macromolecules are inserted after pushing others down
-                        try:
-                            cAM.macromolecules.insert_macromolecule_at(self.macromoleculeId + i,
-                                                                       self.macromolecules[i])
-                        except IndexError:
-                            cAM.macromolecules.add_macromolecule(self.macromolecules[i])
-                # if cAM.macromolecules:  # macromolecules already present
-                # else:  # no macromolecules
-                #     macromolecules = schema.SFFMacromolecules()
-                #     for m in self.macromolecules:
-                #         macromolecules.add_macromolecule(m)
-                #     cAM.macromolecules = macromolecules
-            segment.complexesAndMacromolecules = cAM
+            segment.biological_annotation = bA
         return segment
 
     def del_from_segment(self, segment):
@@ -611,13 +572,13 @@ class AbstractNote(BaseNote):
                 bA.description = None
             if self.numberOfInstances:
                 bA.numberOfInstances = None
-            if self.externalReferenceId:
+            if self.external_reference_id:
                 if bA.externalReferences:
                     # current extRefs
                     refs = list(bA.externalReferences)
                     # extract the items to be removed
                     to_remove = list()
-                    for i in self.externalReferenceId:
+                    for i in self.external_reference_id:
                         try:
                             to_remove.append(refs[i])
                         except IndexError:
@@ -629,12 +590,12 @@ class AbstractNote(BaseNote):
                     bA.externalReferences = schema.SFFExternalReferences(refs)
                 else:
                     print_date("No external references to delete from!")
-            # if self.externalReferenceId is not None:  # it could be 0, which is valid but False
+            # if self.external_reference_id is not None:  # it could be 0, which is valid but False
             #     if bA.externalReferences:
             #         try:
-            #             del bA.externalReferences[self.externalReferenceId]  # externalReferences is a list
+            #             del bA.externalReferences[self.external_reference_id]  # externalReferences is a list
             #         except IndexError:
-            #             print_date("Failed to delete external reference of ID {}".format(self.externalReferenceId))
+            #             print_date("Failed to delete external reference of ID {}".format(self.external_reference_id))
             #     else:
             #         print_date("No external references to delete from.")
             segment.biologicalAnnotation = bA
@@ -709,35 +670,27 @@ class ArgsNote(AbstractNote):
         super(ArgsNote, self).__init__(*args_, **kwargs_)
         self.name = args.segment_name
         self.description = args.description
-        self.numberOfInstances = args.number_of_instances
+        self.number_of_instances = args.number_of_instances
         if hasattr(args, 'external_ref_id'):
-            self.externalReferenceId = args.external_ref_id
+            self.external_reference_id = args.external_ref_id
         # externalReferences
         if hasattr(args, 'external_ref'):  # sff notes del has no -E arg
             if args.external_ref:
-                for _type, _otherType, _value in args.external_ref:
-                    self._extRefList.append(
+                for resource, url, accession in args.external_ref:
+                    self._ext_ref_list.append(
                         ExternalReference(
-                            type_=_type,
-                            otherType=_otherType,
-                            value=_value
+                            resource=resource,
+                            url=url,
+                            accession=accession
                         )
                     )
-        if hasattr(args, 'complex_id'):
-            self.complexId = args.complex_id
-        if hasattr(args, 'complexes'):
-            self.complexes = args.complexes
-        if hasattr(args, 'macromolecule_id'):
-            self.macromoleculeId = args.macromolecule_id
-        if hasattr(args, 'macromolecules'):
-            self.macromolecules = args.macromolecules
 
 
 class SimpleNote(AbstractNote):
     """Class definition for a :py:class:`SimpleNote` object"""
 
     def __init__(
-            self, name=None, description=None, numberOfInstances=None, externalReferenceId=None,
+            self, name=None, description=None, numberOfInstances=None, external_reference_id=None,
             externalReferences=None, complexId=None, complexes=None,
             macromoleculeId=None, macromolecules=None, *args, **kwargs
     ):
@@ -745,7 +698,7 @@ class SimpleNote(AbstractNote):
 
         :param str description: the description string of the segment
         :param int numberOfInstances: the number of instances of this segment
-        :param int externalReferenceId: ID of an external reference
+        :param int external_reference_id: ID of an external reference
         :param externalReferences: iterable of external references
         :param complexId: ID of a complex
         :param complexes: iterable of complexes
@@ -756,11 +709,11 @@ class SimpleNote(AbstractNote):
         self.name = name
         self.description = description
         self.numberOfInstances = numberOfInstances
-        self.externalReferenceId = externalReferenceId
+        self.external_reference_id = external_reference_id
         # externalReferences
         if externalReferences:
             for _type, _otherType, _value in externalReferences:
-                self._extRefList.append(ExternalReference(type_=_type, otherType=_otherType, value=_value))
+                self._ext_ref_list.append(ExternalReference(type_=_type, otherType=_otherType, value=_value))
         self.complexId = complexId
         self.complexes = complexes
         self.macromoleculeId = macromoleculeId
@@ -776,7 +729,7 @@ def add_note(args, configs):
     :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
     if args.segment_id is None:
         # create a GlobalArgsNote object
@@ -815,7 +768,7 @@ def edit_note(args, configs):
     :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
     if args.segment_id is None:
         #  create a GlobalArgsNote object
@@ -823,7 +776,7 @@ def edit_note(args, configs):
         # edit the notes in the segmentation
         # editing name, software, filePath, details are exactly the same as adding
         #  editing external references is different:
-        # the externalReferenceId refers to the extRef to edit
+        # the external_reference_id refers to the extRef to edit
         # any additionally specified external references (-E a b -E x y) are inserted after the edited index
         sff_seg = global_note.edit_in_segmentation(sff_seg)
         #  show the updated header
@@ -858,7 +811,7 @@ def del_note(args, configs):
     :type configs: ``sfftk.core.configs.Congif``
     :return int status: status
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
     if args.segment_id is None:
         # create a GlobalArgsNote object

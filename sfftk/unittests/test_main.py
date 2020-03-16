@@ -9,7 +9,8 @@ from __future__ import division
 
 import glob
 import os
-import unittest
+
+from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
 from .. import BASE_DIR
@@ -26,16 +27,16 @@ host = 'localhost'
 port = '4064'
 
 
-class TestMain_handle_convert(unittest.TestCase):
+class TestMain_handle_convert(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
-        unittest.TestCase.setUp(self)
+        Py23FixTestCase.setUp(self)
 
     def tearDown(self):
-        unittest.TestCase.tearDown(self)
+        Py23FixTestCase.tearDown(self)
         for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')):
             os.remove(s)
 
@@ -85,10 +86,10 @@ class TestMain_handle_convert(unittest.TestCase):
 
     def test_survos(self):
         """Test that we can convert SuRVoS (.h5) files"""
-        args, configs = parse_args('convert -o {} {} --config-path {}'.format(
-            os.path.join(TEST_DATA_PATH, 'test_data.sff'),
-            os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
-            self.config_fn,
+        args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
+            config=self.config_fn,
         ), use_shlex=True)
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
@@ -168,7 +169,7 @@ class TestMain_handle_convert(unittest.TestCase):
 """
 
 
-class TestMain_handle_view(unittest.TestCase):
+class TestMain_handle_view(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -222,7 +223,7 @@ class TestMain_handle_view(unittest.TestCase):
         self.assertEqual(0, Main.handle_view(args, configs))
 
 
-class TestMain_handle_notes(unittest.TestCase):
+class TestMain_handle_notes(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
@@ -250,7 +251,7 @@ class TestMain_handle_notes(unittest.TestCase):
         self.assertEqual(0, Main.handle_notes_search(args, configs))
 
 
-class TestMain_handle_prep(unittest.TestCase):
+class TestMain_handle_prep(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
