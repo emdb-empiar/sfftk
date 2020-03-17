@@ -25,7 +25,11 @@
       "data": "3.3900001049 0.0 0.0 -430.529998779 0.0 3.3900001049 0.0 -430.529998779 0.0 0.0 3.3900001049 -430.529998779"
     }
   ],
-  "bounding_box": null,
+  "bounding_box": {
+    "xmin": 0.0,
+    "ymin": 0.0,
+    "zmin": 0.0
+  },
   "global_external_references": [],
   "segment_list": [
     {
@@ -408,5 +412,6 @@
       "three_d_volume": null,
       "shape_primitive_list": []
     }
-  ]
+  ],
+  "lattice_list": []
 }

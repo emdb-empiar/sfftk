@@ -36,137 +36,138 @@ __date__ = "2017-05-15"
 class TestNotesModifyExternalReference(Py23FixTestCase):
     def test_ols(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'ncit'
-        otherType = u'http://purl.obolibrary.org/obo/NCIT_C62195'
-        value = u'NCIT_C62195'
+        resource = u'ncit'
+        url = u'http://purl.obolibrary.org/obo/NCIT_C62195'
+        accession = u'NCIT_C62195'
         # likely to change
         label = u'Wild Type'
         description = u'The naturally-occurring, normal, non-mutated version of a gene or genome.'
-        urlenc = _urlencode({u'iri': otherType.encode(u'idna')})
+        urlenc = _urlencode({u'iri': url.encode(u'idna')})
         urlenc2 = _urlencode({u'iri': urlenc.split(u'=')[1]})
         urlenc3 = urlenc2.split(u'=')[1]
-        extRef = modify.ExternalReference(
-            type_=type_,
-            otherType=otherType,
-            value=value,
+        ext_ref = modify.ExternalReference(
+            resource=resource,
+            url=url,
+            accession=accession,
         )
-        self.assertEqual(extRef.type, type_)
-        self.assertEqual(extRef.otherType, otherType)
-        self.assertEqual(extRef.value, value)
-        self.assertEqual(extRef.label, label)
-        self.assertEqual(extRef.description,
+        self.assertEqual(ext_ref.resource, resource)
+        self.assertEqual(ext_ref.url, url)
+        self.assertEqual(ext_ref.accession, accession)
+        self.assertEqual(ext_ref.label, label)
+        self.assertEqual(ext_ref.description,
                          description)
-        self.assertCountEqual(extRef._get_text(), [label, description])
-        self.assertEqual(extRef.iri, urlenc3)
+        self.assertCountEqual(ext_ref._get_text(), [label, description])
+        self.assertEqual(ext_ref.iri, urlenc3)
 
     def test_emdb(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'EMDB'
-        otherType = u'https://www.ebi.ac.uk/pdbe/emdb/EMD-8654'
-        value = u'EMD-8654'
+        resource = u'EMDB'
+        url = u'https://www.ebi.ac.uk/pdbe/emdb/EMD-8654'
+        accession = u'EMD-8654'
         # likely to change
         label = u'EMD-8654'
         description = u'Zika virus-infected Vero E6 cell at 48 hpi: dual-axis tilt series tomogram from 3 serial sections'
-        extRef = modify.ExternalReference(
-            type_=type_,
-            otherType=otherType,
-            value=value,
+        ext_ref = modify.ExternalReference(
+            resource=resource,
+            url=url,
+            accession=accession,
         )
-        self.assertEqual(extRef.type, type_)
-        self.assertEqual(extRef.otherType, otherType)
-        self.assertEqual(extRef.value, value)
-        self.assertEqual(extRef.label, label)
-        self.assertEqual(extRef.description,
+        self.assertEqual(ext_ref.resource, resource)
+        self.assertEqual(ext_ref.url, url)
+        self.assertEqual(ext_ref.accession, accession)
+        self.assertEqual(ext_ref.label, label)
+        self.assertEqual(ext_ref.description,
                          description)
-        self.assertCountEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(ext_ref._get_text(), [label, description])
 
     def test_pdb(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'PDB'
-        otherType = u'https://www.ebi.ac.uk/pdbe/entry/pdb/4gzw'
-        value = u'4gzw'
+        resource = u'PDB'
+        url = u'https://www.ebi.ac.uk/pdbe/entry/pdb/4gzw'
+        accession = u'4gzw'
         # likely to change
         label = u'N2 neuraminidase D151G mutant of A/Tanzania/205/2010 H3N2 in complex with avian sialic acid receptor'
         description = u'H3N2 subtype'
-        extRef = modify.ExternalReference(
-            type_=type_,
-            otherType=otherType,
-            value=value,
+        ext_ref = modify.ExternalReference(
+            resource=resource,
+            url=url,
+            accession=accession,
         )
-        self.assertEqual(extRef.type, type_)
-        self.assertEqual(extRef.otherType, otherType)
-        self.assertEqual(extRef.value, value)
-        self.assertEqual(extRef.label, label)
-        self.assertEqual(extRef.description,
+        self.assertEqual(ext_ref.resource, resource)
+        self.assertEqual(ext_ref.url, url)
+        self.assertEqual(ext_ref.accession, accession)
+        self.assertEqual(ext_ref.label, label)
+        self.assertEqual(ext_ref.description,
                          description)
-        self.assertCountEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(ext_ref._get_text(), [label, description])
 
     def test_uniprot(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'UniProt'
-        otherType = u'https://www.uniprot.org/uniprot/A0A1Q8WSX6'
-        value = u'A0A1Q8WSX6'
+        resource = u'UniProt'
+        url = u'https://www.uniprot.org/uniprot/A0A1Q8WSX6'
+        accession = u'A0A1Q8WSX6'
         # likely to change
         label = u'A0A1Q8WSX6_9ACTO'
         description = u'Type I-E CRISPR-associated protein Cas5/CasD (Organism: Actinomyces oris)'
-        extRef = modify.ExternalReference(
-            type_=type_,
-            otherType=otherType,
-            value=value,
+        ext_ref = modify.ExternalReference(
+            resource=resource,
+            url=url,
+            accession=accession,
         )
-        self.assertEqual(extRef.type, type_)
-        self.assertEqual(extRef.otherType, otherType)
-        self.assertEqual(extRef.value, value)
-        self.assertEqual(extRef.label, label)
-        self.assertEqual(extRef.description,
+        self.assertEqual(ext_ref.resource, resource)
+        self.assertEqual(ext_ref.url, url)
+        self.assertEqual(ext_ref.accession, accession)
+        self.assertEqual(ext_ref.label, label)
+        self.assertEqual(ext_ref.description,
                          description)
-        self.assertCountEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(ext_ref._get_text(), [label, description])
 
     def test_europepmc(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'Europe PMC'
-        otherType = u'http://europepmc.org/abstract/MED/30932919'
-        value = u'30932919'
+        resource = u'Europe PMC'
+        url = u'http://europepmc.org/abstract/MED/30932919'
+        accession = u'30932919'
         label = u'Perugi G, De Rossi P, Fagiolini A, Girardi P, Maina G, Sani G, Serretti A.'
         description = u'Personalized and precision medicine as informants for treatment management of bipolar disorder.'
-        extRef = modify.ExternalReference(
-            type_=type_,
-            otherType=otherType,
-            value=value,
+        ext_ref = modify.ExternalReference(
+            resource=resource,
+            url=url,
+            accession=accession,
         )
-        self.assertEqual(extRef.type, type_)
-        self.assertEqual(extRef.otherType, otherType)
-        self.assertEqual(extRef.value, value)
-        self.assertEqual(extRef.label, label)
-        self.assertEqual(extRef.description,
+        self.assertEqual(ext_ref.resource, resource)
+        self.assertEqual(ext_ref.url, url)
+        self.assertEqual(ext_ref.accession, accession)
+        self.assertEqual(ext_ref.label, label)
+        self.assertEqual(ext_ref.description,
                          description)
-        self.assertCountEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(ext_ref._get_text(), [label, description])
 
     def test_empiar(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        type_ = u'EMPIAR'
-        otherType = u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10087/'
-        value = u'EMPIAR-10087'
+        resource = u'EMPIAR'
+        url = u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10087/'
+        accession = u'EMPIAR-10087'
         label = u'Soft X-ray tomography of Plasmodium falciparum infected human erythrocytes stalled in egress by the ' \
                 u'inhibitors Compound 2 and E64'
         description = u'SXT'
-        extRef = modify.ExternalReference(
-            type_=type_,
-            otherType=otherType,
-            value=value,
+        ext_ref = modify.ExternalReference(
+            resource=resource,
+            url=url,
+            accession=accession,
         )
-        self.assertEqual(extRef.type, type_)
-        self.assertEqual(extRef.otherType, otherType)
-        self.assertEqual(extRef.value, value)
-        self.assertEqual(extRef.label, label)
-        self.assertEqual(extRef.description,
+        self.assertEqual(ext_ref.resource, resource)
+        self.assertEqual(ext_ref.url, url)
+        self.assertEqual(ext_ref.accession, accession)
+        self.assertEqual(ext_ref.label, label)
+        self.assertEqual(ext_ref.description,
                          description)
-        self.assertCountEqual(extRef._get_text(), [label, description])
+        self.assertCountEqual(ext_ref._get_text(), [label, description])
 
 
 class TestNotesFindSearchResource(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestNotesFindSearchResource, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_unknown_resource(self):
@@ -405,7 +406,7 @@ class TestNotes_view(Py23FixTestCase):
         ), use_shlex=True)
         status = view.list_notes(args, configs)
         # assertions
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
 
     def test_long_list(self):
         """Test that we can long list (-l) the list of segmentations with annotations"""
@@ -415,7 +416,7 @@ class TestNotes_view(Py23FixTestCase):
         ), use_shlex=True)
         status = view.list_notes(args, configs)
         # assertions
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
 
     def test_show_default(self):
         """Test that we can show annotations in a single segment"""
@@ -425,7 +426,7 @@ class TestNotes_view(Py23FixTestCase):
             self.config_fn,
         ), use_shlex=True)
         status = view.show_notes(args, configs)
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
 
     def test_long_show(self):
         """Test that we can show in long format annotations in a single segment"""
@@ -435,7 +436,7 @@ class TestNotes_view(Py23FixTestCase):
             self.config_fn,
         ), use_shlex=True)
         status = view.show_notes(args, configs)
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
 
 
 class TestNotes_modify(Py23FixTestCase):
@@ -493,7 +494,7 @@ class TestNotes_modify(Py23FixTestCase):
         # pass modified args to modify
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation.from_file(args.sff_file)
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
         self.assertEqual(seg.name, name)
         self.assertEqual(seg.details, details)
         self.assertTrue(len(seg.software_list) > 0)
@@ -535,7 +536,7 @@ class TestNotes_modify(Py23FixTestCase):
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation.from_file(args.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
         self.assertEqual(segment.biological_annotation.description, desc)
         self.assertEqual(segment.biological_annotation.number_of_instances, num)
         self.assertEqual(segment.biological_annotation.external_references[0].resource, extref1[0])
@@ -598,7 +599,7 @@ class TestNotes_modify(Py23FixTestCase):
         status1 = modify.edit_note(args1, configs)
         # we have to compare against the temp-annotated.json file!!!
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
-        self.assertEqual(status1, 0)
+        self.assertEqual(status1, os.EX_OK)
         self.assertEqual(seg.name, name1)
         self.assertEqual(seg.details, details1)
         self.assertTrue(len(seg.software_list), len(_seg.software_list))
@@ -661,7 +662,7 @@ class TestNotes_modify(Py23FixTestCase):
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
         self.stderr(segment)
-        self.assertEqual(status1, 0)
+        self.assertEqual(status1, os.EX_OK)
         self.assertEqual(segment.biological_annotation.name, segment_name1)
         self.assertEqual(segment.biological_annotation.description, desc1)
         self.assertEqual(segment.biological_annotation.number_of_instances, num1)
@@ -672,8 +673,8 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertEqual(segment.biological_annotation.external_references[2].url, extref2[1])
         self.assertEqual(segment.biological_annotation.external_references[2].accession, extref2[2])
 
-    def test_del_global(self):
-        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
+    def _test_del_global(self):
+        # self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
         name = ' '.join(rw.random_words())
         details = li.get_sentences(sentences=3)
         software_name = rw.random_word()
@@ -697,81 +698,77 @@ class TestNotes_modify(Py23FixTestCase):
         )
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
-        self.stderr(args)
         modify.add_note(args, configs)
-        cmd1 = "notes del -N -D -s 1 -e 1 @ --verbose --config-path {config}".format(
+        cmd1 = "notes del -D -s 1 -e 0,1 @ --verbose --config-path {config}".format(
             config=self.config_fn,
         )
         _args1, configs = parse_args(cmd1, use_shlex=True)
         args1 = _handle_notes_modify(_args1, configs)
-        self.stderr(args1)
         status1 = modify.del_note(args1, configs)
-        self.assertEqual(status1, 0)
+        self.assertEqual(status1, os.EX_OK)
+        seg = schema.SFFSegmentation.from_file(args1.sff_file)
+        self.assertIsNone(seg.details)
+        self.assertEqual(len(seg.software_list), 1)
+        self.assertEqual(len(seg.global_external_references), os.EX_OK)
 
     def _test_del(self):
-        """Test that we can delete a note"""
-        segment_name = 'the segment name'
-        desc = 'a short description'
+        # add
+        # self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
+        name = ' '.join(rw.random_words(count=3))
+        descr = li.get_sentences(sentences=2)
         num = _random_integer()
-        extref = ['lsfj', 'sljfs', 'dsljfl']
-        complexes = ['09ej', 'euoisd', 'busdif']
-        macromolecules = ['xuidh', '29hf98e', 'ygce']
-        cmd = "notes add -i {segment_id} -D '{description}' -E {extref} -n {num} -C {complexes} -M {macromolecules} " \
-              "{sff_file} --config-path {config}".format(
+        extref1 = ' '.join(rw.random_words(count=3))
+        extref2 = ' '.join(rw.random_words(count=3))
+        cmd = "notes add -i {segment_id} -n '{name}' -d '{descr}' -I {num} -E {extref1} -E {extref2} " \
+              "{file} --config-path {config}".format(
             segment_id=self.segment_id,
-            description=desc,
-            extref=" ".join(extref),
+            name=name,
+            descr=descr,
             num=num,
-            complexes=','.join(complexes),
-            macromolecules=','.join(macromolecules),
-            sff_file=self.sff_file,
-            config=self.config_fn,
+            extref1=extref1,
+            extref2=extref2,
+            file=self.sff_file,
+            config=self.config_fn
         )
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
-        # add
-        modify.add_note(args, configs)
+        status = modify.add_note(args, configs)
+        self.stderr('status:', status)
         # delete
-        cmd1 = "notes del -i {segment_id} -D -e 0 -n -c 0 -m 1 @ --config-path {config}".format(
+        cmd1 = "notes del -i {segment_id} -n -d -I -e 0,1 @ --config-path {config}".format(
             segment_id=self.segment_id,
-            config=self.config_fn,
+            config=self.config_fn
         )
-        _args1, configs = parse_args(cmd1, use_shlex=True)
-        args1 = _handle_notes_modify(_args1, configs)
-        status1 = modify.del_note(args1, configs)
-        seg = schema.SFFSegmentation(args1.sff_file)
-        segment = seg.segments.get_by_id(self.segment_id)
-        self.assertEqual(status1, 0)
-        self.assertIsNone(segment.biologicalAnnotation.name)
-        self.assertIsNone(segment.biologicalAnnotation.description)
-        self.assertIsNone(segment.biologicalAnnotation.numberOfInstances)
-        self.assertEqual(len(segment.biologicalAnnotation.externalReferences), 0)
-        self.assertEqual(len(segment.complexesAndMacromolecules.complexes), 2)
-        self.assertEqual(len(segment.complexesAndMacromolecules.macromolecules), 2)
+        _args1, configs1 = parse_args(cmd1, use_shlex=True)
+        args1 = _handle_notes_modify(_args1, configs1)
+        status1 = modify.del_note(args1, configs1)
+        seg = schema.SFFSegmentation.from_file(args1.sff_file)
+        segment = seg.segment_list.get_by_id(self.segment_id)
+        self.assertEqual(status1, os.EX_OK)
+        self.assertIsNone(segment.biological_annotation.name)
+        self.assertIsNone(segment.biological_annotation.description)
+        self.assertEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertEqual(len(segment.biological_annotation.external_references), 0)
 
     def _test_merge(self):
         """Test that we can merge notes"""
-        segment_name = 'my very nice segment'
-        desc = 'a short description'
+        segment_name = ' '.join(rw.random_words(count=3))
+        desc = li.get_sentences(sentences=2)
         num = _random_integer()
-        extref = ['lsfj', 'sljfs', 'ldjss']
-        complexes = ['09ej', 'euoisd', 'busdif']
-        macromolecules = ['xuidh', '29hf98e', 'ygce']
+        extref = rw.random_words(count=3)
         # add
-        cmd = "notes add -i {} -s '{}' -d '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-            self.segment_id,
-            segment_name,
-            desc,
-            " ".join(extref),
-            num,
-            ','.join(complexes),
-            ','.join(macromolecules),
-            self.sff_file,
-            self.config_fn,
+        cmd = "notes add -i {segment_id} -n '{segment_name}' -d '{desc}' -E {extref} -I {num} {sff_file} --config-path {config}".format(
+            segment_id=self.segment_id,
+            segment_name=segment_name,
+            desc=desc,
+            extref=' '.join(extref),
+            num=num,
+            sff_file=self.sff_file,
+            config=self.config_fn,
         )
         args, configs = parse_args(cmd, use_shlex=True)
         status = modify.add_note(args, configs)
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
         # merge
         cmd1 = 'notes merge --source {source} {other} --output {output} --config-path {config_fn}'.format(
             source=self.sff_file,
@@ -779,81 +776,60 @@ class TestNotes_modify(Py23FixTestCase):
             output=self.output,
             config_fn=self.config_fn,
         )
+        self.stderr(cmd1)
         args1, configs1 = parse_args(cmd1, use_shlex=True)
         status1 = modify.merge(args1, configs1)
-        self.assertEqual(status1, 0)
-        source_seg = schema.SFFSegmentation(self.sff_file)
-        output_seg = schema.SFFSegmentation(self.output)
+        self.assertEqual(status1, os.EX_OK)
+        source_seg = schema.SFFSegmentation.from_file(self.sff_file)
+        output_seg = schema.SFFSegmentation.from_file(self.output)
         source_segment = source_seg.segments.get_by_id(self.segment_id)
-        # print('description: ' + source_segment.biologicalAnnotation.description, file=sys.stderr)
+        print('description: ' + source_segment.biological_annotation.description, file=sys.stderr)
         output_segment = output_seg.segments.get_by_id(self.segment_id)
-        self.assertEqual(source_segment.biologicalAnnotation.name, segment_name)
-        self.assertEqual(source_segment.biologicalAnnotation.description, desc)
-        self.assertEqual(source_segment.biologicalAnnotation.description,
-                         output_segment.biologicalAnnotation.description)
-        self.assertEqual(source_segment.biologicalAnnotation.numberOfInstances, num)
-        self.assertEqual(source_segment.biologicalAnnotation.numberOfInstances,
-                         output_segment.biologicalAnnotation.numberOfInstances)
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].type, extref[0])
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].otherType, extref[1])
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].value, extref[2])
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].type,
-                         output_segment.biologicalAnnotation.externalReferences[0].type)
-        self.assertEqual(source_segment.complexesAndMacromolecules.complexes[0], complexes[0])
-        self.assertEqual(source_segment.complexesAndMacromolecules.complexes[1], complexes[1])
-        self.assertEqual(source_segment.complexesAndMacromolecules.complexes[2], complexes[2])
-        self.assertEqual(source_segment.complexesAndMacromolecules.macromolecules[0], macromolecules[0])
-        self.assertEqual(source_segment.complexesAndMacromolecules.macromolecules[1], macromolecules[1])
-        self.assertEqual(source_segment.complexesAndMacromolecules.macromolecules[2], macromolecules[2])
-        self.assertEqual(source_segment.complexesAndMacromolecules.complexes[0],
-                         output_segment.complexesAndMacromolecules.complexes[0])
-        self.assertEqual(source_segment.complexesAndMacromolecules.complexes[1],
-                         output_segment.complexesAndMacromolecules.complexes[1])
-        self.assertEqual(source_segment.complexesAndMacromolecules.complexes[2],
-                         output_segment.complexesAndMacromolecules.complexes[2])
-        self.assertEqual(source_segment.complexesAndMacromolecules.macromolecules[0],
-                         output_segment.complexesAndMacromolecules.macromolecules[0])
-        self.assertEqual(source_segment.complexesAndMacromolecules.macromolecules[1],
-                         output_segment.complexesAndMacromolecules.macromolecules[1])
-        self.assertEqual(source_segment.complexesAndMacromolecules.macromolecules[2],
-                         output_segment.complexesAndMacromolecules.macromolecules[2])
+        self.assertEqual(source_segment.biological_annotation.name, segment_name)
+        self.assertEqual(source_segment.biological_annotation.description, desc)
+        self.assertEqual(source_segment.biological_annotation.description,
+                         output_segment.biological_annotation.description)
+        self.assertEqual(source_segment.biological_annotation.number_of_instances, num)
+        self.assertEqual(source_segment.biological_annotation.number_of_instances,
+                         output_segment.biological_annotation.number_of_instances)
+        self.assertEqual(source_segment.biological_annotation.external_references[0].resource, extref[0])
+        self.assertEqual(source_segment.biological_annotation.external_references[0].url, extref[1])
+        self.assertEqual(source_segment.biological_annotation.external_references[0].accession, extref[2])
+        self.assertEqual(source_segment.biological_annotation.external_references[0].resource,
+                         output_segment.biological_annotation.external_references[0].resource)
 
     def _test_clear(self):
         """Test that we can clear notes"""
-        segment_name = 'my very nice segment'
-        desc = 'a short description'
+        segment_name = ' '.join(rw.random_words(count=3))
+        desc = li.get_sentences(sentences=2)
         num = _random_integer()
-        extref = ['lsfj', 'sljfs', 'ldjss']
-        complexes = ['09ej', 'euoisd', 'busdif']
-        macromolecules = ['xuidh', '29hf98e', 'ygce']
+        extref = rw.random_words(count=3)
         # add
-        cmd = "notes add -i {} -s '{}' -D '{}' -E {} -n {} -C {} -M {} {} --config-path {}".format(
-            self.segment_id,
-            segment_name,
-            desc,
-            " ".join(extref),
-            num,
-            ','.join(complexes),
-            ','.join(macromolecules),
-            self.sff_file,
-            self.config_fn,
+        cmd = "notes add -i {segment_id} -n '{name}' -d '{desc}' -E {extref} -I {num} {sff_file} " \
+              "--config-path {config}".format(
+            segment_id=self.segment_id,
+            name=segment_name,
+            desc=desc,
+            extref=" ".join(extref),
+            num=num,
+            sff_file=self.sff_file,
+            config=self.config_fn,
         )
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
         status = modify.add_note(args, configs)
-        self.assertEqual(status, 0)
+        self.assertEqual(status, os.EX_OK)
         # clear
         cmd1 = 'notes clear --all @ --config-path {config_fn}'.format(
-            # self.sff_file,
             config_fn=self.config_fn,
         )
         _args1, configs1 = parse_args(cmd1, use_shlex=True)
         args1 = _handle_notes_modify(_args1, configs1)
         status1 = modify.clear_notes(args1, configs1)
-        self.assertEqual(status1, 0)
-        seg = schema.SFFSegmentation(args1.sff_file)
+        self.assertEqual(status1, os.EX_OK)
+        seg = schema.SFFSegmentation.from_file(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
-        self.assertEqual(len(segment.biologicalAnnotation.externalReferences), 0)
+        self.assertEqual(len(segment.biological_annotation.external_references), 0)
 
     def _test_copy(self):
         """Test that we can copy notes"""
@@ -864,14 +840,13 @@ class TestNotes_modify(Py23FixTestCase):
         shutil.copy2(self.annotated_sff_file, annotated_sff_file)
         # use the file copy
         # before copy
-        seg = schema.SFFSegmentation(annotated_sff_file)
+        seg = schema.SFFSegmentation.from_file(annotated_sff_file)
         source_segment = seg.segments.get_by_id(15559)
         # copy
         cmd = "notes copy -i 15559 -t 15578 {ann_sff_file} --config-path {config}".format(
             ann_sff_file=annotated_sff_file,
             config=self.config_fn
         )
-        print(cmd, file=sys.stderr)
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
         status1 = modify.copy_notes(args, configs)
@@ -880,7 +855,6 @@ class TestNotes_modify(Py23FixTestCase):
             sff_file=annotated_sff_file,
             config=self.config_fn,
         )
-        print(cmd1, file=sys.stderr)
         args, configs = parse_args(cmd1, use_shlex=True)
         status3 = modify.save(args, configs)
         # debug
@@ -891,18 +865,18 @@ class TestNotes_modify(Py23FixTestCase):
         _args1, config = parse_args(cmd2, use_shlex=True)
         args1 = _handle_notes_modify(_args1, config)
         view.list_notes(args1, config)
-        self.assertEqual(status1, 0)
+        self.assertEqual(status1, os.EX_OK)
 
-        copied_seg = schema.SFFSegmentation(annotated_sff_file)
+        copied_seg = schema.SFFSegmentation.from_file(annotated_sff_file)
         copied_segment = copied_seg.segments.get_by_id(15578)
-        self.assertEqual(len(source_segment.biologicalAnnotation.externalReferences),
-                         len(copied_segment.biologicalAnnotation.externalReferences))
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].type,
-                         copied_segment.biologicalAnnotation.externalReferences[0].type)
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].otherType,
-                         copied_segment.biologicalAnnotation.externalReferences[0].otherType)
-        self.assertEqual(source_segment.biologicalAnnotation.externalReferences[0].value,
-                         copied_segment.biologicalAnnotation.externalReferences[0].value)
+        self.assertEqual(len(source_segment.biological_annotation.external_references),
+                         len(copied_segment.biological_annotation.external_references))
+        self.assertEqual(source_segment.biological_annotation.external_references[0].resource,
+                         copied_segment.biological_annotation.external_references[0].resource)
+        self.assertEqual(source_segment.biological_annotation.external_references[0].url,
+                         copied_segment.biological_annotation.external_references[0].url)
+        self.assertEqual(source_segment.biological_annotation.external_references[0].accession,
+                         copied_segment.biological_annotation.external_references[0].accession)
         # # get rid of the copy
         os.remove(annotated_sff_file)
 
@@ -935,6 +909,9 @@ class TestNotes_modify_sff(TestNotes_modify):
     def test_edit(self):
         super(TestNotes_modify_sff, self)._test_edit()
 
+    def test_del_global(self):
+        super(TestNotes_modify_sff, self)._test_del_global()
+
     def test_del(self):
         super(TestNotes_modify_sff, self)._test_del()
 
@@ -951,25 +928,33 @@ class TestNotes_modify_sff(TestNotes_modify):
 class TestNotes_modify_hff(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_hff, self).setUp()
-        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
-        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.hff')
-        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1014.hff')
-        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.hff')
+        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.hff')
+        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'other_emd_1014.hff')
+        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'output_emd_1014.hff')
+        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'annotated_emd_1014.hff')
 
     def tearDown(self):
         super(TestNotes_modify_hff, self).tearDown()
-        seg = schema.SFFSegmentation(self.sff_file)
+        seg = schema.SFFSegmentation.from_file(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
-            segment.biologicalAnnotation = schema.SFFBiologicalAnnotation()
-            segment.complexesAndMacromolecules = schema.SFFComplexesAndMacromolecules()
+            segment.biological_annotation = schema.SFFBiologicalAnnotation()
         seg.export(self.sff_file)
+
+    def test_add_global(self):
+        super(TestNotes_modify_hff, self)._test_add_global()
 
     def test_add(self):
         super(TestNotes_modify_hff, self)._test_add()
 
+    def test_edit_global(self):
+        super(TestNotes_modify_hff, self)._test_edit_global()
+
     def test_edit(self):
         super(TestNotes_modify_hff, self)._test_edit()
+
+    def _test_del_global(self):
+        super(TestNotes_modify_hff, self)._test_del_global()
 
     def test_del(self):
         super(TestNotes_modify_hff, self)._test_del()
@@ -985,18 +970,17 @@ class TestNotes_modify_hff(TestNotes_modify):
 class TestNotes_modify_json(TestNotes_modify):
     def setUp(self):
         super(TestNotes_modify_json, self).setUp()
-        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.json')
-        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'other_emd_1014.json')
-        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'output_emd_1181.json')
-        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'annotated_emd_1014.json')
+        self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.json')
+        self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'other_emd_1014.json')
+        self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'output_emd_1181.json')
+        self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'annotated_emd_1014.json')
 
     def tearDown(self):
         super(TestNotes_modify_json, self).tearDown()
-        seg = schema.SFFSegmentation(self.sff_file)
+        seg = schema.SFFSegmentation.from_file(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
-            segment.biologicalAnnotation = schema.SFFBiologicalAnnotation()
-            segment.complexesAndMacromolecules = schema.SFFComplexesAndMacromolecules()
+            segment.biological_annotation = schema.SFFBiologicalAnnotation()
         seg.export(self.sff_file)
 
     def test_add(self):
@@ -1021,6 +1005,7 @@ class TestNotes_modify_json(TestNotes_modify):
 class TestNotesClasses(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestNotesClasses, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_SimpleNote(self):
@@ -1028,45 +1013,33 @@ class TestNotesClasses(Py23FixTestCase):
         name = li.get_sentence()
         description = li.get_sentences(5)
         num = _random_integer(1)
-        numExtRefs = _random_integer(2)
-        extRefs = [rw.random_words(count=3) for _ in _xrange(3)]
-        complexId = _random_integer(1)
-        complexes = rw.random_words(count=_random_integer(2, 7))
-        macromoleculeId = _random_integer(1)
-        macromolecules = rw.random_words(count=_random_integer(2, 7))
+        num_ext_refs = _random_integer(2)
+        ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
         sn = modify.SimpleNote(
             name=name,
             description=description,
-            numberOfInstances=num,
-            externalReferenceId=numExtRefs,
-            externalReferences=extRefs,
-            complexId=complexId,
-            complexes=complexes,
-            macromoleculeId=macromoleculeId,
-            macromolecules=macromolecules,
+            number_of_instances=num,
+            external_reference_id=num_ext_refs,
+            external_references=ext_refs,
         )
         self.assertEqual(sn.name, name)
         self.assertEqual(sn.description, description)
-        self.assertEqual(sn.numberOfInstances, num)
-        self.assertEqual(sn.complexId, complexId)
-        self.assertEqual(sn.macromoleculeId, macromoleculeId)
-        for idx, extRef_ in enumerate(sn.externalReferences):
+        self.assertEqual(sn.number_of_instances, num)
+        for idx, ext_ref in enumerate(sn.external_references):
             self.assertCountEqual(
-                [extRef_.type, extRef_.otherType, extRef_.value],
-                extRefs[idx],
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
+                ext_refs[idx],
             )
-            self.assertIsInstance(extRef_, modify.ExternalReference)
-        self.assertCountEqual(sn.complexes, complexes)
-        self.assertCountEqual(sn.macromolecules, macromolecules)
+            self.assertIsInstance(ext_ref, modify.ExternalReference)
         # direct assigment of external references
         eRefs = [rw.random_words(count=3) for _ in _xrange(3)]
-        sn.externalReferences = eRefs
-        for idx, extRef_ in enumerate(sn.externalReferences):
+        sn.external_references = eRefs
+        for idx, ext_ref in enumerate(sn.external_references):
             self.assertCountEqual(
-                [extRef_.type, extRef_.otherType, extRef_.value],
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
                 eRefs[idx],
             )
-            self.assertIsInstance(extRef_, modify.ExternalReference)
+            self.assertIsInstance(ext_ref, modify.ExternalReference)
 
     def test_GlobalArgsNote(self):
         """Test GlobalArgsNote (construct global notes from command-line arguments)"""
@@ -1075,8 +1048,8 @@ class TestNotesClasses(Py23FixTestCase):
         sw_name = rw.random_word()
         sw_version = rw.random_word()
         sw_proc = li.get_sentences(sentences=5)
-        extRefs = [rw.random_words(count=3) for _ in _xrange(3)]
-        cmd = "notes add -N '{name}' -D '{details}' -S '{sw_name}' -V '{sw_version}' -P '{sw_proc}' file.sff " \
+        ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
+        cmd = "notes add -N '{name}' -D '{details}' -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' file.sff " \
               "--config-path {config}".format(
             name=name,
             details=details,
@@ -1085,35 +1058,36 @@ class TestNotesClasses(Py23FixTestCase):
             sw_proc=sw_proc,
             config=self.config_fn,
         )
-        for e in extRefs:
+        for e in ext_refs:
             cmd += ' -E {} '.format(' '.join(e))
         args, configs = parse_args(cmd, use_shlex=True)
         gan = modify.GlobalArgsNote(args, configs)
         self.assertEqual(gan.name, name)
         self.assertEqual(gan.details, details)
-        self.assertEqual(gan.softwareName, sw_name)
-        self.assertEqual(gan.softwareVersion, sw_version)
-        self.assertEqual(gan.softwareProcessingDetails, sw_proc)
-        for idx, extRef_ in enumerate(gan.externalReferences):
+        self.assertEqual(gan.software_name, sw_name)
+        self.assertEqual(gan.software_version, sw_version)
+        self.assertEqual(gan.software_processing_details, sw_proc)
+        for idx, ext_ref in enumerate(gan.external_references):
             self.assertCountEqual(
-                [extRef_.type, extRef_.otherType, extRef_.value],
-                extRefs[idx],
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
+                ext_refs[idx],
             )
-            self.assertIsInstance(extRef_, modify.ExternalReference)
+            self.assertIsInstance(ext_ref, modify.ExternalReference)
         # add to segmentation
         seg_in = schema.SFFSegmentation()
         seg_out = gan.add_to_segmentation(seg_in)
         self.assertEqual(seg_out.name, name)
         self.assertEqual(seg_out.details, details)
-        for idx, extRef_ in enumerate(seg_out.global_external_references):
+        for idx, ext_ref in enumerate(seg_out.global_external_references):
             self.assertCountEqual(
-                [extRef_.type, extRef_.otherType, extRef_.value],
-                extRefs[idx]
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
+                ext_refs[idx]
             )
-            self.assertIsInstance(extRef_, schema.SFFExternalReference)
-        self.assertEqual(seg_out.software.name, sw_name)
-        self.assertEqual(seg_out.software.version, sw_version)
-        self.assertEqual(seg_out.software.processingDetails, sw_proc)
+            self.assertIsInstance(ext_ref, schema.SFFExternalReference)
+        software = seg_out.software_list[0]
+        self.assertEqual(software.name, sw_name)
+        self.assertEqual(software.version, sw_version)
+        self.assertEqual(software.processing_details, sw_proc)
         self.assertEqual(seg_out.details, details)
         # edit in segmentation
         name = li.get_sentence()
@@ -1121,19 +1095,19 @@ class TestNotesClasses(Py23FixTestCase):
         sw_version = rw.random_word()
         sw_proc = li.get_sentences(sentences=5)
         details = li.get_sentences(sentences=10)
-        extRefs = rw.random_words(count=3)
-        extRefs1 = rw.random_words(count=3)
-        extRefs2 = rw.random_words(count=3)
-        cmd_edit = "notes edit -N '{name}' -S '{sw_name}' -V '{sw_version}' -P '{sw_proc}' -D '{details}' -e 2 " \
+        ext_refs = rw.random_words(count=3)
+        ext_refs1 = rw.random_words(count=3)
+        ext_refs2 = rw.random_words(count=3)
+        cmd_edit = "notes edit -N '{name}' -s 0 -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' -D '{details}' -e 2 " \
                    "-E {extRefs} -E {extRefs1} -E {extRefs2} file.sff --config-path {config}".format(
             name=name,
             sw_name=sw_name,
             sw_version=sw_version,
             sw_proc=sw_proc,
             details=details,
-            extRefs=' '.join(extRefs),
-            extRefs1=' '.join(extRefs1),
-            extRefs2=' '.join(extRefs2),
+            extRefs=' '.join(ext_refs),
+            extRefs1=' '.join(ext_refs1),
+            extRefs2=' '.join(ext_refs2),
             config=self.config_fn,
         )
         args, configs = parse_args(cmd_edit, use_shlex=True)
@@ -1141,38 +1115,45 @@ class TestNotesClasses(Py23FixTestCase):
         seg_out_edit = gan_edit.edit_in_segmentation(seg_out)
         # we have edited the last extref
         self.assertEqual(seg_out_edit.name, name)
-        self.assertEqual(seg_out_edit.software.name, sw_name)
-        self.assertEqual(seg_out_edit.software.version, sw_version)
-        self.assertEqual(seg_out_edit.software.processingDetails, sw_proc)
+        software = seg_out_edit.software_list[0]
+        self.assertEqual(software.name, sw_name)
+        self.assertEqual(software.version, sw_version)
+        self.assertEqual(software.processing_details, sw_proc)
         self.assertEqual(seg_out_edit.details, details)
         self.assertEqual(
-            [seg_out_edit.global_external_references[2].type, seg_out_edit.global_external_references[2].otherType,
-             seg_out_edit.global_external_references[2].value],
-            extRefs,
+            [
+                seg_out_edit.global_external_references[2].resource,
+                seg_out_edit.global_external_references[2].url,
+                seg_out_edit.global_external_references[2].accession
+            ],
+            ext_refs,
         )
         self.assertEqual(
-            [seg_out_edit.global_external_references[3].type, seg_out_edit.global_external_references[3].otherType,
-             seg_out_edit.global_external_references[3].value],
-            extRefs1
+            [
+                seg_out_edit.global_external_references[3].resource,
+                seg_out_edit.global_external_references[3].url,
+                seg_out_edit.global_external_references[3].accession
+            ],
+            ext_refs1
         )
         self.assertEqual(
-            [seg_out_edit.global_external_references[4].type, seg_out_edit.global_external_references[4].otherType,
-             seg_out_edit.global_external_references[4].value],
-            extRefs2
+            [
+                seg_out_edit.global_external_references[4].resource,
+                seg_out_edit.global_external_references[4].url,
+                seg_out_edit.global_external_references[4].accession
+            ],
+            ext_refs2
         )
         # delete from segmentation
-        cmd_del = "notes del -N -S -V -P -D -e 0,1,2,3,4,5 file.sff --config-path {config}".format(
+        cmd_del = "notes del -s 0 -D -e 0,1,2,3,4,5 file.sff --config-path {config}".format(
             config=self.config_fn,
         )
         args, configs = parse_args(cmd_del, use_shlex=True)
         gan_del = modify.GlobalArgsNote(args, configs)
         seg_out_del = gan_del.del_from_segmentation(seg_out_edit)
-        self.assertIsNone(seg_out_del.name)
-        self.assertIsNone(seg_out_del.software.name)
-        self.assertIsNone(seg_out_del.software.version)
-        self.assertIsNone(seg_out_del.software.processingDetails)
+        self.assertEqual(len(seg_out_del.software_list), 0)
         self.assertIsNone(seg_out_del.details)
-        self.assertEqual(seg_out_del.numglobal_external_references, 0)
+        self.assertEqual(len(seg_out_del.global_external_references), 0)
 
     def test_ArgsNote(self):
         """Test ArgsNote (construct local notes from command-line arguments)"""
@@ -1180,95 +1161,82 @@ class TestNotesClasses(Py23FixTestCase):
         name = li.get_sentence()
         description = li.get_sentences(sentences=4)
         num = _random_integer(start=1)
-        extRefs = [rw.random_words(count=3) for _ in _xrange(3)]
-        comps = rw.random_words(count=5)
-        macrs = rw.random_words(count=5)
-        cmd_add = "notes add -i {segment_id} -s '{name}' -d '{description}' -n {num} -C {comps} -M {macrs} file.sff --config-path {config}".format(
+        ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
+        cmd_add = "notes add -i {segment_id} -n '{name}' -d '{description}' -I {num} file.sff " \
+                  "--config-path {config}".format(
             segment_id=','.join(map(_str, segment_id)),
             name=name,
             description=description,
             num=num,
-            comps=','.join(comps),
-            macrs=','.join(macrs),
             config=self.config_fn,
         )
-        for e in extRefs:
+        for e in ext_refs:
             cmd_add += ' -E {} '.format(' '.join(e))
         args, configs = parse_args(cmd_add, use_shlex=True)
         # add notes
         an_add = modify.ArgsNote(args, configs)
         segment = schema.SFFSegment()
         segment_add = an_add.add_to_segment(segment)
-        self.assertEqual(segment_add.biologicalAnnotation.name, name)
-        self.assertEqual(segment_add.biologicalAnnotation.description, description)
-        self.assertEqual(segment_add.biologicalAnnotation.numberOfInstances, num)
-        for idx, extRef_ in enumerate(an_add.externalReferences):
+        self.assertEqual(segment_add.biological_annotation.name, name)
+        self.assertEqual(segment_add.biological_annotation.description, description)
+        self.assertEqual(segment_add.biological_annotation.number_of_instances, num)
+        for idx, ext_ref in enumerate(an_add.external_references):
             self.assertCountEqual(
-                [extRef_.type, extRef_.otherType, extRef_.value],
-                extRefs[idx],
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
+                ext_refs[idx],
             )
-            self.assertIsInstance(extRef_, modify.ExternalReference)
-        self.assertCountEqual(segment_add.complexesAndMacromolecules.complexes, comps)
-        self.assertIsInstance(segment_add.complexesAndMacromolecules.complexes, schema.SFFComplexes)
-        self.assertCountEqual(segment_add.complexesAndMacromolecules.macromolecules, macrs)
-        self.assertIsInstance(segment_add.complexesAndMacromolecules.macromolecules, schema.SFFMacromolecules)
+            self.assertIsInstance(ext_ref, modify.ExternalReference)
         # edit notes
         name = li.get_sentence()
         desc = li.get_sentences(sentences=10)
         num = _random_integer(start=1)
-        extRefs = rw.random_words(count=3)
+        ext_refs = rw.random_words(count=3)
         extRefs1 = rw.random_words(count=3)
         extRefs2 = rw.random_words(count=3)
-        comp = rw.random_word()
-        macr = rw.random_word()
-        cmd_edit = "notes edit -i {segment_id} -s '{name}' -d '{desc}' -n {num} " \
-                   "-e 4 -E {extRefs} -E {extRefs1} -E {extRefs2} -c 2 -C {comp} " \
-                   "-m 5 -M {macr} file.sff --config-path {config}".format(
+        cmd_edit = "notes edit -i {segment_id} -n '{name}' -d '{desc}' -I {num} " \
+                   "-e 4 -E {extRefs} -E {extRefs1} -E {extRefs2} " \
+                   "file.sff --config-path {config}".format(
             segment_id=','.join(map(_str, segment_id)),
             name=name,
             desc=desc,
             num=num,
-            extRefs=' '.join(extRefs),
+            extRefs=' '.join(ext_refs),
             extRefs1=' '.join(extRefs1),
             extRefs2=' '.join(extRefs2),
-            comp=comp,
-            macr=macr,
             config=self.config_fn,
         )
         args, configs = parse_args(cmd_edit, use_shlex=True)
         an_edit = modify.ArgsNote(args, configs)
         segment_edit = an_edit.edit_in_segment(segment_add)
-        self.assertEqual(segment_edit.biologicalAnnotation.name, name)
-        self.assertEqual(segment_edit.biologicalAnnotation.description, desc)
-        self.assertEqual(segment_edit.biologicalAnnotation.numberOfInstances, num)
+        self.assertEqual(segment_edit.biological_annotation.name, name)
+        self.assertEqual(segment_edit.biological_annotation.description, desc)
+        self.assertEqual(segment_edit.biological_annotation.number_of_instances, num)
         self.assertEqual(
             [
-                segment_edit.biologicalAnnotation.externalReferences[-3].type,
-                segment_edit.biologicalAnnotation.externalReferences[-3].otherType,
-                segment_edit.biologicalAnnotation.externalReferences[-3].value
+                segment_edit.biological_annotation.external_references[-3].resource,
+                segment_edit.biological_annotation.external_references[-3].url,
+                segment_edit.biological_annotation.external_references[-3].accession
             ],
-            extRefs
+            ext_refs
         )
         self.assertEqual(
             [
-                segment_edit.biologicalAnnotation.externalReferences[-2].type,
-                segment_edit.biologicalAnnotation.externalReferences[-2].otherType,
-                segment_edit.biologicalAnnotation.externalReferences[-2].value
+                segment_edit.biological_annotation.external_references[-2].resource,
+                segment_edit.biological_annotation.external_references[-2].url,
+                segment_edit.biological_annotation.external_references[-2].accession
             ],
             extRefs1
         )
         self.assertEqual(
             [
-                segment_edit.biologicalAnnotation.externalReferences[-1].type,
-                segment_edit.biologicalAnnotation.externalReferences[-1].otherType,
-                segment_edit.biologicalAnnotation.externalReferences[-1].value
+                segment_edit.biological_annotation.external_references[-1].resource,
+                segment_edit.biological_annotation.external_references[-1].url,
+                segment_edit.biological_annotation.external_references[-1].accession
             ],
             extRefs2
         )
-        self.assertEqual(segment_edit.complexesAndMacromolecules.complexes[2], comp)
-        self.assertEqual(segment_edit.complexesAndMacromolecules.macromolecules[5], macr)
         # del notes
-        cmd_del = "notes del -i {segment_id} -s -d -n -e 0,1,2,3,4,5 -c 0,1,2,3,4 -m 0,1,2,3,4,5 " \
+        cmd_del = "notes del -i {segment_id} -n -d -I -e 0,1,2,3,4,5 " \
                   "file.sff --config-path {config}".format(
             segment_id=','.join(map(_str, segment_id)),
             config=self.config_fn,
@@ -1276,17 +1244,16 @@ class TestNotesClasses(Py23FixTestCase):
         args, configs = parse_args(cmd_del, use_shlex=True)
         an_del = modify.ArgsNote(args, configs)
         segment_del = an_del.del_from_segment(segment_edit)
-        self.assertIsNone(segment_del.biologicalAnnotation.name)
-        self.assertIsNone(segment_del.biologicalAnnotation.description)
-        self.assertIsNone(segment_del.biologicalAnnotation.numberOfInstances)
-        self.assertEqual(segment_del.biologicalAnnotation.numExternalReferences, 0)
-        self.assertEqual(segment_del.complexesAndMacromolecules.numComplexes, 0)
-        self.assertEqual(segment_del.complexesAndMacromolecules.numMacromolecules, 0)
+        self.assertIsNone(segment_del.biological_annotation.name)
+        self.assertIsNone(segment_del.biological_annotation.description)
+        self.assertEqual(segment_del.biological_annotation.number_of_instances, 1)
+        self.assertEqual(len(segment_del.biological_annotation.external_references), 0)
 
 
 class TestNotes_find(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestNotes_find, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_search_default(self):

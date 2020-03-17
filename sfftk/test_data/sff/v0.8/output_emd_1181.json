@@ -25,22 +25,26 @@
       "data": "3.39 0.0 0.0 -430.53 0.0 3.39 0.0 -430.53 0.0 0.0 3.39 -430.53"
     }
   ],
-  "bounding_box": null,
+  "bounding_box": {
+    "xmin": 0.0,
+    "ymin": 0.0,
+    "zmin": 0.0
+  },
   "global_external_references": [],
   "segment_list": [
     {
       "id": 15559,
       "parent_id": 0,
       "biological_annotation": {
-        "name": "my very nice segment",
-        "description": "a short description",
-        "number_of_instances": 1,
+        "name": "thermometer polarity rags",
+        "description": "Rhoncus facer urnapraesent himenaeos netus litora invidunt, sodales sea dolore lobortis sadipscing nullasuspendisse habitasse vivamus. Molestie inceptos eum arcu consecteturpraesent malesuada sodalessed, maecenas ridiculus facilisis mazim rhoncusmaecenas parturient neque.",
+        "number_of_instances": 329,
         "external_references": [
           {
-            "id": 2,
-            "resource": "lsfj",
-            "url": "sljfs",
-            "accession": "ldjss",
+            "id": 0,
+            "resource": "threat",
+            "url": "breaths",
+            "accession": "variety",
             "label": null,
             "description": null
           }
@@ -417,5 +421,6 @@
       "three_d_volume": null,
       "shape_primitive_list": []
     }
-  ]
+  ],
+  "lattice_list": []
 }

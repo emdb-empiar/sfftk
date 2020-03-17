@@ -20,7 +20,7 @@ from styled import Styled
 
 from . import RESOURCE_LIST_NAMES
 # from .. import schema
-from ..core import _str, _decode, _xrange
+from ..core import _str, _decode
 from ..core.parser import parse_args
 from ..core.print_tools import print_date
 from ..notes.view import HeaderView, NoteView
@@ -273,8 +273,12 @@ class AbstractGlobalNote(BaseNote):
         if self.name is not None:
             segmentation.name = self.name
         # to ensure we don't have any id collisions
-        max_id = max(list(segmentation.software_list.get_ids()))
-        software = schema.SFFSoftware(id=max_id + 1)
+        if segmentation.software_list:
+            max_id = max(list(segmentation.software_list.get_ids()))
+            software = schema.SFFSoftware(id=max_id + 1)
+        else:
+            segmentation.software_list = schema.SFFSoftwareList()
+            software = schema.SFFSoftware()
         # software name
         if self.software_name is not None:
             software.name = self.software_name
@@ -379,15 +383,7 @@ class AbstractGlobalNote(BaseNote):
             except KeyError:
                 software = None
             if software is not None:
-                # software name
-                if self.software_name:
-                    software.name = None
-                # software version
-                if self.software_version:
-                    software.version = None
-                # sofware processing details
-                if self.software_processing_details:
-                    software.processing_details = None
+                segmentation.software_list.remove(software)
         # details
         if self.details:
             segmentation.details = None
@@ -396,19 +392,18 @@ class AbstractGlobalNote(BaseNote):
             if segmentation.global_external_references:
                 # current globalExtRefs
                 # fixme: should not cast!!!
-                refs = list(segmentation.global_external_references)
                 # extract the items to be removed
                 to_remove = list()
                 for i in self.external_reference_id:
                     try:
-                        to_remove.append(refs[i])
+                        to_remove.append(segmentation.global_external_references[i])
                     except IndexError:
                         print_date(_str(
                             Styled("[[ '{}'|fg-red ]]", "Failed to delete global external reference ID {}".format(i))))
                 # now remove them
                 for t in to_remove:
-                    refs.remove(t)
-                segmentation.global_external_references = schema.SFFGlobalExternalReferenceList(refs)
+                    segmentation.global_external_references.remove(t)
+                # segmentation.global_external_references = schema.SFFGlobalExternalReferenceList(refs)
             else:
                 print_date("No global external references to delete from!")
         return segmentation
@@ -435,7 +430,7 @@ class GlobalArgsNote(AbstractGlobalNote):
 
     def __init__(self, args, configs, *args_, **kwargs_):
         super(GlobalArgsNote, self).__init__(*args_, **kwargs_)
-        self.name = args.name
+        self.name = args.name if hasattr(args, 'name') else None
         self.configs = configs
         self.software_id = args.software_id if hasattr(args, 'software_id') else None
         self.software_name = args.software_name
@@ -462,10 +457,6 @@ class AbstractNote(BaseNote):
     description = NoteAttr('description')
     number_of_instances = NoteAttr('number_of_instances')
     external_reference_id = NoteAttr('external_reference_id')
-    complexId = NoteAttr('complexId')
-    complexes = NoteAttr('complexes')
-    macromoleculeId = NoteAttr('macromoleculeId')
-    macromolecules = NoteAttr('macromolecules')
 
     def add_to_segment(self, segment):
         """Add the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
@@ -473,20 +464,22 @@ class AbstractNote(BaseNote):
         :param segment: single segment in EMDB-SFF
         :type segment: ``sfftk.schema.SFFSegment``
         """
-        # biologicalAnnotation
+        # biological_annotation
+        if not segment.biological_annotation:
+            segment.biological_annotation = schema.SFFBiologicalAnnotation()
         bA = segment.biological_annotation
         if self.name is not None:
             bA.name = self.name
         if self.description is not None:
             bA.description = self.description
         # else:
-        #     bA.description = segment.biologicalAnnotation.description
+        #     bA.description = segment.biological_annotation.description
         if self.number_of_instances:
             bA.number_of_instances = self.number_of_instances
         # else:
-        #     bA.numberOfInstances = segment.biologicalAnnotation.numberOfInstances
+        #     bA.number_of_instances = segment.biological_annotation.number_of_instances
         # copy current external references
-        bA.externalReferences = segment.biological_annotation.external_references
+        bA.external_references = segment.biological_annotation.external_references
         if self.external_references:
             if not bA.external_references:
                 bA.external_references = schema.SFFExternalReferenceList()
@@ -510,7 +503,7 @@ class AbstractNote(BaseNote):
         :param segment: single segment in EMDB-SFF
         :type segment: ``sfftk.schema.SFFSegment``
         """
-        # biologicalAnnotation
+        # biological_annotation
         if not segment.biological_annotation:
             print_date("Note: no biological annotation was found. You may edit only after adding with 'sff notes add'.")
         else:
@@ -525,8 +518,8 @@ class AbstractNote(BaseNote):
             if self.number_of_instances:
                 bA.number_of_instances = self.number_of_instances
             # external references
-            # editing externalReferences starting at index 'start_index'
-            # this will result in all subsequent externalReferences being replaced
+            # editing external_references starting at index 'start_index'
+            # this will result in all subsequent external_references being replaced
             # once it gets to the end of the list of eR any additional ones will be appended
             # e.g. if we have 5 eRs and we want to add another 5 but starting at index 4 (the fifth)
             # then we will replace index 4 then keep adding the other new 4 eRs
@@ -561,21 +554,21 @@ class AbstractNote(BaseNote):
         :param segment: single segment in EMDB-SFF
         :type segment: ``sfftk.schema.SFFSegment``
         """
-        # biologicalAnnotation
-        if not segment.biologicalAnnotation:
+        # biological_annotation
+        if not segment.biological_annotation:
             print_date("No biological anotation found! Use 'add' to first add a new annotation.")
         else:
-            bA = segment.biologicalAnnotation
+            bA = segment.biological_annotation
             if self.name:
                 bA.name = None
             if self.description:
                 bA.description = None
-            if self.numberOfInstances:
-                bA.numberOfInstances = None
+            if self.number_of_instances:
+                bA.number_of_instances = None
             if self.external_reference_id:
-                if bA.externalReferences:
+                if bA.external_references:
                     # current extRefs
-                    refs = list(bA.externalReferences)
+                    refs = list(bA.external_references)
                     # extract the items to be removed
                     to_remove = list()
                     for i in self.external_reference_id:
@@ -587,74 +580,18 @@ class AbstractNote(BaseNote):
                     # now remove them
                     for t in to_remove:
                         refs.remove(t)
-                    bA.externalReferences = schema.SFFExternalReferences(refs)
+                    bA.external_references = schema.SFFExternalReferenceList(refs)
                 else:
                     print_date("No external references to delete from!")
             # if self.external_reference_id is not None:  # it could be 0, which is valid but False
-            #     if bA.externalReferences:
+            #     if bA.external_references:
             #         try:
-            #             del bA.externalReferences[self.external_reference_id]  # externalReferences is a list
+            #             del bA.external_references[self.external_reference_id]  # external_references is a list
             #         except IndexError:
             #             print_date("Failed to delete external reference of ID {}".format(self.external_reference_id))
             #     else:
             #         print_date("No external references to delete from.")
-            segment.biologicalAnnotation = bA
-        # complexesAndMacromolecules
-        if not segment.complexesAndMacromolecules:
-            print_date("No complexes and macromolecules found! Use 'add' to first add a new set.")
-        else:
-            cAM = segment.complexesAndMacromolecules
-            # complexes
-            if self.complexId is not None:
-                comps = list(cAM.complexes)
-                # extract the ones to remove
-                to_remove = list()
-                for i in self.complexId:
-                    try:
-                        to_remove.append(comps[i])
-                    except IndexError:
-                        print_date(_str(Styled("[[ '{}'|fg-red ]]", "Failed to delete complex ID {}".format(i))))
-                # now remove them
-                for t in to_remove:
-                    comps.remove(t)
-                new_macromolecules = schema.SFFComplexes()
-                new_macromolecules.set_complexes(comps)
-                cAM.complexes = new_macromolecules
-            segment.complexesAndMacromolecules = cAM
-            # if self.complexId is not None:
-            #     if cAM.complexes:
-            #         try:
-            #             cAM.complexes.delete_at(self.complexId)
-            #         except IndexError:
-            #             print_date("Failed to delete macromolecule of ID {}".format(self.complexId))
-            #     else:
-            #         print_date("No complexes to delete from.")
-            # macromolecules
-            if self.macromoleculeId is not None:
-                macrs = list(cAM.macromolecules)
-                # extract the ones to remove
-                to_remove = list()
-                for i in self.macromoleculeId:
-                    try:
-                        to_remove.append(macrs[i])
-                    except IndexError:
-                        print_date(_str(Styled("[[ '{}'|fg-red ]]", "Failed to delete macromolecule ID {}".format(i))))
-                # now remove them
-                for t in to_remove:
-                    macrs.remove(t)
-                new_macromolecules = schema.SFFMacromolecules()
-                new_macromolecules.set_macromolecules(macrs)
-                cAM.macromolecules = new_macromolecules
-            segment.complexesAndMacromolecules = cAM
-            # if self.macromoleculeId is not None:
-            #     if cAM.macromolecules:
-            #         try:
-            #             cAM.macromolecules.delete_at(self.macromoleculeId)
-            #         except IndexError:
-            #             print_date("Failed to delete macromolecule of ID {}".format(self.macromoleculeId))
-            #     else:
-            #         print_date("No macromolecules to delete from.")
-            # segment.complexesAndMacromolecules = cAM
+            segment.biological_annotation = bA
         return segment
 
 
@@ -673,7 +610,7 @@ class ArgsNote(AbstractNote):
         self.number_of_instances = args.number_of_instances
         if hasattr(args, 'external_ref_id'):
             self.external_reference_id = args.external_ref_id
-        # externalReferences
+        # external_references
         if hasattr(args, 'external_ref'):  # sff notes del has no -E arg
             if args.external_ref:
                 for resource, url, accession in args.external_ref:
@@ -690,34 +627,31 @@ class SimpleNote(AbstractNote):
     """Class definition for a :py:class:`SimpleNote` object"""
 
     def __init__(
-            self, name=None, description=None, numberOfInstances=None, external_reference_id=None,
-            externalReferences=None, complexId=None, complexes=None,
-            macromoleculeId=None, macromolecules=None, *args, **kwargs
+            self, name=None, description=None, number_of_instances=None, external_reference_id=None,
+            external_references=None, *args, **kwargs
     ):
         """Initialise an :py:class:`SimpleNote` object
 
         :param str description: the description string of the segment
-        :param int numberOfInstances: the number of instances of this segment
+        :param int number_of_instances: the number of instances of this segment
         :param int external_reference_id: ID of an external reference
-        :param externalReferences: iterable of external references
-        :param complexId: ID of a complex
-        :param complexes: iterable of complexes
-        :param macromoleculeId: ID of a macromolecule
-        :param macromolecules: iterable of macromolecules
+        :param external_references: iterable of external references
         """
         super(SimpleNote, self).__init__(*args, **kwargs)
         self.name = name
         self.description = description
-        self.numberOfInstances = numberOfInstances
+        self.number_of_instances = number_of_instances
         self.external_reference_id = external_reference_id
-        # externalReferences
-        if externalReferences:
-            for _type, _otherType, _value in externalReferences:
-                self._ext_ref_list.append(ExternalReference(type_=_type, otherType=_otherType, value=_value))
-        self.complexId = complexId
-        self.complexes = complexes
-        self.macromoleculeId = macromoleculeId
-        self.macromolecules = macromolecules
+        # external_references
+        if external_references:
+            for resource, url, accession in external_references:
+                self._ext_ref_list.append(
+                    ExternalReference(
+                        resource=resource,
+                        url=url,
+                        accession=accession
+                    )
+                )
 
 
 def add_note(args, configs):
@@ -850,7 +784,7 @@ def copy_notes(args, configs):
     :param configs: configurations object
     :return: status
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # from segment
     from_segment = list()
     if args.segment_id is not None:
@@ -894,7 +828,7 @@ def clear_notes(args, configs):
     :param configs: configurations object
     :return: status
     """
-    sff_seg = schema.SFFSegmentation(args.sff_file)
+    sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     from_segment = list()
     if args.segment_id is not None:
         from_segment = args.segment_id
@@ -945,11 +879,11 @@ def merge(args, configs):
     # source
     if args.verbose:
         print_date("Reading in source: {}...".format(args.source))
-    source = schema.SFFSegmentation(args.source)
+    source = schema.SFFSegmentation.from_file(args.source)
     # destination
     if args.verbose:
         print_date("Reading in destination: {}...".format(args.other))
-    other = schema.SFFSegmentation(args.other)
+    other = schema.SFFSegmentation.from_file(args.other)
     if args.verbose:
         print_date("Merging annotations...")
     other.merge_annotation(source)
@@ -1007,8 +941,8 @@ def save(args, configs):
         elif re.match(r'.*\.json$', temp_file, re.IGNORECASE) and (
                 re.match(r'.*\.sff$', args.sff_file, re.IGNORECASE) or re.match(r'.*\.hff$', args.sff_file,
                                                                                 re.IGNORECASE)):
-            json_seg = schema.SFFSegmentation(temp_file)
-            seg = schema.SFFSegmentation(args.sff_file)
+            json_seg = schema.SFFSegmentation.from_file(temp_file)
+            seg = schema.SFFSegmentation.from_file(args.sff_file)
             #  merge
             seg.merge_annotation(json_seg)
             seg.export(args.sff_file)

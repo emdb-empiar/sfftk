@@ -686,12 +686,12 @@ del_global_notes_parser = del_notes_parser.add_argument_group(
     title="delete global notes",
     description="delete global attributes to an EMDB-SFF file"
 )
-name['kwargs'] = {
-    'action': 'store_true',
-    'default': False,
-    'help': 'delete the name [default: False]',
-}
-add_args(del_global_notes_parser, name)
+# name['kwargs'] = {
+#     'action': 'store_true',
+#     'default': False,
+#     'help': 'delete the name [default: False]',
+# }
+# add_args(del_global_notes_parser, name)
 # we need a way to identify which software entity in the list is to be acted up
 # remove type so that we can store a list of comma-sep'd ints
 del software_id['kwargs']['type']
