@@ -13,6 +13,8 @@ from __future__ import division
 
 import os
 
+from ..core import _dict
+
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-08-09'
@@ -33,8 +35,8 @@ def get_data(fn):
     stl_meshes = mesh.Mesh.from_multi_file(fn)
     mesh_id = 0
     for stl_mesh in stl_meshes:
-        vertex_ids = dict()
-        polygons = dict()
+        vertex_ids = _dict()
+        polygons = _dict()
         vertex_id = 0
         polygon_id = 0
         for facet in stl_mesh.vectors:
@@ -58,7 +60,7 @@ def get_data(fn):
         
         the transformation matrices are at http://www.tribe43.net/blog/article-33/        
         """
-        vertices = dict(zip(vertex_ids.values(), vertex_ids.keys()))
+        vertices = _dict(zip(vertex_ids.values(), vertex_ids.keys()))
 
         # name
         # name = get_printable_ascii_string(stl_mesh.name) if get_printable_ascii_string(stl_mesh.name) != "" else None

@@ -114,7 +114,7 @@ class IMODMeshes(_UserList):
         # return [mesh for mesh in _dict_iter_values(imod_meshes) if mesh.vsize > 0]
 
     def __iter__(self):
-        return map(IMODMesh, self._meshes)
+        return iter(map(IMODMesh, self._meshes))
 
     def __getitem__(self, index):
         return IMODMesh(self._meshes[index])

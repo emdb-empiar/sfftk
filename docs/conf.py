@@ -15,15 +15,16 @@
 
 import os
 import sys
-sys.path.append('..') # to import sfftk
-import mock
+
+sys.path.append('..')  # to import sfftk
+# import mock
 from sfftk import SFFTK_VERSION
 from sfftk.core import _str
 
-MOCK_MODULES = ['lxml', 'emdb_sff', 'ahds', 'ahds.data_stream', 'bitarray', 'ahds.header', 'h5py', 'numpy', 'scipy',
-                'backports.shutil_get_terminal_size', 'h5py', 'mrcfile',]
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
+# MOCK_MODULES = ['lxml', 'emdb_sff', 'ahds', 'ahds.data_stream', 'bitarray', 'ahds.header', 'h5py', 'numpy', 'scipy',
+#                 'backports.shutil_get_terminal_size', 'h5py', 'mrcfile',]
+# for mod_name in MOCK_MODULES:
+#     sys.modules[mod_name] = mock.Mock()
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -298,6 +299,10 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
+
+# mock imports
+autodoc_mock_imports = ['lxml', 'ahds', 'bitarray', 'h5py', 'numpy', 'scipy',
+                        'backports.shutil_get_terminal_size', 'mrcfile', ]
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),

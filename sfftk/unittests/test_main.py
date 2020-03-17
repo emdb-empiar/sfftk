@@ -30,13 +30,14 @@ port = '4064'
 class TestMain_handle_convert(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestMain_handle_convert, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
-        Py23FixTestCase.setUp(self)
+        super(TestMain_handle_convert, self).setUp()
 
     def tearDown(self):
-        Py23FixTestCase.tearDown(self)
+        super(TestMain_handle_convert, self).tearDown()
         for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')):
             os.remove(s)
 
@@ -172,6 +173,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 class TestMain_handle_view(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestMain_handle_view, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_read_am(self):
@@ -226,6 +228,7 @@ class TestMain_handle_view(Py23FixTestCase):
 class TestMain_handle_notes(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestMain_handle_notes, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_list(self):
@@ -254,12 +257,15 @@ class TestMain_handle_notes(Py23FixTestCase):
 class TestMain_handle_prep(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestMain_handle_prep, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
+        super(TestMain_handle_prep, self).setUp()
         self.test_data = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
 
     def tearDown(self):
+        super(TestMain_handle_prep, self).tearDown()
         os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
 
     def test_ccp4_binmap(self):

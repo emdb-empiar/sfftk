@@ -310,34 +310,6 @@ class HeaderView(View):
         return software
 
     @property
-    def software(self):
-        if self._segmentation.software.name is not None:
-            software_name = self._segmentation.software.name
-        else:
-            software_name = self.NOT_DEFINED
-        if self._segmentation.software.version is not None:
-            software_version = self._segmentation.software.version
-        else:
-            software_version = self.NOT_DEFINED
-        if self._segmentation.software.processingDetails is not None:
-            software_processing_details = textwrap.fill(
-                "\t" + self._segmentation.software.processingDetails,
-                self.DISPLAY_WIDTH
-            )
-        else:
-            software_processing_details = u"\t" + self.NOT_DEFINED
-        software = u"""\
-\tSoftware: {}
-\tVersion:  {}
-Software processing details: \n{}\
-        """.format(
-            software_name,
-            software_version,
-            software_processing_details
-        )
-        return software
-
-    @property
     def primary_descriptor(self):
         return self._segmentation.primary_descriptor
 
@@ -471,7 +443,7 @@ Software processing details: \n{}\
                 # ---
                 self.LINE2,
                 self.name,
-                self.software,
+                self.software_list,
                 # ---
                 self.LINE2,
                 self.primary_descriptor,

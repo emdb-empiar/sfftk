@@ -13,6 +13,7 @@ import sys
 # import ahds.data_stream
 # import ahds.header
 from ahds import AmiraFile
+from ..core import _dict
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -167,7 +168,7 @@ class HxSurfSegment(object):
         # flatten the list of vertex ids in triangles
         unique_vertex_ids = set([vertex for triangle in triangles for vertex in triangle])
         # get only those vertices present in this segments triangles
-        unique_vertices = {vertex: vertices[vertex] for vertex in unique_vertex_ids}
+        unique_vertices = _dict({vertex: vertices[vertex] for vertex in unique_vertex_ids})
         return unique_vertices
 
 
@@ -186,12 +187,12 @@ def extract_segments(af, *args, **kwargs):
     if not af.meta.streams_loaded:
         print("Data streams not yet loaded. Reading...", file=sys.stderr)
         af.read()
-    segments = dict()
+    segments = _dict()
     # first we make a dictionary of vertices
     # keys are indices (1-based)
     vertices_list = af.data_streams.Data.Vertices.data
     # a dictionary of all vertices
-    vertices_dict = dict(zip(range(1, len(vertices_list) + 1), vertices_list))
+    vertices_dict = _dict(zip(range(1, len(vertices_list) + 1), vertices_list))
     # then we repack the vertices and patches into vertices and triangles (collate triangles from all patches)
     for patch in af.data_streams.Data.Vertices.Patches:
         material = af.header.Parameters.Materials.material_dict[patch.InnerRegion]

@@ -40,7 +40,7 @@ import sys
 
 from bitarray import bitarray
 
-from ..core import _decode, _xrange, _dict_iter_items, _dict_iter_keys
+from ..core import _decode, _xrange, _dict_iter_items, _dict_iter_keys, _dict
 from ..core.print_tools import get_printable_ascii_string
 
 import numpy
@@ -88,7 +88,7 @@ OBJT_SYMBOLS = {
     4: 'star',
 }
 
-UNITS = {
+UNITS = _dict({
     - 12: 'pm',
     - 10: 'Angstroms',
     - 9: 'nm',
@@ -98,7 +98,7 @@ UNITS = {
     0: 'pixels',
     1: 'm',
     3: 'km',
-}
+})
 
 UPPER_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -339,10 +339,10 @@ class IMOD(object):
     def __init__(self, f):
         self.f = f
         self.isset = False
-        self.objts = dict()
+        self.objts = _dict()
         self.objt_count = 0
         self.current_objt = None
-        self.views = dict()
+        self.views = _dict()
         self.view_count = 0
         self.mclp = None
         self.minx = None
@@ -464,7 +464,7 @@ class MOST(object):
         """Read the contents of the MOST chunk"""
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
-        self.store = dict()
+        self.store = _dict()
         for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
@@ -490,10 +490,10 @@ class OBJT(object):
     def __init__(self, f):
         self.f = f
         self.isset = False
-        self.conts = dict()
+        self.conts = _dict()
         self.cont_count = 0
         self.current_cont = None
-        self.meshes = dict()
+        self.meshes = _dict()
         self.mesh_count = 0
         self.current_mesh = None
         self.clip = None
@@ -571,7 +571,7 @@ class OBST(object):
         """Read data from file to this object"""
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
-        self.store = dict()
+        self.store = _dict()
         for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
@@ -650,7 +650,7 @@ class COST(object):
         """Read the contents of the COST chunk"""
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
-        self.store = dict()
+        self.store = _dict()
         for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()
@@ -723,7 +723,7 @@ class MEST(object):
     def read(self):
         """Read the contents of the MEST chunk"""
         f = self.f
-        self.store = dict()
+        self.store = _dict()
         for i in _xrange(self.bytes // 12):
             store = STORE(f)
             f = store.read()

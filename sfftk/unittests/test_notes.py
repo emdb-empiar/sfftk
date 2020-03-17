@@ -1290,6 +1290,7 @@ class TestNotes_find(Py23FixTestCase):
         args, configs = parse_args(
             "notes search 'DNA replication licensing factor MCM6' --exact --config-path {}".format(self.config_fn),
             use_shlex=True)
+        self.stderr(args)
         resource = find.SearchResource(args, configs)
         results = resource.search()
         self.assertEqual(len(results), 2)  # funny!

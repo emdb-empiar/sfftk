@@ -19,7 +19,7 @@ import random_words
 from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
-from ..core import _dict_iter_values, _str
+from ..core import _dict_iter_values, _str, _dict
 from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -34,6 +34,7 @@ rw = random_words.RandomWords()
 class TestReaders_amreader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestReaders_amreader, cls).setUpClass()
         cls.am_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.am')
         cls.header, cls.segments_by_stream = amreader.get_data(cls.am_file)
 
@@ -73,6 +74,7 @@ class TestReaders_amreader(Py23FixTestCase):
 
 class TestReaders_mapreader(Py23FixTestCase):
     def setUp(self):
+        super(TestReaders_mapreader, self).setUp()
         self.map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
 
     def test_get_data(self):
@@ -204,7 +206,8 @@ class TestReaders_mapreader(Py23FixTestCase):
 
 class TestReaders_modreader(Py23FixTestCase):
     @classmethod
-    def setUp(cls):
+    def setUpClass(cls):
+        super(TestReaders_modreader, cls).setUpClass()
         cls.mod_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
         cls.mod = modreader.get_data(cls.mod_file)
 
@@ -265,7 +268,6 @@ class TestReaders_modreader(Py23FixTestCase):
     def test_IMOD_pass(self):
         """Test that IMOD chunk read"""
         self.assertTrue(self.mod.isset)
-        print(self.mod.objts[0].meshes[0].list)
         ijk_to_xyz_transform = self.mod.ijk_to_xyz_transform
         self.assertTrue(ijk_to_xyz_transform[0, 0] * ijk_to_xyz_transform[1, 1] * ijk_to_xyz_transform[2, 2] != 0.0)
         self.assertEqual(self.mod.x_length,
@@ -369,6 +371,7 @@ class TestReaders_modreader(Py23FixTestCase):
 
 class TestReaders_segreader(Py23FixTestCase):
     def setUp(self):
+        super(TestReaders_segreader, self).setUp()
         self.seg_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.seg')
 
     def test_get_data(self):
@@ -385,6 +388,7 @@ class TestReaders_segreader(Py23FixTestCase):
 
 class TestReaders_stlreader(Py23FixTestCase):
     def setUp(self):
+        super(TestReaders_stlreader, self).setUp()
         self.stl_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl')
         self.stl_bin_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_binary.stl')
         self.stl_multi_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
@@ -406,7 +410,6 @@ class TestReaders_stlreader(Py23FixTestCase):
     def test_read_binary(self):
         """Test that we can read a binary STL file"""
         meshes = stlreader.get_data(self.stl_bin_file)
-        print(meshes[0][0], file=sys.stderr)
         name, vertices, polygons = meshes[0]
         self.assertEqual(name, "{}#{}".format(os.path.basename(self.stl_bin_file), 0))
         self.assertTrue(len(vertices) > 0)
@@ -434,6 +437,7 @@ class TestReaders_stlreader(Py23FixTestCase):
 class TestReaders_surfreader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestReaders_surfreader, cls).setUpClass()
         cls.surf_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.surf')
         cls.header, cls.segments = surfreader.get_data(cls.surf_file)  #  only one mesh here
 
@@ -459,6 +463,7 @@ class TestReaders_surfreader(Py23FixTestCase):
 class TestReaders_survosreader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestReaders_survosreader, cls).setUpClass()
         cls.survos_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5')
 
     def test_get_data(self):

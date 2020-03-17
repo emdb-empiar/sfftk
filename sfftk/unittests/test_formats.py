@@ -25,6 +25,7 @@ __updated__ = '2018-02-14'
 class TestFormats(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
+        super(TestFormats, cls).setUpClass()
         cls.segmentations_path = os.path.join(TEST_DATA_PATH, 'segmentations')
         # schema version
         cls.schema_version = schema.SFFSegmentation().version

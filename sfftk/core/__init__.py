@@ -16,9 +16,9 @@ if sys.version_info[0] > 2:
     # xrange
     _xrange = range
     # iter* methods on dictionaries
-    _dict_iter_keys = dict.keys
-    _dict_iter_values = dict.values
-    _dict_iter_items = dict.items
+    # _dict_iter_keys = dict.keys
+    # _dict_iter_values = dict.values
+    # _dict_iter_items = dict.items
     # dictionaries preserve order in Python3
     if sys.version_info[1] >= 7:
         _dict = dict
@@ -26,6 +26,12 @@ if sys.version_info[0] > 2:
         from collections import OrderedDict
 
         _dict = OrderedDict
+
+    # iter* methods on dictionaries
+    _dict_iter_keys = _dict.keys
+    _dict_iter_values = _dict.values
+    _dict_iter_items = _dict.items
+
     # UserList
     from collections import UserList
 
@@ -73,14 +79,18 @@ else:
     _xrange = __builtin__.xrange
 
     # iter* methods on dictionaries
-    _dict_iter_keys = dict.iterkeys
-    _dict_iter_values = dict.itervalues
-    _dict_iter_items = dict.iteritems
+    # _dict_iter_keys = dict.iterkeys
+    # _dict_iter_values = dict.itervalues
+    # _dict_iter_items = dict.iteritems
 
     # for order preservation in dicts user OrderedDict
     from collections import OrderedDict
 
     _dict = OrderedDict
+    # iter* methods on dictionaries
+    _dict_iter_keys = _dict.iterkeys
+    _dict_iter_values = _dict.itervalues
+    _dict_iter_items = _dict.iteritems
 
     from UserList import UserList
 

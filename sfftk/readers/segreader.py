@@ -11,7 +11,7 @@ import os
 
 import numpy
 
-from ..core import _decode
+from ..core import _decode, _dict
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -64,7 +64,7 @@ class SeggerSegmentation(object):
         # colours
         self._region_colours = self._seg_handler['region_colors'][()]
         self._region_colours_dict = dict(zip(self._region_ids, self._region_colours))
-        self._parent_region_dict = dict()
+        self._parent_region_dict = _dict()
         for r, p in self._zipped_region_parent_ids:
             if p not in self._parent_region_dict:
                 self._parent_region_dict[p] = [r]
@@ -193,7 +193,7 @@ class SeggerSegmentation(object):
         simplified_mask = numpy.ndarray(mask.shape, dtype=int)
         simplified_mask[:,:,:] = 0
         # group regions_ids by parent_id
-        root_parent_id_group = dict()
+        root_parent_id_group = _dict()
         for r in self.region_ids:
             p = get_root(self._region_parent_dict, r)
             if p not in root_parent_id_group:
