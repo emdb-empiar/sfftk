@@ -10,8 +10,7 @@ from __future__ import division
 import os
 
 import numpy
-
-from ..core import _decode, _dict
+from sfftkrw.core import _decode, _dict
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -191,7 +190,7 @@ class SeggerSegmentation(object):
         :rtype: tuple
         """
         simplified_mask = numpy.ndarray(mask.shape, dtype=int)
-        simplified_mask[:,:,:] = 0
+        simplified_mask[:, :, :] = 0
         # group regions_ids by parent_id
         root_parent_id_group = _dict()
         for r in self.region_ids:
@@ -214,7 +213,7 @@ class SeggerSegmentation(object):
                 # Because parent_ids are non-overlapping (i.e. no region_id has two parent_ids)
                 # we can do successive summation instead of assignments.
                 full_op = 'simplified_mask += (' + comp + ') * %s' % parent_id
-                exec (full_op)
+                exec(full_op)
         else:
             simplified_mask = mask
         return simplified_mask

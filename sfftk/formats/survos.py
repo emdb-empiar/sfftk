@@ -2,10 +2,9 @@
 from __future__ import print_function
 
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core.print_tools import print_date
 
 from .base import Segmentation, Segment
-# from .. import schema
-from ..core.print_tools import print_date
 from ..readers import survosreader
 
 

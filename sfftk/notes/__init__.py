@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import sys
 
-from ..core import _dict
+from sfftkrw.core import _dict
 
 # RESOURCE_LIST = collections.OrderedDict()
 RESOURCE_LIST = _dict()

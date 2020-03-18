@@ -9,8 +9,6 @@ from __future__ import print_function
 
 from ahds import AmiraFile
 
-from ..core.print_tools import print_date
-
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-01-21'
@@ -29,4 +27,4 @@ def get_data(fn, *args, **kwargs):
     if af.header.extra_format == "<hxsurface>":
         return af.header, None
     else:
-        return af.header, af.data_streams.Labels # segments are always in the 'Labels' attribute
+        return af.header, af.data_streams.Labels  # segments are always in the 'Labels' attribute

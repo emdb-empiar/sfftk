@@ -9,14 +9,12 @@ User-facing reader classes for Amira HxSurface files
 from __future__ import division, print_function
 
 import inspect
-import os.path
-import numpy
 
+import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _dict_iter_items, _xrange
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
-# from .. import schema
-from ..core import _dict_iter_items, _xrange
 from ..readers import surfreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -76,7 +74,6 @@ class AmiraHyperSurfaceMesh(Mesh):
             triangles=schema.SFFTriangles.from_array(triangles)
         )
         return mesh
-
 
 
 class AmiraHyperSurfaceAnnotation(Annotation):

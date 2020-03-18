@@ -10,11 +10,10 @@ User-facing reader classes for Segger files
 from __future__ import division
 
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _str
 
 from .base import Annotation, Volume, Segment, Header, \
     Segmentation
-# from .. import schema
-from ..core import _str
 from ..readers import segreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -228,9 +227,9 @@ class SeggerSegmentation(Segmentation):
         segmentation.transform_list.append(
             schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
             # schema.SFFTransformationMatrix(
-                # rows=3,
-                # cols=4,
-                # data=" ".join(map(str, self.header.ijk_to_xyz_transform.flatten().tolist()))
+            # rows=3,
+            # cols=4,
+            # data=" ".join(map(str, self.header.ijk_to_xyz_transform.flatten().tolist()))
             # ).from_array(self.header.ijk_to_xyz_transform)
         )
         # # segmentation.filePath = self.header.file_path

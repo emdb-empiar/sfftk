@@ -13,8 +13,9 @@ import os
 import shutil
 import sys
 
-from . import _dict, _dict_iter_items
-from .print_tools import print_date
+from sfftkrw.core import _dict, _dict_iter_items
+from sfftkrw.core.print_tools import print_date
+
 from .. import BASE_DIR
 
 __author__ = 'Paul K. Korir, PhD'
@@ -217,6 +218,7 @@ def get_configs(args, configs):
     if args.all:
         print_date("Listing all {} configs...".format(len(configs)))
         # view the config object
+        # fixme: use print_date
         print(configs, file=sys.stderr)
     else:
         print_date("Getting config {}...".format(args.name))
@@ -227,6 +229,7 @@ def get_configs(args, configs):
             print_date("No config with name {}".format(args.name))
             return 1
         # view the config
+        # fixme: use print_date
         print(config)
     return os.EX_OK
 
@@ -243,6 +246,7 @@ def set_configs(args, configs):
     # add the new config
     configs[args.name] = args.value
     if args.verbose:
+        # fixme: use print_date
         print(configs)
     # save the configs
     return configs.write()
@@ -269,6 +273,7 @@ def del_configs(args, configs):
             print_date("No config with name {}".format(args.name))
             return 1
     if args.verbose:
+        # fixme: use print_date
         print(configs)
     # save the config
     return configs.write()

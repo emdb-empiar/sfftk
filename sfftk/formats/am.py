@@ -14,10 +14,9 @@ import os.path
 
 import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core.print_tools import print_date
 
 from .base import Segmentation, Segment, Annotation
-# from .. import schema
-from ..core.print_tools import print_date
 from ..readers import amreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -317,7 +316,6 @@ class AmiraMeshSegmentation(Segmentation):
         cols, rows, sections = self._volume.shape[::-1]
         if args.verbose:
             print_date('creating lattice...')
-        # print('type of data:', type(self._volume.data))
         lattice = schema.SFFLattice(
             mode='uint8',
             endianness='little',

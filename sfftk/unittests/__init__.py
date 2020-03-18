@@ -4,8 +4,9 @@ import random
 import sys
 from unittest import TestCase
 
+from sfftkrw.core import _xrange
+
 from .. import BASE_DIR
-from ..core import _xrange
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'

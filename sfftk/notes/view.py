@@ -13,11 +13,9 @@ import sys
 import textwrap
 
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _str
+from sfftkrw.core.print_tools import print_date
 from styled import Styled
-
-# from .. import schema
-from ..core import _str
-from ..core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"

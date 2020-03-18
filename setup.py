@@ -43,6 +43,11 @@ SFFTK_CLASSIFIERS = [
     u"Topic :: Utilities",
 ]
 if sys.version_info[0] > 2:
+    SFFTK_PYTHON3_INSTALL_REQUIRES = ["sfftk-rw", "ahds", "styled", "mrcfile", "bitarray", "requests",
+            "mock",
+            "numpy-stl"]
+    if sys.version_info[1] == 5:
+        SFFTK_PYTHON3_INSTALL_REQUIRES += ["pyOpenSSL"]
     setup(
         name=SFFTK_NAME,
         version=SFFTK_VERSION,
@@ -56,9 +61,7 @@ if sys.version_info[0] > 2:
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy"],
-        install_requires=["sfftk-rw", "ahds", "styled", "mrcfile", "bitarray", "requests",
-                          "mock",
-                          "numpy-stl"],
+        install_requires=SFFTK_PYTHON3_INSTALL_REQUIRES,
         classifiers=SFFTK_CLASSIFIERS,
         entry_points={
             'console_scripts': [

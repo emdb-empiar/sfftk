@@ -12,11 +12,10 @@ import os.path
 
 import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _dict_iter_items
+from sfftkrw.core.print_tools import print_date
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
-# from .. import schema
-from ..core import _dict_iter_items
-from ..core.print_tools import print_date
 from ..readers import stlreader
 
 __author__ = "Paul K. Korir, PhD"

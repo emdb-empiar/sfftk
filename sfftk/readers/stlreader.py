@@ -13,7 +13,7 @@ from __future__ import division
 
 import os
 
-from ..core import _dict
+from sfftkrw.core import _dict
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'

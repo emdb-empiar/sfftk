@@ -12,12 +12,9 @@ import os
 import re
 import sys
 
-# from . import schema
-import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw import sffrw
-
-from .core import _dict_iter_values
-from .core.print_tools import print_date
+from sfftkrw.core import _dict_iter_values
+from sfftkrw.core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -102,10 +99,10 @@ def handle_convert(args, configs):  # @UnusedVariable
             #     seg = schema.SFFSegmentation(args.from_file)
             # elif re.match(r'.*\.hff$', args.from_file, re.IGNORECASE):
             #     if args.verbose:
-                #     print_date("Converting from EMDB-SFF (HDF5) file {}".format(args.from_file))
-                # seg = schema.SFFSegmentation(args.from_file)
-                # if args.verbose:
-                #     print_date("Created SFFSegmentation object")
+            #     print_date("Converting from EMDB-SFF (HDF5) file {}".format(args.from_file))
+            # seg = schema.SFFSegmentation(args.from_file)
+            # if args.verbose:
+            #     print_date("Created SFFSegmentation object")
             # elif re.match(r'.*\.json$', args.from_file, re.IGNORECASE):
             #     if args.verbose:
             #         print_date("Converting from EMDB-SFF (JSON) file {}".format(args.from_file))
@@ -145,10 +142,12 @@ def handle_notes_search(args, configs):
     from sfftk.notes import find
     # query
     resource = find.SearchResource(args, configs)
+    # fixme: use print_date
     print(resource)
     # search
     result = resource.search()
     if result is not None:
+        # fixme: use print_date
         print(result)
         return os.EX_OK
     else:
@@ -396,6 +395,7 @@ def handle_view(args, configs):  # @UnusedVariable
     :type configs: ``sfftk.core.configs.Configs``
     :return int status: status
     """
+    # fixme: use print_date
     try:
         sffrw.handle_view(args)
     except ValueError:

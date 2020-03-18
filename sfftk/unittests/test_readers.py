@@ -10,16 +10,15 @@ from __future__ import division, print_function
 
 import glob
 import os
-import sys
 import unittest
 
 import ahds
 import numpy
 import random_words
+from sfftkrw.core import _dict_iter_values, _str
 from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
-from ..core import _dict_iter_values, _str, _dict
 from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -377,7 +376,6 @@ class TestReaders_segreader(Py23FixTestCase):
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
         seg = segreader.get_data(self.seg_file)
-        print(seg, file=sys.stderr)
         self.assertIsInstance(seg, segreader.SeggerSegmentation)
         self.assertEqual(seg.map_level, 0.852)
         self.assertEqual(seg.format_version, 2)
@@ -490,11 +488,11 @@ class TestReaders_survosreader(Py23FixTestCase):
         ids = list(surv.segment_ids())
         # let's get a portion from the 66-th z at the bottom-right corner
         _s = 66, slice(125, 140), slice(125, 140)
-        print(surv.data[_s], file=sys.stderr)
+        self.stderr(surv.data[_s])
         seg1 = surv[ids[0]]
-        print(seg1[_s], file=sys.stderr)
+        self.stderr(seg1[_s])
         seg2 = surv[ids[1]]
-        print(seg2[_s], file=sys.stderr)
+        self.stderr(seg2[_s])
         self.assertEqual(seg1.shape, surv.shape)
         self.assertEqual(seg2.shape, surv.shape)
 

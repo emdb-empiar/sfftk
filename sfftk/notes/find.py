@@ -14,18 +14,22 @@ import random
 import sys
 import textwrap
 
+import requests
+from sfftkrw.core import utils, _str, _xrange
+from sfftkrw.core.print_tools import print_date
+
 if sys.version_info[0] > 2:
     from shutil import get_terminal_size
+
     _get_terminal_size = get_terminal_size
 else:
     from backports.shutil_get_terminal_size import get_terminal_size
+
     _get_terminal_size = get_terminal_size
 
 from styled import Styled
 
 from . import RESOURCE_LIST
-from ..core import utils, _str, _xrange
-from ..core.print_tools import print_date
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -180,7 +184,6 @@ class SearchResource(object):
         """Perform a search against this resource"""
         url = self.get_url()
         if url is not None:
-            import requests
             # make the search
             R = requests.get(url)
             if R.status_code == 200:
@@ -193,32 +196,29 @@ class SearchResource(object):
             print_date(u'Error: url is None')
             return None
 
+    def _unicode(self):
+        return Styled(u"""Search Resource:
+                    \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
+                    \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
+                    \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
+                    \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
+                    \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
+                    \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(),
+                      **self._resource)
+
     if sys.version_info[0] > 2:
         def __bytes__(self):
             return self.__str__().encode('utf-8')
 
         def __str__(self):
-            string = Styled(u"""Search Resource:
-                        \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
-                        \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
-                        \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
-                        \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
-                        \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
-                        \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(),
-                            **self._resource)
+            string = self._unicode()
             return str(string)
     else:
         def __str__(self):
             return self.__unicode__().encode('utf-8')
 
         def __unicode__(self):
-            string = Styled(u"""Search Resource:
-            \rname:\t\t[[ '{name}'|fg-yellow:bold ]]
-            \rroot_url:\t[[ '{root_url}'|fg-yellow:bold ]]
-            \rsearch_url:\t[[ '{search_url}'|fg-yellow:bold ]]
-            \rformat:\t\t[[ '{format}'|fg-yellow:bold ]]
-            \rresult_path:\t[[ '{result_path}'|fg-yellow:bold ]]
-            \rresult_count:\t[[ '{result_count}'|fg-yellow:bold ]]""", search_url=self.get_url(), **self._resource)
+            string = self._unicode()
             return _str(string)
 
 
@@ -324,8 +324,18 @@ class TableField(object):
         elif self._justify == u'center':
             return text.center(self._width)
 
-    def __unicode__(self):
-        return self.justify(self._name)
+    if sys.version_info[0] > 2:
+        def __bytes__(self):
+            return self.__str__().encode('utf-8')
+
+        def __str__(self):
+            return self.justify(self._name)
+    else:
+        def __str__(self):
+            return self.__unicode__().encode('utf-8')
+
+        def __unicode__(self):
+            return self.justify(self._name)
 
     @property
     def is_index(self):
@@ -647,7 +657,7 @@ class SearchResults(object):
         if self._resource.format == u'json':
             import json
             try:
-                structured_results = json.loads(self._raw_response, encoding='utf-8')
+                structured_results = json.loads(self._raw_response)
             except ValueError:
                 print_date(u"Unable to search at this time. Please try after a few minutes.")
                 structured_results = None

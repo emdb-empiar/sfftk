@@ -12,13 +12,12 @@ import sys
 
 import numpy
 from random_words import RandomWords, LoremIpsum
+from sfftkrw.core import print_tools, utils, _dict_iter_items, _str, _dict
 from sfftkrw.unittests import Py23FixTestCase, _random_integer, _random_integers, _random_float, _random_floats, isclose
 from stl import Mesh
 
 from . import TEST_DATA_PATH
 from .. import BASE_DIR
-from ..core import print_tools
-from ..core import utils, _dict_iter_items, _str, _dict
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list
@@ -96,7 +95,8 @@ class TestCoreConfigs(Py23FixTestCase):
         # if the test does not complete we will have to manually copy it back
         # ~/.sfftk/sff.conf.test to ~/.sfftk/sff.conf
         if os.path.exists(self.user_configs):
-            print('found user configs and moving them...', file=sys.stderr)
+            # fixme: use print_date
+            self.stderr('found user configs and moving them...')
             shutil.move(
                 self.user_configs,
                 self.user_configs_hide,
@@ -105,7 +105,8 @@ class TestCoreConfigs(Py23FixTestCase):
     def return_user_configs(self):
         # we move back ~/.sfftk/sff.conf.test to ~/.sfftk/sff.conf
         if os.path.exists(self.user_configs_hide):
-            print('found moved user configs and returning them...', file=sys.stderr)
+            # fixme: use print_date
+            self.stderr('found moved user configs and returning them...')
             shutil.move(
                 self.user_configs_hide,
                 self.user_configs,
@@ -373,7 +374,6 @@ class TestCoreConfigs(Py23FixTestCase):
     def test_del_all_configs(self):
         """Test that we can delete all configs"""
         args, configs = parse_args('config del --force --all --config-path {}'.format(self.config_fn), use_shlex=True)
-        print('args = ', args)
         self.assertTrue(del_configs(args, configs) == 0)
         _, configs = parse_args('config get --all --config-path {}'.format(self.config_fn), use_shlex=True)
         self.assertTrue(len(configs) == 0)
@@ -661,7 +661,8 @@ class TestCoreParserPrepTransform(Py23FixTestCase):
 class TestCoreParserConvert(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        print("convert tests...", file=sys.stderr)
+        # fixme: use print_date
+        cls.stderr("convert tests...")
         cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
         cls.test_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
         cls.test_hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
@@ -672,7 +673,8 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        print("", file=sys.stderr)
+        # fixme: use print_date
+        cls.stderr("")
 
     def test_default(self):
         """Test convert parser"""
@@ -790,18 +792,18 @@ class TestCoreParserConvert(Py23FixTestCase):
     def test_all_levels(self):
         """Test that we can set the -a/--all-levels flag for Segger segmentations"""
         args, _ = parse_args('convert -v -a {}'.format(self.test_seg_file), use_shlex=True)
-        print(args)
+        self.assertTrue(args.all_levels)
 
 
 class TestCoreParserView(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        print("view tests...", file=sys.stderr)
+        cls.stderr("view tests...")
 
     @classmethod
     def tearDownClass(cls):
-        print("", file=sys.stderr)
+        cls.stderr("")
 
     def test_default(self):
         """Test view parser"""
@@ -839,11 +841,11 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        print("notes ro tests...", file=sys.stderr)
+        cls.stderr("notes ro tests...")
 
     @classmethod
     def tearDownClass(cls):
-        print("", file=sys.stderr)
+        cls.stderr("")
 
     # =========================================================================
     # find
@@ -1110,11 +1112,11 @@ class TestCoreParserNotesReadWrite(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-        print("notes rw tests...", file=sys.stderr)
+        cls.stderr("notes rw tests...")
 
     @classmethod
     def tearDownClass(cls):
-        print("", file=sys.stderr)
+        cls.stderr("")
 
     def setUp(self):
         Py23FixTestCase.setUp(self)
@@ -1509,7 +1511,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = _random_integers(start=101, stop=200)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
-        print('source_id: ', source_id, file=sys.stderr)
         args, _ = parse_args(cmd, use_shlex=True)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, source_id)
@@ -1678,7 +1679,7 @@ class TestCoreUtils(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         super(TestCoreUtils, cls).setUpClass()
-        print("utils tests...", file=sys.stderr)
+        cls.stderr("utils tests...")
 
     def test_get_path_one_level(self):
         """Test that we can get an item at a path one level deep"""
@@ -1753,9 +1754,11 @@ class TestCoreUtils(Py23FixTestCase):
                 }
             }
         }}
+        # invalid path returns None
         path = ['a', 'b', 'c', 'f']
-        with self.assertRaises(KeyError):
-            utils.get_path(D, path)
+        # with self.assertRaises(KeyError):
+        val = utils.get_path(D, path)
+        self.assertIsNone(val)
 
     def test_get_path_nondict_type_error(self):
         """Test that we get an exception when D is not a dict"""

@@ -17,13 +17,12 @@ import re
 import sys
 from copy import deepcopy
 
-from . import _dict_iter_keys
-from .print_tools import print_date
-from ..core import _decode, _input, _str
-from ..notes import RESOURCE_LIST
-
+from sfftkrw.core import _dict_iter_keys, _decode, _input, _str
 # extend the sfftkrw Parser object
 from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, add_args
+from sfftkrw.core.print_tools import print_date
+
+from ..notes import RESOURCE_LIST
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -34,7 +33,6 @@ verbosity_range = range(4)
 multi_file_formats = ['stl', 'map', 'mrc', 'rec']
 prepable_file_formats = ['mrc', 'map', 'rec']
 rescalable_file_formats = ['stl']
-
 
 Parser.description = u"The EMDB-SFF Toolkit (sfftk)"
 # Parser = argparse.ArgumentParser(
@@ -322,7 +320,7 @@ add_args(transform_prep_parser, verbose)
 # =========================================================================
 # extend the sfftk-rw convert parser
 convert_parser.description = "Perform conversions to EMDB-SFF"
-convert_parser.help="converts to EMDB-SFF"
+convert_parser.help = "converts to EMDB-SFF"
 add_args(convert_parser, config_path)
 add_args(convert_parser, shipped_configs)
 convert_parser.add_argument(
@@ -1312,7 +1310,6 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
 
             if args.segment_id is not None:
                 args.segment_id = list(map(int, args.segment_id.split(',')))
-
 
             # unicode
             if args.name is not None:

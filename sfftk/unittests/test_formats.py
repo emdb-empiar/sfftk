@@ -157,7 +157,6 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual(sff_segmentation.software_list[0].name, 'Undefined')
         self.assertEqual(sff_segmentation.primary_descriptor, 'three_d_volume')
         self.assertEqual(sff_segmentation.transform_list[0].id, 0)
-        print(sff_segmentation.transform_list)
 
     def test_map_multi_convert(self):
         """Convert several EMDB Map mask files to a single SFFSegmentation object"""
@@ -177,18 +176,14 @@ class TestFormats(Py23FixTestCase):
     def test_mod_convert(self):
         """Convert a segmentation from an IMOD file to an SFFSegmentation object"""
         args, configs = parse_args('convert {}'.format(self.mod_file), use_shlex=True)
-        # print(dir(self.mod_segmentation.segments[0].meshes[0].vertices))
-        # print(self.mod_segmentation.segments[0].meshes[0].vertices)
-        # print(self.mod_segmentation.segments[0].meshes[0].polygons[0])
         sff_segmentation = self.mod_segmentation.convert(args, configs)
-        print(sff_segmentation.segment_list)
-        # # assertions
-        # self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        # self.assertEqual(sff_segmentation.name, 'IMOD-NewModel')
-        # self.assertEqual(sff_segmentation.version, self.schema_version)
-        # self.assertEqual(sff_segmentation.software_list[0].name, 'IMOD')
-        # self.assertEqual(sff_segmentation.primary_descriptor, 'mesh_list')
-        # self.assertEqual(sff_segmentation.transforms[0].id, 0)
+        # assertions
+        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
+        self.assertEqual(sff_segmentation.name, 'IMOD-NewModel')
+        self.assertEqual(sff_segmentation.version, self.schema_version)
+        self.assertEqual(sff_segmentation.software_list[0].name, 'IMOD')
+        self.assertEqual(sff_segmentation.primary_descriptor, 'mesh_list')
+        self.assertEqual(sff_segmentation.transforms[0].id, 0)
 
     def test_stl_convert(self):
         """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""
@@ -221,9 +216,6 @@ class TestFormats(Py23FixTestCase):
         """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
         args, configs = parse_args('convert {}'.format(self.surf_file), use_shlex=True)
         sff_segmentation = self.surf_segmentation.convert(args, configs)
-        print(sff_segmentation)
-        import sys
-        sff_segmentation.export(sys.stderr)
         # assertions
         self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
         self.assertEqual(sff_segmentation.name, 'Amira HyperSurface Segmentation')

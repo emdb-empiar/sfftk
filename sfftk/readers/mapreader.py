@@ -18,8 +18,7 @@ import os
 import sys
 
 import numpy
-
-from ..core import _xrange, _encode
+from sfftkrw.core import _xrange, _encode
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'

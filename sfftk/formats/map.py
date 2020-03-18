@@ -13,11 +13,10 @@ import os
 import sys
 
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _xrange
+from sfftkrw.core.print_tools import print_date, get_printable_ascii_string
 
 from .base import Segmentation, Header, Segment, Annotation
-# from .. import schema
-from ..core import _xrange
-from ..core.print_tools import print_date, get_printable_ascii_string
 from ..readers import mapreader
 
 __author__ = "Paul K. Korir, PhD"

@@ -38,12 +38,10 @@ import os
 import struct
 import sys
 
-from bitarray import bitarray
-
-from ..core import _decode, _xrange, _dict_iter_items, _dict_iter_keys, _dict
-from ..core.print_tools import get_printable_ascii_string
-
 import numpy
+from bitarray import bitarray
+from sfftkrw.core import _decode, _xrange, _dict_iter_items, _dict_iter_keys, _dict
+from sfftkrw.core.print_tools import get_printable_ascii_string
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk'
@@ -128,7 +126,6 @@ def angstrom_multiplier(units):
     except AssertionError:
         raise ValueError(u"invalid units value '{units}'".format(units=units))
     return 10 ** (10 + units)
-
 
 
 def find_chunk_length(f):
@@ -686,7 +683,6 @@ class MESH(object):
         # first get the array of floats
         # then isolate each frame (0, 1, 2)
         # then zip them all together
-        #         print(sys.stderr, 12*self.vsize, file=sys.stderr)
         vert = struct.unpack('>' + 'fff' * self.vsize, f.read(12 * self.vsize))
         vert_x = vert[0::3]
         vert_y = vert[1::3]
@@ -1039,6 +1035,7 @@ def get_data(fn):
                 f = objt.read()
                 imod.add_objt(objt)
             elif chunk_name == 'OGRP':
+                # fixme: use print_date
                 print("OGRP: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
                 f.read(num_bytes)
@@ -1063,6 +1060,7 @@ def get_data(fn):
                 f = mesh.read()
                 imod.current_objt.add_mesh(mesh)
             elif chunk_name == 'SKLI':
+                # fixme: use print_date
                 print("SKLI: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
                 f.read(num_bytes)
@@ -1083,6 +1081,7 @@ def get_data(fn):
                 f = imat.read()
                 imod.current_objt.imat = imat
             elif chunk_name == 'SLAN':  # the class exists but has not been integrated; need an example of where it occurs
+                # fixme: use print_date
                 print("SLAN: skipping data...", file=sys.stderr)
                 num_bytes = struct.unpack('>i', f.read(4))[0]
                 f.read(num_bytes)
@@ -1104,13 +1103,17 @@ def get_data(fn):
                 imod.minx = minx
             elif chunk_name == 'OLBL':
                 chunk_length, next_chunk = find_chunk_length(f)  # for diagnostics only
+                # fixme: use print_date
                 print("The chunk {} has a length of {} bytes. The next chunk is {}.".format(
                     chunk_name, chunk_length, next_chunk
                 ))
             else:
+                # fixme: use print_date
                 print("This chunk is %(chunk_name)s." % {'chunk_name': chunk_name})
                 chunk_length, next_chunk = find_chunk_length(f)  # for diagnostics only
+                # fixme: use print_date
                 print("It has a length of %(chunk_length)s bytes." % {'chunk_length': chunk_length})
+                # fixme: use print_date
                 print("The next chunk is %(next_chunk)s." % {'next_chunk': next_chunk})
                 raise ValueError("Unknown chunk named '%s'" % chunk_name)
             # next chunk
@@ -1158,10 +1161,12 @@ def show_chunks(fn):
                 marker_count[current_marker] += 1
             elif next_marker != current_marker:
                 marker_count[current_marker] += 1
+                # fixme: use print_date
                 print(current_marker, marker_count[current_marker])
                 #             waiter = raw_input('')
                 marker_count[current_marker] = 0
         # print the last one
+        # fixme: use print_date
         print(next_marker)
 
     return
@@ -1183,7 +1188,7 @@ def print_model(fn):
 
     mod = get_data(fn)
     output_dest = sys.stderr
-
+    # fixme: use print_date
     print("***************************************************************************************", file=output_dest)
     print('IMOD', file=output_dest)
     print(mod, file=output_dest)

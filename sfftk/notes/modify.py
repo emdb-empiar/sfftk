@@ -16,13 +16,12 @@ import sys
 
 import requests
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _str, _decode
+from sfftkrw.core.parser import parse_args
+from sfftkrw.core.print_tools import print_date
 from styled import Styled
 
 from . import RESOURCE_LIST_NAMES
-# from .. import schema
-from ..core import _str, _decode
-from ..core.parser import parse_args
-from ..core.print_tools import print_date
 from ..notes.view import HeaderView, NoteView
 from ..sff import handle_convert
 
@@ -674,6 +673,7 @@ def add_note(args, configs):
         string = Styled(u"[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
+        # fixme: use print_date
         print(_str(string))
     else:
         found_segment = False
@@ -684,6 +684,7 @@ def add_note(args, configs):
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(sff_seg.segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
+                # fixme: use print_date
                 print(string)
                 found_segment = True
         if not found_segment:
@@ -717,6 +718,7 @@ def edit_note(args, configs):
         string = Styled(u"[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
+        # fixme: use print_date
         print(_str(string))
     else:
         found_segment = False
@@ -727,6 +729,7 @@ def edit_note(args, configs):
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(sff_seg.segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
+                # fixme: use print_date
                 print(_str(string))
                 found_segment = True
         if not found_segment:
@@ -756,6 +759,7 @@ def del_note(args, configs):
         string = Styled(u"[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
+        # fixme: use print_date
         print(_str(string))
     else:
         found_segment = False
@@ -766,6 +770,7 @@ def del_note(args, configs):
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(sff_seg.segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
+                # fixme: use print_date
                 print(_str(string))
                 found_segment = True
         if not found_segment:
@@ -815,6 +820,7 @@ def copy_notes(args, configs):
             else:
                 string += _str(NoteView(sff_seg.segments.get_by_id(t), _long=True))
             string += Styled(u"[[ ''|reset ]]")
+            # fixme: use print_date
             print(_str(string))
     # export
     sff_seg.export(args.sff_file)
@@ -847,6 +853,7 @@ def clear_notes(args, configs):
         string = Styled(u"[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
         string += Styled(u"[[ ''|reset ]]")
+        # fixme: use print_date
         print(_str(string))
     if args.segment_id is not None:
         for segment in sff_seg.segments:
@@ -854,12 +861,14 @@ def clear_notes(args, configs):
                 string = Styled(u"[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(segment, _long=True))
                 string += Styled(u"[[ ''|reset ]]")
+                # fixme: use print_date
                 print(_str(string))
     elif args.from_all_segments:
         for segment in sff_seg.segments:
             string = Styled(u"[[ ''|fg-green:no-end ]]")
             string += _str(NoteView(segment, _long=True))
             string += Styled(u"[[ ''|reset ]]")
+            # fixme: use print_date
             print(_str(string))
 
     # export

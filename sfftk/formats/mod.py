@@ -13,11 +13,9 @@ import inspect
 
 import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core import _UserList, _dict_iter_values, _str
 
 from .base import Segmentation, Header, Annotation
-# from .. import schema
-from ..core import _UserList, _dict_iter_values, _str
-from ..core.print_tools import print_date
 from ..readers import modreader
 
 __author__ = "Paul K. Korir, PhD"
@@ -397,7 +395,7 @@ class IMODSegmentation(Segmentation):
             if s.is_empty():
                 continue
             segment, _transforms = s.convert()
-            if s.meshes: # is not None:
+            if s.meshes:  # is not None:
                 # if len(s.meshes) > 0:
                 no_meshes += 1
             transforms += _transforms
