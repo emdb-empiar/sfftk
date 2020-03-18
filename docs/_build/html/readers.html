@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.readers package &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>sfftk.readers package &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -92,13 +92,13 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="schema.html">sfftk.schema package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="formats.html">sfftk.formats package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">sfftk.readers package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.amreader">AmiraMesh reader module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-amreader">sfftk.readers.amreader</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.survosreader">SuRVoS reader module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.mapreader">CCP4 mask reader module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-mapreader">sfftk.readers.mapreader</a></li>
 </ul>
@@ -207,21 +207,68 @@
 <dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – filename</p>
 </dd>
 <dt class="field-even">Return header</dt>
-<dd class="field-even"><p>AmiraMesh header</p>
+<dd class="field-even"><p>Amira(R) file header</p>
 </dd>
 <dt class="field-odd">Rtype header</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ahds.header.AmiraHeader</span></code></p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ahds.header.AmiraHeader</span></code></p>
 </dd>
-<dt class="field-even">Return segments_by_stream</dt>
-<dd class="field-even"><p>segments organised by stream</p>
+<dt class="field-even">Return labels</dt>
+<dd class="field-even"><p>the segments as a 3D volume</p>
 </dd>
-<dt class="field-odd">Rtype segments_by_stream</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ahds.data_streams.ImageSet</span></code></p>
+<dt class="field-odd">Rtype labels</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ahds.data_stream.AmiraMeshDataStream</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 </div>
+</div>
+<div class="section" id="module-sfftk.readers.survosreader">
+<span id="survos-reader-module"></span><h2>SuRVoS reader module<a class="headerlink" href="#module-sfftk.readers.survosreader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="sfftk.readers.survosreader.SuRVoSSegmentation">
+<em class="property">class </em><code class="sig-prename descclassname">sfftk.readers.survosreader.</code><code class="sig-name descname">SuRVoSSegmentation</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">dataset='/data'</em>, <em class="sig-param">mask_value=1</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A SuRVoS segmentation</p>
+<p>SuRVoS segmentations are based on integer annotations. To the best of my understanding
+no textual information is saved in segmentation.</p>
+<dl class="method">
+<dt id="sfftk.readers.survosreader.SuRVoSSegmentation.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The underlying segmentation data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.survosreader.SuRVoSSegmentation.segment_ids">
+<code class="sig-name descname">segment_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.segment_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a frozenset of segment IDs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.survosreader.SuRVoSSegmentation.shape">
+<em class="property">property </em><code class="sig-name descname">shape</code><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shape of the segmentation volume</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.readers.survosreader.get_data">
+<code class="sig-prename descclassname">sfftk.readers.survosreader.</code><code class="sig-name descname">get_data</code><span class="sig-paren">(</span><em class="sig-param">fn</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.survosreader.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main entry point for reader</p>
+<p>We need to return an object with a handle on the segments:</p>
+<ul class="simple">
+<li><p>each segment is a 3D volume with only that segments voxel values retained</p></li>
+<li><p>we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1]</p></li>
+</ul>
+<p>returns the segmentation with annotation value of ‘1’</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">SuRVoSSegmentation</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">()</span> <span class="c1"># returns a list of segment IDs</span>
+<span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># gets the first segment</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 <div class="section" id="module-sfftk.readers.mapreader">
 <span id="ccp4-mask-reader-module"></span><h2>CCP4 mask reader module<a class="headerlink" href="#module-sfftk.readers.mapreader" title="Permalink to this headline">¶</a></h2>
@@ -298,9 +345,27 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 </dd></dl>
 
 <dl class="method">
+<dt id="sfftk.readers.mapreader.Map.skew_matrix">
+<em class="property">property </em><code class="sig-name descname">skew_matrix</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.skew_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skew matrix as a numpy array</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="sfftk.readers.mapreader.Map.skew_matrix_data">
 <em class="property">property </em><code class="sig-name descname">skew_matrix_data</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.skew_matrix_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Skew matrix data</p>
+<dd><p>Skew matrix data as a space-separated string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.mapreader.Map.skew_translation">
+<em class="property">property </em><code class="sig-name descname">skew_translation</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.skew_translation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skew translation as a numpy array</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.mapreader.Map.skew_translation_data">
+<em class="property">property </em><code class="sig-name descname">skew_translation_data</code><a class="headerlink" href="#sfftk.readers.mapreader.Map.skew_translation_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skew translation as a space-separated string</p>
 </dd></dl>
 
 <dl class="method">
@@ -512,6 +577,24 @@ in the design of these classes:</p>
 <dd class="field-odd"><p>use zscale to fix sizes</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.modreader.IMOD.x_length">
+<em class="property">property </em><code class="sig-name descname">x_length</code><a class="headerlink" href="#sfftk.readers.modreader.IMOD.x_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length of X side of the image in angstrom</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.modreader.IMOD.y_length">
+<em class="property">property </em><code class="sig-name descname">y_length</code><a class="headerlink" href="#sfftk.readers.modreader.IMOD.y_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length of Y side of the image in angstrom</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="sfftk.readers.modreader.IMOD.z_length">
+<em class="property">property </em><code class="sig-name descname">z_length</code><a class="headerlink" href="#sfftk.readers.modreader.IMOD.z_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The length of Z side of the image in angstrom</p>
 </dd></dl>
 
 </dd></dl>
@@ -770,6 +853,32 @@ contain <a class="reference internal" href="#sfftk.readers.modreader.CLIP" title
 <em class="property">class </em><code class="sig-prename descclassname">sfftk.readers.modreader.</code><code class="sig-name descname">VIEW_FLAGS</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.VIEW_FLAGS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.modreader.FLAGS" title="sfftk.readers.modreader.FLAGS"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.FLAGS</span></code></a></p>
 <p>Flags in the VIEW chunk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="sfftk.readers.modreader.angstrom_multiplier">
+<code class="sig-prename descclassname">sfftk.readers.modreader.</code><code class="sig-name descname">angstrom_multiplier</code><span class="sig-paren">(</span><em class="sig-param">units</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.readers.modreader.angstrom_multiplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>1Å = 10^(-10) m -&gt; 1m = 10^(10)Å
+Consider some generic unit U with a power of 10 x
+1U = 10^x m     -&gt; 1m = 10^(-x)U
+We need a unit factor that relates Å to U
+Dividing both expressions for 1m
+1 = [10^(10)] / [10^(-x)] Å per U (Å/U) = 10^(10 + x) Å/U
+To convert U to Å we multiply by 10^(10 + x) Å/U
+Example:
+To convert 3 nm to Å we consider that x = -9 for nm
+So 3 nm = 3 nm * 10^(10 + (-9)) Å/nm
+= 3 nm * 10^(10 - 9) Å/nm
+= 3 nm * 10 Å/nm
+= 30 Å</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>units</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">

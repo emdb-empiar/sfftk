@@ -13,7 +13,7 @@ Extending sfftk
 Adding A Segmentation File Format
 =================================
 
-There are four (4) steps involved.
+There are five (5) steps involved.
 
 * Step I: Create a **reader** module
 
@@ -21,9 +21,9 @@ There are four (4) steps involved.
 
 * Step III: Implement a **convert hook** in the :py:func:`sfftk.sff.handle_convert` function
 
-* Step III: Add unit tests in the :py:mod:`sfftk.unittests` module
-
 * Step IV: Add test data files to the ``sfftk/test_data`` folder
+
+* Step V: Add unit tests in the :py:mod:`sfftk.unittests` module
 
 .. _step_I:
 
@@ -77,7 +77,7 @@ Segger segmentation files are represented using 3D volumes. Therefore, the :py:m
 .. code:: python
 
     from .base import Segmentation, Header, Segment, Annotation, Volume
-    from .. import schema
+    import sfftkrw as schema
     from ..readers import segreader
 
     class SeggerAnnotation(Annotation):
@@ -208,7 +208,7 @@ To perform a conversion the :py:class:`sfftk.formats.seg.SeggerSegmentation` cla
         # ...
 
         def convert(self, args, *_args, **_kwargs):
-            """Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object"""
+            """Method to convert a :py:class:`sfftkrw.SFFSegmentation` object"""
             segmentation = schema.SFFSegmentation()
             segmentation.name = "Segger Segmentation"
             segmentation.software = schema.SFFSoftware(
@@ -263,7 +263,7 @@ Notice that in the loop for each segment (``for s in self.segments``) we refer t
         # ...
 
         def convert(self, *args, **kwargs):
-            """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+            """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
             segment = schema.SFFSegment()
             segment.id = self.region_id
             segment.parentID = self.parent_id
@@ -313,19 +313,20 @@ Once this is done the following should work:
 
     sff convert --top-level-only file.seg --verbose
 
+
 .. _step_IV:
 
-Step IV: Add unit tests in the :py:mod:`sfftk.unittests` module
-----------------------------------------------------------------------------------------
-
-Write unit tests and add them to the :py:mod:`sfftk.unittests.test_formats` module. Each format that you add should implement a read and convert test method (respectively called ``test_<format>_read`` and ``test_<format>_convert``. See the :py:mod:`sfftk.unittests.test_formats` module for examples.
-
-.. _step_V:
-
-Step V: Add test data files to the ``sfftk/test_data`` folder
+Step IV: Add test data files to the ``sfftk/test_data`` folder
 ---------------------------------------------------------------------
 
 Provide an example segmentation file in the sfftk.test_data package.
+
+.. _step_V:
+
+Step V: Add unit tests in the :py:mod:`sfftk.unittests` module
+----------------------------------------------------------------------------------------
+
+Write unit tests and add them to the :py:mod:`sfftk.unittests.test_formats` module. Each format that you add should implement a read and convert test method (respectively called ``test_<format>_read`` and ``test_<format>_convert``. See the :py:mod:`sfftk.unittests.test_formats` module for examples.
 
 Of course, you are welcome to contact us for help doing the above. Also, if you have any suggestions on how to improve the extension process these are invited.
 
@@ -342,7 +343,6 @@ Also, tests can be run as follows:
 .. code:: bash
 
     sff tests formats
-
 
 Adding A Search Resource
 =================================
@@ -427,14 +427,14 @@ an example for OLS:
 
         if self._resource.name == 'OLS':
             fields = [
-                TableField('index', key='index', pc=5, is_index=True, justify='right'),
-                TableField('label', key='label', pc=10),
-                TableField('short_form', key='short_form', pc=10, justify='center'),
-                TableField('resource', key='ontology_name', pc=5, justify='center'),
-                TableField('description', key='description', pc=40, is_iterable=True),
-                TableField('iri', key='iri', pc=30),
-            ]
-            table = ResultsTable(self, fields=fields)
+                    TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
+                    TableField(u'label', key=u'label', pc=10),
+                    TableField(u'resource', key=u'ontology_name', pc=5, justify=u'center'),
+                    TableField(u'url', key=u'iri', pc=30),
+                    TableField(u'accession', key=u'short_form', pc=10, justify=u'center'),
+                    TableField(u'description', key=u'description', pc=40, is_iterable=True),
+                ]
+            table += _str(ResultsTable(self, fields=fields))
 
 You will need to refer to the resource's REST API documentation to match result fields with table fields.
 
@@ -459,14 +459,14 @@ You will need to refer to the resource's REST API documentation to match result 
 
     .. code-block:: python
 
-         TableField('iri', key='EntryID', _format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
+         TableField('url', key='EntryID', _format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
 
     for an EMDB entry page.
 
 Step IV: Write tests and test
 ------------------------------------------------------------------------------------------------
 
-You will then need to write at least two tests sfin the ``sfftk.unittests.test_notes.TestNotesFindSearchResource`` class:
+You will then need to write at least two tests in the ``sfftk.unittests.test_notes.TestNotesFindSearchResource`` class:
 
 *   *parser* tests that check that the command-line arguments are correct (see the module for other examples);
 

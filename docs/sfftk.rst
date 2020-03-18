@@ -8,7 +8,6 @@ sfftk packages
 .. toctree::
 	:maxdepth: 2
 	
-	schema
 	formats
 	readers
 	notes

@@ -18,10 +18,10 @@ def get_data(fn, *args, **kwargs):
     '''Reads and returns structured data given the file name
     
     :param str fn: filename
-    :return header: AmiraMesh header
-    :rtype header: ``ahds.header.AmiraHeader``
-    :return segments_by_stream: segments organised by stream
-    :rtype segments_by_stream: ``ahds.data_streams.ImageSet``
+    :return header: Amira(R) file header
+    :rtype header: :py:class:`ahds.header.AmiraHeader`
+    :return labels: the segments as a 3D volume
+    :rtype labels: :py:class:`ahds.data_stream.AmiraMeshDataStream`
     '''
     af = AmiraFile(fn, load_streams=True, *args, **kwargs)
     if af.header.extra_format == "<hxsurface>":

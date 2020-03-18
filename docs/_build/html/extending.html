@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Extending sfftk &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>Extending sfftk &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -98,8 +98,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-iv-add-unit-tests-in-the-sfftk-unittests-module">Step IV: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-v-add-test-data-files-to-the-sfftk-test-data-folder">Step V: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-a-search-resource">Adding A Search Resource</a><ul>
@@ -180,7 +180,7 @@
   <div class="section" id="extending-sfftk">
 <h1><a class="toc-backref" href="#id2">Extending sfftk</a><a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#extending-sfftk" id="id2">Extending sfftk</a></p>
 <ul>
@@ -193,8 +193,8 @@
 </ul>
 </li>
 <li><p><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" id="id7">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a></p></li>
-<li><p><a class="reference internal" href="#step-iv-add-unit-tests-in-the-sfftk-unittests-module" id="id8">Step IV: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></p></li>
-<li><p><a class="reference internal" href="#step-v-add-test-data-files-to-the-sfftk-test-data-folder" id="id9">Step V: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></p></li>
+<li><p><a class="reference internal" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder" id="id8">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></p></li>
+<li><p><a class="reference internal" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module" id="id9">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#adding-a-search-resource" id="id10">Adding A Search Resource</a></p>
@@ -217,13 +217,13 @@ parser</p>
 </div>
 <div class="section" id="adding-a-segmentation-file-format">
 <h2><a class="toc-backref" href="#id3">Adding A Segmentation File Format</a><a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this headline">¶</a></h2>
-<p>There are four (4) steps involved.</p>
+<p>There are five (5) steps involved.</p>
 <ul class="simple">
 <li><p>Step I: Create a <strong>reader</strong> module</p></li>
 <li><p>Step II: Create a <strong>format</strong> adapter module</p></li>
 <li><p>Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</p></li>
-<li><p>Step III: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</p></li>
 <li><p>Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</p></li>
+<li><p>Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</p></li>
 </ul>
 <div class="section" id="step-i-create-a-reader-module">
 <span id="step-i"></span><h3><a class="toc-backref" href="#id4">Step I: Create a <strong>reader</strong> module</a><a class="headerlink" href="#step-i-create-a-reader-module" title="Permalink to this headline">¶</a></h3>
@@ -257,7 +257,7 @@ parser</p>
 <p>To make the above concrete, we outline how the <a class="reference internal" href="formats.html#module-sfftk.formats.seg" title="sfftk.formats.seg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a> format adapter is implemented.</p>
 <p>Segger segmentation files are represented using 3D volumes. Therefore, the <a class="reference internal" href="formats.html#module-sfftk.formats.seg" title="sfftk.formats.seg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a> module has the following top level structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Segmentation</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">Volume</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">schema</span>
+<span class="kn">import</span> <span class="nn">sfftkrw</span> <span class="k">as</span> <span class="nn">schema</span>
 <span class="kn">from</span> <span class="nn">..readers</span> <span class="kn">import</span> <span class="n">segreader</span>
 
 <span class="k">class</span> <span class="nc">SeggerAnnotation</span><span class="p">(</span><span class="n">Annotation</span><span class="p">):</span>
@@ -278,7 +278,7 @@ parser</p>
 </div>
 <p>The <a class="reference internal" href="formats.html#sfftk.formats.seg.SeggerSegmentation" title="sfftk.formats.seg.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.seg.SeggerSegmentation</span></code></a> class’s initialiser does the reading using the <a class="reference internal" href="readers.html#module-sfftk.readers.segreader" title="sfftk.readers.segreader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers.segreader</span></code></a> module described in <a class="reference internal" href="#step-i"><span class="std std-ref">Step I: Create a reader module</span></a>;</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegmentation</span><span class="p">(</span><span class="n">Segmentation</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">top_level</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialise the reader&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fn</span> <span class="o">=</span> <span class="n">fn</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_segmentation</span> <span class="o">=</span> <span class="n">segreader</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -376,7 +376,7 @@ parser</p>
     <span class="c1"># ...</span>
 
     <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Method to convert a :py:class:`sfftkrw.SFFSegmentation` object&quot;&quot;&quot;</span>
         <span class="n">segmentation</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentation</span><span class="p">()</span>
         <span class="n">segmentation</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Segger Segmentation&quot;</span>
         <span class="n">segmentation</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSoftware</span><span class="p">(</span>
@@ -417,7 +417,7 @@ parser</p>
         <span class="p">)</span>
         <span class="n">segmentation</span><span class="o">.</span><span class="n">lattices</span><span class="o">.</span><span class="n">add_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
         <span class="c1"># details</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">details</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">segmentation</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">details</span>
         <span class="k">elif</span> <span class="s1">&#39;details&#39;</span> <span class="ow">in</span> <span class="n">_kwargs</span><span class="p">:</span>
             <span class="n">segmentation</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">_kwargs</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">]</span>
@@ -429,7 +429,7 @@ parser</p>
     <span class="c1"># ...</span>
 
     <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert to a :py:class:`sfftk.schema.SFFSegment` object&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert to a :py:class:`sfftkrw.SFFSegment` object&quot;&quot;&quot;</span>
         <span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
         <span class="n">segment</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">region_id</span>
         <span class="n">segment</span><span class="o">.</span><span class="n">parentID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_id</span>
@@ -475,13 +475,13 @@ parser</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="step-iv-add-unit-tests-in-the-sfftk-unittests-module">
-<span id="step-iv"></span><h3><a class="toc-backref" href="#id8">Step IV: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a><a class="headerlink" href="#step-iv-add-unit-tests-in-the-sfftk-unittests-module" title="Permalink to this headline">¶</a></h3>
-<p>Write unit tests and add them to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module. Each format that you add should implement a read and convert test method (respectively called <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_read</span></code> and <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_convert</span></code>. See the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module for examples.</p>
-</div>
-<div class="section" id="step-v-add-test-data-files-to-the-sfftk-test-data-folder">
-<span id="step-v"></span><h3><a class="toc-backref" href="#id9">Step V: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a><a class="headerlink" href="#step-v-add-test-data-files-to-the-sfftk-test-data-folder" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="step-iv-add-test-data-files-to-the-sfftk-test-data-folder">
+<span id="step-iv"></span><h3><a class="toc-backref" href="#id8">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a><a class="headerlink" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder" title="Permalink to this headline">¶</a></h3>
 <p>Provide an example segmentation file in the sfftk.test_data package.</p>
+</div>
+<div class="section" id="step-v-add-unit-tests-in-the-sfftk-unittests-module">
+<span id="step-v"></span><h3><a class="toc-backref" href="#id9">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a><a class="headerlink" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module" title="Permalink to this headline">¶</a></h3>
+<p>Write unit tests and add them to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module. Each format that you add should implement a read and convert test method (respectively called <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_read</span></code> and <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_convert</span></code>. See the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module for examples.</p>
 <p>Of course, you are welcome to contact us for help doing the above. Also, if you have any suggestions on how to improve the extension process these are invited.</p>
 <p>Once all this components are in place conversion to XML, HDF5 and JSON should be automatic.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.&lt;format&gt; -f sff
@@ -538,13 +538,13 @@ REST API).</p>
 <p>For example, the URL for OLS is generated as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ols</span>
 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;OLS&#39;</span><span class="p">:</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_url</span> <span class="o">+</span> <span class="s2">&quot;search?q={}&amp;start={}&amp;rows={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_url</span> <span class="o">+</span> <span class="s2">&quot;search?q=</span><span class="si">{}</span><span class="s2">&amp;start=</span><span class="si">{}</span><span class="s2">&amp;rows=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">search_term</span><span class="p">,</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">ontology</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;ontology={}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">ontology</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;ontology=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">ontology</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">exact</span><span class="p">:</span>
         <span class="n">url</span> <span class="o">+=</span> <span class="s2">&quot;&amp;exact=on&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_args</span><span class="o">.</span><span class="n">obsoletes</span><span class="p">:</span>
@@ -561,14 +561,14 @@ two classes: <a class="reference internal" href="notes.html#sfftk.notes.find.Tab
 an example for OLS:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resource</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;OLS&#39;</span><span class="p">:</span>
     <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">is_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">),</span>
-        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
-        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;short_form&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;short_form&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">),</span>
-        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;resource&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;ontology_name&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">),</span>
-        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">is_iterable</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-        <span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">ResultsTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+            <span class="n">TableField</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">is_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;right&#39;</span><span class="p">),</span>
+            <span class="n">TableField</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+            <span class="n">TableField</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;resource&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;ontology_name&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;center&#39;</span><span class="p">),</span>
+            <span class="n">TableField</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+            <span class="n">TableField</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;accession&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;short_form&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;center&#39;</span><span class="p">),</span>
+            <span class="n">TableField</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="sa">u</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">is_iterable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="n">table</span> <span class="o">+=</span> <span class="n">_str</span><span class="p">(</span><span class="n">ResultsTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>You will need to refer to the resource’s REST API documentation to match result fields with table fields.</p>
@@ -584,7 +584,7 @@ wide the field should be;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">justify</span></code> can either be <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span></code> or <code class="docutils literal notranslate"><span class="pre">center</span></code> and specifies the field text alignment;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">_format</span></code> specifies a <em>format string</em> (a string with with <code class="docutils literal notranslate"><span class="pre">{}</span></code> which will replace <code class="docutils literal notranslate"><span class="pre">{}</span></code> with the field value.
 This is helpful when creating URLs/IRIs to an accession page e.g.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;iri&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;EntryID&#39;</span><span class="p">,</span> <span class="n">_format</span><span class="o">=</span><span class="s1">&#39;https://www.ebi.ac.uk/pdbe/emdb/EMD-{}&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TableField</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;EntryID&#39;</span><span class="p">,</span> <span class="n">_format</span><span class="o">=</span><span class="s1">&#39;https://www.ebi.ac.uk/pdbe/emdb/EMD-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
 </pre></div>
 </div>
 <p>for an EMDB entry page.</p>
@@ -593,7 +593,7 @@ This is helpful when creating URLs/IRIs to an accession page e.g.</p>
 </div>
 <div class="section" id="step-iv-write-tests-and-test">
 <h3><a class="toc-backref" href="#id14">Step IV: Write tests and test</a><a class="headerlink" href="#step-iv-write-tests-and-test" title="Permalink to this headline">¶</a></h3>
-<p>You will then need to write at least two tests sfin the <code class="docutils literal notranslate"><span class="pre">sfftk.unittests.test_notes.TestNotesFindSearchResource</span></code> class:</p>
+<p>You will then need to write at least two tests in the <code class="docutils literal notranslate"><span class="pre">sfftk.unittests.test_notes.TestNotesFindSearchResource</span></code> class:</p>
 <ul class="simple">
 <li><p><em>parser</em> tests that check that the command-line arguments are correct (see the module for other examples);</p></li>
 <li><p><em>get_url</em> tests that ensure that the URL is correctly formed for all options;</p></li>

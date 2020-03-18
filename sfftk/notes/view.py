@@ -496,7 +496,7 @@ def list_notes(args, configs):
     """List all notes in an EMDB-SFF file
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :return int status: 0 is OK, else failure
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
@@ -519,9 +519,13 @@ def list_notes(args, configs):
         string += Styled(u"[[ ''|reset ]]")
         print(_str(string))
     for note_view in sorted_note_views:
-        string = Styled(u"[[ ''|fg-cyan:no-end ]]")
-        string += _str(note_view)
-        string += Styled(u"[[ ''|reset ]]")
+        if args.list_ids:
+            string = _str(note_view)
+        else:
+            # add colour
+            string = Styled(u"[[ ''|fg-cyan:no-end ]]")
+            string += _str(note_view)
+            string += Styled(u"[[ ''|reset ]]")
         print(_str(string))
     return os.EX_OK
 
@@ -530,7 +534,7 @@ def show_notes(args, configs):
     """Show notes in an EMDB-SFF file for the specified segment IDs
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :return int status: 0 is OK, else failure
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
@@ -546,7 +550,7 @@ def show_notes(args, configs):
             string += Styled(u"[[ ''|reset ]]")
             print(_str(string))
         found_segment = False
-        for segment in sff_seg.segments:
+        for segment in sff_seg.segment_list:
             if segment.id in args.segment_id:
                 string = Styled(u"[[ ''|fg-cyan:no-end ]]")
                 string += _str(NoteView(segment, _long=args.long_format))
@@ -555,4 +559,5 @@ def show_notes(args, configs):
                 found_segment = True
         if not found_segment:
             print_date("No segment with ID(s) {}".format(", ".join(map(str, args.segment_id))))
+            return os.EX_DATAERR
     return os.EX_OK

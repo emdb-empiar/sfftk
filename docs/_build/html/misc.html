@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -199,7 +199,7 @@
   <div class="section" id="miscellaneous-operations-using-sfftk">
 <h1><a class="toc-backref" href="#id2">Miscellaneous Operations Using sfftk</a><a class="headerlink" href="#miscellaneous-operations-using-sfftk" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#miscellaneous-operations-using-sfftk" id="id2">Miscellaneous Operations Using sfftk</a></p>
 <ul>
@@ -266,7 +266,9 @@ sff --version
 </div>
 <p>The full list of options is:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff view
-usage: sff view <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-V<span class="o">]</span> <span class="o">[</span>-C<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> from_file
+usage: sff view <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--sff-version<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span>
+                <span class="o">[</span>-C<span class="o">]</span>
+                from_file
 
 View a summary of an SFF file
 
@@ -275,15 +277,16 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --sff-version         show SFF format version
+  -v, --verbose         verbose output
   -p CONFIG_PATH, --config-path CONFIG_PATH
                         path to configs file
   -b, --shipped-configs
-                        use shipped configs only <span class="k">if</span> config path and user
-                        configs fail <span class="o">[</span>default: False<span class="o">]</span>
-  -V, --version         show SFF format version
-  -C, --show-chunks     show sequence of chunks in IMOD file<span class="p">;</span> only works with
-                        IMOD model files <span class="o">(</span>.mod<span class="o">)</span> <span class="o">[</span>default: False<span class="o">]</span>
-  -v, --verbose         verbose output
+                        use shipped configs only <span class="k">if</span> config path and
+                        user configs fail <span class="o">[</span>default: False<span class="o">]</span>
+  -C, --show-chunks     show sequence of chunks in IMOD file<span class="p">;</span> only
+                        works with IMOD model files <span class="o">(</span>.mod<span class="o">)</span>
+                        <span class="o">[</span>default: False<span class="o">]</span>
 </pre></div>
 </div>
 <div class="section" id="show-imod-chunks">
@@ -339,9 +342,10 @@ optional arguments:
   -h, --help          show this <span class="nb">help</span> message and <span class="nb">exit</span>
 
 Segmentation preparation utility:
-  The following commands provide a number of pre-processing steps <span class="k">for</span>
-  various segmentation file formats. Most only apply to one file type. See
-  the <span class="nb">help</span> <span class="k">for</span> each <span class="nb">command</span> by typing <span class="s1">&#39;sff prep &lt;command&gt;&#39;</span>
+  The following commands provide a number of pre-processing steps
+  <span class="k">for</span> various segmentation file formats. Most only apply to one
+  file type. See the <span class="nb">help</span> <span class="k">for</span> each <span class="nb">command</span> by typing <span class="s1">&#39;sff prep</span>
+<span class="s1">  &lt;command&gt;&#39;</span>
 
   Preparation steps:
     binmap            bin a CCP4 map
@@ -352,10 +356,11 @@ Segmentation preparation utility:
 <h3><a class="toc-backref" href="#id7">Binning Map Files</a><a class="headerlink" href="#binning-map-files" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">binmap</span></code> utility has the following options:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep binmap
-usage: sff prep binmap <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-m MASK_VALUE<span class="o">]</span> <span class="o">[</span>-o OUTPUT<span class="o">]</span>
-                   <span class="o">[</span>--overwrite<span class="o">]</span> <span class="o">[</span>-c CONTOUR_LEVEL<span class="o">]</span> <span class="o">[</span>--negate<span class="o">]</span>
-                   <span class="o">[</span>-B <span class="o">{</span><span class="m">1</span>,2,4,8,16<span class="o">}]</span> <span class="o">[</span>--infix INFIX<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span>
-                   from_file
+usage: sff prep binmap <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-m MASK_VALUE<span class="o">]</span>
+                       <span class="o">[</span>-o OUTPUT<span class="o">]</span> <span class="o">[</span>--overwrite<span class="o">]</span> <span class="o">[</span>-c CONTOUR_LEVEL<span class="o">]</span>
+                       <span class="o">[</span>--negate<span class="o">]</span> <span class="o">[</span>-B <span class="o">{</span><span class="m">1</span>,2,4,8,16<span class="o">}]</span> <span class="o">[</span>--infix INFIX<span class="o">]</span>
+                       <span class="o">[</span>-v<span class="o">]</span>
+                       from_file
 
 Bin the CCP4 file to reduce file size
 
@@ -367,22 +372,25 @@ optional arguments:
   -p CONFIG_PATH, --config-path CONFIG_PATH
                         path to configs file
   -b, --shipped-configs
-                        use shipped configs only <span class="k">if</span> config path and user
-                        configs fail <span class="o">[</span>default: False<span class="o">]</span>
+                        use shipped configs only <span class="k">if</span> config path and
+                        user configs fail <span class="o">[</span>default: False<span class="o">]</span>
   -m MASK_VALUE, --mask-value MASK_VALUE
-                        value to <span class="nb">set</span> to<span class="p">;</span> all other voxels <span class="nb">set</span> to zero
-                        <span class="o">[</span>default: <span class="m">1</span><span class="o">]</span>
+                        value to <span class="nb">set</span> to<span class="p">;</span> all other voxels <span class="nb">set</span> to
+                        zero <span class="o">[</span>default: <span class="m">1</span><span class="o">]</span>
   -o OUTPUT, --output OUTPUT
-                        output file name <span class="o">[</span>default: &lt;infile&gt;_binned.&lt;ext&gt;<span class="o">]</span>
+                        output file name <span class="o">[</span>default:
+                        &lt;infile&gt;_binned.&lt;ext&gt;<span class="o">]</span>
   --overwrite           overwrite output file <span class="o">[</span>default: False<span class="o">]</span>
   -c CONTOUR_LEVEL, --contour-level CONTOUR_LEVEL
-                        value <span class="o">(</span>exclusive<span class="o">)</span> about which to threshold <span class="o">[</span>default:
-                        <span class="m">0</span>.0<span class="o">]</span>
-  --negate              use values below the contour level <span class="o">[</span>default: False<span class="o">]</span>
+                        value <span class="o">(</span>exclusive<span class="o">)</span> about which to threshold
+                        <span class="o">[</span>default: <span class="m">0</span>.0<span class="o">]</span>
+  --negate              use values below the contour level
+                        <span class="o">[</span>default: False<span class="o">]</span>
   -B <span class="o">{</span><span class="m">1</span>,2,4,8,16<span class="o">}</span>, --bytes-per-voxel <span class="o">{</span><span class="m">1</span>,2,4,8,16<span class="o">}</span>
                         number of bytes per voxel <span class="o">[</span>default: <span class="m">1</span><span class="o">]</span>
-  --infix INFIX         infix to be added to filenames e.g. file.map -&gt;
-                        file_&lt;infix&gt;.map <span class="o">[</span>default: <span class="s1">&#39;prep&#39;</span><span class="o">]</span>
+  --infix INFIX         infix to be added to filenames e.g.
+                        file.map -&gt; file_&lt;infix&gt;.map <span class="o">[</span>default:
+                        <span class="s1">&#39;prep&#39;</span><span class="o">]</span>
   -v, --verbose         verbose output
 </pre></div>
 </div>
@@ -557,18 +565,18 @@ infix with the <code class="docutils literal notranslate"><span class="pre">--in
 <h3><a class="toc-backref" href="#id19">Mesh Reduction</a><a class="headerlink" href="#mesh-reduction" title="Permalink to this headline">¶</a></h3>
 <p>Naive marching cubes typically creates far more surface polygons than required leading to much larger files than
 necessary. Mesh reduction helps to eliminate reduntant polygons and thereby save disk space.</p>
-<p>The simplest way to do this on an STL file is to use Paraview, which is a freely-available, powerfully 3D graphics
-application. We have created a <a class="reference download internal" download="" href="_downloads/81eb60d422c1a64fe4017f164a67c23d/smooth_decimate.cpd"><code class="xref download docutils literal notranslate"><span class="pre">custom</span> <span class="pre">filter</span></code></a> that you can incorporate into your paraview installation to do this using
+<p>The simplest way to do this on an STL file is to use Paraview, which is a powerful freely-available 3D graphics
+application developed by Kitware Inc.. We have created a <a class="reference download internal" download="" href="_downloads/81eb60d422c1a64fe4017f164a67c23d/smooth_decimate.cpd"><code class="xref download docutils literal notranslate"><span class="pre">custom</span> <span class="pre">filter</span></code></a> that you can incorporate into your paraview installation to do this using
 the following steps.</p>
 <ol class="arabic simple">
-<li><p>Launch Paraview.</p></li>
+<li><p>Launch <em>Paraview</em>.</p></li>
 </ol>
-<p>2. In the <em>Pipeline Browser</em>, right-click and select <em>Open</em> from the context menu. This will open the file but depending
+<p>2.  In the <em>Pipeline Browser</em>, right-click and select <em>Open</em> from the context menu. This will open the file but depending
 on your settings may not seem to do anything. You might need to hit the <em>Apply</em> button in the <em>Properties</em> dialogue.</p>
 <img alt="_images/open.png" src="_images/open.png" />
 <p>The <em>Statistics Inspector</em> (available under the <em>View</em> menu) shows how much memory the surface occupies.</p>
 <img alt="_images/stats_before.png" src="_images/stats_before.png" />
-<p>3. Make sure you have <a class="reference download internal" download="" href="_downloads/81eb60d422c1a64fe4017f164a67c23d/smooth_decimate.cpd"><code class="xref download docutils literal notranslate"><span class="pre">downloaded</span> <span class="pre">the</span> <span class="pre">custom</span> <span class="pre">filter</span></code></a> then select <em>Tools &gt; Manage Custom Filters…</em>. A new dialogue box
+<p>3.  Make sure you have <a class="reference download internal" download="" href="_downloads/81eb60d422c1a64fe4017f164a67c23d/smooth_decimate.cpd"><code class="xref download docutils literal notranslate"><span class="pre">downloaded</span> <span class="pre">the</span> <span class="pre">custom</span> <span class="pre">filter</span></code></a> then select <em>Tools &gt; Manage Custom Filters…</em>. A new dialogue box
 opens for importing custom filters.</p>
 <img alt="_images/open_custom_filters_manager.png" src="_images/open_custom_filters_manager.png" />
 <ol class="arabic simple" start="4">
@@ -591,8 +599,8 @@ might need to hit the <em>Apply</em> button to run this filter.</p>
 </div>
 <div class="section" id="setting-configurations">
 <h2><a class="toc-backref" href="#id20">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this headline">¶</a></h2>
-<p>Some of the functionality provided by sfftk relies on persistent configurations.
-In the section we outline all you need to know to work with sfftk configurations.</p>
+<p>Some of the functionality provided by <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> relies on persistent configurations.
+In the section we outline all you need to know to work with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> configurations.</p>
 <p>Configurations are handled using the <code class="docutils literal notranslate"><span class="pre">config</span></code> utility with several subcommands.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config <span class="o">[</span>subcommand<span class="o">]</span>
 </pre></div>
@@ -641,7 +649,7 @@ Fri Jan <span class="m">19</span> <span class="m">14</span>:03:34 <span class="m
 </div>
 <div class="section" id="where-configurations-are-stored">
 <span id="configs"></span><h3><a class="toc-backref" href="#id27">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this headline">¶</a></h3>
-<p>sfftk ships with a config file called <code class="docutils literal notranslate"><span class="pre">sff.conf</span></code> which is located in the root of the package.
+<p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> ships with a config file called <code class="docutils literal notranslate"><span class="pre">sff.conf</span></code> which is located in the root of the package.
 In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
 Therefore, default read-only configurations will be obtained from this file.
 However, if the user would like to write new configs they will be written to <code class="docutils literal notranslate"><span class="pre">~/sfftk/sff.conf</span></code>.

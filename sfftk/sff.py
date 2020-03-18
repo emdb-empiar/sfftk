@@ -26,9 +26,9 @@ def handle_prep(args, configs):
     """Handle `prep` subcommand
 
     :param args: parsed arguments
-    :type args: :py:class:``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: :py:class:``sfftk.core.configs.Configs``
+    :type configs: :py:class:``sfftk.core.configs.Configss``
     :return int exit_status: exit status
     """
     if re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
@@ -49,7 +49,7 @@ def handle_convert(args, configs):  # @UnusedVariable
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     try:
@@ -136,7 +136,7 @@ def handle_notes_search(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     from sfftk.notes import find
@@ -160,7 +160,7 @@ def handle_notes_list(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     from sfftk.notes.view import list_notes
@@ -174,7 +174,7 @@ def handle_notes_show(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     from sfftk.notes.view import show_notes
@@ -188,7 +188,7 @@ def _handle_notes_modify(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     temp_file = configs['__TEMP_FILE']
@@ -250,7 +250,7 @@ def handle_notes_add(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     args = _handle_notes_modify(args, configs)
@@ -264,7 +264,7 @@ def handle_notes_edit(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     args = _handle_notes_modify(args, configs)
@@ -278,7 +278,7 @@ def handle_notes_del(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     args = _handle_notes_modify(args, configs)
@@ -292,7 +292,7 @@ def handle_notes_copy(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     args = _handle_notes_modify(args, configs)
@@ -306,7 +306,7 @@ def handle_notes_clear(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     args = _handle_notes_modify(args, configs)
@@ -320,7 +320,7 @@ def handle_notes_merge(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     from sfftk.notes.modify import merge
@@ -333,7 +333,7 @@ def handle_notes_save(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     from sfftk.notes.modify import save
@@ -346,7 +346,7 @@ def handle_notes_trash(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     from sfftk.notes.modify import trash
@@ -359,7 +359,7 @@ def handle_notes(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     if args.notes_subcommand == "search":
@@ -392,7 +392,7 @@ def handle_view(args, configs):  # @UnusedVariable
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     # fixme: use print_date
@@ -450,7 +450,7 @@ def handle_config(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     if args.config_subcommand == "get":
@@ -509,7 +509,7 @@ def handle_tests(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configs``
+    :type configs: ``sfftk.core.configs.Configss``
     :return int status: status
     """
     if 'all' in args.tool:

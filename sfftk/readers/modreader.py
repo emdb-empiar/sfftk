@@ -108,15 +108,14 @@ def angstrom_multiplier(units):
     1U = 10^x m     -> 1m = 10^(-x)U
     We need a unit factor that relates Å to U
     Dividing both expressions for 1m
-    1 = [10^(10)] / [10^(-x)] Å per U (Å/U)
-      = 10^(10 + x) Å/U
+    1 = [10^(10)] / [10^(-x)] Å per U (Å/U) = 10^(10 + x) Å/U
     To convert U to Å we multiply by 10^(10 + x) Å/U
     Example:
     To convert 3 nm to Å we consider that x = -9 for nm
     So 3 nm = 3 nm * 10^(10 + (-9)) Å/nm
-            = 3 nm * 10^(10 - 9) Å/nm
-            = 3 nm * 10 Å/nm
-            = 30 Å
+    = 3 nm * 10^(10 - 9) Å/nm
+    = 3 nm * 10 Å/nm
+    = 30 Å
 
     :param units:
     :return:

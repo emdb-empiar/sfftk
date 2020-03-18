@@ -265,7 +265,7 @@ class AbstractGlobalNote(BaseNote):
         """Adds this note to the given segmentation
 
         :param segmentation: an EMDB-SFF segmentation object
-        :type segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :type segmentation: :py:class:`sfftkrw.SFFSegmentation`
         :return segmentation: the EMDB-SFF segmentation with the annotation added
         """
         #  name
@@ -311,9 +311,9 @@ class AbstractGlobalNote(BaseNote):
         """Modify the global annotation of the given segmentation
         
         :param segmentation: an EMDB-SFF segmentation object
-        :type segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :type segmentation: :py:class:`sfftkrw.SFFSegmentation`
         :return segmentation: the EMDB-SFF segmentation with annotated edited
-        :rtype segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :rtype segmentation: :py:class:`sfftkrw.SFFSegmentation`
         """
         #  name
         if self.name is not None:
@@ -368,9 +368,9 @@ class AbstractGlobalNote(BaseNote):
         """Delete attributes from a segmentation
         
         :param segmentation: an EMDB-SFF segmentation object
-        :type segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :type segmentation: :py:class:`sfftkrw.SFFSegmentation`
         :return segmentation: the EMDB-SFF segmentation with annotation deleted
-        :rtype segmentation: :py:class:`sfftk.schema.SFFSegmentation`
+        :rtype segmentation: :py:class:`sfftkrw.SFFSegmentation`
         """
         #  name
         if self.name:
@@ -458,10 +458,10 @@ class AbstractNote(BaseNote):
     external_reference_id = NoteAttr('external_reference_id')
 
     def add_to_segment(self, segment):
-        """Add the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
+        """Add the annotations found in this ``Note`` object to the :py:class:`sfftkrw.SFFSegment` object
          
         :param segment: single segment in EMDB-SFF
-        :type segment: ``sfftk.schema.SFFSegment``
+        :type segment: :py:class:`sfftkrw.SFFSegment`
         """
         # biological_annotation
         if not segment.biological_annotation:
@@ -497,10 +497,10 @@ class AbstractNote(BaseNote):
         return segment
 
     def edit_in_segment(self, segment):
-        """Edit the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
+        """Edit the annotations found in this ``Note`` object to the :py:class:`sfftkrw.SFFSegment` object
          
         :param segment: single segment in EMDB-SFF
-        :type segment: ``sfftk.schema.SFFSegment``
+        :type segment: :py:class:`sfftkrw.SFFSegment`
         """
         # biological_annotation
         if not segment.biological_annotation:
@@ -548,10 +548,10 @@ class AbstractNote(BaseNote):
         return segment
 
     def del_from_segment(self, segment):
-        """Delete the annotations found in this ``Note`` object to the ``schema.SFFSegment`` object
+        """Delete the annotations found in this ``Note`` object to the :py:class:`sfftkrw.SFFSegment` object
          
         :param segment: single segment in EMDB-SFF
-        :type segment: ``sfftk.schema.SFFSegment``
+        :type segment: :py:class:`sfftkrw.SFFSegment`
         """
         # biological_annotation
         if not segment.biological_annotation:
@@ -657,9 +657,9 @@ def add_note(args, configs):
     """Add annotation to a segment specified in args
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Congif``
+    :type configs: :py:class:`sfftk.core.configs.Configs`
     :return int status: status
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
@@ -698,9 +698,9 @@ def edit_note(args, configs):
     """Edit annotation to a segment specified in args
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Congif``
+    :type configs: :py:class:`sfftk.core.configs.Configs`
     :return int status: status
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
@@ -743,9 +743,9 @@ def del_note(args, configs):
     """Delete annotation to a segment specified in args
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Congif``
+    :type configs: :py:class:`sfftk.core.configs.Configs`
     :return int status: status
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
@@ -880,9 +880,9 @@ def merge(args, configs):
     """Merge two EMDB-SFF files
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Congif``
+    :type configs: :py:class:`sfftk.core.configs.Configs`
     :return int status: status
     """
     # source
@@ -909,9 +909,9 @@ def save(args, configs):
     """Save changes made
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Congif``
+    :type configs: :py:class:`sfftk.core.configs.Configs`
     :return int status: status
     """
     temp_file = configs['__TEMP_FILE']
@@ -973,9 +973,9 @@ def trash(args, configs):
     """Trash changes made
     
     :param args: parsed arguments
-    :type args: ``argparse.Namespace``
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-	:type configs: ``sfftk.core.configs.Congif``
+	:type configs: :py:class:`sfftk.core.configs.Configs`
     :return int status: status
     """
     temp_file = configs['__TEMP_FILE']

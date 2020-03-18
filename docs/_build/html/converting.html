@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Converting Files To EMDB-SFF &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>Converting Files To EMDB-SFF &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -95,7 +95,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#specify-output-format">Specify Output Format</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#emdb-sff-format-interconversion">EMDB-SFF Format Interconversion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#verbose-operation">Verbose Operation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#truncate-segments-segger-only">Truncate Segments (Segger Only)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#include-all-segments">Include All Segments</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#set-details">Set Details</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#change-primary-descriptor">Change Primary Descriptor</a></li>
 </ul>
@@ -110,11 +110,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">Verbose Operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#truncating-segments-segger-only">Truncating Segments (Segger Only)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#including-all-segments">Including All Segments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#specify-details">Specify Details</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#changing-the-primary-descriptor">Changing The Primary Descriptor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#specifying-configurations-to-use">Specifying Configurations To Use</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-multifile-segmentations">Working with Multifile Segmentations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specifying-configurations-to-use">Specifying Configurations To Use</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="annotating.html">Annotating EMDB-SFF Segmentations</a></li>
@@ -189,7 +189,7 @@
   <div class="section" id="converting-files-to-emdb-sff">
 <h1><a class="toc-backref" href="#id5">Converting Files To EMDB-SFF</a><a class="headerlink" href="#converting-files-to-emdb-sff" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#converting-files-to-emdb-sff" id="id5">Converting Files To EMDB-SFF</a></p>
 <ul>
@@ -203,7 +203,7 @@
 <li><p><a class="reference internal" href="#specify-output-format" id="id11">Specify Output Format</a></p></li>
 <li><p><a class="reference internal" href="#emdb-sff-format-interconversion" id="id12">EMDB-SFF Format Interconversion</a></p></li>
 <li><p><a class="reference internal" href="#verbose-operation" id="id13">Verbose Operation</a></p></li>
-<li><p><a class="reference internal" href="#truncate-segments-segger-only" id="id14">Truncate Segments (Segger Only)</a></p></li>
+<li><p><a class="reference internal" href="#include-all-segments" id="id14">Include All Segments</a></p></li>
 <li><p><a class="reference internal" href="#set-details" id="id15">Set Details</a></p></li>
 <li><p><a class="reference internal" href="#change-primary-descriptor" id="id16">Change Primary Descriptor</a></p></li>
 </ul>
@@ -219,11 +219,11 @@
 </ul>
 </li>
 <li><p><a class="reference internal" href="#id3" id="id22">Verbose Operation</a></p></li>
-<li><p><a class="reference internal" href="#truncating-segments-segger-only" id="id23">Truncating Segments (Segger Only)</a></p></li>
+<li><p><a class="reference internal" href="#including-all-segments" id="id23">Including All Segments</a></p></li>
 <li><p><a class="reference internal" href="#specify-details" id="id24">Specify Details</a></p></li>
 <li><p><a class="reference internal" href="#changing-the-primary-descriptor" id="id25">Changing The Primary Descriptor</a></p></li>
-<li><p><a class="reference internal" href="#specifying-configurations-to-use" id="id26">Specifying Configurations To Use</a></p></li>
-<li><p><a class="reference internal" href="#working-with-multifile-segmentations" id="id27">Working with Multifile Segmentations</a></p></li>
+<li><p><a class="reference internal" href="#working-with-multifile-segmentations" id="id26">Working with Multifile Segmentations</a></p></li>
+<li><p><a class="reference internal" href="#specifying-configurations-to-use" id="id27">Specifying Configurations To Use</a></p></li>
 </ul>
 </li>
 </ul>
@@ -242,9 +242,7 @@ sff convert --help
 </div>
 <p>displays all conversion options.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert
-usage: sff convert <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-d DETAILS<span class="o">]</span>
-                   <span class="o">[</span>-R PRIMARY_DESCRIPTOR<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span> <span class="o">[</span>-o OUTPUT <span class="p">|</span> -f FORMAT<span class="o">]</span>
-                   <span class="o">[</span>from_file <span class="o">[</span>from_file ...<span class="o">]]</span>
+usage: sff convert <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-D DETAILS<span class="o">]</span> <span class="o">[</span>-R PRIMARY_DESCRIPTOR<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-x<span class="o">]</span> <span class="o">[</span>--json-indent JSON_INDENT<span class="o">]</span> <span class="o">[</span>--json-sort<span class="o">]</span> <span class="o">[</span>-o OUTPUT <span class="p">|</span> -f FORMAT<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-a<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span> <span class="o">[</span>from_file <span class="o">[</span>from_file ...<span class="o">]]</span>
 
 Perform conversions to EMDB-SFF
 
@@ -253,31 +251,27 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -t, --top-level-only  convert only the top-level segments <span class="o">[</span>default: False<span class="o">]</span>
+  -D DETAILS, --details DETAILS
+                        populates &lt;details&gt;...&lt;/details&gt; in the XML file
+  -R PRIMARY_DESCRIPTOR, --primary-descriptor PRIMARY_DESCRIPTOR
+                        populates the &lt;primary_descriptor&gt;...&lt;/primary_descriptor&gt; to this value <span class="o">[</span>valid values: three_d_volume, mesh_list, shape_primitive_list<span class="o">]</span>
+  -v, --verbose         verbose output
+  -x, --exclude-geometry
+                        <span class="k">do</span> not include the geometry in the conversion<span class="p">;</span> geometry is included by default <span class="o">[</span>default: False<span class="o">]</span>
+  --json-indent JSON_INDENT
+                        size in spaces of the JSON indent <span class="o">[</span>default: <span class="m">2</span><span class="o">]</span>
+  --json-sort           output JSON sorted lexicographically <span class="o">[</span>default: False<span class="o">]</span>
+  -o OUTPUT, --output OUTPUT
+                        file to convert to<span class="p">;</span> the extension <span class="o">(</span>.sff, .hff, .json<span class="o">)</span> determines the output format <span class="o">[</span>default: None<span class="o">]</span>
+  -f FORMAT, --format FORMAT
+                        output file format<span class="p">;</span> valid options are: sff <span class="o">(</span>XML<span class="o">)</span>, hff <span class="o">(</span>HDF5<span class="o">)</span>, json <span class="o">(</span>JSON<span class="o">)</span> <span class="o">[</span>default: sff<span class="o">]</span>
   -p CONFIG_PATH, --config-path CONFIG_PATH
                         path to configs file
   -b, --shipped-configs
-                        use shipped configs only <span class="k">if</span> config path and user
-                        configs fail <span class="o">[</span>default: False<span class="o">]</span>
-  -t, --top-level-only  convert only the top-level segments <span class="o">[</span>default: False<span class="o">]</span>
-  -d DETAILS, --details DETAILS
-                        populates &lt;details&gt;...&lt;/details&gt; in the XML file
-                        <span class="o">[</span>default: <span class="s1">&#39;&#39;</span><span class="o">]</span>
-  -R PRIMARY_DESCRIPTOR, --primary-descriptor PRIMARY_DESCRIPTOR
-                        populates the
-                        &lt;primaryDescriptor&gt;...&lt;/primaryDescriptor&gt; to this
-                        value <span class="o">[</span>valid values: threeDVolume, meshList,
-                        shapePrimitiveList<span class="o">]</span>
-  -v, --verbose         verbose output
-  -m, --multi-file      enables convert to treat multiple files as individual
-                        segments of a single segmentation<span class="p">;</span> only works <span class="k">for</span> the
-                        following filetypes: stl, map, mrc, rec <span class="o">[</span>default:
-                        False<span class="o">]</span>
-  -o OUTPUT, --output OUTPUT
-                        file to convert to<span class="p">;</span> the extension <span class="o">(</span>.sff, .hff, .json<span class="o">)</span>
-                        determines the output format <span class="o">[</span>default: None<span class="o">]</span>
-  -f FORMAT, --format FORMAT
-                        output file format<span class="p">;</span> valid options are: sff <span class="o">(</span>XML<span class="o">)</span>, hff
-                        <span class="o">(</span>HDF5<span class="o">)</span>, json <span class="o">(</span>JSON<span class="o">)</span> <span class="o">[</span>default: sff<span class="o">]</span>
+                        use shipped configs only <span class="k">if</span> config path and user configs fail <span class="o">[</span>default: False<span class="o">]</span>
+  -a, --all-levels      <span class="k">for</span> segments structured hierarchically <span class="o">(</span>e.g. Segger from UCSF Chimera and Chimera X<span class="o">)</span> convert all segment leves in the hierarchy <span class="o">[</span>default: False<span class="o">]</span>
+  -m, --multi-file      enables convert to treat multiple files as individual segments of a single segmentation<span class="p">;</span> only works <span class="k">for</span> the following filetypes: stl, map, mrc, rec <span class="o">[</span>default: False<span class="o">]</span>
 </pre></div>
 </div>
 </div>
@@ -294,7 +288,7 @@ optional arguments:
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.seg -o file.sff
 sff convert file.seg --output /path/to/output/file.sff
 sff convert file.seg -o file.hff
-sff convert file.seg -o file.json <span class="c1"># only metadata; no geometrical data</span>
+sff convert file.seg -o --exclude-geometry file.json <span class="c1"># only metadata; no geometrical data</span>
 </pre></div>
 </div>
 </div>
@@ -320,24 +314,27 @@ sff convert --verbose file.hff
 </pre></div>
 </div>
 </div>
-<div class="section" id="truncate-segments-segger-only">
-<h4><a class="toc-backref" href="#id14">Truncate Segments (Segger Only)</a><a class="headerlink" href="#truncate-segments-segger-only" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -t file.seg
-sff convert --top-level-only file.seg
+<div class="section" id="include-all-segments">
+<h4><a class="toc-backref" href="#id14">Include All Segments</a><a class="headerlink" href="#include-all-segments" title="Permalink to this headline">¶</a></h4>
+<p>When a segmentation is defined hierarchically only the top level of segments (i.e. those just under the root) will
+be included by default. Use <code class="docutils literal notranslate"><span class="pre">-a/--all-levels</span></code> argument to include all segments. This can lead to very large files.
+Segger (<code class="docutils literal notranslate"><span class="pre">.seg</span></code>) segmentations are one such example.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -a file.seg
+sff convert --all-levels file.seg
 </pre></div>
 </div>
 </div>
 <div class="section" id="set-details">
 <h4><a class="toc-backref" href="#id15">Set Details</a><a class="headerlink" href="#set-details" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -d <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> file.seg
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -D <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> file.seg <span class="c1"># strings must be quoted (single/double)</span>
 sff convert --details <span class="s2">&quot;Lorem ipsum dolor...&quot;</span> file.seg
 </pre></div>
 </div>
 </div>
 <div class="section" id="change-primary-descriptor">
 <h4><a class="toc-backref" href="#id16">Change Primary Descriptor</a><a class="headerlink" href="#change-primary-descriptor" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -R contourList file.surf <span class="c1"># AmiraHxSurface file</span>
-sff convert --primary-descriptor contourList file.surf <span class="c1"># AmiraHxSurface file</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -R shape_primitive_list file.surf <span class="c1"># IMOD file</span>
+sff convert --primary-descriptor shape_primitive_list file.surf <span class="c1"># IMOD file</span>
 </pre></div>
 </div>
 </div>
@@ -350,16 +347,14 @@ sff convert --primary-descriptor contourList file.surf <span class="c1"># AmiraH
 </div>
 <div class="section" id="output-formats">
 <span id="id1"></span><h2><a class="toc-backref" href="#id18">Output Formats</a><a class="headerlink" href="#output-formats" title="Permalink to this headline">¶</a></h2>
-<p>EMDB-SFF files can be output as XML (<code class="docutils literal notranslate"><span class="pre">.sff</span></code>), HDF5 (<code class="docutils literal notranslate"><span class="pre">.hff</span></code>) or JSON
+<p>EMDB-SFF files can be output as XML (<code class="docutils literal notranslate"><span class="pre">.sff</span></code>, <code class="docutils literal notranslate"><span class="pre">.xml</span></code>), HDF5 (<code class="docutils literal notranslate"><span class="pre">.hff</span></code>, <code class="docutils literal notranslate"><span class="pre">.h5</span></code> or <code class="docutils literal notranslate"><span class="pre">.hdf5</span></code>) or JSON
 (<code class="docutils literal notranslate"><span class="pre">.json</span></code>).</p>
 <ul class="simple">
-<li><p>XML EMDB-SFF files are typically relatively large compared to HDF5 and
-JSON equivalents. The compression applied in HDF5 files makes them ideal
-for large datasets.</p></li>
-<li><p>JSON EMDB-SFF files do not contain geometric descriptors and are primarily
-used as temporary files during annotation.</p></li>
+<li><p>Both XML and HDF5 are quite compact and in many cases would be smaller than the original segmentation file.</p></li>
+<li><p>JSON EMDB-SFF files may exclude geometry if created with <code class="docutils literal notranslate"><span class="pre">-x/--exclude-geometry</span></code> flag; they are primarily
+used as temporary files during annotation for speed.</p></li>
 <li><p>Interconversion of the three formats is lossless (with the exception of
-geometrical data when converting to JSON - all geometrical data is excluded).</p></li>
+geometrical data when converting to JSON - if geometrical data is excluded).</p></li>
 </ul>
 <p>There are two ways to perform conversion:</p>
 <ul class="simple">
@@ -411,7 +406,7 @@ EMDB-SFF files.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.sff --output /path/to/output/file.hff
 </pre></div>
 </div>
-<p>or using –format</p>
+<p>or using <code class="docutils literal notranslate"><span class="pre">--format</span></code></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.hff --format json
 </pre></div>
 </div>
@@ -419,8 +414,7 @@ EMDB-SFF files.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert file.sff --format sff
 </pre></div>
 </div>
-<p>As stated previously, conversion to JSON drops all geometrical descriptions.
-Similarly, conversions from JSON to EMDB-SFF will not reinstate the geometric
+<p>Conversions from JSON to XML/HDF5 where the latter excluded the geometry will not reinstate the geometrical
 description information.</p>
 </div>
 </div>
@@ -437,25 +431,25 @@ Tue Sep <span class="m">12</span> <span class="m">15</span>:30:07 <span class="m
 </pre></div>
 </div>
 </div>
-<div class="section" id="truncating-segments-segger-only">
-<h2><a class="toc-backref" href="#id23">Truncating Segments (Segger Only)</a><a class="headerlink" href="#truncating-segments-segger-only" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="including-all-segments">
+<h2><a class="toc-backref" href="#id23">Including All Segments</a><a class="headerlink" href="#including-all-segments" title="Permalink to this headline">¶</a></h2>
 <p>Segger segmentations include hundreds to thousands of sub-segmentations due to
 how the algorithm it uses (watershed algorithm) to segment the volume.
 The segmentations thus form a tree with the root having an ID of zero.
 Mostly, we are only interested in the children of the root which are in
-themselves roots of another tree. Specifying this option only transfers the
+themselves roots of another tree. By default we only transfer the
 children of the global root into the EMDB-SFF file.</p>
 <p>Consider the following tree of segments:</p>
 <img alt="_images/converting-01.png" src="_images/converting-01.png" />
 <p>The segmentation contains different levels commencing from the root down, with
 children segments <em>contained within</em> parent segments. Specifying
-<code class="docutils literal notranslate"><span class="pre">-t/--top-level-only</span></code> treats only children of the <em>root</em> as segments and
-excludes all others. Therefore, running</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert --top-level-only file.seg
+<code class="docutils literal notranslate"><span class="pre">-a/--all-levels</span></code> treats all children of the <em>root</em> as segments and
+includes all segments. Therefore, running</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert --all-levels file.seg
 </pre></div>
 </div>
-<p>on the above will produce an EMDB-SFF file with only three segments. Excluding
-this option means that the resulting EMDB-SFF file will be relatively large.</p>
+<p>on the above will produce an EMDB-SFF file with hundreds of segments. The default operation
+results in a more compact file.</p>
 </div>
 <div class="section" id="specify-details">
 <h2><a class="toc-backref" href="#id24">Specify Details</a><a class="headerlink" href="#specify-details" title="Permalink to this headline">¶</a></h2>
@@ -473,8 +467,8 @@ auxilliary information. The contents of this option will be put into
 <div class="section" id="changing-the-primary-descriptor">
 <h2><a class="toc-backref" href="#id25">Changing The Primary Descriptor</a><a class="headerlink" href="#changing-the-primary-descriptor" title="Permalink to this headline">¶</a></h2>
 <p>The EMDB-SFF data model provides for three possible geometrical descriptors:
-<cite>meshes (meshList), shape primitives (shapePrimitiveList)</cite> and
-<cite>3D volumes (threeDVolume)</cite>.</p>
+<cite>meshes (mesh_list), shape primitives (shape_primitive_list)</cite> and
+<cite>3D volumes (three_d_volume)</cite>.</p>
 <p>In some cases, such as with IMOD segmentations, more than one geometrical
 descriptor may have been specified for the same segmentations.</p>
 <p>The mandatory <code class="docutils literal notranslate"><span class="pre">&lt;primaryDescriptor/&gt;</span></code> field specifies the main geometrical
@@ -493,61 +487,47 @@ Only valid values are allowed; otherwise a <code class="docutils literal notrans
 </thead>
 <tbody>
 <tr class="row-even"><td><p>AmiraMesh</p></td>
-<td><p>threeDVolume</p></td>
+<td><p>three_d_volume</p></td>
 </tr>
 <tr class="row-odd"><td><p>AmiraHxSurface</p></td>
-<td><p>meshList</p></td>
+<td><p>mesh_list</p></td>
 </tr>
-<tr class="row-even"><td><p>CCP4 masks</p></td>
-<td><p>threeDVolume</p></td>
+<tr class="row-even"><td><p>SuRVoS</p></td>
+<td><p>three_d_volume</p></td>
 </tr>
-<tr class="row-odd"><td><p>IMOD</p></td>
-<td><p>meshList (default), shapePrimitiveList</p></td>
+<tr class="row-odd"><td><p>CCP4 masks</p></td>
+<td><p>three_d_volume</p></td>
 </tr>
-<tr class="row-even"><td><p>Segger</p></td>
-<td><p>threeDVolume</p></td>
+<tr class="row-even"><td><p>IMOD</p></td>
+<td><p>mesh_list (default), shape_primitive_list</p></td>
 </tr>
-<tr class="row-odd"><td><p>STL</p></td>
-<td><p>meshList</p></td>
+<tr class="row-odd"><td><p>Segger</p></td>
+<td><p>three_d_volume</p></td>
+</tr>
+<tr class="row-even"><td><p>STL</p></td>
+<td><p>mesh_list</p></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>IMOD files must have a mesh generated using <code class="docutils literal notranslate"><span class="pre">imodmesh</span></code> command.</p>
+<p>IMOD files must have a mesh generated using <code class="docutils literal notranslate"><span class="pre">imodmesh</span></code> command. Open contours will need to be converted to
+tubes using the <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;obj_list&gt;</span></code> option. For example, for an IMOD file <code class="docutils literal notranslate"><span class="pre">file.mod</span></code> with three objects all of
+which are open contours we can run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~$ imodmesh -t <span class="m">1</span>,2,3 -d <span class="m">10</span> -E -Z <span class="m">1</span>.0 file.mod
+</pre></div>
+</div>
+<p>which convert to tubes objects 1, 2 and 3 (<code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">1,2,3</span></code>), cap ends (<code class="docutils literal notranslate"><span class="pre">-E</span></code>) with domes at a scale of 1.0
+(<code class="docutils literal notranslate"><span class="pre">-Z</span> <span class="pre">1.0</span></code>) and a diameter of 10 pixels (<code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">10</span></code>).</p>
+<p>You can find out much more about using <code class="docutils literal notranslate"><span class="pre">imodmesh</span></code> at <a class="reference external" href="https://bio3d.colorado.edu/imod/doc/man/imodmesh.html">its documentation page</a>.</p>
 </div>
 <p>Note that the primary descriptor should only be changed to a value of a
 geometrical descriptor that is <em>actually</em> present in the EMDB-SFF file.</p>
-<p>For IMOD files, <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> tries to infer which primary descriptor to use.
-Also, if the primary descriptor is changed, it tries to ensure that a change
-corresponds to the actual file contents.</p>
-</div>
-<div class="section" id="specifying-configurations-to-use">
-<h2><a class="toc-backref" href="#id26">Specifying Configurations To Use</a><a class="headerlink" href="#specifying-configurations-to-use" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> makes use of persistent configurations which affect how certain operations
-are performed. There are three types of configurations detailed in the dedicated
-documentation on configs (see <a class="reference internal" href="misc.html#configs"><span class="std std-ref">Where Configurations Are Stored</span></a>) in decreasing order of priority:</p>
-<ul class="simple">
-<li><p>custom configs defined in a <code class="docutils literal notranslate"><span class="pre">path/to/sff.conf</span></code> file;</p></li>
-<li><p>user configs stored in <code class="docutils literal notranslate"><span class="pre">~/.sfftk/sff.conf</span></code>;</p></li>
-<li><p>shipped configs which will sit with the installed <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> package.</p></li>
-</ul>
-<p>Custom configs are invoked using the <code class="docutils literal notranslate"><span class="pre">-p/--config-path</span></code> option:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -p path/to/configs file.seg
-sff convert --config-path path/to/configs file.seg
-</pre></div>
-</div>
-<p>User configs are default and require no special flags.</p>
-<p>Shipped configs use the <code class="docutils literal notranslate"><span class="pre">-b/--shipped-configs</span></code> flag with no arguments:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -b file.am
-sff convert --shipped-configs file.am
-</pre></div>
-</div>
 </div>
 <div class="section" id="working-with-multifile-segmentations">
-<h2><a class="toc-backref" href="#id27">Working with Multifile Segmentations</a><a class="headerlink" href="#working-with-multifile-segmentations" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id26">Working with Multifile Segmentations</a><a class="headerlink" href="#working-with-multifile-segmentations" title="Permalink to this headline">¶</a></h2>
 <p>Some of the segmentation file formats supported are designed to hold one segment per file.
-Therefore, representating a complete segmentation will require multiple files.</p>
+Therefore, representing a complete segmentation will require multiple files.</p>
 <p>Currently the following file formats are multifile by design:</p>
 <ul class="simple">
 <li><p><strong>CCP4 and related files</strong> - these files store segments as a 3D volume with segment region marked by
@@ -565,6 +545,28 @@ specify a single segment.</p>
 <p>The above command will use default options and write an EMDB-SFF file to <code class="docutils literal notranslate"><span class="pre">file1.sff</span></code>. Alternatively,
 the user should specify the output file</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -m file1.map file2.map file3.map --output file.sff
+</pre></div>
+</div>
+</div>
+<div class="section" id="specifying-configurations-to-use">
+<h2><a class="toc-backref" href="#id27">Specifying Configurations To Use</a><a class="headerlink" href="#specifying-configurations-to-use" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> makes use of persistent configurations which affect how certain operations
+are performed. There are three types of configurations detailed in the dedicated
+documentation on configs (see <a class="reference internal" href="misc.html#configs"><span class="std std-ref">Where Configurations Are Stored</span></a>) in decreasing order of priority:</p>
+<ul class="simple">
+<li><p>custom configs defined in a <code class="docutils literal notranslate"><span class="pre">path/to/sff.conf</span></code> file;</p></li>
+<li><p>user configs stored in <code class="docutils literal notranslate"><span class="pre">~/.sfftk/sff.conf</span></code>;</p></li>
+<li><p>shipped configs which will sit with the installed <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> package.</p></li>
+</ul>
+<p>Custom configs are invoked using the <code class="docutils literal notranslate"><span class="pre">-p/--config-path</span></code> option:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -p path/to/configs file.seg
+sff convert --config-path path/to/configs file.seg
+</pre></div>
+</div>
+<p>User configs are default and require no special flags.</p>
+<p>Shipped configs use the <code class="docutils literal notranslate"><span class="pre">-b/--shipped-configs</span></code> flag with no arguments:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert -b file.am
+sff convert --shipped-configs file.am
 </pre></div>
 </div>
 </div>

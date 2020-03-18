@@ -21,7 +21,7 @@ class SuRVoSSegment(Segment):
         return self._segment_id + 1
 
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.segment_id = self.segment_id
         segment.biological_annotation = schema.SFFBiologicalAnnotation(
@@ -43,7 +43,7 @@ class SuRVoSSegmentation(Segmentation):
     .. code:: python
 
         from sfftk.formats.survos import SuRVoSSegmentation
-        am_seg = SuRVoSSegmentation('predictions.am')
+        am_seg = SuRVoSSegmentation('predictions.h5')
     """
 
     def __init__(self, fn, *args, **kwargs):
@@ -58,7 +58,7 @@ class SuRVoSSegmentation(Segmentation):
         return self._segments
 
     def convert(self, args, *_args, **_kwargs):
-        """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Convert to :py:class:`sfftkrw.SFFSegmentation` object"""
         # header
         segmentation = schema.SFFSegmentation()
         segmentation.name = "SuRVoS Segmentation"

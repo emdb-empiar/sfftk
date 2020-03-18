@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk packages &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>sfftk packages &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="sfftk.schema package" href="schema.html" />
+    <link rel="next" title="sfftk.formats package" href="formats.html" />
     <link rel="prev" title="Extending sfftk" href="extending.html" /> 
 </head>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -92,7 +92,6 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">sfftk packages</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="schema.html">sfftk.schema package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="formats.html">sfftk.formats package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers.html">sfftk.readers package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes.html">sfftk.notes package</a></li>
@@ -167,12 +166,9 @@
 <span id="sfftk-packages"></span><h1>sfftk packages<a class="headerlink" href="#module-sfftk.__init__" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="schema.html">sfftk.schema package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="schema.html#sfftk-schema">sfftk.schema</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="formats.html">sfftk.formats package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="formats.html#module-sfftk.formats.am">AmiraMesh module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#module-sfftk.formats.survos">SuRVoS module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="formats.html#module-sfftk.formats.map">CCP4 mask module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="formats.html#module-sfftk.formats.mod">IMOD module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="formats.html#module-sfftk.formats.seg">Segger module</a></li>
@@ -182,6 +178,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="readers.html">sfftk.readers package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="readers.html#module-sfftk.readers.amreader">AmiraMesh reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readers.html#module-sfftk.readers.survosreader">SuRVoS reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers.html#module-sfftk.readers.mapreader">CCP4 mask reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers.html#module-sfftk.readers.modreader">IMOD reader module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers.html#module-sfftk.readers.segreader">Segger reader module</a></li>
@@ -198,9 +195,7 @@
 <li class="toctree-l1"><a class="reference internal" href="core.html">sfftk.core package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-sfftk.core.configs">Configuration module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-sfftk.core.parser">Parser module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-sfftk.core.print_tools">Printing utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-sfftk.core.prep">Preparation utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#module-sfftk.core.utils">Miscellaneous utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -215,7 +210,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="schema.html" class="btn btn-neutral float-right" title="sfftk.schema package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="formats.html" class="btn btn-neutral float-right" title="sfftk.formats package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="extending.html" class="btn btn-neutral float-left" title="Extending sfftk" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

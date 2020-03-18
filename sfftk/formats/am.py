@@ -47,7 +47,7 @@ class AmiraMeshMesh(object):
         return self._triangles
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFMesh` object"""
+        """Convert to :py:class:`sfftkrw.SFFMesh` object"""
         mesh = schema.SFFMesh()
         vertices = schema.SFFVertexList()
         polygons = schema.SFFPolygonList()
@@ -90,7 +90,7 @@ class AmiraMeshAnnotation(Annotation):
         return colour
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        """Convert to :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
         annotation.description = self.description
@@ -122,7 +122,7 @@ class AmiraMeshVolume(object):
         self._header = header
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFThreeDVolume` object"""
+        """Convert to :py:class:`sfftkrw.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
         # make file
         hdf5_fn = "".join(self._fn.split('.')[:-1]) + '.hdf'
@@ -172,7 +172,7 @@ class AmiraMeshSegment(Segment):
         return AmiraMeshVolume(self._fn, self._header)
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biological_annotation, segment.colour = self.annotation.convert()
         # segment.volume = self.volume.convert()
@@ -260,7 +260,7 @@ class AmiraMeshSegmentation(Segmentation):
         return self._segments
 
     def convert(self, args, *_args, **_kwargs):
-        """Convert to :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Convert to :py:class:`sfftkrw.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         if 'name' in _kwargs:
             segmentation.name = _kwargs['name']

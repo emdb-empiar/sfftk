@@ -19,7 +19,7 @@ import sys
 sys.path.append('..')  # to import sfftk
 # import mock
 from sfftk import SFFTK_VERSION
-from sfftk.core import _str
+from sfftkrw.core import _str
 
 # MOCK_MODULES = ['lxml', 'emdb_sff', 'ahds', 'ahds.data_stream', 'bitarray', 'ahds.header', 'h5py', 'numpy', 'scipy',
 #                 'backports.shutil_get_terminal_size', 'h5py', 'mrcfile',]
@@ -307,4 +307,6 @@ autodoc_mock_imports = ['lxml', 'ahds', 'bitarray', 'h5py', 'numpy', 'scipy',
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+    'sfftkrw': ('http://sfftk-rw.readthedocs.io/en/latest/', None),
+    'ahds': ('http://ahds.readthedocs.io/en/latest/', None),
 }

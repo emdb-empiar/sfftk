@@ -24,7 +24,7 @@ def bin_map(args, configs):
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :type configs: :py:class:`sfftk.core.configs.Configss`
     :return: exit status
     :rtype: int
     """
@@ -75,7 +75,7 @@ def transform(args, configs):
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :type configs: :py:class:`sfftk.core.configs.Configss`
     :return: exit status
     :rtype: int
     """

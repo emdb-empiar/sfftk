@@ -2,25 +2,7 @@
 EMDB-SFF Toolkit (``sfftk``)
 ============================
 
-.. image:: https://badge.fury.io/py/sfftk.svg
-    :target: https://badge.fury.io/py/sfftk
-
-.. image:: https://img.shields.io/pypi/pyversions/sfftk
-    :alt: PyPI - Python Version
-
-.. image:: https://travis-ci.org/emdb-empiar/sfftk.svg?branch=master
-    :target: https://travis-ci.org/emdb-empiar/sfftk
-
-.. image:: https://coveralls.io/repos/github/emdb-empiar/sfftk/badge.svg?branch=master
-    :target: https://coveralls.io/github/emdb-empiar/sfftk?branch=master
-
-.. image:: https://readthedocs.org/projects/sfftk/badge/?version=latest
-    :target: http://sfftk.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-
-.. note::
-
-   Looking for a graphical aid to using ``sfftk``? Try out the online version: the `Segmentation Annotation Tool <https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/>`_.
+.. include:: badges.rst
 
 .. contents::
 
@@ -51,9 +33,12 @@ copyright EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.
 Data Model
 ----------
 
+.. |emdb_sff| raw:: html
+
+    <a href="https://emdb-empiar.github.io/EMDB-SFF" target="_blank">https://emdb-empiar.github.io/EMDB-SFF</a>
+
 ``sfftk`` is built to handle EMDB-SFF files. The corresponding schema
-(``v0.7.0.dev0``) may be obtained at `http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html
-<http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html>`_.
+(``v0.8.0.dev1``) may be found at |emdb_sff|.
 Changes to the schema are welcome for discussion at the *Segmentation Working Group*
 at `https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg
 <https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg>`_.
@@ -68,6 +53,8 @@ extensions):
 
 -  Amira Mesh (.am)
 
+-  SuRVoS (.h5; experimental support)
+
 -  CCP4 Masks (.map)
 
 -  IMOD (.mod)
@@ -81,19 +68,16 @@ extensions):
 Contact
 -------
 
-Any questions or comments should be addressed to
-`ardan@ebi.ac.uk <mailto:ardan@ebi.ac.uk>`_ or
-`pkorir@ebi.ac.uk <mailto:pkorir@ebi.ac.uk>`_.
+Any questions or comments should be addressed to ``pkorir at ebi dot ac dot uk``.
 
 Publications
 ------------
 
-The following articles should be cited whenever ``sfftk`` is used in a
-publication:
+.. Please cite the  whenever ``sfftk`` is used in a publication:
 
-.. note::
+.. .. note::
 
-	Article to be added
+..    Article to be added
 
 The EMDB-SFF data model is the result of various community consultations which
 are published in the following articles:
@@ -118,7 +102,7 @@ that may be needed is ``numpy`` which can be installed with
 
 .. code:: bash
 
-    pip install numpy
+	 pip install numpy
 
 PyPI
 ~~~~
@@ -127,7 +111,7 @@ PyPI
 
 .. code:: bash
 
-    pip install sfftk
+	 pip install sfftk
 
 Source
 ~~~~~~
@@ -151,7 +135,7 @@ command.
 
 .. code:: bash
 
-    sff convert file.am -o file.sff
+	 sff convert file.am -o file.sff
 
 For a full description of how to perform conversion, please see the
 `guide to format conversion <https://sfftk.readthedocs.io/en/latest/converting.html>`_.
@@ -163,7 +147,7 @@ Annotation is performed using the ``notes`` utility on EMDB-SFF files.
 
 .. code:: bash
 
-    sff notes show -H file.sff
+	 sff notes show -H file.sff
 
 ``sfftk`` provides a simple set of tools to allow `viewing, searching and
 modifying annotations` associated with the segmentation and individual
@@ -192,8 +176,7 @@ Developing with ``sfftk``
 -------------------------
 
 ``sfftk`` is developed as a set of decoupled packages providing the various
-functionality. The main classes involved are found in the ``sfftk.schema package``.
-Please see `full API <http://sfftk.readthedocs.io/en/latest/sfftk.html>`_.
+functionality. The main classes involved are found in the :py:mod:`sfftkrw` package.
 There is also a `guide to developing with sfftk <https://sfftk.readthedocs.io/en/latest/developing.html>`_ which
 provides useful instructions.
 

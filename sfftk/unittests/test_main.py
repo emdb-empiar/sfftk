@@ -234,7 +234,7 @@ class TestMain_handle_notes(Py23FixTestCase):
     def test_list(self):
         """Test that we can list notes"""
         args, configs = parse_args('notes list {} --config-path {}'.format(
-            os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff'),
+            os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff'),
             self.config_fn,
         ), use_shlex=True)
         self.assertEqual(0, Main.handle_notes_list(args, configs))
@@ -242,7 +242,7 @@ class TestMain_handle_notes(Py23FixTestCase):
     def test_show(self):
         """Test that we can list notes"""
         args, configs = parse_args('notes show -i 15559 {} --config-path {}'.format(
-            os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff'),
+            os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff'),
             self.config_fn,
         ), use_shlex=True)
         self.assertEqual(0, Main.handle_notes_show(args, configs))

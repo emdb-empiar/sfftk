@@ -86,7 +86,7 @@ external_ref = {
         'help': """An external reference consists of three components: the 
 name of the external reference, a URL to the particular external reference 
 and the accession. If you use the sff notes search utility these will 
-correspond to the ontology_name, IRI and short_form. The following is a list 
+correspond to the resource, url and accession. The following is a list 
 of valid external references: {}. You can also specify multiple external 
 reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23 
 file.json""".format(', '.join(_dict_iter_keys(RESOURCE_LIST))),
@@ -690,10 +690,14 @@ del_global_notes_parser = del_notes_parser.add_argument_group(
 # we need a way to identify which software entity in the list is to be acted up
 # remove type so that we can store a list of comma-sep'd ints
 del software_id['kwargs']['type']
+_software_id_help = software_id['kwargs']['help']
+software_id['kwargs']['help'] = 'the software(s) to delete; delete depends on whether -S, -T and -P are specified ' \
+                                '(see below); if none are specified then the whole software is deleted from the list'
 # add it to the parser
 add_args(del_global_notes_parser, software_id)
 # return things to the way you found them
 software_id['kwargs']['type'] = int
+software_id['kwargs']['help'] = _software_id_help
 software_name['kwargs'] = {
     'action': 'store_true',
     'default': False,
@@ -926,7 +930,7 @@ def parse_args(_args, use_shlex=False):
     :type _args: list or str
     :param bool use_shlex: treat ``_args`` as a string instead for parsing using ``shlex`` lib
     :return: parsed arguments
-    :rtype: tuple[:py:class:`argparse.Namespace`, :py:class:`sfftk.core.configs.Configs`]
+    :rtype: tuple[:py:class:`argparse.Namespace`, :py:class:`sfftk.core.configs.Configss`]
     """
     if use_shlex:  # if we treat _args as a command string for shlex to process
         try:
@@ -1116,7 +1120,7 @@ def parse_args(_args, use_shlex=False):
             dirname = os.path.dirname(from_file)
             if args.format:
                 try:
-                    assert args.format in map(lambda x: x[0], FORMAT_LIST)
+                    assert args.format in list(map(lambda x: x[0], FORMAT_LIST))
                 except AssertionError:
                     print_date("Invalid output format: {}; valid values are: {}".format(
                         args.format, ", ".join(map(lambda x: x[0], FORMAT_LIST))))
@@ -1242,7 +1246,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 return os.EX_USAGE, None
         elif args.notes_subcommand == "show":
             if args.segment_id is not None:
-                args.segment_id = map(int, args.segment_id.split(','))
+                args.segment_id = list(map(int, args.segment_id.split(',')))
 
         elif args.notes_subcommand == "add":
             # if we want to add to a segment
@@ -1395,7 +1399,7 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
         elif args.notes_subcommand == "clear":
             # where to clear notes from
             if args.segment_id is not None:
-                from_segment = map(int, args.segment_id.split(','))
+                from_segment = list(map(int, args.segment_id.split(',')))
                 if isinstance(from_segment, int):
                     args.segment_id = [from_segment]
                 else:

@@ -6,18 +6,18 @@ from __future__ import division, print_function
 
 import json
 import os
-import shutil
-import unittest
 
 import requests
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+import shutil
+import unittest
 from random_words import RandomWords, LoremIpsum
 from sfftkrw.core import _urlencode, _xrange, _str, utils
-from ..core.parser import parse_args
 from sfftkrw.unittests import Py23FixTestCase, _random_integer, _random_integers
 
 from . import TEST_DATA_PATH
 from .. import BASE_DIR
+from ..core.parser import parse_args
 from ..notes import find, modify, view, RESOURCE_LIST
 from ..sff import _handle_notes_modify, handle_notes_trash
 
@@ -419,6 +419,25 @@ class TestNotes_view(Py23FixTestCase):
         status = view.list_notes(args, configs)
         # assertions
         self.assertEqual(status, os.EX_OK)
+
+    def test_list_ids(self):
+        """Test that we can list ids only and that they are usable"""
+        args, configs = parse_args("notes list -I {file} --config-path {config}".format(
+            file=self.sff_file,
+            config=self.config_fn
+        ), use_shlex=True)
+        view.list_notes(args, configs)
+        seg = schema.SFFSegmentation.from_file(self.sff_file)
+        for segment_id in seg.segment_list.get_ids():
+            args, configs = parse_args("notes show -i {segment_id} {file} --config-path {config}".format(
+                segment_id=segment_id,
+                file=self.sff_file,
+                config=self.config_fn
+            ), use_shlex=True)
+            status = view.show_notes(args, configs)
+            self.assertEqual(status, os.EX_OK)
+
+
 
     def test_show_default(self):
         """Test that we can show annotations in a single segment"""

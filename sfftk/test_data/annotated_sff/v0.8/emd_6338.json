@@ -1,0 +1,485 @@
+{
+  "version": "0.8.0.dev1",
+  "name": "Segger Segmentation",
+  "details": "DNA replication in eukaryotes is strictly regulated by several mechanisms. A central step in this replication is the assembly of the heterohexameric minichromosome maintenance (MCM2-7) helicase complex at replication origins during G1 phase as an inactive double hexamer. Here, using cryo-electron microscopy, we report a near-atomic structure of the MCM2-7 double hexamer purified from yeast G1 chromatin. Our structure shows that two single hexamers, arranged in a tilted and twisted fashion through interdigitated amino-terminal domain interactions, form a kinked central channel. Four constricted rings consisting of conserved interior \u03b2-hairpins from the two single hexamers create a narrow passageway that tightly fits duplex DNA. This narrow passageway, reinforced by the offset of the two single hexamers at the double hexamer interface, is flanked by two pairs of gate-forming subunits, MCM2 and MCM5. These unusual features of the twisted and tilted single hexamers suggest a concerted mechanism for the melting of origin DNA that requires structural deformation of the intervening DNA.",
+  "software_list": [
+    {
+      "id": 0,
+      "name": "segger",
+      "version": "2",
+      "processing_details": "watershed algorithm applied"
+    },
+    {
+      "id": 1,
+      "name": "Amira",
+      "version": "2019.1",
+      "processing_details": "mesh computed over the surface"
+    },
+    {
+      "id": 2,
+      "name": "IMOD",
+      "version": "v3.8",
+      "processing_details": "mesh reduction and cleaning"
+    }
+  ],
+  "primary_descriptor": "three_d_volume",
+  "transform_list": [],
+  "bounding_box": {
+    "xmin": 0.0,
+    "ymin": 0.0,
+    "zmin": 0.0
+  },
+  "global_external_references": [
+    {
+      "id": 0,
+      "resource": "ncbitaxon",
+      "url": "http://purl.obolibrary.org/obo/NCBITaxon_559292",
+      "accession": "NCBITaxon_559292",
+      "label": "Saccharomyces cerevisiae S288C",
+      "description": ""
+    },
+    {
+      "id": 1,
+      "resource": "pdb",
+      "url": "http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8",
+      "accession": "3ja8",
+      "label": "",
+      "description": ""
+    }
+  ],
+  "segment_list": [
+    {
+      "id": 9764,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM4",
+        "description": "DNA replication licensing factor MCM4",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 2,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P30665",
+            "accession": "PR_P30665",
+            "label": "DNA replication licensing factor MCM4 (yeast)",
+            "description": "A DNA replication licensing factor MCM4 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 3,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P30665",
+            "accession": "P30665",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.800000011920929,
+        0.959999978542328,
+        0.400000005960464,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9814,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM3",
+        "description": "DNA replication licensing factor MCM3",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 4,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P24279",
+            "accession": "PR_P24279",
+            "label": "DNA replication licensing factor MCM3 (yeast)",
+            "description": "A DNA replication licensing factor MCM3 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 5,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P24279",
+            "accession": "P24279",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.800000011920929,
+        0.479999989271164,
+        0.879999995231628,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9815,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM6",
+        "description": "DNA replication licensing factor MCM6",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 6,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P53091",
+            "accession": "PR_P53091",
+            "label": "DNA replication licensing factor MCM6 (yeast)",
+            "description": "A DNA replication licensing factor MCM6 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 7,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P53091",
+            "accession": "P53091",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        1.0,
+        0.411764711141586,
+        0.705882370471954,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9840,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM2",
+        "description": "DNA replication licensing factor MCM2",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 8,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P29469",
+            "accession": "PR_P29469",
+            "label": "DNA replication licensing factor MCM2 (yeast)",
+            "description": "A DNA replication licensing factor MCM2 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 9,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P29469",
+            "accession": "P29469",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.159999996423721,
+        0.839999973773956,
+        0.479999989271164,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9859,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM7",
+        "description": "DNA replication licensing factor MCM7",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 10,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P38132",
+            "accession": "PR_P38132",
+            "label": "DNA replication licensing factor MCM7 (yeast)",
+            "description": "A DNA replication licensing factor MCM7 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 11,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P38132",
+            "accession": "P38132",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.920000016689301,
+        0.839999973773956,
+        0.959999978542328,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9893,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM5",
+        "description": "Minichromosome maintenance protein 5",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 12,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P29496",
+            "accession": "PR_P29496",
+            "label": "minichromosome maintenance protein 5 (yeast)",
+            "description": "A DNA replication licensing factor MCM5 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 13,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P29496",
+            "accession": "P29496",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.0,
+        0.839999973773956,
+        0.759999990463257,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9897,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM5",
+        "description": "Minichromosome maintenance protein 5",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 14,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P29496",
+            "accession": "PR_P29496",
+            "label": "minichromosome maintenance protein 5 (yeast)",
+            "description": "A DNA replication licensing factor MCM5 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 15,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P29496",
+            "accession": "P29496",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.0,
+        0.839999973773956,
+        0.759999990463257,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9911,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM7",
+        "description": "DNA replication licensing factor MCM7",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 16,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P38132",
+            "accession": "PR_P38132",
+            "label": "DNA replication licensing factor MCM7 (yeast)",
+            "description": "A DNA replication licensing factor MCM7 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 17,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P38132",
+            "accession": "P38132",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.920000016689301,
+        0.839999973773956,
+        0.959999978542328,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9914,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM2",
+        "description": "DNA replication licensing factor MCM2",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 18,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P53091",
+            "accession": "PR_P53091",
+            "label": "DNA replication licensing factor MCM6 (yeast)",
+            "description": "A DNA replication licensing factor MCM6 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 19,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P29469",
+            "accession": "P29469",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.159999996423721,
+        0.839999973773956,
+        0.479999989271164,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9952,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM6",
+        "description": "DNA replication licensing factor MCM6",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 20,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P53091",
+            "accession": "PR_P53091",
+            "label": "DNA replication licensing factor MCM6 (yeast)",
+            "description": "A DNA replication licensing factor MCM6 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 21,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P53091",
+            "accession": "P53091",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        1.0,
+        0.411764711141586,
+        0.705882370471954,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9955,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM4",
+        "description": "DNA replication licensing factor MCM4",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 22,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P30665",
+            "accession": "PR_P30665",
+            "label": "DNA replication licensing factor MCM4 (yeast)",
+            "description": "A DNA replication licensing factor MCM4 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 23,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P30665",
+            "accession": "P30665",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.800000011920929,
+        0.959999978542328,
+        0.400000005960464,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    },
+    {
+      "id": 9956,
+      "parent_id": 0,
+      "biological_annotation": {
+        "name": "MCM3",
+        "description": "DNA replication licensing factor MCM3",
+        "number_of_instances": 1,
+        "external_references": [
+          {
+            "id": 24,
+            "resource": "pr",
+            "url": "http://purl.obolibrary.org/obo/PR_P24279",
+            "accession": "PR_P24279",
+            "label": "DNA replication licensing factor MCM3 (yeast)",
+            "description": "A DNA replication licensing factor MCM3 that is encoded in the genome of yeast."
+          },
+          {
+            "id": 25,
+            "resource": "uniprot",
+            "url": "http://www.uniprot.org/uniprot/P24279",
+            "accession": "P24279",
+            "label": "",
+            "description": ""
+          }
+        ]
+      },
+      "colour": [
+        0.800000011920929,
+        0.479999989271164,
+        0.879999995231628,
+        1.0
+      ],
+      "mesh_list": [],
+      "three_d_volume": null,
+      "shape_primitive_list": []
+    }
+  ],
+  "lattice_list": []
+}

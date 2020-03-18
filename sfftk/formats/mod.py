@@ -223,7 +223,7 @@ class IMODAnnotation(Annotation):
         return self.red, self.green, self.blue
 
     def convert(self):
-        """Convert to :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        """Convert to :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         # annotation
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name.strip(' ')
@@ -367,7 +367,7 @@ class IMODSegmentation(Segmentation):
         return self._segments
 
     def convert(self, args, *_args, **_kwargs):
-        """Method to convert an IMOD file to a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Method to convert an IMOD file to a :py:class:`sfftkrw.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = self.header.name.strip(' ')
         # software

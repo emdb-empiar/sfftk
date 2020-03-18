@@ -20,11 +20,6 @@ Annotation is performed using the `notes` utility that is accessed with the
 .. code:: bash
 
     sff notes
-
-yielding
-
-.. code:: bash
-
     usage: sff notes [-h] EMDB-SFF annotation tools ...
 
     The EMDB-SFF Annotation Toolkit
@@ -42,13 +37,11 @@ yielding
         add                 add new annotations
         edit                edit existing annotations
         del                 delete existing annotations
-        copy                copy notes across segments within the same EMDB-SFF
-                            file
+        copy                copy notes across segments within the same EMDB-SFF file
         clear               clear notes in an EMDB-SFF file
         merge               merge notes from two EMDB-SFF files
         save                write all changes made since the last 'save' action
-        trash               discard all changes made since the last the edit
-                            action (add, edit, del)
+        trash               discard all changes made since the last the edit action (add, edit, del)
     
 Annotation Levels: Global vs. Segment Notes
 --------------------------------------------
@@ -67,8 +60,7 @@ Operations: Find, View, Modify
 
 There are three main operations that a user can perform using the ``notes`` subcommand.
 
--   **Find** notes from an ontology principally the
-    `Ontology Lookup Service (OLS) hosted at EMBL-EBI <https://www.ebi.ac.uk/ols/index>`_;
+-   **Find** notes from a resource; if no resource is specified the `Ontology Lookup Service (OLS) hosted at EMBL-EBI <https://www.ebi.ac.uk/ols/index>`_;
 
 -   **View** notes present in an EMDB-SFF file;
 
@@ -80,7 +72,7 @@ States: FIND, VIEW, MODIFY
 Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and
 the MODIFY state. These will be indicated by the colour of the text on the screen.
 
--  **WHITE** indicates the ``VIEW STATE`` i.e. that no modifications will be done on the EMDB-SFF file
+-  **WHITE** indicates the ``VIEW STATE`` i.e. that no modifications have been made to the EMDB-SFF file
 
 -  **YELLOW** indicates the ``FIND STATE`` i.e. search for terms from `OLS <https://www.ebi.ac.uk/ols/index>`_, and
 
@@ -88,38 +80,30 @@ the MODIFY state. These will be indicated by the colour of the text on the scree
 
 .. note::
 
-	Note, viewing the contents of an EMDB-SFF file in the ``MODIFY STATE`` will also appear in green even if a view
-	command is invoked.
+    Viewing the contents of an EMDB-SFF file in the ``MODIFY STATE`` will also appear in green even if a view
+    command is invoked.
 
 The full listing of sub-subcommands organised by operation are:
 
--  Find
+Find
+~~~~
+*   **search**
 
-    -   **search**
+View
+~~~~
+*   **list**
+*   **show**
 
--  View
-
-    -   **list**
-
-    -   **show**
-
--  Modify
-
-    -   **add**
-
-    -   **edit**
-
-    -   **copy**
-
-    -   **clear**
-
-    -   **merge**
-
-    -   **del**
-
-    -   **save**
-
-    -   **trash**
+Modify
+~~~~~~
+*   **add**
+*   **edit**
+*   **copy**
+*   **clear**
+*   **merge**
+*   **del**
+*   **save**
+*   **trash**
 
 We will look at each of these in turn.
 
@@ -129,7 +113,7 @@ Quick Start
 Finding Notes
 =============
 
-The search sub-subcommand displays results from searching EMBL-EBI’s OLS. As 
+The search sub-subcommand displays results from searching EMBL-EBI’s Ontology Lookup Service (OLS) by default. As
 described in `States <#states-find-view-modify>`__, the terminal text is 
 coloured yellow.
 
@@ -143,10 +127,12 @@ display available options.
 
 .. code:: bash
 
+    sff notes search
     usage: sff notes search [-h] [-p CONFIG_PATH] [-b]
-                        [-R {ols,go,emdb,uniprot,pdb,europepmc,empiar}]
-                        [-s START] [-r ROWS] [-O ONTOLOGY] [-x] [-o] [-L] [-l]
-                        [search_term]
+                            [-R {ols,go,emdb,uniprot,pdb,europepmc,empiar}]
+                            [--start START] [--rows ROWS] [-O ONTOLOGY] [-x] [-o]
+                            [-L] [-l]
+                            [search_term]
 
     Search ontologies for annotation by text labels
 
@@ -162,11 +148,10 @@ display available options.
                             configs fail [default: False]
       -R {ols,go,emdb,uniprot,pdb,europepmc,empiar}, --resource {ols,go,emdb,uniprot,pdb,europepmc,empiar}
                             the resource to search for terms or accessions; other
-                            valid options are [u'ols', u'go', u'emdb', u'uniprot',
-                            u'pdb', u'europepmc', u'empiar'] [default: ols]
-      -s START, --start START
-                            start index [default: 1]
-      -r ROWS, --rows ROWS  number of rows [default: 10]
+                            valid options are ['ols', 'go', 'emdb', 'uniprot',
+                            'pdb', 'europepmc', 'empiar'] [default: ols]
+      --start START         start index [default: 1]
+      --rows ROWS           number of rows [default: 10]
 
     EBI Ontology Lookup Service (OLS):
       The Ontology Lookup Service (OLS) is a repository for biomedical
@@ -183,6 +168,8 @@ display available options.
                             list available ontologies [default: False]
       -l, --short-list-ontologies
                             short list of available ontologies [default: False]
+
+
 
 Specifying Search Terms
 -----------------------
@@ -205,13 +192,13 @@ The search results are displayed as a table with the following columns:
 
 -  *label* of the result term
 
--  *short_form*  [1]_ of the result term
+-  *resource*
 
--  *resource_name*
+-  *url* refers to a link by which the term in the ontology may be accessed
 
--  *description/IRI* is free text describing the term and IRI refers to a link by which the term in the ontology may be accessed, and
+-  *accession*  of the result term
 
--  *type* can have one of the following values: *class, property, individual, ontology*
+-  *description* is free text describing the term, and
 
 .. _specifying-the-resource-to-search:
 
@@ -221,6 +208,8 @@ Specifying The Resource To Search
 By default all searches are carried out against the `EBI Ontology Lookup Service (OLS) <https://www.ebi.ac.uk/ols/index>`_.
 
 In addition to the OLS users can also search the follow resources for accessions to use for annotation:
+
+-   `The Gene Ontology (GO) <http://geneontology.org/>`_;
 
 -   `The Electron Microscopy Data Bank (EMDB) <http://www.emdatabank.org/>`_;
 
@@ -235,6 +224,8 @@ In addition to the OLS users can also search the follow resources for accessions
 The ``-R/--resource`` flag is used to specify the desired resource to search, which takes a string arguments as follows:
 
 -   ``ols`` (default) will search EBI OLS;
+
+-   ``go`` will search EBI OLS restricted to GO terms;
 
 -   ``emdb`` will search the EMDB;
 
@@ -262,8 +253,8 @@ This only applies to searches against the `EBI Ontology Lookup Service <https://
 
 .. code:: bash
 
-    sff notes search -O <resource_name> “<term>”
-    sff notes search --ontology <resource_name> “<term>”
+    sff notes search -O <resource> “<term>”
+    sff notes search --ontology <resource> “<term>”
 
 See `Listing Available Ontologies <#listing-available-ontologies>`__ on how 
 to get an ontology to search.
@@ -321,14 +312,14 @@ often, there will be more than one page of results. This will be evident from
 the last line of the results:
 
 .. code:: bash
-	
+
     Showing: 1 to 10 of 139 results found
 
 Specifying The Start Result
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The user can specify the result index at which results should be displayed 
-using the ``-s/--start`` flag.
+using the ``--start`` flag.
 
 .. code:: bash
 
@@ -338,14 +329,14 @@ using the ``-s/--start`` flag.
 Specifying The Number Of Rows To Display
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-More results can be display using the ``-r/--rows`` flag.
+More results can be display using the ``--rows`` flag.
 
 .. code:: bash
 
     sff notes search -r 11 “<term>”
-    sff notes search --row 11 “<term>”
+    sff notes search --rows 11 “<term>”
 
-Entering invalid values for ``-s/--start`` and ``-r/--rows`` raise 
+Entering invalid values for ``--start`` and ``--rows`` raise
 ``ValueError`` exceptions.
 
 Viewing Notes
@@ -362,13 +353,7 @@ Listing all notes is performed by running
 .. code:: bash
 
     sff notes list
-
-which has the following options:
-
-.. code:: bash
-
-    usage: sff notes list [-h] [-H] [-p CONFIG_PATH] [-b] [-l] [-D] [-r] [-I] [-v]
-                          sff_file
+    usage: sff notes list [-h] [-H] [-p CONFIG_PATH] [-b] [-l] [-D] [-r] [-I] [-v] sff_file
 
     List all available annotations present in an EMDB-SFF file
 
@@ -377,20 +362,15 @@ which has the following options:
 
     optional arguments:
       -h, --help            show this help message and exit
-      -H, --header          show EMDB-SFF header (global) attributes [default:
-                            False]
+      -H, --header          show EMDB-SFF header (global) attributes [default: False]
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
-      -l, --long-format     only show segment ID and description (if present)
-                            [default: False]
-      -D, --sort-by-name    sort listings by segment name [default: False (sorts
-                            by ID)]
+                            use shipped configs only if config path and user configs fail [default: False]
+      -l, --long-format     only show segment ID and description (if present) [default: False]
+      -D, --sort-by-name    sort listings by segment name [default: False (sorts by ID)]
       -r, --reverse         reverse the sort order [default: False]
-      -I, --list-ids        only list the IDs for segments one per line [default:
-                            False]
+      -I, --list-ids        only list the IDs for segments one per line [default: False]
       -v, --verbose         verbose output
 
 The **sff notes list** sub-command only lists a summary table of notes 
@@ -414,45 +394,41 @@ Here is an example:
 
 .. code:: bash
 
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9764    0       GroEL                                        1     7     0     0     (0.8, 0.96, 0.4, 1.0)
-	9814    0       GroEL                                        1     7     0     0     (0.8, 0.48, 0.88, 1.0)
-	9815    0       GroEL                                        1     7     0     0    (1.0, 0.412, 0.706, 1.0)
-	9840    0       GroEL                                        1     7     0     0    (0.16, 0.84, 0.48, 1.0)
-	9859    0       GroEL                                        1     7     0     0    (0.92, 0.84, 0.96, 1.0)
-	9893    0       GroEL                                        1     7     0     0     (0.0, 0.84, 0.76, 1.0)
-	9897    0       GroEL                                        1     7     0     0     (0.0, 0.84, 0.76, 1.0)
-	9911    0       GroEL                                        1     7     0     0    (0.92, 0.84, 0.96, 1.0)
-	9914    0       GroEL                                        1     7     0     0    (0.16, 0.84, 0.48, 1.0)
-	9952    0       GroEL                                        1     7     0     0    (1.0, 0.412, 0.706, 1.0)
-	9955    0       GroEL                                        1     7     0     0     (0.8, 0.96, 0.4, 1.0)
-	9956    0       GroEL                                        1     7     0     0     (0.8, 0.48, 0.88, 1.0)
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9764    0       GroEL::GroEL                                           1     7     (0.8, 0.96, 0.4, 1.0)
+    9814    0       GroEL::GroEL                                           1     7     (0.8, 0.48, 0.88, 1.0)
+    9815    0       GroEL::GroEL                                           1     7    (1.0, 0.412, 0.706, 1.0)
+    9840    0       GroEL::GroEL                                           1     7    (0.16, 0.84, 0.48, 1.0)
+    9859    0       GroEL::GroEL                                           1     7    (0.92, 0.84, 0.96, 1.0)
+    9893    0       GroEL::GroEL                                           1     7     (0.0, 0.84, 0.76, 1.0)
+    9897    0       GroEL::GroEL                                           1     7     (0.0, 0.84, 0.76, 1.0)
+    9911    0       GroEL::GroEL                                           1     7    (0.92, 0.84, 0.96, 1.0)
+    9914    0       GroEL::GroEL                                           1     7    (0.16, 0.84, 0.48, 1.0)
+    9952    0       GroEL::GroEL                                           1     7    (1.0, 0.412, 0.706, 1.0)
+    9955    0       GroEL::GroEL                                           1     7     (0.8, 0.96, 0.4, 1.0)
+    9956    0       GroEL::GroEL                                           1     7     (0.8, 0.48, 0.88, 1.0)
 
 It has the following columns:
 
 - *id*: segment ID
 
-- *parId*: segment ID for the parent ID;
+- *par_idd*: segment ID for the parent ID;
 
 - *description*: a descriptive name for the segment, which provides a useful starting point when searching for annotation terms;
 
 - *#inst*: the number of instances of the segment;
 
-- *#exRf*: the number of external references present;
+- *#ex_ref*: the number of external references present;
 
-- *#cplx*: the number of complexes associated with the segment;
-
-- *#macr*: the number of macromolecules associated with the segment; and
-
-- *colour*: the colour of the segment in normalised RGBA. 
+- *colour*: the colour of the segment in normalised RGBA.
 
 where the first line provides some status information about the current 
 listing. Status messages will become much more important when we look at 
 `modifying notes in EMDB-SFF files <#_c0sybxydflf7>`__. Status messages begin 
 with a timestamp. Following status messages is the EMDB-SFF header 
-information which specifies the schema version (``0.6.0a4``), the name of the 
+information which specifies the schema version, the name of the
 segmentation (‘STL Segmentation’), software information including processing 
 details, the primary descriptor (*meshList* in this case) and additional 
 details on this segmentation. A row asterisks then divides the metadata from 
@@ -485,94 +461,58 @@ structure except now that the Segment metadata section has much more detail.
 
 .. code::
 
-	**************************************************************************************************************
-	ID:		9764
-	PARENT ID:	0
-	Segment Type:	threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	Description:
-		GroEL
-	Number of instances:
-		1
-	--------------------------------------------------------------------------------------------------------------
-	External references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: ogg              http://purl.obolibrary.org/obo/OGG_3000881348            OGG_3000881348       Y N
-		1: ogg              http://purl.obolibrary.org/obo/OGG_3001198820            OGG_3001198820       Y N
-		2: vo               http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y N
-		3: vo               http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y N
-		4: pdro             http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y N
-		5: pdro             http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y N
-		6: omit             http://purl.obolibrary.org/obo/OMIT_0001676              OMIT_0001676         Y N
-	--------------------------------------------------------------------------------------------------------------
-	Complexes:
-		-*- NOT DEFINED -*-
-	Macromolecules:
-		-*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Colour:
-		(0.800000011920929, 0.9599999785423279, 0.4000000059604645, 1.0)
-	**************************************************************************************************************
-	ID:		9814
-	PARENT ID:	0
-	Segment Type:	threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	Description:
-		GroEL
-	Number of instances:
-		1
-	--------------------------------------------------------------------------------------------------------------
-	External references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: ogg              http://purl.obolibrary.org/obo/OGG_3000881348            OGG_3000881348       Y N
-		1: ogg              http://purl.obolibrary.org/obo/OGG_3001198820            OGG_3001198820       Y N
-		2: vo               http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y N
-		3: vo               http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y N
-		4: pdro             http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y N
-		5: pdro             http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y N
-		6: omit             http://purl.obolibrary.org/obo/OMIT_0001676              OMIT_0001676         Y N
-	--------------------------------------------------------------------------------------------------------------
-	Complexes:
-		-*- NOT DEFINED -*-
-	Macromolecules:
-		-*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Colour:
-		(0.800000011920929, 0.47999998927116394, 0.8799999952316284, 1.0)
-	**************************************************************************************************************
-	...
-	# other segments go here
-	...
-	**************************************************************************************************************
-	ID:		9956
-	PARENT ID:	0
-	Segment Type:	threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	Description:
-		GroEL
-	Number of instances:
-		1
-	--------------------------------------------------------------------------------------------------------------
-	External references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: ogg              http://purl.obolibrary.org/obo/OGG_3000881348            OGG_3000881348       Y N
-		1: ogg              http://purl.obolibrary.org/obo/OGG_3001198820            OGG_3001198820       Y N
-		2: vo               http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y N
-		3: vo               http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y N
-		4: pdro             http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y N
-		5: pdro             http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y N
-		6: omit             http://purl.obolibrary.org/obo/OMIT_0001676              OMIT_0001676         Y N
-	--------------------------------------------------------------------------------------------------------------
-	Complexes:
-		-*- NOT DEFINED -*-
-	Macromolecules:
-		-*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Colour:
-		(0.800000011920929, 0.47999998927116394, 0.8799999952316284, 1.0)
+    **************************************************************************************************************
+    ID:             9764
+    PARENT ID:      0
+    Segment Type:   three_d_volume
+    --------------------------------------------------------------------------------------------------------------
+    Name:
+            GroEL
+    Description:
+            GroEL
+    Number of instances:
+            1
+    --------------------------------------------------------------------------------------------------------------
+    External references:
+          # resource         url                                                      accession            L D
+        ------------------------------------------------------------------------------------------------------
+         0: ogg              http://purl.obolibrary.org/obo/OGG_3000881348            OGG_3000881348       Y Y
+         1: ogg              http://purl.obolibrary.org/obo/OGG_3001198820            OGG_3001198820       Y Y
+         2: vo               http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y Y
+         3: vo               http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y Y
+         4: pdro             http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y Y
+         5: pdro             http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y Y
+         6: omit             http://purl.obolibrary.org/obo/OMIT_0001676              OMIT_0001676         Y Y
+    --------------------------------------------------------------------------------------------------------------
+    Colour:
+            (0.800000011920929, 0.959999978542328, 0.400000005960464, 1.0)
+    **************************************************************************************************************
+    ID:             9814
+    PARENT ID:      0
+    Segment Type:   three_d_volume
+    --------------------------------------------------------------------------------------------------------------
+    Name:
+            GroEL
+    Description:
+            GroEL
+    Number of instances:
+            1
+    --------------------------------------------------------------------------------------------------------------
+    External references:
+          # resource         url                                                      accession            L D
+        ------------------------------------------------------------------------------------------------------
+         0: ogg              http://purl.obolibrary.org/obo/OGG_3000881348            OGG_3000881348       Y Y
+         1: ogg              http://purl.obolibrary.org/obo/OGG_3001198820            OGG_3001198820       Y Y
+         2: vo               http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y Y
+         3: vo               http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y Y
+         4: pdro             http://purl.obolibrary.org/obo/VO_0010998                VO_0010998           Y Y
+         5: pdro             http://purl.obolibrary.org/obo/VO_0011075                VO_0011075           Y Y
+         6: omit             http://purl.obolibrary.org/obo/OMIT_0001676              OMIT_0001676         Y Y
+    --------------------------------------------------------------------------------------------------------------
+    Colour:
+            (0.800000011920929, 0.479999989271164, 0.879999995231628, 1.0)
+    **************************************************************************************************************
+    ... truncated ...
 
 Including Segmentation Metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -583,9 +523,9 @@ flag includes this.
 
 .. code:: bash
 
-	sff notes list -H file.sff
-	sff notes list --header file.sff
-	
+    sff notes list -H file.sff
+    sff notes list --header file.sff
+
 The output has the following structure: 
 
 .. code::
@@ -600,51 +540,47 @@ And here's an example:
 
 .. code::
 
-	==============================================================================================================
-	EMDB-SFF v.0.6.0a4
-	--------------------------------------------------------------------------------------------------------------
-	Segmentation name:
-		Segger Segmentation
-	Segmentation software:
-		Software: segger
-		Version:  2
-	Software processing details:
-	        -*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Primary descriptor:
-		threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	File path:
-		/Users/pkorir/Data/segmentations/seg
-	--------------------------------------------------------------------------------------------------------------
-	Bounding box:
-		(0, None, 0, None, 0, None)
-	--------------------------------------------------------------------------------------------------------------
-	Global external references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: ncit             http://purl.obolibrary.org/obo/NCIT_C14206               NCIT_C14206          Y Y
-		1: dron             http://purl.obolibrary.org/obo/DRON_00018778             DRON_00018778        Y N
-		2: omit             http://purl.obolibrary.org/obo/OMIT_0006157              OMIT_0006157         Y N
-		3: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_562             NCBITaxon_562        Y N
-	--------------------------------------------------------------------------------------------------------------
-	Segmentation details:
-		-*- NOT DEFINED -*-
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9764    0       GroEL                                        1     7     0     0     (0.8, 0.96, 0.4, 1.0)
-	9814    0       GroEL                                        1     7     0     0     (0.8, 0.48, 0.88, 1.0)
-	9815    0       GroEL                                        1     7     0     0    (1.0, 0.412, 0.706, 1.0)
-	9840    0       GroEL                                        1     7     0     0    (0.16, 0.84, 0.48, 1.0)
-	9859    0       GroEL                                        1     7     0     0    (0.92, 0.84, 0.96, 1.0)
-	9893    0       GroEL                                        1     7     0     0     (0.0, 0.84, 0.76, 1.0)
-	9897    0       GroEL                                        1     7     0     0     (0.0, 0.84, 0.76, 1.0)
-	9911    0       GroEL                                        1     7     0     0    (0.92, 0.84, 0.96, 1.0)
-	9914    0       GroEL                                        1     7     0     0    (0.16, 0.84, 0.48, 1.0)
-	9952    0       GroEL                                        1     7     0     0    (1.0, 0.412, 0.706, 1.0)
-	9955    0       GroEL                                        1     7     0     0     (0.8, 0.96, 0.4, 1.0)
-	9956    0       GroEL                                        1     7     0     0     (0.8, 0.48, 0.88, 1.0)
+    ==============================================================================================================
+    EMDB-SFF v.0.8.0.dev1
+    --------------------------------------------------------------------------------------------------------------
+    Segmentation name:
+            Segger Segmentation
+    Segmentation software:
+            0 segger/2
+            proc/det:
+
+    --------------------------------------------------------------------------------------------------------------
+    Primary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
+            three_d_volume
+    --------------------------------------------------------------------------------------------------------------
+    Bounding box (xmin,xmax,ymin,ymax,zmin,zmax):
+            (0.0, None, 0.0, None, 0.0, None)
+    --------------------------------------------------------------------------------------------------------------
+    Global external references:
+          # resource         url                                                      accession            L D
+        ------------------------------------------------------------------------------------------------------
+         0: ncit             http://purl.obolibrary.org/obo/NCIT_C14206               NCIT_C14206          Y Y
+         1: dron             http://purl.obolibrary.org/obo/DRON_00018778             DRON_00018778        Y Y
+         2: omit             http://purl.obolibrary.org/obo/OMIT_0006157              OMIT_0006157         Y Y
+         3: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_562             NCBITaxon_562        Y Y
+    --------------------------------------------------------------------------------------------------------------
+    Segmentation details:
+            -*- NOT DEFINED -*-
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9764    0       GroEL::GroEL                                           1     7     (0.8, 0.96, 0.4, 1.0)
+    9814    0       GroEL::GroEL                                           1     7     (0.8, 0.48, 0.88, 1.0)
+    9815    0       GroEL::GroEL                                           1     7    (1.0, 0.412, 0.706, 1.0)
+    9840    0       GroEL::GroEL                                           1     7    (0.16, 0.84, 0.48, 1.0)
+    9859    0       GroEL::GroEL                                           1     7    (0.92, 0.84, 0.96, 1.0)
+    9893    0       GroEL::GroEL                                           1     7     (0.0, 0.84, 0.76, 1.0)
+    9897    0       GroEL::GroEL                                           1     7     (0.0, 0.84, 0.76, 1.0)
+    9911    0       GroEL::GroEL                                           1     7    (0.92, 0.84, 0.96, 1.0)
+    9914    0       GroEL::GroEL                                           1     7    (0.16, 0.84, 0.48, 1.0)
+    9952    0       GroEL::GroEL                                           1     7    (1.0, 0.412, 0.706, 1.0)
+    9955    0       GroEL::GroEL                                           1     7     (0.8, 0.96, 0.4, 1.0)
+    9956    0       GroEL::GroEL                                           1     7     (0.8, 0.48, 0.88, 1.0)
 
 Sorting Notes By Description
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -658,41 +594,41 @@ Notes are sorted by the index (first column) by default. However, the user can s
 
 .. code::
 
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9764    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9814    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9815    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9840    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9859    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9893    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9897    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9911    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9914    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9952    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9955    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9956    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9764    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9814    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9815    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9840    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9859    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9893    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9897    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9911    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9914    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9952    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9955    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9956    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
 
 becomes
 
 .. code::
 
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9840    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9914    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9814    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9956    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9764    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9955    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9815    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9952    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9859    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9911    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9893    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9897    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9840    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9914    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9814    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9956    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9764    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9955    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9893    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9897    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9815    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9952    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9859    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9911    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
 
 
 Note that descriptions longer than 40 characters are truncated and terminated 
@@ -715,21 +651,21 @@ For the above, this becomes:
 
 .. code::
 
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9956    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9955    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9952    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9914    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9911    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9897    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9893    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9859    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9840    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9815    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9814    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9764    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9956    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9955    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9952    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9914    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9911    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9897    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9893    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9859    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9840    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9815    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9814    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9764    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
 
 Reverse sorting by description
 
@@ -742,21 +678,21 @@ leading to
 
 .. code::
 
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9893    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9897    0       Minichromosome maintenance protein 5         1     2     0     0     (0.0, 0.84, 0.76, 1.0)
-	9859    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9911    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
-	9815    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9952    0       DNA replication licensing factor MCM6        1     2     0     0    (1.0, 0.412, 0.706, 1.0)
-	9764    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9955    0       DNA replication licensing factor MCM4        1     2     0     0     (0.8, 0.96, 0.4, 1.0)
-	9814    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9956    0       DNA replication licensing factor MCM3        1     2     0     0     (0.8, 0.48, 0.88, 1.0)
-	9840    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
-	9914    0       DNA replication licensing factor MCM2        1     2     0     0    (0.16, 0.84, 0.48, 1.0)
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9859    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9911    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
+    9815    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9952    0       MCM6::DNA replication licensing facto...               1     2    (1.0, 0.412, 0.706, 1.0)
+    9893    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9897    0       MCM5::Minichromosome maintenance prot...               1     2     (0.0, 0.84, 0.76, 1.0)
+    9764    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9955    0       MCM4::DNA replication licensing facto...               1     2     (0.8, 0.96, 0.4, 1.0)
+    9814    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9956    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9840    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
+    9914    0       MCM2::DNA replication licensing facto...               1     2    (0.16, 0.84, 0.48, 1.0)
 
 
 Viewing Segment IDs Only
@@ -766,58 +702,49 @@ To view the segment IDs only write:
 
 .. code:: bash
 
-	sff notes list -I file.sff
-	9764
-	9814
-	9815
-	9840
-	9859
-	9893
-	9897
-	9911
-	9914
-	9952
-	9955
-	9956
-	
+    sff notes list -I file.sff
+    9764
+    9814
+    9815
+    9840
+    9859
+    9893
+    9897
+    9911
+    9914
+    9952
+    9955
+    9956
+
 which are sorted in ascending order. These can be reversed using the 
 ``-r/--reverse`` flag.
 
 .. code:: bash
 
-	sff notes list -I -r file.sff
-	9956
-	9955
-	9952
-	9914
-	9911
-	9897
-	9893
-	9859
-	9840
-	9815
-	9814
-	9764
-	
+    sff notes list -I -r file.sff
+    9956
+    9955
+    9952
+    9914
+    9911
+    9897
+    9893
+    9859
+    9840
+    9815
+    9814
+    9764
+
 
 Showing Notes In One Or More Segments
 -------------------------------------
 
-To show annotations relating to one or several (or all) segments
-
-type
+To show annotations relating to one or several (or all) segments type
 
 .. code:: bash
 
     sff notes show
-
-which has the following options:
-
-.. code:: bash
-
-    usage: sff notes show [-h] [-p CONFIG_PATH] [-b] [-H] [-l] [-v]
-                          [-i SEGMENT_ID]
-                          sff_file
+    usage: sff notes show [-h] [-p CONFIG_PATH] [-b] [-H] [-l] [-v] [-i SEGMENT_ID] sff_file
 
     Show a specific annotations by ID present in an EMDB-SFF file
 
@@ -829,27 +756,22 @@ which has the following options:
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
-      -H, --header          show EMDB-SFF header (global) attributes [default:
-                            False]
-      -l, --long-format     only show segment ID and description (if present)
-                            [default: False]
+                            use shipped configs only if config path and user configs fail [default: False]
+      -H, --header          show EMDB-SFF header (global) attributes [default: False]
+      -l, --long-format     only show segment ID and description (if present) [default: False]
       -v, --verbose         verbose output
       -i SEGMENT_ID, --segment-id SEGMENT_ID
-                            refer to a segment by its ID; pass more than one ID as
-                            a comma-separated list with no spaces e.g.
-                            'id1,id2,...,idN'
+                            refer to a segment by its ID; pass more than one ID as a comma-separated list with no spaces e.g. 'id1,id2,...,idN'
 
-As describe in `States <#states-find-view-modify>`__, the teminal text colour
-when viewing is **WHITE**.
+    As describe in `States <#states-find-view-modify>`__, the teminal text colour
+    when viewing is **WHITE**.
 
-Listing notes from EMDB-SFF files with many segments could clutter the screen. 
-The user can switch between listing all segments to finding segment IDs of 
-interest then displaying one or more segments of interest using the ``sff
-notes show`` sub-subcommand. Therefore, this takes an extra parameter
-``-i/--segment-id`` which takes either one ID or a sequence of IDs separated 
-only by commas (``,``).
+    Listing notes from EMDB-SFF files with many segments could clutter the screen.
+    The user can switch between listing all segments to finding segment IDs of
+    interest then displaying one or more segments of interest using the ``sff
+    notes show`` sub-subcommand. Therefore, this takes an extra parameter
+    ``-i/--segment-id`` which takes either one ID or a sequence of IDs separated
+    only by commas (``,``).
 
 Show one segment:
 
@@ -869,10 +791,11 @@ Example:
 
 .. code::
 
-	**************************************************************************************************************
-	id      parId   description                              #inst #exRf #cplx #macr           colour
-	--------------------------------------------------------------------------------------------------------------
-	9911    0       DNA replication licensing factor MCM7        1     2     0     0    (0.92, 0.84, 0.96, 1.0)
+    **************************************************************************************************************
+    id      par_id  name::description                                  #inst #ext_ref           colour
+    --------------------------------------------------------------------------------------------------------------
+    9814    0       MCM3::DNA replication licensing facto...               1     2     (0.8, 0.48, 0.88, 1.0)
+    9911    0       MCM7::DNA replication licensing facto...               1     2    (0.92, 0.84, 0.96, 1.0)
 
 Note that there are **NO SPACES** between the sequence of segment IDs. As with 
 listing notes, the user can show notes in long format using the 
@@ -887,30 +810,47 @@ Example:
 
 .. code::
 
-	**************************************************************************************************************
-	ID:		9911
-	PARENT ID:	0
-	Segment Type:	threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	Description:
-		DNA replication licensing factor MCM7
-	Number of instances:
-		1
-	--------------------------------------------------------------------------------------------------------------
-	External references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: pr               http://purl.obolibrary.org/obo/PR_P38132                 PR_P38132            Y Y
-		1: uniprot          http://www.uniprot.org/uniprot/P38132                    P38132               N N
-	--------------------------------------------------------------------------------------------------------------
-	Complexes:
-		-*- NOT DEFINED -*-
-	Macromolecules:
-		-*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Colour:
-		(0.9200000166893005, 0.8399999737739563, 0.9599999785423279, 1.0)
-	
+    **************************************************************************************************************
+    ID:             9814
+    PARENT ID:      0
+    Segment Type:   None
+    --------------------------------------------------------------------------------------------------------------
+    Name:
+            MCM3
+    Description:
+            DNA replication licensing factor MCM3
+    Number of instances:
+            1
+    --------------------------------------------------------------------------------------------------------------
+    External references:
+          # resource         url                                                      accession            L D
+        ------------------------------------------------------------------------------------------------------
+         0: pr               http://purl.obolibrary.org/obo/PR_P24279                 PR_P24279            Y Y
+         1: uniprot          http://www.uniprot.org/uniprot/P24279                    P24279               Y Y
+    --------------------------------------------------------------------------------------------------------------
+    Colour:
+            (0.800000011920929, 0.479999989271164, 0.879999995231628, 1.0)
+    **************************************************************************************************************
+    ID:             9911
+    PARENT ID:      0
+    Segment Type:   None
+    --------------------------------------------------------------------------------------------------------------
+    Name:
+            MCM7
+    Description:
+            DNA replication licensing factor MCM7
+    Number of instances:
+            1
+    --------------------------------------------------------------------------------------------------------------
+    External references:
+          # resource         url                                                      accession            L D
+        ------------------------------------------------------------------------------------------------------
+         0: pr               http://purl.obolibrary.org/obo/PR_P38132                 PR_P38132            Y Y
+         1: uniprot          http://www.uniprot.org/uniprot/P38132                    P38132               Y Y
+    --------------------------------------------------------------------------------------------------------------
+    Colour:
+            (0.920000016689301, 0.839999973773956, 0.959999978542328, 1.0)
+
 
 Viewing Segmentation Metadata Only
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -920,41 +860,47 @@ As specified for ``sff notes list``, using the ``-H/--header`` flag with
 
 .. code:: bash
 
-	sff notes show -H file.json
-	sff notes show --header file.json
-	
+    sff notes show -H file.json
+    sff notes show --header file.json
+
 Example:
 
 .. code::
 
-	==============================================================================================================
-	EMDB-SFF v.0.6.0a4
-	--------------------------------------------------------------------------------------------------------------
-	Segmentation name:
-		Segger Segmentation
-	Segmentation software:
-		Software: segger
-		Version:  2
-	Software processing details:
-	        -*- NOT DEFINED -*-
-	--------------------------------------------------------------------------------------------------------------
-	Primary descriptor:
-		threeDVolume
-	--------------------------------------------------------------------------------------------------------------
-	File path:
-		/Users/pkorir/Data/segmentations/seg
-	--------------------------------------------------------------------------------------------------------------
-	Bounding box:
-		(0, None, 0, None, 0, None)
-	--------------------------------------------------------------------------------------------------------------
-	Global external references:
-		#  ontology_name    iri                                                      short_form           L D
-		------------------------------------------------------------------------------------------------------
-		0: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_559292          NCBITaxon_559292     Y N
-		1: pdb              http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8                 3ja8                 N N
-	--------------------------------------------------------------------------------------------------------------
-	Segmentation details:
-		-*- NOT DEFINED -*-
+    ==============================================================================================================
+    EMDB-SFF v.0.8.0.dev1
+    --------------------------------------------------------------------------------------------------------------
+    Segmentation name:
+            Segger Segmentation
+    Segmentation software:
+            0 segger/2
+            proc/det:
+
+    --------------------------------------------------------------------------------------------------------------
+    Primary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
+            three_d_volume
+    --------------------------------------------------------------------------------------------------------------
+    Bounding box (xmin,xmax,ymin,ymax,zmin,zmax):
+            (0.0, None, 0.0, None, 0.0, None)
+    --------------------------------------------------------------------------------------------------------------
+    Global external references:
+          # resource         url                                                      accession            L D
+        ------------------------------------------------------------------------------------------------------
+         0: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_559292          NCBITaxon_559292     Y Y
+         1: pdb              http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8                 3ja8                 Y Y
+    --------------------------------------------------------------------------------------------------------------
+    Segmentation details:
+            DNA replication in eukaryotes is strictly regulated by several mechanisms. A central step in this
+    replication is the assembly of the heterohexameric minichromosome maintenance (MCM2-7) helicase complex at
+    replication origins during G1 phase as an inactive double hexamer. Here, using cryo-electron microscopy, we
+    report a near-atomic structure of the MCM2-7 double hexamer purified from yeast G1 chromatin. Our structure
+    shows that two single hexamers, arranged in a tilted and twisted fashion through interdigitated amino-terminal
+    domain interactions, form a kinked central channel. Four constricted rings consisting of conserved interior
+    β-hairpins from the two single hexamers create a narrow passageway that tightly fits duplex DNA. This narrow
+    passageway, reinforced by the offset of the two single hexamers at the double hexamer interface, is flanked by
+    two pairs of gate-forming subunits, MCM2 and MCM5. These unusual features of the twisted and tilted single
+    hexamers suggest a concerted mechanism for the melting of origin DNA that requires structural deformation of
+    the intervening DNA.
 
 
 Modifying Notes
@@ -962,9 +908,8 @@ Modifying Notes
 
 Modifying notes is slightly more complicated than the read-only activities 
 of *finding* and *viewing* described above. It involves making changes to the 
-annotation sections (*biologicalAnnotation: description, numberOfInstances, 
-externalReferences* and *complexesAndMacromolecules: complexes* and 
-*macromolecules*) of the segments of interest.
+annotation sections (*biological_annotation: name, description, number_of_instances, and
+external_references*) of the segmentation and individual segments of interest.
 
 Temporary File
 --------------
@@ -977,46 +922,45 @@ in the temporary file then starting again.
 
 .. note::
 
-	**A Note About EMDB-SFF Formats**
-	
-	Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary file. 
-	However, JSON is preferred because of the absence of geometrical data. XML 
-	(particularly) and HDF5 can have voluminous geometrical data which can make 
-	the process of modifying an EMDB-SFF very slow. 
-	
-	The default format used is JSON.
+    **A Note About EMDB-SFF Formats**
+
+    Any EMDB-SFF format (XML, HDF5, JSON) may be used for the temporary file.
+    However, JSON is preferred because of the absence of geometrical data. XML
+    and HDF5 can have voluminous geometrical data which can make
+    the process of modifying an EMDB-SFF very slow.
+
+    The default format used is JSON.
 
 You can modify the name and format of the temporary file using the ``config``
 command to modify the ``__TEMP_FILE`` option.
 
 .. code:: bash
 
-	sff config get __TEMP_FILE
-	Mon Jan 22 16:49:59 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
-	Mon Jan 22 16:49:59 2018	Getting config __TEMP_FILE...
-	./temp-annotated.json
-	
+    ~$ sff config get __TEMP_FILE
+    Mon Jan 22 16:49:59 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
+    Mon Jan 22 16:49:59 2018	Getting config __TEMP_FILE...
+    ./temp-annotated.json
+
 to view current settings. As for ``convert``, the extension of the temporary
 file determines the output form.
 
 .. code:: bash
 
-	sff config set __TEMP_FILE ./my-annotations.json
-	Mon Jan 22 16:49:27 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
-	Mon Jan 22 16:49:27 2018	Setting config __TEMP_FILE to value ./my-annotations.json...
-	sff config get -all
-	Mon Jan 22 16:49:31 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
-	Mon Jan 22 16:49:31 2018	Listing all 3 configs...
-	__TEMP_FILE          = ./my-annotations.json
-	__TEMP_FILE_REF      = @
-	NAME                 = VALUE
-	
+    ~$ sff config set __TEMP_FILE ./my-annotations.json
+    Mon Jan 22 16:49:27 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
+    Mon Jan 22 16:49:27 2018	Setting config __TEMP_FILE to value ./my-annotations.json...
+    ~$ sff config get -all
+    Mon Jan 22 16:49:31 2018	Reading configs from /Users/pkorir/.sfftk/sff.conf
+    Mon Jan 22 16:49:31 2018	Listing all 3 configs...
+    __TEMP_FILE          = ./my-annotations.json
+    __TEMP_FILE_REF      = @
+    NAME                 = VALUE
+
 
 Temporary File Shorthand
 ------------------------
 
-Once the user has entered the MODIFY state (by either running one of ``sff notes add``, 
-``sff notes edit`` or ``sff notes del``) the user can refer to the temporary 
+Once the user has entered the MODIFY state (by either running one of ``sff notes [add|edit|del|copy|clear|merge]``) the user can refer to the temporary
 file using a shorthand specified in the configs. 
 
 The default shorthand is the 'at' symbol (``@``).
@@ -1024,26 +968,26 @@ The default shorthand is the 'at' symbol (``@``).
 .. code:: bash
 
     # add a description (assuming none exists)
-    sff notes add -i 1 -D ‘some description’ file.sff
+    sff notes add -i 1 -n 'a name' -d ‘some description’ file.sff
     # user is now in MODIFY state
-    sff notes edit -i 1 -D ‘another description’ @
+    sff notes edit -i 1 -n 'another name' -d ‘another description’ @
 
 This is useful if the file has a long name or is at a distant path.
 
 .. code:: bash
 
-    sff notes add -i 1 -D ‘some description’ tomo_5_diff_change_3.3_pi_77_27_paul_publishes.json
-    sff notes edit -i 1 -D ‘another description’ @
+    sff notes add -i 1 -d ‘some description’ tomo_5_diff_change_3.3_pi_77_27_paul_publishes.json
+    sff notes edit -i 1 -d ‘another description’ @
 
 or
 
 .. code:: bash
 
-    sff notes add -i 1 -D ‘some description’ ~/experiments/files/tomograms/zebra_fish_20170312/masks_repeat_19_3.3_relion_2.0.json
-    sff notes edit -i 1 -D ‘some description’ @
+    sff notes add -i 1 -d ‘some description’ ~/experiments/files/tomograms/zebra_fish_20170312/masks_repeat_19_3.3_relion_2.0.json
+    sff notes edit -i 1 -d ‘some description’ @
     
 The attentive reader will have noticed the option ``__TEMP_FILE_REF`` above. 
-Indeed this variable specifieds the temporary file shorthand and can 
+Indeed this variable specifies the temporary file shorthand and can
 be modifed as above.
 
 Modify Sequence
@@ -1060,19 +1004,21 @@ At the segmentation level one may add:
 
 -   the *name* of the segmentation;
 
--   the segmentation software's:
+-   a list of the segmentation software used each having a:
 
     -   *name*
 
     -   *version*
 
-    -   *processingDetails*
+    -   *processing_details*
 
 -   the segmentation's *details* (description)
 
 -   a list of *global external references*.
 
-At the segment level there are four types of annotations that can be made:
+At the segment level there are several types of annotations that can be made:
+
+-  the segment *name*;
 
 -  the segment *description*;
 
@@ -1080,7 +1026,6 @@ At the segment level there are four types of annotations that can be made:
 
 -  *external references* available in public archives
 
--  *complexes and macromolecules* (reserved for internal use)
 
 Adding Notes
 ------------
@@ -1096,30 +1041,87 @@ references:
 
 - ``-S/--software-name``: the *name of the software program* that produced the segmentation;
 
-- ``-V/--software-version``: the *version of the software* used;
+- ``-T/--software-version``: the *version of the software* used;
 
 - ``-P/--software-processing-details``: a quoted string outlining the processing details by which the segmentation was obtained;
 
-.. todo::
-
-    Make ``-P/--software-processing-details`` take an optional file
-    argument containing the segmentation protocol
-
-- ``-F/--file-path``: the *path to the segmentation file* on the local machine;
-
-.. warning::
-
-    .. deprecated:: EMDB-SFF 0.7.0
-        The ``-F/--file-path`` option has been used to link to external files holding geometrical data. This will
-        be deprecated in favour of hosting all geometrical data within the EMDB-SFF file (HDF5 and XML).
-
-- ``-d/--details``: a quoted string of additional *details* pertaining to this segmentation;
+- ``-D/--details``: a quoted string of additional *details* pertaining to this segmentation;
 
 - ``-E/--external-ref`` for *global* or *segment external references*;
 
-Each of the above will be demonstrated. The examples demonstrate before entering
+Each of the above will be demonstrated. The examples demonstrate the notes state before entering
 the MODIFY STATE (explicitly specifying the filename) and after entering the 
 MODIFY STATE (using file shorthand e.g. ``@`` used).
+
+Here's the help output for ``sff notes add``:
+
+.. code-block:: bash
+
+    sff notes add
+    usage: sff notes add [-h] [-p CONFIG_PATH] [-b]
+                         [-E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF]
+                         [-v] [-N NAME] [-S SOFTWARE_NAME]
+                         [-T SOFTWARE_VERSION]
+                         [-P SOFTWARE_PROCESSING_DETAILS] [-D DETAILS]
+                         [-i SEGMENT_ID] [-n SEGMENT_NAME]
+                         [-d DESCRIPTION] [-I NUMBER_OF_INSTANCES]
+                         sff_file
+
+    Add a new annotation to an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
+      -E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF, --external-ref EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF
+                            An external reference consists of three
+                            components: the name of the external
+                            reference, a URL to the particular external
+                            reference and the accession. If you use the
+                            sff notes search utility these will
+                            correspond to the resource, url and
+                            accession. The following is a list of valid
+                            external references: ols, go, emdb,
+                            uniprot, pdb, europepmc, empiar. You can
+                            also specify multiple external reference
+                            arguments e.g. sff notes add -i <int> -E
+                            r11 r12 r13 -E r21 r22 r23 file.json
+      -v, --verbose         verbose output
+
+    add global notes:
+      add global attributes to an EMDB-SFF file
+
+      -N NAME, --name NAME  the segmentation name
+      -S SOFTWARE_NAME, --software-name SOFTWARE_NAME
+                            the name of the software used to create the
+                            segmentation
+      -T SOFTWARE_VERSION, --software-version SOFTWARE_VERSION
+                            the version of software used to create the
+                            segmentation
+      -P SOFTWARE_PROCESSING_DETAILS, --software-processing-details SOFTWARE_PROCESSING_DETAILS
+                            details of how the segmentation was
+                            processed
+      -D DETAILS, --details DETAILS
+                            populates <details>...</details> in the XML
+                            file
+
+    add segment notes:
+      add attributes to a single segment in an EMDB-SFF file
+
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            refer to a segment by its ID
+      -n SEGMENT_NAME, --segment-name SEGMENT_NAME
+                            the name of the segment
+      -d DESCRIPTION, --description DESCRIPTION
+                            the description
+      -I NUMBER_OF_INSTANCES, --number-of-instances NUMBER_OF_INSTANCES
+                            the number of instances
 
 Adding A Segmentation Name
 ``````````````````````````````````````````````````````
@@ -1129,63 +1131,54 @@ single word values no quotes are required.
 
 .. code::
 
-	# general
-	sff notes add -N "My Best Segmentation" file.json 	# not in MODIFY state yet
-	sff notes add --name "My Worst Segmentation" @ 		# already in MODIFY state
-	# single word
-	sff notes add -N Mitochondria file.json 
-	
-Adding The Software Name
+    # general
+    sff notes add -N "My Best Segmentation" file.json 	# not in MODIFY state yet
+    sff notes add --name "My Worst Segmentation" @ 		# already in MODIFY state
+    # single word
+    sff notes add -N Mitochondria file.json
+
+Adding The Software
 ``````````````````````````````````````````````````````
+
+The list of software applications may be extended using either ``-S/--software-name``, ``-T/--software-version``
+or ``-P/--software-processing-details``. Any call to ``sff notes add`` with any one of these three arguments
+will result in a *new* software entity added to the list. If you would like to modify the list of software
+entities in the list use ``sff notes edit`` or ``sff notes del`` as outlined below.
+
 .. code::
 
-	sff notes add -S IMOD file.json			# not in MODIFY state
-	sff notes add --software-name Amira @	# MODIFY state
+    sff notes add -S IMOD -T v4.2.9 -P "contours defined" file.json # not in MODIFY state
+    sff notes add --software-name Amira --software-version 2019.1 @ # MODIFY state
 
+Use quotes (single/double) to enter software processing details:
 
-Adding The Software Version
-``````````````````````````````````````````````````````
 .. code::
 
-	sff notes add -V v5.6.3 file.json			# not in MODIFY state
-	sff notes add --software-version v0.1.1 @	# MODIFY state		
+    # not in MODIFY state
+    sff notes add -P "Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes" file.json
+    # MODIFY state
+    sff notes add --software-processing-details "Threshold of 1.08" @
 
-
-Adding Software Processing Details
-``````````````````````````````````````````````````````
-.. code::
-
-	# not in MODIFY state
-	sff notes add -P "Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes" file.json
-	# MODIFY state
-	sff notes add --software-processing-details "Threshold of 1.08" @
-
-Adding A File Path
-``````````````````````````````````````````````````````
-.. code::
-
-	sff notes add -F /path/to/seg file.json		# not in MODIFY state
-	sff notes add --file-path /path/to/seg @	# MODIFY state
 
 Adding Segmentation Details
 ``````````````````````````````````````````````````````
 .. code::
 
-	# not in MODIFY state
-	sff notes add -d "Specimen was irradiated with 5 lux of light then imaged vertically" file.json
-	# MODIFY state
-	sff notes add --description "All imaging was done at 17 K" @
-	
+    # not in MODIFY state
+    sff notes add -D "Specimen was irradiated with 5 lux of light then imaged vertically" file.json
+    # MODIFY state
+    sff notes add --details "All imaging was done at 17 K" @
+
 Adding An External Reference (Global Or Segment)
 ``````````````````````````````````````````````````````
 
 The external references flag (``-E/--external-ref``) takes three arguments:
 
-- the ``name of the source`` at which the reference may be found;
+- the ``resource name`` where the reference may be found;
 
-- the ``IRI to the term`` [2]_ where more details may be found;
+- the ``permanent URL`` where more details may be found;
 
-- the ``accession code`` for the reference.
+- the ``accession`` code for the reference.
 
 You can use multiple ``-E/--external-ref`` flags at once.
 
@@ -1195,16 +1188,23 @@ For example, suppose we ran
 
 .. code:: bash
 
-	sff notes search 'mitochondria'
+    sff notes search 'mitochondria'
 
 and obtain the following results:
 
 .. image:: search-results-01.png
 
 and are interested in adding the second result as an external reference to a
-segment. We note down the *ontology name* (``go``), *IRI*
-(``http://purl.obolibrary.org/obo/GO_0005739``) and the *short_form*
+segment. We note down the *resource* (``go``), *url*
+(``http://purl.obolibrary.org/obo/GO_0005739``) and the *accession*
 (``GO:0005739``) then use the following command:
+
+.. code-block:: bash
+
+    # -E <resource> <url> <accession>
+    sff notes add -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
+
+More examples:
 
 .. code:: bash
 
@@ -1214,14 +1214,12 @@ segment. We note down the *ontology name* (``go``), *IRI*
     # MODIFY state
     # more than one reference
     sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
-    # per-segment notes
-    sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
-    sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
 
 Adding Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Notes are added using the **sff notes add** sub-subcommand.
+Notes are added using the **sff notes add** sub-subcommand but specifying the segment by ID using the
+``-i/--segment-id`` argument.
 
 .. code:: bash
 
@@ -1230,21 +1228,21 @@ Notes are added using the **sff notes add** sub-subcommand.
 Adding A Segment Name
 `````````````````````````````
 
-The ``-s/--segment-name`` flag takes a single argument or quoted string to name the segment.
+The ``-n/--segment-name`` flag takes a single argument or quoted string to name the segment.
 
 .. code:: bash
 
-    sff notes add -i 9911 -s "Top-most segment" file.sff
+    sff notes add -i 9911 -n "Top-most segment" file.sff
     sff notes add -i 9911 --segment-name "Top-most segment" file.sff
 
 Adding A Segment Description
 ``````````````````````````````````````````````````````
 
-Use the ``-D/--description`` flag to add a description. Multi-word descriptions will need to be quoted.
+Use the ``-d/--description`` flag to add a description. Multi-word descriptions will need to be quoted.
 
 .. code:: bash
 
-    sff notes add -i 9911 -D 'a very good description' file.sff
+    sff notes add -i 9911 -d 'a very good description' file.sff
     sff notes add --segment-id 9911 --description 'a very good description' file.sff
 
 Adding The Number of Instances
@@ -1252,7 +1250,7 @@ Adding The Number of Instances
 
 .. code:: bash
 
-    sff notes add -i 9911 -n <int> file.json
+    sff notes add -i 9911 -I <int> file.json
     sff notes add --segment-id 9911 --number-of-instances <int> file.json
 
 Adding External References
@@ -1260,30 +1258,17 @@ Adding External References
 
 .. code:: bash
 
-    sff notes add -i 9911 -E <resource_name> <iri> <short_form> file.json
+    sff notes add -i 9911 -E <resource> <url> <accession> file.json
 
 or several at once using multiple ``-E/--external-ref`` flags:
 
 .. code:: bash
 
-    sff notes add -i 9911 -E <resource_name> <iri> <short_form> -E <resource_name> <iri> <short_form> -E <resource_name> <iri> <short_form>file.json
+    sff notes add -i 9911 -E <resource> <url> <accession> -E <resource> <url> <accession> -E <resource> <url> <accession>file.json
+    # per-segment notes
+    sff notes add -i 9911 -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
+    sff notes add -i 9911 --external-ref go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.json
 
-
-Adding A Complex (Internal Use)
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes add -i <segment_id> -C <comp1>,<comp2>,...,<compN> file.json
-    sff notes add -i <segment_id> --complexes <comp1>,<comp2>,...,<compN> file.json
-
-Adding A Macromolecule (Internal Use)
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes add -i <segment_id> -M <macr1>,<macr2>,...,<macrN> file.json
-    sff notes add -i <segment_id> --macromolecules <macr1>,<macr2>,...,<macrN> file.json
 
 Editing Notes
 -------------
@@ -1292,8 +1277,82 @@ Editing Global Notes (Segmentation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Editing global notes is straightforward and works exactly like adding notes
-for all items of metadata except external references. In fact, one can use 
-``add`` and ``edit`` interchangeably for *name, software name, software version, software processing details, file path* and *details*.
+for all items of metadata except external references. Where the entity to be modified is not a list, one can use 
+``add`` and ``edit`` interchangeably for *name*, *segment name*, *segment description*, *number of instances* and *details*.
+
+.. code-block:: bash
+
+    sff notes edit
+    usage: sff notes edit [-h] [-p CONFIG_PATH] [-b]
+                          [-e EXTERNAL_REF_ID]
+                          [-E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF]
+                          [-v] [-N NAME] [-s SOFTWARE_ID]
+                          [-S SOFTWARE_NAME] [-T SOFTWARE_VERSION]
+                          [-P SOFTWARE_PROCESSING_DETAILS] [-D DETAILS]
+                          [-i SEGMENT_ID] [-n SEGMENT_NAME]
+                          [-d DESCRIPTION] [-I NUMBER_OF_INSTANCES]
+                          sff_file
+
+    Edit an existing annotation to an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
+      -e EXTERNAL_REF_ID, --external-ref-id EXTERNAL_REF_ID
+                            the external reference ID as shown with the
+                            'list' command
+      -E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF, --external-ref EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF
+                            An external reference consists of three
+                            components: the name of the external
+                            reference, a URL to the particular external
+                            reference and the accession. If you use the
+                            sff notes search utility these will
+                            correspond to the resource, url and
+                            accession. The following is a list of valid
+                            external references: ols, go, emdb,
+                            uniprot, pdb, europepmc, empiar. You can
+                            also specify multiple external reference
+                            arguments e.g. sff notes add -i <int> -E
+                            r11 r12 r13 -E r21 r22 r23 file.json
+      -v, --verbose         verbose output
+
+    edit global notes:
+      edit global attributes to an EMDB-SFF file
+
+      -N NAME, --name NAME  the segmentation name
+      -s SOFTWARE_ID, --software-id SOFTWARE_ID
+                            the software to edit
+      -S SOFTWARE_NAME, --software-name SOFTWARE_NAME
+                            the name of the software used to create the
+                            segmentation
+      -T SOFTWARE_VERSION, --software-version SOFTWARE_VERSION
+                            the version of software used to create the
+                            segmentation
+      -P SOFTWARE_PROCESSING_DETAILS, --software-processing-details SOFTWARE_PROCESSING_DETAILS
+                            details of how the segmentation was
+                            processed
+      -D DETAILS, --details DETAILS
+                            populates <details>...</details> in the XML
+                            file
+
+    edit segment notes:
+      edit attributes to a single segment in an EMDB-SFF file
+
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            refer to a segment by its ID
+      -n SEGMENT_NAME, --segment-name SEGMENT_NAME
+                            the name of the segment
+      -d DESCRIPTION, --description DESCRIPTION
+                            the description
+      -I NUMBER_OF_INSTANCES, --number-of-instances NUMBER_OF_INSTANCES
+                            the number of instances
 
 Editing External References
 ``````````````````````````````````````````````````````
@@ -1303,10 +1362,10 @@ reference to be edited (``-e/--external-ref-id``).
 
 .. code:: bash
 
-    sff notes edit -e <ref_id> -E <resource_name> <iri> <short_form> file.json
-	
-Specifying ``sff notes edit -e 0 -E <resource_name> <iri> <short_form> file.json`` when there are no external
-references is equivalent to using ``sff notes add -E <resource_name> <iri> <short_form> file.json``.
+    sff notes edit -e <ref_id> -E <resource> <url> <accession> file.json
+
+Specifying ``sff notes edit -e 0 -E <resource> <url> <accession> file.json`` when there are no external
+references is equivalent to using ``sff notes add -E <resource> <url> <accession> file.json``.
 
 Editing Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1321,7 +1380,7 @@ Editing A Segment Name
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -s <name> file.json
+    sff notes edit -i <segment_id> -n <name> file.json
     sff notes edit -i <segment_id> --segment-name <name> @ # if editing a just-added name
 
 Editing A Description
@@ -1329,45 +1388,203 @@ Editing A Description
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -D ‘<description>’ file.json
-    sff notes edit -i <segment_id> -D ‘<description>’ @ # if editing a just-added description
+    sff notes edit -i <segment_id> -d ‘<description>’ file.json
+    sff notes edit -i <segment_id> -d ‘<description>’ @ # if editing a just-added description
 
 Editing The Number of Instances
 ``````````````````````````````````````````````````````
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -n <int> file.json
-    sff notes edit -i <segment_id> -n <int> @ # if editing a just-added value
+    sff notes edit -i <segment_id> -I <int> file.json
+    sff notes edit -i <segment_id> -I <int> @ # if editing a just-added value
 
 Editing An External Reference
 ``````````````````````````````````````````````````````
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <iri> <obo_id> file.json
-    sff notes edit -i <segment_id> --external-ref-id <extref_id> -E <ontology> <iri> <obo_id> file.json
+    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <url> <obo_id> file.json
+    sff notes edit -i <segment_id> --external-ref-id <extref_id> -E <ontology> <url> <obo_id> file.json
     # if editing a just-added description
-    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <iri> <obo_id> @
+    sff notes edit -i <segment_id> -e <extref_id> -E <ontology> <url> <obo_id> @
 
-Editing A Complex (Internal Use)
+Deleting Notes
+--------------
+
+Notes may be deleted using the ``sff notes del`` sub-subcommand.
+
+Unlike when adding and editing, **delete options take no arguments *except* when
+referring to listed metadata** (external references, complexes and macromolecules).
+
+.. code-block:: bash
+
+    sff notes del
+    usage: sff notes del [-h] [-p CONFIG_PATH] [-b] [-v]
+                         [-e EXTERNAL_REF_ID] [-s SOFTWARE_ID] [-S]
+                         [-T] [-P] [-D] [-i SEGMENT_ID] [-n] [-d] [-I]
+                         sff_file
+
+    Delete an existing annotation to an EMDB-SFF file
+
+    positional arguments:
+      sff_file              path (rel/abs) to an EMDB-SFF file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -p CONFIG_PATH, --config-path CONFIG_PATH
+                            path to configs file
+      -b, --shipped-configs
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
+      -v, --verbose         verbose output
+      -e EXTERNAL_REF_ID, --external-ref-id EXTERNAL_REF_ID
+                            the external reference ID as shown with the
+                            'list' command
+
+    delete global notes:
+      delete global attributes to an EMDB-SFF file
+
+      -s SOFTWARE_ID, --software-id SOFTWARE_ID
+                            the software(s) to delete; delete depends
+                            on whether -S, -T and -P are specified (see
+                            below); if none are specified then the
+                            whole software is deleted from the list
+      -S, --software-name   delete the software name for the specified
+                            software id(s) [default: False]
+      -T, --software-version
+                            delete the software version for the
+                            specified software id(s) [default: False]
+      -P, --software-processing-details
+                            delete the software processing details for
+                            the specified software id(s) [default:
+                            False]
+      -D, --details         delete the details [default: False]
+
+    delete segment notes:
+      delete attributes to a single segment in an EMDB-SFF file
+
+      -i SEGMENT_ID, --segment-id SEGMENT_ID
+                            refer to a segment by its ID
+      -n, --segment-name    delete the segment name [default: False]
+      -d, --description     delete the description [default: False]
+      -I, --number-of-instances
+                            delete the number of instances [default:
+                            False]
+
+Deleting Global Notes (Segmentation)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Deleting A Segmentation Name
+``````````````````````````````````````````````````````
+
+.. note::
+
+    It is not possible to delete the *segmentation name* as this a required attribute.
+
+Deleting Software Details
+``````````````````````````````````````````````````````
+
+The software item on the software list should be specified using ``-s/--software-id`` to perform a
+deletion. If none of ``-S/--software-name``, ``-T/--software-version`` or ``-P/--software-processing-details``
+is provided then the whole software item will be deleted. Otherwise, only the specified field will be deleted.
+
+.. code-block:: bash
+
+    sff notes del -s <software_id> file.json
+
+To delete the name of the software for one item use:
+
+.. code:: bash
+
+    sff notes del -s <software_id> -S file.json
+    sff notes del -s <software_id> -S @
+
+Similarly, to delete the version or processing details for a single software item use:
+
+.. code:: bash
+
+    sff notes del -s <software_id> -T file.json
+    sff notes del -s <software_id> -T @
+
+.. code:: bash
+
+    sff notes del -s <software_id> -P file.json
+    sff notes del -s <software_id> -P @
+
+Any combination of the above will also work as expected:
+
+.. code-block:: bash
+
+    sff notes del -s <id> -S -T file.json
+
+
+Deleting Details
 ``````````````````````````````````````````````````````
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -c <comp_id> -C <comp1>,<comp2>,...,<compN> file.json
-    sff notes edit -i <segment_id> --complex-id <comp_id> -C <comp1>,<comp2>,...,<compN> file.json
+    sff notes del -D file.json
+    sff notes del -D @
 
-If only one complex is specified then the complex at complex_id will be replaced. However, if more than one is specified then complex_id will be replaced and the new complexes will bump down all present complexes.
-
-Editing A Macromolecule (Internal Use)
+Deleting External References
 ``````````````````````````````````````````````````````
 
 .. code:: bash
 
-    sff notes edit -i <segment_id> -m <macr_id> -M <macr1>,<macr2>,...,<macrN> file.json
-    sff notes edit -i <segment_id> --macromolecule-id <macr_id> -M <macr1>,<macr2>,...,<macrN> file.json
+    sff notes del -e <extref_id> file.json
+    sff notes del -e <extref_id> @
 
+Deleting Segment Notes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Deleting The Segment Name
+``````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -n file.json
+    sff notes del -i <segment_id> -n @
+
+This will set the value to the default of ``1``.
+
+
+Deleting A Description
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -d file.json
+    sff notes del -i <segment_id> -d @
+
+Deleting The Number Of Instances
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -I file.json
+    sff notes del -i <segment_id> -I @
+
+Deleting An External Reference
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -e <extref_id> file.json
+
+Deleting A Complex (Internal Use)
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -c <comp_id> file.json
+
+Deleting A Macromolecule (Internal Use)
+``````````````````````````````````````````````````````
+
+.. code:: bash
+
+    sff notes del -i <segment_id> -m <macr_id> file.json
 
 Copying Notes
 -------------
@@ -1379,7 +1596,7 @@ Important points to remember:
 -   Copying only makes use of external references - the segment description and number of instances are left intact.
 
 -   It is currently not possible to select a subset of annotations (this will be added in a later release); all
-    annotations are copied to the destination. However, individual annotations that are to be excluded may be removed
+    annotations are copied to the destination. However, individual annotations that are to be excluded *after copying* may be removed
     using the following sequence:
 
     1.  view notes in the segment using
@@ -1408,11 +1625,12 @@ For the complete set of options run:
 
     sff notes copy
     usage: sff notes copy [-h] [-p CONFIG_PATH] [-b] [-i SEGMENT_ID]
-                      [--from-global | --to-global] [-t TO_SEGMENT | --to-all]
-                      sff_file
+                          [--from-global | --to-global]
+                          [-t TO_SEGMENT | --to-all]
+                          sff_file
 
-    Copy notes from one/multiple segment to one/multiple/all other segments within
-    the same EMDB-SFF file
+    Copy notes from one/multiple segment to one/multiple/all other
+    segments within the same EMDB-SFF file
 
     positional arguments:
       sff_file              path (rel/abs) to an EMDB-SFF file
@@ -1422,22 +1640,24 @@ For the complete set of options run:
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
       -i SEGMENT_ID, --segment-id SEGMENT_ID
-                            segment ID or a comma-separated sequence of segment
-                            IDs of source segment(s); run 'sff notes list <file>'
-                            for a list of segment IDs
-      --from-global         copy notes from global (metadata) to --to-segment
-                            segments
-      --to-global           copy notes from --segment-id segment to global
-                            (metadata)
+                            segment ID or a comma-separated sequence of
+                            segment IDs of source segment(s); run 'sff
+                            notes list <file>' for a list of segment
+                            IDs
+      --from-global         copy notes from global (metadata) to --to-
+                            segment segments
+      --to-global           copy notes from --segment-id segment to
+                            global (metadata)
       -t TO_SEGMENT, --to-segment TO_SEGMENT
-                            segment ID or a comma-separated sequence of segment
-                            IDs of destination segment(s); run 'sff notes list
-                            <file>' for a list of segment IDs
-      --to-all              copy notes from --segment-id segment to all (other)
-                            segments
+                            segment ID or a comma-separated sequence of
+                            segment IDs of destination segment(s); run
+                            'sff notes list <file>' for a list of
+                            segment IDs
+      --to-all              copy notes from --segment-id segment to all
+                            (other) segments
 
 Source of Notes: One or More Segments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1506,7 +1726,8 @@ As always we can view the full list of options:
 .. code:: bash
 
     sff notes clear
-    usage: sff notes clear [-h] [-p CONFIG_PATH] [-b] [--all] [--from-global]
+    usage: sff notes clear [-h] [-p CONFIG_PATH] [-b] [-v] [--all]
+                           [--from-global]
                            [-i SEGMENT_ID | --from-all-segments]
                            sff_file
 
@@ -1520,14 +1741,16 @@ As always we can view the full list of options:
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
+      -v, --verbose         verbose output
       --all                 clear all notes; USE WITH CARE!
       --from-global         clear notes from global (metadata)
       -i SEGMENT_ID, --segment-id SEGMENT_ID
-                            segment ID or a comma-separated sequence of segment
-                            IDs of source segment(s); run 'sff notes list <file>'
-                            for a list of segment IDs
+                            segment ID or a comma-separated sequence of
+                            segment IDs of source segment(s); run 'sff
+                            notes list <file>' for a list of segment
+                            IDs
       --from-all-segments   clear notes from all segments
 
 
@@ -1579,8 +1802,7 @@ However, given that modification happens on a temporary file, clearing all notes
     # restore to status before beginning the current modify session
     sff notes trash @
 
-It is advisable to constantly save instead of only at the end of the annotation. This will ensure that there will be a
-minimal loss of annotations.
+It is advisable to constantly save instead of only at the end of the annotation.
 
 Merging Notes
 -------------
@@ -1590,29 +1812,30 @@ Notes can be manually merged from two EMDB-SFF files using ``sff notes merge``.
 .. code:: bash
 
     sff notes merge
-    usage: sff notes merge [-h] [-p CONFIG_PATH] [-b] --source SOURCE [-o OUTPUT]
-                       [-v]
-                       other
+    usage: sff notes merge [-h] [-p CONFIG_PATH] [-b] --source SOURCE
+                           [-o OUTPUT] [-v]
+                           other
 
     Merge notes from two EMDB-SFF files
 
     positional arguments:
-      other                 EMDB-SFF file whose content will be merged with notes
-                            from the file specified with --source
+      other                 EMDB-SFF file whose content will be merged
+                            with notes from the file specified with
+                            --source
 
     optional arguments:
       -h, --help            show this help message and exit
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
       --source SOURCE       EMDB-SFF file from which to obtain notes
       -o OUTPUT, --output OUTPUT
-                            file to convert to; the extension (.sff, .hff, .json)
-                            determines the output format; if not specified then
-                            NOTES IN OTHER ONLY will be overwritten [default:
-                            None]
+                            file to convert to; the extension (.sff,
+                            .hff, .json) determines the output format;
+                            if not specified then NOTES IN OTHER ONLY
+                            will be overwritten [default: None]
       -v, --verbose         verbose output
 
 Both files must refer to the exact same segmentation i.e. the number and IDs of segments must correspond (in
@@ -1643,139 +1866,7 @@ In this case, the destination file is overwritten.
 will produce an XML file (``file.sff``).
 
 
-Deleting Notes
---------------
 
-Notes may be deleted using the ``sff notes del`` sub-subcommand. 
-
-Unlike when adding and editing, delete options take no arguments except when
-referring to listed metadata (external references, complexes and macromolecules).
-
-Deleting Global Notes (Segmentation)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Deleting A Segmentation Name
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -N file.json
-	sff notes del -N @
-
-results in
-
-.. code:: bash
-
-	sff notes show -H @
-	...
-	Segmentation name:
-		Segger Segmentation
-
-to become 
-
-.. code:: bash
-
-	sff notes show -H @
-	...
-	Segmentation name:
-		-*- NOT DEFINED -*-
-	
-Deleting The Software Name
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -S file.json
-	sff notes del -S @ 
-	
-Deleting The Software Version
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -V file.json
-	sff notes del -V @
-	
-Deleting The Software Processing Details
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -P file.json
-	sff notes del -P @
-	
-Deleting the Filepath
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -F file.json
-	sff notes del -F @
-	
-Deleting Details
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -d file.json
-	sff notes del -d @
-	
-Deleting External References
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-	sff notes del -e <extref_id> file.json
-	sff notes del -e <extref_id> @
-	
-Deleting Segment Notes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Deleting The Segment Name
-``````````````````````````````
-
-.. code:: bash
-
-    sff notes del -i <segment_id> -s file.json
-    sff notes del -i <segment_id> -s @
-
-
-Deleting A Description
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes del -i <segment_id> -D file.json
-    sff notes del -i <segment_id> -D @
-
-Deleting The Number Of Instances
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes del -i <segment_id> -n file.json
-    sff notes del -i <segment_id> -n @
-
-Deleting An External Reference
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes del -i <segment_id> -e <extref_id> file.json
-
-Deleting A Complex (Internal Use)
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes del -i <segment_id> -c <comp_id> file.json
-
-Deleting A Macromolecule (Internal Use)
-``````````````````````````````````````````````````````
-
-.. code:: bash
-
-    sff notes del -i <segment_id> -m <macr_id> file.json
 
 Saving Notes
 ------------
@@ -1785,9 +1876,9 @@ overwrites all notes from the temporary file into the destination file.
 
 .. note::
 
-	By **overwrite** we mean that the final result will be only from the 
-	temporary file. But this should not be a worry because the temporary
-	file was a copy of the original file. 
+    By **overwrite** we mean that the final result will be only from the
+    temporary file. But this should not be a worry because the temporary
+    file was a copy of the original file.
 
 .. code:: bash
 
@@ -1835,8 +1926,4 @@ There are two main parameters that control the annotation process:
    The use can use it to refer to the segmentation file instead of typing 
    the full file path and name.
 
-.. [1]
-   A unique identifier for a term under the Open Biology Ontologies consortium’s OBO Foundry (see `http://www.obofoundry.org/id-policy.html <http://www.obofoundry.org/id-policy.html>`__ to learn more about obo_id). For example, in the Gene Ontology (GO) the term *positive regulation of release of cytochrome c from mitochondria* has the OBO ID *GO:0090200.*
 
-.. [2]
-	An *internationalised resource identifier* (IRI) is a type of link to a resource that may include international characters e.g. Chinese.

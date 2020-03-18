@@ -95,7 +95,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
         return self._colour
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         # annotation
         annotation = schema.SFFBiologicalAnnotation(
             name=self.name,
@@ -138,7 +138,7 @@ class AmiraHyperSurfaceSegment(Segment):
         return self._meshes
 
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biologicalAnnotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
@@ -207,7 +207,7 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         return self._segments
 
     def convert(self, args, *_args, **_kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Amira HyperSurface Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()

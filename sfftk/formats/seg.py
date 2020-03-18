@@ -43,7 +43,7 @@ class SeggerAnnotation(Annotation):
         return r, g, b, a
 
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
         annotation.description = self.description
@@ -74,7 +74,7 @@ class SeggerVolume(Volume):
         return self._segmentation.map_level
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFThreeDVolume` object"""
+        """Convert to a :py:class:`sfftkrw.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
         # volume.file = self.file
         # volume.contourLevel = self.map_level
@@ -107,7 +107,7 @@ class SeggerSegment(Segment):
         return SeggerVolume(self._segmentation)
 
     def convert(self, *args, **kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.id = self.region_id
         segment.parentID = self.parent_id
@@ -213,7 +213,7 @@ class SeggerSegmentation(Segmentation):
         return segments
 
     def convert(self, args, *_args, **_kwargs):
-        """Method to convert a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Method to convert a :py:class:`sfftkrw.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
         segmentation.name = "Segger Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()

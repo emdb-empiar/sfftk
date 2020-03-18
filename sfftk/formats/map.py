@@ -116,7 +116,7 @@ class MapAnnotation(Annotation):
         return None
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
         annotation.number_of_instances = 1
@@ -150,7 +150,7 @@ class MapSegment(Segment):
     #     return MapVolume(self._map_obj)
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         lattice = schema.SFFLattice(
             mode=self.annotation.mode,
             endianness=self.annotation.endianness,
@@ -303,7 +303,7 @@ class MapSegmentation(Segmentation):
         # return [MapSegment(self)]
 
     def convert(self, args, *_args, **_kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
 
         # segmentation.name = self.header.name

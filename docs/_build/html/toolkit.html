@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>EMDB-SFF Toolkit (sfftk) &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>EMDB-SFF Toolkit (sfftk) &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -193,10 +193,14 @@
 <a class="reference external image-reference" href="http://sfftk.readthedocs.io/en/latest/?badge=latest"><img alt="Documentation Status" src="https://readthedocs.org/projects/sfftk/badge/?version=latest" /></a>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Looking for a graphical aid to using <code class="docutils literal notranslate"><span class="pre">sfftk</span></code>? Try out the online version: the <a class="reference external" href="https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/">Segmentation Annotation Tool</a>.</p>
+<p>Looking for a graphical aid to using <code class="docutils literal notranslate"><span class="pre">sfftk</span></code>? Try out the online version: the <a href="https://wwwdev.ebi.ac.uk/pdbe/emdb/sat_branch/sat/" target="_blank">Segmentation Annotation Tool</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only interested in handling EMDB-SFF files? Checkout the <em>minimal</em> <code class="docutils literal notranslate"><span class="pre">sfftk-rw</span></code> package <a href="https://sfftk-rw.readthedocs.io/en/latest/" target="_blank">here</a>.</p>
 </div>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#emdb-sff-toolkit-sfftk" id="id2">EMDB-SFF Toolkit (<code class="docutils literal notranslate"><span class="pre">sfftk</span></code>)</a></p>
 <ul>
@@ -256,7 +260,7 @@ copyright EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.</p>
 <div class="section" id="data-model">
 <h3><a class="toc-backref" href="#id6">Data Model</a><a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> is built to handle EMDB-SFF files. The corresponding schema
-(<code class="docutils literal notranslate"><span class="pre">v0.7.0.dev0</span></code>) may be obtained at <a class="reference external" href="http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html">http://wwwdev.ebi.ac.uk/pdbe/emdb/emdb_static/doc/segmentation_da_docs/segmentation_da.html</a>.
+(<code class="docutils literal notranslate"><span class="pre">v0.8.0.dev1</span></code>) may be found at <a href="https://emdb-empiar.github.io/EMDB-SFF" target="_blank">https://emdb-empiar.github.io/EMDB-SFF</a>.
 Changes to the schema are welcome for discussion at the <em>Segmentation Working Group</em>
 at <a class="reference external" href="https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg">https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg</a>.</p>
 </div>
@@ -266,6 +270,7 @@ at <a class="reference external" href="https://listserver.ebi.ac.uk/mailman/list
 extensions):</p>
 <ul class="simple">
 <li><p>Amira Mesh (.am)</p></li>
+<li><p>SuRVoS (.h5; experimental support)</p></li>
 <li><p>CCP4 Masks (.map)</p></li>
 <li><p>IMOD (.mod)</p></li>
 <li><p>Segger (.seg)</p></li>
@@ -275,18 +280,10 @@ extensions):</p>
 </div>
 <div class="section" id="contact">
 <h3><a class="toc-backref" href="#id8">Contact</a><a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h3>
-<p>Any questions or comments should be addressed to
-<a class="reference external" href="mailto:ardan&#37;&#52;&#48;ebi&#46;ac&#46;uk">ardan<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk</a> or
-<a class="reference external" href="mailto:pkorir&#37;&#52;&#48;ebi&#46;ac&#46;uk">pkorir<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk</a>.</p>
+<p>Any questions or comments should be addressed to <code class="docutils literal notranslate"><span class="pre">pkorir</span> <span class="pre">at</span> <span class="pre">ebi</span> <span class="pre">dot</span> <span class="pre">ac</span> <span class="pre">dot</span> <span class="pre">uk</span></code>.</p>
 </div>
 <div class="section" id="publications">
 <h3><a class="toc-backref" href="#id9">Publications</a><a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h3>
-<p>The following articles should be cited whenever <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> is used in a
-publication:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Article to be added</p>
-</div>
 <p>The EMDB-SFF data model is the result of various community consultations which
 are published in the following articles:</p>
 <ul class="simple">
@@ -365,8 +362,7 @@ treatment.</p>
 <div class="section" id="developing-with-sfftk">
 <h3><a class="toc-backref" href="#id19">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a><a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> is developed as a set of decoupled packages providing the various
-functionality. The main classes involved are found in the <code class="docutils literal notranslate"><span class="pre">sfftk.schema</span> <span class="pre">package</span></code>.
-Please see <a class="reference external" href="http://sfftk.readthedocs.io/en/latest/sfftk.html">full API</a>.
+functionality. The main classes involved are found in the <a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#module-sfftkrw" title="(in sfftk-rw vv0.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftkrw</span></code></a> package.
 There is also a <a class="reference external" href="https://sfftk.readthedocs.io/en/latest/developing.html">guide to developing with sfftk</a> which
 provides useful instructions.</p>
 </div>

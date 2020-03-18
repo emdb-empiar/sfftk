@@ -87,7 +87,7 @@ class STLAnnotation(Annotation):
         # self.colour = tuple([random.random() for _ in _xrange(3)])
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFBiologicalAnnotation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation(
             name=self.name,
         )
@@ -119,7 +119,7 @@ class STLSegment(Segment):
         return [STLMesh(self._vertices, self._polygons)]
 
     def convert(self):
-        """Convert to a :py:class:`sfftk.schema.SFFSegment` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biological_annotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
@@ -184,7 +184,7 @@ class STLSegmentation(Segmentation):
         return self._segments
 
     def convert(self, args, *_args, **_kwargs):
-        """Convert to a :py:class:`sfftk.schema.SFFSegmentation` object"""
+        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object"""
         segmentation = schema.SFFSegmentation()
 
         segmentation.name = "STL Segmentation"

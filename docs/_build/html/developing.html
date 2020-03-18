@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Developing with sfftk &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>Developing with sfftk &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -91,38 +91,6 @@
 <li class="toctree-l1"><a class="reference internal" href="misc.html">Miscellaneous Operations Using sfftk</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reading-emdb-sff-files">Reading EMDB-SFF Files</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#viewing-segmentation-metadata">Viewing Segmentation Metadata</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#viewing-segments">Viewing Segments</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#getting-the-list-of-segment-ids">Getting The List of Segment IDs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#getting-a-segment-by-id">Getting A Segment By ID</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#viewing-segment-metadata">Viewing Segment Metadata</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id-and-parent-id">ID and Parent ID</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#biological-annotation">Biological Annotation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#complexes-and-macromolecules">Complexes and Macromolecules</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#creating-emdb-sff-objects">Creating EMDB-SFF Objects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#setting-segmentation-metadata">Setting Segmentation Metadata</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#setting-segments">Setting Segments</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#exporting-emdb-sff-objects">Exporting EMDB-SFF Objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#navigating-your-way-through-a-segmentation">Navigating Your Way Through A Segmentation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#iterating">Iterating</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#segments">Segments</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#meshes">Meshes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#external-references">External References</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="#annotating-emdb-sff-objects">Annotating EMDB-SFF Objects</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#note-objects">Note Objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#adding-notes">Adding Notes</a></li>
@@ -209,83 +177,30 @@
            <div itemprop="articleBody">
             
   <div class="section" id="developing-with-sfftk">
-<h1><a class="toc-backref" href="#id4">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a><a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id2">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a><a class="headerlink" href="#developing-with-sfftk" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
+<p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#developing-with-sfftk" id="id4">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></p>
+<li><p><a class="reference internal" href="#developing-with-sfftk" id="id2">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></p>
 <ul>
-<li><p><a class="reference internal" href="#introduction" id="id5">Introduction</a></p></li>
-<li><p><a class="reference internal" href="#reading-emdb-sff-files" id="id6">Reading EMDB-SFF Files</a></p>
+<li><p><a class="reference internal" href="#introduction" id="id3">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#annotating-emdb-sff-objects" id="id4">Annotating EMDB-SFF Objects</a></p>
 <ul>
-<li><p><a class="reference internal" href="#viewing-segmentation-metadata" id="id7">Viewing Segmentation Metadata</a></p></li>
-<li><p><a class="reference internal" href="#viewing-segments" id="id8">Viewing Segments</a></p>
-<ul>
-<li><p><a class="reference internal" href="#getting-the-list-of-segment-ids" id="id9">Getting The List of Segment IDs</a></p></li>
-<li><p><a class="reference internal" href="#getting-a-segment-by-id" id="id10">Getting A Segment By ID</a></p></li>
+<li><p><a class="reference internal" href="#note-objects" id="id5">Note Objects</a></p></li>
+<li><p><a class="reference internal" href="#adding-notes" id="id6">Adding Notes</a></p></li>
+<li><p><a class="reference internal" href="#editing-notes" id="id7">Editing Notes</a></p></li>
+<li><p><a class="reference internal" href="#deleting-notes" id="id8">Deleting Notes</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#viewing-segment-metadata" id="id11">Viewing Segment Metadata</a></p>
+<li><p><a class="reference internal" href="#reading-application-specific-segmentation-files" id="id9">Reading Application-Specific Segmentation Files</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id-and-parent-id" id="id12">ID and Parent ID</a></p></li>
-<li><p><a class="reference internal" href="#biological-annotation" id="id13">Biological Annotation</a></p></li>
-<li><p><a class="reference internal" href="#complexes-and-macromolecules" id="id14">Complexes and Macromolecules</a></p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#creating-emdb-sff-objects" id="id15">Creating EMDB-SFF Objects</a></p>
-<ul>
-<li><p><a class="reference internal" href="#setting-segmentation-metadata" id="id16">Setting Segmentation Metadata</a></p>
-<ul>
-<li><p><a class="reference internal" href="#setting-segments" id="id17">Setting Segments</a></p>
-<ul>
-<li><p><a class="reference internal" href="#setting-segment-metadata" id="id18">Setting Segment Metadata</a></p>
-<ul>
-<li><p><a class="reference internal" href="#id1" id="id19">Biological Annotation</a></p></li>
-<li><p><a class="reference internal" href="#id2" id="id20">Complexes and Macromolecules</a></p></li>
-<li><p><a class="reference internal" href="#colour" id="id21">Colour</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#setting-mesh-segments" id="id22">Setting Mesh Segments</a></p></li>
-<li><p><a class="reference internal" href="#setting-shape-segments" id="id23">Setting Shape Segments</a></p></li>
-<li><p><a class="reference internal" href="#setting-volume-segments" id="id24">Setting Volume Segments</a></p></li>
-<li><p><a class="reference internal" href="#adding-a-segment-to-the-segmentation" id="id25">Adding A Segment To The Segmentation</a></p></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#exporting-emdb-sff-objects" id="id26">Exporting EMDB-SFF Objects</a></p></li>
-<li><p><a class="reference internal" href="#navigating-your-way-through-a-segmentation" id="id27">Navigating Your Way Through A Segmentation</a></p>
-<ul>
-<li><p><a class="reference internal" href="#iterating" id="id28">Iterating</a></p>
-<ul>
-<li><p><a class="reference internal" href="#segments" id="id29">Segments</a></p></li>
-<li><p><a class="reference internal" href="#meshes" id="id30">Meshes</a></p></li>
-<li><p><a class="reference internal" href="#external-references" id="id31">External References</a></p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#annotating-emdb-sff-objects" id="id32">Annotating EMDB-SFF Objects</a></p>
-<ul>
-<li><p><a class="reference internal" href="#note-objects" id="id33">Note Objects</a></p></li>
-<li><p><a class="reference internal" href="#adding-notes" id="id34">Adding Notes</a></p></li>
-<li><p><a class="reference internal" href="#editing-notes" id="id35">Editing Notes</a></p></li>
-<li><p><a class="reference internal" href="#deleting-notes" id="id36">Deleting Notes</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#reading-application-specific-segmentation-files" id="id37">Reading Application-Specific Segmentation Files</a></p>
-<ul>
-<li><p><a class="reference internal" href="#amiramesh-am" id="id38">AmiraMesh (.am)</a></p></li>
-<li><p><a class="reference internal" href="#ccp4-map" id="id39">CCP4 (.map)</a></p></li>
-<li><p><a class="reference internal" href="#imod-mod" id="id40">IMOD (.mod)</a></p></li>
-<li><p><a class="reference internal" href="#segger-seg" id="id41">Segger (.seg)</a></p></li>
-<li><p><a class="reference internal" href="#stl-stl" id="id42">STL (.stl)</a></p></li>
-<li><p><a class="reference internal" href="#amira-hypersurface-surf" id="id43">Amira HyperSurface (.surf)</a></p></li>
-<li><p><a class="reference internal" href="#converting-application-specific-segmentations-to-emdb-sff" id="id44">Converting Application-Specific Segmentations to EMDB-SFF</a></p></li>
+<li><p><a class="reference internal" href="#amiramesh-am" id="id10">AmiraMesh (.am)</a></p></li>
+<li><p><a class="reference internal" href="#ccp4-map" id="id11">CCP4 (.map)</a></p></li>
+<li><p><a class="reference internal" href="#imod-mod" id="id12">IMOD (.mod)</a></p></li>
+<li><p><a class="reference internal" href="#segger-seg" id="id13">Segger (.seg)</a></p></li>
+<li><p><a class="reference internal" href="#stl-stl" id="id14">STL (.stl)</a></p></li>
+<li><p><a class="reference internal" href="#amira-hypersurface-surf" id="id15">Amira HyperSurface (.surf)</a></p></li>
+<li><p><a class="reference internal" href="#converting-application-specific-segmentations-to-emdb-sff" id="id16">Converting Application-Specific Segmentations to EMDB-SFF</a></p></li>
 </ul>
 </li>
 </ul>
@@ -293,651 +208,63 @@
 </ul>
 </div>
 <div class="section" id="introduction">
-<h2><a class="toc-backref" href="#id5">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> has been designed to be relatively straightforward to integrate into other Python applications because it has been designed in such a way that the various components are independent of one another. The main components of the package are:</p>
 <ul class="simple">
-<li><p>the <strong>schema</strong> API (<a class="reference internal" href="schema.html#module-sfftk.schema" title="sfftk.schema"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.schema</span></code></a>) which handles how data fields are represented independent of the file formats to be used (XML, HDF5 and JSON). This package provides an adapter to the underlying <a class="reference external" href="https://www.davekuhlman.org/generateDS.html">GenerateDS</a> API which <em>extends</em> and <em>simplifies</em> EMDB-SFF fields.</p></li>
+<li><p>the <strong>schema</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.schema</span></code>) which handles how data fields are represented independent of the file formats to be used (XML, HDF5 and JSON). This package provides an adapter to the underlying <a class="reference external" href="https://www.davekuhlman.org/generateDS.html">GenerateDS</a> API which <em>extends</em> and <em>simplifies</em> EMDB-SFF fields.</p></li>
+</ul>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.5: </span><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> uses the schema API provided by the minimal <a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#module-sfftkrw" title="(in sfftk-rw vv0.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftkrw</span></code></a> package. Installing <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> automatically installs <code class="docutils literal notranslate"><span class="pre">sfftk-rw</span></code>.</p>
+</div>
+<ul class="simple">
 <li><p>the <strong>core</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.core</span></code>) provides a set of useful utilities mainly for the command-line toolkit (<code class="docutils literal notranslate"><span class="pre">sff</span></code> command) that handle command line arguments (making sure that they have the right values), read persistent configs from disk, do any prep work on segmentation files as well as several print and miscellaneous utilities.</p></li>
 <li><p>the <strong>readers</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers</span></code>) implements <em>ad hoc</em> segmentation file format readers. They are <em>ad hoc</em> because they are not expected to conform to a rigid API. For example, the <a class="reference internal" href="readers.html#module-sfftk.readers.segreader" title="sfftk.readers.segreader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers.segreader</span></code></a> module has a single class (<a class="reference internal" href="readers.html#sfftk.readers.segreader.SeggerSegmentation" title="sfftk.readers.segreader.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.segreader.SeggerSegmentation</span></code></a>) which represents a Segger segmentation, which is completely different from the <a class="reference internal" href="readers.html#module-sfftk.readers.modreader" title="sfftk.readers.modreader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers.modreader</span></code></a> module which has over 20 classes representing the various components of an IMOD segmentation. The only requirement of a segmentation reader module in this package is that it has to implement a <code class="docutils literal notranslate"><span class="pre">get_data(fn,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> function which returns the <em>ad hoc</em> segmentation object(s).</p></li>
 <li><p>the <strong>format</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats</span></code>) provides adapters that correspond to individual readers. It is the responsibility of the modules in this package to <em>adapt</em> the <em>ad hoc</em> segmentation representation to an EMDB-SFF representation. This is where the call to <code class="docutils literal notranslate"><span class="pre">get_data(fn,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> will be invoked. For example, the <a class="reference internal" href="formats.html#module-sfftk.formats.mod" title="sfftk.formats.mod"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.mod</span></code></a> module has a <a class="reference internal" href="formats.html#sfftk.formats.mod.IMODSegmentation" title="sfftk.formats.mod.IMODSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.mod.IMODSegmentation</span></code></a> class which invokes the <a class="reference internal" href="readers.html#sfftk.readers.modreader.get_data" title="sfftk.readers.modreader.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.readers.modreader.get_data()</span></code></a> function to supply the <em>ad hoc</em> <a class="reference internal" href="readers.html#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.IMOD</span></code></a> object that contains the IMOD segmentation. Presently, this API only provides the ability to read application-specific segmentation files. We hope to eventually add the ability to write out application-specific segmentation files.</p></li>
 <li><p>finally, the <strong>notes</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes</span></code>) supplies three modules for <em>finding</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.find" title="sfftk.notes.find"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.find</span></code></a>), <em>modifying</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.modify" title="sfftk.notes.modify"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code></a>) and <em>viewing</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.view" title="sfftk.notes.view"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.view</span></code></a>) annotations.</p></li>
 </ul>
 </div>
-<div class="section" id="reading-emdb-sff-files">
-<h2><a class="toc-backref" href="#id6">Reading EMDB-SFF Files</a><a class="headerlink" href="#reading-emdb-sff-files" title="Permalink to this headline">¶</a></h2>
-<p>All aspects of the structure of an EMDB-SFF file are handled by <a class="reference internal" href="schema.html#module-sfftk.schema" title="sfftk.schema"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.schema</span></code></a> package which defines the <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentation" title="sfftk.schema.SFFSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentation</span></code></a> class to handle reading, creation and writing of EMDB-SFF files. Please consult the section on <a class="reference internal" href="converting.html#output-formats"><span class="std std-ref">Output Formats</span></a> for background information.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="kn">import</span> <span class="n">SFFSegmentation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.unittests</span> <span class="kn">import</span> <span class="n">TEST_DATA_PATH</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># XML file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TEST_DATA_PATH</span><span class="p">,</span> <span class="s1">&#39;sff&#39;</span><span class="p">,</span> <span class="s1">&#39;v0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;emd_1014.sff&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_fn</span>
-<span class="go">&#39;/Users/pkorir/PycharmProjects/sfftk/sfftk/test_data/sff/v0.7/emd_1014.sff&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">(</span><span class="n">seg_fn</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># HDF5 file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TEST_DATA_PATH</span><span class="p">,</span> <span class="s1">&#39;sff&#39;</span><span class="p">,</span> <span class="s1">&#39;v0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;emd_1014.hff&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">(</span><span class="n">seg_fn</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># JSON file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TEST_DATA_PATH</span><span class="p">,</span> <span class="s1">&#39;sff&#39;</span><span class="p">,</span> <span class="s1">&#39;v0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;emd_1014.json&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">(</span><span class="n">seg_fn</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="viewing-segmentation-metadata">
-<h3><a class="toc-backref" href="#id7">Viewing Segmentation Metadata</a><a class="headerlink" href="#viewing-segmentation-metadata" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="kn">import</span> <span class="n">SFFSegmentation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.unittests</span> <span class="kn">import</span> <span class="n">TEST_DATA_PATH</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># XML file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg_fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TEST_DATA_PATH</span><span class="p">,</span> <span class="s1">&#39;annotated_sff&#39;</span><span class="p">,</span> <span class="s1">&#39;v0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;emd_6338.sff&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">(</span><span class="n">seg_fn</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># name</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="go">Segger Segmentation</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># schema version</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
-<span class="go">0.7.0.dev0</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># software details</span>
-<span class="gp">... </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">software</span><span class="p">)</span>
-<span class="go">Software object</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># primary descriptor</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">primaryDescriptor</span><span class="p">)</span>
-<span class="go">threeDVolume</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="p">)</span>
-<span class="go">List of transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="p">))</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">[1.0000 0.0000 0.0000 1.0000 ]</span>
-<span class="go">[0.0000 1.0000 0.0000 1.0000 ]</span>
-<span class="go">[0.0000 0.0000 1.0000 1.0000 ]</span>
-
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># bounding box</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">boundingBox</span><span class="p">)</span>
-<span class="go">Bounding box: (0.0, None, 0.0, None, 0.0, None)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># details</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">details</span><span class="p">)</span>
-<span class="go">DNA replication in eukaryotes is strictly regulated by several mechanisms. A central step in this replication is the assembly of the heterohexameric minichromosome maintenance (MCM2-7) helicase complex at replication origins during G1 phase as an inactive double hexamer. Here, using cryo-electron microscopy, we report a near-atomic structure of the MCM2-7 double hexamer purified from yeast G1 chromatin. Our structure shows that two single hexamers, arranged in a tilted and twisted fashion through interdigitated amino-terminal domain interactions, form a kinked central channel. Four constricted rings consisting of conserved interior β-hairpins from the two single hexamers create a narrow passageway that tightly fits duplex DNA. This narrow passageway, reinforced by the offset of the two single hexamers at the double hexamer interface, is flanked by two pairs of gate-forming subunits, MCM2 and MCM5. These unusual features of the twisted and tilted single hexamers suggest a concerted mechanism for the melting of origin DNA that requires structural deformation of the intervening DNA.</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="viewing-segments">
-<h3><a class="toc-backref" href="#id8">Viewing Segments</a><a class="headerlink" href="#viewing-segments" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="p">)</span>
-<span class="go">Segment container</span>
-</pre></div>
-</div>
-<div class="section" id="getting-the-list-of-segment-ids">
-<h4><a class="toc-backref" href="#id9">Getting The List of Segment IDs</a><a class="headerlink" href="#getting-the-list-of-segment-ids" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># segment IDs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">get_ids</span><span class="p">())</span>
-<span class="go">[9952, 9859, 9764, 9893, 9897, 9911, 9840, 9955, 9814, 9815, 9956, 9914]</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="getting-a-segment-by-id">
-<h4><a class="toc-backref" href="#id10">Getting A Segment By ID</a><a class="headerlink" href="#getting-a-segment-by-id" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="mi">9911</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
-<span class="go">Segment 9911</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="viewing-segment-metadata">
-<h3><a class="toc-backref" href="#id11">Viewing Segment Metadata</a><a class="headerlink" href="#viewing-segment-metadata" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id-and-parent-id">
-<h4><a class="toc-backref" href="#id12">ID and Parent ID</a><a class="headerlink" href="#id-and-parent-id" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="go">9911</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Every segment is a child of the root segment with parentID = 0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">parentID</span><span class="p">)</span>
-<span class="go">0</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="biological-annotation">
-<h4><a class="toc-backref" href="#id13">Biological Annotation</a><a class="headerlink" href="#biological-annotation" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="p">)</span>
-<span class="go">Container for biological annotation with 2 external references</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-<span class="go">DNA replication licensing factor MCM7</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">numberOfInstances</span><span class="p">)</span>
-<span class="go">1</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">)</span>
-<span class="go">External references list with 2 reference(s)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># first reference</span>
-<span class="go">Reference: pr; http://purl.obolibrary.org/obo/PR_P38132; PR_P38132</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="complexes-and-macromolecules">
-<h4><a class="toc-backref" href="#id14">Complexes and Macromolecules</a><a class="headerlink" href="#complexes-and-macromolecules" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span><span class="p">)</span>
-<span class="go">Complexes: 0; Macromolecules: 0</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span><span class="o">.</span><span class="n">complexes</span><span class="p">)</span>
-<span class="go">Complex list of length 0</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span><span class="o">.</span><span class="n">macromolecules</span><span class="p">)</span>
-<span class="go">Macromolecule list of length 0</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="creating-emdb-sff-objects">
-<h2><a class="toc-backref" href="#id15">Creating EMDB-SFF Objects</a><a class="headerlink" href="#creating-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
-<p>Users can create EMDB-SFF objects from scratch then export them to a file format of your choice.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk</span> <span class="kn">import</span> <span class="n">schema</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentation</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># We can view how the file looks like so far; note the lack of an XML header &lt;?xml ...&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-<span class="go">&lt;segmentation&gt;</span>
-<span class="go">    &lt;version&gt;0.7.0.dev0&lt;/version&gt;</span>
-<span class="go">&lt;/segmentation&gt;</span>
-</pre></div>
-</div>
-<div class="section" id="setting-segmentation-metadata">
-<h3><a class="toc-backref" href="#id16">Setting Segmentation Metadata</a><a class="headerlink" href="#setting-segmentation-metadata" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># segmentation name</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;A New Segmentation&#39;</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># segmentation software used</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSoftware</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Some Software&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;v0.1.3.dev3&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">processingDetails</span><span class="o">=</span><span class="s1">&#39;Lorem ipsum dolor...&#39;</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># bounding box</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">boundingBox</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFBoundingBox</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">xmax</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">ymax</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">zmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">zmax</span><span class="o">=</span><span class="mi">256</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># an identity matrix with no transformation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="s1">&#39;1 0 0 0 0 1 0 0 0 0 1 0&#39;</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add it to the list of transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="setting-segments">
-<h4><a class="toc-backref" href="#id17">Setting Segments</a><a class="headerlink" href="#setting-segments" title="Permalink to this headline">¶</a></h4>
-<div class="section" id="setting-segment-metadata">
-<h5><a class="toc-backref" href="#id18">Setting Segment Metadata</a><a class="headerlink" href="#setting-segment-metadata" title="Permalink to this headline">¶</a></h5>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="section" id="id1">
-<h6><a class="toc-backref" href="#id19">Biological Annotation</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h6>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># define the biological annotation object</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bioAnn</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFBiologicalAnnotation</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bioAnn</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Segment name&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bioAnn</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Some description&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bioAnn</span><span class="o">.</span><span class="n">numberOfInstances</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># define the external references</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">extRefs</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFExternalReferences</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">extRefs</span><span class="o">.</span><span class="n">add_externalReference</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">schema</span><span class="o">.</span><span class="n">SFFExternalReference</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;ncbitaxon&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">otherType</span><span class="o">=</span><span class="s2">&quot;http://purl.obolibrary.org/obo/NCBITaxon_559292&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;NCBITaxon_559292&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Saccharomyces cerevisiae S288C&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="p">)</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">extRefs</span><span class="o">.</span><span class="n">add_externalReference</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">schema</span><span class="o">.</span><span class="n">SFFExternalReference</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;pdb&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">otherType</span><span class="o">=</span><span class="s2">&quot;http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;3ja8&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="p">)</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the external references to the biological annotation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bioAnn</span><span class="o">.</span><span class="n">externalReferences</span> <span class="o">=</span> <span class="n">extRefs</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the biological annotation to the segment</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span> <span class="o">=</span> <span class="n">bioAnn</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="id2">
-<h6><a class="toc-backref" href="#id20">Complexes and Macromolecules</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h6>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">compMacr</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFComplexesAndMacromolecules</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># complexes</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">comp</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFComplexes</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">comp</span><span class="o">.</span><span class="n">add_complex</span><span class="p">(</span><span class="s2">&quot;comp1&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">comp</span><span class="o">.</span><span class="n">add_complex</span><span class="p">(</span><span class="s2">&quot;comp2&quot;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># macromolecules</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">macr</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFMacromolecules</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">macr</span><span class="o">.</span><span class="n">add_macromolecule</span><span class="p">(</span><span class="s2">&quot;macr1&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">macr</span><span class="o">.</span><span class="n">add_macromolecule</span><span class="p">(</span><span class="s2">&quot;macr2&quot;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the complexes and macromolecules</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compMacr</span><span class="o">.</span><span class="n">complexes</span> <span class="o">=</span> <span class="n">comp</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compMacr</span><span class="o">.</span><span class="n">macromolecules</span> <span class="o">=</span> <span class="n">macr</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add them to the segment</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">complexesAndMacromolecules</span> <span class="o">=</span> <span class="n">compMacr</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="colour">
-<h6><a class="toc-backref" href="#id21">Colour</a><a class="headerlink" href="#colour" title="Permalink to this headline">¶</a></h6>
-<p>Colours should be described using normalised RGBA values (each channel has a value in the interval [0,1]).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFRGBA</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">red</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">green</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">blue</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">colour</span>
-<span class="go">(0.1, 0.2, 0.3, 0.7)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="setting-mesh-segments">
-<h5><a class="toc-backref" href="#id22">Setting Mesh Segments</a><a class="headerlink" href="#setting-mesh-segments" title="Permalink to this headline">¶</a></h5>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">randint</span><span class="p">,</span> <span class="n">choice</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># the list of meshes</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">meshes</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFMeshList</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a mesh</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFMesh</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a list of vertices</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFVertexList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">no_vertices</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add vertices from the list of vertices</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">no_vertices</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">vertex</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFVertex</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">vertex</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))))</span>
-<span class="gp">... </span>    <span class="n">vertices</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a list of polygons</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">polygons</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFPolygonList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">no_polygons</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add polygons to the list of polygons</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">no_polygons</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">polygon</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFPolygon</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">polygon</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))))</span>
-<span class="gp">... </span>    <span class="n">polygon</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))))</span>
-<span class="gp">... </span>    <span class="n">polygon</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))))</span>
-<span class="gp">... </span>    <span class="n">polygons</span><span class="o">.</span><span class="n">add_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># set the vertices and polygons on the mesh</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">polygons</span> <span class="o">=</span> <span class="n">polygons</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the mesh to the list of meshes</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">meshes</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the mesh to the segment</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">meshes</span> <span class="o">=</span> <span class="n">meshes</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">meshes</span>
-<span class="go">meshList</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">meshes</span><span class="p">)</span>
-<span class="go">1</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="setting-shape-segments">
-<h5><a class="toc-backref" href="#id23">Setting Shape Segments</a><a class="headerlink" href="#setting-shape-segments" title="Permalink to this headline">¶</a></h5>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a list of shape</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">shapes</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFShapePrimitiveList</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a cone</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># first we define the transform that locates it in place</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="s1">&#39;1 0 0 0 0 1 0 0 0 0 1 0&#39;</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># second we define its dimension</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">shapes</span><span class="o">.</span><span class="n">add_shape</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">schema</span><span class="o">.</span><span class="n">SFFCone</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">height</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">bottomRadius</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">transformId</span><span class="o">=</span><span class="n">transform</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the transform to the list of transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a cuboid</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="s1">&#39;2 0 0 0 5 3 0 0 27 0 0 1 9&#39;</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">shapes</span><span class="o">.</span><span class="n">add_shape</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">schema</span><span class="o">.</span><span class="n">SFFCuboid</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">x</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">y</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">z</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">transformId</span><span class="o">=</span><span class="n">transform</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the transform to the list of transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># a cylinder</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="s1">&#39;2 0 0 0 15 3 0 0 17 0 0 1 16&#39;</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">shapes</span><span class="o">.</span><span class="n">add_shape</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">schema</span><span class="o">.</span><span class="n">SFFCylinder</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">height</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">diameter</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">transformId</span><span class="o">=</span><span class="n">transform</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the transform to the list of transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># an ellipsoid</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFTransformationMatrix</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">rows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">cols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="s1">&#39;1 0 0 0 15 1 0 0 17 0 0 1 16&#39;</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">shapes</span><span class="o">.</span><span class="n">add_shape</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">schema</span><span class="o">.</span><span class="n">SFFEllipsoid</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">x</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">y</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">z</span><span class="o">=</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">transformId</span><span class="o">=</span><span class="n">transform</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the transform to the list of transforms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">add_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="setting-volume-segments">
-<h5><a class="toc-backref" href="#id24">Setting Volume Segments</a><a class="headerlink" href="#setting-volume-segments" title="Permalink to this headline">¶</a></h5>
-<p>Working with 3D volumes consists of two steps:</p>
-<ul class="simple">
-<li><p>first, we need to define the volumes that contain the actual volume data as a set of <a class="reference internal" href="schema.html#sfftk.schema.SFFLattice" title="sfftk.schema.SFFLattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFLattice</span></code></a> objects contained in a <a class="reference internal" href="schema.html#sfftk.schema.SFFLatticeList" title="sfftk.schema.SFFLatticeList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFLatticeList</span></code></a>;</p></li>
-<li><p>next, we reference the lattice by specifying how the segment is associated with the lattice e.g. by contour level or voxel value using a <a class="reference internal" href="schema.html#sfftk.schema.SFFThreeDVolume" title="sfftk.schema.SFFThreeDVolume"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code></a> object contained in a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object as a <code class="docutils literal notranslate"><span class="pre">volume</span></code> attribute i.e. if <code class="docutils literal notranslate"><span class="pre">segment</span></code> is a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegment" title="sfftk.schema.SFFSegment"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegment</span></code></a> object then <code class="docutils literal notranslate"><span class="pre">segment.volume</span></code> will be a <a class="reference internal" href="schema.html#sfftk.schema.SFFThreeDVolume" title="sfftk.schema.SFFThreeDVolume"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFThreeDVolume</span></code></a> object and we say that <code class="docutils literal notranslate"><span class="pre">segment</span></code> contains a <code class="docutils literal notranslate"><span class="pre">threeDVolume</span></code> segment representation.</p></li>
-</ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># lattice 1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># lattice container</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattices</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFLatticeList</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># lattice 1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binlist</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFLattice</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;uint32&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">endianness</span><span class="o">=</span><span class="s1">&#39;little&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">size</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeStructure</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">start</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeIndex</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="n">binlist</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattices</span><span class="o">.</span><span class="n">add_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattices</span>
-<span class="go">Container for 3D lattices</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binlist</span>
-<span class="go">array([2, 4, 4, ..., 3, 0, 3])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binlist</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">(8000,)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFLattice</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;uint32&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">endianness</span><span class="o">=</span><span class="s1">&#39;little&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">size</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeStructure</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">start</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeIndex</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="n">binlist</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span>
-<span class="go">3D lattice</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span><span class="o">.</span><span class="n">mode</span>
-<span class="go">&#39;uint32&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span><span class="o">.</span><span class="n">endianness</span>
-<span class="go">&#39;little&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span><span class="o">.</span><span class="n">size</span>
-<span class="go">3D volume structure: cols, rows, sections</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span><span class="o">.</span><span class="n">start</span>
-<span class="go">3D volume start index: cols, rows, sections</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># the lattice data is base64 encoded</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice</span><span class="o">.</span><span class="n">data</span>
-<span class="go">&#39;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&#39;</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># lattice 2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">binlist2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattice2</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFLattice</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;float32&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">endianness</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">size</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeStructure</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">start</span><span class="o">=</span><span class="n">schema</span><span class="o">.</span><span class="n">SFFVolumeIndex</span><span class="p">(</span><span class="n">cols</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">rows</span><span class="o">=-</span><span class="mi">40</span><span class="p">,</span> <span class="n">sections</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="n">binlist2</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattices</span><span class="o">.</span><span class="n">add_lattice</span><span class="p">(</span><span class="n">lattice2</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lattices</span>
-<span class="go">Container for 3D lattices</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">lattices</span><span class="p">)</span>
-<span class="go">2</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># now we define the segments that reference the lattices above</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># segments</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segments</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentList</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># segment one</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vol1_value</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFThreeDVolume</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">latticeId</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="n">vol1_value</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFRGBA</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">red</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">green</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">blue</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segments</span><span class="o">.</span><span class="n">add_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># segment two</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">vol2_value</span> <span class="o">=</span> <span class="mf">37.1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFThreeDVolume</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">latticeId</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="n">vol2_value</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFRGBA</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">red</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">green</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">blue</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
-<span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="adding-a-segment-to-the-segmentation">
-<h5><a class="toc-backref" href="#id25">Adding A Segment To The Segmentation</a><a class="headerlink" href="#adding-a-segment-to-the-segmentation" title="Permalink to this headline">¶</a></h5>
-<p>Once we have added the individual segment representations to the respective segments we can add the segment to the segmentation. The list of segments is contained in a <a class="reference internal" href="schema.html#sfftk.schema.SFFSegmentList" title="sfftk.schema.SFFSegmentList"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.schema.SFFSegmentList</span></code></a> object.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># create the list of segments</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegmentList</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add the segment</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="o">.</span><span class="n">add_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="exporting-emdb-sff-objects">
-<h2><a class="toc-backref" href="#id26">Exporting EMDB-SFF Objects</a><a class="headerlink" href="#exporting-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
-<p>Finally, after completing the segmentation we can export it to disk as a file. The <a class="reference internal" href="schema.html#sfftk.schema.SFFType.export" title="sfftk.schema.SFFType.export"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sfftk.schema.SFFType.export()</span></code></a> method infers the output file type from from the file extension.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># XML</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;file.sff&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># HDF5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;file.hff&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># JSON</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;file.json&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="navigating-your-way-through-a-segmentation">
-<h2><a class="toc-backref" href="#id27">Navigating Your Way Through A Segmentation</a><a class="headerlink" href="#navigating-your-way-through-a-segmentation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="iterating">
-<h3><a class="toc-backref" href="#id28">Iterating</a><a class="headerlink" href="#iterating" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="segments">
-<h4><a class="toc-backref" href="#id29">Segments</a><a class="headerlink" href="#segments" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">seg</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># do something with segment</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">parentID</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">2 0</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="meshes">
-<h4><a class="toc-backref" href="#id30">Meshes</a><a class="headerlink" href="#meshes" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">meshes</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">vID</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span> <span class="c1"># &#39;surface&#39; or &#39;normal&#39;</span>
-<span class="gp">... </span>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">vertex</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">vertex</span><span class="o">.</span><span class="n">z</span>
-<span class="gp">...</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">polygons</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">PID</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">vertex_ids</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="external-references">
-<h4><a class="toc-backref" href="#id31">External References</a><a class="headerlink" href="#external-references" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">extRef</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">biologicalAnnotation</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">extRef</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">extRef</span><span class="o">.</span><span class="n">otherType</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">extRef</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">extRef</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">extRef</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 <div class="section" id="annotating-emdb-sff-objects">
-<h2><a class="toc-backref" href="#id32">Annotating EMDB-SFF Objects</a><a class="headerlink" href="#annotating-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id4">Annotating EMDB-SFF Objects</a><a class="headerlink" href="#annotating-emdb-sff-objects" title="Permalink to this headline">¶</a></h2>
 <p>Use the <a class="reference internal" href="notes.html#module-sfftk.notes.modify" title="sfftk.notes.modify"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code></a> module to perform annotations</p>
 <div class="section" id="note-objects">
-<h3><a class="toc-backref" href="#id33">Note Objects</a><a class="headerlink" href="#note-objects" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id5">Note Objects</a><a class="headerlink" href="#note-objects" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.notes.modify</span> <span class="kn">import</span> <span class="n">SimpleNote</span><span class="p">,</span> <span class="n">ExternalReference</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span> <span class="o">=</span> <span class="n">SimpleNote</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;some name&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;some description&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">numberOfInstances</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">number_of_instances</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># these are random data hence no real label and description will be found</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Es</span> <span class="o">=</span> <span class="p">[</span>
-<span class="go">    ExternalReference(type_=&#39;ontology1&#39;, otherType=&#39;iri1&#39;, value=&#39;obo_id1&#39;),</span>
-<span class="gp">... </span>    <span class="n">ExternalReference</span><span class="p">(</span><span class="n">type_</span><span class="o">=</span><span class="s1">&#39;ontology2&#39;</span><span class="p">,</span> <span class="n">otherType</span><span class="o">=</span><span class="s1">&#39;iri2&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;obo_id2&#39;</span><span class="p">),</span>
+<span class="go">        ExternalReference(resource=&#39;ontology1&#39;, url=&#39;url1&#39;, accession=&#39;obo_id1&#39;),</span>
+<span class="gp">... </span>    <span class="n">ExternalReference</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="s1">&#39;ontology2&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;url2&#39;</span><span class="p">,</span> <span class="n">accession</span><span class="o">=</span><span class="s1">&#39;obo_id2&#39;</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">]</span>
 <span class="go">Tue Mar 12 13:21:48 2019    Could not find label and description for external reference ontology1:obo_id1</span>
 <span class="go">Tue Mar 12 13:21:48 2019    Could not find label and description for external reference ontology2:obo_id2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">externalReferences</span> <span class="o">=</span> <span class="n">Es</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">complexes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;comp1&#39;</span><span class="p">,</span> <span class="s1">&#39;comp2&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">macromolecules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;macr1&#39;</span><span class="p">,</span> <span class="s1">&#39;macr2&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">external_references</span> <span class="o">=</span> <span class="n">Es</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span>
 <span class="go">&lt;sfftk.notes.modify.SimpleNote object at 0x10c9c0550&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">name</span>
 <span class="go">&#39;some name&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">description</span>
 <span class="go">&#39;some description&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">externalReferences</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">external_references</span>
 <span class="go">[&lt;sfftk.notes.modify.ExternalReference object at 0x10c960dd0&gt;, &lt;sfftk.notes.modify.ExternalReference object at 0x10bfc66d0&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">external_references</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="go">&lt;sfftk.notes.modify.ExternalReference object at 0x10c960dd0&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">external_references</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">resource</span>
 <span class="go">&#39;ontology1&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">otherType</span>
-<span class="go">&#39;iri1&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">externalReferences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">external_references</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">url</span>
+<span class="go">&#39;url1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">external_references</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">accession</span>
 <span class="go">&#39;obo_id1&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">complexes</span>
-<span class="go">[&#39;comp1&#39;, &#39;comp2&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">macromolecules</span>
-<span class="go">[&#39;macr1&#39;, &#39;macr2&#39;]</span>
 <span class="go">&gt;&gt;&gt;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="adding-notes">
-<h3><a class="toc-backref" href="#id34">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.schema</span> <span class="kn">import</span> <span class="n">SFFSegment</span>
+<h3><a class="toc-backref" href="#id6">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftkrw</span> <span class="kn">import</span> <span class="n">SFFSegment</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">SFFSegment</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -950,19 +277,16 @@
 </div>
 </div>
 <div class="section" id="editing-notes">
-<span id="id3"></span><h3><a class="toc-backref" href="#id35">Editing Notes</a><a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
-<p>First make an note containing the edits. For <code class="docutils literal notranslate"><span class="pre">externalReference</span></code>, <code class="docutils literal notranslate"><span class="pre">complex</span></code> and <code class="docutils literal notranslate"><span class="pre">macromolecules</span></code> specify the <code class="docutils literal notranslate"><span class="pre">ID</span></code> to be edited with the <code class="docutils literal notranslate"><span class="pre">externalReferenceId</span></code>, <code class="docutils literal notranslate"><span class="pre">complexId</span></code> and <code class="docutils literal notranslate"><span class="pre">macromoleculeId</span></code>, respectively.</p>
+<span id="id1"></span><h3><a class="toc-backref" href="#id7">Editing Notes</a><a class="headerlink" href="#editing-notes" title="Permalink to this headline">¶</a></h3>
+<p>First make an note containing the edits. For <code class="docutils literal notranslate"><span class="pre">external_references</span></code> specify the <code class="docutils literal notranslate"><span class="pre">ID</span></code> to be edited with the <code class="docutils literal notranslate"><span class="pre">external_reference_id</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edit_note</span> <span class="o">=</span> <span class="n">SimpleNote</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;some name&#39;</span><span class="p">,</span>
 <span class="go">    ...     description=&#39;new description&#39;,</span>
-<span class="go">    ...     numberOfInstances=14,</span>
-<span class="go">    ...     externalReferenceId=0, # the external reference ID to change</span>
-<span class="go">    ...     externalReferences=[</span>
-<span class="go">    ...      ExternalReference(type=&#39;x&#39;, otherType=&#39;y&#39;, value=&#39;z&#39;)</span>
+<span class="go">    ...     number_of_instances=14,</span>
+<span class="go">    ...     external_reference_id=0, # the external reference ID to change</span>
+<span class="go">    ...     external_references=[</span>
+<span class="go">    ...      ExternalReference(resource=&#39;x&#39;, url=&#39;y&#39;, accession=&#39;z&#39;)</span>
 <span class="go">    ...      ],</span>
-<span class="go">    ...     complexId=3,</span>
-<span class="go">    ...     complexes=[&#39;comp1&#39;, &#39;comp2&#39;],</span>
-<span class="go">    ...     macromoleculeId=0,</span>
-<span class="go">    ...     macromolecules=[&#39;macr1&#39;, &#39;macr2&#39;],</span>
 <span class="go">    ...     )</span>
 <span class="go">&gt;&gt;&gt;</span>
 </pre></div>
@@ -973,14 +297,13 @@
 </div>
 </div>
 <div class="section" id="deleting-notes">
-<h3><a class="toc-backref" href="#id36">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
-<p>In a similar manner to <a class="reference internal" href="#editing-notes"><span class="std std-ref">Editing Notes</span></a>, create a note object indicating which attributes (<code class="docutils literal notranslate"><span class="pre">description</span></code>, <code class="docutils literal notranslate"><span class="pre">numberOfInstances</span></code> etc.) and/or IDs should be deleted in the target note.</p>
+<h3><a class="toc-backref" href="#id8">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this headline">¶</a></h3>
+<p>In a similar manner to <a class="reference internal" href="#editing-notes"><span class="std std-ref">Editing Notes</span></a>, create a note object indicating which attributes (<code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">description</span></code>, <code class="docutils literal notranslate"><span class="pre">number_of_instances</span></code> etc.) and/or IDs should be deleted in the target note.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">del_note</span> <span class="o">=</span> <span class="n">SimpleNote</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="go">    ...     description=True,</span>
-<span class="go">    ...     numberOfInstances=True,</span>
-<span class="go">    ...     externalReferenceId=2,</span>
-<span class="go">    ...     complexId=3,</span>
-<span class="go">    ...     macromoleculeId=0</span>
+<span class="go">    ...     number_of_instances=True,</span>
+<span class="go">    ...     external_reference_id=2,</span>
 <span class="go">    ...     )</span>
 <span class="go">&gt;&gt;&gt;</span>
 </pre></div>
@@ -992,57 +315,57 @@
 </div>
 </div>
 <div class="section" id="reading-application-specific-segmentation-files">
-<h2><a class="toc-backref" href="#id37">Reading Application-Specific Segmentation Files</a><a class="headerlink" href="#reading-application-specific-segmentation-files" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">Reading Application-Specific Segmentation Files</a><a class="headerlink" href="#reading-application-specific-segmentation-files" title="Permalink to this headline">¶</a></h2>
 <p>Application-specific file format readers and converters are defined in the sfftk.formats package with each module defined by the file extension. For example, AmiraMesh files have an ‘am’ extension hence we would read them using the sfftk.formats.am module which defines an AmiraMeshSegmentation class.</p>
 <div class="section" id="amiramesh-am">
-<h3><a class="toc-backref" href="#id38">AmiraMesh (.am)</a><a class="headerlink" href="#amiramesh-am" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">AmiraMesh (.am)</a><a class="headerlink" href="#amiramesh-am" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.formats.am</span> <span class="kn">import</span> <span class="n">AmiraMeshSegmentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">am_seg</span> <span class="o">=</span> <span class="n">AmiraMeshSegmentation</span><span class="p">(</span><span class="s1">&#39;file.am&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="ccp4-map">
-<h3><a class="toc-backref" href="#id39">CCP4 (.map)</a><a class="headerlink" href="#ccp4-map" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">CCP4 (.map)</a><a class="headerlink" href="#ccp4-map" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.formats.map</span> <span class="kn">import</span> <span class="n">MAPSegmentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">map_seg</span> <span class="o">=</span> <span class="n">MAPSegmentation</span><span class="p">(</span><span class="s1">&#39;file.map&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="imod-mod">
-<h3><a class="toc-backref" href="#id40">IMOD (.mod)</a><a class="headerlink" href="#imod-mod" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">IMOD (.mod)</a><a class="headerlink" href="#imod-mod" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.formats.mod</span> <span class="kn">import</span> <span class="n">IMODSegmentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mod_seg</span> <span class="o">=</span> <span class="n">IMODSegmentation</span><span class="p">(</span><span class="s1">&#39;file.mod&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="segger-seg">
-<h3><a class="toc-backref" href="#id41">Segger (.seg)</a><a class="headerlink" href="#segger-seg" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id13">Segger (.seg)</a><a class="headerlink" href="#segger-seg" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.formats.seg</span> <span class="kn">import</span> <span class="n">SeggerSegmentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seg_seg</span> <span class="o">=</span> <span class="n">SeggerSegmentation</span><span class="p">(</span><span class="s1">&#39;file.seg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="stl-stl">
-<h3><a class="toc-backref" href="#id42">STL (.stl)</a><a class="headerlink" href="#stl-stl" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">STL (.stl)</a><a class="headerlink" href="#stl-stl" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.formats.stl</span> <span class="kn">import</span> <span class="n">STLSegmentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stl_seg</span> <span class="o">=</span> <span class="n">STLSegmentation</span><span class="p">(</span><span class="s1">&#39;file.stl&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="amira-hypersurface-surf">
-<h3><a class="toc-backref" href="#id43">Amira HyperSurface (.surf)</a><a class="headerlink" href="#amira-hypersurface-surf" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">Amira HyperSurface (.surf)</a><a class="headerlink" href="#amira-hypersurface-surf" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.formats.surf</span> <span class="kn">import</span> <span class="n">AmiraHyperSurfaceSegmentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">surf_seg</span> <span class="o">=</span> <span class="n">AmiraHyperSurfaceSegmentation</span><span class="p">(</span><span class="s1">&#39;file.surf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="converting-application-specific-segmentations-to-emdb-sff">
-<h3><a class="toc-backref" href="#id44">Converting Application-Specific Segmentations to EMDB-SFF</a><a class="headerlink" href="#converting-application-specific-segmentations-to-emdb-sff" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id16">Converting Application-Specific Segmentations to EMDB-SFF</a><a class="headerlink" href="#converting-application-specific-segmentations-to-emdb-sff" title="Permalink to this headline">¶</a></h3>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">convert</span></code> method on a segmentation object to effect the conversion to an EMDB-SFF object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sff_seg</span> <span class="o">=</span> <span class="n">as_seg</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Remember, the segmentation is only an EMDB-SFF object and is not of a particular file format. The file format is chosen by the extension when <a class="reference external" href="#exporting-emdb-sff-objects">using the export method</a>.</p>
+<p>Remember, the segmentation is only an EMDB-SFF object and is not of a particular file format. The file format is chosen by the extension when using the <a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/base.html#sfftkrw.schema.base.SFFType.export" title="(in sfftk-rw vv0.6)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sfftkrw.schema.base.SFFType.export()</span></code></a> method.</p>
 </div>
 </div>
 </div>

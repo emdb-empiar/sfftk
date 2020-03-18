@@ -665,10 +665,10 @@ class SearchResults(object):
         elif self._resource.format == u'tab':
             try:
                 # split rows; split columns; dump first and last rows
-                _structured_results = map(lambda r: r.split('\t'), self._raw_response.split('\n'))[1:-1]
+                _structured_results = list(map(lambda r: r.split('\t'), self._raw_response.split('\n')))[1:-1]
                 # make a list of dicts with the given ids
-                structured_results = map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
-                                         _structured_results)
+                structured_results = list(map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
+                                         _structured_results))
             except ValueError:
                 structured_results = None
             return structured_results
@@ -740,74 +740,74 @@ class SearchResults(object):
                 fields = [
                     TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
                     TableField(u'label', key=u'label', pc=10),
-                    TableField(u'short_form', key=u'short_form', pc=10, justify=u'center'),
                     TableField(u'resource', key=u'ontology_name', pc=5, justify=u'center'),
+                    TableField(u'url', key=u'iri', pc=30),
+                    TableField(u'accession', key=u'short_form', pc=10, justify=u'center'),
                     TableField(u'description', key=u'description', pc=40, is_iterable=True),
-                    TableField(u'iri', key=u'iri', pc=30),
                 ]
                 table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'GO':
             fields = [
                 TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label', key=u'label', pc=10),
-                TableField(u'short_form', key=u'short_form', pc=10, justify=u'center'),
                 TableField(u'resource', key=u'ontology_name', pc=5, justify=u'center'),
+                TableField(u'url', key=u'iri', pc=30),
+                TableField(u'accession', key=u'short_form', pc=10, justify=u'center'),
                 TableField(u'description', key=u'description', pc=40, is_iterable=True),
-                TableField(u'iri', key=u'iri', pc=30),
             ]
             table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'EMDB':
             fields = [
                 TableField(u'index', key=u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label', text=self._resource.search_args.search_term, pc=10, justify=u'center'),
-                TableField(u'short_form', key=u'EntryID', pc=10, _format=u'EMD-{}', justify=u'center'),
                 TableField(u'resource', text=u'EMDB', pc=5, justify=u'center'),
+                TableField(u'url', key=u'EntryID', _format=u'https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
+                TableField(u'accession', key=u'EntryID', pc=10, _format=u'EMD-{}', justify=u'center'),
                 TableField(u'description', key=u'Title', pc=40),
-                TableField(u'iri', key=u'EntryID', _format=u'https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
             ]
             table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u"UniProt":
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label', key=u'name', pc=10),
-                TableField(u'short_form', key=u'id', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'UniProt', pc=5, justify=u'center'),
+                TableField(u'url', key=u'id', _format=u'https://www.uniprot.org/uniprot/{}', pc=30),
+                TableField(u'accession', key=u'id', pc=10, justify=u'center'),
                 TableField(u'description', key=u'proteins', pc=40),
                 # TableField('organism', key='organism', width=40),
-                TableField(u'iri', key=u'id', _format=u'https://www.uniprot.org/uniprot/{}', pc=30),
             ]
             table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u"PDB":
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label', text=self._resource.search_args.search_term, pc=10),
-                TableField(u'short_form', key=u'pdb_id', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'PDB', pc=5, justify=u'center'),
+                TableField(u'url', key=u'pdb_id', _format=u'https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
+                TableField(u'accession', key=u'pdb_id', pc=10, justify=u'center'),
                 # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
                 TableField(u'description', key=u'title', pc=40),
-                TableField(u'iri', key=u'pdb_id', _format=u'https://www.ebi.ac.uk/pdbe/entry/pdb/{}', pc=30),
             ]
             table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'Europe PMC':
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label (authors)', key=u'authorString', pc=20),
-                TableField(u'short_form', key=u'id', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'Europe PMC', pc=10, justify=u'center'),
+                TableField(u'url', key=u'id', _format=u'https://europepmc.org/abstract/MED/{}', pc=30),
+                TableField(u'accession', key=u'id', pc=10, justify=u'center'),
                 TableField(u'description (title)', key=u'title', pc=25),
                 # TableField(u'iri (doi)', key=u'doi', _format=u'https://doi.org/{}', pc=30)
-                TableField(u'iri', key=u'id', _format=u'https://europepmc.org/abstract/MED/{}', pc=30),
             ]
             table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == u'EMPIAR':
             fields = [
                 TableField(u'index', pc=5, is_index=True, justify=u'right'),
                 TableField(u'label', text=self._resource.search_args.search_term, pc=10),
-                TableField(u'short_form', key=u'empiarid', pc=10, justify=u'center'),
                 TableField(u'resource', text=u'EMPIAR', pc=8, justify=u'center'),
+                TableField(u'url', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}',
+                           pc=30),
+                TableField(u'accession', key=u'empiarid', pc=10, justify=u'center'),
                 TableField(u'description', key=u'title', pc=33),
-                TableField(u'iri', key=u'empiarid_abr', _format=u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}',
-                           pc=30)
             ]
             table += _str(ResultsTable(self, fields=fields))
         # close style

@@ -26,7 +26,9 @@ The full list of options is:
 .. code:: bash
 
     sff view
-    usage: sff view [-h] [-p CONFIG_PATH] [-b] [-V] [-C] [-v] from_file
+    usage: sff view [-h] [--sff-version] [-v] [-p CONFIG_PATH] [-b]
+                    [-C]
+                    from_file
 
     View a summary of an SFF file
 
@@ -35,15 +37,16 @@ The full list of options is:
 
     optional arguments:
       -h, --help            show this help message and exit
+      --sff-version         show SFF format version
+      -v, --verbose         verbose output
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
-      -V, --version         show SFF format version
-      -C, --show-chunks     show sequence of chunks in IMOD file; only works with
-                            IMOD model files (.mod) [default: False]
-      -v, --verbose         verbose output
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
+      -C, --show-chunks     show sequence of chunks in IMOD file; only
+                            works with IMOD model files (.mod)
+                            [default: False]
 
 Show IMOD Chunks
 ----------------
@@ -105,9 +108,10 @@ compact file, whose data will then be efficiently embedded into the EMDB-SFF fil
       -h, --help          show this help message and exit
 
     Segmentation preparation utility:
-      The following commands provide a number of pre-processing steps for
-      various segmentation file formats. Most only apply to one file type. See
-      the help for each command by typing 'sff prep <command>'
+      The following commands provide a number of pre-processing steps
+      for various segmentation file formats. Most only apply to one
+      file type. See the help for each command by typing 'sff prep
+      <command>'
 
       Preparation steps:
         binmap            bin a CCP4 map
@@ -122,10 +126,11 @@ The ``binmap`` utility has the following options:
 .. code:: bash
 
     sff prep binmap
-    usage: sff prep binmap [-h] [-p CONFIG_PATH] [-b] [-m MASK_VALUE] [-o OUTPUT]
-                       [--overwrite] [-c CONTOUR_LEVEL] [--negate]
-                       [-B {1,2,4,8,16}] [--infix INFIX] [-v]
-                       from_file
+    usage: sff prep binmap [-h] [-p CONFIG_PATH] [-b] [-m MASK_VALUE]
+                           [-o OUTPUT] [--overwrite] [-c CONTOUR_LEVEL]
+                           [--negate] [-B {1,2,4,8,16}] [--infix INFIX]
+                           [-v]
+                           from_file
 
     Bin the CCP4 file to reduce file size
 
@@ -137,22 +142,25 @@ The ``binmap`` utility has the following options:
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
+                            use shipped configs only if config path and
+                            user configs fail [default: False]
       -m MASK_VALUE, --mask-value MASK_VALUE
-                            value to set to; all other voxels set to zero
-                            [default: 1]
+                            value to set to; all other voxels set to
+                            zero [default: 1]
       -o OUTPUT, --output OUTPUT
-                            output file name [default: <infile>_binned.<ext>]
+                            output file name [default:
+                            <infile>_binned.<ext>]
       --overwrite           overwrite output file [default: False]
       -c CONTOUR_LEVEL, --contour-level CONTOUR_LEVEL
-                            value (exclusive) about which to threshold [default:
-                            0.0]
-      --negate              use values below the contour level [default: False]
+                            value (exclusive) about which to threshold
+                            [default: 0.0]
+      --negate              use values below the contour level
+                            [default: False]
       -B {1,2,4,8,16}, --bytes-per-voxel {1,2,4,8,16}
                             number of bytes per voxel [default: 1]
-      --infix INFIX         infix to be added to filenames e.g. file.map ->
-                            file_<infix>.map [default: 'prep']
+      --infix INFIX         infix to be added to filenames e.g.
+                            file.map -> file_<infix>.map [default:
+                            'prep']
       -v, --verbose         verbose output
 
 
@@ -366,13 +374,13 @@ Mesh Reduction
 Naive marching cubes typically creates far more surface polygons than required leading to much larger files than
 necessary. Mesh reduction helps to eliminate reduntant polygons and thereby save disk space.
 
-The simplest way to do this on an STL file is to use Paraview, which is a freely-available, powerfully 3D graphics
-application. We have created a :download:`custom filter <smooth_decimate.cpd>` that you can incorporate into your paraview installation to do this using
+The simplest way to do this on an STL file is to use Paraview, which is a powerful freely-available 3D graphics
+application developed by Kitware Inc.. We have created a :download:`custom filter <smooth_decimate.cpd>` that you can incorporate into your paraview installation to do this using
 the following steps.
 
-1. Launch Paraview.
+1.  Launch *Paraview*.
 
-2. In the *Pipeline Browser*, right-click and select *Open* from the context menu. This will open the file but depending
+2.  In the *Pipeline Browser*, right-click and select *Open* from the context menu. This will open the file but depending
 on your settings may not seem to do anything. You might need to hit the *Apply* button in the *Properties* dialogue.
 
 .. image:: open.png
@@ -381,7 +389,7 @@ The *Statistics Inspector* (available under the *View* menu) shows how much memo
 
 .. image:: stats_before.png
 
-3. Make sure you have :download:`downloaded the custom filter <smooth_decimate.cpd>` then select *Tools > Manage Custom Filters...*. A new dialogue box
+3.  Make sure you have :download:`downloaded the custom filter <smooth_decimate.cpd>` then select *Tools > Manage Custom Filters...*. A new dialogue box
 opens for importing custom filters.
 
 .. image:: open_custom_filters_manager.png
@@ -417,8 +425,8 @@ You can play with the parameters in the *Properties* dialogue to modify how the 
 Setting Configurations
 =======================
 
-Some of the functionality provided by sfftk relies on persistent configurations. 
-In the section we outline all you need to know to work with sfftk configurations.
+Some of the functionality provided by ``sfftk`` relies on persistent configurations.
+In the section we outline all you need to know to work with ``sfftk`` configurations.
 
 Configurations are handled using the ``config`` utility with several subcommands.
 
@@ -481,7 +489,7 @@ Clearing all configurations
 Where Configurations Are Stored
 ---------------------------------
 
-sfftk ships with a config file called ``sff.conf`` which is located in the root of the package. 
+``sfftk`` ships with a config file called ``sff.conf`` which is located in the root of the package.
 In some cases this might be a read-only location e.g. if installed in an unmodified ``/usr/local/lib/python2.7/site-packages``. 
 Therefore, default read-only configurations will be obtained from this file. 
 However, if the user would like to write new configs they will be written to ``~/sfftk/sff.conf``. 

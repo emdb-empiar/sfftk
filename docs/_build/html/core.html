@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sfftk.core package &mdash; sfftk v0.4.2.dev0 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.5.0.dev0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                v0.4
+                v0.5
               </div>
             
           
@@ -91,7 +91,6 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="extending.html">Extending sfftk</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="sfftk.html">sfftk packages</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="schema.html">sfftk.schema package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="formats.html">sfftk.formats package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="readers.html">sfftk.readers package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes.html">sfftk.notes package</a></li>
@@ -104,16 +103,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#parser-py">parser.py</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.print_tools">Printing utilities</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#print-tools-py">print_tools.py</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.prep">Preparation utilities</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#prep-py">prep.py</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.utils">Miscellaneous utilities</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#utils-py">utils.py</a></li>
 </ul>
 </li>
 </ul>
@@ -382,37 +373,6 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 module includes both the parser object <code class="docutils literal notranslate"><span class="pre">Parser</span></code> as well as a <a class="reference internal" href="#sfftk.core.parser.parse_args" title="sfftk.core.parser.parse_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.core.parser.parse_args()</span></code></a> function
 which does sanity checking of all command line arguments.</p>
 <dl class="function">
-<dt id="sfftk.core.parser.add_args">
-<code class="sig-prename descclassname">sfftk.core.parser.</code><code class="sig-name descname">add_args</code><span class="sig-paren">(</span><em class="sig-param">parser</em>, <em class="sig-param">the_arg</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.add_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convenience function to add <code class="docutils literal notranslate"><span class="pre">the_arg</span></code> to the <code class="docutils literal notranslate"><span class="pre">parser</span></code>.</p>
-<p>This relies on the argument being structured as a dictionary with the keys 
-<code class="docutils literal notranslate"><span class="pre">args</span></code> for positional arguments and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> for the keyword
-arguments. The value of doing this is that arguments that are reused
-in several parsers can be referred to by a variable instead of being 
-redefined.</p>
-<p>Usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_arg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;arg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;-x&#39;</span><span class="p">],</span> <span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;help&#39;</span><span class="p">:</span> <span class="s1">&#39;help&#39;</span><span class="p">}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">this_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">add_args</span><span class="p">(</span><span class="n">this_parser</span><span class="p">,</span> <span class="n">my_arg</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – the parser to be modified</p></li>
-<li><p><strong>the_arg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – the argument specified as a dict with keys <code class="docutils literal notranslate"><span class="pre">args</span></code> and <code class="docutils literal notranslate"><span class="pre">kwargs</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a modified parser object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="sfftk.core.parser.check_multi_file_formats">
 <code class="sig-prename descclassname">sfftk.core.parser.</code><code class="sig-name descname">check_multi_file_formats</code><span class="sig-paren">(</span><em class="sig-param">file_names</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.parser.check_multi_file_formats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check file names for file formats</p>
@@ -451,64 +411,7 @@ assume correct argument values and can concentrate on functionality.</p>
 <dd class="field-even"><p>parsed arguments</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
-</div>
-<div class="section" id="module-sfftk.core.print_tools">
-<span id="printing-utilities"></span><h2>Printing utilities<a class="headerlink" href="#module-sfftk.core.print_tools" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="print-tools-py">
-<h3>print_tools.py<a class="headerlink" href="#print-tools-py" title="Permalink to this headline">¶</a></h3>
-<p>Utilities for printing stuff to the screen.</p>
-<dl class="function">
-<dt id="sfftk.core.print_tools.get_printable_ascii_string">
-<code class="sig-prename descclassname">sfftk.core.print_tools.</code><code class="sig-name descname">get_printable_ascii_string</code><span class="sig-paren">(</span><em class="sig-param">B</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.get_printable_ascii_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a bytes string of ASCII and non-ASCII return the maximal printable prefix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>B</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a>) – the bytes string to search</p>
-</dd>
-<dt class="field-even">Return ascii_b</dt>
-<dd class="field-even"><p>the maximal ASCII prefix</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)">bytes</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="sfftk.core.print_tools.print_date">
-<code class="sig-prename descclassname">sfftk.core.print_tools.</code><code class="sig-name descname">print_date</code><span class="sig-paren">(</span><em class="sig-param">print_string</em>, <em class="sig-param">stream=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em>, <em class="sig-param">newline=True</em>, <em class="sig-param">incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_date" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the given string with date on the given stream</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – the bytes/str to be printed</p></li>
-<li><p><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stderr</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stdout" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stdout</span></code></a>) – the stream/file to write to</p></li>
-<li><p><strong>newline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to add a newline at the end</p></li>
-<li><p><strong>incl_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to include the date at the beginning</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="sfftk.core.print_tools.print_static">
-<code class="sig-prename descclassname">sfftk.core.print_tools.</code><code class="sig-name descname">print_static</code><span class="sig-paren">(</span><em class="sig-param">print_string</em>, <em class="sig-param">stream=&lt;_io.TextIOWrapper name='&lt;stderr&gt;' mode='w' encoding='UTF-8'&gt;</em>, <em class="sig-param">incl_date=True</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.print_tools.print_static" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print the given string with date on the given stream from the first position 
-overwriting any characters.</p>
-<p>This is a useful way to display progress without overcrowding the screen.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>print_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.8)"><em>bytes</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – the bytes/str to be printed</p></li>
-<li><p><strong>stream</strong> (<a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stderr" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stderr</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.stdout" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.stdout</span></code></a>) – the stream/file to write to</p></li>
-<li><p><strong>incl_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – whether (default) or not to include the date at the beginning</p></li>
-</ul>
+<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configss</span></code>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -528,7 +431,7 @@ overwriting any characters.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
+<li><p><strong>configs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configss</span></code>) – configurations object</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -565,7 +468,7 @@ overwriting any characters.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
+<li><p><strong>configs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configss</span></code>) – configurations object</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -593,50 +496,6 @@ overwriting any characters.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
-</div>
-<div class="section" id="module-sfftk.core.utils">
-<span id="miscellaneous-utilities"></span><h2>Miscellaneous utilities<a class="headerlink" href="#module-sfftk.core.utils" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="utils-py">
-<h3>utils.py<a class="headerlink" href="#utils-py" title="Permalink to this headline">¶</a></h3>
-<p>A collection of helpful utilities</p>
-<dl class="function">
-<dt id="sfftk.core.utils.get_path">
-<code class="sig-prename descclassname">sfftk.core.utils.</code><code class="sig-name descname">get_path</code><span class="sig-paren">(</span><em class="sig-param">D</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.utils.get_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a path from a dictionary</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>D</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – a dictionary</p></li>
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – an iterable of hashables</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the item at the path from the dictionary</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="sfftk.core.utils.rgba_to_hex">
-<code class="sig-prename descclassname">sfftk.core.utils.</code><code class="sig-name descname">rgba_to_hex</code><span class="sig-paren">(</span><em class="sig-param">rgba</em>, <em class="sig-param">channels=3</em><span class="sig-paren">)</span><a class="headerlink" href="#sfftk.core.utils.rgba_to_hex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert RGB(A) iterable to a hex string (e.g. #aabbcc(dd)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rgba</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – an iterable with normalised (values in the closed interval <code class="docutils literal notranslate"><span class="pre">[0-1]</span></code>) colour channel values</p></li>
-<li><p><strong>channels</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – the number of channels (3 or 4); default 3</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a hex string</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

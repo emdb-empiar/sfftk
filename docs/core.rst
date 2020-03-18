@@ -15,23 +15,9 @@ Parser module
     :members:
     :show-inheritance:
 
-Printing utilities
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: sfftk.core.print_tools
-    :members:
-    :show-inheritance:
-
 Preparation utilities
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.prep
-    :members:
-    :show-inheritance:
-
-Miscellaneous utilities
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: sfftk.core.utils
     :members:
     :show-inheritance:
