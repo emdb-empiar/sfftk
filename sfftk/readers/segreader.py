@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-sfftk.readers.segreader
-========================
+``sfftk.readers.segreader``
+===========================
 
 Ad hoc reader for Segger files
 """

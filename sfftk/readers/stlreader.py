@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-sfftk.readers.stlreader
-========================
+``sfftk.readers.stlreader``
+===========================
 
 Ad hoc reader for Stereolithography (STL) files
 

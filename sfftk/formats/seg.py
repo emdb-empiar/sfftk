@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-sfftk.formats.seg
-=================
+``sfftk.formats.seg``
+=====================
 
 User-facing reader classes for Segger files
 
@@ -184,7 +184,7 @@ class SeggerHeader(Header):
 class SeggerSegmentation(Segmentation):
     """Class representing an Segger segmentation
 
-    .. code:: python
+    .. code-block:: python
 
         from sfftk.formats.seg import SeggerSegmentation
         seg_seg = SeggerSegmentation('file.seg')

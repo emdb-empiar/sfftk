@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # surf.py
 """
-sfftk.formats.stl
-==================
+``sfftk.formats.stl``
+======================
 User-facing reader classes for Stereolithography files
 """
 from __future__ import division, print_function
@@ -157,7 +157,7 @@ class STLHeader(Header):
 class STLSegmentation(Segmentation):
     """Class representing an STL segmentation
     
-    .. code:: python
+    .. code-block:: python
     
         from sfftk.formats.stl import STLSegmentation
         stl_seg = STLSegmentation('file.stl')

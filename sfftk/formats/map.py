@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # map.py
 """
-sfftk.formats.map
-=================
+``sfftk.formats.map``
+=====================
 
 User-facing reader classes for CCP4 masks
 """
@@ -252,7 +252,7 @@ class MapHeader(Header):
 class MapSegmentation(Segmentation):
     """Class representing an CCP4/MAP mask segmentation
     
-    .. code:: python
+    .. code-block:: python
     
         from sfftk.formats.map import MapSegmentation
         map_seg = MapSegmentation('file.map')

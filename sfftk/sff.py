@@ -2,9 +2,7 @@
 # encoding: utf-8
 # sff.py
 """
-sfftk.sff -- Toolkit to handle operations for EMDB-SFF files
-
-sfftk.sff is the main entry point for performing command-line operations.
+:py:mod:`sfftk.sff` is the main entry point for performing command-line operations.
 """
 from __future__ import division, print_function
 
@@ -28,8 +26,9 @@ def handle_prep(args, configs):
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: :py:class:``sfftk.core.configs.Configss``
-    :return int exit_status: exit status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     if re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
         from .core.prep import bin_map
@@ -47,10 +46,11 @@ def handle_convert(args, configs):  # @UnusedVariable
     Handle `convert` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     try:
         sffrw.handle_convert(args)
@@ -93,32 +93,8 @@ def handle_convert(args, configs):  # @UnusedVariable
             elif re.match(r'.*\.h5$', args.from_file, re.IGNORECASE):
                 from .formats.survos import SuRVoSSegmentation
                 seg = SuRVoSSegmentation(args.from_file)
-            # elif re.match(r'.*\.sff$', args.from_file, re.IGNORECASE):
-            #     if args.verbose:
-            #         print_date("Converting from EMDB-SFf (XML) file {}".format(args.from_file))
-            #     seg = schema.SFFSegmentation(args.from_file)
-            # elif re.match(r'.*\.hff$', args.from_file, re.IGNORECASE):
-            #     if args.verbose:
-            #     print_date("Converting from EMDB-SFF (HDF5) file {}".format(args.from_file))
-            # seg = schema.SFFSegmentation(args.from_file)
-            # if args.verbose:
-            #     print_date("Created SFFSegmentation object")
-            # elif re.match(r'.*\.json$', args.from_file, re.IGNORECASE):
-            #     if args.verbose:
-            #         print_date("Converting from EMDB-SFF (JSON) file {}".format(args.from_file))
-            #     seg = schema.SFFSegmentation(args.from_file)
-            #     if args.verbose:
-            #         print_date("Created SFFSegmentation object")
             else:
                 raise ValueError("Unknown file type %s" % args.from_file)
-        # export (convert first if needed)
-        # if isinstance(seg, schema.SFFSegmentation):
-        #     sff_seg = seg  #  no conversion needed
-        #     if args.primary_descriptor is not None:
-        #         sff_seg.primaryDescriptor = args.primary_descriptor
-        #     if args.details is not None:
-        #         sff_seg.details = args.details
-        # else:
         sff_seg = seg.convert(args)  # convert according to args
         # export as args.format
         if args.verbose:
@@ -134,10 +110,11 @@ def handle_notes_search(args, configs):
     """Handle `search` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     from sfftk.notes import find
     # query
@@ -158,10 +135,11 @@ def handle_notes_list(args, configs):
     """Handle `list` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     from sfftk.notes.view import list_notes
     status = list_notes(args, configs)
@@ -172,10 +150,11 @@ def handle_notes_show(args, configs):
     """Handle `show` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     from sfftk.notes.view import show_notes
     status = show_notes(args, configs)
@@ -186,10 +165,11 @@ def _handle_notes_modify(args, configs):
     """Handle creation of temporary file as either SFF, HFF or JSON
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     temp_file = configs['__TEMP_FILE']
     temp_file_ref = configs['__TEMP_FILE_REF']
@@ -248,10 +228,11 @@ def handle_notes_add(args, configs):
     """Handle `add` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     args = _handle_notes_modify(args, configs)
     from sfftk.notes.modify import add_note
@@ -262,10 +243,11 @@ def handle_notes_edit(args, configs):
     """Handle `edit` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     args = _handle_notes_modify(args, configs)
     from sfftk.notes.modify import edit_note
@@ -276,10 +258,11 @@ def handle_notes_del(args, configs):
     """Handle `del` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     args = _handle_notes_modify(args, configs)
     from sfftk.notes.modify import del_note
@@ -290,10 +273,11 @@ def handle_notes_copy(args, configs):
     """Handle `copy` subcommand of `notes` subcommand
 
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     args = _handle_notes_modify(args, configs)
     from sfftk.notes.modify import copy_notes
@@ -304,10 +288,11 @@ def handle_notes_clear(args, configs):
     """Handle `copy` subcommand of `notes` subcommand
 
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     args = _handle_notes_modify(args, configs)
     from sfftk.notes.modify import clear_notes
@@ -318,10 +303,11 @@ def handle_notes_merge(args, configs):
     """Handle `merge` subcommand of `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     from sfftk.notes.modify import merge
     return merge(args, configs)
@@ -331,10 +317,11 @@ def handle_notes_save(args, configs):
     """Handle the `save` subcommand` of the `notes` subcommand`
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     from sfftk.notes.modify import save
     return save(args, configs)
@@ -344,10 +331,11 @@ def handle_notes_trash(args, configs):
     """Handle the `trash` subcommand` of the `notes` subcommand`
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     from sfftk.notes.modify import trash
     return trash(args, configs)
@@ -357,10 +345,11 @@ def handle_notes(args, configs):
     """Handle `notes` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     if args.notes_subcommand == "search":
         return handle_notes_search(args, configs)
@@ -390,10 +379,11 @@ def handle_view(args, configs):  # @UnusedVariable
     """Handle `view` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     # fixme: use print_date
     try:
@@ -448,10 +438,11 @@ def handle_config(args, configs):
     """Handle `view` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     if args.config_subcommand == "get":
         from .core.configs import get_configs
@@ -496,6 +487,9 @@ def _discover_test_runner(path, args, top_level_dir=None):
     :param str path: path to search for tests
     :param args: parsed arguments
     :type args: `argparse.Namespace`
+    :param str top_level_dir: the name of the top level directory (default: None)
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     import unittest
     suite = unittest.TestLoader().discover(path, top_level_dir=top_level_dir)
@@ -507,10 +501,11 @@ def handle_tests(args, configs):
     """Handle `test` subcommand
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :type configs: ``sfftk.core.configs.Configss``
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
     """
     if 'all' in args.tool:
         from .unittests import test_main

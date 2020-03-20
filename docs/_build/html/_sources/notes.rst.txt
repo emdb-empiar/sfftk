@@ -1,21 +1,21 @@
-sfftk.notes package
+``sfftk.notes`` package
 -----------------------
 
-Find notes module
+Find notes
 ~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.notes.find
 	:members:
 	:show-inheritance:
 	
-View notes module
+View notes
 ~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.notes.view
 	:members:
 	:show-inheritance:
 	
-Modify notes module
+Modify notes
 ~~~~~~~~~~~~~~~~~~~
 	
 .. automodule:: sfftk.notes.modify

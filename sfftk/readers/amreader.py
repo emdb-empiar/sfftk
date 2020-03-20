@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
-sfftk.readers.amreader
-======================
+``sfftk.readers.amreader``
+===========================
 
 Ad hoc reader for AmiraMesh files
 '''

@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 # parser.py
 """
-parser.py
-=========
+``sfftk.core.parser``
+===========================
 
-A large number of functions in ``sfftk`` consume only two arguments: ``args``, which is the direct output of Python's
-:py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which consists of all persistent configs. This
-module includes both the parser object ``Parser`` as well as a :py:func:`sfftk.core.parser.parse_args` function
-which does sanity checking of all command line arguments.
+A large number of functions in ``sfftk`` consume only two arguments: ``args``, which is the direct output of Python's :py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which consists of all persistent configs. This module extends the parser object :py:class:`sfftkrw.core.parser.Parser` as well as includes a :py:func:`sfftk.core.parser.parse_args` function which does sanity checking of all command line arguments.
 """
 from __future__ import print_function
 
@@ -923,14 +920,13 @@ def parse_args(_args, use_shlex=False):
     arguments are properly formatted and checked for sanity. It also 
     extracts configs from the config files.
 
-    In this way command handlers (defined in ``sfftk/sff.py`` e.g. ``handle_convert(...)``)
-    assume correct argument values and can concentrate on functionality.
+    In this way command handlers (defined in :py:mod:`sfftk.sff` e.g. :py:meth:`sfftk.sff.handle_convert`) assume correct argument values and can concentrate on functionality making the code more readable.
 
     :param list _args: list of arguments (``use_shlex=False``); string of arguments (``use_shlex=True``)
     :type _args: list or str
     :param bool use_shlex: treat ``_args`` as a string instead for parsing using ``shlex`` lib
     :return: parsed arguments
-    :rtype: tuple[:py:class:`argparse.Namespace`, :py:class:`sfftk.core.configs.Configss`]
+    :rtype: tuple[:py:class:`argparse.Namespace`, :py:class:`sfftk.core.configs.Configs`]
     """
     if use_shlex:  # if we treat _args as a command string for shlex to process
         try:
@@ -980,7 +976,7 @@ def parse_args(_args, use_shlex=False):
     config_file_path = get_config_file_path(args)
     if config_file_path is None:
         print_date("Invalid destination for configs. Omit --shipped-configs to write to user configs.")
-        return None, None
+        return os.EX_USAGE, None
     from .configs import load_configs
     # now get configs to use
     configs = load_configs(config_file_path)

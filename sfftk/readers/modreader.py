@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-sfftk.readers.modreader
-=======================
+``sfftk.readers.modreader``
+===========================
 
 Ad hoc reader for IMOD (`.mod`) files.
 
@@ -22,15 +22,16 @@ by the respective chunk names. The following patterns are observed
 in the design of these classes:
 
 - The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.
-
 - All classes have one public method: read(f), which takes a file handle and returns a file handle at the current unread position.
-
-- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as add_<chunk> e.g. OBJT objects are containers of CONT objects and therefore have a add_cont() method which takes a CONT object as argument. Internally, container objects use dictionaries to store contained objects.
-
-- All chunk classes inherit from 'object' class and have the __repr__() method implemented to print objects of that class.
-
+- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()`` method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.
+- All chunk classes inherit from :py:class:`object` class and have the :py:meth:`object.__repr__()` method implemented to print objects of that class.
 
 In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.
+
+.. note::
+
+    The order of classes is based on their position in the module. This can be changed if needed.
+    The most important classes are :py:class:`.modreader.IMOD`, :py:class:`.modreader.OBJT`, :py:class:`.modreader.CONT` and :py:class:`.modreader.MESH`
 """
 from __future__ import division, print_function
 
@@ -103,22 +104,43 @@ UPPER_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 def angstrom_multiplier(units):
     """
-    1Å = 10^(-10) m -> 1m = 10^(10)Å
-    Consider some generic unit U with a power of 10 x
-    1U = 10^x m     -> 1m = 10^(-x)U
-    We need a unit factor that relates Å to U
-    Dividing both expressions for 1m
-    1 = [10^(10)] / [10^(-x)] Å per U (Å/U) = 10^(10 + x) Å/U
-    To convert U to Å we multiply by 10^(10 + x) Å/U
-    Example:
-    To convert 3 nm to Å we consider that x = -9 for nm
-    So 3 nm = 3 nm * 10^(10 + (-9)) Å/nm
-    = 3 nm * 10^(10 - 9) Å/nm
-    = 3 nm * 10 Å/nm
-    = 30 Å
+    Determine a multiplier to convert units to angstrom
 
-    :param units:
-    :return:
+    .. math::
+
+        1\\textrm{Å} = 10^{-10}\\textrm{m} \\Rightarrow  1\\textrm{m} = 10^{10}\\textrm{Å}
+
+    Consider some generic unit *U* with a power of 10
+
+    .. math::
+
+        1\\textrm{U} = 10^x \\textrm{m} \Rightarrow 1\\textrm{m} = 10^{-x}\\textrm{U}
+
+    We need a unit factor that relates Å to *U*. Dividing both expressions for :math:`1\\textrm{m}`
+
+    .. math::
+
+        \\begin{aligned}
+        1 = \\frac{10^{10}}{10^{-x}} \\textrm{Å per U (Å/U)} = 10^{10 + x} \\textrm{Å/U}
+        \\end{aligned}
+
+    To convert *U* to Å we multiply by :math:`10^{10 + x}` Å/U
+
+    Example:
+    To convert 3 nm to Å we consider that :math:`x = -9` for nm. So:
+
+    .. math::
+
+        \\begin{align}
+        3\\textrm{nm} & = 3\\textrm{nm} \\times 10^{10 + (-9)}\\textrm{Å/nm} \\\\
+            & = 3\\textrm{nm} \\times 10^{10 - 9}\\textrm{Å/nm} \\\\
+            & = 3\\textrm{nm} \\times 10\\textrm{Å/nm} \\\\
+            & = 30\\textrm{Å}
+        \\end{align}
+
+    :param int units: the power of ten for the unit e.g. for nm ``units=-9``
+    :return: the correct multiplier to convert the given units to angstrom
+    :rtype: int
     """
     try:
         assert units in list(_dict_iter_keys(UNITS))
@@ -133,11 +155,9 @@ def find_chunk_length(f):
     
     Assumes that current position in the file is immediately after the chunk header.
     
-    Arguments:
     :param file f: file handle
-    :return int chunk_length: the length of the chunk
-    :return str next_chunk: the chunk that follows (four uppercase letters)
-    :return file f: the original file handle advanced further after finding the next chunk
+    :return: the length of the chunk, the next chunk name, the file handle at the next read position
+    :rtype: tuple(int, str, file)
     """
     chunk_length = 0
     next_chunk = struct.unpack('>4s', f.read(4))[0]
@@ -146,7 +166,6 @@ def find_chunk_length(f):
         chunk_length += 1
         f.seek(-3, os.SEEK_CUR)
         next_chunk = struct.unpack('>4s', f.read(4))[0]
-    #     f.seek(-4, os.SEEK_CUR)
     return chunk_length, next_chunk, f
 
 
@@ -162,7 +181,7 @@ class FLAGS(object):
         
         Example usage:
         
-        .. code:: python
+        .. code-block:: python
         
             >>> from sfftk.readers.modreader import FLAGS
             >>> flag = FLAGS(10, 2)

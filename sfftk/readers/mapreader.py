@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-sfftk.readers.mapreader
-========================
+``sfftk.readers.mapreader``
+===========================
 
 Ad hoc reader for CCP4 masks
 

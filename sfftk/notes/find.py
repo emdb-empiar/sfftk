@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-sfftk.notes.find
+``sfftk.notes.find``
 =======================
 
 Search for terms and display ontologies

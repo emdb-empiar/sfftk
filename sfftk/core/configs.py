@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-configs.py
-===========
+``sfftk.core.configs``
+======================
 
 This module defines classes and functions to correctly process persistent
 configurations. Please see the :doc:`guide to miscellaneous operations <misc>`
@@ -27,13 +27,13 @@ __updated__ = '2018-02-27'
 class Configs(_dict):
     """Class defining configs
     
-    Configurations are stored in a subclass of ``OrderedDict`` with 
-    appended methods for reading (``read()``), writing (``write``) and 
-    clearing (``clear()``) configs.
+    Configurations are stored in a subclass of :py:class:`OrderedDict` (normal :py:class:`dict` for Python 3.7+) with
+    appended methods for reading (:py:meth:`.Configs.read()`), writing (:py:meth:`.Configs.write`) and
+    clearing (:py:meth:`.Configs.clear`) configs.
     
     Printing an object of this class displays all configs.
     
-    This class is used an argument to ``load_configs()``.
+    This class is used an argument to :py:func:`.configs.load_configs`.
     """
     shipped_configs = os.path.join(BASE_DIR, 'sff.conf')
 
@@ -82,37 +82,43 @@ class Configs(_dict):
 def get_config_file_path(args, user_folder='~/.sfftk', user_conf_fn='sff.conf', config_class=Configs):
     """A function that returns the right config path to use depending on the command specified
 
-    The user may specify `sff <cmd> [<sub_cmd>] [--shipped-configs|--config-path] [args...]`
+    The user may specify
+
+    .. code-block:: bash
+
+        sff <cmd> [<sub_cmd>] [--shipped-configs|--config-path] [args...]`
+
     and we have to decide which configs to use.
 
     Example:
+
     - View the notes in the file. If user configs are available use them otherwise use shipped configs
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff notes list file.json
 
     - View the notes in the file but ONLY use shipped configs.
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff notes list --shipped-configs file.json
 
     - View the notes in the file but ONLY use custom configs at path
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff notes list --config-path /path/to/sff.conf file.json
 
     - Get available configs. First check for user configs and fall back on shipped configs
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff config get --all
 
     - Get configs from the path
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff config get --config-path /path/to/sff.conf --all
         # ignore shipped still!
@@ -120,25 +126,25 @@ def get_config_file_path(args, user_folder='~/.sfftk', user_conf_fn='sff.conf', 
 
     - Get shipped configs even if user configs exist
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff config get --shipped-configs --all
 
     - Set configs to user configs. If user configs don't exist copy shipped and add the new config.
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff config set NAME VALUE
 
     - Set configs to config path. Ignore user and shipped configs
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff config set --config-path /path/to/sff.conf NAME VALUE
 
     - Fail! Shipped configs are read-only
 
-    .. code:: bash
+    .. code-block:: bash
 
         sff config set --shipped-configs NAME VALUE
 
@@ -213,7 +219,8 @@ def get_configs(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     if args.all:
         print_date("Listing all {} configs...".format(len(configs)))
@@ -240,7 +247,8 @@ def set_configs(args, configs):
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     print_date("Setting config {} to value {}...".format(args.name, args.value))
     # add the new config
@@ -256,9 +264,10 @@ def del_configs(args, configs):
     """Delete the named config
     
     :param args: parsed arguments
-    :type args: `argparse.Namespace`
+    :type args: :py:class:`argparse.Namespace`
     :param dict configs: configuration options
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     if args.all:
         print_date("Deleting all {} configs...".format(len(configs)))
@@ -271,7 +280,7 @@ def del_configs(args, configs):
             del configs[args.name]
         except KeyError:
             print_date("No config with name {}".format(args.name))
-            return 1
+            return os.EX_DATAERR
     if args.verbose:
         # fixme: use print_date
         print(configs)

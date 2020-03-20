@@ -26,12 +26,12 @@
     <segment_list>
         <segment id="15559" parent_id="0">
             <biological_annotation>
-                <name>directives sonar lantern</name>
-                <description>Laoreetphasellus consectetur lobortis sociosqu exerci, lobortisetiam semvestibulum pulvinarvestibulum nisl blandit. Sapien aliquam cubilia stet elitvivamus luctus, suscipit quisque possim iaculis sit potenti.</description>
+                <name>noses assignments purposes</name>
+                <description>Scelerisque praesent integer. Quisque pretium convallis elitduis elit netus nonummy, potenti eum mauris magnapraesent soluta minim viverra erosin.</description>
                 <external_references>
-                    <ref id="0" resource="specializations" url="saps" accession="surfaces"/>
+                    <ref id="0" resource="quantity" url="command" accession="half"/>
                 </external_references>
-                <number_of_instances>691</number_of_instances>
+                <number_of_instances>659</number_of_instances>
             </biological_annotation>
             <colour>
                 <red>0.921817600727081</red>

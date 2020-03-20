@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # surf.py
 """
-sfftk.formats.surf
-===================
+``sfftk.formats.surf``
+======================
 
 User-facing reader classes for Amira HxSurface files
 """
@@ -181,7 +181,7 @@ class AmiraHyperSurfaceHeader(Header):
 class AmiraHyperSurfaceSegmentation(Segmentation):
     """Class representing an AmiraHyperSurface segmentation
     
-    .. code:: python
+    .. code-block:: python
     
         from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
         surf_seg = AmiraHyperSurfaceSegmentation('file.surf')

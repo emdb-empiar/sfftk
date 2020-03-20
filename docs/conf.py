@@ -14,6 +14,7 @@
 # serve to show the default.
 
 import os
+
 import sys
 
 sys.path.append('..')  # to import sfftk
@@ -45,6 +46,8 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -233,6 +236,7 @@ latex_elements = {
 
     # Latex figure (float) alignment
     # 'figure_align': 'htbp',
+    'preamble': r"""\usepackage{amsmath}"""
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -308,5 +312,5 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),
     'numpy': ('http://docs.scipy.org/doc/numpy/', None),
     'sfftkrw': ('http://sfftk-rw.readthedocs.io/en/latest/', None),
-    'ahds': ('http://ahds.readthedocs.io/en/latest/', None),
+    'ahds': ('https://ahds.readthedocs.io/en/latest/', None),
 }

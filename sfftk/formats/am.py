@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # am.py
 """
-sfftk.formats.am
-================
+``sfftk.formats.am``
+====================
 
 User-facing reader classes for AmiraMesh files
 
@@ -212,7 +212,7 @@ class AmiraMeshHeader(object):
 class AmiraMeshSegmentation(Segmentation):
     """Class representing an AmiraMesh segmentation
     
-    .. code:: python
+    .. code-block:: python
     
         from sfftk.formats.am import AmiraMeshSegmentation
         am_seg = AmiraMeshSegmentation('file.am')
@@ -228,29 +228,12 @@ class AmiraMeshSegmentation(Segmentation):
         segment_indices = indices_set.difference({0})  # do not include '0' as a label
         for segment_id in segment_indices:
             self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
-        """
-        if hasattr(self.header.Parameters, 'Materials') or hasattr(self.header.Parameters, 'materials'):
-            # it appears that the one-to-one correspondence between voxel values and material IDs is not reliable
-            # instead of relying on material IDs we should just use voxel values and check whether a
-            # corresponding material exists
-            indices_set = set(numpy.unique(self._volume))
-            segment_indices = indices_set.difference({0}) # do not include '0' as a label
-            # now check whether these label correspond to materials
-            for segment_id in segment_indices:
-                self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
-            # for segment_id in self.header.Parameters.Materials.ids:
-        else:
-            indices_set = set(self._volume.flatten().tolist())
-            segment_indices = indices_set.difference({0}) # do not include '0' as a label
-            for segment_id in segment_indices:
-                self._segments.append(AmiraMeshSegment(self._fn, self.header, segment_id))
-        """
 
     @property
     def header(self):
-        """The AmiraMesh header obtained using the ``ahds`` package
+        """The AmiraMesh header obtained using the :py:mod:`ahds` package
 
-        The header is wrapped with a generic AmiraMeshHeader class
+        The header is wrapped with a generic :py:mod:`ahds.header` class
         """
         return self._header
 

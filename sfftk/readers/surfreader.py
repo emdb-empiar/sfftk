@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-sfftk.readers.surfreader
-=========================
+``sfftk.readers.surfreader``
+============================
 
 Ad hoc reader for Amira HyperSurface files
 """
@@ -22,7 +22,7 @@ __updated__ = '2018-02-14'
 class HxSurfSegment(object):
     """Generic HxSurface segment class
 
-    The `ahds <http://ahds.readthedocs.io/en/latest/>`_ package provides a better abstraction of this filetype
+    The :py:mod:`ahds` package provides a better abstraction of this filetype
     """
 
     def __init__(self, material, vertices, triangles, prune=True):
@@ -99,6 +99,7 @@ def extract_segments(af, *args, **kwargs):
     """Extract patches as segments
 
     :param af: an `AmiraFile` object
+    :type af: :py:class:`ahds.AmiraFile`
     :return dict segments: a dictionary of segments with keys set to Material Ids (voxel values)
     """
     # make sure it's an AmiraFile object
@@ -139,21 +140,9 @@ def get_data(fn, *args, **kwargs):
     
     :param str fn: file name
     :return header: AmiraHxSurface header
-    :rtype header: ``ahds.header.AmiraHeader`` (see `ahds <http://ahds.readthedocs.io/en/latest/>`_ package)
+    :rtype header: :py:mod:`ahds.header`
     :return dict segments: segments each of class :py:class:`sfftk.readers.surfreader.HxSurfSegment`
     """
     af = AmiraFile(fn, load_streams=True, *args, **kwargs)
     segments = extract_segments(af, *args, **kwargs)
     return af.header, segments
-    """
-    header = ahds.header.AmiraHeader.from_file(fn, *args, **kwargs)
-    data_streams = ahds.data_stream.DataStreams(fn, *args, **kwargs)
-    segments = dict()
-    for patch_name in data_streams['Patches']:
-        patch_material = getattr(header.Parameters.Materials, patch_name)
-        patch_vertices, patch_triangles = vertices_for_patches(data_streams['Vertices'], data_streams['Patches'][patch_name])
-        # we use the material ID as the key because it is a unique reference to the patch
-        # segments[patch_material.Id] = (patch_vertices, patch_triangles)
-        segments[patch_material.Id] = HxSurfSegment(patch_material, patch_vertices, patch_triangles)
-    return header, segments
-    """

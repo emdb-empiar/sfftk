@@ -1,4 +1,3 @@
-# readers
 # -*- coding: utf-8 -*-
 """
 sfftk.readers package

@@ -1,14 +1,15 @@
-sfftk packages
-===============
+``sfftk`` packages
+===================
 
 .. automodule:: sfftk.__init__
-	:members:
-	:show-inheritance:
-	
+    :members:
+    :show-inheritance:
+
 .. toctree::
-	:maxdepth: 2
-	
-	formats
-	readers
-	notes
-	core
+    :maxdepth: 2
+
+    sff
+    formats
+    readers
+    notes
+    core

@@ -1,50 +1,50 @@
-sfftk.formats package
----------------------
+``sfftk.formats`` package
+-------------------------
 
-AmiraMesh module
+AmiraMesh format
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.am
     :members: AmiraMeshSegmentation, AmiraMeshHeader, AmiraMeshSegment, AmiraMeshAnnotation, AmiraMeshMesh, AmiraMeshVolume
     :show-inheritance:
 
-SuRVoS module
+SuRVoS format
 ~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.survos
     :members: SuRVoSSegmentation, SuRVoSSegment
     :show-inheritance:
 
-CCP4 mask module
+CCP4 mask format
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.map
     :members: MapSegmentation, MapHeader, MapSegment, MapAnnotation
     :show-inheritance:
 
-IMOD module
+IMOD format
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.mod
     :members: IMODSegmentation, IMODHeader, IMODSegment, IMODAnnotation, IMODMeshes, IMODMesh, IMODShapes, IMODEllipsoid
     :show-inheritance:
 
-Segger module
+Segger format
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.seg
     :members: SeggerSegmentation, SeggerHeader, SeggerSegment, SeggerAnnotation, SeggerVolume
     :show-inheritance:
 
-Stereolithography module
-~~~~~~~~~~~~~~~~~~~~~~~~
+Stereolithography format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.stl
     :members: STLSegmentation, STLHeader, STLSegment, STLAnnotation, STLMesh
     :show-inheritance:
 
-Amira HyperSurface module
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Amira HyperSurface format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.surf
     :members: AmiraHyperSurfaceSegmentation, AmiraHyperSurfaceHeader, AmiraHyperSurfaceSegment, AmiraHyperSurfaceAnnotation, AmiraHyperSurfaceMesh

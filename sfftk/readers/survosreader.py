@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+'''
+``sfftk.readers.survosreader``
+==============================
+
+Ad hoc reader for SuRVoS segmentation files
+'''
 from __future__ import print_function
 
 import numbers
@@ -57,10 +63,9 @@ def get_data(fn, *args, **kwargs):
     We need to return an object with a handle on the segments:
 
     - each segment is a 3D volume with only that segments voxel values retained
-    - we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1]
-    returns the segmentation with annotation value of '1'
+    - we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1] returns the segmentation with annotation value of '1'
 
-    .. code:: python
+    .. code-block:: python
 
         s = SuRVoSSegmentation(fn)
         s.segment_ids() # returns a list of segment IDs

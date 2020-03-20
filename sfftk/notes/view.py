@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-sfftk.notes.view
+``sfftk.notes.view``
 =============================
 
 Display notes in EMDB-SFF files
@@ -497,7 +497,8 @@ def list_notes(args, configs):
     
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
-    :return int status: 0 is OK, else failure
+    :return status: 0 is OK, else failure
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # todo: make this optional
@@ -535,7 +536,8 @@ def show_notes(args, configs):
     
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
-    :return int status: 0 is OK, else failure
+    :return status: 0 is OK, else failure
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     if args.header:

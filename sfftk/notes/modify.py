@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-sfftk.notes.modify
+``sfftk.notes.modify``
 =======================
 
 Add, edit and delete terms in EMDB-SFF files
@@ -660,7 +660,8 @@ def add_note(args, configs):
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
@@ -691,7 +692,7 @@ def add_note(args, configs):
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
     sff_seg.export(args.sff_file)
-    return 0
+    return os.EX_OK
 
 
 def edit_note(args, configs):
@@ -701,7 +702,8 @@ def edit_note(args, configs):
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
@@ -736,7 +738,7 @@ def edit_note(args, configs):
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
     sff_seg.export(args.sff_file)
-    return 0
+    return os.EX_OK
 
 
 def del_note(args, configs):
@@ -746,7 +748,8 @@ def del_note(args, configs):
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
@@ -777,7 +780,7 @@ def del_note(args, configs):
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
     sff_seg.export(args.sff_file)
-    return 0
+    return os.EX_OK
 
 
 def copy_notes(args, configs):
@@ -785,9 +788,12 @@ def copy_notes(args, configs):
 
     One or more segments can be chosen for either or both source and destination
 
-    :param args: parse arguments
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :return: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return status: status
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # from segment
@@ -830,9 +836,12 @@ def copy_notes(args, configs):
 def clear_notes(args, configs):
     """Clear notes from segments
 
-    :param args: parse arguments
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-    :return: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return status: status
+    :rtype status: int
     """
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     from_segment = list()
@@ -877,13 +886,14 @@ def clear_notes(args, configs):
 
 
 def merge(args, configs):
-    """Merge two EMDB-SFF files
+    """Merge notes from two EMDB-SFF files
     
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     # source
     if args.verbose:
@@ -912,7 +922,8 @@ def save(args, configs):
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
     :type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int status: status
+    :return status: status
+    :rtype status: int
     """
     temp_file = configs['__TEMP_FILE']
     if os.path.exists(temp_file):
@@ -975,8 +986,9 @@ def trash(args, configs):
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
-	:type configs: :py:class:`sfftk.core.configs.Configs`
-    :return int status: status
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return status: status
+    :rtype status: int
     """
     temp_file = configs['__TEMP_FILE']
     if os.path.exists(temp_file):

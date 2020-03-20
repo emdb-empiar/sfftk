@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # mod.py
 """
-sfftk.formats.mod
-=================
+``sfftk.formats.mod``
+=====================
 
 User-facing reader classes for IMOD files
 
@@ -317,7 +317,7 @@ class IMODSegment(object):
 class IMODSegmentation(Segmentation):
     """Class representing an IMOD segmentation
     
-    .. code:: python
+    .. code-block:: python
     
         from sfftk.formats.mod import IMODSegmentation
         mod_seg = IMODSegmentation('file.mod')

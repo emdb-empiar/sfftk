@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+``sfftk.formats.survos``
+========================
+"""
 from __future__ import print_function
 
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
@@ -40,7 +44,7 @@ class SuRVoSSegment(Segment):
 class SuRVoSSegmentation(Segmentation):
     """SuRVoS segmentation adapter
 
-    .. code:: python
+    .. code-block:: python
 
         from sfftk.formats.survos import SuRVoSSegmentation
         am_seg = SuRVoSSegmentation('predictions.h5')

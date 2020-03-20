@@ -1,14 +1,14 @@
-sfftk.core package
+``sfftk.core`` package
 -----------------------
 
-Configuration module
+Configs
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.configs
     :members:
     :show-inheritance:
 
-Parser module
+Parser
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.core.parser
