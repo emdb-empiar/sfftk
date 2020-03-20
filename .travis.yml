@@ -11,12 +11,13 @@ sudo: true
 
 before_install:
   - python --version
-  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
-  - sudo apt-get update
-  - sudo apt-get install build-essential
+  - apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
+  - apt-get update
+  - apt-get install build-essential
   - pip -V
   - pip install --upgrade pip
   - pip install setuptools
+  - pip install coverage
   - pip install coveralls
   - pip install numpy
   - pip install pytest
@@ -27,8 +28,8 @@ install:
 #  - sff --help
 
 script:
-  - pytest --cov=./sfftk sfftk/unittests
-#  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/schema/v*.py","/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
+  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
+#  - pytest --cov=./sfftk sfftk/unittests
 
 after_success:
   - coveralls
