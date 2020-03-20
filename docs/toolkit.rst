@@ -2,8 +2,6 @@
 EMDB-SFF Toolkit (``sfftk``)
 ============================
 
-.. include:: badges.rst
-
 .. contents::
 
 Introduction

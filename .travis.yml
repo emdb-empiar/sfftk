@@ -19,7 +19,7 @@ before_install:
   - pip install setuptools
   - pip install coverage
   - pip install coveralls
-  - pip install numpy
+  - pip install numpy<=1.15.4
   - pip install pytest
   - pip install pytest-cov
 
