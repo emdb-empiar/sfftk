@@ -31,12 +31,8 @@ copyright EMBL-European Bioinformatics Institute (EMBL-EBI) 2017.
 Data Model
 ----------
 
-.. |emdb_sff| raw:: html
-
-    <a href="https://emdb-empiar.github.io/EMDB-SFF" target="_blank">https://emdb-empiar.github.io/EMDB-SFF</a>
-
 ``sfftk`` is built to handle EMDB-SFF files. The corresponding schema
-(``v0.8.0.dev1``) may be found at |emdb_sff|.
+(``v0.8.0.dev1``) may be found at `https://emdb-empiar.github.io/EMDB-SFF <https://emdb-empiar.github.io/EMDB-SFF>`_.
 Changes to the schema are welcome for discussion at the *Segmentation Working Group*
 at `https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg
 <https://listserver.ebi.ac.uk/mailman/listinfo/segtrans-wg>`_.
@@ -174,7 +170,7 @@ Developing with ``sfftk``
 -------------------------
 
 ``sfftk`` is developed as a set of decoupled packages providing the various
-functionality. The main classes involved are found in the :py:mod:`sfftkrw` package.
+functionality. The main classes involved are found in the `sfftkrw <https://sfftk-rw.readthedocs.io/en/latest/>`_ package.
 There is also a `guide to developing with sfftk <https://sfftk.readthedocs.io/en/latest/developing.html>`_ which
 provides useful instructions.
 
