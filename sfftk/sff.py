@@ -53,7 +53,10 @@ def handle_convert(args, configs):  # @UnusedVariable
     :rtype exit_status: int
     """
     try:
-        sffrw.handle_convert(args)
+        if args.multi_file:
+            raise ValueError
+        else:
+            return sffrw.handle_convert(args)
     except (ValueError, KeyError):
         if args.multi_file:
             if re.match(r'.*\.(map|mrc|rec)$', args.from_file[0], re.IGNORECASE):

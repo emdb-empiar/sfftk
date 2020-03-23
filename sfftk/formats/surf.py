@@ -100,7 +100,7 @@ class AmiraHyperSurfaceAnnotation(Annotation):
         annotation = schema.SFFBiologicalAnnotation(
             name=self.name,
             description=self.name,
-            numberOfInstances=1,
+            number_of_instances=1,
         )
         # colour
         red, green, blue = self.colour
@@ -140,7 +140,7 @@ class AmiraHyperSurfaceSegment(Segment):
     def convert(self, *args, **kwargs):
         """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
-        segment.biologicalAnnotation, segment.colour = self.annotation.convert()
+        segment.biological_annotation, segment.colour = self.annotation.convert()
         meshes = schema.SFFMeshList()
         for i, mesh in enumerate(self.meshes):
             meshes.append(mesh.convert())

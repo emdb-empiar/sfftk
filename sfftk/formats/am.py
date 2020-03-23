@@ -175,7 +175,6 @@ class AmiraMeshSegment(Segment):
         """Convert to :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biological_annotation, segment.colour = self.annotation.convert()
-        # segment.volume = self.volume.convert()
         segment.three_d_volume = schema.SFFThreeDVolume(
             lattice_id=0,
             value=self.segment_id,

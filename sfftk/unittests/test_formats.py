@@ -26,49 +26,79 @@ class TestFormats(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
         super(TestFormats, cls).setUpClass()
+        # path to test files
         cls.segmentations_path = os.path.join(TEST_DATA_PATH, 'segmentations')
         # schema version
         cls.schema_version = schema.SFFSegmentation().version
-        # files
-        cls.am_file = os.path.join(cls.segmentations_path, 'test_data.am')
-        cls.seg_file = os.path.join(cls.segmentations_path, 'test_data.seg')
-        cls.map_file = os.path.join(cls.segmentations_path, 'test_data.map')
-        cls.map_multi0_file = os.path.join(cls.segmentations_path, 'test_data_multi0.map')
-        cls.map_multi1_file = os.path.join(cls.segmentations_path, 'test_data_multi1.map')
-        cls.map_multi2_file = os.path.join(cls.segmentations_path, 'test_data_multi2.map')
-        cls.mod_file = os.path.join(cls.segmentations_path, 'test_data.mod')  # -25
-        # cls.mod_file = '/Users/pkorir/data/for_debugging/mod/input_file.mod' # -25 multiple
-        # cls.mod_file = '/Users/pkorir/data/segmentations/mod/test10.mod' # -23
-        cls.stl_file = os.path.join(cls.segmentations_path, 'test_data.stl')
-        cls.stl_multi0_file = os.path.join(cls.segmentations_path, 'test_data_multi0.stl')
-        cls.stl_multi1_file = os.path.join(cls.segmentations_path, 'test_data_multi1.stl')
-        cls.stl_multi2_file = os.path.join(cls.segmentations_path, 'test_data_multi2.stl')
-        cls.surf_file = os.path.join(cls.segmentations_path, 'test_data.surf')
-        cls.survos_file = os.path.join(cls.segmentations_path, 'test_data.h5')
-        # am
-        cls.am_segmentation = am.AmiraMeshSegmentation(cls.am_file)
-        # seg
-        cls.seg_segmentation = seg.SeggerSegmentation(cls.seg_file)
-        # map
-        cls.map_segmentation = map.MapSegmentation([cls.map_file])
-        # map multi
-        cls.map_multi_segmentation = map.MapSegmentation(
-            [cls.map_multi0_file, cls.map_multi1_file, cls.map_multi2_file])
-        # mod
-        cls.mod_segmentation = mod.IMODSegmentation(cls.mod_file)
-        # stl
-        cls.stl_segmentation = stl.STLSegmentation([cls.stl_file])
-        # stl multi
-        cls.stl_multi_segmentation = stl.STLSegmentation(
-            [cls.stl_multi0_file, cls.stl_multi1_file, cls.stl_multi2_file])
-        # surf
-        cls.surf_segmentation = surf.AmiraHyperSurfaceSegmentation(cls.surf_file)
-        # survos
-        cls.survos_segmentation = survos.SuRVoSSegmentation(cls.survos_file)
+
+    def read_am(self):
+        """Read .am files"""
+        if not hasattr(self, 'am_file'):
+            self.am_file = os.path.join(self.segmentations_path, 'test_data.am')
+            self.am_segmentation = am.AmiraMeshSegmentation(self.am_file)
+
+    def read_seg(self):
+        """Read .seg files"""
+        if not hasattr(self, 'seg_file'):
+            self.seg_file = os.path.join(self.segmentations_path, 'test_data.seg')
+            self.seg_segmentation = seg.SeggerSegmentation(self.seg_file)
+
+    def read_map(self):
+        """Read .seg files"""
+        if not hasattr(self, 'map_file'):
+            self.map_file = os.path.join(self.segmentations_path, 'test_data.map')
+            self.map_segmentation = map.MapSegmentation([self.map_file])
+
+    def read_map_multi(self):
+        """Read .map multi files"""
+        if not hasattr(self, 'map_multi0_file'):
+            self.map_multi0_file = os.path.join(self.segmentations_path, 'test_data_multi0.map')
+            self.map_multi1_file = os.path.join(self.segmentations_path, 'test_data_multi1.map')
+            self.map_multi2_file = os.path.join(self.segmentations_path, 'test_data_multi2.map')
+            self.map_multi_segmentation = map.MapSegmentation(
+                [self.map_multi0_file, self.map_multi1_file, self.map_multi2_file]
+            )
+
+    def read_mod(self):
+        """Read .mod files"""
+        if not hasattr(self, 'mod_file'):
+            self.mod_file = os.path.join(self.segmentations_path, 'test_data.mod')
+            self.mod_segmentation = mod.IMODSegmentation(self.mod_file)
+            # self.mod_file = '/Users/pkorir/data/for_debugging/mod/input_file.mod' # -25 multiple
+            # self.mod_file = '/Users/pkorir/data/segmentations/mod/test10.mod' # -23
+
+    def read_stl(self):
+        """Read .stl files"""
+        if not hasattr(self, 'stl_file'):
+            self.stl_file = os.path.join(self.segmentations_path, 'test_data.stl')
+            self.stl_segmentation = stl.STLSegmentation([self.stl_file])
+
+    def read_stl_multi(self):
+        """Read .stl multi files"""
+        if not hasattr(self, 'stl_multi0_file'):
+            self.stl_multi0_file = os.path.join(self.segmentations_path, 'test_data_multi0.stl')
+            self.stl_multi1_file = os.path.join(self.segmentations_path, 'test_data_multi1.stl')
+            self.stl_multi2_file = os.path.join(self.segmentations_path, 'test_data_multi2.stl')
+            self.stl_multi_segmentation = stl.STLSegmentation(
+                [self.stl_multi0_file, self.stl_multi1_file, self.stl_multi2_file]
+            )
+
+    def read_surf(self):
+        """Read .surf files"""
+        if not hasattr(self, 'surf_file'):
+            self.surf_file = os.path.join(self.segmentations_path, 'test_data.surf')
+            self.surf_segmentation = surf.AmiraHyperSurfaceSegmentation(self.surf_file)
+
+    def read_survos(self):
+        """Read SuRVoS .h5 files"""
+        if not hasattr(self, 'survos_file'):
+            self.survos_file = os.path.join(self.segmentations_path, 'test_data.h5')
+            self.survos_segmentation = survos.SuRVoSSegmentation(self.survos_file)
 
     # read
     def test_am_read(self):
         """Read an AmiraMesh (.am) segmentation"""
+        self.read_am()
         # assertions
         self.assertIsInstance(self.am_segmentation.header, am.AmiraMeshHeader)
         self.assertIsInstance(self.am_segmentation.segments, list)
@@ -76,6 +106,7 @@ class TestFormats(Py23FixTestCase):
 
     def test_seg_read(self):
         """Read a Segger (.seg) segmentation"""
+        self.read_seg()
         # assertions
         self.assertIsInstance(self.seg_segmentation.header, seg.SeggerHeader)
         self.assertIsInstance(self.seg_segmentation.segments, list)
@@ -83,6 +114,7 @@ class TestFormats(Py23FixTestCase):
 
     def test_map_read(self):
         """Read an EMDB Map mask (.map) segmentation"""
+        self.read_map()
         # assertions
         self.assertIsInstance(self.map_segmentation.header, map.MapHeader)
         self.assertIsInstance(self.map_segmentation.segments, list)
@@ -90,6 +122,7 @@ class TestFormats(Py23FixTestCase):
 
     def test_mod_read(self):
         """Read an IMOD (.mod) segmentation"""
+        self.read_mod()
         # assertions
         self.assertIsInstance(self.mod_segmentation.header, mod.IMODHeader)
         self.assertIsInstance(self.mod_segmentation.segments, list)
@@ -97,6 +130,7 @@ class TestFormats(Py23FixTestCase):
 
     def test_stl_read(self):
         """Read a Stereo Lithography (.stl) segmentation"""
+        self.read_stl()
         # assertions
         self.assertIsInstance(self.stl_segmentation.header, stl.STLHeader)
         self.assertIsInstance(self.stl_segmentation.segments, list)
@@ -104,6 +138,7 @@ class TestFormats(Py23FixTestCase):
 
     def test_surf_read(self):
         """Read a HyperSurface (.surf) segmentation"""
+        self.read_surf()
         # assertions
         self.assertIsInstance(self.surf_segmentation.header, surf.AmiraHyperSurfaceHeader)
         self.assertIsInstance(self.surf_segmentation.segments, list)
@@ -111,6 +146,7 @@ class TestFormats(Py23FixTestCase):
 
     def test_survos_read(self):
         """Read a SuRVoS (.h5) segmentation"""
+        self.read_survos()
         segmentation = self.survos_segmentation
         self.assertIsInstance(segmentation, survos.SuRVoSSegmentation)
         self.assertIsInstance(segmentation.segments, list)
@@ -120,113 +156,209 @@ class TestFormats(Py23FixTestCase):
     # convert
     def test_am_convert(self):
         """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
+        self.read_am()
         args, configs = parse_args('convert {}'.format(self.am_file), use_shlex=True)
-        sff_segmentation = self.am_segmentation.convert(args, configs)
+        seg = self.am_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'AmiraMesh Segmentation')
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'Amira')
-        self.assertEqual(sff_segmentation.software_list[0].version, self.am_segmentation.header.version)
-        # self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.am_file)))
-        self.assertEqual(sff_segmentation.primary_descriptor, 'three_d_volume')
-        self.assertEqual(sff_segmentation.transforms[0].id, 0)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'AmiraMesh Segmentation')
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'Amira')
+        self.assertEqual(seg.software_list[0].version, self.am_segmentation.header.version)
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
 
     def test_seg_convert(self):
         """Convert a segmentation from a Segger file to an SFFSegmentation object"""
+        self.read_seg()
         args, configs = parse_args('convert {}'.format(self.seg_file), use_shlex=True)
-        sff_segmentation = self.seg_segmentation.convert(args, configs)
+        seg = self.seg_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'Segger Segmentation')
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'segger')
-        self.assertEqual(sff_segmentation.software_list[0].version, self.seg_segmentation.header.version)
-        # self.assertEqual(sff_segmentation.filePath, os.path.dirname(os.path.abspath(self.seg_file)))
-        self.assertEqual(sff_segmentation.primary_descriptor, 'three_d_volume')
-        self.assertEqual(sff_segmentation.transform_list[0].id, 0)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'Segger Segmentation')
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'segger')
+        self.assertEqual(seg.software_list[0].version, self.seg_segmentation.header.version)
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
 
     def test_map_convert(self):
         """Convert a segmentation from an EMDB Map mask file to an SFFSegmentation object"""
+        self.read_map()
         args, configs = parse_args('convert {}'.format(self.map_file), use_shlex=True)
-        sff_segmentation = self.map_segmentation.convert(args, configs)
+        seg = self.map_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'CCP4 mask segmentation')  # might have an extra space at the end
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'Undefined')
-        self.assertEqual(sff_segmentation.primary_descriptor, 'three_d_volume')
-        self.assertEqual(sff_segmentation.transform_list[0].id, 0)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'CCP4 mask segmentation')  # might have an extra space at the end
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'Undefined')
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
 
     def test_map_multi_convert(self):
         """Convert several EMDB Map mask files to a single SFFSegmentation object"""
+        self.read_map_multi()
         args, configs = parse_args(
             'convert -m {}'.format(' '.join([self.map_multi0_file, self.map_multi1_file, self.map_multi2_file])),
             use_shlex=True)
-        sff_segmentation = self.map_multi_segmentation.convert(args, configs)
+        seg = self.map_multi_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'CCP4 mask segmentation')  # might have an extra space at the end
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'Undefined')
-        self.assertEqual(sff_segmentation.primary_descriptor, 'three_d_volume')
-        self.assertEqual(sff_segmentation.transform_list[0].id, 0)
-        self.assertEqual(len(sff_segmentation.segment_list), 3)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'CCP4 mask segmentation')  # might have an extra space at the end
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'Undefined')
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual(len(seg.segment_list), 3)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
 
     def test_mod_convert(self):
         """Convert a segmentation from an IMOD file to an SFFSegmentation object"""
+        self.read_mod()
         args, configs = parse_args('convert {}'.format(self.mod_file), use_shlex=True)
-        sff_segmentation = self.mod_segmentation.convert(args, configs)
+        seg = self.mod_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'IMOD-NewModel')
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'IMOD')
-        self.assertEqual(sff_segmentation.primary_descriptor, 'mesh_list')
-        self.assertEqual(sff_segmentation.transforms[0].id, 0)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'IMOD-NewModel')
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'IMOD')
+        self.assertEqual(seg.primary_descriptor, 'mesh_list')
+        self.assertEqual(seg.transforms[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertGreaterEqual(len(segment.mesh_list), 1)
+        mesh = segment.mesh_list[0]
+        self.assertIsNotNone(mesh.vertices)
+        self.assertGreater(len(mesh.vertices.data), 1)
+        self.assertIsNotNone(mesh.triangles)
+        self.assertGreater(len(mesh.triangles.data), 1)
 
     def test_stl_convert(self):
         """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""
+        self.read_stl()
         args, configs = parse_args('convert {}'.format(self.stl_file), use_shlex=True)
-        sff_segmentation = self.stl_segmentation.convert(args, configs)
+        seg = self.stl_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'STL Segmentation')
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'Unknown')
-        self.assertEqual(sff_segmentation.primary_descriptor, 'mesh_list')
-        self.assertEqual(sff_segmentation.transform_list[0].id, 0)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'STL Segmentation')
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'Unknown')
+        self.assertEqual(seg.primary_descriptor, 'mesh_list')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertGreaterEqual(len(segment.mesh_list), 1)
+        mesh = segment.mesh_list[0]
+        self.assertIsNotNone(mesh.vertices)
+        self.assertGreater(len(mesh.vertices.data), 1)
+        self.assertIsNotNone(mesh.triangles)
+        self.assertGreater(len(mesh.triangles.data), 1)
 
     def test_stl_multi_convert(self):
         """Convert several STL files into a single SFFSegmentation object"""
+        self.read_stl_multi()
         args, configs = parse_args(
             'convert -m {}'.format(' '.join([self.stl_multi0_file, self.stl_multi1_file, self.stl_multi2_file])),
             use_shlex=True)
-        sff_segmentation = self.stl_multi_segmentation.convert(args, configs)
+        seg = self.stl_multi_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'STL Segmentation')
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'Unknown')
-        self.assertEqual(sff_segmentation.primary_descriptor, 'mesh_list')
-        self.assertEqual(sff_segmentation.transform_list[0].id, 0)
-        self.assertEqual(len(sff_segmentation.segments), 3)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'STL Segmentation')
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'Unknown')
+        self.assertEqual(seg.primary_descriptor, 'mesh_list')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual(len(seg.segments), 3)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertGreaterEqual(len(segment.mesh_list), 1)
+        mesh = segment.mesh_list[0]
+        self.assertIsNotNone(mesh.vertices)
+        self.assertGreater(len(mesh.vertices.data), 1)
+        self.assertIsNotNone(mesh.triangles)
+        self.assertGreater(len(mesh.triangles.data), 1)
 
     def test_surf_convert(self):
         """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
+        self.read_surf()
         args, configs = parse_args('convert {}'.format(self.surf_file), use_shlex=True)
-        sff_segmentation = self.surf_segmentation.convert(args, configs)
+        seg = self.surf_segmentation.convert(args, configs)
         # assertions
-        self.assertIsInstance(sff_segmentation, schema.SFFSegmentation)
-        self.assertEqual(sff_segmentation.name, 'Amira HyperSurface Segmentation')
-        self.assertEqual(sff_segmentation.version, self.schema_version)
-        self.assertEqual(sff_segmentation.software_list[0].name, 'Amira')
-        self.assertEqual(sff_segmentation.software_list[0].version, self.surf_segmentation.header.version)
-        self.assertEqual(sff_segmentation.primary_descriptor, 'mesh_list')
-        self.assertEqual(sff_segmentation.transform_list[0].id, 0)
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'Amira HyperSurface Segmentation')
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'Amira')
+        self.assertEqual(seg.software_list[0].version, self.surf_segmentation.header.version)
+        self.assertEqual(seg.primary_descriptor, 'mesh_list')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertGreaterEqual(len(segment.mesh_list), 1)
+        mesh = segment.mesh_list[0]
+        self.assertIsNotNone(mesh.vertices)
+        self.assertGreater(len(mesh.vertices.data), 1)
+        self.assertIsNotNone(mesh.triangles)
+        self.assertGreater(len(mesh.triangles.data), 1)
 
     def test_survos_convert(self):
         """Convert a segmentation from SuRVoS to SFFSegmentation object"""
+        self.read_survos()
         args, configs = parse_args('convert {}'.format(self.survos_file), use_shlex=True)
         seg = self.survos_segmentation.convert(args, configs)
         self.assertIsInstance(seg, schema.SFFSegmentation)

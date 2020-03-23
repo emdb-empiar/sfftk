@@ -168,8 +168,7 @@ class MapSegment(Segment):
         )
         segment = schema.SFFSegment()
         segment.biological_annotation, segment.colour = self.annotation.convert()
-        # segment.volume = self.volume.convert()
-        segment.volume = schema.SFFThreeDVolume(
+        segment.three_d_volume = schema.SFFThreeDVolume(
             lattice_id=lattice.id,
             value=1.0,
         )
@@ -239,14 +238,6 @@ class MapHeader(Header):
             raise ValueError("Fourier transform instead of segmentation")
         elif 0 <= self._mode <= 2:
             return MODE_STRING[self._mode]
-
-
-#
-#     def convert(self, *args, **kwargs):
-#         """Convert this object into an EMDB-SFF segmentation header
-#
-#         Currently  not implement"""
-#         pass
 
 
 class MapSegmentation(Segmentation):

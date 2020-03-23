@@ -9,3 +9,6 @@ omit =
     sfftk/unittests/*
     sfftk/sff.py
     sfftk/core/__init__.py
+
+[report]
+sort = Cover

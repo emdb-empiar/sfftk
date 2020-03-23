@@ -47,7 +47,7 @@ class SeggerAnnotation(Annotation):
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
         annotation.description = self.description
-        annotation.numberOfInstances = 1
+        annotation.number_of_instances = 1
         # colour = schema.SFFColour()
         r, g, b, a = self.colour
         colour = schema.SFFRGBA(
@@ -110,14 +110,14 @@ class SeggerSegment(Segment):
         """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.id = self.region_id
-        segment.parentID = self.parent_id
+        segment.parent_id = self.parent_id
         # annotation
-        segment.annotation, segment.colour = self.annotation.convert()
+        segment.biological_annotation, segment.colour = self.annotation.convert()
         # geometry
         # segment.volume = self.volume.convert()
-        segment.volume = schema.SFFThreeDVolume()
-        segment.volume.latticeId = 0
-        segment.volume.value = self.region_id
+        segment.three_d_volume = schema.SFFThreeDVolume()
+        segment.three_d_volume.lattice_id = 0
+        segment.three_d_volume.value = self.region_id
         return segment
 
 
@@ -226,13 +226,7 @@ class SeggerSegmentation(Segmentation):
         segmentation.transform_list = schema.SFFTransformList()
         segmentation.transform_list.append(
             schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
-            # schema.SFFTransformationMatrix(
-            # rows=3,
-            # cols=4,
-            # data=" ".join(map(str, self.header.ijk_to_xyz_transform.flatten().tolist()))
-            # ).from_array(self.header.ijk_to_xyz_transform)
         )
-        # # segmentation.filePath = self.header.file_path
         segmentation.primary_descriptor = "three_d_volume"
         segments = schema.SFFSegmentList()
         for s in self.segments:
