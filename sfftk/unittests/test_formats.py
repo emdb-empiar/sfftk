@@ -62,10 +62,10 @@ class TestFormats(Py23FixTestCase):
     def read_mod(self):
         """Read .mod files"""
         if not hasattr(self, 'mod_file'):
-            self.mod_file = os.path.join(self.segmentations_path, 'test_data.mod')
-            self.mod_segmentation = mod.IMODSegmentation(self.mod_file)
+            # self.mod_file = os.path.join(self.segmentations_path, 'test_data.mod')
             # self.mod_file = '/Users/pkorir/data/for_debugging/mod/input_file.mod' # -25 multiple
-            # self.mod_file = '/Users/pkorir/data/segmentations/mod/test10.mod' # -23
+            self.mod_file = '/Users/pkorir/data/segmentations/mod/test10.mod' # -23
+            self.mod_segmentation = mod.IMODSegmentation(self.mod_file)
 
     def read_stl(self):
         """Read .stl files"""
@@ -279,6 +279,8 @@ class TestFormats(Py23FixTestCase):
         self.assertGreater(len(mesh.vertices.data), 1)
         self.assertIsNotNone(mesh.triangles)
         self.assertGreater(len(mesh.triangles.data), 1)
+        vertex_ids = set(mesh.triangles.data_array.flatten().tolist())
+        self.assertEqual(max(vertex_ids), mesh.vertices.num_vertices - 1)
 
     def test_stl_convert(self):
         """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""
@@ -303,6 +305,8 @@ class TestFormats(Py23FixTestCase):
         self.assertGreater(len(mesh.vertices.data), 1)
         self.assertIsNotNone(mesh.triangles)
         self.assertGreater(len(mesh.triangles.data), 1)
+        vertex_ids = set(mesh.triangles.data_array.flatten().tolist())
+        self.assertEqual(max(vertex_ids), mesh.vertices.num_vertices - 1)
 
     def test_stl_multi_convert(self):
         """Convert several STL files into a single SFFSegmentation object"""
@@ -330,6 +334,8 @@ class TestFormats(Py23FixTestCase):
         self.assertGreater(len(mesh.vertices.data), 1)
         self.assertIsNotNone(mesh.triangles)
         self.assertGreater(len(mesh.triangles.data), 1)
+        vertex_ids = set(mesh.triangles.data_array.flatten().tolist())
+        self.assertEqual(max(vertex_ids), mesh.vertices.num_vertices - 1)
 
     def test_surf_convert(self):
         """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
@@ -355,6 +361,8 @@ class TestFormats(Py23FixTestCase):
         self.assertGreater(len(mesh.vertices.data), 1)
         self.assertIsNotNone(mesh.triangles)
         self.assertGreater(len(mesh.triangles.data), 1)
+        vertex_ids = set(mesh.triangles.data_array.flatten().tolist())
+        self.assertEqual(max(vertex_ids), mesh.vertices.num_vertices - 1)
 
     def test_survos_convert(self):
         """Convert a segmentation from SuRVoS to SFFSegmentation object"""

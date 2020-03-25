@@ -14,7 +14,12 @@ SFFTK_AUTHOR = u"Paul K. Korir, PhD"
 SFFTK_AUTHOR_EMAIL = u"pkorir@ebi.ac.uk, paul.korir@gmail.com"
 SFFTK_DESCRIPTION = u"Toolkit for working with EMDB-SFF and other segmentation file formats"
 SFFTK_DESCRIPTION_CONTENT_TYPE = u'text/x-rst; charset=UTF-8'
-SFFTK_URL = u"http://sfftk.readthedocs.io/en/latest/index.html"
+SFFTK_URL = u"https://emdb-empiar.github.io/EMDB-SFF/"
+SFFTK_PROJECT_URLS = {
+    u"Report Issues": u"https://github.com/emdb-empiar/sfftk/issues",
+    u"Documentation": u"http://sfftk.readthedocs.io/en/latest/index.html",
+    u"Souce Code": u"https://github.com/emdb-empiar/sfftk"
+}
 SFFTK_LICENSE = u"Apache License"
 SFFTK_KEYWORDS = u"EMDB-SFF, SFF, segmentation"
 SFFTK_CLASSIFIERS = [
@@ -58,6 +63,7 @@ if sys.version_info[0] > 2:
         long_description=long_description,
         long_description_content_type=SFFTK_DESCRIPTION_CONTENT_TYPE,
         url=SFFTK_URL,
+        project_urls=SFFTK_PROJECT_URLS,
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy"],
@@ -83,6 +89,7 @@ else:
         long_description=long_description,
         long_description_content_type=SFFTK_DESCRIPTION_CONTENT_TYPE,
         url=SFFTK_URL,
+        project_urls=SFFTK_PROJECT_URLS,
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy<1.17"],

@@ -41,7 +41,8 @@ class IMODMesh(object):
             _triangles = list(filter(lambda i: i >= 0, self._mesh.list))
             surface_vertices = self._mesh.vert[::2]
             normal_vertices = self._mesh.vert[1::2]
-            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3)
+            # divide by 2 because indices now point every second
+            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3) // 2
             self._surface_vertices = numpy.array(surface_vertices)
             self._normal_vertices = numpy.array(normal_vertices)
         elif _id_type == -23:
@@ -51,7 +52,7 @@ class IMODMesh(object):
             _triangles = mixed_indices[1::2]
             surface_vertices = self._mesh.vert[::2]
             normal_vertices = self._mesh.vert[1::2]
-            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3)
+            self._triangles = numpy.array(_triangles).reshape(len(_triangles) // 3, 3) // 2
             self._surface_vertices = numpy.array(surface_vertices)
             self._normal_vertices = numpy.array(normal_vertices)
         elif _id_type == -21:
