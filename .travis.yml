@@ -28,8 +28,8 @@ install:
 #  - sff --help
 
 script:
-  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
-#  - pytest --cov=./sfftk sfftk/unittests
+  - pytest --cov=./sfftk sfftk/unittests
+#  - coverage run --include="/home/travis/build/emdb-empiar/sfftk/sfftk/*" --omit="/home/travis/build/emdb-empiar/sfftk/sfftk/test_data","/home/travis/build/emdb-empiar/sfftk/sfftk/unittests" `which sff` tests all -v 3
 
 after_success:
   - coveralls
