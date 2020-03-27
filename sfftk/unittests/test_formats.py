@@ -63,7 +63,7 @@ class TestFormats(Py23FixTestCase):
         """Read .mod files"""
         if not hasattr(self, 'mod_file'):
             self.mod_file = os.path.join(self.segmentations_path, 'test_data.mod')
-            self.mod_file = '/Users/pkorir/data/for_debugging/mod/input_file.mod' # -25 multiple
+            # self.mod_file = '/Users/pkorir/data/for_debugging/mod/input_file.mod' # -25 multiple
             # self.mod_file = '/Users/pkorir/data/segmentations/mod/test10.mod' # -23
             self.mod_segmentation = mod.IMODSegmentation(self.mod_file)
 
