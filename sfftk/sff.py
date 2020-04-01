@@ -467,7 +467,8 @@ def _module_test_runner(mod, args):
     """
     import unittest
     suite = unittest.TestLoader().loadTestsFromModule(mod)
-    unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
+    if not args.dry_run:
+        unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
     return os.EX_OK
 
 
@@ -480,7 +481,8 @@ def _testcase_test_runner(tc, args):
     """
     import unittest
     suite = unittest.TestLoader().loadTestsFromTestCase(tc)
-    unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
+    if not args.dry_run:
+        unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
     return os.EX_OK
 
 
@@ -496,7 +498,8 @@ def _discover_test_runner(path, args, top_level_dir=None):
     """
     import unittest
     suite = unittest.TestLoader().discover(path, top_level_dir=top_level_dir)
-    unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
+    if not args.dry_run:
+        unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
     return os.EX_OK
 
 
@@ -511,19 +514,26 @@ def handle_tests(args, configs):
     :rtype exit_status: int
     """
     if 'all' in args.tool:
+        # sfftk-rw tests
+        sffrw.handle_tests(args)
+        # sfftk tests
         from .unittests import test_main
         _module_test_runner(test_main, args)
         _discover_test_runner("sfftk.unittests", args)
     else:
         if 'main' in args.tool:
+            sffrw.handle_tests(args)
+        if 'core' in args.tool:
+            sffrw.handle_tests(args)
+        if 'schema' in args.tool:
+            sffrw.handle_tests(args)
+        if 'all_sfftk' in args.tool:
             from .unittests import test_main
             _module_test_runner(test_main, args)
-        if 'core' in args.tool:
-            from .unittests import test_core
-            _module_test_runner(test_core, args)
-        if 'schema' in args.tool:
-            from .unittests import test_schema
-            _module_test_runner(test_schema, args)
+            _discover_test_runner("sfftk.unittests", args)
+        if 'main_sfftk' in args.tool:
+            from .unittests import test_main
+            _module_test_runner(test_main, args)
         if 'formats' in args.tool:
             from .unittests import test_formats
             _module_test_runner(test_formats, args)
@@ -533,7 +543,7 @@ def handle_tests(args, configs):
         if 'notes' in args.tool:
             from .unittests import test_notes
             _module_test_runner(test_notes, args)
-    return os.EX_OK
+        return os.EX_OK
 
 
 def main():

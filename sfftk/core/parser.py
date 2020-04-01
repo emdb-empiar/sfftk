@@ -16,7 +16,7 @@ from copy import deepcopy
 
 from sfftkrw.core import _dict_iter_keys, _decode, _input, _str
 # extend the sfftkrw Parser object
-from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, add_args
+from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, tests_parser, tool_list, add_args
 from sfftkrw.core.print_tools import print_date
 
 from ..notes import RESOURCE_LIST
@@ -32,21 +32,6 @@ prepable_file_formats = ['mrc', 'map', 'rec']
 rescalable_file_formats = ['stl']
 
 Parser.description = u"The EMDB-SFF Toolkit (sfftk)"
-# Parser = argparse.ArgumentParser(
-#     prog='sff', description="The EMDB-SFF Toolkit (sfftk)")
-# Parser.add_argument(
-#     '-V', '--version',
-#     action='store_true',
-#     default=False,
-#     help='show the sfftk version string and the supported EMDB-SFF version string',
-# )
-
-# subparsers = Parser.add_subparsers(
-#     title='Tools',
-#     dest='subcommand',
-#     description='The EMDB-SFF Toolkit (sfftk) provides the following tools:',
-#     metavar="EMDB-SFF tools"
-# )
 
 # =========================================================================
 # common arguments
@@ -870,17 +855,17 @@ add_args(trash_notes_parser, shipped_configs)
 # get the full list of tools from the Parser object
 # tool_list = Parser._actions[1].choices.keys()
 # print(tool_list)
-tool_list = ['all', 'core', 'formats', 'notes', 'readers', 'schema', 'main']
+tool_list += ['all_sfftk', 'main_sfftk', 'formats', 'notes', 'readers']
 
 # tests
+# on inspection the second action is the tests action
+tests_parser_tools = tests_parser._actions[1]
 test_help = "one or none of the following: {}".format(", ".join(tool_list))
-tests_parser = subparsers.add_parser(
-    'tests', description="Run unit tests", help="run unit tests")
-tests_parser.add_argument('tool', nargs='+', help=test_help)
+# update the help
+tests_parser_tools.help = test_help
+# add config paths
 add_args(tests_parser, config_path)
 add_args(tests_parser, shipped_configs)
-tests_parser.add_argument('-v', '--verbosity', default=1, type=int,
-                          help="set verbosity; valid values: %s [default: 0]" % ", ".join(map(str, verbosity_range)))
 
 
 def check_multi_file_formats(file_names):
@@ -1173,6 +1158,9 @@ def parse_args(_args, use_shlex=False):
         # if 'all' is specified together with others then it should simply be 'all'
         if 'all' in args.tool:
             args.tool = ['all']
+        # same for 'all_sfftk' but only if 'all' not present
+        if 'all_sfftk' in args.tool and 'all' not in args.tool:
+            args.tool = ['all_sfftk']
         # if isinstance(args.tool, list):
         for tool in args.tool:
             try:

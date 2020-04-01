@@ -1072,8 +1072,8 @@ class TestCoreParserTests(Py23FixTestCase):
             tools.add(random.choice(tool_list))
         tools = list(tools)
         # normalise
-        if 'all' in tools:
-            tools = ['all']
+        if 'all_sfftk' in tools:
+            tools = ['all_sfftk']
         args, _ = parse_args("tests {}".format(' '.join(tools)), use_shlex=True)
         self.assertCountEqual(args.tool, tools)
 
@@ -1089,22 +1089,22 @@ class TestCoreParserTests(Py23FixTestCase):
 
     def test_valid_verbosity(self):
         """Test valid verbosity"""
-        args, _ = parse_args("tests all -v 0", use_shlex=True)
+        args, _ = parse_args("tests all_sfftk -v 0", use_shlex=True)
         self.assertEqual(args.verbosity, 0)
-        args, _ = parse_args("tests all -v 1", use_shlex=True)
+        args, _ = parse_args("tests all_sfftk -v 1", use_shlex=True)
         self.assertEqual(args.verbosity, 1)
-        args, _ = parse_args("tests all -v 2", use_shlex=True)
+        args, _ = parse_args("tests all_sfftk -v 2", use_shlex=True)
         self.assertEqual(args.verbosity, 2)
-        args, _ = parse_args("tests all -v 3", use_shlex=True)
+        args, _ = parse_args("tests all_sfftk -v 3", use_shlex=True)
         self.assertEqual(args.verbosity, 3)
 
     def test_invalid_verbosity(self):
         """Test that verbosity is in [0,3]"""
         v1 = _random_integer(start=4)
-        args, _ = parse_args("tests all -v {}".format(v1), use_shlex=True)
+        args, _ = parse_args("tests all_sfftk -v {}".format(v1), use_shlex=True)
         self.assertEqual(args, os.EX_USAGE)
         v2 = -_random_integer(start=0)
-        args, _ = parse_args("tests all -v {}".format(v2), use_shlex=True)
+        args, _ = parse_args("tests all_sfftk -v {}".format(v2), use_shlex=True)
         self.assertEqual(args, os.EX_USAGE)
 
 
