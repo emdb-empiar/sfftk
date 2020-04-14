@@ -1159,7 +1159,7 @@ def parse_args(_args, use_shlex=False):
         if 'all' in args.tool:
             args.tool = ['all']
         # same for 'all_sfftk' but only if 'all' not present
-        if 'all_sfftk' in args.tool and 'all' not in args.tool:
+        elif 'all_sfftk' in args.tool:
             args.tool = ['all_sfftk']
         # if isinstance(args.tool, list):
         for tool in args.tool:

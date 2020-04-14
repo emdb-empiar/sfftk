@@ -1072,9 +1072,12 @@ class TestCoreParserTests(Py23FixTestCase):
             tools.add(random.choice(tool_list))
         tools = list(tools)
         # normalise
-        if 'all_sfftk' in tools:
+        if 'all' in tools:
+            tools = ['all']
+        elif 'all_sfftk' in tools:
             tools = ['all_sfftk']
         args, _ = parse_args("tests {}".format(' '.join(tools)), use_shlex=True)
+        self.stderr(args.tool, tools)
         self.assertCountEqual(args.tool, tools)
 
     def test_tool_fail(self):
