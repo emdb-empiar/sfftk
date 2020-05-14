@@ -25,7 +25,8 @@ before_install:
   - pip install pytest-cov
 
 install:
-  - python setup.py develop
+  - pip install -e .
+#  - python setup.py develop
 #  - sff --help
 
 script:
