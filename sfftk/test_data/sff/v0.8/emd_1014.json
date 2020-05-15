@@ -30,7 +30,16 @@
     "ymin": 0.0,
     "zmin": 0.0
   },
-  "global_external_references": [],
+  "global_external_references": [
+    {
+      "id": 0,
+      "resource": "ncit",
+      "url": "http://purl.obolibrary.org/obo/NCIT_C78815",
+      "accession": "NCIT_C78815",
+      "label": "Focused Ion Beam-Scanning Electron Microscope",
+      "description": "An instrument that combines the use of a focused beam of gallium ions to etch or coat a sample with a scanning electron microscope to image the sample."
+    }
+  ],
   "segment_list": [
     {
       "id": 15559,

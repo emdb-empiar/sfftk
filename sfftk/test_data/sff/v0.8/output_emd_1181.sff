@@ -22,16 +22,18 @@
         </transformation_matrix>
     </transform_list>
     <primary_descriptor>three_d_volume</primary_descriptor>
-    <global_external_references/>
+    <global_external_references>
+        <ref id="0" resource="ncit" url="http://purl.obolibrary.org/obo/NCIT_C78815" accession="NCIT_C78815" label="Focused Ion Beam-Scanning Electron Microscope" description="An instrument that combines the use of a focused beam of gallium ions to etch or coat a sample with a scanning electron microscope to image the sample."/>
+    </global_external_references>
     <segment_list>
         <segment id="15559" parent_id="0">
             <biological_annotation>
-                <name>view exhaust chills</name>
-                <description>Hac consectetuer aliquet ullamcorper libero, tation soluta facilisisat nascetur facilisi quam malesuadanullam congue. Risus duo sedfusce.</description>
+                <name>regions mast measurements</name>
+                <description>Duo ad vel ultrices viverra, facilisisat dolor nunccurabitur massa id platea etiam. Clita tortor fringilla iaculis, elementum veniam odio nobis doming maecenas.</description>
                 <external_references>
-                    <ref id="0" resource="freshwater" url="pocket" accession="passenger"/>
+                    <ref id="0" resource="abettors" url="searches" accession="crowns"/>
                 </external_references>
-                <number_of_instances>289</number_of_instances>
+                <number_of_instances>981</number_of_instances>
             </biological_annotation>
             <colour>
                 <red>0.921817600727081</red>

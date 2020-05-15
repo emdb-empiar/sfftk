@@ -522,13 +522,13 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertEqual(seg.software_list[1].name, software_name)
         self.assertEqual(seg.software_list[1].version, software_version)
         self.assertEqual(seg.software_list[1].processing_details, software_processing_details)
-        self.assertEqual(len(seg.global_external_references), 2)
-        self.assertEqual(seg.global_external_references[0].resource, extref1[0])
-        self.assertEqual(seg.global_external_references[0].url, extref1[1])
-        self.assertEqual(seg.global_external_references[0].accession, extref1[2])
-        self.assertEqual(seg.global_external_references[1].resource, extref2[0])
-        self.assertEqual(seg.global_external_references[1].url, extref2[1])
-        self.assertEqual(seg.global_external_references[1].accession, extref2[2])
+        self.assertEqual(len(seg.global_external_references), 3)
+        self.assertEqual(seg.global_external_references[1].resource, extref1[0])
+        self.assertEqual(seg.global_external_references[1].url, extref1[1])
+        self.assertEqual(seg.global_external_references[1].accession, extref1[2])
+        self.assertEqual(seg.global_external_references[2].resource, extref2[0])
+        self.assertEqual(seg.global_external_references[2].url, extref2[1])
+        self.assertEqual(seg.global_external_references[2].accession, extref2[2])
 
     def _test_add(self):
         """Test adding segment notes"""
@@ -727,7 +727,7 @@ class TestNotes_modify(Py23FixTestCase):
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
         self.assertIsNone(seg.details)
         self.assertEqual(len(seg.software_list), 1)
-        self.assertEqual(len(seg.global_external_references), os.EX_OK)
+        self.assertEqual(len(seg.global_external_references), 1)
 
     def _test_del(self):
         # add
@@ -977,7 +977,6 @@ class TestNotes_modify_hff(TestNotes_modify):
     def test_clear(self):
         super(TestNotes_modify_hff, self)._test_clear()
 
-    # fixme: can't figure out why this fails
     def test_copy(self):
         super(TestNotes_modify_hff, self)._test_copy()
 
