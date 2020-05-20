@@ -56,12 +56,12 @@ class SeggerSegmentation(object):
         """
         self._seg_handler = h5py.File(fn, 'r', *args, **kwargs)
         # region/parent ids
-        self._region_ids = self._seg_handler['region_ids'][()]
-        self._parent_ids = self._seg_handler['parent_ids'][()]
+        self._region_ids = self._seg_handler['region_ids'][()].astype(int)
+        self._parent_ids = self._seg_handler['parent_ids'][()].astype(int)
         self._zipped_region_parent_ids = list(zip(self._region_ids, self._parent_ids))
         self._region_parent_dict = dict(self._zipped_region_parent_ids)
         # colours
-        self._region_colours = self._seg_handler['region_colors'][()]
+        self._region_colours = self._seg_handler['region_colors'][()].astype(float)
         self._region_colours_dict = dict(zip(self._region_ids, self._region_colours))
         self._parent_region_dict = _dict()
         for r, p in self._zipped_region_parent_ids:
@@ -106,12 +106,12 @@ class SeggerSegmentation(object):
     @property
     def format_version(self):
         """Format version"""
-        return self._seg_handler.attrs['format_version']
+        return self._seg_handler.attrs['format_version'].astype(int)
 
     @property
     def ijk_to_xyz_transform(self):
         """Image-to-physical space transform"""
-        return self._seg_handler.attrs['ijk_to_xyz_transform']
+        return self._seg_handler.attrs['ijk_to_xyz_transform'].astype(float)
 
     @property
     def map_level(self):
@@ -119,12 +119,12 @@ class SeggerSegmentation(object):
         """
         :TODO: verify if this is the contour level
         """
-        return self._seg_handler.attrs['map_level']
+        return self._seg_handler.attrs['map_level'].astype(float)
 
     @property
     def map_path(self):
         """Path to map file"""
-        return self._seg_handler.attrs['map_path']
+        return _decode(self._seg_handler.attrs['map_path'], 'utf-8')
 
     @property
     def map_size(self):
@@ -133,7 +133,7 @@ class SeggerSegmentation(object):
         :TODO: is the I, J, K notation correct?
         """
         try:
-            return self._seg_handler.attrs['map_size']
+            return self._seg_handler.attrs['map_size'].astype(int)
         except KeyError:
             return self._seg_handler['mask'][()].shape
 

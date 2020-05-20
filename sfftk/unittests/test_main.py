@@ -8,6 +8,7 @@ Unit tests for convert subcommand
 from __future__ import division
 
 import glob
+import json
 import os
 
 from sfftkrw.unittests import Py23FixTestCase
@@ -40,6 +41,10 @@ class TestMain_handle_convert(Py23FixTestCase):
         super(TestMain_handle_convert, self).tearDown()
         for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')):
             os.remove(s)
+        for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.json')):
+            os.remove(s)
+        for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.hff')):
+            os.remove(s)
 
     def test_seg(self):
         """Test that we can convert .seg"""
@@ -51,6 +56,17 @@ class TestMain_handle_convert(Py23FixTestCase):
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry for JSON
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.seg'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
 
     def test_mod(self):
         """Test that we can convert .mod"""
@@ -62,6 +78,19 @@ class TestMain_handle_convert(Py23FixTestCase):
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry option for JSON
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_file = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_file[0], 'r') as f:
+            data = json.load(f)
+        # ensure that the mesh_list is empty
+        self.assertEqual(len(data[u'segment_list'][0][u'mesh_list']), 0)
+        self.assertEqual(len(data[u'segment_list'][0][u'shape_primitive_list']), 0)
 
     def test_am(self):
         """Test that we can convert .am"""
@@ -73,6 +102,40 @@ class TestMain_handle_convert(Py23FixTestCase):
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry for JSON
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.am'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
+
+    def test_stl(self):
+        """Test that we can convert .stl"""
+        args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_file = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(len(sff_file), 1)
+        # with --exclude-geometry option for JSON
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_file = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_file[0], 'r') as f:
+            data = json.load(f)
+        # ensure that the mesh_list is empty
+        self.assertEqual(len(data[u'segment_list'][0][u'mesh_list']), 0)
 
     def test_surf(self):
         """Test that we can convert .surf"""
@@ -84,6 +147,18 @@ class TestMain_handle_convert(Py23FixTestCase):
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry option for JSON
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.surf'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_file = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_file[0], 'r') as f:
+            data = json.load(f)
+        # ensure that the mesh_list is empty
+        self.assertEqual(len(data[u'segment_list'][0][u'mesh_list']), 0)
 
     def test_survos(self):
         """Test that we can convert SuRVoS (.h5) files"""
@@ -95,6 +170,17 @@ class TestMain_handle_convert(Py23FixTestCase):
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry for JSON
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
 
     def test_unknown(self):
         """Test that unknown fails"""
@@ -155,13 +241,13 @@ class TestMain_handle_convert(Py23FixTestCase):
         ), use_shlex=True)
         Main.handle_convert(args, configs)
         # then convert to .sff
-        args, configs = parse_args('convert {} -o {} --config-path {}'.format(
-            os.path.join(TEST_DATA_PATH, 'test_data.json'),
-            os.path.join(TEST_DATA_PATH, 'test_data.sff'),
-            self.config_fn,
+        args, configs = parse_args('convert {input} -o {output} --config-path {config}'.format(
+            input=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
+            config=self.config_fn,
         ), use_shlex=True)
         Main.handle_convert(args, configs)
-        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.hff'))
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
 
 

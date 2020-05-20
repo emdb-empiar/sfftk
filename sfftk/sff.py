@@ -102,7 +102,7 @@ def handle_convert(args, configs):  # @UnusedVariable
         # export as args.format
         if args.verbose:
             print_date("Exporting to {}".format(args.output))
-        sff_seg.export(args.output)
+        sff_seg.export(args.output, args)
         if args.verbose:
             print_date("Done")
 

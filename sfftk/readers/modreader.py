@@ -114,7 +114,7 @@ def angstrom_multiplier(units):
 
     .. math::
 
-        1\\textrm{U} = 10^x \\textrm{m} \Rightarrow 1\\textrm{m} = 10^{-x}\\textrm{U}
+        1\\textrm{U} = 10^x \\textrm{m} \\Rightarrow 1\\textrm{m} = 10^{-x}\\textrm{U}
 
     We need a unit factor that relates Å to *U*. Dividing both expressions for :math:`1\\textrm{m}`
 
