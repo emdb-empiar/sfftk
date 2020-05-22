@@ -19,7 +19,7 @@ from sfftkrw.core import _dict_iter_values, _str
 from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
-from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader
+from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader, ilastikreader
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -70,6 +70,19 @@ class TestReaders_amreader(Py23FixTestCase):
         self.assertIsInstance(header, ahds.header.AmiraHeader)
         self.assertIsNone(segments_by_stream)
 
+
+class TestReaders_ilastikreader(Py23FixTestCase):
+    def setUp(self):
+        super(TestReaders_ilastikreader, self).setUp()
+        self.ilastik_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5')
+
+    def test_get_data(self):
+        """Test the get_data() function"""
+        ilastik_obj = ilastikreader.get_data(self.ilastik_file)
+        self.assertIsInstance(ilastik_obj, ilastikreader.IlastikSegmentation)
+        self.stderr(ilastik_obj.data.shape, ilastik_obj.segment_ids)
+        # self.assert
+        self.assertTrue(len(ilastik_obj.segment_ids) > 0)
 
 class TestReaders_mapreader(Py23FixTestCase):
     def setUp(self):

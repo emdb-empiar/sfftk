@@ -235,7 +235,7 @@ class SeggerSegmentation(Segmentation):
         # finally pack everything together
         segmentation.segment_list = segments
         # lattice
-        segmentation.lattices = schema.SFFLatticeList()
+        segmentation.lattice_list = schema.SFFLatticeList()
         # check the order: c,r,s or r,c,s???
         cols, rows, sections = self.header.map_size
         lattice = schema.SFFLattice(
