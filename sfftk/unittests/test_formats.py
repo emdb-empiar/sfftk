@@ -7,6 +7,8 @@ from __future__ import division
 
 import numbers
 import os
+import sys
+from io import StringIO
 
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw.unittests import Py23FixTestCase
@@ -169,7 +171,7 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual(seg.transform_list[0].id, 0)
         self.assertGreaterEqual(len(seg.transform_list), 1)
         self.assertGreaterEqual(len(seg.lattice_list), 1)
-        if seg.lattice_list[0].data != '': # MemoryError will set .data to an emtpy string
+        if seg.lattice_list[0].data != '':  # MemoryError will set .data to an emtpy string
             self.assertGreater(len(seg.lattice_list[0].data), 1)
         segment = seg.segment_list[0]
         self.assertIsNotNone(segment.biological_annotation)
@@ -368,6 +370,7 @@ class TestFormats(Py23FixTestCase):
     def test_survos_convert(self):
         """Convert a segmentation from SuRVoS to SFFSegmentation object"""
         self.read_survos()
+        sys.stdin = StringIO(u'0')
         args, configs = parse_args('convert {}'.format(self.survos_file), use_shlex=True)
         seg = self.survos_segmentation.convert(args, configs)
         self.assertIsInstance(seg, schema.SFFSegmentation)

@@ -14,6 +14,8 @@ from sfftkrw import sffrw
 from sfftkrw.core import _dict_iter_values
 from sfftkrw.core.print_tools import print_date
 
+from .core.parser import _get_file_extension
+
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = '2017-02-15'
@@ -55,8 +57,13 @@ def handle_convert(args, configs):  # @UnusedVariable
     try:
         if args.multi_file:
             raise ValueError
-        else:
-            return sffrw.handle_convert(args)
+        # .h5 is ambiguous so we check whether we are referring to an EMDB-SFF file
+        ext = _get_file_extension(args.from_file)
+        if ext == 'h5' and args.subtype_index != 2:
+            raise ValueError
+        # if no ValueError is raised we assume we are dealing with an EMDB-SFF file
+        # we delegate handling to sfftk-rw
+        return sffrw.handle_convert(args)
     except (ValueError, KeyError):
         if args.multi_file:
             if re.match(r'.*\.(map|mrc|rec)$', args.from_file[0], re.IGNORECASE):
@@ -94,8 +101,20 @@ def handle_convert(args, configs):  # @UnusedVariable
                 from .formats.stl import STLSegmentation
                 seg = STLSegmentation([args.from_file])
             elif re.match(r'.*\.h5$', args.from_file, re.IGNORECASE):
-                from .formats.survos import SuRVoSSegmentation
-                seg = SuRVoSSegmentation(args.from_file)
+                ext = _get_file_extension(args.from_file)
+                # this is how we handle extension disambiguation
+                # the subtype index values are according to the sfftk.core.parser.EXTENSION_SUBTYPE_INDICES dict
+                if args.subtype_index > -1:
+                    if args.subtype_index == 0:
+                        from .formats.survos import SuRVoSSegmentation
+                        seg = SuRVoSSegmentation(args.from_file)
+                    elif args.subtype_index == 1:
+                        from .formats.ilastik import IlastikSegmentation
+                        seg = IlastikSegmentation(args.from_file)
+                else:
+                    print_date("Ambiguous file extension '{ext}'. Please select the right type or use the "
+                               "--subtype-index <value> option".format(ext=ext))
+                    return os.EX_USAGE
             else:
                 raise ValueError("Unknown file type %s" % args.from_file)
         sff_seg = seg.convert(args)  # convert according to args

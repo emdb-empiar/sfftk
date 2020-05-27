@@ -9,6 +9,7 @@ import random
 import shlex
 import shutil
 import sys
+from io import StringIO
 
 import numpy
 from random_words import RandomWords, LoremIpsum
@@ -20,7 +21,7 @@ from . import TEST_DATA_PATH
 from .. import BASE_DIR
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
-from ..core.parser import Parser, parse_args, tool_list
+from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
 from ..notes import RESOURCE_LIST
 
@@ -664,6 +665,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         # fixme: use print_date
         cls.stderr("convert tests...")
         cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
+        cls.test_data_file_h5 = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5')
         cls.test_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
         cls.test_hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
         cls.empty_maps = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.map'))
@@ -690,6 +692,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         self.assertEqual(args.primary_descriptor, None)
         self.assertFalse(args.verbose)
         self.assertFalse(args.multi_file)
+        self.assertEqual(args.subtype_index, -1)
 
     def test_config_path(self):
         """Test setting of arg config_path"""
@@ -793,6 +796,42 @@ class TestCoreParserConvert(Py23FixTestCase):
         """Test that we can set the -a/--all-levels flag for Segger segmentations"""
         args, _ = parse_args('convert -v -a {}'.format(self.test_seg_file), use_shlex=True)
         self.assertTrue(args.all_levels)
+
+    def test_subtype_index_defined(self):
+        """Test that users can enter a subtype index"""
+        args, _ = parse_args('convert --subtype-index 0 {file}'.format(
+            file=self.test_data_file_h5
+        ), use_shlex=True)
+        self.assertGreaterEqual(args.subtype_index, 0)
+
+    def test_set_subtype_index(self):
+        """Test correct functionality of the parser._set_subtype_index function"""
+        sys.stdin = StringIO(u'1') # avail for stdin
+        # construct the namespace object
+        args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
+        self.assertTrue(args.subtype_index > -1)
+        # exceptions
+        # invalid file extension e.g. file.mod
+        args, _ = parse_args('convert {file}'.format(file=self.test_data_file), use_shlex=True)
+        # we need to explicitly invoke _set_subtype_index because it is ignored
+        ext = _get_file_extension(args.from_file)
+        args = _set_subtype_index(args, ext)
+        self.assertEqual(args.subtype_index, -1)
+        # invalid entry: type
+        sys.stdin = StringIO(u'a')  # avail for stdin
+        args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
+        self.assertEqual(args.subtype_index, -1)
+        # invalid entry: range
+        sys.stdin = StringIO(u'10')  # avail for stdin
+        args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
+        self.assertEqual(args.subtype_index, -1)
+        # fixme: not tested ambiguous mutli-file formats
+
+    def test_get_file_extension(self):
+        """Test function to return file extension"""
+        self.assertEqual(_get_file_extension('file.abc'), 'abc')
+        self.assertEqual(_get_file_extension('file.h5'), 'h5')
+        self.assertEqual(_get_file_extension('file.1.2.3.4.something'), 'something')
 
 
 class TestCoreParserView(Py23FixTestCase):

@@ -14,7 +14,7 @@ import re
 import sys
 from copy import deepcopy
 
-from sfftkrw.core import _dict_iter_keys, _decode, _input, _str
+from sfftkrw.core import _dict_iter_keys, _decode, _input, _str, _dict_iter_items, _xrange, _dict
 # extend the sfftkrw Parser object
 from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, tests_parser, tool_list, add_args
 from sfftkrw.core.print_tools import print_date
@@ -26,10 +26,19 @@ __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
 __date__ = '2016-06-10'
 __updated__ = '2018-02-14'
 
-verbosity_range = range(4)
-multi_file_formats = ['stl', 'map', 'mrc', 'rec']
-prepable_file_formats = ['mrc', 'map', 'rec']
-rescalable_file_formats = ['stl']
+VERBOSITY_RANGE = _xrange(4)
+MULTI_FILE_FORMATS = ['stl', 'map', 'mrc', 'rec']
+PREPABLE_FILE_FORMATS = ['mrc', 'map', 'rec']
+RESCALABLE_FILE_FORMATS = ['stl']
+# some file extensions are used by multiple file types
+# this dictionary lists indices that may be used for subtypes by extension
+# each value of each extension is a tuple of a friendly name and the FQN for the corresponding class
+EXTENSION_SUBTYPE_INDICES = _dict()
+# .h5
+EXTENSION_SUBTYPE_INDICES['h5'] = _dict()
+EXTENSION_SUBTYPE_INDICES['h5'][0] = 'SuRVoS'
+EXTENSION_SUBTYPE_INDICES['h5'][1] = 'ilastik'
+EXTENSION_SUBTYPE_INDICES['h5'][2] = 'EMDB-SFF'
 
 Parser.description = u"The EMDB-SFF Toolkit (sfftk)"
 
@@ -170,6 +179,14 @@ software_version = {
     'args': ['-T', '--software-version'],
     'kwargs': {
         'help': "the version of software used to create the segmentation"
+    }
+}
+subtype_index = {
+    'args': ['--subtype-index'],
+    'kwargs': {
+        'default': -1,
+        'type': int,
+        'help': """some file extensions are used by multiple file types"""
     }
 }
 verbose = {
@@ -318,9 +335,10 @@ convert_parser.add_argument(
     default=False,
     help="enables convert to treat multiple files as individual segments of a single segmentation; only works for the "
          "following filetypes: {} [default: False]".format(
-        ', '.join(multi_file_formats),
+        ', '.join(MULTI_FILE_FORMATS),
     )
 )
+add_args(convert_parser, subtype_index)
 
 # =========================================================================
 # config subparser
@@ -868,6 +886,15 @@ add_args(tests_parser, config_path)
 add_args(tests_parser, shipped_configs)
 
 
+def _get_file_extension(fn):
+    """Extract the file extension
+
+    :param str fn: filename
+    :return str ext: extension
+    """
+    return fn.split('.')[-1]
+
+
 def check_multi_file_formats(file_names):
     """Check file names for file formats
 
@@ -882,8 +909,9 @@ def check_multi_file_formats(file_names):
     file_formats = set()
     invalid_formats = set()
     for fn in file_names:
-        ff = fn.split('.')[-1].lower()
-        if ff in multi_file_formats:
+        # ff = fn.split('.')[-1].lower()
+        ff = _get_file_extension(fn)
+        if ff in MULTI_FILE_FORMATS:
             file_formats.add(ff)
         else:
             invalid_formats.add(ff)
@@ -894,6 +922,46 @@ def check_multi_file_formats(file_names):
         file_format = None
         invalid_formats.union(file_formats)
     return is_valid_format, file_format, invalid_formats
+
+
+def _set_subtype_index(args, ext):
+    """Set the --subtype-index argument value
+
+    :params arg: an argument namespace
+    :type arg: :py:class:`argparse.Namespace`
+    :param str ext: a file extension
+    :return arg: the updated argument namespace
+    :rtype arg: :py:class:`argparse.Namespace`
+    """
+    # if --subtype-index is set don't bother
+    if args.subtype_index > -1:
+        return args
+    try:
+        index_range = EXTENSION_SUBTYPE_INDICES[ext].keys()
+    except KeyError:
+        print_date("Invalid file extension: {ext}".format(ext=ext))
+        return args
+    print("The file extension {ext} has multiple formats associated with it.".format(
+        ext=ext,
+    ))
+    print("(You can avoid this intercept by using the --subtype-index <value> option.)")
+    for k, v in _dict_iter_items(EXTENSION_SUBTYPE_INDICES[ext]):
+        print("\t[{k}] - {v}".format(k=k, v=v))
+    try:
+        index = int(_input("Please enter a valid choice [{min_index}-{max_index}]: ".format(
+            min_index=min(index_range),
+            max_index=max(index_range),
+        )))
+    except ValueError:
+        print_date("Please enter a numeric value only.")
+        return args
+    try:
+        assert index in index_range
+    except AssertionError:
+        print_date("Invalid index ({index})".format(index=index))
+        return args
+    args.subtype_index = index
+    return args
 
 
 # parser function
@@ -1025,7 +1093,7 @@ def parse_args(_args, use_shlex=False):
         # binmap
         if args.prep_subcommand == 'binmap':
             ext = args.from_file.split('.')[-1]
-            if ext.lower() not in prepable_file_formats:
+            if ext.lower() not in PREPABLE_FILE_FORMATS:
                 print_date("File format {} not available for prepping".format(ext.lower()))
                 return os.EX_USAGE, configs
             if args.output is None:
@@ -1038,7 +1106,7 @@ def parse_args(_args, use_shlex=False):
                     print_date("Output will be written to {}".format(args.output))
         elif args.prep_subcommand == 'transform':
             ext = args.from_file.split('.')[-1]
-            if ext.lower() not in rescalable_file_formats:
+            if ext.lower() not in RESCALABLE_FILE_FORMATS:
                 print_date("File format {} not available for transforming".format(ext.lower()))
                 return os.EX_USAGE, configs
             if args.output is None:
@@ -1070,6 +1138,11 @@ def parse_args(_args, use_shlex=False):
             except AssertionError:
                 print_date("File {} was not found".format(args.from_file))
                 return os.EX_USAGE, configs
+            # only bother handling extension disambiguation if the file exists
+            ext = _get_file_extension(args.from_file)
+            # check if this is an ambiguous extension
+            if ext in EXTENSION_SUBTYPE_INDICES.keys():
+                args = _set_subtype_index(args, ext)
         else:
             if args.multi_file:
                 is_valid_format, file_format, invalid_formats = check_multi_file_formats(args.from_file)
@@ -1086,9 +1159,12 @@ def parse_args(_args, use_shlex=False):
                 else:
                     print_date("Invalid format(s) for multi-file segmentation: {}; should be only one of: {}".format(
                         ', '.join(invalid_formats),
-                        ', '.join(multi_file_formats),
+                        ', '.join(MULTI_FILE_FORMATS),
                     ))
                     return os.EX_USAGE, configs
+                # now we check if this is an ambiguous extension
+                if file_format in EXTENSION_SUBTYPE_INDICES.keys():
+                    args = _set_subtype_index(args, file_format)
             else:
                 print_date("Please use -m/--multi-file argument for multi-file segmentations")
                 return os.EX_USAGE, configs
@@ -1176,8 +1252,8 @@ def parse_args(_args, use_shlex=False):
             except:
                 print_date(
                     "Verbosity should be in {}-{}: {} given".format(
-                        verbosity_range[0],
-                        verbosity_range[-1],
+                        VERBOSITY_RANGE[0],
+                        VERBOSITY_RANGE[-1],
                         args.verbosity
                     )
                 )

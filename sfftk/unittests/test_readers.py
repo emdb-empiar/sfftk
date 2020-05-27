@@ -80,9 +80,18 @@ class TestReaders_ilastikreader(Py23FixTestCase):
         """Test the get_data() function"""
         ilastik_obj = ilastikreader.get_data(self.ilastik_file)
         self.assertIsInstance(ilastik_obj, ilastikreader.IlastikSegmentation)
-        self.stderr(ilastik_obj.data.shape, ilastik_obj.segment_ids)
-        # self.assert
         self.assertTrue(len(ilastik_obj.segment_ids) > 0)
+        self.assertEqual(ilastik_obj.data.dtype, int)
+        self.assertTrue(ilastik_obj.num_voxels > 0)
+        self.assertTrue(ilastik_obj.dtype, numpy.dtype)
+        self.assertTrue(_str(ilastik_obj.dtype), _str)
+        self.assertTrue(len(ilastik_obj.shape), 3)
+        self.assertIsInstance(ilastik_obj.shape, tuple)
+        self.assertTrue(ilastik_obj.num_images > 0)
+        self.assertEqual(ilastik_obj.filename, self.ilastik_file)
+        self.assertTrue(len(ilastik_obj.segment_ids) > 0)
+        self.assertTrue(ilastik_obj.segment_count > 0)
+
 
 class TestReaders_mapreader(Py23FixTestCase):
     def setUp(self):

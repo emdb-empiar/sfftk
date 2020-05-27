@@ -10,6 +10,8 @@ from __future__ import division
 import glob
 import json
 import os
+import sys
+from io import StringIO
 
 from sfftkrw.unittests import Py23FixTestCase
 
@@ -45,6 +47,45 @@ class TestMain_handle_convert(Py23FixTestCase):
             os.remove(s)
         for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.hff')):
             os.remove(s)
+
+    def test_subtype(self):
+        """Sometimes a file extension is ambiguous; this tests the disambiguation menu"""
+        sys.stdin = StringIO(u'0')  # SuRVoS
+        args, configs = parse_args(
+            'convert -o {output} {input} --config-path {config}'.format(
+                output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
+                input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
+                config=self.config_fn,
+            ),
+            use_shlex=True,
+        )
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(len(sff_files), 1)
+
+    def test_ilastik(self):
+        """Test that we can convert .h5 for ilastik"""
+        sys.stdin = StringIO(u'1')  # ilastik
+        args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry for JSON
+        sys.stdin = StringIO(u'1')  # ilastik
+        args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
+            output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
+            input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5'),
+            config=self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
 
     def test_seg(self):
         """Test that we can convert .seg"""
@@ -162,6 +203,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 
     def test_survos(self):
         """Test that we can convert SuRVoS (.h5) files"""
+        sys.stdin = StringIO(u'0')
         args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
@@ -171,6 +213,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
         # with --exclude-geometry for JSON
+        sys.stdin = StringIO(u'0')
         args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
