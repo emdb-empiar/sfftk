@@ -93,7 +93,7 @@ else:
         license=SFFTK_LICENSE,
         keywords=SFFTK_KEYWORDS,
         setup_requires=["numpy<1.17"],
-        install_requires=["sfftk-rw", "ahds", "lxml", "h5py>2.7.0", "requests", "bitarray",
+        install_requires=["sfftk-rw", "ahds", "lxml", "h5py>2.7.0,<3", "requests", "bitarray",
                           "numpy-stl", "backports.shutil_get_terminal_size", "mock", "mrcfile", "Pillow<7.0.0",
                           "matplotlib<3.0", "scipy<1.2", "RandomWords", "styled", "networkx<2.3", "PyWavelets<1.1.0",
                           "kiwisolver<1.2.0", "pyparsing<3.0"],
