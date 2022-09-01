@@ -692,7 +692,7 @@ def add_note(args, configs):
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
     sff_seg.export(args.sff_file)
-    return os.EX_OK
+    return 0
 
 
 def edit_note(args, configs):
@@ -738,7 +738,7 @@ def edit_note(args, configs):
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
     sff_seg.export(args.sff_file)
-    return os.EX_OK
+    return 0
 
 
 def del_note(args, configs):
@@ -780,7 +780,7 @@ def del_note(args, configs):
             print_date("Segment of ID(s) {} not found".format(", ".join(map(str, args.segment_id))))
     # export
     sff_seg.export(args.sff_file)
-    return os.EX_OK
+    return 0
 
 
 def copy_notes(args, configs):
@@ -830,7 +830,7 @@ def copy_notes(args, configs):
             print(_str(string))
     # export
     sff_seg.export(args.sff_file)
-    return os.EX_OK
+    return 0
 
 
 def clear_notes(args, configs):
@@ -882,7 +882,7 @@ def clear_notes(args, configs):
 
     # export
     sff_seg.export(args.sff_file)
-    return os.EX_OK
+    return 0
 
 
 def merge(args, configs):
@@ -912,7 +912,7 @@ def merge(args, configs):
     other.export(args.output)
     if args.verbose:
         print_date("Done")
-    return os.EX_OK
+    return 0
 
 
 def save(args, configs):
@@ -971,13 +971,13 @@ def save(args, configs):
             assert not os.path.exists(temp_file)
         else:
             print_date("Unknown file type: {}".format(args.sff_file))
-            return os.EX_USAGE
-        return os.EX_OK
+            return 64
+        return 0
     else:
         print_date(
             "Missing temp file {}. First perform some edit actions ('add', 'edit', 'del') before trying to save.".format(
                 temp_file))
-        return os.EX_USAGE
+        return 64
 
 
 def trash(args, configs):
@@ -996,7 +996,7 @@ def trash(args, configs):
         os.remove(temp_file)
         assert not os.path.exists(temp_file)
         print_date("Done", incl_date=False)
-        return os.EX_OK
+        return 0
     else:
         print_date("Unable to discard with missing temp file {}. No changes made.".format(temp_file))
-        return os.EX_DATAERR
+        return 65

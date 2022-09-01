@@ -58,7 +58,7 @@ def bin_map(args, configs):
         except ValueError:
             print_date("Binarising preparation failed")
             print_date("Attempting to overwrite without explicit --overwrite argument")
-            return os.EX_DATAERR
+            return 65
         if args.verbose:
             print_date('Writing header data...')
         mrc2.header.cella = mrc.header.cella
@@ -66,7 +66,7 @@ def bin_map(args, configs):
         mrc2.close()
         if args.verbose:
             print_date('Binarising complete!')
-    return os.EX_OK
+    return 0
 
 
 def transform(args, configs):
@@ -90,17 +90,17 @@ def transform(args, configs):
         in_mesh = Mesh.from_file(args.from_file)
         out_mesh = transform_stl_mesh(in_mesh, transform)
         if out_mesh is None:
-            return os.EX_DATAERR
+            return 65
         if args.verbose:
             print_date("Saving output...")
         # save the output
         out_mesh.save(args.output)
         if args.verbose:
             print_date("Done")
-        return os.EX_OK
+        return 0
     else:
         print_date("Rescaling functionality for this filetype yet to be implemented!")
-        return os.EX_OK
+        return 0
 
 
 def construct_transformation_matrix(args):

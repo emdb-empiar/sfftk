@@ -271,7 +271,7 @@ class MapSegmentation(Segmentation):
                         segment_annotation.sections)
                     )
                     print_date("Error: The provided CCP4 masks have different volume dimensions")
-                    sys.exit(os.EX_DATAERR)
+                    sys.exit(65)
             print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
                 os.path.basename(fn), cols, rows, sections)
             )

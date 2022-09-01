@@ -149,7 +149,7 @@ CCP4 (.map)
 .. code:: python
 
     >>> from sfftk.formats.map import MAPSegmentation
-    >>> map_seg = MAPSegmentation('file.map')
+    >>> map_seg = MapSegmentation('file.map')
 
 IMOD (.mod)
 -----------

@@ -103,7 +103,7 @@ class Map(object):
         f.write(string)
         f.flush()
 
-        return os.EX_OK
+        return 0
 
     def read(self, f, header_only=False):
         """Read data from an EMDB Map mask
@@ -181,7 +181,7 @@ class Map(object):
         if header_only:
             self._voxel_values = set()
             self._voxel_array = None
-            return os.EX_OK
+            return 0
 
         #         import math
 
@@ -214,7 +214,7 @@ class Map(object):
             raise ValueError("There is still some data (%s bytes) to read: current_position = %s; end_position = %s" % (
                 final_position - current_position, current_position, final_position))
 
-        return os.EX_OK
+        return 0
 
     if sys.version_info[0] > 2:
         def __bytes__(self):

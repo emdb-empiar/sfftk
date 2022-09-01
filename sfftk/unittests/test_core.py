@@ -37,19 +37,19 @@ class TestParser(Py23FixTestCase):
     def test_default(self):
         """Test that default operation is OK"""
         args, configs = parse_args("--version", use_shlex=True)
-        self.assertEqual(args, os.EX_OK)
+        self.assertEqual(args, 0)
         self.assertIsNone(configs)
 
     def test_use_shlex(self):
         """Test that we can use shlex i.e. treat command as string"""
         args, configs = parse_args("--version", use_shlex=True)
-        self.assertEqual(args, os.EX_OK)
+        self.assertEqual(args, 0)
         self.assertIsNone(configs)
 
     def test_fail_use_shlex(self):
         """Test that we raise an error when use_shlex=True but _args not str"""
         args, configs = parse_args("--version", use_shlex=True)
-        self.assertEqual(args, os.EX_OK)
+        self.assertEqual(args, 0)
         self.assertIsNone(configs)
 
 
@@ -314,12 +314,12 @@ class TestCoreConfigs(Py23FixTestCase):
     def test_get_configs(self):
         """Test that we can get a config by name"""
         args, configs = parse_args('config get __TEMP_FILE --config-path {}'.format(self.config_fn), use_shlex=True)
-        self.assertTrue(get_configs(args, configs) == os.EX_OK)
+        self.assertTrue(get_configs(args, configs) == 0)
 
     def test_get_all_configs(self):
         """Test that we can list all configs"""
         args, configs = parse_args('config get --all --config-path {}'.format(self.config_fn), use_shlex=True)
-        self.assertTrue(get_configs(args, configs) == os.EX_OK)
+        self.assertTrue(get_configs(args, configs) == 0)
         self.assertTrue(len(configs) > 0)
 
     def test_get_absent_configs(self):
@@ -341,7 +341,7 @@ class TestCoreConfigs(Py23FixTestCase):
     def test_set_new_configs(self):
         """Test that new configs will by default be written to user configs .i.e. ~/sfftk/sff.conf"""
         args, configs = parse_args('config set --force NAME VALUE', use_shlex=True)
-        self.assertTrue(set_configs(args, configs) == os.EX_OK)
+        self.assertTrue(set_configs(args, configs) == 0)
         _, configs = parse_args('config get --all', use_shlex=True)
         D = _dict()
         D['NAME'] = 'VALUE'
@@ -350,10 +350,10 @@ class TestCoreConfigs(Py23FixTestCase):
     def test_set_force_configs(self):
         """Test that forcing works"""
         args, configs = parse_args('config set --force NAME VALUE', use_shlex=True)
-        self.assertTrue(set_configs(args, configs) == os.EX_OK)
+        self.assertTrue(set_configs(args, configs) == 0)
         self.assertTrue(configs['NAME'] == 'VALUE')
         args, configs_after = parse_args('config set --force NAME VALUE1', use_shlex=True)
-        self.assertTrue(set_configs(args, configs_after) == os.EX_OK)
+        self.assertTrue(set_configs(args, configs_after) == 0)
         self.assertTrue(configs_after['NAME'] == 'VALUE1')
 
     def test_del_configs(self):
@@ -573,7 +573,7 @@ class TestCoreParserPrepBinmap(Py23FixTestCase):
     def test_blank_infix(self):
         """Test that a blank infix fails"""
         args, _ = parse_args("prep binmap --infix '' file.map", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
 
 class TestCoreParserPrepTransform(Py23FixTestCase):
@@ -628,7 +628,7 @@ class TestCoreParserPrepTransform(Py23FixTestCase):
                 indices=' '.join(map(str, indices)),
                 origin=' '.join(map(str, origin)),
             ), use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_output(self):
         """Test that we can set the output"""
@@ -744,7 +744,7 @@ class TestCoreParserConvert(Py23FixTestCase):
     def test_wrong_primary_descriptor_fails(self):
         """Test that we have a check on primary descriptor values"""
         args, _ = parse_args('convert -R something {}'.format(self.test_data_file), use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_verbose(self):
         """Test convert parser with verbose"""
@@ -772,25 +772,25 @@ class TestCoreParserConvert(Py23FixTestCase):
         """Test that excluding -m issues a warning for CCP4"""
         args, _ = parse_args('convert -v {}'.format(' '.join(self.empty_maps)), use_shlex=True)
         # assertions
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_multifile_stl_fail2(self):
         """Test that excluding -m issues a warning for STL"""
         args, _ = parse_args('convert -v {}'.format(' '.join(self.empty_stls)), use_shlex=True)
         # assertions
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_multifile_xxx_fail3(self):
         """Test that other file format fails for multifile e.g. Segger (.seg)"""
         args, _ = parse_args('convert -v {}'.format(' '.join(self.empty_segs)), use_shlex=True)
         # assertions
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_multifile_xxx_fail4(self):
         """Test that other file format fails even with -m e.g. Segger (.seg)"""
         args, _ = parse_args('convert -v -m {}'.format(' '.join(self.empty_segs)), use_shlex=True)
         # assertions
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_all_levels(self):
         """Test that we can set the -a/--all-levels flag for Segger segmentations"""
@@ -873,7 +873,7 @@ class TestCoreParserView(Py23FixTestCase):
     def test_show_chunks_other_fails(self):
         """Test that show chunks only works for .mod files"""
         args, _ = parse_args('view -C file.sff', use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
 
 class TestCoreParserNotesReadOnly(Py23FixTestCase):
@@ -924,55 +924,55 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     def test_search_list_ontologies_non_OLS_fail(self):
         """Test failure for list ontologies for non OLS"""
         args, _ = parse_args("notes search -l -R emdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -L -R emdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -O go -R emdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -o -R emdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -x -R emdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -l -R pdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -L -R pdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -O go -R pdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -o -R pdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -x -R pdb", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -l -R uniprot", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -L -R uniprot", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -O go -R uniprot", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -o -R uniprot", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -x -R uniprot", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -l -R europepmc", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -L -R europepmc", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -O go -R europepmc", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -o -R europepmc", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -x -R europepmc", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -l -R empiar", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -L -R empiar", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -O go -R empiar", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -o -R empiar", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         args, _ = parse_args("notes search -x -R empiar", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_search_options(self):
         """Test setting of:
@@ -1004,14 +1004,14 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         start = -_random_integer()
         args, _ = parse_args("notes search --start {} 'mitochondria' --config-path {}".format(start, self.config_fn),
                              use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_search_invalid_rows(self):
         """Test that we catch an invalid rows"""
         rows = -_random_integer()
         args, _ = parse_args("notes search --rows {} 'mitochondria' --config-path {}".format(rows, self.config_fn),
                              use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_search_resource_options(self):
         """Test various values of -R/--resource"""
@@ -1044,7 +1044,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         """Test that shortcut fails with list"""
         args, _ = parse_args('notes list @ --config-path {}'.format(self.config_fn), use_shlex=True)
         #  assertions
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_list_sort_by_name(self):
         """Test list segments sorted by description"""
@@ -1088,7 +1088,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         args, _ = parse_args(
             'notes show -i {},{} @ --config-path {}'.format(segment_id0, segment_id1, self.config_fn), use_shlex=True)
         #  assertions
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
 
 class TestCoreParserTests(Py23FixTestCase):
@@ -1122,12 +1122,12 @@ class TestCoreParserTests(Py23FixTestCase):
     def test_tool_fail(self):
         """Test that we catch a wrong tool"""
         args, _ = parse_args("tests wrong_tool_spec", use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_tests_no_tool(self):
         """Test that with no tool we simply get usage info"""
         args, _ = parse_args("tests", use_shlex=True)
-        self.assertEqual(args, os.EX_OK)
+        self.assertEqual(args, 0)
 
     def test_valid_verbosity(self):
         """Test valid verbosity"""
@@ -1144,10 +1144,10 @@ class TestCoreParserTests(Py23FixTestCase):
         """Test that verbosity is in [0,3]"""
         v1 = _random_integer(start=4)
         args, _ = parse_args("tests all_sfftk -v {}".format(v1), use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
         v2 = -_random_integer(start=0)
         args, _ = parse_args("tests all_sfftk -v {}".format(v2), use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
 
 class TestCoreParserNotesReadWrite(Py23FixTestCase):
@@ -1281,7 +1281,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         segment_id = _random_integer()
         args, _ = parse_args(
             'notes add -i {} file.sff --config-path {}'.format(segment_id, self.config_fn), use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     # ===========================================================================
     # notes: edit
@@ -1393,7 +1393,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
                 self.config_fn,
             ), use_shlex=True)
 
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
         args, _ = parse_args(
             "notes edit -S new -T 1.3 -P 'we added one piece to another' @ --config-path {}".format(
@@ -1401,7 +1401,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             ),
             use_shlex=True
         )
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     # ===========================================================================
     # notes: del
@@ -1566,7 +1566,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, source_id)), config_fn=self.config_fn, )
         args, _ = parse_args(cmd, use_shlex=True)
-        self.assertEqual(args, os.EX_USAGE)
+        self.assertEqual(args, 64)
 
     def test_copy_all(self):
         """Test that we can copy to all others"""
@@ -1851,7 +1851,7 @@ class TestCorePrep(Py23FixTestCase):
         cmd = "prep binmap -v {}".format(test_map_file)
         args, _ = parse_args(cmd, use_shlex=True)
         ex_st = bin_map(args, _)
-        self.assertEqual(ex_st, os.EX_OK)
+        self.assertEqual(ex_st, 0)
         # clean up
         os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
 

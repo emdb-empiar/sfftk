@@ -408,7 +408,7 @@ class TestNotes_view(Py23FixTestCase):
         ), use_shlex=True)
         status = view.list_notes(args, configs)
         # assertions
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
 
     def test_long_list(self):
         """Test that we can long list (-l) the list of segmentations with annotations"""
@@ -418,7 +418,7 @@ class TestNotes_view(Py23FixTestCase):
         ), use_shlex=True)
         status = view.list_notes(args, configs)
         # assertions
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
 
     def test_list_ids(self):
         """Test that we can list ids only and that they are usable"""
@@ -435,7 +435,7 @@ class TestNotes_view(Py23FixTestCase):
                 config=self.config_fn
             ), use_shlex=True)
             status = view.show_notes(args, configs)
-            self.assertEqual(status, os.EX_OK)
+            self.assertEqual(status, 0)
 
 
 
@@ -447,7 +447,7 @@ class TestNotes_view(Py23FixTestCase):
             self.config_fn,
         ), use_shlex=True)
         status = view.show_notes(args, configs)
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
 
     def test_long_show(self):
         """Test that we can show in long format annotations in a single segment"""
@@ -457,7 +457,7 @@ class TestNotes_view(Py23FixTestCase):
             self.config_fn,
         ), use_shlex=True)
         status = view.show_notes(args, configs)
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
 
 
 class TestNotes_modify(Py23FixTestCase):
@@ -515,7 +515,7 @@ class TestNotes_modify(Py23FixTestCase):
         # pass modified args to modify
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation.from_file(args.sff_file)
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
         self.assertEqual(seg.name, name)
         self.assertEqual(seg.details, details)
         self.assertTrue(len(seg.software_list) > 0)
@@ -557,7 +557,7 @@ class TestNotes_modify(Py23FixTestCase):
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation.from_file(args.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
         self.assertEqual(segment.biological_annotation.description, desc)
         self.assertEqual(segment.biological_annotation.number_of_instances, num)
         self.assertEqual(segment.biological_annotation.external_references[0].resource, extref1[0])
@@ -620,7 +620,7 @@ class TestNotes_modify(Py23FixTestCase):
         status1 = modify.edit_note(args1, configs)
         # we have to compare against the temp-annotated.json file!!!
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
         self.assertEqual(seg.name, name1)
         self.assertEqual(seg.details, details1)
         self.assertTrue(len(seg.software_list), len(_seg.software_list))
@@ -680,7 +680,7 @@ class TestNotes_modify(Py23FixTestCase):
         # # we have to compare against the temp-annotated.json file!!!
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
         self.assertEqual(segment.biological_annotation.name, segment_name1)
         self.assertEqual(segment.biological_annotation.description, desc1)
         self.assertEqual(segment.biological_annotation.number_of_instances, num1)
@@ -723,7 +723,7 @@ class TestNotes_modify(Py23FixTestCase):
         _args1, configs = parse_args(cmd1, use_shlex=True)
         args1 = _handle_notes_modify(_args1, configs)
         status1 = modify.del_note(args1, configs)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
         self.assertIsNone(seg.details)
         self.assertEqual(len(seg.software_list), 1)
@@ -761,7 +761,7 @@ class TestNotes_modify(Py23FixTestCase):
         status1 = modify.del_note(args1, configs1)
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
         segment = seg.segment_list.get_by_id(self.segment_id)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
         self.assertIsNone(segment.biological_annotation.name)
         self.assertIsNone(segment.biological_annotation.description)
         self.assertEqual(segment.biological_annotation.number_of_instances, 1)
@@ -785,7 +785,7 @@ class TestNotes_modify(Py23FixTestCase):
         )
         args, configs = parse_args(cmd, use_shlex=True)
         status = modify.add_note(args, configs)
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
         # merge
         cmd1 = 'notes merge --source {source} {other} --output {output} --config-path {config_fn}'.format(
             source=self.sff_file,
@@ -795,7 +795,7 @@ class TestNotes_modify(Py23FixTestCase):
         )
         args1, configs1 = parse_args(cmd1, use_shlex=True)
         status1 = modify.merge(args1, configs1)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
         source_seg = schema.SFFSegmentation.from_file(self.sff_file)
         output_seg = schema.SFFSegmentation.from_file(self.output)
         source_segment = source_seg.segments.get_by_id(self.segment_id)
@@ -833,7 +833,7 @@ class TestNotes_modify(Py23FixTestCase):
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
         status = modify.add_note(args, configs)
-        self.assertEqual(status, os.EX_OK)
+        self.assertEqual(status, 0)
         # clear
         cmd1 = 'notes clear --all @ --config-path {config_fn}'.format(
             config_fn=self.config_fn,
@@ -841,7 +841,7 @@ class TestNotes_modify(Py23FixTestCase):
         _args1, configs1 = parse_args(cmd1, use_shlex=True)
         args1 = _handle_notes_modify(_args1, configs1)
         status1 = modify.clear_notes(args1, configs1)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
         seg = schema.SFFSegmentation.from_file(args1.sff_file)
         segment = seg.segments.get_by_id(self.segment_id)
         self.assertEqual(len(segment.biological_annotation.external_references), 0)
@@ -880,7 +880,7 @@ class TestNotes_modify(Py23FixTestCase):
         _args1, config = parse_args(cmd2, use_shlex=True)
         args1 = _handle_notes_modify(_args1, config)
         view.list_notes(args1, config)
-        self.assertEqual(status1, os.EX_OK)
+        self.assertEqual(status1, 0)
 
         copied_seg = schema.SFFSegmentation.from_file(annotated_sff_file)
         copied_segment = copied_seg.segments.get_by_id(15578)

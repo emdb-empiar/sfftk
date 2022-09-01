@@ -528,7 +528,7 @@ def list_notes(args, configs):
             string += _str(note_view)
             string += Styled(u"[[ ''|reset ]]")
         print(_str(string))
-    return os.EX_OK
+    return 0
 
 
 def show_notes(args, configs):
@@ -561,5 +561,5 @@ def show_notes(args, configs):
                 found_segment = True
         if not found_segment:
             print_date("No segment with ID(s) {}".format(", ".join(map(str, args.segment_id))))
-            return os.EX_DATAERR
-    return os.EX_OK
+            return 65
+    return 0

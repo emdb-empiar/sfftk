@@ -70,7 +70,7 @@ class Configs(_dict):
             for name, value in _dict_iter_items(self):
                 f.write('{}={}\n'.format(name, value))
 
-        return os.EX_OK
+        return 0
 
     def __str__(self):
         string = ""
@@ -238,7 +238,7 @@ def get_configs(args, configs):
         # view the config
         # fixme: use print_date
         print(config)
-    return os.EX_OK
+    return 0
 
 
 def set_configs(args, configs):
@@ -280,7 +280,7 @@ def del_configs(args, configs):
             del configs[args.name]
         except KeyError:
             print_date("No config with name {}".format(args.name))
-            return os.EX_DATAERR
+            return 65
     if args.verbose:
         # fixme: use print_date
         print(configs)

@@ -985,14 +985,14 @@ def parse_args(_args, use_shlex=False):
         try:
             assert isinstance(_args, str)
         except AssertionError:
-            return os.EX_USAGE, None
+            return 64, None
         import shlex
         _args = shlex.split(_args)
 
     # if we have no subcommands then show the available tools
     if len(_args) == 0:
         Parser.print_help()
-        return os.EX_OK, None
+        return 0, None
     # if we only have a subcommand then show that subcommand's help
     elif len(_args) == 1:
         # print(_args[0])
@@ -1002,26 +1002,26 @@ def parse_args(_args, use_shlex=False):
         if _args[0] == '-V' or _args[0] == '--version':
             from .. import SFFTK_VERSION
             print_date("sfftk version: {}".format(SFFTK_VERSION))
-            return os.EX_OK, None
+            return 0, None
         # anytime a new argument is added to the base parser subparsers are bumped down in index
         elif _args[0] in _dict_iter_keys(Parser._actions[2].choices):
             exec('{}_parser.print_help()'.format(_args[0]))
-            return os.EX_OK, None
+            return 0, None
     # if we have 'notes' as the subcommand and a sub-subcommand show the
     # options for that sub-subcommand
     elif len(_args) == 2:
         if _args[0] == 'notes':
             if _args[1] in _dict_iter_keys(Parser._actions[2].choices['notes']._actions[1].choices):
                 exec('{}_notes_parser.print_help()'.format(_args[1]))
-                return os.EX_OK, None
+                return 0, None
         elif _args[0] == 'prep':
             if _args[1] in _dict_iter_keys(Parser._actions[2].choices['prep']._actions[1].choices):
                 exec('{}_prep_parser.print_help()'.format(_args[1]))
-                return os.EX_OK, None
+                return 0, None
         elif _args[0] == 'config':
             if _args[1] in _dict_iter_keys(Parser._actions[2].choices['config']._actions[1].choices):
                 exec('{}_config_parser.print_help()'.format(_args[1]))
-                return os.EX_OK, None
+                return 0, None
     # parse arguments
     args = Parser.parse_args(_args)
     from .configs import get_config_file_path
@@ -1029,7 +1029,7 @@ def parse_args(_args, use_shlex=False):
     config_file_path = get_config_file_path(args)
     if config_file_path is None:
         print_date("Invalid destination for configs. Omit --shipped-configs to write to user configs.")
-        return os.EX_USAGE, None
+        return 64, None
     from .configs import load_configs
     # now get configs to use
     configs = load_configs(config_file_path)
@@ -1058,11 +1058,11 @@ def parse_args(_args, use_shlex=False):
                     choice = 'y'
                 else:
                     print_date("Invalid choice: '{}'")
-                    return os.EX_USAGE, configs
+                    return 64, configs
                 # act on user choice
                 if choice == 'n':
                     print_date("You have opted to cancel deletion of '{}'".format(args.name))
-                    return os.EX_USAGE, configs
+                    return 64, configs
                 elif choice == 'y':
                     pass
         elif args.config_subcommand == 'set':
@@ -1081,7 +1081,7 @@ def parse_args(_args, use_shlex=False):
                         choice = 'y'
                     else:
                         print_date("Invalid choice: '{}'")
-                        return os.EX_USAGE, configs
+                        return 64, configs
                     # act on user choice
                     if choice == 'n':
                         print_date("You have opted to cancel overwriting of '{}'".format(args.name))
@@ -1095,26 +1095,26 @@ def parse_args(_args, use_shlex=False):
             ext = args.from_file.split('.')[-1]
             if ext.lower() not in PREPABLE_FILE_FORMATS:
                 print_date("File format {} not available for prepping".format(ext.lower()))
-                return os.EX_USAGE, configs
+                return 64, configs
             if args.output is None:
                 if args.infix != '':
                     args.output = '.'.join(args.from_file.split('.')[:-1]) + '_' + args.infix + '.' + ext
                 else:
                     print_date("Cannot overwrite input file")
-                    return os.EX_USAGE, configs
+                    return 64, configs
                 if args.verbose:
                     print_date("Output will be written to {}".format(args.output))
         elif args.prep_subcommand == 'transform':
             ext = args.from_file.split('.')[-1]
             if ext.lower() not in RESCALABLE_FILE_FORMATS:
                 print_date("File format {} not available for transforming".format(ext.lower()))
-                return os.EX_USAGE, configs
+                return 64, configs
             if args.output is None:
                 if args.infix != '':
                     args.output = '.'.join(args.from_file.split('.')[:-1]) + '_' + args.infix + '.' + ext
                 else:
                     print_date("Cannot overwrite input file")
-                    return os.EX_USAGE, configs
+                    return 64, configs
                 if args.verbose:
                     print_date("Output will be written to {}".format(args.output))
 
@@ -1123,7 +1123,7 @@ def parse_args(_args, use_shlex=False):
         if args.show_chunks:
             if not re.match(r".*\.mod$", args.from_file, re.IGNORECASE):
                 print_date("Invalid file type to view chunks. Only works with IMOD files")
-                return os.EX_USAGE, configs
+                return 64, configs
     # convert
     elif args.subcommand == 'convert':
         # convert details to unicode
@@ -1137,7 +1137,7 @@ def parse_args(_args, use_shlex=False):
                 assert os.path.exists(args.from_file)
             except AssertionError:
                 print_date("File {} was not found".format(args.from_file))
-                return os.EX_USAGE, configs
+                return 64, configs
             # only bother handling extension disambiguation if the file exists
             ext = _get_file_extension(args.from_file)
             # check if this is an ambiguous extension
@@ -1155,19 +1155,19 @@ def parse_args(_args, use_shlex=False):
                             print_date("File {} was not found".format(fn))
                             file_missing = True
                     if file_missing:
-                        return os.EX_USAGE, configs
+                        return 64, configs
                 else:
                     print_date("Invalid format(s) for multi-file segmentation: {}; should be only one of: {}".format(
                         ', '.join(invalid_formats),
                         ', '.join(MULTI_FILE_FORMATS),
                     ))
-                    return os.EX_USAGE, configs
+                    return 64, configs
                 # now we check if this is an ambiguous extension
                 if file_format in EXTENSION_SUBTYPE_INDICES.keys():
                     args = _set_subtype_index(args, file_format)
             else:
                 print_date("Please use -m/--multi-file argument for multi-file segmentations")
-                return os.EX_USAGE, configs
+                return 64, configs
         # set the output file
         if args.output is None:
             if args.multi_file:
@@ -1181,7 +1181,7 @@ def parse_args(_args, use_shlex=False):
                 except AssertionError:
                     print_date("Invalid output format: {}; valid values are: {}".format(
                         args.format, ", ".join(map(lambda x: x[0], FORMAT_LIST))))
-                    return os.EX_USAGE, configs
+                    return 64, configs
                 fn = ".".join(os.path.basename(from_file).split(
                     '.')[:-1]) + '.{}'.format(args.format)
                 args.__setattr__('output', os.path.join(dirname, fn))
@@ -1213,7 +1213,7 @@ def parse_args(_args, use_shlex=False):
                 if args.verbose:
                     print_date(
                         "Invalid value for primary descriptor: {}".format(args.primary_descriptor))
-                return os.EX_USAGE, configs
+                return 64, configs
             if args.verbose:
                 print_date(
                     "Trying to set primary descriptor to {}".format(args.primary_descriptor))
@@ -1229,7 +1229,7 @@ def parse_args(_args, use_shlex=False):
             print_date("Unable to run tests with {} in current path ({})".format(configs['__TEMP_FILE'],
                                                                                  os.path.abspath(__file__)))
             print_date("Run 'sff notes save <file.sff>' or 'sff notes trash @' before proceeding.")
-            return os.EX_USAGE, configs
+            return 64, configs
         # normalise tool list
         # if 'all' is specified together with others then it should simply be 'all'
         if 'all' in args.tool:
@@ -1245,7 +1245,7 @@ def parse_args(_args, use_shlex=False):
                 print_date(
                     "Unknown tool: {}; Available tools for test: {}".format(tool, ", ".join(tool_list))
                 )
-                return os.EX_USAGE, configs
+                return 64, configs
         if args.verbosity:
             try:
                 assert args.verbosity in range(4)
@@ -1257,7 +1257,7 @@ def parse_args(_args, use_shlex=False):
                         args.verbosity
                     )
                 )
-                return os.EX_USAGE, configs
+                return 64, configs
     # notes
     elif args.subcommand == 'notes':
         # convenience: the user can use '@' to refer to an EMDB-SFF file whch is the previous
@@ -1276,7 +1276,7 @@ def parse_args(_args, use_shlex=False):
                     else:
                         print_date("Temporary file {} does not exist. \
 Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".format(temp_file), stream=sys.stdout)
-                        return os.EX_USAGE, configs
+                        return 64, configs
                 else:
                     if args.verbose:
                         print_date(
@@ -1288,22 +1288,22 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 except AssertionError:
                     print_date(
                         "Save-to file {} not found.".format(args.sff_file))
-                    return os.EX_USAGE, configs
+                    return 64, configs
 
         if args.notes_subcommand == "search":
             # ensure start is valid
             if args.start < 1:
                 print_date("Invalid start value: {}; should be greater than 1".format(args.start))
-                return os.EX_USAGE, configs
+                return 64, configs
             # ensure rows is valid
             if args.rows < 1:
                 print_date("Invalid rows value: {}; should be greater than 1".format(args.rows))
-                return os.EX_USAGE, configs
+                return 64, configs
             if args.resource != 'ols' and (
                     args.ontology is not None or args.exact or args.list_ontologies or \
                     args.short_list_ontologies or args.obsoletes):
                 print_date("Invalid usage: -O, -x, -o, -L, -l can only be used with -R ols")
-                return os.EX_USAGE, None
+                return 64, None
         elif args.notes_subcommand == "show":
             if args.segment_id is not None:
                 args.segment_id = list(map(int, args.segment_id.split(',')))
@@ -1323,7 +1323,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                                "-n <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefOtherType> <extrefValue> \n\t"
                                "-I <int>")
 
-                    return os.EX_USAGE, configs
+                    return 64, configs
 
             # unicode conversion
             if args.name is not None:
@@ -1356,7 +1356,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                     print_date("Will not be able to edit an external reference without \
 specifying an external reference ID. Run 'list' or 'show' to see available \
 external reference IDs for segment {}".format(args.segment_id), stream=sys.stdout)
-                    return os.EX_USAGE, configs
+                    return 64, configs
 
                 # consistency of format
                 # todo: check this; doesn't seem right
@@ -1370,7 +1370,7 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                 except AssertionError:
                     print_date("Will not be able to edit a software intance without specifying an software ID. "
                                "Run 'show' to see the available software IDs.")
-                    return os.EX_USAGE, configs
+                    return 64, configs
 
             if args.segment_id is not None:
                 args.segment_id = list(map(int, args.segment_id.split(',')))
@@ -1403,7 +1403,7 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                 except AssertionError:
                     print_date(
                         "Please specify a segment ID", stream=sys.stdout)
-                    return os.EX_USAGE, configs
+                    return 64, configs
 
                 args.segment_id = list(map(int, args.segment_id.split(',')))
 
@@ -1413,7 +1413,7 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                            (args.external_ref_id is not None)
                 except AssertionError:
                     print_date("Incorrect usage; please use -h for help")
-                    return os.EX_USAGE, configs
+                    return 64, configs
             # convert from string to list of ints
             if args.external_ref_id is not None:
                 ext_ref_ids = list(map(int, args.external_ref_id.split(',')))
@@ -1454,7 +1454,7 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                         "the following segment IDs appear in both --segment-id and --to-segment: {}".format(
                             " ".join(map(str, common))
                         ))
-                    return os.EX_USAGE, configs
+                    return 64, configs
 
         elif args.notes_subcommand == "clear":
             # where to clear notes from

@@ -384,10 +384,10 @@ class TestMain_handle_notes(Py23FixTestCase):
         # 65 =
         status = Main.handle_notes_search(args, configs)
         self.assertTrue(
-            status == os.EX_OK or
-            status == os.EX_DATAERR
+            status == 0 or
+            status == 65
         )
-        if status == os.EX_DATAERR:
+        if status == 65:
             self.stderr(u"Warning: unable to run test on response due to API issue")
 
 
@@ -408,4 +408,4 @@ class TestMain_handle_prep(Py23FixTestCase):
     def test_ccp4_binmap(self):
         """Test that we can prepare a CCP4 map by binning"""
         args, configs = parse_args('prep binmap -v {}'.format(self.test_data), use_shlex=True)
-        self.assertEqual(os.EX_OK, Main.handle_prep(args, configs))
+        self.assertEqual(0, Main.handle_prep(args, configs))

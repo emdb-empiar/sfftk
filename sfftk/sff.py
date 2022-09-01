@@ -40,7 +40,7 @@ def handle_prep(args, configs):
         return transform(args, configs)
     else:
         print_date("No prep protocol for file type {}".format(args.from_file))
-        return os.EX_DATAERR
+        return 65
 
 
 def handle_convert(args, configs):  # @UnusedVariable
@@ -114,7 +114,7 @@ def handle_convert(args, configs):  # @UnusedVariable
                 else:
                     print_date("Ambiguous file extension '{ext}'. Please select the right type or use the "
                                "--subtype-index <value> option".format(ext=ext))
-                    return os.EX_USAGE
+                    return 64
             else:
                 raise ValueError("Unknown file type %s" % args.from_file)
         sff_seg = seg.convert(details=args.details, verbose=args.verbose)  # convert according to args
@@ -125,7 +125,7 @@ def handle_convert(args, configs):  # @UnusedVariable
         if args.verbose:
             print_date("Done")
 
-    return os.EX_OK
+    return 0
 
 
 def handle_notes_search(args, configs):
@@ -148,9 +148,9 @@ def handle_notes_search(args, configs):
     if result is not None:
         # fixme: use print_date
         print(result)
-        return os.EX_OK
+        return 0
     else:
-        return os.EX_DATAERR
+        return 65
 
 
 def handle_notes_list(args, configs):
@@ -202,12 +202,12 @@ def _handle_notes_modify(args, configs):
         else:
             print_date("Temporary file {} does not exist. \
 Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".format(temp_file), stream=sys.stdout)
-            sys.exit(os.EX_DATAERR)
+            sys.exit(65)
     else:
         if os.path.exists(temp_file):
             print_date("Found temp file {}. Either run 'save' or 'trash' to \
 discard changes before working on another file.".format(temp_file), stream=sys.stdout)
-            sys.exit(os.EX_DATAERR)
+            sys.exit(65)
         else:
             if re.match(r'.*\.sff$', temp_file, re.IGNORECASE):
                 # copy the actual file to the temp file
@@ -226,7 +226,7 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                 from .core.parser import parse_args
                 _args, _configs = parse_args(cmd, use_shlex=True)
                 if not _args:
-                    sys.exit(os.EX_USAGE)
+                    sys.exit(64)
                 handle_convert(_args, configs)  # convert
                 args.sff_file = temp_file
             elif re.match(r'.*\.hff$', temp_file, re.IGNORECASE):
@@ -240,7 +240,7 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                 _args, _configs = parse_args(cmd, use_shlex=True)
                 if not _args:
                     # todo: fix this (only main() can call sys.exit())
-                    sys.exit(os.EX_USAGE)
+                    sys.exit(64)
                 handle_convert(_args, configs)  # convert
                 args.sff_file = temp_file
     return args
@@ -453,7 +453,7 @@ def handle_view(args, configs):  # @UnusedVariable
             print("*" * 50)
         else:
             print_date("Not implemented view for files of type .{}".format(args.from_file.split('.')[-1]), sys.stderr)
-    return os.EX_OK
+    return 0
 
 
 def handle_config(args, configs):
@@ -488,7 +488,7 @@ def _module_test_runner(mod, args):
     suite = unittest.TestLoader().loadTestsFromModule(mod)
     if not args.dry_run:
         unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
-    return os.EX_OK
+    return 0
 
 
 def _testcase_test_runner(tc, args):
@@ -502,7 +502,7 @@ def _testcase_test_runner(tc, args):
     suite = unittest.TestLoader().loadTestsFromTestCase(tc)
     if not args.dry_run:
         unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
-    return os.EX_OK
+    return 0
 
 
 def _discover_test_runner(path, args, top_level_dir=None):
@@ -519,7 +519,7 @@ def _discover_test_runner(path, args, top_level_dir=None):
     suite = unittest.TestLoader().discover(path, top_level_dir=top_level_dir)
     if not args.dry_run:
         unittest.TextTestRunner(verbosity=args.verbosity).run(suite)
-    return os.EX_OK
+    return 0
 
 
 def handle_tests(args, configs):
@@ -562,7 +562,7 @@ def handle_tests(args, configs):
         if 'notes' in args.tool:
             from .unittests import test_notes
             _module_test_runner(test_notes, args)
-        return os.EX_OK
+        return 0
 
 
 def main():
@@ -570,10 +570,10 @@ def main():
         from .core.parser import parse_args
         args, configs = parse_args(sys.argv[1:])
         # missing args
-        if args == os.EX_USAGE:
-            return os.EX_USAGE
-        elif args == os.EX_OK:  # e.g. show version has no error but has no handler either
-            return os.EX_OK
+        if args == 64:
+            return 64
+        elif args == 0:  # e.g. show version has no error but has no handler either
+            return 0
         # subcommands
         if args.subcommand == 'prep':
             return handle_prep(args, configs)
@@ -590,8 +590,8 @@ def main():
 
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
-        return os.EX_OK
-    return os.EX_OK
+        return 0
+    return 0
 
 
 if __name__ == "__main__":
