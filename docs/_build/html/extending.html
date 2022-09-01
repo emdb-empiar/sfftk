@@ -1,72 +1,38 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Extending sfftk &mdash; sfftk v0.5.0.dev0 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extending sfftk &mdash; sfftk v0.5.5.dev1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="sfftk packages" href="sfftk.html" />
     <link rel="prev" title="Developing with sfftk" href="developing.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> sfftk
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 v0.5
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -74,17 +40,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="toolkit.html">EMDB-SFF Toolkit (<code class="docutils literal notranslate"><span class="pre">sfftk</span></code>)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="converting.html">Converting Files To EMDB-SFF</a></li>
@@ -113,73 +69,35 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sfftk.html">sfftk packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sfftk.html"><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> packages</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">sfftk</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>Extending sfftk</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/extending.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="extending-sfftk">
-<h1><a class="toc-backref" href="#id2">Extending sfftk</a><a class="headerlink" href="#extending-sfftk" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="extending-sfftk">
+<h1><a class="toc-backref" href="#id2">Extending sfftk</a><a class="headerlink" href="#extending-sfftk" title="Permalink to this heading"></a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -193,7 +111,7 @@
 <li><p><a class="reference internal" href="#example" id="id6">Example:</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" id="id7">Step III: Implement a <strong>convert hook</strong> in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function</a></p></li>
+<li><p><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" id="id7">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a></p></li>
 <li><p><a class="reference internal" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder" id="id8">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></p></li>
 <li><p><a class="reference internal" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module" id="id9">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></p></li>
 </ul>
@@ -216,24 +134,24 @@
 <p>multifile
 parser</p>
 </div>
-<div class="section" id="adding-a-segmentation-file-format">
-<h2><a class="toc-backref" href="#id3">Adding A Segmentation File Format</a><a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this headline">¶</a></h2>
+<section id="adding-a-segmentation-file-format">
+<h2><a class="toc-backref" href="#id3">Adding A Segmentation File Format</a><a class="headerlink" href="#adding-a-segmentation-file-format" title="Permalink to this heading"></a></h2>
 <p>There are five (5) steps involved.</p>
 <ul class="simple">
 <li><p>Step I: Create a <strong>reader</strong> module</p></li>
 <li><p>Step II: Create a <strong>format</strong> adapter module</p></li>
-<li><p>Step III: Implement a <strong>convert hook</strong> in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function</p></li>
+<li><p>Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</p></li>
 <li><p>Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</p></li>
 <li><p>Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</p></li>
 </ul>
-<div class="section" id="step-i-create-a-reader-module">
-<span id="step-i"></span><h3><a class="toc-backref" href="#id4">Step I: Create a <strong>reader</strong> module</a><a class="headerlink" href="#step-i-create-a-reader-module" title="Permalink to this headline">¶</a></h3>
+<section id="step-i-create-a-reader-module">
+<span id="step-i"></span><h3><a class="toc-backref" href="#id4">Step I: Create a <strong>reader</strong> module</a><a class="headerlink" href="#step-i-create-a-reader-module" title="Permalink to this heading"></a></h3>
 <p>The role of the reader module is to be the first point of contact with the application-specific segmentation file.</p>
 <p>Each reader module <strong>must</strong> implement a <code class="docutils literal notranslate"><span class="pre">get_data(fn,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> function which takes the segmentation file’s name as a string together with optional positional and keyword arguments to be passed down the class chain. This function then returns a single <em>ad hoc</em> object that encapsulates the segmentation with a simple API faithful to the segmentation’s structure to access various attributes of the segmentation e.g. <code class="docutils literal notranslate"><span class="pre">headers</span></code>, <code class="docutils literal notranslate"><span class="pre">segments</span></code> etc.</p>
 <p>The reader module <strong>must</strong> then be placed in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers</span></code> package and should be named as the extension followed by the word ‘reader’ e.g. for Segger files with a <code class="docutils literal notranslate"><span class="pre">.seg</span></code> extension this would be <code class="docutils literal notranslate"><span class="pre">segreader.py</span></code>.</p>
-</div>
-<div class="section" id="step-ii-create-a-format-adapter-module">
-<span id="step-ii"></span><h3><a class="toc-backref" href="#id5">Step II: Create a <strong>format</strong> adapter module</a><a class="headerlink" href="#step-ii-create-a-format-adapter-module" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-ii-create-a-format-adapter-module">
+<span id="step-ii"></span><h3><a class="toc-backref" href="#id5">Step II: Create a <strong>format</strong> adapter module</a><a class="headerlink" href="#step-ii-create-a-format-adapter-module" title="Permalink to this heading"></a></h3>
 <p>The format adapter is where the <em>ad hoc</em> segmentation object is <em>adapted</em> to the EMDB-SFF model.</p>
 <p>The classes defined in this module represent a hierarchy describing a typical segmentation data structure. For the following discussion, please refer to the diagram below. (You might need to right-click and select an option to view the image in a new tab to see the image details.)</p>
 <img alt="_images/segmentation_object_hierarchy.png" src="_images/segmentation_object_hierarchy.png" />
@@ -253,8 +171,8 @@ parser</p>
 </ul>
 <p>Format adapter modules <strong>must</strong> be placed in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats</span></code> package and should be named as the segmentation file format’s extension e.g. for Segger files with a <code class="docutils literal notranslate"><span class="pre">.seg</span></code> extension this is <code class="docutils literal notranslate"><span class="pre">seg.py</span></code>.</p>
 <p>Conversion is effected within each class by implementing a <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method which takes the attributes obtained from the <em>ad hoc</em> segmentation object and uses them to populate fields in a corresponding EMDB-SFF attribute object. Given the hierarchy described above, the <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method for objects higher up in the hierarchy may then invoke the <code class="docutils literal notranslate"><span class="pre">convert()</span></code> method of lower level objects when effecting their conversions. An example will be provided below.</p>
-<div class="section" id="example">
-<h4><a class="toc-backref" href="#id6">Example:</a><a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<section id="example">
+<h4><a class="toc-backref" href="#id6">Example:</a><a class="headerlink" href="#example" title="Permalink to this heading"></a></h4>
 <p>To make the above concrete, we outline how the <a class="reference internal" href="formats.html#module-sfftk.formats.seg" title="sfftk.formats.seg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a> format adapter is implemented.</p>
 <p>Segger segmentation files are represented using 3D volumes. Therefore, the <a class="reference internal" href="formats.html#module-sfftk.formats.seg" title="sfftk.formats.seg"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a> module has the following top level structure:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">Segmentation</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">Segment</span><span class="p">,</span> <span class="n">Annotation</span><span class="p">,</span> <span class="n">Volume</span>
@@ -429,7 +347,7 @@ parser</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SeggerSegment</span><span class="p">(</span><span class="n">Segment</span><span class="p">):</span>
     <span class="c1"># ...</span>
 
-    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert to a :py:class:`sfftkrw.SFFSegment` object&quot;&quot;&quot;</span>
         <span class="n">segment</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">SFFSegment</span><span class="p">()</span>
         <span class="n">segment</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">region_id</span>
@@ -445,11 +363,11 @@ parser</p>
 </pre></div>
 </div>
 <p>and which in turn calls the <code class="docutils literal notranslate"><span class="pre">convert()</span></code> methods on the contained annotation and volume objects.</p>
-</div>
-</div>
-<div class="section" id="step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function">
-<span id="step-iii"></span><h3><a class="toc-backref" href="#id7">Step III: Implement a <strong>convert hook</strong> in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function</a><a class="headerlink" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" title="Permalink to this headline">¶</a></h3>
-<p>In order to perform conversion using the command-line utility, we need to have the <code class="docutils literal notranslate"><span class="pre">convert</span></code> utility recognise segmentations by file type. This is simply done by add adding a regular expression match object in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function as follows:</p>
+</section>
+</section>
+<section id="step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function">
+<span id="step-iii"></span><h3><a class="toc-backref" href="#id7">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a><a class="headerlink" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" title="Permalink to this heading"></a></h3>
+<p>In order to perform conversion using the command-line utility, we need to have the <code class="docutils literal notranslate"><span class="pre">convert</span></code> utility recognise segmentations by file type. This is simply done by add adding a regular expression match object in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">handle_convert</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>  <span class="c1"># @UnusedVariable</span>
     <span class="c1"># ...</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multi_file</span><span class="p">:</span>
@@ -475,13 +393,13 @@ parser</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert --top-level-only file.seg --verbose
 </pre></div>
 </div>
-</div>
-<div class="section" id="step-iv-add-test-data-files-to-the-sfftk-test-data-folder">
-<span id="step-iv"></span><h3><a class="toc-backref" href="#id8">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a><a class="headerlink" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-iv-add-test-data-files-to-the-sfftk-test-data-folder">
+<span id="step-iv"></span><h3><a class="toc-backref" href="#id8">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a><a class="headerlink" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder" title="Permalink to this heading"></a></h3>
 <p>Provide an example segmentation file in the sfftk.test_data package.</p>
-</div>
-<div class="section" id="step-v-add-unit-tests-in-the-sfftk-unittests-module">
-<span id="step-v"></span><h3><a class="toc-backref" href="#id9">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a><a class="headerlink" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-v-add-unit-tests-in-the-sfftk-unittests-module">
+<span id="step-v"></span><h3><a class="toc-backref" href="#id9">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a><a class="headerlink" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module" title="Permalink to this heading"></a></h3>
 <p>Write unit tests and add them to the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module. Each format that you add should implement a read and convert test method (respectively called <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_read</span></code> and <code class="docutils literal notranslate"><span class="pre">test_&lt;format&gt;_convert</span></code>. See the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests.test_formats</span></code> module for examples.</p>
 <p>Of course, you are welcome to contact us for help doing the above. Also, if you have any suggestions on how to improve the extension process these are invited.</p>
 <p>Once all this components are in place conversion to XML, HDF5 and JSON should be automatic.</p>
@@ -494,17 +412,17 @@ sff convert file.&lt;format&gt; -f json
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff tests formats
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="adding-a-search-resource">
-<h2><a class="toc-backref" href="#id10">Adding A Search Resource</a><a class="headerlink" href="#adding-a-search-resource" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="adding-a-search-resource">
+<h2><a class="toc-backref" href="#id10">Adding A Search Resource</a><a class="headerlink" href="#adding-a-search-resource" title="Permalink to this heading"></a></h2>
 <p>The list of search resources is extensible. Any new search results must fulfil the following criteria:</p>
 <ul class="simple">
 <li><p>Have a A REST API;</p></li>
 <li><p>Return the result as either JSON or TAB-delimitted text;</p></li>
 </ul>
-<div class="section" id="step-i-add-the-resource-description">
-<h3><a class="toc-backref" href="#id11">Step I: Add the resource description</a><a class="headerlink" href="#step-i-add-the-resource-description" title="Permalink to this headline">¶</a></h3>
+<section id="step-i-add-the-resource-description">
+<h3><a class="toc-backref" href="#id11">Step I: Add the resource description</a><a class="headerlink" href="#step-i-add-the-resource-description" title="Permalink to this heading"></a></h3>
 <p>The resource descriptions are contained in <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.__init__.py</span></code>. For example, the one for
 <a class="reference external" href="https://www.ebi.ac.uk/ols">OLS</a> is:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RESOURCE_LIST</span><span class="p">[</span><span class="s1">&#39;ols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
@@ -529,9 +447,9 @@ Each resource’s description is a dictionary of:</p>
 page of all results is returned but it is useful to inform the user of how many results were found. If this is not
 present set it to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
-</div>
-<div class="section" id="step-ii-add-a-handler-to-return-the-correct-url">
-<h3><a class="toc-backref" href="#id12">Step II: Add a handler to return the correct URL</a><a class="headerlink" href="#step-ii-add-a-handler-to-return-the-correct-url" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-ii-add-a-handler-to-return-the-correct-url">
+<h3><a class="toc-backref" href="#id12">Step II: Add a handler to return the correct URL</a><a class="headerlink" href="#step-ii-add-a-handler-to-return-the-correct-url" title="Permalink to this heading"></a></h3>
 <p>Modify the <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.SearchResults.get_url()</span></code> method by adding a conditional handler for
 the resource that returns the complete search URL (i.e. including the search term and additional options allowed on the
 REST API).</p>
@@ -554,9 +472,9 @@ REST API).</p>
 </div>
 <p>Each of the subsequent <code class="docutils literal notranslate"><span class="pre">if</span></code> statements conditionally include additional parameters specified in the command-line
 arguments.</p>
-</div>
-<div class="section" id="step-iii-define-how-the-table-is-formated">
-<h3><a class="toc-backref" href="#id13">Step III: Define how the table is formated</a><a class="headerlink" href="#step-iii-define-how-the-table-is-formated" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-iii-define-how-the-table-is-formated">
+<h3><a class="toc-backref" href="#id13">Step III: Define how the table is formated</a><a class="headerlink" href="#step-iii-define-how-the-table-is-formated" title="Permalink to this heading"></a></h3>
 <p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">sfftk.notes.find.SearchResource.tabulate()</span></code> specifies how to tabulate results from each resource. We use
 two classes: <a class="reference internal" href="notes.html#sfftk.notes.find.TableField" title="sfftk.notes.find.TableField"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.TableField</span></code></a> and <a class="reference internal" href="notes.html#sfftk.notes.find.ResultsTable" title="sfftk.notes.find.ResultsTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.find.ResultsTable</span></code></a> to do this. Here is
 an example for OLS:</p>
@@ -591,73 +509,55 @@ This is helpful when creating URLs/IRIs to an accession page e.g.</p>
 <p>for an EMDB entry page.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="step-iv-write-tests-and-test">
-<h3><a class="toc-backref" href="#id14">Step IV: Write tests and test</a><a class="headerlink" href="#step-iv-write-tests-and-test" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-iv-write-tests-and-test">
+<h3><a class="toc-backref" href="#id14">Step IV: Write tests and test</a><a class="headerlink" href="#step-iv-write-tests-and-test" title="Permalink to this heading"></a></h3>
 <p>You will then need to write at least two tests in the <code class="docutils literal notranslate"><span class="pre">sfftk.unittests.test_notes.TestNotesFindSearchResource</span></code> class:</p>
 <ul class="simple">
 <li><p><em>parser</em> tests that check that the command-line arguments are correct (see the module for other examples);</p></li>
 <li><p><em>get_url</em> tests that ensure that the URL is correctly formed for all options;</p></li>
 </ul>
-</div>
-<div class="section" id="step-iv-write-documentation-for-the-new-resource">
-<h3><a class="toc-backref" href="#id15">Step IV: Write documentation for the new resource</a><a class="headerlink" href="#step-iv-write-documentation-for-the-new-resource" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="step-iv-write-documentation-for-the-new-resource">
+<h3><a class="toc-backref" href="#id15">Step IV: Write documentation for the new resource</a><a class="headerlink" href="#step-iv-write-documentation-for-the-new-resource" title="Permalink to this heading"></a></h3>
 <p>Finally, document the resource in the section <a class="reference internal" href="annotating.html#specifying-the-resource-to-search"><span class="std std-ref">Specifying The Resource To Search</span></a> by describing the following:</p>
 <ul class="simple">
 <li><p>the <em>name</em> and <em>link to</em> the resource in the list of resources;</p></li>
 <li><p>the <em>keyword</em> to be passed to the <code class="docutils literal notranslate"><span class="pre">-R/--resource</span></code> flag;</p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="sfftk.html" class="btn btn-neutral float-right" title="sfftk packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="developing.html" class="btn btn-neutral float-left" title="Developing with sfftk" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="developing.html" class="btn btn-neutral float-left" title="Developing with sfftk" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sfftk.html" class="btn btn-neutral float-right" title="sfftk packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, EMBL-EBI
-
-    </p>
+    <p>&#169; Copyright 2017, EMBL-EBI.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

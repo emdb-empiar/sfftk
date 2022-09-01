@@ -124,9 +124,9 @@ class ExternalReference(object):
                     u"Could not find label and description for external reference {}:{}".format(self.resource,
                                                                                                 self.accession))
         elif self.resource == u"UniProt":
-            url = u"https://www.uniprot.org/uniprot/" \
-                  u"?query=accession:{search_term}&format=tab&offset=0&limit=1&columns=id,entry_name," \
-                  u"protein_names,organism".format(
+            url = u"https://rest.uniprot.org/uniprotkb/search" \
+                  u"?query=accession:{search_term}&format=tsv&size=1&fields=accession,id," \
+                  u"protein_name,organism_name".format(
                 search_term=self.accession,
             )
             R = requests.get(url)

@@ -20,7 +20,7 @@ class IlastikSegment(object):
         self._segmentation = segmentation
         self._segment_id = segment_id
 
-    def convert(self, args, *_args, **_kwargs):
+    def convert(self, **kwargs):
         segment = schema.SFFSegment(id=self._segment_id)
         segment.biological_annotation = schema.SFFBiologicalAnnotation()
         segment.biological_annotation.name = "ilastik segment #{id}".format(id=self._segment_id)
@@ -47,15 +47,24 @@ class IlastikSegmentation(object):
     def segments(self):
         return iter(IlastikSegment(self._segmentation, segment_id) for segment_id in self._segmentation.segment_ids)
 
-    def convert(self, args, *_args, **_kwargs):
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+        """
+        Convert to a :py:class:`sfftkrw.SFFSegmentation` object
+
+        :param str name: optional name of the segmentation used in <name/>
+        :param str software_version: optional software version for Amira use in <software><version/></software>
+        :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
+        :param str details: optional details associated with this segmentation used in <details/>
+        :param bool verbose: option to determine whether conversion should be verbose
+        """
         segmentation = schema.SFFSegmentation()
-        segmentation.name = u"ilastik Segmentation"
+        segmentation.name = name if name is not None else u"ilastik Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
                 name="ilastik",
-                version="v1.3.3post3",
-                processing_details="Autocontext (2-stage)",
+                version=software_version if software_version is not None else "Unspecified",
+                processing_details=processing_details,
             )
         )
         segmentation.transform_list = schema.SFFTransformList()
@@ -71,7 +80,7 @@ class IlastikSegmentation(object):
         segmentation.primary_descriptor = "three_d_volume"
         segments = schema.SFFSegmentList()
         for s in self.segments:
-            segments.append(s.convert(args, *_args, **_kwargs))
+            segments.append(s.convert())
         segmentation.segment_list = segments
         # lattice
         segmentation.lattice_list = schema.SFFLatticeList()
@@ -85,8 +94,5 @@ class IlastikSegmentation(object):
             )
         )
         # details
-        if args.details:
-            segmentation.details = args.details
-        elif u'details' in _kwargs:
-            segmentation.details = _kwargs[u'details']
+        segmentation.details = details
         return segmentation

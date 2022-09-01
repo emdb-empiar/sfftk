@@ -52,7 +52,7 @@ class AmiraHyperSurfaceMesh(Mesh):
         for t0, t1, t2 in triangle_list:
             yield lut[t0], lut[t1], lut[t2]
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert to a :py:class:`sfftkrw.SFFMesh` object"""
         indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in _dict_iter_items(self.vertices)),
                                   key=lambda v: v[0])
@@ -137,7 +137,7 @@ class AmiraHyperSurfaceSegment(Segment):
         """Segment meshes"""
         return self._meshes
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biological_annotation, segment.colour = self.annotation.convert()
@@ -206,15 +206,23 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         """The segments in the segmentation"""
         return self._segments
 
-    def convert(self, args, *_args, **_kwargs):
-        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object"""
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object
+
+        :param str name: optional name of the segmentation used in <name/>
+        :param str software_version: optional software version for Amira use in <software><version/></software>
+        :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
+        :param str details: optional details associated with this segmentation used in <details/>
+        :param bool verbose: option to determine whether conversion should be verbose
+        """
         segmentation = schema.SFFSegmentation()
-        segmentation.name = "Amira HyperSurface Segmentation"
+        segmentation.name = name if name is not None else "Amira HyperSurface Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
                 name="Amira",
-                version=self.header.version,
+                version=software_version if software_version is not None else self.header.version,
+                processing_details=processing_details
             )
         )
         # transforms
@@ -232,8 +240,5 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         for i, s in enumerate(self.segments):
             segmentation.segment_list.append(s.convert())
         # details
-        if args.details is not None:
-            segmentation.details = args.details
-        elif 'details' in _kwargs:
-            segmentation.details = _kwargs['details']
+        segmentation.details = details
         return segmentation

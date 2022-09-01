@@ -87,7 +87,7 @@ class IMODMesh(object):
         """Polygons are triangles"""
         return self._triangles
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert this to an EMDB-SFF object"""
         mesh = schema.SFFMesh(
             vertices=schema.SFFVertices.from_array(self.vertices),
@@ -121,13 +121,13 @@ class IMODMeshes(_UserList):
     def __len__(self):
         return len(self._meshes)
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert the set of meshes for this segment into a container of mesh objects"""
         mesh_list = schema.SFFMeshList()
         for mesh in self:
             if mesh.is_empty():
                 continue
-            mesh_list.append(mesh.convert(*args, **kwargs))
+            mesh_list.append(mesh.convert(**kwargs))
         return mesh_list
 
 
@@ -256,7 +256,7 @@ class IMODHeader(Header):
                 continue
             setattr(self, attr, getattr(self._segmentation, attr))
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert to an EMDB-SFF segmentation header object
 
         Currently not implemented
@@ -367,16 +367,24 @@ class IMODSegmentation(Segmentation):
         """Segments in segmentation"""
         return self._segments
 
-    def convert(self, args, *_args, **_kwargs):
-        """Method to convert an IMOD file to a :py:class:`sfftkrw.SFFSegmentation` object"""
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+        """Method to convert an IMOD file to a :py:class:`sfftkrw.SFFSegmentation` object
+
+        :param str name: optional name of the segmentation used in <name/>
+        :param str software_version: optional software version for Amira use in <software><version/></software>
+        :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
+        :param str details: optional details associated with this segmentation used in <details/>
+        :param bool verbose: option to determine whether conversion should be verbose
+        """
         segmentation = schema.SFFSegmentation()
-        segmentation.name = self.header.name.strip(' ')
+        segmentation.name = name if name is not None else self.header.name.strip(' ')
         # software
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
                 name="IMOD",
-                version=self.header.version,
+                version=software_version if software_version is not None else self.header.version,
+                processing_details=processing_details
             )
         )
         # transforms
@@ -409,9 +417,6 @@ class IMODSegmentation(Segmentation):
         # now is the right time to set the primary descriptor attribute
         segmentation.primary_descriptor = "mesh_list"
         # details
-        if args.details is not None:
-            segmentation.details = args.details
-        elif 'details' in _kwargs:
-            segmentation.details = _kwargs['details']
+        segmentation.details = details
 
         return segmentation

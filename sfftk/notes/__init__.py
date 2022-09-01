@@ -8,7 +8,7 @@ from sfftkrw.core import _dict
 
 # RESOURCE_LIST = collections.OrderedDict()
 RESOURCE_LIST = _dict()
-FORMATS = [u'json', u'tab']
+FORMATS = [u'json', u'tsv']
 """
 Enter a set of resources to search
 Each resource must have the following keys:
@@ -42,8 +42,8 @@ RESOURCE_LIST[u'emdb'] = {
 }
 RESOURCE_LIST[u'uniprot'] = {
     u'name': u'UniProt',
-    u'root_url': u'https://www.uniprot.org/uniprot/',
-    u'format': u'tab',
+    u'root_url': u'https://rest.uniprot.org/uniprotkb/search',
+    u'format': u'tsv',
     u'result_path': None,
     u'result_count': None,
 }

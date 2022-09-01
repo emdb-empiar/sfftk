@@ -293,22 +293,26 @@ class MapSegmentation(Segmentation):
         return self._segments
         # return [MapSegment(self)]
 
-    def convert(self, args, *_args, **_kwargs):
-        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object"""
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+        """Convert to a :py:class:`sfftkrw.SFFSegmentation` object
+
+        :param str name: optional name of the segmentation used in <name/>
+        :param str software_version: optional software version for Amira use in <software><version/></software>
+        :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
+        :param str details: optional details associated with this segmentation used in <details/>
+        :param bool verbose: option to determine whether conversion should be verbose
+        """
         segmentation = schema.SFFSegmentation()
-
-        # segmentation.name = self.header.name
-        segmentation.name = "CCP4 mask segmentation"
-
+        segmentation.name = name if name is not None else "CCP4 mask segmentation"
         # software
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
-                name="Undefined",
-                version="Undefined",
+                name="Unspecified",
+                version=software_version if software_version is not None else "Unspecified",
+                processing_details=processing_details
             )
         )
-        # segmentation.filePath = os.path.dirname(os.path.abspath(self._fn))
         segmentation.primary_descriptor = "three_d_volume"
 
         segmentation.bounding_box = schema.SFFBoundingBox(
@@ -341,8 +345,5 @@ class MapSegmentation(Segmentation):
         segmentation.segment_list = segment_list
         segmentation.lattice_list = lattice_list
 
-        if args.details is not None:
-            segmentation.details = args.details
-        elif 'details' in _kwargs:
-            segmentation.details = _kwargs['details']
+        segmentation.details = details
         return segmentation

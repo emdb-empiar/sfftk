@@ -16,7 +16,7 @@ from sfftkrw.unittests import Py23FixTestCase
 from . import TEST_DATA_PATH
 # from .. import schema
 from ..core.parser import parse_args
-from ..formats import am, seg, map, mod, stl, surf, survos
+from ..formats import am, seg, map, mod, stl, surf, survos, ilastik
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -38,6 +38,12 @@ class TestFormats(Py23FixTestCase):
         if not hasattr(self, 'am_file'):
             self.am_file = os.path.join(self.segmentations_path, 'test_data.am')
             self.am_segmentation = am.AmiraMeshSegmentation(self.am_file)
+
+    def read_ilastik(self):
+        """Read ilastik .h5 files"""
+        if not hasattr(self, 'ilastik_file'):
+            self.ilastik_file = os.path.join(self.segmentations_path, 'test_data_ilastik.h5')
+            self.ilastik_segmentation = ilastik.IlastikSegmentation(self.ilastik_file)
 
     def read_seg(self):
         """Read .seg files"""
@@ -106,6 +112,12 @@ class TestFormats(Py23FixTestCase):
         self.assertIsInstance(self.am_segmentation.segments, list)
         # self.assertIsInstance(self.am_segmentation.segments[0], am.AmiraMeshSegment)
 
+    def test_ilastik_read(self):
+        """Read an ilastik (.h5) segmentation"""
+        self.read_ilastik()
+        self.assertIsInstance(list(self.ilastik_segmentation.segments), list)
+        self.assertIsInstance(list(self.ilastik_segmentation.segments)[0], ilastik.IlastikSegment)
+
     def test_seg_read(self):
         """Read a Segger (.seg) segmentation"""
         self.read_seg()
@@ -160,13 +172,13 @@ class TestFormats(Py23FixTestCase):
         """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
         self.read_am()
         args, configs = parse_args('convert {}'.format(self.am_file), use_shlex=True)
-        seg = self.am_segmentation.convert(args, configs)
+        seg = self.am_segmentation.convert(details=args.details, verbose=True)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'AmiraMesh Segmentation')
         self.assertEqual(seg.version, self.schema_version)
         self.assertEqual(seg.software_list[0].name, 'Amira')
-        self.assertEqual(seg.software_list[0].version, self.am_segmentation.header.version)
+        self.assertEqual("Unspecified", seg.software_list[0].version)
         self.assertEqual(seg.primary_descriptor, 'three_d_volume')
         self.assertEqual(seg.transform_list[0].id, 0)
         self.assertGreaterEqual(len(seg.transform_list), 1)
@@ -182,11 +194,38 @@ class TestFormats(Py23FixTestCase):
         self.assertIsNotNone(segment.three_d_volume.lattice_id)
         self.assertGreaterEqual(segment.three_d_volume.value, 1)
 
+    def test_ilastik_convert(self):
+        """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
+        self.read_ilastik()
+        args, configs = parse_args('convert {} --details ilastik --subtype-index 1'.format(self.ilastik_file), use_shlex=True)
+        seg = self.ilastik_segmentation.convert(details=args.details, verbose=True)
+        # assertions
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual('ilastik Segmentation', seg.name)
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual("ilastik", seg.software_list[0].name)
+        self.assertEqual("Unspecified", seg.software_list[0].version)
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertEqual('ilastik', seg.details)
+        if seg.lattice_list[0].data != '':  # MemoryError will set .data to an emtpy string
+            self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
+
     def test_seg_convert(self):
         """Convert a segmentation from a Segger file to an SFFSegmentation object"""
         self.read_seg()
         args, configs = parse_args('convert {}'.format(self.seg_file), use_shlex=True)
-        seg = self.seg_segmentation.convert(args, configs)
+        seg = self.seg_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'Segger Segmentation')
@@ -211,12 +250,12 @@ class TestFormats(Py23FixTestCase):
         """Convert a segmentation from an EMDB Map mask file to an SFFSegmentation object"""
         self.read_map()
         args, configs = parse_args('convert {}'.format(self.map_file), use_shlex=True)
-        seg = self.map_segmentation.convert(args, configs)
+        seg = self.map_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'CCP4 mask segmentation')  # might have an extra space at the end
         self.assertEqual(seg.version, self.schema_version)
-        self.assertEqual(seg.software_list[0].name, 'Undefined')
+        self.assertEqual("Unspecified", seg.software_list[0].name)
         self.assertEqual(seg.primary_descriptor, 'three_d_volume')
         self.assertEqual(seg.transform_list[0].id, 0)
         self.assertGreaterEqual(len(seg.transform_list), 1)
@@ -237,12 +276,12 @@ class TestFormats(Py23FixTestCase):
         args, configs = parse_args(
             'convert -m {}'.format(' '.join([self.map_multi0_file, self.map_multi1_file, self.map_multi2_file])),
             use_shlex=True)
-        seg = self.map_multi_segmentation.convert(args, configs)
+        seg = self.map_multi_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'CCP4 mask segmentation')  # might have an extra space at the end
         self.assertEqual(seg.version, self.schema_version)
-        self.assertEqual(seg.software_list[0].name, 'Undefined')
+        self.assertEqual("Unspecified", seg.software_list[0].name)
         self.assertEqual(seg.primary_descriptor, 'three_d_volume')
         self.assertEqual(seg.transform_list[0].id, 0)
         self.assertEqual(len(seg.segment_list), 3)
@@ -261,8 +300,8 @@ class TestFormats(Py23FixTestCase):
     def test_mod_convert(self):
         """Convert a segmentation from an IMOD file to an SFFSegmentation object"""
         self.read_mod()
-        args, configs = parse_args('convert {}'.format(self.mod_file), use_shlex=True)
-        seg = self.mod_segmentation.convert(args, configs)
+        args, configs = parse_args('convert {} --details "Something interesting"'.format(self.mod_file), use_shlex=True)
+        seg = self.mod_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'IMOD-NewModel')
@@ -271,6 +310,7 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual(seg.primary_descriptor, 'mesh_list')
         self.assertEqual(seg.transforms[0].id, 0)
         self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertEqual("Something interesting", seg.details)
         segment = seg.segment_list[0]
         self.assertIsNotNone(segment.biological_annotation)
         self.assertIsNotNone(segment.biological_annotation.name)
@@ -288,15 +328,16 @@ class TestFormats(Py23FixTestCase):
     def test_stl_convert(self):
         """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""
         self.read_stl()
-        args, configs = parse_args('convert {}'.format(self.stl_file), use_shlex=True)
-        seg = self.stl_segmentation.convert(args, configs)
+        args, configs = parse_args('convert {} --details Nothing'.format(self.stl_file), use_shlex=True)
+        seg = self.stl_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'STL Segmentation')
         self.assertEqual(seg.version, self.schema_version)
-        self.assertEqual(seg.software_list[0].name, 'Unknown')
+        self.assertEqual("Unspecified", seg.software_list[0].name)
         self.assertEqual(seg.primary_descriptor, 'mesh_list')
         self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual("Nothing", seg.details)
         segment = seg.segment_list[0]
         self.assertIsNotNone(segment.biological_annotation)
         self.assertIsNotNone(segment.biological_annotation.name)
@@ -315,17 +356,19 @@ class TestFormats(Py23FixTestCase):
         """Convert several STL files into a single SFFSegmentation object"""
         self.read_stl_multi()
         args, configs = parse_args(
-            'convert -m {}'.format(' '.join([self.stl_multi0_file, self.stl_multi1_file, self.stl_multi2_file])),
+            'convert -m {} --details details'.format(
+                ' '.join([self.stl_multi0_file, self.stl_multi1_file, self.stl_multi2_file])),
             use_shlex=True)
-        seg = self.stl_multi_segmentation.convert(args, configs)
+        seg = self.stl_multi_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'STL Segmentation')
         self.assertEqual(seg.version, self.schema_version)
-        self.assertEqual(seg.software_list[0].name, 'Unknown')
+        self.assertEqual('Unspecified', seg.software_list[0].name)
         self.assertEqual(seg.primary_descriptor, 'mesh_list')
         self.assertEqual(seg.transform_list[0].id, 0)
         self.assertEqual(len(seg.segments), 3)
+        self.assertEqual('details', seg.details)
         segment = seg.segment_list[0]
         self.assertIsNotNone(segment.biological_annotation)
         self.assertIsNotNone(segment.biological_annotation.name)
@@ -343,8 +386,8 @@ class TestFormats(Py23FixTestCase):
     def test_surf_convert(self):
         """Convert a segmentation from a HyperSurface file to an SFFSegmentation object"""
         self.read_surf()
-        args, configs = parse_args('convert {}'.format(self.surf_file), use_shlex=True)
-        seg = self.surf_segmentation.convert(args, configs)
+        args, configs = parse_args('convert {} --details overwhelming'.format(self.surf_file), use_shlex=True)
+        seg = self.surf_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, 'Amira HyperSurface Segmentation')
@@ -353,6 +396,7 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual(seg.software_list[0].version, self.surf_segmentation.header.version)
         self.assertEqual(seg.primary_descriptor, 'mesh_list')
         self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual('overwhelming', seg.details)
         segment = seg.segment_list[0]
         self.assertIsNotNone(segment.biological_annotation)
         self.assertIsNotNone(segment.biological_annotation.name)
@@ -371,8 +415,8 @@ class TestFormats(Py23FixTestCase):
         """Convert a segmentation from SuRVoS to SFFSegmentation object"""
         self.read_survos()
         sys.stdin = StringIO(u'0')
-        args, configs = parse_args('convert {}'.format(self.survos_file), use_shlex=True)
-        seg = self.survos_segmentation.convert(args, configs)
+        args, configs = parse_args('convert {} --details survos'.format(self.survos_file), use_shlex=True)
+        seg = self.survos_segmentation.convert(details=args.details)
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual(seg.name, "SuRVoS Segmentation")
         self.assertEqual(seg.version, self.schema_version)
@@ -380,6 +424,7 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual(seg.software_list[0].version, "1.0")
         self.assertEqual(seg.primary_descriptor, "three_d_volume")
         self.assertTrue(len(seg.segment_list) > 0)
+        self.assertEqual('survos', seg.details)
         segment = seg.segment_list.get_by_id(1)
         self.assertEqual(segment.biological_annotation.name, "SuRVoS Segment #1")
         self.assertTrue(0 <= segment.colour.red <= 1)

@@ -26,7 +26,10 @@ displays all conversion options.
 .. code:: bash
 
     sff convert
-    usage: sff convert [-h] [-t] [-D DETAILS] [-R PRIMARY_DESCRIPTOR] [-v] [-x] [--json-indent JSON_INDENT] [--json-sort] [-o OUTPUT | -f FORMAT] [-p CONFIG_PATH] [-b] [-a] [-m] [from_file [from_file ...]]
+    usage: sff convert [-h] [-D DETAILS] [-R PRIMARY_DESCRIPTOR] [-v] [-x]
+                       [--json-indent JSON_INDENT] [--json-sort]
+                       [-o OUTPUT | -f FORMAT] [-p CONFIG_PATH] [-b] [-a] [-m]
+                       [from_file [from_file ...]]
 
     Perform conversions to EMDB-SFF
 
@@ -35,27 +38,39 @@ displays all conversion options.
 
     optional arguments:
       -h, --help            show this help message and exit
-      -t, --top-level-only  convert only the top-level segments [default: False]
       -D DETAILS, --details DETAILS
                             populates <details>...</details> in the XML file
       -R PRIMARY_DESCRIPTOR, --primary-descriptor PRIMARY_DESCRIPTOR
-                            populates the <primary_descriptor>...</primary_descriptor> to this value [valid values: three_d_volume, mesh_list, shape_primitive_list]
+                            populates the
+                            <primary_descriptor>...</primary_descriptor> to this
+                            value [valid values: three_d_volume, mesh_list,
+                            shape_primitive_list]
       -v, --verbose         verbose output
       -x, --exclude-geometry
-                            do not include the geometry in the conversion; geometry is included by default [default: False]
+                            do not include the geometry in the conversion;
+                            geometry is included by default [default: False]
       --json-indent JSON_INDENT
                             size in spaces of the JSON indent [default: 2]
       --json-sort           output JSON sorted lexicographically [default: False]
       -o OUTPUT, --output OUTPUT
-                            file to convert to; the extension (.sff, .hff, .json) determines the output format [default: None]
+                            file to convert to; the extension (.sff, .hff, .json)
+                            determines the output format [default: None]
       -f FORMAT, --format FORMAT
-                            output file format; valid options are: sff (XML), hff (HDF5), json (JSON) [default: sff]
+                            output file format; valid options are: sff (XML), hff
+                            (HDF5), json (JSON) [default: sff]
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and user configs fail [default: False]
-      -a, --all-levels      for segments structured hierarchically (e.g. Segger from UCSF Chimera and Chimera X) convert all segment leves in the hierarchy [default: False]
-      -m, --multi-file      enables convert to treat multiple files as individual segments of a single segmentation; only works for the following filetypes: stl, map, mrc, rec [default: False]
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -a, --all-levels      for segments structured hierarchically (e.g. Segger
+                            from UCSF Chimera and Chimera X) convert all segment
+                            leves in the hierarchy [default: False]
+      -m, --multi-file      enables convert to treat multiple files as individual
+                            segments of a single segmentation; only works for the
+                            following filetypes: stl, map, mrc, rec [default:
+                            False]
+
 
 Quick Start
 -----------

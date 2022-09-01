@@ -46,7 +46,7 @@ class AmiraMeshMesh(object):
         """Triangles in mesh"""
         return self._triangles
 
-    def convert(self):
+    def convert(self, **kwargs):
         """Convert to :py:class:`sfftkrw.SFFMesh` object"""
         mesh = schema.SFFMesh()
         vertices = schema.SFFVertexList()
@@ -89,7 +89,7 @@ class AmiraMeshAnnotation(Annotation):
             colour = None
         return colour
 
-    def convert(self):
+    def convert(self, **kwargs):
         """Convert to :py:class:`sfftkrw.SFFBiologicalAnnotation` object"""
         annotation = schema.SFFBiologicalAnnotation()
         annotation.name = self.name
@@ -121,7 +121,7 @@ class AmiraMeshVolume(object):
         self._fn = fn
         self._header = header
 
-    def convert(self):
+    def convert(self, **kwargs):
         """Convert to :py:class:`sfftkrw.SFFThreeDVolume` object"""
         volume = schema.SFFThreeDVolume()
         # make file
@@ -171,7 +171,7 @@ class AmiraMeshSegment(Segment):
         """The segmentation as a volume"""
         return AmiraMeshVolume(self._fn, self._header)
 
-    def convert(self):
+    def convert(self, **kwargs):
         """Convert to :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.biological_annotation, segment.colour = self.annotation.convert()
@@ -201,7 +201,7 @@ class AmiraMeshHeader(object):
             else:
                 setattr(self, attr, getattr(header, attr))
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert an AmiraMeshHeader object into an EMDB-SFF segmentation header
 
         Currently empty"""
@@ -241,20 +241,23 @@ class AmiraMeshSegmentation(Segmentation):
         """Segments in this segmentation"""
         return self._segments
 
-    def convert(self, args, *_args, **_kwargs):
-        """Convert to :py:class:`sfftkrw.SFFSegmentation` object"""
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+        """Convert to :py:class:`sfftkrw.SFFSegmentation` object
+
+        :param str name: optional name of the segmentation used in <name/>
+        :param str software_version: optional software version for Amira use in <software><version/></software>
+        :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
+        :param str details: optional details associated with this segmentation used in <details/>
+        :param bool verbose: option to determine whether conversion should be verbose
+        """
         segmentation = schema.SFFSegmentation()
-        if 'name' in _kwargs:
-            segmentation.name = _kwargs['name']
-        else:
-            segmentation.name = "AmiraMesh Segmentation"
+        segmentation.name = name if name is not None else "AmiraMesh Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
                 name="Amira",
-                version=_kwargs['softwareVersion'] if 'softwareVersion' in _kwargs else "{}".format(
-                    self.header.version),
-                processing_details=_kwargs['processingDetails'] if 'processingDetails' in _kwargs else "None",
+                version=software_version if software_version is not None else "Unspecified",
+                processing_details=processing_details
             )
         )
         segmentation.transform_list = schema.SFFTransformList()
@@ -296,7 +299,7 @@ class AmiraMeshSegmentation(Segmentation):
         lattices = schema.SFFLatticeList()
         # the lattice
         cols, rows, sections = self._volume.shape[::-1]
-        if args.verbose:
+        if verbose:
             print_date('creating lattice...')
         lattice = schema.SFFLattice(
             mode='uint8',
@@ -305,15 +308,9 @@ class AmiraMeshSegmentation(Segmentation):
             start=schema.SFFVolumeIndex(cols=0, rows=0, sections=0),
             data=self._volume.data,  # the numpy data is on the .data attribute
         )
-        if args.verbose:
+        if verbose:
             print_date('adding lattice...')
         lattices.append(lattice)
         segmentation.lattice_list = lattices
-        # """
-
-        if args.details is not None:
-            segmentation.details = args.details
-        elif 'details' in _kwargs:
-            segmentation.details = _kwargs['details']
-
+        segmentation.details = details
         return segmentation

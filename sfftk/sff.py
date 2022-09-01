@@ -117,7 +117,7 @@ def handle_convert(args, configs):  # @UnusedVariable
                     return os.EX_USAGE
             else:
                 raise ValueError("Unknown file type %s" % args.from_file)
-        sff_seg = seg.convert(args)  # convert according to args
+        sff_seg = seg.convert(details=args.details, verbose=args.verbose)  # convert according to args
         # export as args.format
         if args.verbose:
             print_date("Exporting to {}".format(args.output))

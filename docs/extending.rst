@@ -262,7 +262,7 @@ Notice that in the loop for each segment (``for s in self.segments``) we refer t
     class SeggerSegment(Segment):
         # ...
 
-        def convert(self, *args, **kwargs):
+        def convert(self, **kwargs):
             """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
             segment = schema.SFFSegment()
             segment.id = self.region_id

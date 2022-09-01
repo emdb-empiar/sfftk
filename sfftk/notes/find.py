@@ -149,8 +149,8 @@ class SearchResource(object):
             )
         # uniprot
         elif self.name == u"UniProt":
-            url = self.root_url + u"?query={search_term}&format=tab&offset={start}&limit={rows}&columns=id,entry_name," \
-                                  u"protein_names,organism".format(
+            url = self.root_url + u"?query={search_term}&format=tsv&size={rows}&fields=accession,id," \
+                                  u"protein_name,organism_name".format(
                 search_term=self.search_args.search_term,
                 # search_term2=self.search_args.search_term,
                 start=self.search_args.start,
@@ -662,7 +662,7 @@ class SearchResults(object):
                 print_date(u"Unable to search at this time. Please try after a few minutes.")
                 structured_results = None
             return structured_results
-        elif self._resource.format == u'tab':
+        elif self._resource.format == u'tsv':
             try:
                 # split rows; split columns; dump first and last rows
                 _structured_results = list(map(lambda r: r.split('\t'), self._raw_response.split('\n')))[1:-1]

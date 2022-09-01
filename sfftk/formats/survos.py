@@ -24,7 +24,7 @@ class SuRVoSSegment(Segment):
         """As usual, segment IDs start from 1 (not 0)"""
         return self._segment_id + 1
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.segment_id = self.segment_id
@@ -61,16 +61,24 @@ class SuRVoSSegmentation(Segmentation):
         """A list of segments"""
         return self._segments
 
-    def convert(self, args, *_args, **_kwargs):
-        """Convert to :py:class:`sfftkrw.SFFSegmentation` object"""
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+        """Convert to :py:class:`sfftkrw.SFFSegmentation` object
+
+        :param str name: optional name of the segmentation used in <name/>
+        :param str software_version: optional software version for Amira use in <software><version/></software>
+        :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
+        :param str details: optional details associated with this segmentation used in <details/>
+        :param bool verbose: option to determine whether conversion should be verbose
+        """
         # header
         segmentation = schema.SFFSegmentation()
-        segmentation.name = "SuRVoS Segmentation"
+        segmentation.name = name if name is not None else "SuRVoS Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
                 name="SuRVoS",
-                version="1.0",
+                version=software_version if software_version is not None else "1.0",
+                processing_details=processing_details
             )
         )
         segmentation.transform_list = schema.SFFTransformList()
@@ -102,8 +110,5 @@ class SuRVoSSegmentation(Segmentation):
         )
         lattices.append(lattice)
         segmentation.lattice_list = lattices
-        if args.details is not None:
-            segmentation.details = args.details
-        elif 'details' in _kwargs:
-            segmentation.details = _kwargs['details']
+        segmentation.details = details
         return segmentation

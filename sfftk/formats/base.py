@@ -33,13 +33,12 @@ __updated__ = '2018-02-14'
 class SegmentationType(object):
     """Base class for all segmentation classes"""
 
-    def convert(self, *args, **kwargs):
+    def convert(self, **kwargs):
         """Method to implement conversion to EMDB-SFF using the intermediary API.
-        
-        :param str name: optional name of the segmentation used in <name/>
-        :param str softwareVersion: optional software version for Amira use in <software><version/></software>
-        :param str processingDetails: optional processings used in Amira used in <software><processingDetails/></software>
-        :param str details: optional details associated with this segmentation used in <details/> 
+
+        The kwargs to be supplied will depend on the subclass. For example, Segmentation classes will typically
+        need to have `name`, `software_version`, `processing_details` (for the software), `details` with a `verbose`
+        option provided to control conversion verbosity.
         
         Implementations of this method within converters can do only two things:
         

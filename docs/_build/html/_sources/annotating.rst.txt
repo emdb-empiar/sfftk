@@ -1277,7 +1277,7 @@ Editing Global Notes (Segmentation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Editing global notes is straightforward and works exactly like adding notes
-for all items of metadata except external references. Where the entity to be modified is not a list, one can use 
+for all items of metadata except external references. Where the entity to be modified is not a list, one can use
 ``add`` and ``edit`` interchangeably for *name*, *segment name*, *segment description*, *number of instances* and *details*.
 
 .. code-block:: bash

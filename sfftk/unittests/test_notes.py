@@ -103,7 +103,7 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
     def test_uniprot(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
         resource = u'UniProt'
-        url = u'https://www.uniprot.org/uniprot/A0A1Q8WSX6'
+        url = u'https://rest.uniprot.org/uniprotkb/A0A1Q8WSX6.tsv'
         accession = u'A0A1Q8WSX6'
         # likely to change
         label = u'A0A1Q8WSX6_9ACTO'
@@ -280,7 +280,7 @@ class TestNotesFindSearchResource(Py23FixTestCase):
                 config_fn=self.config_fn,
             ), use_shlex=True)
         resource = find.SearchResource(args, configs)
-        url = "{root_url}?query={search_term}&format=tab&offset={start}&limit={rows}&columns=id,entry_name,protein_names,organism".format(
+        url = "{root_url}?query={search_term}&format=tsv&size={rows}&fields=accession,id,protein_name,organism_name".format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
             search_term=args.search_term,
             start=args.start,
