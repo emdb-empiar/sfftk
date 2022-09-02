@@ -1,5 +1,13 @@
 #Changes by release
 
+## [0.6.0.dev1] - 2022-09-02
+
+Bugfixes
+
+* removed .travis.yml since we don't use them anymore
+* added ilastik.IlastikHeader class, which was implied but absent >:(
+* fixed github workflow by removing py27 and py35 and quote py3.10
+
 ## [0.6.0.dev0] - 2022-09-01
 
 * dropped support for Python2.7; requires Python3.6+

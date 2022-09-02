@@ -13,6 +13,11 @@ from sfftkrw.core import _str
 from ..readers import ilastikreader
 
 
+class IlastikHeader:
+    def __init__(self, segmentation):
+        self._segmentation = segmentation
+
+
 class IlastikSegment(object):
     """Segment"""
 

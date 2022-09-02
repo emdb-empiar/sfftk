@@ -115,6 +115,7 @@ class TestFormats(Py23FixTestCase):
     def test_ilastik_read(self):
         """Read an ilastik (.h5) segmentation"""
         self.read_ilastik()
+        self.assertIsInstance(self.ilastik_segmentation.header, ilastik.IlastikHeader)
         self.assertIsInstance(list(self.ilastik_segmentation.segments), list)
         self.assertIsInstance(list(self.ilastik_segmentation.segments)[0], ilastik.IlastikSegment)
 
