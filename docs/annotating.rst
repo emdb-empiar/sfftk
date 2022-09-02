@@ -1154,7 +1154,7 @@ Use quotes (single/double) to enter software processing details:
 
 .. code::
 
-    # not in MODIFY state
+    # not in MODIFY state
     sff notes add -P "Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes" file.json
     # MODIFY state
     sff notes add --software-processing-details "Threshold of 1.08" @
@@ -1212,7 +1212,7 @@ More examples:
     # not in MODIFY state
     sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 file.json
     # MODIFY state
-    # more than one reference
+    # more than one reference
     sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
 
 Adding Segment Notes

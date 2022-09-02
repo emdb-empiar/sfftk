@@ -50,7 +50,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 
     def test_subtype(self):
         """Sometimes a file extension is ambiguous; this tests the disambiguation menu"""
-        sys.stdin = StringIO(u'0')  # SuRVoS
+        sys.stdin = StringIO('0')  # SuRVoS
         args, configs = parse_args(
             'convert -o {output} {input} --config-path {config}'.format(
                 output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
@@ -65,7 +65,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 
     def test_ilastik(self):
         """Test that we can convert .h5 for ilastik"""
-        sys.stdin = StringIO(u'1')  # ilastik
+        sys.stdin = StringIO('1')  # ilastik
         args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5'),
@@ -75,7 +75,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
         # with --exclude-geometry for JSON
-        sys.stdin = StringIO(u'1')  # ilastik
+        sys.stdin = StringIO('1')  # ilastik
         args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5'),
@@ -85,7 +85,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
         with open(sff_files[0], 'r') as f:
             data = json.load(f)
-        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
 
     def test_seg(self):
         """Test that we can convert .seg"""
@@ -107,7 +107,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
         with open(sff_files[0], 'r') as f:
             data = json.load(f)
-        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
 
     def test_mod(self):
         """Test that we can convert .mod"""
@@ -130,8 +130,8 @@ class TestMain_handle_convert(Py23FixTestCase):
         with open(sff_file[0], 'r') as f:
             data = json.load(f)
         # ensure that the mesh_list is empty
-        self.assertEqual(len(data[u'segment_list'][0][u'mesh_list']), 0)
-        self.assertEqual(len(data[u'segment_list'][0][u'shape_primitive_list']), 0)
+        self.assertEqual(len(data['segment_list'][0]['mesh_list']), 0)
+        self.assertEqual(len(data['segment_list'][0]['shape_primitive_list']), 0)
 
     def test_am(self):
         """Test that we can convert .am"""
@@ -153,7 +153,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
         with open(sff_files[0], 'r') as f:
             data = json.load(f)
-        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
 
     def test_stl(self):
         """Test that we can convert .stl"""
@@ -176,7 +176,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         with open(sff_file[0], 'r') as f:
             data = json.load(f)
         # ensure that the mesh_list is empty
-        self.assertEqual(len(data[u'segment_list'][0][u'mesh_list']), 0)
+        self.assertEqual(len(data['segment_list'][0]['mesh_list']), 0)
 
     def test_surf(self):
         """Test that we can convert .surf"""
@@ -199,11 +199,11 @@ class TestMain_handle_convert(Py23FixTestCase):
         with open(sff_file[0], 'r') as f:
             data = json.load(f)
         # ensure that the mesh_list is empty
-        self.assertEqual(len(data[u'segment_list'][0][u'mesh_list']), 0)
+        self.assertEqual(len(data['segment_list'][0]['mesh_list']), 0)
 
     def test_survos(self):
         """Test that we can convert SuRVoS (.h5) files"""
-        sys.stdin = StringIO(u'0')
+        sys.stdin = StringIO('0')
         args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.sff'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
@@ -213,7 +213,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
         self.assertEqual(len(sff_files), 1)
         # with --exclude-geometry for JSON
-        sys.stdin = StringIO(u'0')
+        sys.stdin = StringIO('0')
         args, configs = parse_args('convert -o {output} {input} --exclude-geometry --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5'),
@@ -223,7 +223,7 @@ class TestMain_handle_convert(Py23FixTestCase):
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
         with open(sff_files[0], 'r') as f:
             data = json.load(f)
-        self.assertIsNone(data[u'segment_list'][0][u'three_d_volume'])
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
 
     def test_unknown(self):
         """Test that unknown fails"""
@@ -239,7 +239,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 
     def test_sff(self):
         """Test that we can convert .sff"""
-        #  first convert from some other format e.g. .mod
+        # first convert from some other format e.g. .mod
         args, configs = parse_args('convert -o {} {} --config-path {}'.format(
             os.path.join(TEST_DATA_PATH, 'test_data.sff'),
             os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
@@ -257,7 +257,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 
     def test_hff(self):
         """Test that we can convert .hff"""
-        #  first convert from some other format e.g. .mod
+        # first convert from some other format e.g. .mod
         args, configs = parse_args('convert -o {} {} --config-path {}'.format(
             os.path.join(TEST_DATA_PATH, 'test_data.hff'),
             os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
@@ -276,7 +276,7 @@ class TestMain_handle_convert(Py23FixTestCase):
 
     def test_json(self):
         """Test that we can convert .json"""
-        #  first convert from some other format e.g. .mod
+        # first convert from some other format e.g. .mod
         args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(
             output=os.path.join(TEST_DATA_PATH, 'test_data.json'),
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod'),
@@ -315,7 +315,7 @@ class TestMain_handle_view(Py23FixTestCase):
 
     def test_read_map(self):
         """Test that we can view .map"""
-        args, configs = parse_args('view {}'.format(
+        args, configs = parse_args('view {} --config-path {}'.format(
             os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map'),
             self.config_fn,
         ), use_shlex=True)
@@ -388,7 +388,7 @@ class TestMain_handle_notes(Py23FixTestCase):
             status == 65
         )
         if status == 65:
-            self.stderr(u"Warning: unable to run test on response due to API issue")
+            self.stderr("Warning: unable to run test on response due to API issue")
 
 
 class TestMain_handle_prep(Py23FixTestCase):

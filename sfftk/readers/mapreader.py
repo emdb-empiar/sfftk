@@ -14,7 +14,6 @@ The following article is useful as it exposes many internals of map files:
 """
 from __future__ import division, print_function
 
-import os
 import sys
 
 import numpy
@@ -30,19 +29,19 @@ class Map(object):
 
     def __init__(self, fn, *args, **kwargs):
         """Initialise a Map object
-        
+
         :param str fn: file name
         """
         self._fn = fn
         self._inverted = False
         with open(fn, 'rb') as f:
             status = self.read(f, *args, **kwargs)
-        #  0 is good
+        # 0 is good
         assert status == 0
 
     def write(self, f):
         """Write data to an EMDB Map file
-        
+
         :param file f: file object
         :return int status: 0 on success; fail otherwise
         """
@@ -67,7 +66,7 @@ class Map(object):
         string += _encode(self._machst, 'utf-8')
         string += struct.pack('<f', self._rms)
 
-        #  if inverted we will add one more label
+        # if inverted we will add one more label
         if self._inverted:
             string += struct.pack('<i', self._nlabl + 1)
         else:
@@ -76,7 +75,6 @@ class Map(object):
         for i in range(self._nlabl):
             len_label = len(self.__getattribute__('_label_%s' % i))
             encoding = _encode(self.__getattribute__('_label_{}'.format(i)), 'utf-8')
-            len_encoding = len(encoding)
             string += encoding
             # pack the remaining space
             string += struct.pack('<{}x'.format(80 - len_label))
@@ -221,21 +219,21 @@ class Map(object):
             return self.__str__().encode('utf-8')
 
         def __str__(self):
-            string = u"""\
-            \rCols, rows, sections: 
+            string = """\
+            \rCols, rows, sections:
             \r    {0}, {1}, {2}
             \rMode: {3}
-            \rStart col, row, sections: 
+            \rStart col, row, sections:
             \r    {4}, {5}, {6}
-            \rX, Y, Z: 
+            \rX, Y, Z:
             \r    {7}, {8}, {9}
-            \rLengths X, Y, Z (Ångstrom): 
+            \rLengths X, Y, Z (Ångstrom):
             \r    {10}, {11}, {12}
-            \r\U000003b1, \U000003b2, \U000003b3: 
+            \r\U000003b1, \U000003b2, \U000003b3:
             \r    {13}, {14}, {15}
-            \rMap cols, rows, sections: 
+            \rMap cols, rows, sections:
             \r    {16}, {17}, {18}
-            \rDensity min, max, mean: 
+            \rDensity min, max, mean:
             \r    {19}, {20}, {21}
             \rSpace group: {22}
             \rBytes in symmetry table: {23}
@@ -286,21 +284,21 @@ class Map(object):
             return self.__unicode__().encode('utf-8')
 
         def __unicode__(self):
-            string = u"""\
-            \rCols, rows, sections: 
+            string = """\
+            \rCols, rows, sections:
             \r    {0}, {1}, {2}
             \rMode: {3}
-            \rStart col, row, sections: 
+            \rStart col, row, sections:
             \r    {4}, {5}, {6}
-            \rX, Y, Z: 
+            \rX, Y, Z:
             \r    {7}, {8}, {9}
-            \rLengths X, Y, Z (Ångstrom): 
+            \rLengths X, Y, Z (Ångstrom):
             \r    {10}, {11}, {12}
-            \r\U000003b1, \U000003b2, \U000003b3: 
+            \r\U000003b1, \U000003b2, \U000003b3:
             \r    {13}, {14}, {15}
-            \rMap cols, rows, sections: 
+            \rMap cols, rows, sections:
             \r    {16}, {17}, {18}
-            \rDensity min, max, mean: 
+            \rDensity min, max, mean:
             \r    {19}, {20}, {21}
             \rSpace group: {22}
             \rBytes in symmetry table: {23}
@@ -377,7 +375,7 @@ class Map(object):
         :param float mask_value: the mask value
         :param int voxel_value_threshold: the maxmimum number of voxel values permitted in fixing the mask
         """
-        assert voxel_values_threshold > 2  #  no need to fix a proper mask (value of 2)
+        assert voxel_values_threshold > 2  # no need to fix a proper mask (value of 2)
 
         # round values
         import numpy
@@ -472,7 +470,7 @@ class Map(object):
 
 def get_data(fn, inverted=False, *args, **kwargs):
     """Get structured data from EMDB Map file
-    
+
     :param str fn: map filename
     :param bool inverted: should we invert the histogram or not (default)?
     :return: map object
@@ -480,6 +478,7 @@ def get_data(fn, inverted=False, *args, **kwargs):
     """
     my_map = Map(fn, *args, **kwargs)
 
-    if inverted: my_map.invert()
+    if inverted:
+        my_map.invert()
 
     return my_map

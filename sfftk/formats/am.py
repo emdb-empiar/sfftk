@@ -81,7 +81,7 @@ class AmiraMeshAnnotation(Annotation):
     @property
     def colour(self):
         """Segment colour
-        
+
         Colour may or may not exist. Return None if it doesn't and the caller will determine what to do"""
         try:
             colour = self._material.Color
@@ -136,7 +136,7 @@ class AmiraMeshSegment(Segment):
 
     def __init__(self, fn, header, segment_id):
         """Initialiser of AmiraMeshSegment
-         
+
         :param header: an ``AmiraMeshHeader`` object containing header metadata
         :type header: AmiraMeshHeader
         :param int segment_id: the integer identifier for this segment ('Id' in Materials)
@@ -210,12 +210,11 @@ class AmiraMeshHeader(object):
 
 class AmiraMeshSegmentation(Segmentation):
     """Class representing an AmiraMesh segmentation
-    
+
     .. code-block:: python
-    
+
         from sfftk.formats.am import AmiraMeshSegmentation
         am_seg = AmiraMeshSegmentation('file.am')
-        
     """
 
     def __init__(self, fn, *args, **kwargs):

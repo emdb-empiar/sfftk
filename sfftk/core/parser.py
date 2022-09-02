@@ -4,11 +4,13 @@
 ``sfftk.core.parser``
 ===========================
 
-A large number of functions in ``sfftk`` consume only two arguments: ``args``, which is the direct output of Python's :py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which consists of all persistent configs. This module extends the parser object :py:class:`sfftkrw.core.parser.Parser` as well as includes a :py:func:`sfftk.core.parser.parse_args` function which does sanity checking of all command line arguments.
+A large number of functions in ``sfftk`` consume only two arguments: ``args``, which is the direct output of
+Python's :py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which consists of all persistent configs.
+This module extends the parser object :py:class:`sfftkrw.core.parser.Parser` as well as includes a
+:py:func:`sfftk.core.parser.parse_args` function which does sanity checking of all command line arguments.
 """
 from __future__ import print_function
 
-import argparse
 import os
 import re
 import sys
@@ -40,7 +42,7 @@ EXTENSION_SUBTYPE_INDICES['h5'][0] = 'SuRVoS'
 EXTENSION_SUBTYPE_INDICES['h5'][1] = 'ilastik'
 EXTENSION_SUBTYPE_INDICES['h5'][2] = 'EMDB-SFF'
 
-Parser.description = u"The EMDB-SFF Toolkit (sfftk)"
+Parser.description = "The EMDB-SFF Toolkit (sfftk)"
 
 # =========================================================================
 # common arguments
@@ -74,13 +76,15 @@ external_ref = {
     'args': ['-E', '--external-ref'],
     'kwargs': {
         'nargs': 3,
-        'help': """An external reference consists of three components: the 
-name of the external reference, a URL to the particular external reference 
-and the accession. If you use the sff notes search utility these will 
-correspond to the resource, url and accession. The following is a list 
-of valid external references: {}. You can also specify multiple external 
-reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23 
-file.json""".format(', '.join(_dict_iter_keys(RESOURCE_LIST))),
+        'help': (
+            "An external reference consists of three components: the "
+            "name of the external reference, a URL to the particular external reference "
+            "and the accession. If you use the sff notes search utility these will "
+            "correspond to the resource, url and accession. The following is a list "
+            "of valid external references: {}. You can also specify multiple external "
+            "reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23 "
+            "file.json"
+        ).format(', '.join(_dict_iter_keys(RESOURCE_LIST))),
     }
 }
 FORMAT_LIST = [
@@ -145,7 +149,10 @@ config_path = {
 primary_descriptor = {
     'args': ['-R', '--primary-descriptor'],
     'kwargs': {
-        'help': "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  three_d_volume, mesh_list, shape_primitive_list]"
+        'help': (
+            "populates the <primaryDescriptor>...</primaryDescriptor> to this value [valid values:  "
+            "three_d_volume, mesh_list, shape_primitive_list]"
+        )
     }
 }
 software_name = {
@@ -276,7 +283,8 @@ transform_prep_parser = prep_subparsers.add_parser(
     description='Transform the STL mesh vertices by the given values',
     help='transform an STL mesh',
 )
-# todo: add a new option for the voxel coordinates e.g. --voxel-size <v_x> <v_y> <v_z> which is mutually exclusive with --lengths and --indices
+# todo: add a new option for the voxel coordinates e.g. --voxel-size <v_x> <v_y> <v_z> which is
+#  mutually exclusive with --lengths and --indices
 transform_prep_parser.add_argument(
     'from_file', help="the name of the segmentation file"
 )
@@ -333,8 +341,10 @@ convert_parser.add_argument(
     '-m', '--multi-file',
     action='store_true',
     default=False,
-    help="enables convert to treat multiple files as individual segments of a single segmentation; only works for the "
-         "following filetypes: {} [default: False]".format(
+    help=(
+        "enables convert to treat multiple files as individual segments of a single segmentation; only works for the "
+        "following filetypes: {} [default: False]"
+    ).format(
         ', '.join(MULTI_FILE_FORMATS),
     )
 )
@@ -474,12 +484,14 @@ search_notes_parser.add_argument(
     help="the term to search; add quotes if spaces are included")
 add_args(search_notes_parser, config_path)
 add_args(search_notes_parser, shipped_configs)
-l = list(_dict_iter_keys(RESOURCE_LIST))
+resources_list = list(_dict_iter_keys(RESOURCE_LIST))
 search_notes_parser.add_argument(
-    '-R', '--resource', default=l[0], choices=l,
-    help='the resource to search for terms or accessions; other valid options are {resources} [default: {default}]'.format(
-        resources=l,
-        default=l[0],
+    '-R', '--resource', default=resources_list[0], choices=resources_list,
+    help=(
+        'the resource to search for terms or accessions; other valid options are {resources} [default: {default}]'
+    ).format(
+        resources=resources_list,
+        default=resources_list[0],
     )
 )
 search_notes_parser.add_argument(
@@ -508,31 +520,6 @@ ols_parser.add_argument(
     '-l', '--short-list-ontologies', default=False,
     action='store_true', help="short list of available ontologies [default: False]"
 )
-
-# todo: add resource-specific argument groups
-# emdb_parser = search_notes_parser.add_argument_group(
-#     title='The Electron Microscopy Data Bank (EMDB)',
-#     description='The Electron Microscopy Data Bank (EMDB) is a public repository for electron microscopy density maps '
-#                 'of macromolecular complexes and subcellular structures. Searching against EMDB can use the following '
-#                 'options:'
-# )
-# uniprot_parser = search_notes_parser.add_argument_group(
-#     title='The Universal Protein Resource (UniProt)',
-#     description='The Universal Protein Resource (UniProt) is a comprehensive resource for protein sequence and '
-#                 'annotation data. Searching against UniProt can use the following options:'
-# )
-# pdb_parser = search_notes_parser.add_argument_group(
-#     title='The Protein Data Bank archive (PDB)',
-#     description='Since 1971, the Protein Data Bank archive (PDB) has served as the single repository of information '
-#                 'about the 3D structures of proteins, nucleic acids, and complex assemblies. Searching against EMDB '
-#                 'can use the following options:'
-# )
-
-# =========================================================================
-# notes: suggest
-# =========================================================================
-# todo: suggest terms from a description
-# TBA
 
 # =========================================================================
 # notes: list
@@ -637,7 +624,7 @@ external_ref['kwargs']['action'] = 'append'
 add_args(edit_notes_parser, external_ref)
 add_args(edit_notes_parser, verbose)
 del external_ref['kwargs']['action']
-#  global notes
+# global notes
 edit_global_notes_parser = edit_notes_parser.add_argument_group(
     title="edit global notes",
     description="edit global attributes to an EMDB-SFF file"
@@ -762,8 +749,10 @@ add_args(copy_notes_parser, shipped_configs)
 # todo: merge with segment_id above
 copy_notes_parser.add_argument(
     '-i', '--segment-id',
-    help="segment ID or a comma-separated sequence of segment IDs of source segment(s); run 'sff notes list <file>' for a list of "
-         "segment IDs",
+    help=(
+        "segment ID or a comma-separated sequence of segment IDs of source segment(s); "
+        "run 'sff notes list <file>' for a list of segment IDs",
+    )
 )
 copy_global_notes_parse = copy_notes_parser.add_mutually_exclusive_group()
 copy_global_notes_parse.add_argument(
@@ -781,8 +770,10 @@ copy_global_notes_parse.add_argument(
 to_segment_or_all_copy_notes_parser = copy_notes_parser.add_mutually_exclusive_group()
 to_segment_or_all_copy_notes_parser.add_argument(
     '-t', '--to-segment',
-    help="segment ID or a comma-separated sequence of segment IDs of destination segment(s); run 'sff notes list <file>' for a list of "
-         "segment IDs",
+    help=(
+        "segment ID or a comma-separated sequence of segment IDs of destination segment(s); "
+        "run 'sff notes list <file>' for a list of segment IDs"
+    ),
 )
 to_segment_or_all_copy_notes_parser.add_argument(
     '--to-all',
@@ -818,8 +809,10 @@ clear_notes_parser.add_argument(
 from_segment_or_all_clear_notes_parser = clear_notes_parser.add_mutually_exclusive_group()
 from_segment_or_all_clear_notes_parser.add_argument(
     '-i', '--segment-id',
-    help="segment ID or a comma-separated sequence of segment IDs of source segment(s); run 'sff notes list <file>' for a list of "
-         "segment IDs",
+    help=(
+        "segment ID or a comma-separated sequence of segment IDs of source segment(s); "
+        "run 'sff notes list <file>' for a list of segment IDs"
+    ),
 )
 from_segment_or_all_clear_notes_parser.add_argument(
     '--from-all-segments',
@@ -839,10 +832,15 @@ merge_notes_parser = notes_subparsers.add_parser(
 add_args(merge_notes_parser, config_path)
 add_args(merge_notes_parser, shipped_configs)
 merge_notes_parser.add_argument('--source', help="EMDB-SFF file from which to obtain notes", required=True)
-merge_notes_parser.add_argument('other',
-                                help="EMDB-SFF file whose content will be merged with notes from the file specified with --source")
+merge_notes_parser.add_argument(
+    'other',
+    help="EMDB-SFF file whose content will be merged with notes from the file specified with --source"
+)
 output['kwargs'][
-    'help'] = "file to convert to; the extension (.sff, .hff, .json) determines the output format; if not specified then NOTES IN OTHER ONLY will be overwritten [default: None]"
+    'help'] = (
+    "file to convert to; the extension (.sff, .hff, .json) determines the output format; "
+    "if not specified then NOTES IN OTHER ONLY will be overwritten [default: None]"
+)
 merge_notes_parser.add_argument(*output['args'], **output['kwargs'])
 merge_notes_parser.add_argument(*verbose['args'], **verbose['kwargs'])
 
@@ -871,9 +869,7 @@ add_args(trash_notes_parser, config_path)
 add_args(trash_notes_parser, shipped_configs)
 
 # get the full list of tools from the Parser object
-# tool_list = Parser._actions[1].choices.keys()
-# print(tool_list)
-tool_list += ['all_sfftk', 'main_sfftk', 'formats', 'notes', 'readers']
+tool_list = list(tool_list) + ['all_sfftk', 'main_sfftk', 'formats', 'notes', 'readers']
 
 # tests
 # on inspection the second action is the tests action
@@ -970,10 +966,11 @@ def parse_args(_args, use_shlex=False):
     Parse and check command-line arguments and also return configs.
 
     This function does all the heavy lifting in ensuring that commandline
-    arguments are properly formatted and checked for sanity. It also 
+    arguments are properly formatted and checked for sanity. It also
     extracts configs from the config files.
 
-    In this way command handlers (defined in :py:mod:`sfftk.sff` e.g. :py:meth:`sfftk.sff.handle_convert`) assume correct argument values and can concentrate on functionality making the code more readable.
+    In this way command handlers (defined in :py:mod:`sfftk.sff` e.g. :py:meth:`sfftk.sff.handle_convert`) assume
+    correct argument values and can concentrate on functionality making the code more readable.
 
     :param list _args: list of arguments (``use_shlex=False``); string of arguments (``use_shlex=True``)
     :type _args: list or str
@@ -1209,7 +1206,7 @@ def parse_args(_args, use_shlex=False):
             try:
                 assert args.primary_descriptor in [
                     'three_d_volume', 'mesh_list', 'shape_primitive_list']
-            except:
+            except AssertionError:
                 if args.verbose:
                     print_date(
                         "Invalid value for primary descriptor: {}".format(args.primary_descriptor))
@@ -1249,7 +1246,7 @@ def parse_args(_args, use_shlex=False):
         if args.verbosity:
             try:
                 assert args.verbosity in range(4)
-            except:
+            except AssertionError:
                 print_date(
                     "Verbosity should be in {}-{}: {} given".format(
                         VERBOSITY_RANGE[0],
@@ -1300,8 +1297,9 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 print_date("Invalid rows value: {}; should be greater than 1".format(args.rows))
                 return 64, configs
             if args.resource != 'ols' and (
-                    args.ontology is not None or args.exact or args.list_ontologies or \
-                    args.short_list_ontologies or args.obsoletes):
+                    args.ontology is not None or args.exact or args.list_ontologies or
+                    args.short_list_ontologies or args.obsoletes
+            ):
                 print_date("Invalid usage: -O, -x, -o, -L, -l can only be used with -R ols")
                 return 64, None
         elif args.notes_subcommand == "show":
@@ -1319,9 +1317,11 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                            (args.number_of_instances is not None) or \
                            (args.external_ref is not None)
                 except AssertionError:
-                    print_date("Nothing specified to add. Use one or more of the following options:\n\t"
-                               "-n <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefOtherType> <extrefValue> \n\t"
-                               "-I <int>")
+                    print_date(
+                        "Nothing specified to add. Use one or more of the following options:\n\t"
+                        "-n <segment_name> \n\t-D <description> \n\t-E <extrefType> <extrefOtherType> <extrefValue> "
+                        "\n\t -I <int>"
+                    )
 
                     return 64, configs
 
@@ -1428,7 +1428,6 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                     args.software_name = True
                     args.software_version = True
                     args.software_processing_details = True
-
 
         elif args.notes_subcommand == "copy":
             # convert from and to to lists of ints

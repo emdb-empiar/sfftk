@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 ``sfftk.readers.survosreader``
 ==============================
 
 Ad hoc reader for SuRVoS segmentation files
-'''
+"""
 from __future__ import print_function
 
 import numbers
@@ -23,7 +23,7 @@ class SuRVoSSegmentation(object):
         self._fn = fn
         self._dataset = dataset
         self._mask_value = mask_value
-        with h5py.File(fn, u'r') as s:
+        with h5py.File(fn, 'r') as s:
             self._data = s[self._dataset][()].astype(int)
             self._labels = list(map(int, s[self._dataset].attrs["labels"]))
             pass
@@ -64,7 +64,8 @@ def get_data(fn, *args, **kwargs):
     We need to return an object with a handle on the segments:
 
     - each segment is a 3D volume with only that segments voxel values retained
-    - we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1] returns the segmentation with annotation value of '1'
+    - we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1]
+    returns the segmentation with annotation value of '1'
 
     .. code-block:: python
 

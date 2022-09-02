@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en-gb" >
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Annotating EMDB-SFF Segmentations &mdash; sfftk v0.5.5.dev1 documentation</title>
+  <title>Annotating EMDB-SFF Segmentations &mdash; sfftk v0.6.0.dev1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.5
+                v0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -1318,7 +1318,7 @@ entities in the list use <code class="docutils literal notranslate"><span class=
 </pre></div>
 </div>
 <p>Use quotes (single/double) to enter software processing details:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># not in MODIFY state</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#not in MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">-</span><span class="n">P</span> <span class="s2">&quot;Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes&quot;</span> <span class="n">file</span><span class="o">.</span><span class="n">json</span>
 <span class="c1"># MODIFY state</span>
 <span class="n">sff</span> <span class="n">notes</span> <span class="n">add</span> <span class="o">--</span><span class="n">software</span><span class="o">-</span><span class="n">processing</span><span class="o">-</span><span class="n">details</span> <span class="s2">&quot;Threshold of 1.08&quot;</span> <span class="o">@</span>
@@ -1363,7 +1363,7 @@ sff notes add -E go http://purl.obolibrary.org/obo/GO_0005739 GO:0005739 file.js
 <span class="c1"># not in MODIFY state</span>
 sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 file.json
 <span class="c1"># MODIFY state</span>
-<span class="c1"># more than one reference</span>
+<span class="c1">#more than one reference</span>
 sff notes add -E ncbitaxon http://purl.obolibrary.org/obo/NCBITaxon_559292 NCBITaxon_559292 -E pdb http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8 3ja8 @
 </pre></div>
 </div>

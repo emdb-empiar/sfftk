@@ -51,7 +51,7 @@ class STLMesh(Mesh):
         try:
             assert indexed_vertices[0][0] == 0 and len(indexed_vertices) == indexed_vertices[-1][0] + 1
         except AssertionError:
-            raise ValueError(u"missing one or more vertices")
+            raise ValueError("missing one or more vertices")
         # validate polygons/triangles
         # now we know that all vertex indexes exist
         _triangles = list(self.polygons.values())
@@ -65,7 +65,7 @@ class STLMesh(Mesh):
             assert vertex_ids == polygon_vertex_ids
         except AssertionError:
             raise ValueError(
-                u"incompatible vertices and triangles due to reference(s) to non-existent vertex/vertices")
+                "incompatible vertices and triangles due to reference(s) to non-existent vertex/vertices")
         # create vertices
         _vertices = numpy.array(indexed_vertices)
         # indexed vertices had an extra column of the index value; now we delete that column
@@ -156,19 +156,18 @@ class STLHeader(Header):
 
 class STLSegmentation(Segmentation):
     """Class representing an STL segmentation
-    
+
     .. code-block:: python
-    
+
         from sfftk.formats.stl import STLSegmentation
         stl_seg = STLSegmentation('file.stl')
-        
     """
 
     def __init__(self, fns, *args, **kwargs):
         self._fns = fns
         self._segments = list()
         for fn in self._fns:
-            print_date(u"{}: Stereolithography mesh".format(os.path.basename(fn)))
+            print_date("{}: Stereolithography mesh".format(os.path.basename(fn)))
             segment = stlreader.get_data(fn, *args, **kwargs)
             for name, vertices, polygons in segment:
                 self._segments.append(STLSegment(name, vertices, polygons))

@@ -180,12 +180,11 @@ class AmiraHyperSurfaceHeader(Header):
 
 class AmiraHyperSurfaceSegmentation(Segmentation):
     """Class representing an AmiraHyperSurface segmentation
-    
+
     .. code-block:: python
-    
+
         from sfftk.formats.surf import AmiraHyperSurfaceSegmentation
         surf_seg = AmiraHyperSurfaceSegmentation('file.surf')
-        
     """
 
     def __init__(self, fn):

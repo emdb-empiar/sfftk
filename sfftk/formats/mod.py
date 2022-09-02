@@ -317,17 +317,16 @@ class IMODSegment(object):
 
 class IMODSegmentation(Segmentation):
     """Class representing an IMOD segmentation
-    
+
     .. code-block:: python
-    
+
         from sfftk.formats.mod import IMODSegmentation
         mod_seg = IMODSegmentation('file.mod')
-        
     """
 
     def __init__(self, fn, *args, **kwargs):
         """Initialise the IMODReader
-        
+
         :param str fn: name of Segger file
         """
         self._fn = fn
@@ -344,7 +343,7 @@ class IMODSegmentation(Segmentation):
     @property
     def has_mesh_or_shapes(self):
         """Check whether the segmentation has meshes or shapes
-        
+
         If it only has contours this property is False
         Do not convert segmentations that only have contours
         """

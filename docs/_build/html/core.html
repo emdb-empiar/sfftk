@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en-gb" >
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.core package &mdash; sfftk v0.5.5.dev1 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.6.0.dev1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.5
+                v0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,7 +57,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-configs"><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#parser">Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.parser">Parser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-core-parser"><code class="docutils literal notranslate"><span class="pre">sfftk.core.parser</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.prep">Preparation utilities</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-prep"><code class="docutils literal notranslate"><span class="pre">sfftk.core.prep</span></code></a></li>
 </ul>
@@ -294,8 +297,59 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 
 </section>
 </section>
-<section id="parser">
-<h2>Parser<a class="headerlink" href="#parser" title="Permalink to this heading"></a></h2>
+<section id="module-sfftk.core.parser">
+<span id="parser"></span><h2>Parser<a class="headerlink" href="#module-sfftk.core.parser" title="Permalink to this heading"></a></h2>
+<section id="sfftk-core-parser">
+<h3><code class="docutils literal notranslate"><span class="pre">sfftk.core.parser</span></code><a class="headerlink" href="#sfftk-core-parser" title="Permalink to this heading"></a></h3>
+<p>A large number of functions in <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> consume only two arguments: <code class="docutils literal notranslate"><span class="pre">args</span></code>, which is the direct output of
+Python’s <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">configs</span></code> dictionary, which consists of all persistent configs.
+This module extends the parser object <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.core.parser.Parser</span></code> as well as includes a
+<a class="reference internal" href="#sfftk.core.parser.parse_args" title="sfftk.core.parser.parse_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.core.parser.parse_args()</span></code></a> function which does sanity checking of all command line arguments.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.core.parser.check_multi_file_formats">
+<span class="sig-prename descclassname"><span class="pre">sfftk.core.parser.</span></span><span class="sig-name descname"><span class="pre">check_multi_file_formats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/parser.html#check_multi_file_formats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.parser.check_multi_file_formats" title="Permalink to this definition"></a></dt>
+<dd><p>Check file names for file formats</p>
+<p>When working with multifile segmentations, this function checks that all files are consistent</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – a list of file names</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tuple consisting of whether or not the set of file formats if valid, the set of file formats observed
+and the set of invalid file formats</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.10)">set</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.10)">set</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.core.parser.parse_args">
+<span class="sig-prename descclassname"><span class="pre">sfftk.core.parser.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_shlex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/parser.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.parser.parse_args" title="Permalink to this definition"></a></dt>
+<dd><p>Parse and check command-line arguments and also return configs.</p>
+<p>This function does all the heavy lifting in ensuring that commandline
+arguments are properly formatted and checked for sanity. It also
+extracts configs from the config files.</p>
+<p>In this way command handlers (defined in <a class="reference internal" href="sff.html#module-sfftk.sff" title="sfftk.sff"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.sff</span></code></a> e.g. <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a>) assume
+correct argument values and can concentrate on functionality making the code more readable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – list of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=False</span></code>); string of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=True</span></code>)</p></li>
+<li><p><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>parsed arguments</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 <section id="module-sfftk.core.prep">
 <span id="preparation-utilities"></span><h2>Preparation utilities<a class="headerlink" href="#module-sfftk.core.prep" title="Permalink to this heading"></a></h2>

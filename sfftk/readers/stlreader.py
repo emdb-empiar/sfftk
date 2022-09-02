@@ -25,7 +25,8 @@ def get_data(fn):
     """Get data from an StL file
 
     :param str fn: filename
-    :return: a `generator` of meshes; each mesh is a `tuple` of a name, a `dict` of vertices indexed by `vertex_id` and a `dict` of polygons referring to vertices by `vertex_id`
+    :return: a `generator` of meshes; each mesh is a `tuple` of a name, a `dict` of vertices indexed by `vertex_id`
+        and a `dict` of polygons referring to vertices by `vertex_id`
     :rtype: tuple
     """
     from stl import mesh
@@ -55,15 +56,8 @@ def get_data(fn):
             polygon_id += 1
 
         # we now need to reverse the vertex_ids dict
-        """
-        :TODO: transform vertices to image space!!! 
-        
-        the transformation matrices are at http://www.tribe43.net/blog/article-33/        
-        """
         vertices = _dict(zip(vertex_ids.values(), vertex_ids.keys()))
 
-        # name
-        # name = get_printable_ascii_string(stl_mesh.name) if get_printable_ascii_string(stl_mesh.name) != "" else None
         name = "{}#{}".format(os.path.basename(fn), mesh_id)
         meshes.append((name, vertices, polygons))
     return meshes

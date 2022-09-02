@@ -26,13 +26,13 @@ __updated__ = '2018-02-27'
 
 class Configs(_dict):
     """Class defining configs
-    
+
     Configurations are stored in a subclass of :py:class:`OrderedDict` (normal :py:class:`dict` for Python 3.7+) with
     appended methods for reading (:py:meth:`.Configs.read()`), writing (:py:meth:`.Configs.write`) and
     clearing (:py:meth:`.Configs.clear`) configs.
-    
+
     Printing an object of this class displays all configs.
-    
+
     This class is used an argument to :py:func:`.configs.load_configs`.
     """
     shipped_configs = os.path.join(BASE_DIR, 'sff.conf')
@@ -215,7 +215,7 @@ def load_configs(config_file_path, config_class=Configs):
 
 def get_configs(args, configs):
     """Get the value of the named config
-    
+
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
@@ -243,7 +243,7 @@ def get_configs(args, configs):
 
 def set_configs(args, configs):
     """Set the config of the given name to have the given value
-    
+
     :param args: parsed arguments
     :type args: `argparse.Namespace`
     :param dict configs: configuration options
@@ -262,7 +262,7 @@ def set_configs(args, configs):
 
 def del_configs(args, configs):
     """Delete the named config
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param dict configs: configuration options

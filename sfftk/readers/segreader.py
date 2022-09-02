@@ -21,14 +21,14 @@ __updated__ = '2018-02-14'
 def get_root(region_parent_zip, region_id):
     """
     Return the penultimate `parent_id` for any `region_id`.
-    
+
     The penultimate parent is one layer below the root (0).
     The set of penultimate parents are the distinct regions contained in the segmentation.
     They correspond to putative functional regions.
 
     :param tuple region_parent_zip: a list of 2-tuples of `region_ids` and `parent_ids`
     :param int region_id: the `region_id` whose root parent_id is sought
-    :return int parent_id: the corresponding penultimate `parent_id` (one step below the root - value of `0`)    
+    :return int parent_id: the corresponding penultimate `parent_id` (one step below the root - value of `0`)
     """
     if region_id == 0:
         return 0
@@ -185,7 +185,8 @@ class SeggerSegmentation(object):
         are penultimate roots. This method replaces each `region_id` with its penultimate `parent_id`.
         It *simplifies* the volume.
 
-        :param bool replace: if `True` then the returned `mask` will have values; `False` will leave the `mask` unchanged (useful for running tests to speed things up)
+        :param bool replace: if `True` then the returned `mask` will have values; `False` will leave the `mask`
+            unchanged (useful for running tests to speed things up)
         :return: `simplified_mask`, `segment_colours`, `segment_ids`
         :rtype: tuple
         """
@@ -202,7 +203,7 @@ class SeggerSegmentation(object):
         if replace:
             # It is vastly faster to use multiple array-wide comparisons than to do
             # comparisons element-wise. Therefore, we generate a string to be executed
-            #  that will do hundreds of array-wide comparisons at a time.
+            # that will do hundreds of array-wide comparisons at a time.
             # Each comparison is for all region_ids for a parent_id which will
             # then get assigned the parent_id.
             for parent_id, region_id_list in root_parent_id_group.items():

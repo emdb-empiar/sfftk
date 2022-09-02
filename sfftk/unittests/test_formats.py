@@ -415,7 +415,7 @@ class TestFormats(Py23FixTestCase):
     def test_survos_convert(self):
         """Convert a segmentation from SuRVoS to SFFSegmentation object"""
         self.read_survos()
-        sys.stdin = StringIO(u'0')
+        sys.stdin = StringIO('0')
         args, configs = parse_args('convert {} --details survos'.format(self.survos_file), use_shlex=True)
         seg = self.survos_segmentation.convert(details=args.details)
         self.assertIsInstance(seg, schema.SFFSegmentation)

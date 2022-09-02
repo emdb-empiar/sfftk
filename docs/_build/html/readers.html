@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en-gb" >
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.readers package &mdash; sfftk v0.5.5.dev1 documentation</title>
+  <title>sfftk.readers package &mdash; sfftk v0.6.0.dev1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.5
+                v0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -192,8 +192,9 @@ no textual information is saved in segmentation.</p>
 <p>We need to return an object with a handle on the segments:</p>
 <ul class="simple">
 <li><p>each segment is a 3D volume with only that segments voxel values retained</p></li>
-<li><p>we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1] returns the segmentation with annotation value of ‘1’</p></li>
+<li><p>we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1]</p></li>
 </ul>
+<p>returns the segmentation with annotation value of ‘1’</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">SuRVoSSegmentation</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 <span class="n">s</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">()</span> <span class="c1"># returns a list of segment IDs</span>
 <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># gets the first segment</span>
@@ -351,29 +352,36 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <section id="sfftk-readers-modreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.modreader</span></code><a class="headerlink" href="#sfftk-readers-modreader" title="Permalink to this heading"></a></h3>
 <p>Ad hoc reader for IMOD (<cite>.mod</cite>) files.</p>
-<p><cite>.mod</cite> files are chunk files and loosely follow the Interchange File 
+<p><cite>.mod</cite> files are chunk files and loosely follow the Interchange File
 Format (IFF). In summary, IFF files consist of a four-byte header
 (all caps chunk name e.g. ‘IMOD’) followed by an integer of
 the number of bytes in the chunk. The chunk is then structured
-according to the author’s design requirements. Not all .mod 
+according to the author’s design requirements. Not all .mod
 chunks follow this convention (e.g. ‘OBJT’ chunks do not include
 the size of the chunk immediately after the chunk ID.</p>
-<p>A description of the structure of <cite>.mod</cite> files can be found at 
-the following URL: <a class="reference external" href="http://bio3d.colorado.edu/imod/betaDoc/binspec.html">http://bio3d.colorado.edu/imod/betaDoc/binspec.html</a></p>
+<p>A description of the structure of <cite>.mod</cite> files can be found at
+the following URL: <a class="reference external" href="https://bio3d.colorado.edu/imod/betaDoc/binspec.html">https://bio3d.colorado.edu/imod/betaDoc/binspec.html</a></p>
 <p>This module consists of a set of classes each identified
 by the respective chunk names. The following patterns are observed
 in the design of these classes:</p>
 <ul class="simple">
 <li><p>The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.</p></li>
-<li><p>All classes have one public method: read(f), which takes a file handle and returns a file handle at the current unread position.</p></li>
-<li><p>Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code> method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.</p></li>
-<li><p>All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method implemented to print objects of that class.</p></li>
+<li><p>All classes have one public method: read(f), which takes a file handle and returns a file handle at the current</p></li>
 </ul>
-<p>In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.</p>
+<p>unread position.
+- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
+defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code>
+method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
+contained objects.
+- All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method
+implemented to print objects of that class.</p>
+<p>In addition, there are several useful dictionary constants and functions and classes (flags) that interpret
+several fields within chunks.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The order of classes is based on their position in the module. This can be changed if needed.
-The most important classes are <a class="reference internal" href="#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.IMOD</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.OBJT</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.CONT</span></code></a> and <a class="reference internal" href="#sfftk.readers.modreader.MESH" title="sfftk.readers.modreader.MESH"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.MESH</span></code></a></p>
+The most important classes are <a class="reference internal" href="#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.IMOD</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.OBJT</span></code></a>,
+<a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.CONT</span></code></a> and <a class="reference internal" href="#sfftk.readers.modreader.MESH" title="sfftk.readers.modreader.MESH"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.MESH</span></code></a></p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.CLIP">
@@ -696,9 +704,11 @@ Documented as 72 bytes but works with 76 bytes</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">OBJT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#OBJT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.OBJT" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>OBJT chunk class</p>
-<p>An IMOD file has several <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.OBJT</span></code></a> chunks, each of which contain the data 
-either as contours (<a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.CONT</span></code></a>) or meshes (<a class="reference internal" href="#sfftk.readers.modreader.MESH" title="sfftk.readers.modreader.MESH"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.MESH</span></code></a>). OBJT chunks also 
-contain <a class="reference internal" href="#sfftk.readers.modreader.CLIP" title="sfftk.readers.modreader.CLIP"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.CLIP</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.IMAT" title="sfftk.readers.modreader.IMAT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.IMAT</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.MEPA" title="sfftk.readers.modreader.MEPA"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.MEPA</span></code></a> and a <a class="reference internal" href="#sfftk.readers.modreader.OBST" title="sfftk.readers.modreader.OBST"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.OBST</span></code></a> storage chunk.</p>
+<p>An IMOD file has several <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.OBJT</span></code></a> chunks, each of which contain the data
+either as contours (<a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.CONT</span></code></a>) or meshes
+(<a class="reference internal" href="#sfftk.readers.modreader.MESH" title="sfftk.readers.modreader.MESH"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.MESH</span></code></a>). OBJT chunks also contain <a class="reference internal" href="#sfftk.readers.modreader.CLIP" title="sfftk.readers.modreader.CLIP"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.CLIP</span></code></a>,
+<a class="reference internal" href="#sfftk.readers.modreader.IMAT" title="sfftk.readers.modreader.IMAT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.IMAT</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.MEPA" title="sfftk.readers.modreader.MEPA"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.MEPA</span></code></a> and a
+<a class="reference internal" href="#sfftk.readers.modreader.OBST" title="sfftk.readers.modreader.OBST"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.OBST</span></code></a> storage chunk.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.OBJT.add_cont">
 <span class="sig-name descname"><span class="pre">add_cont</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cont</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#OBJT.add_cont"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.OBJT.add_cont" title="Permalink to this definition"></a></dt>
@@ -1023,7 +1033,8 @@ are penultimate roots. This method replaces each <cite>region_id</cite> with its
 It <em>simplifies</em> the volume.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – if <cite>True</cite> then the returned <cite>mask</cite> will have values; <cite>False</cite> will leave the <cite>mask</cite> unchanged (useful for running tests to speed things up)</p>
+<dd class="field-odd"><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – if <cite>True</cite> then the returned <cite>mask</cite> will have values; <cite>False</cite> will leave the <cite>mask</cite>
+unchanged (useful for running tests to speed things up)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><cite>simplified_mask</cite>, <cite>segment_colours</cite>, <cite>segment_ids</cite></p>
@@ -1088,7 +1099,8 @@ They correspond to putative functional regions.</p>
 <dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – filename</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a <cite>generator</cite> of meshes; each mesh is a <cite>tuple</cite> of a name, a <cite>dict</cite> of vertices indexed by <cite>vertex_id</cite> and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</cite></p>
+<dd class="field-even"><p>a <cite>generator</cite> of meshes; each mesh is a <cite>tuple</cite> of a name, a <cite>dict</cite> of vertices indexed by <cite>vertex_id</cite>
+and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</cite></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a></p>

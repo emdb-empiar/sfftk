@@ -6,32 +6,39 @@
 
 Ad hoc reader for IMOD (`.mod`) files.
 
-`.mod` files are chunk files and loosely follow the Interchange File 
+`.mod` files are chunk files and loosely follow the Interchange File
 Format (IFF). In summary, IFF files consist of a four-byte header
 (all caps chunk name e.g. 'IMOD') followed by an integer of
 the number of bytes in the chunk. The chunk is then structured
-according to the author's design requirements. Not all .mod 
+according to the author's design requirements. Not all .mod
 chunks follow this convention (e.g. 'OBJT' chunks do not include
-the size of the chunk immediately after the chunk ID. 
+the size of the chunk immediately after the chunk ID.
 
-A description of the structure of `.mod` files can be found at 
-the following URL: http://bio3d.colorado.edu/imod/betaDoc/binspec.html
+A description of the structure of `.mod` files can be found at
+the following URL: https://bio3d.colorado.edu/imod/betaDoc/binspec.html
 
 This module consists of a set of classes each identified
 by the respective chunk names. The following patterns are observed
 in the design of these classes:
 
 - The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.
-- All classes have one public method: read(f), which takes a file handle and returns a file handle at the current unread position.
-- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()`` method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.
-- All chunk classes inherit from :py:class:`object` class and have the :py:meth:`object.__repr__()` method implemented to print objects of that class.
+- All classes have one public method: read(f), which takes a file handle and returns a file handle at the current
+unread position.
+- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
+defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()``
+method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
+contained objects.
+- All chunk classes inherit from :py:class:`object` class and have the :py:meth:`object.__repr__()` method
+implemented to print objects of that class.
 
-In addition, there are several useful dictionary constants and functions and classes (flags) that interpret several fields within chunks.
+In addition, there are several useful dictionary constants and functions and classes (flags) that interpret
+several fields within chunks.
 
 .. note::
 
     The order of classes is based on their position in the module. This can be changed if needed.
-    The most important classes are :py:class:`.modreader.IMOD`, :py:class:`.modreader.OBJT`, :py:class:`.modreader.CONT` and :py:class:`.modreader.MESH`
+    The most important classes are :py:class:`.modreader.IMOD`, :py:class:`.modreader.OBJT`,
+    :py:class:`.modreader.CONT` and :py:class:`.modreader.MESH`
 """
 from __future__ import division, print_function
 
@@ -52,7 +59,7 @@ __updated__ = '2018-02-14'
 """
 :TODO: unravel VIEW chunk (email from 3dmod authors unclear)
 :TODO: list fiels in MESH chunk with -24 markers
-:TODO: empty (no field) implementation of OGRP, SKLI and SLAN (class exists but unclear how to nest it) 
+:TODO: empty (no field) implementation of OGRP, SKLI and SLAN (class exists but unclear how to nest it)
 """
 
 KEY_WORDS = [
@@ -145,16 +152,16 @@ def angstrom_multiplier(units):
     try:
         assert units in list(_dict_iter_keys(UNITS))
     except AssertionError:
-        raise ValueError(u"invalid units value '{units}'".format(units=units))
+        raise ValueError("invalid units value '{units}'".format(units=units))
     return 10 ** (10 + units)
 
 
 def find_chunk_length(f):
     """
     Determine the size (in bytes) of the current chunk. Also, return the name of the next chunk.
-    
+
     Assumes that current position in the file is immediately after the chunk header.
-    
+
     :param file f: file handle
     :return: the length of the chunk, the next chunk name, the file handle at the next read position
     :rtype: tuple(int, str, file)
@@ -174,15 +181,15 @@ class FLAGS(object):
 
     def __init__(self, int_value, num_bytes, endian='little'):
         """Initialiser of ``FLAG`` class
-        
+
         :param int int_value: the value in base 10
         :param int bytes: the number of bytes to store
         :param str endian: one of `little` or `big`
-        
+
         Example usage:
-        
+
         .. code-block:: python
-        
+
             >>> from sfftk.readers.modreader import FLAGS
             >>> flag = FLAGS(10, 2)
             >>> flag
@@ -330,7 +337,7 @@ class STORE(object):
         elif self.flags[-2] and self.flags[-1]:  # 3
             self.index = struct.unpack('>bbbb', f.read(4))
         # bit 3 and 2 (in order)
-        if not self.flags[-4] and not self.flags[-3]:  #  0
+        if not self.flags[-4] and not self.flags[-3]:  # 0
             self.value = struct.unpack('>i', f.read(4))[0]
         elif not self.flags[-4] and self.flags[-3]:  # 1
             self.value = struct.unpack('>f', f.read(4))[0]
@@ -347,7 +354,7 @@ class STORE(object):
 
 class IMOD(object):
     """Class encapsulating the data in an IMOD file
-    
+
     The top-level of an IMOD file is an IMOD chunk specifying various data members.
     """
 
@@ -365,7 +372,7 @@ class IMOD(object):
 
     def read(self):
         """Read the IMOD file into an IMOD object
-        
+
         :FIXME: use zscale to fix sizes
         """
         f = self.f
@@ -454,18 +461,20 @@ alpha:         %s
 beta:          %s
 gamma:         %s
 stored data:
-%s""" % (self.version, self.name, self.xmax, self.ymax, self.zmax, \
-         self.objsize, self.flags, self.drawmode, self.mousemode, \
-         self.blacklevel, self.whitelevel, self.xoffset, self.yoffset, \
-         self.zoffset, self.xscale, self.yscale, self.zscale, self.object, \
-         self.contour, self.point, self.res, self.thresh, self.pixsize, \
-         self.units, self.named_units, self.csum, self.alpha, self.beta, self.gamma, self.most)
+%s""" % (
+            self.version, self.name, self.xmax, self.ymax, self.zmax,
+            self.objsize, self.flags, self.drawmode, self.mousemode,
+            self.blacklevel, self.whitelevel, self.xoffset, self.yoffset,
+            self.zoffset, self.xscale, self.yscale, self.zscale, self.object,
+            self.contour, self.point, self.res, self.thresh, self.pixsize,
+            self.units, self.named_units, self.csum, self.alpha, self.beta, self.gamma, self.most
+        )
         return string
 
 
 class MOST(object):
     """MOST chunk class
-    
+
     Class encapsulating storage parameters for the top-level :py:class:`sfftk.readers.modreader.IMOD` chunk.
 
     :param file f: file handle of the IMOD segmentation
@@ -496,10 +505,12 @@ class MOST(object):
 
 class OBJT(object):
     """OBJT chunk class
-    
-    An IMOD file has several :py:class:`sfftk.readers.modreader.OBJT` chunks, each of which contain the data 
-    either as contours (:py:class:`sfftk.readers.modreader.CONT`) or meshes (:py:class:`sfftk.readers.modreader.MESH`). OBJT chunks also 
-    contain :py:class:`sfftk.readers.modreader.CLIP`, :py:class:`sfftk.readers.modreader.IMAT`, :py:class:`sfftk.readers.modreader.MEPA` and a :py:class:`sfftk.readers.modreader.OBST` storage chunk. 
+
+    An IMOD file has several :py:class:`sfftk.readers.modreader.OBJT` chunks, each of which contain the data
+    either as contours (:py:class:`sfftk.readers.modreader.CONT`) or meshes
+    (:py:class:`sfftk.readers.modreader.MESH`). OBJT chunks also contain :py:class:`sfftk.readers.modreader.CLIP`,
+    :py:class:`sfftk.readers.modreader.IMAT`, :py:class:`sfftk.readers.modreader.MEPA` and a
+    :py:class:`sfftk.readers.modreader.OBST` storage chunk.
     """
 
     def __init__(self, f):
@@ -567,11 +578,13 @@ trans:         %s
 meshsize:      %s
 surfsize:      %s
 stored data:
-%s""" % (self.name, self.extra, self.contsize, self.flags, \
-         self.axis, self.drawmode, self.red, self.green, self.blue, \
-         self.pdrawsize, self.symbol, self.symsize, self.linewidth2, \
-         self.linewidth, self.linesty, self.symflags, self.sympad, \
-         self.trans, self.meshsize, self.surfsize, self.obst)
+%s""" % (
+            self.name, self.extra, self.contsize, self.flags,
+            self.axis, self.drawmode, self.red, self.green, self.blue,
+            self.pdrawsize, self.symbol, self.symsize, self.linewidth2,
+            self.linewidth, self.linesty, self.symflags, self.sympad,
+            self.trans, self.meshsize, self.surfsize, self.obst
+        )
         return string
 
 
@@ -763,8 +776,7 @@ class IMAT(object):
         """Read the contents of the IMAT chunk"""
         f = self.f
         self.bytes = struct.unpack('>I', f.read(4))[0]
-        self.ambient, self.diffuse, self.specular, self.shininess, self.fillred, \
-        self.fillgreen, self.fillblue, self.quality = struct.unpack('>BBBBBBBB', f.read(8))
+        self.ambient, self.diffuse, self.specular, self.shininess, self.fillred, self.fillgreen, self.fillblue, self.quality = struct.unpack('>BBBBBBBB', f.read(8))
         self.mat2 = struct.unpack('>I', f.read(4))[0]
         self.valblack, self.valwhite, self.matflags2, self.mat3b3 = struct.unpack('>BBBB', f.read(4))
         self.isset = True
@@ -785,9 +797,11 @@ mat2:          %s
 valblack:      %s
 valwhite:      %s
 matflags2:     %s
-mat3b3:        %s""" % (self.bytes, self.ambient, self.diffuse, self.specular, self.shininess, self.fillred, \
-                        self.fillgreen, self.fillblue, self.quality, self.mat2, self.valblack, \
-                        self.valwhite, self.matflags2, self.mat3b3)
+mat3b3:        %s""" % (
+            self.bytes, self.ambient, self.diffuse, self.specular, self.shininess, self.fillred,
+            self.fillgreen, self.fillblue, self.quality, self.mat2, self.valblack,
+            self.valwhite, self.matflags2, self.mat3b3
+        )
         return string
 
 
@@ -848,7 +862,7 @@ Objv:          %s""" % (self.objvsize, self.Objv)
 
 class MINX(object):
     """MINX chunk class
-    
+
     Model to image transformation
     Documented as 72 bytes but works with 76 bytes
 
@@ -880,8 +894,10 @@ otrans:        %s
 orot:          %s
 cscale:        %s
 ctrans:        %s
-crot:          %s""" % (self.bytes, self.oscale, self.otrans, \
-                        self.orot, self.cscale, self.ctrans, self.crot)
+crot:          %s""" % (
+            self.bytes, self.oscale, self.otrans,
+            self.orot, self.cscale, self.ctrans, self.crot
+        )
         return string
 
 
@@ -925,7 +941,7 @@ something:    %s""" % (self.count, self.flags, self.trans, self.plane, self.norm
 
 class MCLP(object):
     """MCLP chunk class
-    
+
     Model clipping plane parameters
 
     :param file f: file handle of the IMOD segmentation file
@@ -980,8 +996,8 @@ class MEPA(object):
         self.flags = MEPA_FLAGS(struct.unpack('>I', f.read(4))[0], 4)
         self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz, self.maxz, self.reserved_int = struct.unpack(
             '>8i', f.read(32))
-        self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, self.tolHighRes, \
-        self.flatCrit, self.reserved_float = struct.unpack('>10f', f.read(40))
+        self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, self.tolHighRes, self.flatCrit, self.reserved_float = struct.unpack(
+            '>10f', f.read(40))
         self.isset = True
         return f
 
@@ -1008,8 +1024,8 @@ tolHighRes:   %s
 flatCrit:     %s
 reserved:     %s""" % (
             self.bytes, self.flags, self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz,
-            self.maxz, self.reserved_int, \
-            self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, \
+            self.maxz, self.reserved_int,
+            self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes,
             self.tolHighRes, self.flatCrit, self.reserved_float)
         return string
 
@@ -1017,7 +1033,7 @@ reserved:     %s""" % (
 def get_data(fn):
     """
     Extract chunks from IMOD model file pointed to by the handle f
-    
+
     :param str fn: name of IMOD file
     :raises ValueError: if it doesn't start with an IMOD chunk
     :raises ValueError: if the file lacks an IEOF chunk
@@ -1147,7 +1163,7 @@ def get_data(fn):
 def show_chunks(fn):
     """
     Show the sequence and number of chunks pointed to the by file handle f.
-    
+
     :param str fn: name of IMOD file
     """
     marker_sequence = list()
@@ -1192,7 +1208,7 @@ def show_chunks(fn):
 
 def print_model(fn):
     """Pretty print the IMOD model
-    
+
     Arguments:
     :param str fn: name of IMOD file
     # :param mod: an object of class IMOD containing all data

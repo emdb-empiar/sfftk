@@ -303,30 +303,30 @@ class TestReaders_modreader(Py23FixTestCase):
 
     def test_OBJT_pass(self):
         """Test that OBJT chunk read"""
-        for O in _dict_iter_values(self.mod.objts):
-            self.assertTrue(O.isset)
+        for objects in _dict_iter_values(self.mod.objts):
+            self.assertTrue(objects.isset)
 
     def test_CONT_pass(self):
         """Test that CONT chunk read"""
-        for O in _dict_iter_values(self.mod.objts):
-            for C in _dict_iter_values(O.conts):
+        for objects in _dict_iter_values(self.mod.objts):
+            for C in _dict_iter_values(objects.conts):
                 self.assertTrue(C.isset)
 
     def test_MESH_pass(self):
         """Test that MESH chunk read"""
-        for O in _dict_iter_values(self.mod.objts):
-            for M in _dict_iter_values(O.meshes):
+        for objects in _dict_iter_values(self.mod.objts):
+            for M in _dict_iter_values(objects.meshes):
                 self.assertTrue(M.isset)
 
     def test_IMAT_pass(self):
         """Test that IMAT chunk read"""
-        for O in _dict_iter_values(self.mod.objts):
-            self.assertTrue(O.imat.isset)
+        for objects in _dict_iter_values(self.mod.objts):
+            self.assertTrue(objects.imat.isset)
 
     def test_VIEW_pass(self):
         """Test that VIEW chunk read"""
-        for V in _dict_iter_values(self.mod.views):
-            self.assertTrue(V.isset)
+        for views in _dict_iter_values(self.mod.views):
+            self.assertTrue(views.isset)
 
     def test_MINX_pass(self):
         """Test that MINX chunk read"""
@@ -334,19 +334,19 @@ class TestReaders_modreader(Py23FixTestCase):
 
     def test_MEPA_pass(self):
         """Test that MEPA chunk read"""
-        for O in _dict_iter_values(self.mod.objts):
+        for objects in _dict_iter_values(self.mod.objts):
             try:
-                self.assertTrue(O.mepa.isset)
+                self.assertTrue(objects.mepa.isset)
             except AttributeError:
-                self.assertEqual(O.mepa, None)
+                self.assertEqual(objects.mepa, None)
 
     def test_CLIP_pass(self):
         """Test that CLIP chunk read"""
-        for O in _dict_iter_values(self.mod.objts):
+        for objects in _dict_iter_values(self.mod.objts):
             try:
-                self.assertTrue(O.clip.isset)
+                self.assertTrue(objects.clip.isset)
             except AttributeError:
-                self.assertEqual(O.clip, None)
+                self.assertEqual(objects.clip, None)
 
     def test_number_of_OBJT_chunks(self):
         """Test that compares declared and found OBJT chunks"""
@@ -354,39 +354,39 @@ class TestReaders_modreader(Py23FixTestCase):
 
     def test_number_of_CONT_chunks(self):
         """Test that compares declared and found CONT chunks"""
-        for O in _dict_iter_values(self.mod.objts):
-            self.assertEqual(O.contsize, len(O.conts))
+        for objects in _dict_iter_values(self.mod.objts):
+            self.assertEqual(objects.contsize, len(objects.conts))
 
     def test_number_of_MESH_chunks(self):
         """Test that compares declared and found MESH chunks"""
-        for O in _dict_iter_values(self.mod.objts):
-            self.assertEqual(O.meshsize, len(O.meshes))
+        for objects in _dict_iter_values(self.mod.objts):
+            self.assertEqual(objects.meshsize, len(objects.meshes))
 
     def test_number_of_surface_objects(self):
         """Test that compares declared and found surface objects"""
-        for O in _dict_iter_values(self.mod.objts):
+        for objects in _dict_iter_values(self.mod.objts):
             no_of_surfaces = 0
-            for C in _dict_iter_values(O.conts):
+            for C in _dict_iter_values(objects.conts):
                 if C.surf != 0:
                     no_of_surfaces += 1
-            self.assertEqual(O.surfsize, no_of_surfaces)
+            self.assertEqual(objects.surfsize, no_of_surfaces)
 
     def test_number_of_points_in_CONT_chunk(self):
         """Test that compares declared an found points in CONT chunks"""
-        for O in _dict_iter_values(self.mod.objts):
-            for C in _dict_iter_values(O.conts):
+        for objects in _dict_iter_values(self.mod.objts):
+            for C in _dict_iter_values(objects.conts):
                 self.assertEqual(C.psize, len(C.pt))
 
     def test_number_of_vertex_elements_in_MESH_chunk(self):
         """Test that compares declared an found vertices in MESH chunks"""
-        for O in _dict_iter_values(self.mod.objts):
-            for M in _dict_iter_values(O.meshes):
+        for objects in _dict_iter_values(self.mod.objts):
+            for M in _dict_iter_values(objects.meshes):
                 self.assertEqual(M.vsize, len(M.vert))
 
     def test_number_of_list_elements_in_MESH_chunk(self):
         """Test that compares declared an found indices in MESH chunks"""
-        for O in _dict_iter_values(self.mod.objts):
-            for M in _dict_iter_values(O.meshes):
+        for objects in _dict_iter_values(self.mod.objts):
+            for M in _dict_iter_values(objects.meshes):
                 self.assertEqual(M.lsize, len(M.list))
 
 
@@ -415,7 +415,7 @@ class TestReaders_stlreader(Py23FixTestCase):
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""
-        meshes = stlreader.get_data(self.stl_file)  #  only one mesh here
+        meshes = stlreader.get_data(self.stl_file)  # only one mesh here
         name, vertices, polygons = meshes[0]
         num_vertices = len(vertices)
         a, b, c = zip(*polygons.values())
@@ -441,7 +441,7 @@ class TestReaders_stlreader(Py23FixTestCase):
 
     def test_read_multiple(self):
         """Test that we can read a multi-solid STL file
-          
+
         Only works for ASCII by concatenation"""
         meshes = stlreader.get_data(self.stl_multi_file)
         for name, vertices, polygons in meshes:
@@ -459,7 +459,7 @@ class TestReaders_surfreader(Py23FixTestCase):
     def setUpClass(cls):
         super(TestReaders_surfreader, cls).setUpClass()
         cls.surf_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.surf')
-        cls.header, cls.segments = surfreader.get_data(cls.surf_file)  #  only one mesh here
+        cls.header, cls.segments = surfreader.get_data(cls.surf_file)  # only one mesh here
 
     def test_get_data(self):
         """Test the main entry point: get_data(...)"""

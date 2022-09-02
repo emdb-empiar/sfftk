@@ -12,7 +12,7 @@ import numpy
 class IlastikSegmentation(object):
     """Encapsulation of an Ilastik segmentation"""
 
-    def __init__(self, fn, dataset_name=u'exported_data', axis_order='zyxc', *args, **kwargs):
+    def __init__(self, fn, dataset_name='exported_data', axis_order='zyxc', *args, **kwargs):
         self._fn = fn
         self._axis_order = axis_order
         self._dataset_name = dataset_name

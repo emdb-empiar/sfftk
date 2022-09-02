@@ -6,11 +6,11 @@ from __future__ import division, print_function
 
 import json
 import os
+import shutil
+import unittest
 
 import requests
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
-import shutil
-import unittest
 from random_words import RandomWords, LoremIpsum
 from sfftkrw.core import _urlencode, _xrange, _str, utils
 from sfftkrw.unittests import Py23FixTestCase, _random_integer, _random_integers
@@ -35,15 +35,15 @@ __date__ = "2017-05-15"
 class TestNotesModifyExternalReference(Py23FixTestCase):
     def test_ols(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        resource = u'ncit'
-        url = u'http://purl.obolibrary.org/obo/NCIT_C62195'
-        accession = u'NCIT_C62195'
+        resource = 'ncit'
+        url = 'http://purl.obolibrary.org/obo/NCIT_C62195'
+        accession = 'NCIT_C62195'
         # likely to change
-        label = u'Wild Type'
-        description = u'The naturally-occurring, normal, non-mutated version of a gene or genome.'
-        urlenc = _urlencode({u'iri': url.encode(u'idna')})
-        urlenc2 = _urlencode({u'iri': urlenc.split(u'=')[1]})
-        urlenc3 = urlenc2.split(u'=')[1]
+        label = 'Wild Type'
+        description = 'The naturally-occurring, normal, non-mutated version of a gene or genome.'
+        urlenc = _urlencode({u'iri': url.encode('idna')})
+        urlenc2 = _urlencode({u'iri': urlenc.split('=')[1]})
+        urlenc3 = urlenc2.split('=')[1]
         ext_ref = modify.ExternalReference(
             resource=resource,
             url=url,
@@ -60,12 +60,12 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
 
     def test_emdb(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        resource = u'EMDB'
-        url = u'https://www.ebi.ac.uk/pdbe/emdb/EMD-8654'
-        accession = u'EMD-8654'
+        resource = 'EMDB'
+        url = 'https://www.ebi.ac.uk/pdbe/emdb/EMD-8654'
+        accession = 'EMD-8654'
         # likely to change
-        label = u'EMD-8654'
-        description = u'Zika virus-infected Vero E6 cell at 48 hpi: dual-axis tilt series tomogram from 3 serial sections'
+        label = 'EMD-8654'
+        description = 'Zika virus-infected Vero E6 cell at 48 hpi: dual-axis tilt series tomogram from 3 serial sections'
         ext_ref = modify.ExternalReference(
             resource=resource,
             url=url,
@@ -81,12 +81,12 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
 
     def test_pdb(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        resource = u'PDB'
-        url = u'https://www.ebi.ac.uk/pdbe/entry/pdb/4gzw'
-        accession = u'4gzw'
+        resource = 'PDB'
+        url = 'https://www.ebi.ac.uk/pdbe/entry/pdb/4gzw'
+        accession = '4gzw'
         # likely to change
-        label = u'N2 neuraminidase D151G mutant of A/Tanzania/205/2010 H3N2 in complex with avian sialic acid receptor'
-        description = u'H3N2 subtype'
+        label = 'N2 neuraminidase D151G mutant of A/Tanzania/205/2010 H3N2 in complex with avian sialic acid receptor'
+        description = 'H3N2 subtype'
         ext_ref = modify.ExternalReference(
             resource=resource,
             url=url,
@@ -102,12 +102,12 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
 
     def test_uniprot(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        resource = u'UniProt'
-        url = u'https://rest.uniprot.org/uniprotkb/A0A1Q8WSX6.tsv'
-        accession = u'A0A1Q8WSX6'
+        resource = 'UniProt'
+        url = 'https://rest.uniprot.org/uniprotkb/A0A1Q8WSX6.tsv'
+        accession = 'A0A1Q8WSX6'
         # likely to change
-        label = u'A0A1Q8WSX6_9ACTO'
-        description = u'Type I-E CRISPR-associated protein Cas5/CasD (Organism: Actinomyces oris)'
+        label = 'A0A1Q8WSX6_9ACTO'
+        description = 'Type I-E CRISPR-associated protein Cas5/CasD (Organism: Actinomyces oris)'
         ext_ref = modify.ExternalReference(
             resource=resource,
             url=url,
@@ -123,11 +123,11 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
 
     def test_europepmc(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        resource = u'Europe PMC'
-        url = u'http://europepmc.org/abstract/MED/30932919'
-        accession = u'30932919'
-        label = u'Perugi G, De Rossi P, Fagiolini A, Girardi P, Maina G, Sani G, Serretti A.'
-        description = u'Personalized and precision medicine as informants for treatment management of bipolar disorder.'
+        resource = 'Europe PMC'
+        url = 'http://europepmc.org/abstract/MED/30932919'
+        accession = '30932919'
+        label = 'Perugi G, De Rossi P, Fagiolini A, Girardi P, Maina G, Sani G, Serretti A.'
+        description = 'Personalized and precision medicine as informants for treatment management of bipolar disorder.'
         ext_ref = modify.ExternalReference(
             resource=resource,
             url=url,
@@ -143,12 +143,12 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
 
     def test_empiar(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
-        resource = u'EMPIAR'
-        url = u'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10087/'
-        accession = u'EMPIAR-10087'
-        label = u'Soft X-ray tomography of Plasmodium falciparum infected human erythrocytes stalled in egress by the ' \
-                u'inhibitors Compound 2 and E64'
-        description = u'SXT'
+        resource = 'EMPIAR'
+        url = 'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10087/'
+        accession = 'EMPIAR-10087'
+        label = 'Soft X-ray tomography of Plasmodium falciparum infected human erythrocytes stalled in egress by the ' \
+                'inhibitors Compound 2 and E64'
+        description = 'SXT'
         ext_ref = modify.ExternalReference(
             resource=resource,
             url=url,
@@ -222,7 +222,7 @@ class TestNotesFindSearchResource(Py23FixTestCase):
         if resource_results is not None and test_results is not None:
             self.assertCountEqual(resource_results, test_results)
         else:
-            self.stderr(u"Warning: unable to run test on response due to API issue to {url}".format(url=url))
+            self.stderr("Warning: unable to run test on response due to API issue to {url}".format(url=url))
 
     def test_get_url_ols_list_ontologies(self):
         """Test url correctness for OLS"""
@@ -246,7 +246,10 @@ class TestNotesFindSearchResource(Py23FixTestCase):
                 config_fn=self.config_fn,
             ), use_shlex=True)
         resource = find.SearchResource(args, configs)
-        url = "{root_url}search?q={search_term}&start={start}&rows={rows}&local=true&ontology={ontology}&exact=on&obsoletes=on".format(
+        url = (
+            "{root_url}search?q={search_term}&start={start}&rows={rows}&local=true&"
+            "ontology={ontology}&exact=on&obsoletes=on"
+        ).format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
             search_term=args.search_term,
             start=args.start - 1,
@@ -280,10 +283,11 @@ class TestNotesFindSearchResource(Py23FixTestCase):
                 config_fn=self.config_fn,
             ), use_shlex=True)
         resource = find.SearchResource(args, configs)
-        url = "{root_url}?query={search_term}&format=tsv&size={rows}&fields=accession,id,protein_name,organism_name".format(
+        url = (
+            "{root_url}?query={search_term}&format=tsv&size={rows}&fields=accession,id,protein_name,organism_name"
+        ).format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
             search_term=args.search_term,
-            start=args.start,
             rows=args.rows,
         )
         self.assertEqual(resource.get_url(), url)
@@ -296,7 +300,9 @@ class TestNotesFindSearchResource(Py23FixTestCase):
             config_fn=self.config_fn,
         ), use_shlex=True)
         resource = find.SearchResource(args, configs)
-        url = "{root_url}?q={search_term}&wt=json&fl=pdb_id,title,organism_scientific_name&start={start}&rows={rows}".format(
+        url = (
+            "{root_url}?q={search_term}&wt=json&fl=pdb_id,title,organism_scientific_name&start={start}&rows={rows}"
+        ).format(
             root_url=RESOURCE_LIST[resource_name]['root_url'],
             search_term=args.search_term,
             start=args.start,
@@ -366,7 +372,7 @@ class TestNotesFindTableField(Py23FixTestCase):
         with self.assertRaises(ValueError):
             find.TableField('my-field', pc='1.3')
         with self.assertRaises(ValueError):
-            find.TableField('my-field', pc=u'1.3')
+            find.TableField('my-field', pc='1.3')
         with self.assertRaises(ValueError):
             find.TableField('my-field', pc=list())
         with self.assertRaises(ValueError):
@@ -437,8 +443,6 @@ class TestNotes_view(Py23FixTestCase):
             status = view.show_notes(args, configs)
             self.assertEqual(status, 0)
 
-
-
     def test_show_default(self):
         """Test that we can show annotations in a single segment"""
         args, configs = parse_args("notes show -i {} {} --config-path {}".format(
@@ -497,9 +501,11 @@ class TestNotes_modify(Py23FixTestCase):
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
         # self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
-        cmd = "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} " \
-              "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} " \
-              "--verbose --config-path {config}".format(
+        cmd = (
+            "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} "
+            "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} "
+            "--verbose --config-path {config}"
+        ).format(
             name=name,
             details=details,
             software_name=software_name,
@@ -538,8 +544,10 @@ class TestNotes_modify(Py23FixTestCase):
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
         # self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
-        cmd = "notes add -i {segment_id} -n '{name}' -d '{description}' -E {extref1} -E {extref2} -I {num} " \
-              "{sff_file} --config-path {config}".format(
+        cmd = (
+            "notes add -i {segment_id} -n '{name}' -d '{description}' -E {extref1} -E {extref2} -I {num} "
+            "{sff_file} --config-path {config}"
+        ).format(
             segment_id=self.segment_id,
             name=segment_name,
             description=desc,
@@ -578,9 +586,11 @@ class TestNotes_modify(Py23FixTestCase):
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
         # add
-        cmd = "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} " \
-              "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} " \
-              "--verbose --config-path {config}".format(
+        cmd = (
+            "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} "
+            "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} "
+            "--verbose --config-path {config}"
+        ).format(
             name=name,
             details=details,
             software_name=software_name,
@@ -602,9 +612,11 @@ class TestNotes_modify(Py23FixTestCase):
         software_processing_details1 = software_processing_details[::-1]
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
-        cmd1 = "notes edit -N '{name}' -D '{details}' -s 1 -S {software_name} -T {software_version} " \
-               "-P '{software_processing_details}' -e 1 -E {extref1} -E {extref2} @ " \
-               "--verbose --config-path {config}".format(
+        cmd1 = (
+            "notes edit -N '{name}' -D '{details}' -s 1 -S {software_name} -T {software_version} "
+            "-P '{software_processing_details}' -e 1 -E {extref1} -E {extref2} @ "
+            "--verbose --config-path {config}"
+        ).format(
             name=name1,
             details=details1,
             software_name=software_name1,
@@ -643,8 +655,10 @@ class TestNotes_modify(Py23FixTestCase):
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
         # add
-        cmd = "notes add -i {segment_id} -n '{name}' -d '{description}' -E {extref1} -E {extref2} -I {num} " \
-              "{sff_file} --config-path {config}".format(
+        cmd = (
+            "notes add -i {segment_id} -n '{name}' -d '{description}' -E {extref1} -E {extref2} -I {num} "
+            "{sff_file} --config-path {config}"
+        ).format(
             segment_id=self.segment_id,
             name=segment_name,
             description=desc,
@@ -662,9 +676,11 @@ class TestNotes_modify(Py23FixTestCase):
         num1 = _random_integer()
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
-        cmd1 = "notes edit -i {segment_id} -n '{name}' -d '{description}' " \
-               "-e 1 -E {extref1} -E {extref2} -I {num} " \
-               "@ --config-path {config}".format(
+        cmd1 = (
+            "notes edit -i {segment_id} -n '{name}' -d '{description}' "
+            "-e 1 -E {extref1} -E {extref2} -I {num} "
+            "@ --config-path {config}"
+        ).format(
             segment_id=self.segment_id,
             name=segment_name1,
             description=desc1,
@@ -701,9 +717,11 @@ class TestNotes_modify(Py23FixTestCase):
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
         # add
-        cmd = "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} " \
-              "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} " \
-              "--verbose --config-path {config}".format(
+        cmd = (
+            "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} "
+            "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} "
+            "--verbose --config-path {config}"
+        ).format(
             name=name,
             details=details,
             software_name=software_name,
@@ -737,8 +755,10 @@ class TestNotes_modify(Py23FixTestCase):
         num = _random_integer()
         extref1 = ' '.join(rw.random_words(count=3))
         extref2 = ' '.join(rw.random_words(count=3))
-        cmd = "notes add -i {segment_id} -n '{name}' -d '{descr}' -I {num} -E {extref1} -E {extref2} " \
-              "{file} --config-path {config}".format(
+        cmd = (
+            "notes add -i {segment_id} -n '{name}' -d '{descr}' -I {num} -E {extref1} -E {extref2} "
+            "{file} --config-path {config}"
+        ).format(
             segment_id=self.segment_id,
             name=name,
             descr=descr,
@@ -750,7 +770,7 @@ class TestNotes_modify(Py23FixTestCase):
         )
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
-        status = modify.add_note(args, configs)
+        _ = modify.add_note(args, configs)
         # delete
         cmd1 = "notes del -i {segment_id} -n -d -I -e 0,1 @ --config-path {config}".format(
             segment_id=self.segment_id,
@@ -774,7 +794,10 @@ class TestNotes_modify(Py23FixTestCase):
         num = _random_integer()
         extref = rw.random_words(count=3)
         # add
-        cmd = "notes add -i {segment_id} -n '{segment_name}' -d '{desc}' -E {extref} -I {num} {sff_file} --config-path {config}".format(
+        cmd = (
+            "notes add -i {segment_id} -n '{segment_name}' -d '{desc}'"
+            " -E {extref} -I {num} {sff_file} --config-path {config}"
+        ).format(
             segment_id=self.segment_id,
             segment_name=segment_name,
             desc=desc,
@@ -820,8 +843,10 @@ class TestNotes_modify(Py23FixTestCase):
         num = _random_integer()
         extref = rw.random_words(count=3)
         # add
-        cmd = "notes add -i {segment_id} -n '{name}' -d '{desc}' -E {extref} -I {num} {sff_file} " \
-              "--config-path {config}".format(
+        cmd = (
+            "notes add -i {segment_id} -n '{name}' -d '{desc}' -E {extref} -I {num} {sff_file} "
+            "--config-path {config}"
+        ).format(
             segment_id=self.segment_id,
             name=segment_name,
             desc=desc,
@@ -871,7 +896,7 @@ class TestNotes_modify(Py23FixTestCase):
             config=self.config_fn,
         )
         args, configs = parse_args(cmd1, use_shlex=True)
-        status3 = modify.save(args, configs)
+        _ = modify.save(args, configs)
         # debug
         cmd2 = "notes list {sff_file} --config-path {config}".format(
             sff_file=annotated_sff_file,
@@ -1072,8 +1097,10 @@ class TestNotesClasses(Py23FixTestCase):
         sw_version = rw.random_word()
         sw_proc = li.get_sentences(sentences=5)
         ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
-        cmd = "notes add -N '{name}' -D '{details}' -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' file.sff " \
-              "--config-path {config}".format(
+        cmd = (
+            "notes add -N '{name}' -D '{details}' -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' file.sff "
+            "--config-path {config}"
+        ).format(
             name=name,
             details=details,
             sw_name=sw_name,
@@ -1121,8 +1148,10 @@ class TestNotesClasses(Py23FixTestCase):
         ext_refs = rw.random_words(count=3)
         ext_refs1 = rw.random_words(count=3)
         ext_refs2 = rw.random_words(count=3)
-        cmd_edit = "notes edit -N '{name}' -s 0 -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' -D '{details}' -e 2 " \
-                   "-E {extRefs} -E {extRefs1} -E {extRefs2} file.sff --config-path {config}".format(
+        cmd_edit = (
+            "notes edit -N '{name}' -s 0 -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' -D '{details}' -e 2 "
+            "-E {extRefs} -E {extRefs1} -E {extRefs2} file.sff --config-path {config}"
+        ).format(
             name=name,
             sw_name=sw_name,
             sw_version=sw_version,
@@ -1185,8 +1214,10 @@ class TestNotesClasses(Py23FixTestCase):
         description = li.get_sentences(sentences=4)
         num = _random_integer(start=1)
         ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
-        cmd_add = "notes add -i {segment_id} -n '{name}' -d '{description}' -I {num} file.sff " \
-                  "--config-path {config}".format(
+        cmd_add = (
+            "notes add -i {segment_id} -n '{name}' -d '{description}' -I {num} file.sff "
+            "--config-path {config}"
+        ).format(
             segment_id=','.join(map(_str, segment_id)),
             name=name,
             description=description,
@@ -1214,18 +1245,20 @@ class TestNotesClasses(Py23FixTestCase):
         desc = li.get_sentences(sentences=10)
         num = _random_integer(start=1)
         ext_refs = rw.random_words(count=3)
-        extRefs1 = rw.random_words(count=3)
-        extRefs2 = rw.random_words(count=3)
-        cmd_edit = "notes edit -i {segment_id} -n '{name}' -d '{desc}' -I {num} " \
-                   "-e 4 -E {extRefs} -E {extRefs1} -E {extRefs2} " \
-                   "file.sff --config-path {config}".format(
+        ext_refs1 = rw.random_words(count=3)
+        ext_refs2 = rw.random_words(count=3)
+        cmd_edit = (
+            "notes edit -i {segment_id} -n '{name}' -d '{desc}' -I {num} "
+            "-e 4 -E {ext_refs} -E {ext_refs1} -E {ext_refs2} "
+            "file.sff --config-path {config}"
+        ).format(
             segment_id=','.join(map(_str, segment_id)),
             name=name,
             desc=desc,
             num=num,
-            extRefs=' '.join(ext_refs),
-            extRefs1=' '.join(extRefs1),
-            extRefs2=' '.join(extRefs2),
+            ext_refs=' '.join(ext_refs),
+            ext_refs1=' '.join(ext_refs1),
+            ext_refs2=' '.join(ext_refs2),
             config=self.config_fn,
         )
         args, configs = parse_args(cmd_edit, use_shlex=True)
@@ -1248,7 +1281,7 @@ class TestNotesClasses(Py23FixTestCase):
                 segment_edit.biological_annotation.external_references[-2].url,
                 segment_edit.biological_annotation.external_references[-2].accession
             ],
-            extRefs1
+            ext_refs1
         )
         self.assertEqual(
             [
@@ -1256,11 +1289,13 @@ class TestNotesClasses(Py23FixTestCase):
                 segment_edit.biological_annotation.external_references[-1].url,
                 segment_edit.biological_annotation.external_references[-1].accession
             ],
-            extRefs2
+            ext_refs2
         )
         # del notes
-        cmd_del = "notes del -i {segment_id} -n -d -I -e 0,1,2,3,4,5 " \
-                  "file.sff --config-path {config}".format(
+        cmd_del = (
+            "notes del -i {segment_id} -n -d -I -e 0,1,2,3,4,5 "
+            "file.sff --config-path {config}"
+        ).format(
             segment_id=','.join(map(_str, segment_id)),
             config=self.config_fn,
         )
@@ -1289,7 +1324,7 @@ class TestNotes_find(Py23FixTestCase):
             self.assertGreater(len(results), 0)
         else:
             self.stderr(
-                u"Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
+                "Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
 
     def test_search_no_results(self):
         """Test search that returns no results"""
@@ -1302,7 +1337,7 @@ class TestNotes_find(Py23FixTestCase):
             self.assertEqual(len(results), 0)
         else:
             self.stderr(
-                u"Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
+                "Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
 
     def test_search_exact_result(self):
         """Test that we get an exact result
@@ -1319,7 +1354,7 @@ class TestNotes_find(Py23FixTestCase):
 
     def test_search_ontology(self):
         """Test that we can search an ontology"""
-        #  this search should bring at least one result
+        # this search should bring at least one result
         args, configs = parse_args(
             "notes search 'mitochondria' --exact -O omit --config-path {}".format(self.config_fn), use_shlex=True)
         resource = find.SearchResource(args, configs)
@@ -1328,7 +1363,7 @@ class TestNotes_find(Py23FixTestCase):
             self.assertGreaterEqual(len(results), 1)
         else:
             self.stderr(
-                u"Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
+                "Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
 
     def test_search_from_start(self):
         """Test that we can search from the starting index"""
@@ -1344,7 +1379,7 @@ class TestNotes_find(Py23FixTestCase):
             self.assertGreaterEqual(results.structured_response['response']['start'], random_start - 1)
         else:
             self.stderr(
-                u"Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
+                "Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
 
     def test_search_result_rows(self):
         """Test that we get as many result rows as specified"""
@@ -1360,7 +1395,7 @@ class TestNotes_find(Py23FixTestCase):
             self.assertGreaterEqual(len(results), random_rows)
         else:
             self.stderr(
-                u"Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
+                "Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
 
 
 if __name__ == "__main__":

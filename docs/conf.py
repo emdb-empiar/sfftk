@@ -60,9 +60,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'sfftk'
-copyright = u'2017, EMBL-EBI'
-author = u'Paul K. Korir, PhD'
+project = 'sfftk'
+copyright = '2017, EMBL-EBI'
+author = 'Paul K. Korir, PhD'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -78,7 +78,7 @@ release = str(SFFTK_VERSION)
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en-gb'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -238,8 +238,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'sfftk.tex', u'sfftk Documentation',
-     u'Paul K. Korir, PhD', 'manual'),
+    (master_doc, 'sfftk.tex', 'sfftk Documentation',
+     'Paul K. Korir, PhD', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -268,7 +268,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'sfftk', u'sfftk Documentation',
+    (master_doc, 'sfftk', 'sfftk Documentation',
      [author], 1)
 ]
 
@@ -282,7 +282,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'sfftk', u'sfftk Documentation',
+    (master_doc, 'sfftk', 'sfftk Documentation',
      author, 'sfftk', 'One line description of project.',
      'Miscellaneous'),
 ]

@@ -91,8 +91,8 @@ class MapAnnotation(Annotation):
                 (self._machst[0] == 'D' and self._machst[1] == 'A' and self._machst[2] == '\x00' and self._machst[
                     3] == '\x00'):
             return 'little'
-        elif self._machst[0] == '\x11' and self._machst[1] == '\x11' and self._machst[2] == '\x00' and self._machst[
-            3] == '\x00':
+        elif self._machst[0] == '\x11' and self._machst[1] == '\x11' and self._machst[2] == '\x00' and \
+                self._machst[3] == '\x00':
             return 'big'
         else:
             raise ValueError("MACHST = ", self._machst)
@@ -242,12 +242,11 @@ class MapHeader(Header):
 
 class MapSegmentation(Segmentation):
     """Class representing an CCP4/MAP mask segmentation
-    
+
     .. code-block:: python
-    
+
         from sfftk.formats.map import MapSegmentation
         map_seg = MapSegmentation('file.map')
-        
     """
 
     def __init__(self, fns, *args, **kwargs):
@@ -265,7 +264,8 @@ class MapSegmentation(Segmentation):
                 rows = segment_annotation.rows
                 sections = segment_annotation.sections
             else:
-                if cols != segment_annotation.cols or rows != segment_annotation.rows or sections != segment_annotation.sections:
+                if cols != segment_annotation.cols or rows != segment_annotation.rows or \
+                        sections != segment_annotation.sections:
                     print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
                         os.path.basename(fn), segment_annotation.cols, segment_annotation.rows,
                         segment_annotation.sections)

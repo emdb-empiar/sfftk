@@ -55,9 +55,9 @@ class ExternalReference(object):
             from urllib.parse import urlencode
         else:
             from urllib import urlencode
-        urlenc = urlencode({u'iri': self.url.encode(u'idna')})
-        urlenc2 = urlencode({u'iri': urlenc.split(u'=')[1]})
-        return _decode(urlenc2.split(u'=')[1], 'utf-8')
+        urlenc = urlencode({u'iri': self.url.encode('idna')})
+        urlenc2 = urlencode({u'iri': urlenc.split('=')[1]})
+        return _decode(urlenc2.split('=')[1], 'utf-8')
 
     # fixme: perhaps the text should exist already instead of being searched for?
     # this seems to be a special case for OLS
@@ -71,131 +71,132 @@ class ExternalReference(object):
         description = None
         # only search for label and description if from OLS
         if self.resource not in RESOURCE_LIST_NAMES:
-            url = u"https://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
+            url = "https://www.ebi.ac.uk/ols/api/ontologies/{ontology}/terms/{iri}".format(
                 ontology=self.resource,
                 iri=self.iri,
             )
-            R = requests.get(url)
-            if R.status_code == 200:
-                self._result = json.loads(R.text)
-                #  label
+            response = requests.get(url)
+            if response.status_code == 200:
+                self._result = json.loads(response.text)
+                # label
                 try:
-                    label = self._result[u'label']
+                    label = self._result['label']
                 except KeyError:
                     label = ''
-                #  description
+                # description
                 try:
-                    description = self._result[u'description'][0] if self._result[u'description'] else None
+                    description = self._result['description'][0] if self._result['description'] else None
                 except KeyError:
                     description = ''
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                self.accession))
-        elif self.resource == u'EMDB':
-            url = u"https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.accession)
-            R = requests.get(url)
-            if R.status_code == 200:
-                self._result = json.loads(R.text)
+                    "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                               self.accession))
+        elif self.resource == 'EMDB':
+            url = "https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.accession)
+            response = requests.get(url)
+            if response.status_code == 200:
+                self._result = json.loads(response.text)
                 # label
                 label = list(self._result.keys())[0]
                 # description
-                description = self._result[label][0][u'deposition'][u'title']
+                description = self._result[label][0]['deposition']['title']
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                self.accession))
-        elif self.resource == u"PDB":
-            url = u"https://www.ebi.ac.uk/pdbe/search/pdb/select?q={}&wt=json".format(self.accession)
-            R = requests.get(url)
-            if R.status_code == 200:
-                self._result = json.loads(R.text)
+                    "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                               self.accession))
+        elif self.resource == "PDB":
+            url = "https://www.ebi.ac.uk/pdbe/search/pdb/select?q={}&wt=json".format(self.accession)
+            response = requests.get(url)
+            if response.status_code == 200:
+                self._result = json.loads(response.text)
                 try:
                     # label
-                    label = self._result[u'response'][u'docs'][0][u'title']
+                    label = self._result['response']['docs'][0]['title']
                     # description
-                    description = u"; ".join(self._result[u'response'][u'docs'][0][u'organism_scientific_name'])
+                    description = "; ".join(self._result['response']['docs'][0]['organism_scientific_name'])
                 except IndexError:
                     print_date(
-                        u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                    self.accession))
+                        "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                   self.accession))
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                self.accession))
-        elif self.resource == u"UniProt":
-            url = u"https://rest.uniprot.org/uniprotkb/search" \
-                  u"?query=accession:{search_term}&format=tsv&size=1&fields=accession,id," \
-                  u"protein_name,organism_name".format(
+                    "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                               self.accession))
+        elif self.resource == "UniProt":
+            url = (
+                "https://rest.uniprot.org/uniprotkb/search"
+                "?query=accession:{search_term}&format=tsv&size=1&fields=accession,id,"
+                "protein_name,organism_name"
+            ).format(
                 search_term=self.accession,
             )
-            R = requests.get(url)
-            if R.status_code == 200:
-                self._result = R.text
+            response = requests.get(url)
+            if response.status_code == 200:
+                self._result = response.text
                 try:
                     # split rows; split columns; dump first and last rows
                     _structured_results = list(map(lambda r: r.split('\t'), self._result.split('\n')))[1:-1]
                     # make a list of dicts with the given ids
-                    structured_results = list(map(lambda r: dict(zip([u'id', u'name', u'proteins', u'organism'], r)),
+                    structured_results = list(map(lambda r: dict(zip(['id', 'name', 'proteins', 'organism'], r)),
                                                   _structured_results))[0]
                     # label
-                    label = structured_results[u'name']
+                    label = structured_results['name']
                     # description
-                    description = u"{} (Organism: {})".format(structured_results[u'proteins'],
-                                                              structured_results[u'organism'])
+                    description = "{} (Organism: {})".format(structured_results['proteins'],
+                                                             structured_results['organism'])
                 except ValueError as v:
-                    print_date(u"Unknown exception: {}".format(str(v)))
+                    print_date("Unknown exception: {}".format(str(v)))
                 except IndexError:
                     print_date(
-                        u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                    self.accession))
+                        "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                                   self.accession))
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                self.accession))
-        elif self.resource == u'Europe PMC':
-            url = u"https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json".format(
-                self.accession)
-            R = requests.get(url)
-            if R.status_code == 200:
-                self._result = json.loads(R.text)
+                    "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                               self.accession))
+        elif self.resource == 'Europe PMC':
+            url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=30932919&format=json"
+            response = requests.get(url)
+            if response.status_code == 200:
+                self._result = json.loads(response.text)
                 try:
                     # label
-                    label = self._result[u"resultList"][u"result"][0][u"authorString"]
+                    label = self._result["resultList"]["result"][0]["authorString"]
                     # description
-                    description = self._result[u"resultList"][u"result"][0][u"title"]
+                    description = self._result["resultList"]["result"][0]["title"]
                 except IndexError:
                     print_date(
-                        u"Could not find label and description for external reference {}:{}".format(
+                        "Could not find label and description for external reference {}:{}".format(
                             self.resource,
                             self.accession
                         )
                     )
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                self.accession))
-        elif self.resource == u'EMPIAR':
-            url = u"https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.accession)
-            R = requests.get(url)
-            if R.status_code == 200:
-                self._result = json.loads(R.text)
+                    "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                               self.accession))
+        elif self.resource == 'EMPIAR':
+            url = "https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.accession)
+            response = requests.get(url)
+            if response.status_code == 200:
+                self._result = json.loads(response.text)
                 try:
                     # label
-                    label = self._result[self.accession][u"title"]
+                    label = self._result[self.accession]["title"]
                     # description
-                    description = self._result[self.accession][u"experiment_type"]
+                    description = self._result[self.accession]["experiment_type"]
                 except IndexError:
                     print_date(
-                        u"Could not find label and description for external reference {}:{}".format(
+                        "Could not find label and description for external reference {}:{}".format(
                             self.resource,
                             self.accession
                         )
                     )
             else:
                 print_date(
-                    u"Could not find label and description for external reference {}:{}".format(self.resource,
-                                                                                                self.accession))
+                    "Could not find label and description for external reference {}:{}".format(self.resource,
+                                                                                               self.accession))
         return label, description
 
 
@@ -268,7 +269,7 @@ class AbstractGlobalNote(BaseNote):
         :type segmentation: :py:class:`sfftkrw.SFFSegmentation`
         :return segmentation: the EMDB-SFF segmentation with the annotation added
         """
-        #  name
+        # name
         if self.name is not None:
             segmentation.name = self.name
         # to ensure we don't have any id collisions
@@ -284,7 +285,7 @@ class AbstractGlobalNote(BaseNote):
         # software version
         if self.software_version is not None:
             software.version = self.software_version
-        #  software processing details
+        # software processing details
         if self.software_processing_details is not None:
             software.processing_details = self.software_processing_details
         segmentation.software_list.append(software)
@@ -309,13 +310,13 @@ class AbstractGlobalNote(BaseNote):
 
     def edit_in_segmentation(self, segmentation):
         """Modify the global annotation of the given segmentation
-        
+
         :param segmentation: an EMDB-SFF segmentation object
         :type segmentation: :py:class:`sfftkrw.SFFSegmentation`
         :return segmentation: the EMDB-SFF segmentation with annotated edited
         :rtype segmentation: :py:class:`sfftkrw.SFFSegmentation`
         """
-        #  name
+        # name
         if self.name is not None:
             segmentation.name = self.name
         # get the software to be edited
@@ -330,7 +331,7 @@ class AbstractGlobalNote(BaseNote):
             # software version
             if self.software_version is not None:
                 software.version = self.software_version
-            #  software processing details
+            # software processing details
             if self.software_processing_details is not None:
                 software.processing_details = self.software_processing_details
         # details
@@ -366,13 +367,13 @@ class AbstractGlobalNote(BaseNote):
 
     def del_from_segmentation(self, segmentation):
         """Delete attributes from a segmentation
-        
+
         :param segmentation: an EMDB-SFF segmentation object
         :type segmentation: :py:class:`sfftkrw.SFFSegmentation`
         :return segmentation: the EMDB-SFF segmentation with annotation deleted
         :rtype segmentation: :py:class:`sfftkrw.SFFSegmentation`
         """
-        #  name
+        # name
         if self.name:
             segmentation.name = None
         # software
@@ -408,8 +409,11 @@ class AbstractGlobalNote(BaseNote):
         return segmentation
 
     def __repr__(self):
-        return u"{class_name}(name={name}, software_name={software_name}, software_version={software_version}, " \
-               u"software_processing_details={software_processing_details}, details={details}, external_ref_id={external_ref_id})".format(
+        return (
+            "{class_name}(name={name}, software_name={software_name}, software_version={software_version}, "
+            "software_processing_details={software_processing_details}, details={details}, "
+            "external_ref_id={external_ref_id})"
+        ).format(
             class_name=self.__class__,
             name=self.name,
             software_name=self.software_name,
@@ -459,7 +463,7 @@ class AbstractNote(BaseNote):
 
     def add_to_segment(self, segment):
         """Add the annotations found in this ``Note`` object to the :py:class:`sfftkrw.SFFSegment` object
-         
+
         :param segment: single segment in EMDB-SFF
         :type segment: :py:class:`sfftkrw.SFFSegment`
         """
@@ -498,7 +502,7 @@ class AbstractNote(BaseNote):
 
     def edit_in_segment(self, segment):
         """Edit the annotations found in this ``Note`` object to the :py:class:`sfftkrw.SFFSegment` object
-         
+
         :param segment: single segment in EMDB-SFF
         :type segment: :py:class:`sfftkrw.SFFSegment`
         """
@@ -549,7 +553,7 @@ class AbstractNote(BaseNote):
 
     def del_from_segment(self, segment):
         """Delete the annotations found in this ``Note`` object to the :py:class:`sfftkrw.SFFSegment` object
-         
+
         :param segment: single segment in EMDB-SFF
         :type segment: :py:class:`sfftkrw.SFFSegment`
         """
@@ -655,7 +659,7 @@ class SimpleNote(AbstractNote):
 
 def add_note(args, configs):
     """Add annotation to a segment specified in args
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -671,9 +675,9 @@ def add_note(args, configs):
         # add notes to segmentation
         sff_seg = global_note.add_to_segmentation(sff_seg)
         # show the updated header
-        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        string = Styled("[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
-        string += Styled(u"[[ ''|reset ]]")
+        string += Styled("[[ ''|reset ]]")
         # fixme: use print_date
         print(_str(string))
     else:
@@ -682,9 +686,9 @@ def add_note(args, configs):
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.add_to_segment(segment)
-                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string = Styled("[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(sff_seg.segment, _long=True))
-                string += Styled(u"[[ ''|reset ]]")
+                string += Styled("[[ ''|reset ]]")
                 # fixme: use print_date
                 print(string)
                 found_segment = True
@@ -697,7 +701,7 @@ def add_note(args, configs):
 
 def edit_note(args, configs):
     """Edit annotation to a segment specified in args
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -708,18 +712,18 @@ def edit_note(args, configs):
     sff_seg = schema.SFFSegmentation.from_file(args.sff_file)
     # global changes
     if args.segment_id is None:
-        #  create a GlobalArgsNote object
+        # create a GlobalArgsNote object
         global_note = GlobalArgsNote(args, configs)
         # edit the notes in the segmentation
         # editing name, software, filePath, details are exactly the same as adding
-        #  editing external references is different:
+        # editing external references is different:
         # the external_reference_id refers to the extRef to edit
         # any additionally specified external references (-E a b -E x y) are inserted after the edited index
         sff_seg = global_note.edit_in_segmentation(sff_seg)
-        #  show the updated header
-        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        # show the updated header
+        string = Styled("[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
-        string += Styled(u"[[ ''|reset ]]")
+        string += Styled("[[ ''|reset ]]")
         # fixme: use print_date
         print(_str(string))
     else:
@@ -728,9 +732,9 @@ def edit_note(args, configs):
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.edit_in_segment(segment)
-                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string = Styled("[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(sff_seg.segment, _long=True))
-                string += Styled(u"[[ ''|reset ]]")
+                string += Styled("[[ ''|reset ]]")
                 # fixme: use print_date
                 print(_str(string))
                 found_segment = True
@@ -743,7 +747,7 @@ def edit_note(args, configs):
 
 def del_note(args, configs):
     """Delete annotation to a segment specified in args
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -758,10 +762,10 @@ def del_note(args, configs):
         global_note = GlobalArgsNote(args, configs)
         # delete the notes from segmentation
         sff_seg = global_note.del_from_segmentation(sff_seg)
-        #  show the updated header
-        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        # show the updated header
+        string = Styled("[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
-        string += Styled(u"[[ ''|reset ]]")
+        string += Styled("[[ ''|reset ]]")
         # fixme: use print_date
         print(_str(string))
     else:
@@ -770,9 +774,9 @@ def del_note(args, configs):
             if segment.id in args.segment_id:
                 note = ArgsNote(args, configs)
                 sff_seg.segment = note.del_from_segment(segment)
-                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string = Styled("[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(sff_seg.segment, _long=True))
-                string += Styled(u"[[ ''|reset ]]")
+                string += Styled("[[ ''|reset ]]")
                 # fixme: use print_date
                 print(_str(string))
                 found_segment = True
@@ -820,12 +824,12 @@ def copy_notes(args, configs):
     for f in from_segment:
         for t in to_segment:
             sff_seg.copy_annotation(f, t)
-            string = Styled(u"[[ ''|fg-green:no-end ]]")
+            string = Styled("[[ ''|fg-green:no-end ]]")
             if t == -1:
                 string += _str(HeaderView(sff_seg))
             else:
                 string += _str(NoteView(sff_seg.segments.get_by_id(t), _long=True))
-            string += Styled(u"[[ ''|reset ]]")
+            string += Styled("[[ ''|reset ]]")
             # fixme: use print_date
             print(_str(string))
     # export
@@ -859,24 +863,24 @@ def clear_notes(args, configs):
     for f in from_segment:
         sff_seg.clear_annotation(f)
     if args.from_global:
-        string = Styled(u"[[ ''|fg-green:no-end ]]")
+        string = Styled("[[ ''|fg-green:no-end ]]")
         string += _str(HeaderView(sff_seg))
-        string += Styled(u"[[ ''|reset ]]")
+        string += Styled("[[ ''|reset ]]")
         # fixme: use print_date
         print(_str(string))
     if args.segment_id is not None:
         for segment in sff_seg.segments:
             if segment.id in args.segment_id:
-                string = Styled(u"[[ ''|fg-green:no-end ]]")
+                string = Styled("[[ ''|fg-green:no-end ]]")
                 string += _str(NoteView(segment, _long=True))
-                string += Styled(u"[[ ''|reset ]]")
+                string += Styled("[[ ''|reset ]]")
                 # fixme: use print_date
                 print(_str(string))
     elif args.from_all_segments:
         for segment in sff_seg.segments:
-            string = Styled(u"[[ ''|fg-green:no-end ]]")
+            string = Styled("[[ ''|fg-green:no-end ]]")
             string += _str(NoteView(segment, _long=True))
-            string += Styled(u"[[ ''|reset ]]")
+            string += Styled("[[ ''|reset ]]")
             # fixme: use print_date
             print(_str(string))
 
@@ -887,7 +891,7 @@ def clear_notes(args, configs):
 
 def merge(args, configs):
     """Merge notes from two EMDB-SFF files
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -917,7 +921,7 @@ def merge(args, configs):
 
 def save(args, configs):
     """Save changes made
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -952,7 +956,7 @@ def save(args, configs):
                                                                                          re.IGNORECASE))):
             cmd = "convert -v {} -o {}".format(temp_file, args.sff_file)
             _args = parse_args(cmd, use_shlex=True)
-            handle_convert(_args)  #  convert
+            handle_convert(_args)  # convert
             print_date("Deleting temp file {}...".format(temp_file))
             os.remove(temp_file)
             assert not os.path.exists(temp_file)
@@ -963,7 +967,7 @@ def save(args, configs):
                                                                                 re.IGNORECASE)):
             json_seg = schema.SFFSegmentation.from_file(temp_file)
             seg = schema.SFFSegmentation.from_file(args.sff_file)
-            #  merge
+            # merge
             seg.merge_annotation(json_seg)
             seg.export(args.sff_file)
             print_date("Deleting temp file {}...".format(temp_file))
@@ -982,7 +986,7 @@ def save(args, configs):
 
 def trash(args, configs):
     """Trash changes made
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object

@@ -412,7 +412,7 @@ class TestCorePrintUtils(Py23FixTestCase):
         data = self.temp_file.readlines()[0]
         _words = data.split(' ')
         self.assertIn(_words[0], self._weekdays)  # the first part is a date
-        self.assertEqual(_words[-1][-1], '\n')  #  the last letter is a newline
+        self.assertEqual(_words[-1][-1], '\n')  # the last letter is a newline
 
     def test_print_date_non_basestring(self):
         """Test exception when print_string is not a basestring subclass"""
@@ -590,11 +590,11 @@ class TestCoreParserPrepTransform(Py23FixTestCase):
         self.assertEqual(args.output, 'file_transformed.stl')
         self.assertEqual(args.infix, 'transformed')
         # zip values -> compare using isclose() -> a list of booleans
-        l = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
-        i = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
+        lengths = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
+        indices = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
         # now test that all values in the comparison lists are True using all()
-        self.assertTrue(all(l))
-        self.assertTrue(all(i))
+        self.assertTrue(all(lengths))
+        self.assertTrue(all(indices))
 
     def test_origin(self):
         """Test with setting the origin"""
@@ -609,13 +609,13 @@ class TestCoreParserPrepTransform(Py23FixTestCase):
             ), use_shlex=True)
         self.assertEqual(args.from_file, 'file.stl')
         # zip values -> compare using isclose() -> a list of booleans
-        l = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
-        i = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
-        o = map(lambda x: isclose(x[0], x[1]), zip(args.origin, origin))  # origin
+        lengths = map(lambda x: isclose(x[0], x[1]), zip(args.lengths, lengths))  # lengths
+        indices = map(lambda x: isclose(x[0], x[1]), zip(args.indices, indices))  # indices
+        origins = map(lambda x: isclose(x[0], x[1]), zip(args.origin, origin))  # origins
         # now test that all values in the comparison lists are True using all()
-        self.assertTrue(all(l))
-        self.assertTrue(all(i))
-        self.assertTrue(all(o))
+        self.assertTrue(all(lengths))
+        self.assertTrue(all(indices))
+        self.assertTrue(all(origins))
 
     def test_non_stl(self):
         """Test that it fails for non-STL files"""
@@ -806,7 +806,7 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     def test_set_subtype_index(self):
         """Test correct functionality of the parser._set_subtype_index function"""
-        sys.stdin = StringIO(u'1') # avail for stdin
+        sys.stdin = StringIO('1')  # avail for stdin
         # construct the namespace object
         args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
         self.assertTrue(args.subtype_index > -1)
@@ -818,11 +818,11 @@ class TestCoreParserConvert(Py23FixTestCase):
         args = _set_subtype_index(args, ext)
         self.assertEqual(args.subtype_index, -1)
         # invalid entry: type
-        sys.stdin = StringIO(u'a')  # avail for stdin
+        sys.stdin = StringIO('a')  # avail for stdin
         args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
         self.assertEqual(args.subtype_index, -1)
         # invalid entry: range
-        sys.stdin = StringIO(u'10')  # avail for stdin
+        sys.stdin = StringIO('10')  # avail for stdin
         args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
         self.assertEqual(args.subtype_index, -1)
         # fixme: not tested ambiguous mutli-file formats
@@ -1027,7 +1027,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     def test_list_default(self):
         """Test that we can list notes from an SFF file"""
         args, _ = parse_args('notes list file.sff --config-path {}'.format(self.config_fn), use_shlex=True)
-        #  assertion
+        # assertion
         self.assertEqual(args.notes_subcommand, 'list')
         self.assertEqual(args.sff_file, 'file.sff')
         self.assertFalse(args.long_format)
@@ -1043,7 +1043,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     def test_list_shortcut(self):
         """Test that shortcut fails with list"""
         args, _ = parse_args('notes list @ --config-path {}'.format(self.config_fn), use_shlex=True)
-        #  assertions
+        # assertions
         self.assertEqual(args, 64)
 
     def test_list_sort_by_name(self):
@@ -1065,7 +1065,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         args, _ = parse_args(
             'notes show -i {},{} file.sff --config-path {}'.format(segment_id0, segment_id1, self.config_fn),
             use_shlex=True)
-        #  assertions
+        # assertions
         self.assertEqual(args.notes_subcommand, 'show')
         self.assertCountEqual(args.segment_id, [segment_id0, segment_id1])
         self.assertEqual(args.sff_file, 'file.sff')
@@ -1078,7 +1078,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         args, _ = parse_args(
             'notes show -l -i {},{} file.sff --config-path {}'.format(segment_id0, segment_id1, self.config_fn),
             use_shlex=True)
-        #  assertions
+        # assertions
         self.assertTrue(args.long_format)
 
     def test_show_shortcut(self):
@@ -1087,7 +1087,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         segment_id1 = _random_integer()
         args, _ = parse_args(
             'notes show -i {},{} @ --config-path {}'.format(segment_id0, segment_id1, self.config_fn), use_shlex=True)
-        #  assertions
+        # assertions
         self.assertEqual(args, 64)
 
 
@@ -1241,9 +1241,11 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         resource2 = rw.random_word()
         url2 = rw.random_word()
         accession2 = rw.random_word()
-        cmd = "notes add -i {id} -n '{name}' -d '{description}' -I {number_of_instances} " \
-              "-E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} " \
-              "file.sff --config-path {config_path}".format(
+        cmd = (
+            "notes add -i {id} -n '{name}' -d '{description}' -I {number_of_instances} "
+            "-E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} "
+            "file.sff --config-path {config_path}"
+        ).format(
             id=segment_id, name=name,
             description=description,
             number_of_instances=number_of_instances,
@@ -1256,7 +1258,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             config_path=self.config_fn
         )
         args, _ = parse_args(cmd, use_shlex=True)
-        #  assertions
+        # assertions
         self.assertEqual(args.notes_subcommand, 'add')
         self.assertCountEqual(args.segment_id, [segment_id])
         self.assertEqual(args.segment_name, name)
@@ -1301,9 +1303,11 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         url2 = rw.random_word()
         accession2 = rw.random_word()
         external_ref_id = _random_integer(start=0)
-        cmd = "notes edit -N '{name}' -D '{details}' -s {software_id} -S '{software_name}' -T {software_version} " \
-              "-P '{software_processing_details}' file.sff --config-path {config_path} " \
-              "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2}".format(
+        cmd = (
+            "notes edit -N '{name}' -D '{details}' -s {software_id} -S '{software_name}' -T {software_version} "
+            "-P '{software_processing_details}' file.sff --config-path {config_path} "
+            "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2}"
+        ).format(
             name=name,
             details=details,
             software_id=software_id,
@@ -1356,9 +1360,11 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         resource2 = rw.random_word()
         url2 = rw.random_word()
         accession2 = rw.random_word()
-        cmd = "notes edit -i {id} -n '{name}' -d '{description}' -I {number_of_instances} " \
-              "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} " \
-              "file.sff --config-path {config_path}".format(
+        cmd = (
+            "notes edit -i {id} -n '{name}' -d '{description}' -I {number_of_instances} "
+            "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} "
+            "file.sff --config-path {config_path}"
+        ).format(
             id=segment_id,
             name=name,
             description=description,
@@ -1386,7 +1392,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         """Test handling of missing IDs"""
         segment_id = _random_integer()
         number_of_instances = _random_integer()
-        external_ref_id = _random_integer()
         args, _ = parse_args(
             'notes edit -i {} -d something -I {} -E abc ABC 123 file.sff --config-path {}'.format(
                 segment_id, number_of_instances,
@@ -1673,7 +1678,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             "notes edit -i {} -d something file.sff --config-path {}".format(segment_id, self.config_fn),
             use_shlex=True)
         self.assertEqual(args.sff_file, 'file.sff')
-        #  can only save to an existing file
+        # can only save to an existing file
         save_fn = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
         args1, _ = parse_args("notes save {} --config-path {}".format(save_fn, self.config_fn), use_shlex=True)
         self.assertEqual(args1.notes_subcommand, 'save')

@@ -63,7 +63,7 @@ class IlastikSegmentation(object):
         :param bool verbose: option to determine whether conversion should be verbose
         """
         segmentation = schema.SFFSegmentation()
-        segmentation.name = name if name is not None else u"ilastik Segmentation"
+        segmentation.name = name if name is not None else "ilastik Segmentation"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(

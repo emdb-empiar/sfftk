@@ -1,5 +1,12 @@
 #Changes by release
 
+## [0.6.0.dev2] - 2022-09-02
+
+Cleanup
+
+* removed all u"..." strings and other Python2 related code
+* run flake8 checks; considerable reformatting
+
 ## [0.6.0.dev1] - 2022-09-02
 
 Bugfixes

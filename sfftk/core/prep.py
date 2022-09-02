@@ -8,7 +8,6 @@ This module consists of preparation utilities to condition segmentation files pr
 """
 from __future__ import division, print_function
 
-import os
 import re
 
 import mrcfile

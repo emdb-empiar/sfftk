@@ -137,7 +137,7 @@ def extract_segments(af, *args, **kwargs):
 
 def get_data(fn, *args, **kwargs):
     """Get segmentation data from the Amira HxSurface file
-    
+
     :param str fn: file name
     :return header: AmiraHxSurface header
     :rtype header: :py:mod:`ahds.header`

@@ -46,7 +46,7 @@ def handle_prep(args, configs):
 def handle_convert(args, configs):  # @UnusedVariable
     """
     Handle `convert` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -130,7 +130,7 @@ def handle_convert(args, configs):  # @UnusedVariable
 
 def handle_notes_search(args, configs):
     """Handle `search` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -155,7 +155,7 @@ def handle_notes_search(args, configs):
 
 def handle_notes_list(args, configs):
     """Handle `list` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -170,7 +170,7 @@ def handle_notes_list(args, configs):
 
 def handle_notes_show(args, configs):
     """Handle `show` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -185,7 +185,7 @@ def handle_notes_show(args, configs):
 
 def _handle_notes_modify(args, configs):
     """Handle creation of temporary file as either SFF, HFF or JSON
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -200,8 +200,11 @@ def _handle_notes_modify(args, configs):
         if os.path.exists(temp_file):
             args.sff_file = temp_file
         else:
-            print_date("Temporary file {} does not exist. \
-Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".format(temp_file), stream=sys.stdout)
+            print_date(
+                "Temporary file {} does not exist. Try invoking an edit ('add', 'edit', 'del') "
+                "action on a valid EMDB-SFF file.".format(temp_file),
+                stream=sys.stdout
+            )
             sys.exit(65)
     else:
         if os.path.exists(temp_file):
@@ -248,7 +251,7 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
 
 def handle_notes_add(args, configs):
     """Handle `add` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -263,7 +266,7 @@ def handle_notes_add(args, configs):
 
 def handle_notes_edit(args, configs):
     """Handle `edit` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -278,7 +281,7 @@ def handle_notes_edit(args, configs):
 
 def handle_notes_del(args, configs):
     """Handle `del` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -323,7 +326,7 @@ def handle_notes_clear(args, configs):
 
 def handle_notes_merge(args, configs):
     """Handle `merge` subcommand of `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -337,7 +340,7 @@ def handle_notes_merge(args, configs):
 
 def handle_notes_save(args, configs):
     """Handle the `save` subcommand` of the `notes` subcommand`
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -351,7 +354,7 @@ def handle_notes_save(args, configs):
 
 def handle_notes_trash(args, configs):
     """Handle the `trash` subcommand` of the `notes` subcommand`
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -365,7 +368,7 @@ def handle_notes_trash(args, configs):
 
 def handle_notes(args, configs):
     """Handle `notes` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -399,7 +402,7 @@ def handle_notes(args, configs):
 
 def handle_view(args, configs):  # @UnusedVariable
     """Handle `view` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -458,7 +461,7 @@ def handle_view(args, configs):  # @UnusedVariable
 
 def handle_config(args, configs):
     """Handle `view` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -478,8 +481,8 @@ def handle_config(args, configs):
 
 
 def _module_test_runner(mod, args):
-    """Module test runner 
-    
+    """Module test runner
+
     :param module mod: the module where the tests will be found
     :param args: parsed arguments
     :type args: `argparse.Namespace`
@@ -493,7 +496,7 @@ def _module_test_runner(mod, args):
 
 def _testcase_test_runner(tc, args):
     """TestCase test runner
-    
+
     :param tc: test case
     :param args: parsed arguments
     :type args: `argparse.Namespace`
@@ -507,7 +510,7 @@ def _testcase_test_runner(tc, args):
 
 def _discover_test_runner(path, args, top_level_dir=None):
     """Test runner that looks for tests in *path*
-    
+
     :param str path: path to search for tests
     :param args: parsed arguments
     :type args: `argparse.Namespace`
@@ -524,7 +527,7 @@ def _discover_test_runner(path, args, top_level_dir=None):
 
 def handle_tests(args, configs):
     """Handle `test` subcommand
-    
+
     :param args: parsed arguments
     :type args: :py:class:`argparse.Namespace`
     :param configs: configurations object
@@ -589,8 +592,7 @@ def main():
             return handle_tests(args, configs)
 
     except KeyboardInterrupt:
-        ### handle keyboard interrupt ###
-        return 0
+        pass
     return 0
 
 

@@ -96,7 +96,7 @@ First make an note containing the edits. For ``external_references`` specify the
     ...     name='some name',
 	...     description='new description',
 	...     number_of_instances=14,
-	...     external_reference_id=0, # the external reference ID to change
+	...     external_reference_id=0, #the external reference ID to change
 	...     external_references=[
 	...      ExternalReference(resource='x', url='y', accession='z')
 	...      ],
@@ -149,7 +149,7 @@ CCP4 (.map)
 .. code:: python
 
     >>> from sfftk.formats.map import MAPSegmentation
-    >>> map_seg = MapSegmentation('file.map')
+    >>> map_seg = MAPSegmentation('file.map')
 
 IMOD (.mod)
 -----------

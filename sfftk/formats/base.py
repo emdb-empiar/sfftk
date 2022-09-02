@@ -6,8 +6,8 @@ sfftk.formats.base
 
 Generic application-specific segmentation file format (GAS-SFF)
 
-Keep it as simple as possible. Assignment to attributes is done directly. Uses 
-basic data structures (lists, dicts, tuples). Defines global attributes and methods.
+Keep it as simple as possible. Assignment to attributes is done directly. Uses
+ basic data structures (lists, dicts, tuples). Defines global attributes and methods.
 
 We define a single segmentation container consisting of two top-level containers:
 
@@ -39,9 +39,9 @@ class SegmentationType(object):
         The kwargs to be supplied will depend on the subclass. For example, Segmentation classes will typically
         need to have `name`, `software_version`, `processing_details` (for the software), `details` with a `verbose`
         option provided to control conversion verbosity.
-        
+
         Implementations of this method within converters can do only two things:
-        
+
         - use objects in the schema API
         - call objects locally extended from the formats API
         """
@@ -70,7 +70,6 @@ class Mesh(SegmentFormat):
         super(Mesh, self).__init__(*args, **kwargs)
 
 
-
 class Shapes(SegmentFormat):
     """``shapePrimitiveList`` segmentation"""
     format = 'shapes'
@@ -94,8 +93,6 @@ class Segment(SegmentationType):
     contours = None
     volume = None
     shapes = None
-
-
 
 
 class Annotation(SegmentationType):

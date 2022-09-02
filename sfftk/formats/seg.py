@@ -188,7 +188,6 @@ class SeggerSegmentation(Segmentation):
 
         from sfftk.formats.seg import SeggerSegmentation
         seg_seg = SeggerSegmentation('file.seg')
-        
     """
 
     def __init__(self, fn, top_level=True, *args, **kwargs):
