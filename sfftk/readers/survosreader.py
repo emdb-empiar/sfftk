@@ -23,10 +23,19 @@ class SuRVoSSegmentation(object):
         self._fn = fn
         self._dataset = dataset
         self._mask_value = mask_value
+        self._labels = list()
+        self._colours = list()
+        self._names = list()
         with h5py.File(fn, 'r') as s:
             self._data = s[self._dataset][()].astype(int)
-            self._labels = list(map(int, s[self._dataset].attrs["labels"]))
-            pass
+            if "label" in s[self._dataset].attrs:
+                self._labels = list(map(int, s[self._dataset].attrs["label"]))
+            else:
+                self._labels = list(set(self._data.flatten().tolist()))
+            if "colors" in s[self._dataset].attrs:
+                self._colours = list(map(lambda c: c.decode('utf-8'), s[self._dataset].attrs["colors"]))
+            if "names" in s[self._dataset].attrs:
+                self._names = list(map(lambda n: n.decode('utf-8'), s[self._dataset].attrs["names"]))
 
     @property
     def data(self):
@@ -41,6 +50,21 @@ class SuRVoSSegmentation(object):
     def segment_ids(self):
         """Returns a frozenset of segment IDs"""
         return frozenset(self._labels)
+
+    @property
+    def colours(self):
+        """A list of ordered colours"""
+        return self._colours
+
+    @property
+    def names(self):
+        """A list of ordered names"""
+        return self._names
+
+    @property
+    def labels(self):
+        """A list of labels used"""
+        return self._labels
 
     def __getitem__(self, item):
         """Get the segment by segment ID

@@ -24,14 +24,14 @@ class SuRVoSSegment(Segment):
         """As usual, segment IDs start from 1 (not 0)"""
         return self._segment_id + 1
 
-    def convert(self, **kwargs):
+    def convert(self, name=None, colour=None):
         """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         segment = schema.SFFSegment()
         segment.segment_id = self.segment_id
         segment.biological_annotation = schema.SFFBiologicalAnnotation(
-            name="SuRVoS Segment #{}".format(self.segment_id)
+            name=name if name is not None else "SuRVoS Segment #{}".format(self.segment_id)
         )
-        segment.colour = schema.SFFRGBA(random_colour=True)
+        segment.colour = colour if colour is not None else schema.SFFRGBA(random_colour=True)
         print_date(
             "Colour not defined for SuRVoS segments. Setting colour to random RGBA value of {}".format(segment.colour))
         segment.three_d_volume = schema.SFFThreeDVolume(

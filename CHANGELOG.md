@@ -1,5 +1,9 @@
 #Changes by release
 
+## [0.6.1.dev0] - 2022-09-06
+
+* improvements for reading SuRVoS files with additional attributes 
+
 ## [0.6.0.dev2] - 2022-09-02
 
 Cleanup

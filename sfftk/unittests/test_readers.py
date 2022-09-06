@@ -485,6 +485,7 @@ class TestReaders_survosreader(Py23FixTestCase):
     def setUpClass(cls):
         super(TestReaders_survosreader, cls).setUpClass()
         cls.survos_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5')
+        cls.survos_complex_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_complex_survos.h5')
 
     def test_get_data(self):
         """Test the main entry point"""
@@ -494,6 +495,20 @@ class TestReaders_survosreader(Py23FixTestCase):
         ids = result.segment_ids()
         self.assertIsInstance(ids, frozenset)
         self.assertFalse(-1 in ids)  # 0 is an invalid segment marker
+        # attributes are empty lists: colours, labels, names
+        self.assertEqual(0, len(result.names))
+        self.assertEqual(2, len(result.labels))
+        self.assertEqual(0, len(result.colours))
+
+    def test_get_complex_data(self):
+        """Test survos file with extra attributes"""
+        result = survosreader.get_data(self.survos_complex_file)
+        self.assertIsInstance(result, survosreader.SuRVoSSegmentation)
+        self.assertIsInstance(result.data, numpy.ndarray)
+        # attributes: colours, labels, names
+        self.assertTrue(len(result.names) > 0)
+        self.assertTrue(len(result.labels) > 0)
+        self.assertTrue(len(result.colours) > 0)
 
     def test_SuRVoSSegmentation(self):
         """Tests for the SuRVoSSegmentation class"""
