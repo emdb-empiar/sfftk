@@ -13,6 +13,7 @@ import os
 import sys
 from io import StringIO
 
+from sfftkrw import SFFSegmentation, SFFTransformationMatrix
 from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
@@ -108,6 +109,73 @@ class TestMain_handle_convert(Py23FixTestCase):
         with open(sff_files[0], 'r') as f:
             data = json.load(f)
         self.assertIsNone(data['segment_list'][0]['three_d_volume'])
+
+    def test_seg_with_image(self):
+        """Test using --image to extract the transform from the image"""
+        args, configs = parse_args('convert -o {} {} --image {} --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'emd_1832.sff'),
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'emd_1832.seg'),
+            os.path.join(TEST_DATA_PATH, 'images', 'emd_1832.map'),
+            self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(len(sff_files), 1)
+        seg = SFFSegmentation.from_file(sff_files[0])
+        # we know what the transform should be
+        self.assertEqual(
+            SFFTransformationMatrix(
+                id=0, rows=3, cols=4,
+                data="5.699999809265137 0.0 0.0 -182.39999389648438 0.0 5.699999809265137 0.0 -182.39999389648438 "
+                     "0.0 0.0 5.699999809265137 -182.39999389648438"
+            ),
+            seg.transform_list[0]
+        )
+        self.assertEqual(1, len(seg.transforms))  # and there is only one transform
+        # with --exclude-geometry for JSON
+        args, configs = parse_args(
+            'convert -o {output} {input} --exclude-geometry --image {image} --config-path {config}'.format(
+                output=os.path.join(TEST_DATA_PATH, 'emd_1832.json'),
+                input=os.path.join(TEST_DATA_PATH, 'segmentations', 'emd_1832.seg'),
+                image=os.path.join(TEST_DATA_PATH, 'images', 'emd_1832.map'),
+                config=self.config_fn,
+            ), use_shlex=True
+        )
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        self.assertEqual(len(sff_files), 1)
+        seg = SFFSegmentation.from_file(sff_files[0])
+        self.assertEqual(
+            SFFTransformationMatrix(
+                id=0, rows=3, cols=4,
+                data="5.699999809265137 0.0 0.0 -182.39999389648438 0.0 5.699999809265137 0.0 -182.39999389648438 "
+                     "0.0 0.0 5.699999809265137 -182.39999389648438"
+            ),
+            seg.transform_list[0]
+        )
+        self.assertEqual(1, len(seg.transforms))
+        # now let's use a 'wrong' image to compute a different transformation matrix
+        # we would expect that there will still be only one tx having the new values
+        args, configs = parse_args('convert -o {} {} --image {} --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'emd_1832.sff'),
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'emd_1832.seg'),
+            os.path.join(TEST_DATA_PATH, 'images', 'emd_5625.map'),
+            self.config_fn,
+        ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(len(sff_files), 1)
+        seg = SFFSegmentation.from_file(sff_files[0])
+        # we know what the transform should be
+        self.assertEqual(
+            SFFTransformationMatrix(
+                id=0, rows=3, cols=4,
+                data="4.230000087193081 0.0 0.0 -118.44000244140626 0.0 4.230000087193081 0.0 -118.44000244140626 "
+                     "0.0 0.0 4.230000087193081 -118.44000244140626"
+            ),
+            seg.transform_list[0]
+        )
+        self.assertEqual(1, len(seg.transforms))  # and there is only one transform
 
     def test_mod(self):
         """Test that we can convert .mod"""
@@ -320,6 +388,33 @@ class TestMain_handle_view(Py23FixTestCase):
             self.config_fn,
         ), use_shlex=True)
         self.assertEqual(0, Main.handle_view(args, configs))
+
+    def test_view_transform_from_map(self):
+        """Test that we can view the transform from a MAP image"""
+        # ssv
+        args, configs = parse_args('view {} --transform --print-ssv --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map'),
+            self.config_fn,
+        ), use_shlex=True)
+        sys.stdout = StringIO()
+        Main.handle_view(args, configs)
+        self.assertRegex(sys.stdout.getvalue(), r"^(\d+\.\d+[ ]*){12}$")
+        # csv
+        args, configs = parse_args('view {} --transform --print-csv --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map'),
+            self.config_fn,
+        ), use_shlex=True)
+        sys.stdout = StringIO()
+        Main.handle_view(args, configs)
+        self.assertRegex(sys.stdout.getvalue(), r"^(\d+\.\d+[,]*){12}$")
+        # array
+        args, configs = parse_args('view {} --transform --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map'),
+            self.config_fn,
+        ), use_shlex=True)
+        sys.stdout = StringIO()
+        Main.handle_view(args, configs)
+        self.assertRegex(sys.stdout.getvalue(), r"(?m)^[[].*?(\d+\.\d*)*.*?[]]$")
 
     def test_read_mod(self):
         """Test that we can view .mod"""

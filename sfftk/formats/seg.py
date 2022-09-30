@@ -211,7 +211,8 @@ class SeggerSegmentation(Segmentation):
                         region_id != 0]
         return segments
 
-    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False,
+                transform=None):
         """Method to convert a :py:class:`sfftkrw.SFFSegmentation` object
 
         :param str name: optional name of the segmentation used in <name/>
@@ -219,6 +220,8 @@ class SeggerSegmentation(Segmentation):
         :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
         :param str details: optional details associated with this segmentation used in <details/>
         :param bool verbose: option to determine whether conversion should be verbose
+        :param transform: a 3x4 numpy.ndarray for the image-to-physical space transform
+        :type transform: `numpy.ndarray`
         """
         segmentation = schema.SFFSegmentation()
         segmentation.name = name if name is not None else "Segger Segmentation"
@@ -231,9 +234,14 @@ class SeggerSegmentation(Segmentation):
             )
         )
         segmentation.transform_list = schema.SFFTransformList()
-        segmentation.transform_list.append(
-            schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
-        )
+        if transform is not None:
+            segmentation.transform_list.append(
+                schema.SFFTransformationMatrix.from_array(transform)
+            )
+        else:
+            segmentation.transform_list.append(
+                schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
+            )
         segmentation.primary_descriptor = "three_d_volume"
         segments = schema.SFFSegmentList()
         for s in self.segments:

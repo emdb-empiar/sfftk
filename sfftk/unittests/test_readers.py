@@ -10,6 +10,7 @@ from __future__ import division, print_function
 
 import glob
 import os
+import sys
 import unittest
 
 import ahds
@@ -224,6 +225,35 @@ class TestReaders_mapreader(Py23FixTestCase):
             with open('rm.map', 'w') as f:
                 map.write(f)
 
+    def test_compute_img_to_phy_transform(self):
+        """Compute the transform that aligns the image with the physical space"""
+        # only works on local
+        # map_file = "/Users/pkorir/Data/segmentations/align_iso_and_seg/emd_5625.map"
+        transform = mapreader.compute_transform(self.map_file)
+        # transform = mapreader.compute_transform(map_file)
+        print(f"\n{transform}")
+        # only works on local
+        # self.assertTrue(
+        #     numpy.array_equal(
+        #         numpy.array([
+        #             [236.8800048828125/56, 0.0, 0.0, 236.8800048828125/56*(-28)],
+        #             [0.0, 236.8800048828125/56, 0.0, 236.8800048828125/56*(-28)],
+        #             [0.0, 0.0, 236.8800048828125/56, 236.8800048828125/56*(-28)]
+        #         ]),
+        #         transform
+        #     )
+        # )
+        self.assertTrue(
+            numpy.array_equal(
+                numpy.array([
+                    [5481.2099609375 / 301, 0.0, 0.0, 0.0],
+                    [0.0, 7302.20947265625 / 401, 0.0, 0.0],
+                    [0.0, 0.0, 1292.909912109375 / 71, 0.0],
+                ]),
+                transform
+            )
+        )
+
 
 class TestReaders_modreader(Py23FixTestCase):
     @classmethod
@@ -260,17 +290,17 @@ class TestReaders_modreader(Py23FixTestCase):
         self.assertIn(self.mod.thresh, range(256))
         self.assertGreater(self.mod.pixsize, 0)
         self.assertIn(modreader.UNITS[self.mod.units],
-                      ['pm', 'Angstroms', 'nm', 'microns', 'mm', 'cm', 'm', 'pixels', 'km'])
+                      ['pm', 'ångström', 'nm', 'microns', 'mm', 'cm', 'm', 'pixels', 'km'])
         self.assertIsInstance(self.mod.csum, int)
         self.assertEqual(self.mod.alpha, 0)
         self.assertEqual(self.mod.beta, 0)
         self.assertEqual(self.mod.gamma, 0)
 
     def test_to_angstrom(self):
-        """Test function that converts to angstrom"""
+        """Test function that converts to ångström"""
         with self.assertRaises(ValueError):
             modreader.angstrom_multiplier(-11)
-        self.assertEqual(modreader.angstrom_multiplier(-10), 1)  # angstroms
+        self.assertEqual(modreader.angstrom_multiplier(-10), 1)  # ångström
         self.assertEqual(modreader.angstrom_multiplier(-9), 10)  # nm
         self.assertEqual(modreader.angstrom_multiplier(3), 10 ** 13)  # km
 

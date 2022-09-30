@@ -35,9 +35,9 @@ RESCALABLE_FILE_FORMATS = ['stl']
 # some file extensions are used by multiple file types
 # this dictionary lists indices that may be used for subtypes by extension
 # each value of each extension is a tuple of a friendly name and the FQN for the corresponding class
-EXTENSION_SUBTYPE_INDICES = _dict()
+EXTENSION_SUBTYPE_INDICES = dict()
 # .h5
-EXTENSION_SUBTYPE_INDICES['h5'] = _dict()
+EXTENSION_SUBTYPE_INDICES['h5'] = dict()
 EXTENSION_SUBTYPE_INDICES['h5'][0] = 'SuRVoS'
 EXTENSION_SUBTYPE_INDICES['h5'][1] = 'ilastik'
 EXTENSION_SUBTYPE_INDICES['h5'][2] = 'EMDB-SFF'
@@ -204,6 +204,21 @@ verbose = {
         'help': "verbose output"
     },
 }
+transform_id = {
+    'args': ['-x', '--transform-id'],
+    'kwargs': {
+        'type': int,
+        'help': "the transform ID to edit"
+    }
+}
+transform = {
+    'args': ['-X', '--transform'],
+    'kwargs': {
+        'nargs': 12,
+        'type': float,
+        'help': "twelve (12) floats to specify the 3x4 matrix; rows first"
+    }
+}
 
 # =========================================================================
 # prep subparser
@@ -307,7 +322,7 @@ transform_prep_parser.add_argument(
     '-O', '--origin',
     nargs=3, type=float,
     default=[0.0, 0.0, 0.0],
-    help="the origin position (in angstrom); literally, the distance between the first voxel (lowest indices) and the "
+    help="the origin position (in ångström); literally, the distance between the first voxel (lowest indices) and the "
          "physical origin; three (3) space-separated values [default: 0.0 0.0 0.0]"
 )
 transform_prep_parser.add_argument(
@@ -349,6 +364,10 @@ convert_parser.add_argument(
     )
 )
 add_args(convert_parser, subtype_index)
+convert_parser.add_argument(
+    '--image',
+    help="specify the segmented EMDB MAP/MRC file from which to determine the correct image-to-physical transform"
+)
 
 # =========================================================================
 # config subparser
@@ -450,8 +469,29 @@ add_args(del_config_parser, verbose)
 # handle configs
 add_args(view_parser, config_path)
 add_args(view_parser, shipped_configs)
-view_parser.add_argument('-C', '--show-chunks', action='store_true',
-                         help="show sequence of chunks in IMOD file; only works with IMOD model files (.mod) [default: False]")
+view_parser.add_argument(
+    '-C', '--show-chunks', action='store_true',
+    help="show sequence of chunks in IMOD file; only works with IMOD model files (.mod) [default: False]"
+)
+view_parser.add_argument(
+    '-X', '--transform',
+    action='store_true',
+    help="when specified, the file should be the segmented EMDB MAP/MRC file from "
+         "which to determine the correct image-to-physical transform"
+)
+view_format_mutex = view_parser.add_mutually_exclusive_group()
+view_format_mutex.add_argument(
+    '--print-array', default=True, action='store_true',
+    help="display the implied image-to-physical transform as the raw numpy array"
+)
+view_format_mutex.add_argument(
+    '--print-csv', action='store_true',
+    help="display the implied image-to-physical transform as a comma-separated values form"
+)
+view_format_mutex.add_argument(
+    '--print-ssv', action='store_true',
+    help="display the implied image-to-physical transform as a space-separated value form"
+)
 
 # =============================================================================
 # notes parser
@@ -484,7 +524,7 @@ search_notes_parser.add_argument(
     help="the term to search; add quotes if spaces are included")
 add_args(search_notes_parser, config_path)
 add_args(search_notes_parser, shipped_configs)
-resources_list = list(_dict_iter_keys(RESOURCE_LIST))
+resources_list = list(RESOURCE_LIST.keys())
 search_notes_parser.add_argument(
     '-R', '--resource', default=resources_list[0], choices=resources_list,
     help=(
@@ -597,6 +637,7 @@ add_args(add_global_notes_parser, name)
 add_args(add_global_notes_parser, software_name)
 add_args(add_global_notes_parser, software_version)
 add_args(add_global_notes_parser, software_proc_details)
+add_args(add_global_notes_parser, transform)
 add_args(add_global_notes_parser, details)
 # segment notes
 add_segment_notes_parser = add_notes_parser.add_argument_group(
@@ -634,6 +675,8 @@ add_args(edit_global_notes_parser, software_id)
 add_args(edit_global_notes_parser, software_name)
 add_args(edit_global_notes_parser, software_version)
 add_args(edit_global_notes_parser, software_proc_details)
+add_args(edit_global_notes_parser, transform_id)
+add_args(edit_global_notes_parser, transform)
 add_args(edit_global_notes_parser, details)
 # segment notes
 edit_segment_notes_parser = edit_notes_parser.add_argument_group(
@@ -734,6 +777,16 @@ number_of_instances['kwargs'] = {
     'help': 'delete the number of instances [default: False]',
 }
 add_args(del_segment_notes_parser, number_of_instances)
+# we need a way to identify which transform entity in the list is to be acted up
+# remove type so that we can store a list of comma-sep'd ints
+del transform_id['kwargs']['type']
+_transform_id_help = transform_id['kwargs']['help']
+transform_id['kwargs']['help'] = 'the transforms(s) to delete'
+# add it to the parser
+add_args(del_global_notes_parser, transform_id)
+# return things to the way you found them
+transform_id['kwargs']['type'] = int
+transform_id['kwargs']['help'] = _transform_id_help
 
 # =============================================================================
 # notes: copy
@@ -1120,9 +1173,23 @@ def parse_args(_args, use_shlex=False):
         if args.show_chunks:
             if not re.match(r".*\.mod$", args.from_file, re.IGNORECASE):
                 print_date("Invalid file type to view chunks. Only works with IMOD files")
-                return 64, configs
+                return 64, configs  # 64 = USAGE
+        if args.transform:
+            if not re.search(r".*\.(map|mrc|rec)$", args.from_file, re.IGNORECASE):
+                print_date("Invalid file type to treat as image. Only works with .map/.mrc/.rec files")
+                return 64, configs  # 64 = USAGE
     # convert
     elif args.subcommand == 'convert':
+        # --image must be .map,.mrc,.rec
+        if args.image:
+            try:
+                assert re.match(r".*\.(map|mrc|rec)$", args.image, re.IGNORECASE)
+            except AssertionError:
+                print_date("Invalid file type for --image. Please use .map, .mrc or .rec files only.")
+                return 65, configs  # 65 = DATAERR
+        else:
+            print("Warning: missing --image <file.map> option to accurately determine image-to-physical transform",
+                  file=sys.stderr)
         # convert details to unicode
         if args.details is not None:
             args.details = _decode(args.details, 'utf-8')
@@ -1355,7 +1422,7 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
                 except AssertionError:
                     print_date("Will not be able to edit an external reference without \
 specifying an external reference ID. Run 'list' or 'show' to see available \
-external reference IDs for segment {}".format(args.segment_id), stream=sys.stdout)
+external reference IDs for segment {}".format(args.segment_id))
                     return 64, configs
 
                 # consistency of format
@@ -1368,12 +1435,21 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                 try:
                     assert args.software_id is not None
                 except AssertionError:
-                    print_date("Will not be able to edit a software intance without specifying an software ID. "
+                    print_date("Will not be able to edit a software instance without specifying an software ID. "
                                "Run 'show' to see the available software IDs.")
                     return 64, configs
 
             if args.segment_id is not None:
                 args.segment_id = list(map(int, args.segment_id.split(',')))
+
+            # transforms
+            if args.transform:
+                try:
+                    assert args.transform_id is not None
+                except AssertionError:
+                    print_date("Will not be able to edit a transform without specifying a transform ID. "
+                               "Run 'show' to see the available transform IDs.")
+                    return 64, configs
 
             # unicode
             if args.name is not None:
@@ -1428,6 +1504,10 @@ external reference IDs for segment {}".format(args.segment_id), stream=sys.stdou
                     args.software_name = True
                     args.software_version = True
                     args.software_processing_details = True
+            # convert from string to list of ints for transforms
+            if args.transform_id is not None:
+                transform_ids = list(map(int, args.transform_id.split(',')))
+                args.transform_id = transform_ids
 
         elif args.notes_subcommand == "copy":
             # convert from and to to lists of ints

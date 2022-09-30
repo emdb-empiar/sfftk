@@ -13,7 +13,7 @@ import os
 import shutil
 import sys
 
-from sfftkrw.core import _dict, _dict_iter_items
+from sfftkrw.core import _dict_iter_items
 from sfftkrw.core.print_tools import print_date
 
 from .. import BASE_DIR
@@ -24,7 +24,7 @@ __date__ = '2016-08-23'
 __updated__ = '2018-02-27'
 
 
-class Configs(_dict):
+class Configs(dict):
     """Class defining configs
 
     Configurations are stored in a subclass of :py:class:`OrderedDict` (normal :py:class:`dict` for Python 3.7+) with

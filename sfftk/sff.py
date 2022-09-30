@@ -57,7 +57,7 @@ def handle_convert(args, configs):  # @UnusedVariable
     try:
         if args.multi_file:
             raise ValueError
-        # .h5 is ambiguous so we check whether we are referring to an EMDB-SFF file
+        # .h5 is ambiguous, so we check whether we are referring to an EMDB-SFF file
         ext = _get_file_extension(args.from_file)
         if ext == 'h5' and args.subtype_index != 2:
             raise ValueError
@@ -117,7 +117,12 @@ def handle_convert(args, configs):  # @UnusedVariable
                     return 64
             else:
                 raise ValueError("Unknown file type %s" % args.from_file)
-        sff_seg = seg.convert(details=args.details, verbose=args.verbose)  # convert according to args
+        # now get the transform
+        transform = None
+        if args.image:
+            from .readers.mapreader import compute_transform
+            transform = compute_transform(args.image)
+        sff_seg = seg.convert(details=args.details, verbose=args.verbose, transform=transform)  # convert according to args
         # export as args.format
         if args.verbose:
             print_date("Exporting to {}".format(args.output))
@@ -439,17 +444,29 @@ def handle_view(args, configs):  # @UnusedVariable
                     modreader.print_model(args.from_file)
                 else:
                     modreader.show_chunks(args.from_file)
-        elif re.match(r'.*\.map$', args.from_file, re.IGNORECASE) or \
-                re.match(r'.*\.mrc$', args.from_file, re.IGNORECASE) or \
-                re.match(r'.*\.rec$', args.from_file, re.IGNORECASE):
-            from .formats.map import MapSegmentation
-            seg = MapSegmentation([args.from_file], header_only=True)
-            print("*" * 50)
-            print("CCP4 Mask Segmentation")
-            print("*" * 50)
-            # fixme: use _str
-            print(str(seg.segments[0].annotation._map_obj))
-            print("*" * 50)
+        elif re.search(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
+            if args.transform:  # we're dealing with an image
+                print_date("Image space to physical space transform CCP4 MAP")
+                from .readers.mapreader import compute_transform
+                transform = compute_transform(args.from_file)
+                if args.print_csv:
+                    print_date("Print type: CSV (use -h/--help for other formats)")
+                    print(','.join(map(str, transform.flatten().tolist())))
+                elif args.print_ssv:
+                    print_date("Print type: SSV (use -h/--help for other formats)")
+                    print(' '.join(map(str, transform.flatten().tolist())))
+                else:
+                    print_date("Print type: numpy arrray (use -h/--help for other formats)")
+                    print(transform)
+            else:  # we're dealing with a mask/segmentation
+                from .formats.map import MapSegmentation
+                seg = MapSegmentation([args.from_file], header_only=True)
+                print("*" * 50)
+                print("CCP4 Mask Segmentation")
+                print("*" * 50)
+                # fixme: use _str
+                print(str(seg.segments[0].annotation._map_obj))
+                print("*" * 50)
         elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
             print("*" * 50)
             print("STL Segmentation")

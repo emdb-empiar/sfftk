@@ -15,21 +15,20 @@ chunks follow this convention (e.g. 'OBJT' chunks do not include
 the size of the chunk immediately after the chunk ID.
 
 A description of the structure of `.mod` files can be found at
-the following URL: https://bio3d.colorado.edu/imod/betaDoc/binspec.html
+the following URL: https://bio3d.colorado.edu/imod/betaDoc/binspec.html.
+This module consists of a set of classes each identified by the respective chunk names. The following patterns are
+observed in the design of these classes:
 
-This module consists of a set of classes each identified
-by the respective chunk names. The following patterns are observed
-in the design of these classes:
+-   The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.
 
-- The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.
-- All classes have one public method: read(f), which takes a file handle and returns a file handle at the current
-unread position.
-- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
-defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()``
-method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
-contained objects.
-- All chunk classes inherit from :py:class:`object` class and have the :py:meth:`object.__repr__()` method
-implemented to print objects of that class.
+-   All classes have one public method: read(f), which takes a file handle and returns a file handle at the current
+    unread position.
+
+-   Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
+    defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()`` method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.
+
+-   All chunk classes inherit from :py:class:`object` class and have the :py:meth:`object.__repr__()` method
+    implemented to print objects of that class.
 
 In addition, there are several useful dictionary constants and functions and classes (flags) that interpret
 several fields within chunks.
@@ -96,7 +95,7 @@ OBJT_SYMBOLS = {
 
 UNITS = _dict({
     - 12: 'pm',
-    - 10: 'Angstroms',
+    - 10: 'ångström',
     - 9: 'nm',
     - 6: 'microns',
     - 3: 'mm',

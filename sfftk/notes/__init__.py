@@ -2,10 +2,10 @@
 # notes
 from __future__ import print_function
 
-from sfftkrw.core import _dict
+# from sfftkrw.core import _dict
 
 # RESOURCE_LIST = collections.OrderedDict()
-RESOURCE_LIST = _dict()
+RESOURCE_LIST = dict()
 FORMATS = ['json', 'tsv']
 """
 Enter a set of resources to search

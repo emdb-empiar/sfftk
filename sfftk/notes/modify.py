@@ -14,6 +14,7 @@ import re
 import shutil
 import sys
 
+import numpy
 import requests
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw.core import _str, _decode
@@ -243,9 +244,7 @@ class BaseNote(object):
 
 
 class AbstractGlobalNote(BaseNote):
-    """Abstract class definition for global annotations
-
-    Defines attributes of global annotation.
+    """Abstract class definition for global annotations which defines attributes of global annotation.
 
     Also defines three methods that effect the annotation to a segmentation object:
 
@@ -257,8 +256,9 @@ class AbstractGlobalNote(BaseNote):
     """
     name = NoteAttr('name')
     software_name = NoteAttr('software_name')
-    software_version = NoteAttr('sofwareVersion')
+    software_version = NoteAttr('sofware_version')
     software_processing_details = NoteAttr('software_processing_details')
+    transform = NoteAttr('transform')
     details = NoteAttr('details')
     external_reference_id = NoteAttr('external_reference_id')
 
@@ -289,7 +289,20 @@ class AbstractGlobalNote(BaseNote):
         if self.software_processing_details is not None:
             software.processing_details = self.software_processing_details
         segmentation.software_list.append(software)
-        # details
+        # transform
+        if self.transform is not None:
+            if segmentation.transform_list:
+                max_id = max(list(segmentation.transform_list.get_ids()))
+                transform = schema.SFFTransformationMatrix(
+                    id=max_id + 1, rows=3, cols=4,
+                    data=" ".join(map(str, self.transform))
+                )
+                segmentation.transform_list.append(transform)
+            else:
+                # create and populate the transform list immediately
+                segmentation.transform_list = schema.SFFTransformList()
+                segmentation.transform_list.append(
+                    schema.SFFTransformationMatrix.from_array(numpy.array(self.transform).reshape(3, 4)))
         if self.details is not None:
             segmentation.details = self.details
         # global external references
@@ -334,6 +347,14 @@ class AbstractGlobalNote(BaseNote):
             # software processing details
             if self.software_processing_details is not None:
                 software.processing_details = self.software_processing_details
+        # get the transform to be edited
+        try:
+            transform = segmentation.transform_list.get_by_id(self.transform_id)
+        except KeyError:
+            transform = None
+        if transform is not None:
+            if self.transform is not None:
+                transform.data = " ".join(map(str, self.transform))
         # details
         if self.details is not None:
             segmentation.details = self.details
@@ -384,6 +405,15 @@ class AbstractGlobalNote(BaseNote):
                 software = None
             if software is not None:
                 segmentation.software_list.remove(software)
+        # transform
+        if self.transform_id is not None:
+            for transform_id in self.transform_id:
+                try:
+                    transform = segmentation.transform_list.get_by_id(transform_id)
+                except KeyError:
+                    software = None
+                if software is not None:
+                    segmentation.transform_list.remove(transform)
         # details
         if self.details:
             segmentation.details = None
@@ -439,6 +469,8 @@ class GlobalArgsNote(AbstractGlobalNote):
         self.software_name = args.software_name
         self.software_version = args.software_version
         self.software_processing_details = args.software_processing_details
+        self.transform_id = args.transform_id if hasattr(args, 'transform_id') else None
+        self.transform = args.transform if hasattr(args, 'transform') else None
         self.details = args.details
         if hasattr(args, 'external_ref_id'):
             self.external_reference_id = args.external_ref_id

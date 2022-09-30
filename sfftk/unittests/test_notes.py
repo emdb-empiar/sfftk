@@ -13,7 +13,7 @@ import requests
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from random_words import RandomWords, LoremIpsum
 from sfftkrw.core import _urlencode, _xrange, _str, utils
-from sfftkrw.unittests import Py23FixTestCase, _random_integer, _random_integers
+from sfftkrw.unittests import Py23FixTestCase, _random_integer, _random_integers, _random_floats
 
 from . import TEST_DATA_PATH
 from .. import BASE_DIR
@@ -498,13 +498,14 @@ class TestNotes_modify(Py23FixTestCase):
         software_name = rw.random_word()
         software_version = rw.random_word()
         software_processing_details = li.get_sentences(sentences=2)
+        transform = ' '.join(map(str, _random_floats(count=12, multiplier=10)))
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
         # self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
         cmd = (
             "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} "
-            "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} "
-            "--verbose --config-path {config}"
+            "-P '{software_processing_details}' -E {extref1} -E {extref2} -X {transform} "
+            "{sff_file} --verbose --config-path {config}"
         ).format(
             name=name,
             details=details,
@@ -513,6 +514,7 @@ class TestNotes_modify(Py23FixTestCase):
             software_processing_details=software_processing_details,
             extref1=' '.join(extref1),
             extref2=' '.join(extref2),
+            transform=transform,
             sff_file=self.sff_file,
             config=self.config_fn,
         )
@@ -528,6 +530,7 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertEqual(seg.software_list[1].name, software_name)
         self.assertEqual(seg.software_list[1].version, software_version)
         self.assertEqual(seg.software_list[1].processing_details, software_processing_details)
+        self.assertEqual(3, len(seg.transform_list))
         self.assertEqual(len(seg.global_external_references), 3)
         self.assertEqual(seg.global_external_references[1].resource, extref1[0])
         self.assertEqual(seg.global_external_references[1].url, extref1[1])
@@ -1096,9 +1099,10 @@ class TestNotesClasses(Py23FixTestCase):
         sw_name = rw.random_word()
         sw_version = rw.random_word()
         sw_proc = li.get_sentences(sentences=5)
+        tx = _random_floats(count=12, multiplier=10)
         ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
         cmd = (
-            "notes add -N '{name}' -D '{details}' -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' file.sff "
+            "notes add -N '{name}' -D '{details}' -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' -X {tx} file.sff "
             "--config-path {config}"
         ).format(
             name=name,
@@ -1106,6 +1110,7 @@ class TestNotesClasses(Py23FixTestCase):
             sw_name=sw_name,
             sw_version=sw_version,
             sw_proc=sw_proc,
+            tx=' '.join(map(str, tx)),
             config=self.config_fn,
         )
         for e in ext_refs:
@@ -1117,6 +1122,7 @@ class TestNotesClasses(Py23FixTestCase):
         self.assertEqual(gan.software_name, sw_name)
         self.assertEqual(gan.software_version, sw_version)
         self.assertEqual(gan.software_processing_details, sw_proc)
+        self.assertEqual(gan.transform, tx)
         for idx, ext_ref in enumerate(gan.external_references):
             self.assertCountEqual(
                 [ext_ref.resource, ext_ref.url, ext_ref.accession],
@@ -1138,19 +1144,25 @@ class TestNotesClasses(Py23FixTestCase):
         self.assertEqual(software.name, sw_name)
         self.assertEqual(software.version, sw_version)
         self.assertEqual(software.processing_details, sw_proc)
+        transform = seg_out.transform_list[0]
+        self.assertEqual(3, transform.rows)
+        self.assertEqual(4, transform.cols)
+        self.assertEqual(' '.join(map(str, tx)), transform.data)
         self.assertEqual(seg_out.details, details)
         # edit in segmentation
         name = li.get_sentence()
         sw_name = rw.random_word()
         sw_version = rw.random_word()
         sw_proc = li.get_sentences(sentences=5)
+        tx = _random_floats(count=12, multiplier=10)
         details = li.get_sentences(sentences=10)
         ext_refs = rw.random_words(count=3)
         ext_refs1 = rw.random_words(count=3)
         ext_refs2 = rw.random_words(count=3)
         cmd_edit = (
             "notes edit -N '{name}' -s 0 -S '{sw_name}' -T '{sw_version}' -P '{sw_proc}' -D '{details}' -e 2 "
-            "-E {extRefs} -E {extRefs1} -E {extRefs2} file.sff --config-path {config}"
+            "-E {extRefs} -E {extRefs1} -E {extRefs2} -x 0 -X {tx} "
+            "file.sff --config-path {config}"
         ).format(
             name=name,
             sw_name=sw_name,
@@ -1160,6 +1172,7 @@ class TestNotesClasses(Py23FixTestCase):
             extRefs=' '.join(ext_refs),
             extRefs1=' '.join(ext_refs1),
             extRefs2=' '.join(ext_refs2),
+            tx=' '.join(map(str, tx)),
             config=self.config_fn,
         )
         args, configs = parse_args(cmd_edit, use_shlex=True)
@@ -1171,6 +1184,10 @@ class TestNotesClasses(Py23FixTestCase):
         self.assertEqual(software.name, sw_name)
         self.assertEqual(software.version, sw_version)
         self.assertEqual(software.processing_details, sw_proc)
+        transform = seg_out_edit.transform_list[0]
+        self.assertEqual(transform.rows, 3)
+        self.assertEqual(transform.cols, 4)
+        self.assertEqual(transform.data, " ".join(map(str, tx)))
         self.assertEqual(seg_out_edit.details, details)
         self.assertEqual(
             [
@@ -1197,13 +1214,14 @@ class TestNotesClasses(Py23FixTestCase):
             ext_refs2
         )
         # delete from segmentation
-        cmd_del = "notes del -s 0 -D -e 0,1,2,3,4,5 file.sff --config-path {config}".format(
+        cmd_del = "notes del -s 0 -D -e 0,1,2,3,4,5 file.sff -x 0 --config-path {config}".format(
             config=self.config_fn,
         )
         args, configs = parse_args(cmd_del, use_shlex=True)
         gan_del = modify.GlobalArgsNote(args, configs)
         seg_out_del = gan_del.del_from_segmentation(seg_out_edit)
         self.assertEqual(len(seg_out_del.software_list), 0)
+        self.assertEqual(len(seg_out_del.transform_list), 0)
         self.assertIsNone(seg_out_del.details)
         self.assertEqual(len(seg_out_del.global_external_references), 0)
 

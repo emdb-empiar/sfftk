@@ -3,8 +3,7 @@
 ``sfftk.readers.segreader``
 ===========================
 
-Ad hoc reader for Segger files
-"""
+Ad hoc reader for Segger files"""
 from __future__ import division
 
 import os
@@ -44,7 +43,8 @@ def get_root(region_parent_zip, region_id):
 
 
 class SeggerSegmentation(object):
-    """Encapsulation of a Segger segmentation"""
+    """Encapsulation of a Segger segmentation
+    """
 
     def __init__(self, fn, *args, **kwargs):
         """Initialiser of Segger Segmentation objects"""
@@ -90,22 +90,30 @@ class SeggerSegmentation(object):
 
     @property
     def file_name(self):
-        """File name"""
+        """
+        File name
+        """
         return os.path.basename(os.path.abspath(self._fn))
 
     @property
     def name(self):
-        """Name of the segmentation"""
+        """
+        Name of the segmentation
+        """
         return _decode(self._seg_handler.attrs['name'], 'utf-8')
 
     @property
     def format(self):
-        """Format of the segmentation"""
+        """
+        Format of the segmentation
+        """
         return _decode(self._seg_handler.attrs['format'], 'utf-8')
 
     @property
     def format_version(self):
-        """Format version"""
+        """
+        Format version
+        """
         return self._seg_handler.attrs['format_version'].astype(int)
 
     @property
@@ -237,7 +245,9 @@ class SeggerSegmentation(object):
 
     @property
     def descriptions(self):
-        """Returns a dictionary of descriptions for each region"""
+        """
+        Returns a dictionary of descriptions for each region
+        """
         if 'Description' in self._seg_handler:
             return dict(zip(self._seg_handler['Description/ids'], self._seg_handler['Description/values']))
         else:

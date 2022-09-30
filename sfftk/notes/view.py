@@ -162,7 +162,7 @@ class NoteView(View):
                 \rNumber of instances:
                 \r\t{}
                 \r{}
-                \rExternal references:
+                \rExternal references: (L = label present; D = description present)
                 \r{}
                 \r{}
                 \rColour:
@@ -314,6 +314,25 @@ class HeaderView(View):
                    self._segmentation.bounding_box.zmin, self._segmentation.bounding_box.zmax
 
     @property
+    def transforms(self):
+        string_list = list()
+        for transform in self._segmentation.transforms:
+            transform_list = transform.data_array.flatten().tolist()
+            string_list.append(
+                "\t{}\t{}\n\t\t{}\n\t\t{}".format(
+                    transform.id,
+                    transform_list[:4],
+                    transform_list[4:8],
+                    transform_list[8:],
+                )
+            )
+            string_list.append(
+                "\t{}".format(self.LINE2)
+            )
+        string_list.pop() # remove the last line
+        return "\n".join(string_list)
+
+    @property
     def global_external_references(self):
         if self._segmentation.global_external_references:
             string_list = list()
@@ -374,10 +393,13 @@ class HeaderView(View):
                     \rPrimary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
                     \r\t{}
                     \r{}
+                    \rTransforms:
+                    \r{}
+                    \r{}
                     \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
                     \r\t{}
                     \r{}
-                    \rGlobal external references:
+                    \rGlobal external references: (L = label present; D = description present)
                     \r\t{}
                     \r{}
                     \rSegmentation details:
@@ -393,6 +415,9 @@ class HeaderView(View):
                 # ---
                 self.LINE2,
                 self.primary_descriptor,
+                # ---
+                self.LINE2,
+                self.transforms,
                 # ---
                 self.LINE2,
                 self.bounding_box,
@@ -421,10 +446,13 @@ class HeaderView(View):
             \rPrimary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
             \r\t{}
             \r{}
+            \rTransforms:
+            \r\t{}
+            \r{}
             \rBounding box (xmin,xmax,ymin,ymax,zmin,zmax):
             \r\t{}
             \r{}
-            \rGlobal external references:
+            \rGlobal external references: (L = label present; D = description present)
             \r\t{}
             \r{}
             \rSegmentation details:
@@ -440,6 +468,9 @@ class HeaderView(View):
                 # ---
                 self.LINE2,
                 self.primary_descriptor,
+                # ---
+                self.LINE2,
+                self.transforms,
                 # ---
                 self.LINE2,
                 self.bounding_box,

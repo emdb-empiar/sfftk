@@ -240,7 +240,7 @@ class AmiraMeshSegmentation(Segmentation):
         """Segments in this segmentation"""
         return self._segments
 
-    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False, transform=None):
         """Convert to :py:class:`sfftkrw.SFFSegmentation` object
 
         :param str name: optional name of the segmentation used in <name/>
@@ -248,6 +248,8 @@ class AmiraMeshSegmentation(Segmentation):
         :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
         :param str details: optional details associated with this segmentation used in <details/>
         :param bool verbose: option to determine whether conversion should be verbose
+        :param transform: a 3x4 numpy.ndarray for the image-to-physical space transform
+        :type transform: `numpy.ndarray`
         """
         segmentation = schema.SFFSegmentation()
         segmentation.name = name if name is not None else "AmiraMesh Segmentation"
@@ -277,6 +279,10 @@ class AmiraMeshSegmentation(Segmentation):
                  [0.0, 0.0, (z1 - z0) / s, 0.0]]
             )
             segmentation.transform_list.append(schema.SFFTransformationMatrix.from_array(arr))
+        elif transform is not None:
+            segmentation.transform_list.append(
+                schema.SFFTransformationMatrix.from_array(transform)
+            )
         else:
             segmentation.transform_list.append(
                 schema.SFFTransformationMatrix(

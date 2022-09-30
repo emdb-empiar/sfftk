@@ -61,7 +61,8 @@ class SuRVoSSegmentation(Segmentation):
         """A list of segments"""
         return self._segments
 
-    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False):
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False,
+                transform=None):
         """Convert to :py:class:`sfftkrw.SFFSegmentation` object
 
         :param str name: optional name of the segmentation used in <name/>
@@ -69,6 +70,8 @@ class SuRVoSSegmentation(Segmentation):
         :param str processing_details: optional processings used in Amira used in <software><processingDetails/></software>
         :param str details: optional details associated with this segmentation used in <details/>
         :param bool verbose: option to determine whether conversion should be verbose
+        :param transform: a 3x4 numpy.ndarray for the image-to-physical space transform
+        :type transform: `numpy.ndarray`
         """
         # header
         segmentation = schema.SFFSegmentation()
@@ -82,13 +85,18 @@ class SuRVoSSegmentation(Segmentation):
             )
         )
         segmentation.transform_list = schema.SFFTransformList()
-        segmentation.transform_list.append(
-            schema.SFFTransformationMatrix(
-                rows=3,
-                cols=4,
-                data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+        if transform is not None:
+            segmentation.transform_list.append(
+                schema.SFFTransformationMatrix.from_array(transform)
             )
-        )
+        else:
+            segmentation.transform_list.append(
+                schema.SFFTransformationMatrix(
+                    rows=3,
+                    cols=4,
+                    data='1.0 0.0 0.0 1.0 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0'
+                )
+            )
         segmentation.primary_descriptor = "three_d_volume"
         # segments
         segments = schema.SFFSegmentList()

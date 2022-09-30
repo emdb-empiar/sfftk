@@ -3,6 +3,7 @@
 """Unit tests for :py:mod:`sfftk.core` package"""
 from __future__ import division, print_function
 
+import contextlib
 import glob
 import os
 import random
@@ -804,6 +805,41 @@ class TestCoreParserConvert(Py23FixTestCase):
         ), use_shlex=True)
         self.assertGreaterEqual(args.subtype_index, 0)
 
+    def test_convert_with_image_for_transform(self):
+        """Test that we can use the --image file.map to extract the correct transform
+
+        Here are the conditions for the test:
+        - if the file is any other than an STL then the first transform should be
+        - --image only works with .map, .mrc, or .rec files
+        """
+        args, _ = parse_args('convert --image file.map {file}'.format(
+            file=self.test_data_file
+        ), use_shlex=True)
+        self.assertEqual('file.map', args.image)
+        args, _ = parse_args('convert --image file.mrc {file}'.format(
+            file=self.test_data_file
+        ), use_shlex=True)
+        self.assertEqual('file.mrc', args.image)
+        args, _ = parse_args('convert --image file.rec {file}'.format(
+            file=self.test_data_file
+        ), use_shlex=True)
+        self.assertEqual('file.rec', args.image)
+        self.assertEqual(
+            (65, _),
+            parse_args(
+                'convert --image file.stl {file}'.format(file=self.test_data_file),
+                use_shlex=True
+            )
+        )
+
+    def test_convert_without_image_for_transform(self):
+        """Test that we warn the user when they don't supply the image"""
+        with contextlib.redirect_stderr(StringIO()) as f:
+            args, _ = parse_args('convert {file}'.format(
+                file=self.test_data_file
+            ), use_shlex=True)
+            self.assertRegex(sys.stderr.getvalue(), r"(?i)Warning.*transform")
+
     def test_set_subtype_index(self):
         """Test correct functionality of the parser._set_subtype_index function"""
         sys.stdin = StringIO('1')  # avail for stdin
@@ -874,6 +910,25 @@ class TestCoreParserView(Py23FixTestCase):
         """Test that show chunks only works for .mod files"""
         args, _ = parse_args('view -C file.sff', use_shlex=True)
         self.assertEqual(args, 64)
+
+    def test_view_transform(self):
+        """Test that we can view the implied transform"""
+        # this expects that the file is a segmentation
+        args, _ = parse_args("view file.map", use_shlex=True)
+        self.assertFalse(args.transform)
+        # but this expects that the file is the segmented image
+        args, _ = parse_args("view --transform file.map", use_shlex=True)
+        self.assertTrue(args.transform)
+        self.assertEqual('file.map', args.from_file)
+        self.assertTrue(args.print_array)
+        # we can change the format of the transform
+        args, _ = parse_args("view --transform --print-csv file.map", use_shlex=True)
+        self.assertTrue(args.print_csv)
+        args, _ = parse_args("view --transform --print-ssv file.map", use_shlex=True)
+        self.assertTrue(args.print_ssv)
+        # if we specify --image then we only accept .map/.mrc/.rec
+        args, _ = parse_args("view --transform file.sff", use_shlex=True)
+        self.assertEqual(64, args)
 
 
 class TestCoreParserNotesReadOnly(Py23FixTestCase):
@@ -1190,10 +1245,12 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         resource2 = rw.random_word()
         url2 = rw.random_word()
         accession2 = rw.random_word()
+        transform = _random_floats(12)
+        print(f"{transform = }")
         args, _ = parse_args(
             "notes add -N '{name}' -D '{details}' -S '{software_name}' -T {software_version} "
             "-P '{software_processing_details}' -E {resource1} {url1} {accession1} "
-            "-E {resource2} {url2} {accession2} file.sff --config-path {config_path}".format(
+            "-E {resource2} {url2} {accession2} file.sff -X {transform} --config-path {config_path}".format(
                 name=name,
                 details=details,
                 software_name=software_name,
@@ -1205,6 +1262,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
                 resource2=resource2,
                 url2=url2,
                 accession2=accession2,
+                transform=' '.join(map(str, transform)),
                 config_path=self.config_fn,
             ),
             use_shlex=True
@@ -1303,10 +1361,13 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         url2 = rw.random_word()
         accession2 = rw.random_word()
         external_ref_id = _random_integer(start=0)
+        tx_id = 0
+        transform = "1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0"
         cmd = (
             "notes edit -N '{name}' -D '{details}' -s {software_id} -S '{software_name}' -T {software_version} "
             "-P '{software_processing_details}' file.sff --config-path {config_path} "
-            "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2}"
+            "-e {external_ref_id} -E {resource1} {url1} {accession1} -E {resource2} {url2} {accession2} "
+            "-x {tx_id} -X {transform}"
         ).format(
             name=name,
             details=details,
@@ -1321,7 +1382,9 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             accession1=accession1,
             resource2=resource2,
             url2=url2,
-            accession2=accession2
+            accession2=accession2,
+            tx_id=tx_id,
+            transform=transform
         )
         args, _ = parse_args(cmd, use_shlex=True)
         self.stderr(args)
@@ -1338,6 +1401,8 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertIsInstance(args.software_version, _str)
         self.assertIsInstance(args.software_processing_details, _str)
         self.assertEqual(args.external_ref_id, external_ref_id)
+        self.assertEqual(args.transform_id, tx_id)
+        self.assertEqual(args.transform, list(map(float, range(1, 13))))
         for i, tov in enumerate(args.external_ref):
             t, o, v = tov  # resource, url, accession
             self.assertEqual(args.external_ref[i][0], t)
@@ -1408,6 +1473,15 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         )
         self.assertEqual(args, 64)
 
+        args, _ = parse_args(
+            "notes edit -X {} @ --config-path {}".format(
+                '1.0 ' * 12,
+                self.config_fn,
+            ),
+            use_shlex=True
+        )
+        self.assertEqual(args, 64)
+
     # ===========================================================================
     # notes: del
     # ===========================================================================
@@ -1416,7 +1490,9 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         software_id = _random_integers(count=3, start=0)
         segment_id = _random_integer()
         external_ref_id = _random_integers(count=5, start=0)
-        args, _ = parse_args('notes del -s {} -i {} -d -I -e {} file.sff --config-path {}'.format(
+        transform_id = _random_integers(count=3, start=0)
+        args, _ = parse_args('notes del -x {} -s {} -i {} -d -I -e {} file.sff --config-path {}'.format(
+            ','.join(map(_str, transform_id)),
             ','.join(map(_str, software_id)),
             segment_id,
             ','.join(map(_str, external_ref_id)),
@@ -1424,6 +1500,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         ), use_shlex=True)
         self.assertEqual(args.notes_subcommand, 'del')
         self.assertCountEqual(args.segment_id, [segment_id])
+        self.assertCountEqual(args.transform_id, transform_id)
         self.assertTrue(args.description)
         self.assertTrue(args.number_of_instances)
         self.assertEqual(args.software_id, software_id)

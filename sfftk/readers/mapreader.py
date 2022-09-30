@@ -27,15 +27,16 @@ __date__ = '2016-07-05'
 class Map(object):
     """Class to encapsulate a CCP4 mask"""
 
-    def __init__(self, fn, *args, **kwargs):
+    def __init__(self, fn, header_only=False, *args, **kwargs):
         """Initialise a Map object
 
         :param str fn: file name
+        :param bool header_only: whether or not (default) to read the data
         """
         self._fn = fn
         self._inverted = False
         with open(fn, 'rb') as f:
-            status = self.read(f, *args, **kwargs)
+            status = self.read(f, header_only=header_only, *args, **kwargs)
         # 0 is good
         assert status == 0
 
@@ -227,7 +228,7 @@ class Map(object):
             \r    {4}, {5}, {6}
             \rX, Y, Z:
             \r    {7}, {8}, {9}
-            \rLengths X, Y, Z (Ångstrom):
+            \rLengths X, Y, Z (ångström):
             \r    {10}, {11}, {12}
             \r\U000003b1, \U000003b2, \U000003b3:
             \r    {13}, {14}, {15}
@@ -292,7 +293,7 @@ class Map(object):
             \r    {4}, {5}, {6}
             \rX, Y, Z:
             \r    {7}, {8}, {9}
-            \rLengths X, Y, Z (Ångstrom):
+            \rLengths X, Y, Z (ångström):
             \r    {10}, {11}, {12}
             \r\U000003b1, \U000003b2, \U000003b3:
             \r    {13}, {14}, {15}
@@ -482,3 +483,28 @@ def get_data(fn, inverted=False, *args, **kwargs):
         my_map.invert()
 
     return my_map
+
+
+def compute_transform(fn, header_only=True):
+    """Compute the transform that connects the image to physical space
+
+    :param str fn: map filename
+    :param bool header_only: only read the header if `True`
+    :return: a 3x4 transformation matrix
+    :rtype: :py:class:`numpy.ndarray`
+    """
+    my_map = Map(fn, header_only=header_only)
+    transform = numpy.zeros((3, 4))
+    s_x = my_map._x_length / my_map._nc
+    s_y = my_map._y_length / my_map._nr
+    s_z = my_map._z_length / my_map._ns
+    t_x = my_map._ncstart * s_x
+    t_y = my_map._nrstart * s_y
+    t_z = my_map._nsstart * s_z
+    transform[0, 0] = s_x
+    transform[1, 1] = s_y
+    transform[2, 2] = s_z
+    transform[0, 3] = t_x
+    transform[1, 3] = t_y
+    transform[2, 3] = t_z
+    return transform
