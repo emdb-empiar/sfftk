@@ -334,12 +334,12 @@ class MapSegmentation(Segmentation):
             segmentation.transform_list.append(
                 schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
             )
-        segmentation.transform_list.append(
-            schema.SFFTransformationMatrix.from_array(self.header.skew_matrix)
-        )
-        segmentation.transform_list.append(
-            schema.SFFTransformationMatrix.from_array(self.header.skew_translation)
-        )
+        # segmentation.transform_list.append(
+        #     schema.SFFTransformationMatrix.from_array(self.header.skew_matrix)
+        # )
+        # segmentation.transform_list.append(
+        #     schema.SFFTransformationMatrix.from_array(self.header.skew_translation)
+        # )
 
         segment_list = schema.SFFSegmentList()
         lattice_list = schema.SFFLatticeList()

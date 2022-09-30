@@ -273,22 +273,23 @@ class AbstractGlobalNote(BaseNote):
         if self.name is not None:
             segmentation.name = self.name
         # to ensure we don't have any id collisions
-        if segmentation.software_list:
-            max_id = max(list(segmentation.software_list.get_ids()))
-            software = schema.SFFSoftware(id=max_id + 1)
-        else:
-            segmentation.software_list = schema.SFFSoftwareList()
-            software = schema.SFFSoftware()
-        # software name
-        if self.software_name is not None:
-            software.name = self.software_name
-        # software version
-        if self.software_version is not None:
-            software.version = self.software_version
-        # software processing details
-        if self.software_processing_details is not None:
-            software.processing_details = self.software_processing_details
-        segmentation.software_list.append(software)
+        if self.software_name or self.software_version or self.software_processing_details:
+            if segmentation.software_list:
+                max_id = max(list(segmentation.software_list.get_ids()))
+                software = schema.SFFSoftware(id=max_id + 1)
+            else:
+                segmentation.software_list = schema.SFFSoftwareList()
+                software = schema.SFFSoftware()
+            # software name
+            if self.software_name is not None:
+                software.name = self.software_name
+            # software version
+            if self.software_version is not None:
+                software.version = self.software_version
+            # software processing details
+            if self.software_processing_details is not None:
+                software.processing_details = self.software_processing_details
+            segmentation.software_list.append(software)
         # transform
         if self.transform is not None:
             if segmentation.transform_list:
@@ -398,13 +399,14 @@ class AbstractGlobalNote(BaseNote):
         if self.name:
             segmentation.name = None
         # software
-        for software_id in self.software_id:
-            try:
-                software = segmentation.software_list.get_by_id(software_id)
-            except KeyError:
-                software = None
-            if software is not None:
-                segmentation.software_list.remove(software)
+        if self.software_id is not None:
+            for software_id in self.software_id:
+                try:
+                    software = segmentation.software_list.get_by_id(software_id)
+                except KeyError:
+                    software = None
+                if software is not None:
+                    segmentation.software_list.remove(software)
         # transform
         if self.transform_id is not None:
             for transform_id in self.transform_id:
@@ -412,7 +414,7 @@ class AbstractGlobalNote(BaseNote):
                     transform = segmentation.transform_list.get_by_id(transform_id)
                 except KeyError:
                     software = None
-                if software is not None:
+                if transform is not None:
                     segmentation.transform_list.remove(transform)
         # details
         if self.details:
@@ -942,6 +944,8 @@ def merge(args, configs):
     if args.verbose:
         print_date("Merging annotations...")
     other.merge_annotation(source)
+    # include transforms instead of modifying and releasing a new sfftk-rw package
+    other.transform_list = source.transform_list
     # export
     if args.verbose:
         print_date("Writing output to {}".format(args.output))
@@ -1001,6 +1005,7 @@ def save(args, configs):
             seg = schema.SFFSegmentation.from_file(args.sff_file)
             # merge
             seg.merge_annotation(json_seg)
+            seg.transform_list = json_seg.transform_list
             seg.export(args.sff_file)
             print_date("Deleting temp file {}...".format(temp_file))
             os.remove(temp_file)

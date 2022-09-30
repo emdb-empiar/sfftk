@@ -588,11 +588,12 @@ class TestNotes_modify(Py23FixTestCase):
         software_processing_details = li.get_sentences(sentences=2)
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
+        tx = _random_floats(count=12, multiplier=10)
         # add
         cmd = (
             "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} "
-            "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} "
-            "--verbose --config-path {config}"
+            "-P '{software_processing_details}' -E {extref1} -E {extref2} -X {tx} "
+            "{sff_file} --verbose --config-path {config}"
         ).format(
             name=name,
             details=details,
@@ -601,6 +602,7 @@ class TestNotes_modify(Py23FixTestCase):
             software_processing_details=software_processing_details,
             extref1=' '.join(extref1),
             extref2=' '.join(extref2),
+            tx=' '.join(map(str, tx)),
             sff_file=self.sff_file,
             config=self.config_fn,
         )
@@ -615,9 +617,10 @@ class TestNotes_modify(Py23FixTestCase):
         software_processing_details1 = software_processing_details[::-1]
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
+        tx = _random_floats(count=12, multiplier=10)
         cmd1 = (
             "notes edit -N '{name}' -D '{details}' -s 1 -S {software_name} -T {software_version} "
-            "-P '{software_processing_details}' -e 1 -E {extref1} -E {extref2} @ "
+            "-P '{software_processing_details}' -e 1 -E {extref1} -E {extref2} -x 2 -X {tx} @ "
             "--verbose --config-path {config}"
         ).format(
             name=name1,
@@ -627,6 +630,7 @@ class TestNotes_modify(Py23FixTestCase):
             software_processing_details=software_processing_details1,
             extref1=' '.join(extref1),
             extref2=' '.join(extref2),
+            tx=' '.join(map(str, tx)),
             config=self.config_fn,
         )
         _args1, configs = parse_args(cmd1, use_shlex=True)
@@ -648,6 +652,7 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertEqual(seg.global_external_references[2].resource, extref2[0])
         self.assertEqual(seg.global_external_references[2].url, extref2[1])
         self.assertEqual(seg.global_external_references[2].accession, extref2[2])
+        self.assertEqual(seg.transform_list[2].data, " ".join(map(str, tx)))
 
     def _test_edit(self):
         """Test that we can edit a note"""
@@ -719,11 +724,12 @@ class TestNotes_modify(Py23FixTestCase):
         software_processing_details = li.get_sentences(sentences=2)
         extref1 = rw.random_words(count=3)
         extref2 = rw.random_words(count=3)
+        tx = _random_floats(count=12, multiplier=10)
         # add
         cmd = (
             "notes add -N '{name}' -D '{details}' -S {software_name} -T {software_version} "
-            "-P '{software_processing_details}' -E {extref1} -E {extref2} {sff_file} "
-            "--verbose --config-path {config}"
+            "-P '{software_processing_details}' -E {extref1} -E {extref2} -X {tx} "
+            "{sff_file} --verbose --config-path {config}"
         ).format(
             name=name,
             details=details,
@@ -732,13 +738,14 @@ class TestNotes_modify(Py23FixTestCase):
             software_processing_details=software_processing_details,
             extref1=' '.join(extref1),
             extref2=' '.join(extref2),
+            tx=' '.join(map(str, tx)),
             sff_file=self.sff_file,
             config=self.config_fn,
         )
         _args, configs = parse_args(cmd, use_shlex=True)
         args = _handle_notes_modify(_args, configs)
         modify.add_note(args, configs)
-        cmd1 = "notes del -D -s 1 -e 0,1 @ --verbose --config-path {config}".format(
+        cmd1 = "notes del -D -s 1 -e 0,1 -x 1,2 @ --verbose --config-path {config}".format(
             config=self.config_fn,
         )
         _args1, configs = parse_args(cmd1, use_shlex=True)
@@ -749,6 +756,7 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertIsNone(seg.details)
         self.assertEqual(len(seg.software_list), 1)
         self.assertEqual(len(seg.global_external_references), 1)
+        self.assertEqual(len(seg.transform_list), 1)
 
     def _test_del(self):
         # add

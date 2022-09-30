@@ -329,7 +329,8 @@ class HeaderView(View):
             string_list.append(
                 "\t{}".format(self.LINE2)
             )
-        string_list.pop() # remove the last line
+        if string_list:
+            string_list.pop() # remove the last line
         return "\n".join(string_list)
 
     @property

@@ -22,7 +22,7 @@
       "id": 1,
       "rows": 3,
       "cols": 4,
-      "data": "3.39 0.0 0.0 -430.53 0.0 3.39 0.0 -430.53 0.0 0.0 3.39 -430.53"
+      "data": "3.3900001049 0.0 0.0 -430.529998779 0.0 3.3900001049 0.0 -430.529998779 0.0 0.0 3.3900001049 -430.529998779"
     }
   ],
   "bounding_box": {
@@ -45,15 +45,15 @@
       "id": 15559,
       "parent_id": 0,
       "biological_annotation": {
-        "name": "fatigues treatments duplicates",
-        "description": "Quammaecenas dui variuscras leo elitduis potenti, est ultrices maurisaenean bibendum. Ligula fusce autem nibh ut arcu elitduis, tempor platea nisi amet rhoncus tation leo montes.",
-        "number_of_instances": 427,
+        "name": "hood photodiode blades",
+        "description": "Imperdiet eum, iaculis dapibus ea lorem leopraesent. Bibendum eleifend varius urnamorbi rhoncus, eget viverra tortorvestibulum class fames lobortisetiam duimauris vivamus.",
+        "number_of_instances": 590,
         "external_references": [
           {
             "id": 0,
-            "resource": "aggravations",
-            "url": "blanket",
-            "accession": "percentage",
+            "resource": "weathers",
+            "url": "parcels",
+            "accession": "wonders",
             "label": null,
             "description": null
           }
