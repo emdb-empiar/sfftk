@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Extending sfftk &mdash; sfftk v0.6.0.dev1 documentation</title>
+  <title>Extending sfftk &mdash; sfftk v0.7.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.6
+                v0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -111,7 +111,7 @@
 <li><p><a class="reference internal" href="#example" id="id6">Example:</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" id="id7">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a></p></li>
+<li><p><a class="reference internal" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" id="id7">Step III: Implement a <strong>convert hook</strong> in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function</a></p></li>
 <li><p><a class="reference internal" href="#step-iv-add-test-data-files-to-the-sfftk-test-data-folder" id="id8">Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</a></p></li>
 <li><p><a class="reference internal" href="#step-v-add-unit-tests-in-the-sfftk-unittests-module" id="id9">Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</a></p></li>
 </ul>
@@ -140,7 +140,7 @@ parser</p>
 <ul class="simple">
 <li><p>Step I: Create a <strong>reader</strong> module</p></li>
 <li><p>Step II: Create a <strong>format</strong> adapter module</p></li>
-<li><p>Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</p></li>
+<li><p>Step III: Implement a <strong>convert hook</strong> in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function</p></li>
 <li><p>Step IV: Add test data files to the <code class="docutils literal notranslate"><span class="pre">sfftk/test_data</span></code> folder</p></li>
 <li><p>Step V: Add unit tests in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.unittests</span></code> module</p></li>
 </ul>
@@ -366,8 +366,8 @@ parser</p>
 </section>
 </section>
 <section id="step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function">
-<span id="step-iii"></span><h3><a class="toc-backref" href="#id7">Step III: Implement a <strong>convert hook</strong> in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function</a><a class="headerlink" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" title="Permalink to this heading"></a></h3>
-<p>In order to perform conversion using the command-line utility, we need to have the <code class="docutils literal notranslate"><span class="pre">convert</span></code> utility recognise segmentations by file type. This is simply done by add adding a regular expression match object in the <code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code> function as follows:</p>
+<span id="step-iii"></span><h3><a class="toc-backref" href="#id7">Step III: Implement a <strong>convert hook</strong> in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function</a><a class="headerlink" href="#step-iii-implement-a-convert-hook-in-the-sfftk-sff-handle-convert-function" title="Permalink to this heading"></a></h3>
+<p>In order to perform conversion using the command-line utility, we need to have the <code class="docutils literal notranslate"><span class="pre">convert</span></code> utility recognise segmentations by file type. This is simply done by add adding a regular expression match object in the <a class="reference internal" href="sff.html#sfftk.sff.handle_convert" title="sfftk.sff.handle_convert"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.sff.handle_convert()</span></code></a> function as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">handle_convert</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>  <span class="c1"># @UnusedVariable</span>
     <span class="c1"># ...</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">multi_file</span><span class="p">:</span>

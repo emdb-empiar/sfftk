@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.readers package &mdash; sfftk v0.6.0.dev1 documentation</title>
+  <title>sfftk.readers package &mdash; sfftk v0.7.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.6
+                v0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -166,9 +166,27 @@
 <p>SuRVoS segmentations are based on integer annotations. To the best of my understanding
 no textual information is saved in segmentation.</p>
 <dl class="py property">
+<dt class="sig sig-object py" id="sfftk.readers.survosreader.SuRVoSSegmentation.colours">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">colours</span></span><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.colours" title="Permalink to this definition"></a></dt>
+<dd><p>A list of ordered colours</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="sfftk.readers.survosreader.SuRVoSSegmentation.data">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.data" title="Permalink to this definition"></a></dt>
 <dd><p>The underlying segmentation data</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.readers.survosreader.SuRVoSSegmentation.labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">labels</span></span><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.labels" title="Permalink to this definition"></a></dt>
+<dd><p>A list of labels used</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.readers.survosreader.SuRVoSSegmentation.names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">names</span></span><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation.names" title="Permalink to this definition"></a></dt>
+<dd><p>A list of ordered names</p>
 </dd></dl>
 
 <dl class="py method">
@@ -192,9 +210,9 @@ no textual information is saved in segmentation.</p>
 <p>We need to return an object with a handle on the segments:</p>
 <ul class="simple">
 <li><p>each segment is a 3D volume with only that segments voxel values retained</p></li>
-<li><p>we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1]</p></li>
+<li><p>we reference each segment on the segmentation through an index-like interface e.g. s1 = Segmentation[1]
+returns the segmentation with annotation value of ‘1’</p></li>
 </ul>
-<p>returns the segmentation with annotation value of ‘1’</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">SuRVoSSegmentation</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 <span class="n">s</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">()</span> <span class="c1"># returns a list of segment IDs</span>
 <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">segment_ids</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># gets the first segment</span>
@@ -217,7 +235,7 @@ no textual information is saved in segmentation.</p>
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.mapreader.Map">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.mapreader.</span></span><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/mapreader.html#Map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.mapreader.Map" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.mapreader.</span></span><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/mapreader.html#Map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.mapreader.Map" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to encapsulate a CCP4 mask</p>
 <dl class="py method">
@@ -325,6 +343,26 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="sfftk.readers.mapreader.compute_transform">
+<span class="sig-prename descclassname"><span class="pre">sfftk.readers.mapreader.</span></span><span class="sig-name descname"><span class="pre">compute_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/mapreader.html#compute_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.mapreader.compute_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the transform that connects the image to physical space</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – map filename</p></li>
+<li><p><strong>header_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – only read the header if <cite>True</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a 3x4 transformation matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="sfftk.readers.mapreader.get_data">
 <span class="sig-prename descclassname"><span class="pre">sfftk.readers.mapreader.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/mapreader.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.mapreader.get_data" title="Permalink to this definition"></a></dt>
 <dd><p>Get structured data from EMDB Map file</p>
@@ -360,21 +398,18 @@ according to the author’s design requirements. Not all .mod
 chunks follow this convention (e.g. ‘OBJT’ chunks do not include
 the size of the chunk immediately after the chunk ID.</p>
 <p>A description of the structure of <cite>.mod</cite> files can be found at
-the following URL: <a class="reference external" href="https://bio3d.colorado.edu/imod/betaDoc/binspec.html">https://bio3d.colorado.edu/imod/betaDoc/binspec.html</a></p>
-<p>This module consists of a set of classes each identified
-by the respective chunk names. The following patterns are observed
-in the design of these classes:</p>
+the following URL: <a class="reference external" href="https://bio3d.colorado.edu/imod/betaDoc/binspec.html">https://bio3d.colorado.edu/imod/betaDoc/binspec.html</a>.
+This module consists of a set of classes each identified by the respective chunk names. The following patterns are
+observed in the design of these classes:</p>
 <ul class="simple">
 <li><p>The name of the class is the name of the chunk e.g. OBJT class refers to OBJT chunks.</p></li>
-<li><p>All classes have one public method: read(f), which takes a file handle and returns a file handle at the current</p></li>
+<li><p>All classes have one public method: read(f), which takes a file handle and returns a file handle at the current
+unread position.</p></li>
+<li><p>Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
+defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code> method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.</p></li>
+<li><p>All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method
+implemented to print objects of that class.</p></li>
 </ul>
-<p>unread position.
-- Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
-defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code>
-method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
-contained objects.
-- All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method
-implemented to print objects of that class.</p>
 <p>In addition, there are several useful dictionary constants and functions and classes (flags) that interpret
 several fields within chunks.</p>
 <div class="admonition note">

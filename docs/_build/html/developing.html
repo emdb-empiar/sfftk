@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Developing with sfftk &mdash; sfftk v0.6.0.dev1 documentation</title>
+  <title>Developing with sfftk &mdash; sfftk v0.7.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.6
+                v0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -139,12 +139,12 @@
 <li><p>the <strong>core</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.core</span></code>) provides a set of useful utilities mainly for the command-line toolkit (<code class="docutils literal notranslate"><span class="pre">sff</span></code> command) that handle command line arguments (making sure that they have the right values), read persistent configs from disk, do any prep work on segmentation files as well as several print and miscellaneous utilities.</p></li>
 <li><p>the <strong>readers</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers</span></code>) implements <em>ad hoc</em> segmentation file format readers. They are <em>ad hoc</em> because they are not expected to conform to a rigid API. For example, the <a class="reference internal" href="readers.html#module-sfftk.readers.segreader" title="sfftk.readers.segreader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers.segreader</span></code></a> module has a single class (<a class="reference internal" href="readers.html#sfftk.readers.segreader.SeggerSegmentation" title="sfftk.readers.segreader.SeggerSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.segreader.SeggerSegmentation</span></code></a>) which represents a Segger segmentation, which is completely different from the <a class="reference internal" href="readers.html#module-sfftk.readers.modreader" title="sfftk.readers.modreader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.readers.modreader</span></code></a> module which has over 20 classes representing the various components of an IMOD segmentation. The only requirement of a segmentation reader module in this package is that it has to implement a <code class="docutils literal notranslate"><span class="pre">get_data(fn,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> function which returns the <em>ad hoc</em> segmentation object(s).</p></li>
 <li><p>the <strong>format</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats</span></code>) provides adapters that correspond to individual readers. It is the responsibility of the modules in this package to <em>adapt</em> the <em>ad hoc</em> segmentation representation to an EMDB-SFF representation. This is where the call to <code class="docutils literal notranslate"><span class="pre">get_data(fn,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> will be invoked. For example, the <a class="reference internal" href="formats.html#module-sfftk.formats.mod" title="sfftk.formats.mod"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.formats.mod</span></code></a> module has a <a class="reference internal" href="formats.html#sfftk.formats.mod.IMODSegmentation" title="sfftk.formats.mod.IMODSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.mod.IMODSegmentation</span></code></a> class which invokes the <a class="reference internal" href="readers.html#sfftk.readers.modreader.get_data" title="sfftk.readers.modreader.get_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.readers.modreader.get_data()</span></code></a> function to supply the <em>ad hoc</em> <a class="reference internal" href="readers.html#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.IMOD</span></code></a> object that contains the IMOD segmentation. Presently, this API only provides the ability to read application-specific segmentation files. We hope to eventually add the ability to write out application-specific segmentation files.</p></li>
-<li><p>finally, the <strong>notes</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes</span></code>) supplies three modules for <em>finding</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.find" title="sfftk.notes.find"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.find</span></code></a>), <em>modifying</em> (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code>) and <em>viewing</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.view" title="sfftk.notes.view"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.view</span></code></a>) annotations.</p></li>
+<li><p>finally, the <strong>notes</strong> API (<code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes</span></code>) supplies three modules for <em>finding</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.find" title="sfftk.notes.find"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.find</span></code></a>), <em>modifying</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.modify" title="sfftk.notes.modify"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code></a>) and <em>viewing</em> (<a class="reference internal" href="notes.html#module-sfftk.notes.view" title="sfftk.notes.view"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.view</span></code></a>) annotations.</p></li>
 </ul>
 </section>
 <section id="annotating-emdb-sff-objects">
 <h2><a class="toc-backref" href="#id4">Annotating EMDB-SFF Objects</a><a class="headerlink" href="#annotating-emdb-sff-objects" title="Permalink to this heading"></a></h2>
-<p>Use the <code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code> module to perform annotations</p>
+<p>Use the <a class="reference internal" href="notes.html#module-sfftk.notes.modify" title="sfftk.notes.modify"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code></a> module to perform annotations</p>
 <section id="note-objects">
 <h3><a class="toc-backref" href="#id5">Note Objects</a><a class="headerlink" href="#note-objects" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.notes.modify</span> <span class="kn">import</span> <span class="n">SimpleNote</span><span class="p">,</span> <span class="n">ExternalReference</span>
@@ -202,7 +202,7 @@
 <span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;some name&#39;</span><span class="p">,</span>
 <span class="go">    ...     description=&#39;new description&#39;,</span>
 <span class="go">    ...     number_of_instances=14,</span>
-<span class="go">    ...     external_reference_id=0, #the external reference ID to change</span>
+<span class="go">    ...     external_reference_id=0, # the external reference ID to change</span>
 <span class="go">    ...     external_references=[</span>
 <span class="go">    ...      ExternalReference(resource=&#39;x&#39;, url=&#39;y&#39;, accession=&#39;z&#39;)</span>
 <span class="go">    ...      ],</span>
