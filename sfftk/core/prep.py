@@ -4,8 +4,6 @@
 
 This module consists of preparation utilities to condition segmentation files prior to conversion.
 """
-from __future__ import division, print_function
-
 import re
 
 import mrcfile

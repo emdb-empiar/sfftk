@@ -5,8 +5,6 @@
 User-facing reader classes for AmiraMesh files
 
 """
-from __future__ import division, print_function
-
 import inspect
 import os.path
 

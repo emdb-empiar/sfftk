@@ -23,7 +23,9 @@ observed in the design of these classes:
     unread position.
 
 -   Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
-    defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()`` method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.
+    defined as ``add_<chunk>`` e.g. OBJT objects are containers of CONT objects and therefore have a ``add_cont()``
+    method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
+    contained objects.
 
 -   All chunk classes inherit from :py:class:`object` class and have the :py:meth:`object.__repr__()` method
     implemented to print objects of that class.
@@ -37,8 +39,6 @@ several fields within chunks.
     The most important classes are :py:class:`.modreader.IMOD`, :py:class:`.modreader.OBJT`,
     :py:class:`.modreader.CONT` and :py:class:`.modreader.MESH`
 """
-from __future__ import division, print_function
-
 import os
 import struct
 import sys
@@ -773,7 +773,8 @@ class IMAT(object):
         """Read the contents of the IMAT chunk"""
         f = self.f
         self.bytes = struct.unpack('>I', f.read(4))[0]
-        self.ambient, self.diffuse, self.specular, self.shininess, self.fillred, self.fillgreen, self.fillblue, self.quality = struct.unpack('>BBBBBBBB', f.read(8))
+        self.ambient, self.diffuse, self.specular, self.shininess, self.fillred, self.fillgreen, self.fillblue, \
+            self.quality = struct.unpack('>BBBBBBBB', f.read(8))
         self.mat2 = struct.unpack('>I', f.read(4))[0]
         self.valblack, self.valwhite, self.matflags2, self.mat3b3 = struct.unpack('>BBBB', f.read(4))
         self.isset = True
@@ -991,10 +992,10 @@ class MEPA(object):
         f = self.f
         self.bytes = struct.unpack('>i', f.read(4))[0]
         self.flags = MEPA_FLAGS(struct.unpack('>I', f.read(4))[0], 4)
-        self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz, self.maxz, self.reserved_int = struct.unpack(
-            '>8i', f.read(32))
-        self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, self.tolHighRes, self.flatCrit, self.reserved_float = struct.unpack(
-            '>10f', f.read(40))
+        self.cap, self.passes, self.capSkipNz, self.inczLowRes, self.inczHighRes, self.minz, self.maxz, \
+            self.reserved_int = struct.unpack('>8i', f.read(32))
+        self.overlaps, self.tubeDiameter, self.xmin, self.xmax, self.ymin, self.ymax, self.tolLowRes, \
+            self.tolHighRes, self.flatCrit, self.reserved_float = struct.unpack('>10f', f.read(40))
         self.isset = True
         return f
 

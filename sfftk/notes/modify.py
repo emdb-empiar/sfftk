@@ -4,8 +4,6 @@
 
 Add, edit and delete terms in EMDB-SFF files
 """
-from __future__ import division, print_function
-
 import json
 import os
 import re

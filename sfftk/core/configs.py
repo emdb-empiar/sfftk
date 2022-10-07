@@ -6,13 +6,10 @@ This module defines classes and functions to correctly process persistent
 configurations. Please see the :doc:`guide to miscellaneous operations <misc>`
 for a complete description of working with configs.
 """
-from __future__ import print_function
-
 import os
 import shutil
 import sys
 
-from sfftkrw.core import _dict_iter_items
 from sfftkrw.core.print_tools import print_date
 
 from .. import BASE_DIR
@@ -66,14 +63,14 @@ class Configs(dict):
             return 1
 
         with open(self.config_fn, 'w') as f:
-            for name, value in _dict_iter_items(self):
+            for name, value in self.items():
                 f.write('{}={}\n'.format(name, value))
 
         return 0
 
     def __str__(self):
         string = ""
-        for name, value in _dict_iter_items(self):
+        for name, value in self.items():
             string += "{:<20} = {:<20}\n".format(name, value)
         return string[:-1]
 

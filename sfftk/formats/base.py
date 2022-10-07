@@ -20,8 +20,6 @@ Each segment container has two main parts:
 - the actual geometric container that can either be meshes, contours, a volume or shapes
 
 """
-from __future__ import division
-
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
 __date__ = "2017-03-28"

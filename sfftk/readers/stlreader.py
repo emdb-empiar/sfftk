@@ -8,8 +8,6 @@ Ad hoc reader for Stereolithography (STL) files
 
 - Reads both ASCII and binary files
 """
-from __future__ import division
-
 import os
 
 from sfftkrw.core import _dict

@@ -11,8 +11,6 @@ The following article is useful as it exposes many internals of map files:
 - ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf
 
 """
-from __future__ import division, print_function
-
 import sys
 
 import numpy

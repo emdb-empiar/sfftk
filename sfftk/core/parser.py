@@ -7,14 +7,12 @@ Python's :py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which
 This module extends the parser object :py:class:`sfftkrw.core.parser.Parser` as well as includes a
 :py:func:`sfftk.core.parser.parse_args` function which does sanity checking of all command line arguments.
 """
-from __future__ import print_function
-
 import os
 import re
 import sys
 from copy import deepcopy
 
-from sfftkrw.core import _dict_iter_keys, _decode, _input, _str, _dict_iter_items, _xrange, _dict
+from sfftkrw.core import _dict_iter_keys, _decode, _input, _str, _xrange
 # extend the sfftkrw Parser object
 from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, tests_parser, tool_list, add_args
 from sfftkrw.core.print_tools import print_date
@@ -82,7 +80,7 @@ external_ref = {
             "of valid external references: {}. You can also specify multiple external "
             "reference arguments e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22 r23 "
             "file.json"
-        ).format(', '.join(_dict_iter_keys(RESOURCE_LIST))),
+        ).format(', '.join(RESOURCE_LIST.keys())),
     }
 }
 FORMAT_LIST = [
@@ -992,7 +990,7 @@ def _set_subtype_index(args, ext):
         ext=ext,
     ))
     print("(You can avoid this intercept by using the --subtype-index <value> option.)")
-    for k, v in _dict_iter_items(EXTENSION_SUBTYPE_INDICES[ext]):
+    for k, v in EXTENSION_SUBTYPE_INDICES[ext].items():
         print("\t[{k}] - {v}".format(k=k, v=v))
     try:
         index = int(_input("Please enter a valid choice [{min_index}-{max_index}]: ".format(

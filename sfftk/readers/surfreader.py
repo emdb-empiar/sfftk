@@ -4,8 +4,6 @@
 
 Ad hoc reader for Amira HyperSurface files
 """
-from __future__ import division, print_function
-
 import random
 import sys
 

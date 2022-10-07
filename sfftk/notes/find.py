@@ -4,8 +4,6 @@
 
 Search for terms and display ontologies
 """
-from __future__ import division, print_function
-
 import math
 import numbers
 import random

@@ -5,8 +5,6 @@
 User-facing reader classes for Segger files
 
 """
-from __future__ import division
-
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw.core import _str
 

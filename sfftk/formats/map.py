@@ -4,8 +4,6 @@
 
 User-facing reader classes for CCP4 masks
 """
-from __future__ import division, print_function
-
 import inspect
 import os
 import sys

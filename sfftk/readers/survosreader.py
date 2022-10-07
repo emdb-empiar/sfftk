@@ -4,8 +4,6 @@
 
 Ad hoc reader for SuRVoS segmentation files
 """
-from __future__ import print_function
-
 import numbers
 
 import h5py

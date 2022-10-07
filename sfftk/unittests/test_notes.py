@@ -1,7 +1,6 @@
-"""Unit tests for :py:mod:`sfftk.core.notes` package"""
-
-from __future__ import division, print_function
-
+"""
+Unit tests for :py:mod:`sfftk.core.notes` package
+"""
 import json
 import os
 import shutil

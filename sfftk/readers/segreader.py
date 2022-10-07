@@ -3,8 +3,6 @@
 ===========================
 
 Ad hoc reader for Segger files"""
-from __future__ import division
-
 import os
 
 import numpy

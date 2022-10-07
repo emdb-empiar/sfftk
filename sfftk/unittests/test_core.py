@@ -1,6 +1,6 @@
-"""Unit tests for :py:mod:`sfftk.core` package"""
-from __future__ import division, print_function
-
+"""
+Unit tests for :py:mod:`sfftk.core` package
+"""
 import contextlib
 import glob
 import os
@@ -344,7 +344,7 @@ class TestCoreConfigs(Py23FixTestCase):
         _, configs = parse_args('config get --all', use_shlex=True)
         D = _dict()
         D['NAME'] = 'VALUE'
-        self.assertLessEqual(list(_dict_iter_items(D)), list(_dict_iter_items(configs)))
+        self.assertLessEqual(list(D.items()), list(configs.items()))
 
     def test_set_force_configs(self):
         """Test that forcing works"""
@@ -832,7 +832,7 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     def test_convert_without_image_for_transform(self):
         """Test that we warn the user when they don't supply the image"""
-        with contextlib.redirect_stderr(StringIO()) as f:
+        with contextlib.redirect_stderr(StringIO()) as _:
             args, _ = parse_args('convert {file}'.format(
                 file=self.test_data_file
             ), use_shlex=True)
@@ -1244,7 +1244,6 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         url2 = rw.random_word()
         accession2 = rw.random_word()
         transform = _random_floats(12)
-        print(f"{transform = }")
         args, _ = parse_args(
             "notes add -N '{name}' -D '{details}' -S '{software_name}' -T {software_version} "
             "-P '{software_processing_details}' -E {resource1} {url1} {accession1} "

@@ -1,8 +1,6 @@
 """
 sfftk.formats modules unit tests
 """
-from __future__ import division
-
 import numbers
 import os
 import sys

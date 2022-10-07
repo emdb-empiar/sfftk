@@ -4,8 +4,6 @@
 
 Ad hoc reader for AmiraMesh files
 """
-from __future__ import print_function
-
 from ahds import AmiraFile
 
 __author__ = 'Paul K. Korir, PhD'

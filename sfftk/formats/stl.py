@@ -3,14 +3,11 @@
 ======================
 User-facing reader classes for Stereolithography files
 """
-from __future__ import division, print_function
-
 import inspect
 import os.path
 
 import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
-from sfftkrw.core import _dict_iter_items
 from sfftkrw.core.print_tools import print_date
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
@@ -41,7 +38,7 @@ class STLMesh(Mesh):
     def convert(self):
         """Convert to a :py:class:`sfftkrw.SFFMesh` object"""
         # convert the dict to a list of 4-tuples where the first item is the key
-        indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in _dict_iter_items(self.vertices)),
+        indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in self.vertices.items()),
                                   key=lambda v: v[0])
         # validate vertices
         # vertices are valid if len(vertices) == last_index + 1

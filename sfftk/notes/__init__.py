@@ -1,8 +1,3 @@
-from __future__ import print_function
-
-# from sfftkrw.core import _dict
-
-# RESOURCE_LIST = collections.OrderedDict()
 RESOURCE_LIST = dict()
 FORMATS = ['json', 'tsv']
 """
@@ -69,12 +64,12 @@ RESOURCE_LIST_NAMES = [RESOURCE_LIST[k]['name'] for k in RESOURCE_LIST.keys()]
 for resource in RESOURCE_LIST:
     name = RESOURCE_LIST[resource]['name']
     root_url = RESOURCE_LIST[resource]['root_url']
-    format = RESOURCE_LIST[resource]['format']
+    format_ = RESOURCE_LIST[resource]['format']
     result_path = RESOURCE_LIST[resource]['result_path']
     result_count = RESOURCE_LIST[resource]['result_count']
     assert isinstance(name, str)
     assert isinstance(root_url, str)
-    assert format in FORMATS
+    assert format_ in FORMATS
     assert result_path is None or map(hash, result_path)
     assert result_path is None or len(result_path) > 0
     assert result_count is None or map(hash, result_count)

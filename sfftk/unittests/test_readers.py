@@ -3,12 +3,8 @@ sfftk.unittests.test_readers
 
 This testing module should have no side-effects because it only reads.
 """
-
-from __future__ import division, print_function
-
 import glob
 import os
-import sys
 import unittest
 
 import ahds

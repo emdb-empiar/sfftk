@@ -4,8 +4,6 @@
 
 Display notes in EMDB-SFF files
 """
-from __future__ import division, print_function
-
 import sys
 import textwrap
 
@@ -328,7 +326,7 @@ class HeaderView(View):
                 "\t{}".format(self.LINE2)
             )
         if string_list:
-            string_list.pop() # remove the last line
+            string_list.pop()  # remove the last line
         return "\n".join(string_list)
 
     @property

@@ -3,8 +3,6 @@ test_py
 
 Unit tests for convert subcommand
 """
-from __future__ import division
-
 import glob
 import json
 import os

@@ -47,7 +47,7 @@ SFFTK_CLASSIFIERS = [
     "Topic :: Utilities",
 ]
 SFFTK_PYTHON3_INSTALL_REQUIRES = [
-    "sfftk-rw", "ahds", "styled", "mrcfile", "bitarray", "requests",
+    "sfftk-rw", "numpy", "ahds", "styled", "mrcfile", "bitarray", "requests",
     "mock", "numpy-stl"
 ]
 

@@ -4,13 +4,11 @@
 
 User-facing reader classes for Amira HxSurface files
 """
-from __future__ import division, print_function
-
 import inspect
 
 import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
-from sfftkrw.core import _dict_iter_items, _xrange
+from sfftkrw.core import _xrange
 
 from .base import Segmentation, Header, Segment, Annotation, Mesh
 from ..readers import surfreader
@@ -52,7 +50,7 @@ class AmiraHyperSurfaceMesh(Mesh):
 
     def convert(self, **kwargs):
         """Convert to a :py:class:`sfftkrw.SFFMesh` object"""
-        indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in _dict_iter_items(self.vertices)),
+        indexed_vertices = sorted(((k, v[0], v[1], v[2]) for k, v in self.vertices.items()),
                                   key=lambda v: v[0])
         vertex_keys = sorted(self.vertices.keys())
         # a look-up table to remap indices to start from 0
@@ -190,7 +188,7 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         header, segments = surfreader.get_data(self._fn)
         self._header = AmiraHyperSurfaceHeader(header)
         self._segments = list()
-        for segment_id, segment in _dict_iter_items(segments):
+        for segment_id, segment in segments.items():
             self._segments.append(AmiraHyperSurfaceSegment(segment))
 
     @property
@@ -203,7 +201,8 @@ class AmiraHyperSurfaceSegmentation(Segmentation):
         """The segments in the segmentation"""
         return self._segments
 
-    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False, transform=None):
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False,
+                transform=None):
         """Convert to a :py:class:`sfftkrw.SFFSegmentation` object
 
         :param str name: optional name of the segmentation used in <name/>

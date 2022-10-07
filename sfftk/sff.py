@@ -1,8 +1,6 @@
 """
 :py:mod:`sfftk.sff` is the main entry point for performing command-line operations.
 """
-from __future__ import division, print_function
-
 import os
 import re
 import sys
