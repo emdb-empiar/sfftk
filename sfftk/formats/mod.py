@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# mod.py
 """
 ``sfftk.formats.mod``
 =====================

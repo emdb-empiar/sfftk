@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# notes
 from __future__ import print_function
 
 # from sfftkrw.core import _dict

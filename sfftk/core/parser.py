@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# parser.py
 """
 ``sfftk.core.parser``
 ===========================

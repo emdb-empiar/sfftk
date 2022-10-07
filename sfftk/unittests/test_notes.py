@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """Unit tests for :py:mod:`sfftk.core.notes` package"""
 
 from __future__ import division, print_function
@@ -564,6 +562,14 @@ class TestNotes_modify(Py23FixTestCase):
         _args, configs = parse_args(cmd, use_shlex=True)
         # we intercept them for 'modify' actions
         args = _handle_notes_modify(_args, configs)
+        # the temp file should have no geometry
+        temp_file = os.path.join(BASE_DIR, '..', 'temp-annotated.json')
+        # read the temp file
+        temp_seg = schema.SFFSegmentation.from_file(temp_file)
+        for segment in temp_seg.segments:
+            self.assertIsNone(segment.three_d_volume)
+            self.assertEqual(schema.SFFMeshList([]), segment.mesh_list)
+            self.assertEqual(schema.SFFShapePrimitiveList([]), segment.shape_primitive_list)
         # we pass modified args for 'temp-annotated.json'
         status = modify.add_note(args, configs)
         seg = schema.SFFSegmentation.from_file(args.sff_file)

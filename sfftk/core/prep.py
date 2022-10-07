@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# prep.py
 """
 ``sfftk.core.prep``
 ==========================

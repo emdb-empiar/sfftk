@@ -24,4 +24,4 @@
 
 .. note::
 
-    Only interested in handling EMDB-SFF files? Checkout the *minimal* :py:mod:`sfftkrw` package.
+    Only interested in working directly with EMDB-SFF files? Checkout the *minimal* :py:mod:`sfftkrw` package.

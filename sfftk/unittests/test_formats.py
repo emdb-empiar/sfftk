@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# test_formats.py
 """
 sfftk.formats modules unit tests
 """

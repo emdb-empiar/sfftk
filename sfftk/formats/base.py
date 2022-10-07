@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# base.py
 """
 sfftk.formats.base
 ==================

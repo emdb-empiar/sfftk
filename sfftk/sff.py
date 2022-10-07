@@ -1,6 +1,3 @@
-#!/usr/local/bin/python2.7
-# encoding: utf-8
-# sff.py
 """
 :py:mod:`sfftk.sff` is the main entry point for performing command-line operations.
 """
@@ -226,11 +223,11 @@ discard changes before working on another file.".format(temp_file), stream=sys.s
                 args.sff_file = temp_file
             elif re.match(r'.*\.json$', temp_file, re.IGNORECASE):
                 if args.config_path:
-                    cmd = "convert -v {} -o {} --config-path {}".format(args.sff_file, temp_file, args.config_path)
+                    cmd = "convert -v {} -o {} -x --config-path {}".format(args.sff_file, temp_file, args.config_path)
                 elif args.shipped_configs:
-                    cmd = "convert -v {} -o {} --shipped-configs".format(args.sff_file, temp_file)
+                    cmd = "convert -v {} -o {} -x --shipped-configs".format(args.sff_file, temp_file)
                 else:
-                    cmd = "convert -v {} -o {}".format(args.sff_file, temp_file)
+                    cmd = "convert -v {} -x -o {}".format(args.sff_file, temp_file)
                 from .core.parser import parse_args
                 _args, _configs = parse_args(cmd, use_shlex=True)
                 if not _args:

@@ -1,5 +1,29 @@
 #Changes by release
 
+## [0.7.1] (2022-10-07) - Bugfix for annotation
+
+* temporary file should exclude geometry: FIXED
+
+## [0.7.0] (2022-10-04) - Support for working with transforms
+
+* `sff view --transform file.map` now outputs the image-to-physical space transform; `sff view file.map` will still output
+* user may choose how to display the transform using `sff view --transform [--print-array (default) | --print-csv | --print-ssv] file.map`
+* `sff convert` now takes an option `--image` that takes an `.map/.mrc/.rec` file and extracts the transform to set as transform `0` ; excluding `--image <file.map>` produces a warning and possibly wrong transform `0`
+* `sff notes [add|edit|del] [-x/--transform-id <int>] [-X/--transform <12-floats>] file.sff` to add/modify/delete transforms
+* `sff notes show -H file.sff` now displays the table of transforms
+* all formats now honour `--image <file.map>` to set the correct transform
+* `sfftk.readers.mapreader.compute_transform('file.map')` computes transform; when computing the transform from MAP file, only reads the header
+* all associated tests
+* correct spelling for ångström
+* minor cleanup and improvements
+* bugfixes for cases not caught by tests e.g. merge annotation does not interact with transform_list - must be done manually
+* for map file we will not write skew and translation matrices; assume rectilinear lattices
+* bugfix: `sff notes add` was always adding extra software
+* bugfix: display of transforms when empty
+* tests for edit and del of notes: OK
+* incomplete updates to documentation
+* including image used for testing transforms
+
 ## [0.6.1.dev0] - 2022-09-06
 
 * improvements for reading SuRVoS files with additional attributes 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# surf.py
 """
 ``sfftk.formats.stl``
 ======================

@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-'''
+"""
 ``sfftk.readers.amreader``
 ===========================
 
 Ad hoc reader for AmiraMesh files
-'''
+"""
 from __future__ import print_function
 
 from ahds import AmiraFile

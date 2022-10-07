@@ -4,6 +4,7 @@ EMDB-SFF Toolkit (``sfftk``)
 
 .. contents::
 
+
 Introduction
 ============
 

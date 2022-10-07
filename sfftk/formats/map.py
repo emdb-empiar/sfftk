@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# map.py
 """
 ``sfftk.formats.map``
 =====================

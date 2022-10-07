@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# test_core.py
 """Unit tests for :py:mod:`sfftk.core` package"""
 from __future__ import division, print_function
 
