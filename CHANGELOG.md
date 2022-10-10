@@ -1,5 +1,17 @@
 #Changes by release
 
+## [0.7.2] (2022-10-10) - Bugfixes for CI/CD and docbuild
+
+* fixes for Github workflow
+* removal of mock packages which prevented documentation build
+* requirements.txt for building documentation
+* remove all appearances of `from __future__ import <foo>`
+* remove most uses of python2-3 adaption functions
+* inclusion of missing image file to run test
+* now including explicit rtd configs (`.readthedocs.yml`)
+* added numpy as explicit dependency
+* removed source dependency for ahds
+
 ## [0.7.1] (2022-10-07) - Bugfix for annotation
 
 * temporary file should exclude geometry: FIXED
