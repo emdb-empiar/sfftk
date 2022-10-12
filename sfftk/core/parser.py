@@ -7,6 +7,8 @@ Python's :py:class:`argparse.ArgumentParser` and a ``configs`` dictionary, which
 This module extends the parser object :py:class:`sfftkrw.core.parser.Parser` as well as includes a
 :py:func:`sfftk.core.parser.parse_args` function which does sanity checking of all command line arguments.
 """
+import argparse
+import configparser
 import os
 import re
 import sys
@@ -332,6 +334,22 @@ transform_prep_parser.add_argument(
     help="infix to be added to filenames e.g. file.stl -> file_<infix>.stl [default: 'transformed']",
 )
 add_args(transform_prep_parser, verbose)
+# =========================================================================
+# prep: mergemask
+# =========================================================================
+mergemask_prep_parser = prep_subparsers.add_parser(
+    'mergemask',
+    description='Merge two or more binary masks into one with integer labels',
+    help='merge two or more binary masks',
+)
+add_args(mergemask_prep_parser, config_path)
+add_args(mergemask_prep_parser, shipped_configs)
+mergemask_prep_parser.add_argument(
+    'masks',
+    nargs='+',
+    help="a sequence of two masks in a CCP4-like format e.g. .mrc, .map, .rec; "
+         "the order of placement determines the order of labels"
+)
 
 # =========================================================================
 # convert subparser
@@ -1150,6 +1168,7 @@ def parse_args(_args, use_shlex=False):
                     return 64, configs
                 if args.verbose:
                     print_date("Output will be written to {}".format(args.output))
+        # transform
         elif args.prep_subcommand == 'transform':
             ext = args.from_file.split('.')[-1]
             if ext.lower() not in RESCALABLE_FILE_FORMATS:
@@ -1163,6 +1182,14 @@ def parse_args(_args, use_shlex=False):
                     return 64, configs
                 if args.verbose:
                     print_date("Output will be written to {}".format(args.output))
+        # mergemask
+        elif args.prep_subcommand == 'mergemask':
+            if len(args.masks) < 2:
+                print_date("mergemask requires two or more masks")
+                return 64, configs
+            if len(args.masks) > 255:
+                print_date(f"mergemask can handle at most 255 masks ({len(args.masks)} provided)")
+                return 64, configs
 
     # view
     elif args.subcommand == 'view':
@@ -1548,3 +1575,11 @@ external reference IDs for segment {}".format(args.segment_id))
                 args.output = args.other
 
     return args, configs
+
+
+def cli(cmd: str) -> (argparse.Namespace, configparser.ConfigParser):
+    """CLI function"""
+    import shlex
+    print(cmd)
+    sys.argv = shlex.split(cmd)
+    return parse_args(sys.argv)

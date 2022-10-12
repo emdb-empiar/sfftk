@@ -2,8 +2,8 @@
 Unit tests for :py:mod:`sfftk.core` package
 """
 import contextlib
-import glob
 import os
+import pathlib
 import random
 import shlex
 import shutil
@@ -20,12 +20,15 @@ from . import TEST_DATA_PATH
 from .. import BASE_DIR
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
-from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index
+from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index, cli
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
 from ..notes import RESOURCE_LIST
 
 rw = RandomWords()
 li = LoremIpsum()
+
+TEST_DATA_PATH = pathlib.Path(TEST_DATA_PATH)
+BASE_DIR = pathlib.Path(BASE_DIR)
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -59,8 +62,8 @@ class TestCoreConfigs(Py23FixTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.test_config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'test_sff.conf')
-        cls.config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
+        cls.test_config_fn = TEST_DATA_PATH / 'configs' / 'test_sff.conf'
+        cls.config_fn = TEST_DATA_PATH / 'configs' / 'sff.conf'
         cls.config_values = _dict()
         cls.config_values['__TEMP_FILE'] = './temp-annotated.json'
         cls.config_values['__TEMP_FILE_REF'] = '@'
@@ -516,7 +519,7 @@ class TestCorePrintUtils(Py23FixTestCase):
 class TestCoreParserPrepBinmap(Py23FixTestCase):
     def test_default(self):
         """Test default params for prep binmap"""
-        args, _ = parse_args('prep binmap file.map', use_shlex=True)
+        args, _ = cli('prep binmap file.map')
         self.assertEqual(args.prep_subcommand, 'binmap')
         self.assertEqual(args.from_file, 'file.map')
         self.assertEqual(args.mask_value, 1)
@@ -526,52 +529,52 @@ class TestCoreParserPrepBinmap(Py23FixTestCase):
         self.assertEqual(args.bytes_per_voxel, 1)
         self.assertEqual(args.infix, 'prep')
         self.assertFalse(args.verbose)
-        args, _ = parse_args('prep binmap -B 2 file.map', use_shlex=True)
+        args, _ = cli('prep binmap -B 2 file.map')
         self.assertEqual(args.bytes_per_voxel, 2)
-        args, _ = parse_args('prep binmap -B 4 file.map', use_shlex=True)
+        args, _ = cli('prep binmap -B 4 file.map')
         self.assertEqual(args.bytes_per_voxel, 4)
-        args, _ = parse_args('prep binmap -B 8 file.map', use_shlex=True)
+        args, _ = cli('prep binmap -B 8 file.map')
         self.assertEqual(args.bytes_per_voxel, 8)
-        args, _ = parse_args('prep binmap -B 16 file.map', use_shlex=True)
+        args, _ = cli('prep binmap -B 16 file.map')
         self.assertEqual(args.bytes_per_voxel, 16)
 
     def test_mask(self):
         """Test setting mask value"""
         mask_value = _random_integer()
-        args, _ = parse_args('prep binmap -m {} file.map'.format(mask_value), use_shlex=True)
+        args, _ = cli('prep binmap -m {} file.map'.format(mask_value))
         self.assertEqual(args.mask_value, mask_value)
 
     def test_output(self):
         """Test that we can set the output"""
-        args, _ = parse_args('prep binmap -o my_file.map file.map', use_shlex=True)
+        args, _ = cli('prep binmap -o my_file.map file.map')
         self.assertEqual(args.output, 'my_file.map')
 
     def test_contour_level(self):
         """Test that we can set the contour level"""
         contour_level = _random_float()
-        args, _ = parse_args('prep binmap -c {} file.map'.format(contour_level), use_shlex=True)
+        args, _ = cli('prep binmap -c {} file.map'.format(contour_level))
         self.assertEqual(round(args.contour_level, 8), round(contour_level, 8))
 
     def test_negate(self):
         """Test that we can set negate"""
-        args, _ = parse_args('prep binmap --negate file.map', use_shlex=True)
+        args, _ = cli('prep binmap --negate file.map')
         self.assertTrue(args.negate)
 
     def test_bytes_per_voxel(self):
         """Test that we can set bytes per voxel"""
         bytes_per_voxel = random.choice([1, 2, 4, 8, 16])
-        args, _ = parse_args('prep binmap -B {} file.map'.format(bytes_per_voxel), use_shlex=True)
+        args, _ = cli('prep binmap -B {} file.map'.format(bytes_per_voxel))
         self.assertEqual(args.bytes_per_voxel, bytes_per_voxel)
 
     def test_infix(self):
         """Test setting infix"""
-        args, _ = parse_args('prep binmap --infix something file.map', use_shlex=True)
+        args, _ = cli('prep binmap --infix something file.map')
         self.assertEqual(args.infix, 'something')
         self.assertEqual(args.output, 'file_something.map')
 
     def test_blank_infix(self):
         """Test that a blank infix fails"""
-        args, _ = parse_args("prep binmap --infix '' file.map", use_shlex=True)
+        args, _ = cli("prep binmap --infix '' file.map")
         self.assertEqual(args, 64)
 
 
@@ -663,14 +666,14 @@ class TestCoreParserConvert(Py23FixTestCase):
     def setUpClass(cls):
         # fixme: use print_date
         cls.stderr("convert tests...")
-        cls.test_data_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
-        cls.test_data_file_h5 = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5')
-        cls.test_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
-        cls.test_hff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.hff')
-        cls.empty_maps = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.map'))
-        cls.empty_stls = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.stl'))
-        cls.empty_segs = glob.glob(os.path.join(TEST_DATA_PATH, 'segmentations', 'empty*.seg'))
-        cls.test_seg_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'emd_1014.seg')
+        cls.test_data_file = TEST_DATA_PATH / 'segmentations' / 'test_data.mod'
+        cls.test_data_file_h5 = TEST_DATA_PATH / 'segmentations' / 'test_data.h5'
+        cls.test_sff_file = TEST_DATA_PATH / 'sff' / 'v0.7' / 'emd_1014.sff'
+        cls.test_hff_file = TEST_DATA_PATH / 'sff' / 'v0.7' / 'emd_1014.hff'
+        cls.empty_maps = list((TEST_DATA_PATH / 'segmentations').glob('empty*.map'))
+        cls.empty_stls = list((TEST_DATA_PATH / 'segmentations').glob('empty*.stl'))
+        cls.empty_segs = list((TEST_DATA_PATH / 'segmentations').glob('empty*.seg'))
+        cls.test_seg_file = TEST_DATA_PATH / 'segmentations' / 'emd_1014.seg'
 
     @classmethod
     def tearDownClass(cls):
@@ -679,10 +682,10 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     def test_default(self):
         """Test convert parser"""
-        args, _ = parse_args('convert {}'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert {}'.format(self.test_data_file))
         # assertions
         self.assertEqual(args.subcommand, 'convert')
-        self.assertEqual(args.from_file, self.test_data_file)
+        self.assertEqual(args.from_file, str(self.test_data_file))
         self.assertIsNone(args.config_path)
         # self.assertFalse(args.top_level_only)
         self.assertFalse(args.all_levels)
@@ -695,105 +698,105 @@ class TestCoreParserConvert(Py23FixTestCase):
 
     def test_config_path(self):
         """Test setting of arg config_path"""
-        config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
-        args, _ = parse_args('convert --config-path {} {}'.format(config_fn, self.test_data_file), use_shlex=True)
+        config_fn = TEST_DATA_PATH / 'configs' / 'sff.conf'
+        args, _ = cli('convert --config-path {} {}'.format(config_fn, self.test_data_file))
         self.stderr(args)
-        self.assertEqual(args.config_path, config_fn)
+        self.assertEqual(args.config_path, str(config_fn))
 
     def test_details(self):
         """Test convert parser with details"""
-        args, _ = parse_args('convert -D "Some details" {}'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert -D "Some details" {}'.format(self.test_data_file))
         # assertions
         self.assertEqual(args.details, 'Some details')
 
     def test_output_sff(self):
         """Test convert parser to .sff"""
-        args, _ = parse_args('convert {} -o file.sff'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert {} -o file.sff'.format(self.test_data_file))
         # assertions
         self.assertEqual(args.output, 'file.sff')
 
     def test_output_hff(self):
         """Test convert parser to .hff"""
-        args, _ = parse_args('convert {} -o file.hff'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert {} -o file.hff'.format(self.test_data_file))
         # assertions
         self.assertEqual(args.output, 'file.hff')
 
     def test_output_json(self):
         """Test convert parser to .json"""
-        args, _ = parse_args('convert {} -o file.json'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert {} -o file.json'.format(self.test_data_file))
         # assertions
         self.assertEqual(args.output, 'file.json')
 
     def test_hff_default_output_sff(self):
         """Test that converting an .hff with no args gives .sff"""
-        args, _ = parse_args('convert {}'.format(self.test_hff_file), use_shlex=True)
-        self.assertEqual(args.output, self.test_sff_file)
+        args, _ = cli('convert {}'.format(self.test_hff_file))
+        self.assertEqual(args.output, str(self.test_sff_file))
 
     def test_sff_default_output_hff(self):
         """Test that converting a .sff with no args gives .hff"""
-        args, _ = parse_args('convert {}'.format(self.test_sff_file), use_shlex=True)
-        self.assertEqual(args.output, self.test_hff_file)
+        args, _ = cli('convert {}'.format(self.test_sff_file))
+        self.assertEqual(args.output, str(self.test_hff_file))
 
     def test_primary_descriptor(self):
         """Test convert parser with primary_descriptor"""
-        args, _ = parse_args('convert -R three_d_volume {}'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert -R three_d_volume {}'.format(self.test_data_file))
         # assertions
         self.assertEqual(args.primary_descriptor, 'three_d_volume')
 
     def test_wrong_primary_descriptor_fails(self):
         """Test that we have a check on primary descriptor values"""
-        args, _ = parse_args('convert -R something {}'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert -R something {}'.format(self.test_data_file))
         self.assertEqual(args, 64)
 
     def test_verbose(self):
         """Test convert parser with verbose"""
-        args, _ = parse_args('convert -v {}'.format(self.test_data_file), use_shlex=True)
+        args, _ = cli('convert -v {}'.format(self.test_data_file))
         # assertions
         self.assertTrue(args.verbose)
 
     def test_multifile_map(self):
         """Test that multi-file works for CCP4 masks"""
-        cmd = 'convert -v -m {}'.format(' '.join(self.empty_maps))
-        args, _ = parse_args(cmd, use_shlex=True)
+        cmd = 'convert -v -m {}'.format(' '.join(map(str, self.empty_maps)))
+        args, _ = cli(cmd)
         # assertions
         self.assertTrue(args.multi_file)
-        self.assertCountEqual(args.from_file, self.empty_maps)
+        self.assertCountEqual(args.from_file, map(str, self.empty_maps))
 
     def test_multifile_stl(self):
         """Test that multi-file works for STLs"""
-        cmd = 'convert -v -m {}'.format(' '.join(self.empty_stls))
-        args, _ = parse_args(cmd, use_shlex=True)
+        cmd = 'convert -v -m {}'.format(' '.join(map(str, self.empty_stls)))
+        args, _ = cli(cmd)
         # assertions
         self.assertTrue(args.multi_file)
-        self.assertCountEqual(args.from_file, self.empty_stls)
+        self.assertCountEqual(args.from_file, map(str, self.empty_stls))
 
     def test_multifile_map_fail1(self):
         """Test that excluding -m issues a warning for CCP4"""
-        args, _ = parse_args('convert -v {}'.format(' '.join(self.empty_maps)), use_shlex=True)
+        args, _ = cli('convert -v {}'.format(' '.join(map(str, self.empty_maps))))
         # assertions
         self.assertEqual(args, 64)
 
     def test_multifile_stl_fail2(self):
         """Test that excluding -m issues a warning for STL"""
-        args, _ = parse_args('convert -v {}'.format(' '.join(self.empty_stls)), use_shlex=True)
+        args, _ = cli('convert -v {}'.format(' '.join(map(str, self.empty_stls))))
         # assertions
         self.assertEqual(args, 64)
 
     def test_multifile_xxx_fail3(self):
         """Test that other file format fails for multifile e.g. Segger (.seg)"""
-        args, _ = parse_args('convert -v {}'.format(' '.join(self.empty_segs)), use_shlex=True)
+        args, _ = cli('convert -v {}'.format(' '.join(map(str, self.empty_segs))))
         # assertions
         self.assertEqual(args, 64)
 
     def test_multifile_xxx_fail4(self):
         """Test that other file format fails even with -m e.g. Segger (.seg)"""
-        args, _ = parse_args('convert -v -m {}'.format(' '.join(self.empty_segs)), use_shlex=True)
+        args, _ = cli('convert -v -m {}'.format(' '.join(map(str, self.empty_segs))))
         # assertions
         self.assertEqual(args, 64)
 
     def test_all_levels(self):
         """Test that we can set the -a/--all-levels flag for Segger segmentations"""
-        args, _ = parse_args('convert -v -a {}'.format(self.test_seg_file), use_shlex=True)
+        args, _ = cli('convert -v -a {}'.format(self.test_seg_file))
         self.assertTrue(args.all_levels)
 
     def test_subtype_index_defined(self):
@@ -842,22 +845,22 @@ class TestCoreParserConvert(Py23FixTestCase):
         """Test correct functionality of the parser._set_subtype_index function"""
         sys.stdin = StringIO('1')  # avail for stdin
         # construct the namespace object
-        args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
+        args, _ = cli('convert {file}'.format(file=self.test_data_file_h5))
         self.assertTrue(args.subtype_index > -1)
         # exceptions
         # invalid file extension e.g. file.mod
-        args, _ = parse_args('convert {file}'.format(file=self.test_data_file), use_shlex=True)
+        args, _ = cli('convert {file}'.format(file=self.test_data_file))
         # we need to explicitly invoke _set_subtype_index because it is ignored
         ext = _get_file_extension(args.from_file)
         args = _set_subtype_index(args, ext)
         self.assertEqual(args.subtype_index, -1)
         # invalid entry: type
         sys.stdin = StringIO('a')  # avail for stdin
-        args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
+        args, _ = cli('convert {file}'.format(file=self.test_data_file_h5))
         self.assertEqual(args.subtype_index, -1)
         # invalid entry: range
         sys.stdin = StringIO('10')  # avail for stdin
-        args, _ = parse_args('convert {file}'.format(file=self.test_data_file_h5), use_shlex=True)
+        args, _ = cli('convert {file}'.format(file=self.test_data_file_h5))
         self.assertEqual(args.subtype_index, -1)
         # fixme: not tested ambiguous mutli-file formats
 
@@ -880,7 +883,7 @@ class TestCoreParserView(Py23FixTestCase):
 
     def test_default(self):
         """Test view parser"""
-        args, _ = parse_args('view file.sff', use_shlex=True)
+        args, _ = cli('view file.sff')
 
         self.assertEqual(args.from_file, 'file.sff')
         self.assertFalse(args.version)
@@ -889,43 +892,43 @@ class TestCoreParserView(Py23FixTestCase):
 
     def test_version(self):
         """Test view version"""
-        args, _ = parse_args('view --sff-version file.sff', use_shlex=True)
+        args, _ = cli('view --sff-version file.sff')
 
         self.assertTrue(args.sff_version)
 
     def test_config_path(self):
         """Test setting of arg config_path"""
-        config_fn = os.path.join(TEST_DATA_PATH, 'configs', 'sff.conf')
-        args, _ = parse_args('view --config-path {} file.sff'.format(config_fn), use_shlex=True)
-        self.assertEqual(args.config_path, config_fn)
+        config_fn = TEST_DATA_PATH / 'configs' / 'sff.conf'
+        args, _ = cli('view --config-path {} file.sff'.format(config_fn))
+        self.assertEqual(args.config_path, str(config_fn))
 
     def test_show_chunks_mod(self):
         """Test that we can view chunks"""
-        args, _ = parse_args('view -C file.mod', use_shlex=True)
+        args, _ = cli('view -C file.mod')
         self.assertTrue(args.show_chunks)
 
     def test_show_chunks_other_fails(self):
         """Test that show chunks only works for .mod files"""
-        args, _ = parse_args('view -C file.sff', use_shlex=True)
+        args, _ = cli('view -C file.sff')
         self.assertEqual(args, 64)
 
     def test_view_transform(self):
         """Test that we can view the implied transform"""
         # this expects that the file is a segmentation
-        args, _ = parse_args("view file.map", use_shlex=True)
+        args, _ = cli("view file.map")
         self.assertFalse(args.transform)
         # but this expects that the file is the segmented image
-        args, _ = parse_args("view --transform file.map", use_shlex=True)
+        args, _ = cli("view --transform file.map")
         self.assertTrue(args.transform)
         self.assertEqual('file.map', args.from_file)
         self.assertTrue(args.print_array)
         # we can change the format of the transform
-        args, _ = parse_args("view --transform --print-csv file.map", use_shlex=True)
+        args, _ = cli("view --transform --print-csv file.map")
         self.assertTrue(args.print_csv)
-        args, _ = parse_args("view --transform --print-ssv file.map", use_shlex=True)
+        args, _ = cli("view --transform --print-ssv file.map")
         self.assertTrue(args.print_ssv)
         # if we specify --image then we only accept .map/.mrc/.rec
-        args, _ = parse_args("view --transform file.sff", use_shlex=True)
+        args, _ = cli("view --transform file.sff")
         self.assertEqual(64, args)
 
 
@@ -945,7 +948,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     def test_search_default(self):
         """Test default find parameters"""
         cmd = "notes search 'mitochondria' --config-path {}".format(self.config_fn)
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'search')
         self.assertEqual(args.search_term, 'mitochondria')
         self.assertEqual(args.rows, 10)
@@ -960,7 +963,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
 
     def test_search_list_ontologies(self):
         """Test that we can list ontologies in OLS"""
-        args, _ = parse_args("notes search -L", use_shlex=True)
+        args, _ = cli("notes search -L")
         self.assertEqual(args.notes_subcommand, 'search')
         self.assertEqual(args.search_term, '')
         self.assertEqual(args.resource, 'ols')
@@ -968,7 +971,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
 
     def test_search_short_list_ontologies(self):
         """Test that we can short-list ontologies in OLS"""
-        args, _ = parse_args("notes search -l", use_shlex=True)
+        args, _ = cli("notes search -l")
         self.assertEqual(args.notes_subcommand, 'search')
         self.assertEqual(args.search_term, '')
         self.assertEqual(args.resource, 'ols')
@@ -976,55 +979,55 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
 
     def test_search_list_ontologies_non_OLS_fail(self):
         """Test failure for list ontologies for non OLS"""
-        args, _ = parse_args("notes search -l -R emdb", use_shlex=True)
+        args, _ = cli("notes search -l -R emdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -L -R emdb", use_shlex=True)
+        args, _ = cli("notes search -L -R emdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -O go -R emdb", use_shlex=True)
+        args, _ = cli("notes search -O go -R emdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -o -R emdb", use_shlex=True)
+        args, _ = cli("notes search -o -R emdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -x -R emdb", use_shlex=True)
+        args, _ = cli("notes search -x -R emdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -l -R pdb", use_shlex=True)
+        args, _ = cli("notes search -l -R pdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -L -R pdb", use_shlex=True)
+        args, _ = cli("notes search -L -R pdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -O go -R pdb", use_shlex=True)
+        args, _ = cli("notes search -O go -R pdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -o -R pdb", use_shlex=True)
+        args, _ = cli("notes search -o -R pdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -x -R pdb", use_shlex=True)
+        args, _ = cli("notes search -x -R pdb")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -l -R uniprot", use_shlex=True)
+        args, _ = cli("notes search -l -R uniprot")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -L -R uniprot", use_shlex=True)
+        args, _ = cli("notes search -L -R uniprot")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -O go -R uniprot", use_shlex=True)
+        args, _ = cli("notes search -O go -R uniprot")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -o -R uniprot", use_shlex=True)
+        args, _ = cli("notes search -o -R uniprot")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -x -R uniprot", use_shlex=True)
+        args, _ = cli("notes search -x -R uniprot")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -l -R europepmc", use_shlex=True)
+        args, _ = cli("notes search -l -R europepmc")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -L -R europepmc", use_shlex=True)
+        args, _ = cli("notes search -L -R europepmc")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -O go -R europepmc", use_shlex=True)
+        args, _ = cli("notes search -O go -R europepmc")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -o -R europepmc", use_shlex=True)
+        args, _ = cli("notes search -o -R europepmc")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -x -R europepmc", use_shlex=True)
+        args, _ = cli("notes search -x -R europepmc")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -l -R empiar", use_shlex=True)
+        args, _ = cli("notes search -l -R empiar")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -L -R empiar", use_shlex=True)
+        args, _ = cli("notes search -L -R empiar")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -O go -R empiar", use_shlex=True)
+        args, _ = cli("notes search -O go -R empiar")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -o -R empiar", use_shlex=True)
+        args, _ = cli("notes search -o -R empiar")
         self.assertEqual(args, 64)
-        args, _ = parse_args("notes search -x -R empiar", use_shlex=True)
+        args, _ = cli("notes search -x -R empiar")
         self.assertEqual(args, 64)
 
     def test_search_options(self):
@@ -1079,7 +1082,7 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
     # =========================================================================
     def test_list_default(self):
         """Test that we can list notes from an SFF file"""
-        args, _ = parse_args('notes list file.sff --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, _ = cli('notes list file.sff --config-path {}'.format(self.config_fn))
         # assertion
         self.assertEqual(args.notes_subcommand, 'list')
         self.assertEqual(args.sff_file, 'file.sff')
@@ -1089,25 +1092,25 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
 
     def test_list_long(self):
         """Test short list of notes"""
-        args, _ = parse_args('notes list -l file.sff --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, _ = cli('notes list -l file.sff --config-path {}'.format(self.config_fn))
         # assertions
         self.assertTrue(args.long_format)
 
     def test_list_shortcut(self):
         """Test that shortcut fails with list"""
-        args, _ = parse_args('notes list @ --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, _ = cli('notes list @ --config-path {}'.format(self.config_fn))
         # assertions
         self.assertEqual(args, 64)
 
     def test_list_sort_by_name(self):
         """Test list segments sorted by description"""
-        args, _ = parse_args('notes list -D file.sff --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, _ = cli('notes list -D file.sff --config-path {}'.format(self.config_fn))
         # assertions
         self.assertTrue(args.sort_by_name)
 
     def test_list_reverse_sort(self):
         """Test list sort in reverse"""
-        args, _ = parse_args('notes list -r file.sff --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, _ = cli('notes list -r file.sff --config-path {}'.format(self.config_fn))
         # assertions
         self.assertTrue(args.reverse)
 
@@ -1147,14 +1150,14 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
 class TestCoreParserTests(Py23FixTestCase):
     def test_tests_default(self):
         """Test that tests can be launched"""
-        args, _ = parse_args("tests all", use_shlex=True)
+        args, _ = cli("tests all")
         self.assertEqual(args.subcommand, 'tests')
         self.assertCountEqual(args.tool, ['all'])
 
     def test_tests_one_tool(self):
         """Test that with any tool we get proper tool"""
         tool = random.choice(tool_list)
-        args, _ = parse_args("tests {}".format(tool), use_shlex=True)
+        args, _ = cli("tests {}".format(tool))
         self.assertCountEqual(args.tool, [tool])
 
     def test_multi_tool(self):
@@ -1168,38 +1171,38 @@ class TestCoreParserTests(Py23FixTestCase):
             tools = ['all']
         elif 'all_sfftk' in tools:
             tools = ['all_sfftk']
-        args, _ = parse_args("tests {}".format(' '.join(tools)), use_shlex=True)
+        args, _ = cli("tests {}".format(' '.join(tools)))
         self.stderr(args.tool, tools)
         self.assertCountEqual(args.tool, tools)
 
     def test_tool_fail(self):
         """Test that we catch a wrong tool"""
-        args, _ = parse_args("tests wrong_tool_spec", use_shlex=True)
+        args, _ = cli("tests wrong_tool_spec")
         self.assertEqual(args, 64)
 
     def test_tests_no_tool(self):
         """Test that with no tool we simply get usage info"""
-        args, _ = parse_args("tests", use_shlex=True)
+        args, _ = cli("tests")
         self.assertEqual(args, 0)
 
     def test_valid_verbosity(self):
         """Test valid verbosity"""
-        args, _ = parse_args("tests all_sfftk -v 0", use_shlex=True)
+        args, _ = cli("tests all_sfftk -v 0")
         self.assertEqual(args.verbosity, 0)
-        args, _ = parse_args("tests all_sfftk -v 1", use_shlex=True)
+        args, _ = cli("tests all_sfftk -v 1")
         self.assertEqual(args.verbosity, 1)
-        args, _ = parse_args("tests all_sfftk -v 2", use_shlex=True)
+        args, _ = cli("tests all_sfftk -v 2")
         self.assertEqual(args.verbosity, 2)
-        args, _ = parse_args("tests all_sfftk -v 3", use_shlex=True)
+        args, _ = cli("tests all_sfftk -v 3")
         self.assertEqual(args.verbosity, 3)
 
     def test_invalid_verbosity(self):
         """Test that verbosity is in [0,3]"""
         v1 = _random_integer(start=4)
-        args, _ = parse_args("tests all_sfftk -v {}".format(v1), use_shlex=True)
+        args, _ = cli("tests all_sfftk -v {}".format(v1))
         self.assertEqual(args, 64)
         v2 = -_random_integer(start=0)
-        args, _ = parse_args("tests all_sfftk -v {}".format(v2), use_shlex=True)
+        args, _ = cli("tests all_sfftk -v {}".format(v2))
         self.assertEqual(args, 64)
 
 
@@ -1312,7 +1315,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             accession2=accession2,
             config_path=self.config_fn
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         # assertions
         self.assertEqual(args.notes_subcommand, 'add')
         self.assertCountEqual(args.segment_id, [segment_id])
@@ -1383,7 +1386,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             tx_id=tx_id,
             transform=transform
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.stderr(args)
         self.assertEqual(args.notes_subcommand, 'edit')
         self.assertEqual(args.name, name)
@@ -1440,7 +1443,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             accession2=accession2,
             config_path=self.config_fn
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'edit')
         self.assertCountEqual(args.segment_id, [segment_id])
         self.assertEqual(args.description, description)
@@ -1591,7 +1594,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = _random_integer(start=1)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=source_id, other_id=other_id, config_fn=self.config_fn, )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, [source_id])
         self.assertCountEqual(args.to_segment, [other_id])
@@ -1606,7 +1609,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = list(set(other_id).difference({source_id}))
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=source_id, other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, [source_id])
         self.assertCountEqual(args.to_segment, other_id)
@@ -1619,7 +1622,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = _random_integer(start=201, stop=400)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=other_id, config_fn=self.config_fn, )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, source_id)
         self.assertCountEqual(args.to_segment, [other_id])
@@ -1632,7 +1635,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         other_id = _random_integers(start=101, stop=200)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, other_id)), config_fn=self.config_fn, )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'copy')
         self.assertCountEqual(args.segment_id, source_id)
         self.assertCountEqual(args.to_segment, other_id)
@@ -1644,7 +1647,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         source_id = _random_integers(start=1)
         cmd = 'notes copy --segment-id {source_id} --to-segment {other_id} --config-path {config_fn} file.sff '.format(
             source_id=','.join(map(str, source_id)), other_id=','.join(map(str, source_id)), config_fn=self.config_fn, )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args, 64)
 
     def test_copy_all(self):
@@ -1655,7 +1658,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             source_id=source_id,
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertTrue(args.to_all)
 
     def test_copy_to_and_all_exception(self):
@@ -1667,7 +1670,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             config_fn=self.config_fn,
         )
         with self.assertRaises(SystemExit):
-            args, _ = parse_args(cmd, use_shlex=True)
+            args, _ = cli(cmd)
 
     def test_copy_from_global_notes(self):
         """Test copy from global"""
@@ -1676,7 +1679,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             other_id=','.join(map(str, other_id)),
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertTrue(args.from_global)
         self.assertFalse(args.to_global)
 
@@ -1687,7 +1690,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             source_id=source_id,
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertTrue(args.to_global)
         self.assertFalse(args.from_global)
 
@@ -1701,7 +1704,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             source_id=source_id,
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(args.notes_subcommand, 'clear')
         self.assertEqual(list(args.segment_id), [source_id])
         self.assertFalse(args.from_all_segments)
@@ -1713,7 +1716,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             source_id=','.join(map(str, source_id)),
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertEqual(list(args.segment_id), source_id)
 
     def test_clear_all_except_global(self):
@@ -1721,7 +1724,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         cmd = "notes clear --from-all-segments --config-path {config_fn} file.sff".format(
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertTrue(args.from_all_segments)
 
     def test_clear_global_only(self):
@@ -1729,7 +1732,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         cmd = "notes clear --from-global --config-path {config_fn} file.sff".format(
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertTrue(args.from_global)
 
     def test_clear_all(self):
@@ -1737,7 +1740,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         cmd = "notes clear --all --config-path {config_fn} file.sff".format(
             config_fn=self.config_fn,
         )
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         self.assertTrue(args.all)
         self.assertTrue(args.from_global)
         self.assertTrue(args.from_all_segments)
@@ -1753,10 +1756,10 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
             use_shlex=True)
         self.assertEqual(args.sff_file, 'file.sff')
         # can only save to an existing file
-        save_fn = os.path.join(TEST_DATA_PATH, 'sff', 'v0.7', 'emd_1014.sff')
+        save_fn = TEST_DATA_PATH / 'sff' / 'v0.7' / 'emd_1014.sff'
         args1, _ = parse_args("notes save {} --config-path {}".format(save_fn, self.config_fn), use_shlex=True)
         self.assertEqual(args1.notes_subcommand, 'save')
-        self.assertEqual(args1.sff_file, save_fn)
+        self.assertEqual(args1.sff_file, str(save_fn))
         self.assertEqual(args.config_path, self.config_fn)
 
     # ===========================================================================
@@ -1926,18 +1929,18 @@ class TestCoreUtils(Py23FixTestCase):
 class TestCorePrep(Py23FixTestCase):
     def test_binmap_default(self):
         """Test binarise map"""
-        test_map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
+        test_map_file = TEST_DATA_PATH / 'segmentations' / 'test_data.map'
         cmd = "prep binmap -v {}".format(test_map_file)
-        args, _ = parse_args(cmd, use_shlex=True)
+        args, _ = cli(cmd)
         ex_st = bin_map(args, _)
         self.assertEqual(ex_st, 0)
         # clean up
-        os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
+        os.remove(TEST_DATA_PATH / 'segmentations' / 'test_data_prep.map')
 
     def test_transform_stl_default(self):
         """Test transform stl"""
         # the original STL file
-        test_stl_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl')
+        test_stl_file = TEST_DATA_PATH / 'segmentations' / 'test_data.stl'
         # lengths = _random_floats(count=3, multiplier=1000)
         # indices = _random_integers(count=3, start=100, stop=1000)
         # origin = _random_floats(count=3, multiplier=10)
@@ -1988,3 +1991,54 @@ class TestCorePrep(Py23FixTestCase):
         self.assertTrue(numpy.allclose(transformd_vertex_v0, transformd_mesh.v0[v0_index]))
         self.assertTrue(numpy.allclose(transformd_vertex_v1, transformd_mesh.v1[v1_index]))
         self.assertTrue(numpy.allclose(transformd_vertex_v2, transformd_mesh.v2[v2_index]))
+
+    def test_mergemask_maps(self):
+        """Test correct argument handling for map merge"""
+        mergeable_maps = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask {' '.join(mergeable_maps)}")
+        self.assertEqual(mergeable_maps, args.masks)
+
+    def test_mergemask_must_be_two_or_more(self):
+        """Test that we print an error if only one mask is provided"""
+        args, _ = cli(f"prep mergemask {mergeable_maps[0]}")
+        self.assertEqual(64, args)
+
+    def test_mergemask_must_not_be_more_than_255(self):
+        """Test that we limit to a max of 255 maps"""
+        excessive_maps = [f"mask_{_}.map" for _ in range(300)]
+        args, _ = cli(f"prep mergemask {' '.join(excessive_maps)}")
+        self.assertEqual(64, args)
+        # all maps must have the same dimensions
+        # args, _ = cli(f"")
+        # all maps must have same mode
+        # all maps must be binary
+
+    # todo: move this test from here to another module
+    def test_merge_arrays(self):
+        """Test that we can merge mergeable_arrays of similar sizes"""
+        total_length = 1000
+        arr1 = numpy.zeros((total_length,), dtype=int)
+        index_set = set(range(len(arr1)))
+        mergeable_arrays = list()
+        individual_length = total_length // 3
+        while len(index_set) > individual_length:
+            indexes = random.sample(index_set, individual_length)
+            index_set = index_set.difference(indexes)
+            _array = numpy.zeros(total_length)
+            numpy.put(_array, indexes, 1)
+            mergeable_arrays.append(_array)
+        array_sum = mergeable_arrays[0] + mergeable_arrays[1] + mergeable_arrays[2]
+        self.assertEqual(1, numpy.amax(array_sum))
+        # unmergeable arrays
+        unmergeable_arrays = list()
+        index_set = list(range(len(arr1)))
+        while len(index_set) > individual_length:
+            indexes = random.choices(index_set, k=individual_length)
+            del index_set[-individual_length:]
+            _array = numpy.zeros(total_length)
+            numpy.put(_array, indexes, 1)
+            unmergeable_arrays.append(_array)
+        array_sum = unmergeable_arrays[0] + unmergeable_arrays[1] + unmergeable_arrays[2]
+        self.assertTrue(numpy.amax(array_sum) > 1)
