@@ -1,6 +1,7 @@
 """
 Unit tests for :py:mod:`sfftk.core` package
 """
+import argparse
 import contextlib
 import os
 import pathlib
@@ -1994,26 +1995,81 @@ class TestCorePrep(Py23FixTestCase):
 
     def test_mergemask_maps(self):
         """Test correct argument handling for map merge"""
-        mergeable_maps = [
+        mergeable_masks = [
             str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
         ]
-        args, _ = cli(f"prep mergemask {' '.join(mergeable_maps)}")
-        self.assertEqual(mergeable_maps, args.masks)
+        args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
+        self.assertEqual(mergeable_masks, args.masks)
 
     def test_mergemask_must_be_two_or_more(self):
         """Test that we print an error if only one mask is provided"""
-        args, _ = cli(f"prep mergemask {mergeable_maps[0]}")
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask {mergeable_masks[0]}")
         self.assertEqual(64, args)
 
     def test_mergemask_must_not_be_more_than_255(self):
         """Test that we limit to a max of 255 maps"""
-        excessive_maps = [f"mask_{_}.map" for _ in range(300)]
-        args, _ = cli(f"prep mergemask {' '.join(excessive_maps)}")
+        # fail
+        excessive_masks = [f"mask_{_}.map" for _ in range(300)]
+        args, _ = cli(f"prep mergemask {' '.join(excessive_masks)}")
         self.assertEqual(64, args)
-        # all maps must have the same dimensions
-        # args, _ = cli(f"")
-        # all maps must have same mode
-        # all maps must be binary
+
+    def test_mergemask_all_same_dimension(self):
+        """Test that we catch all maps must have the same dimensions"""
+        # pass
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
+        self.assertIsInstance(args, argparse.Namespace)
+        # fail
+        masks_to_merge = [
+            str(TEST_DATA_PATH / 'segmentations' / 'mergeable_1.map'),
+            str(TEST_DATA_PATH / 'segmentations' / 'unmergeable_7.map'),
+        ]
+        args, _ = cli(f"prep mergemask {' '.join(masks_to_merge)}")
+        self.assertEqual(65, args)
+
+    def test_mergemask_all_masks_exist(self):
+        """Test that all masks exist"""
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
+        self.assertIsInstance(args, argparse.Namespace)
+
+    def test_mergemask_all_correct_files(self):
+        """Test that all masks have the correct file type"""
+        # fail
+        mergeable_masks = [
+                              str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+                          ] + [
+                              str(TEST_DATA_PATH / 'segmentation' / f'test_data.mod')
+                          ]
+        args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
+        self.assertEqual(65, args)
+
+    def test_mergemask_all_same_mode(self):
+        """Test we check that all maps must have same mode"""
+        # pass
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
+        self.assertIsInstance(args, argparse.Namespace)
+        # fail
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ] + [
+            str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(8, 11)
+        ]
+        args, _ = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+
+    def test_mergemask_all_binary(self):
+        """Test that we check that all maps must be binary"""
+        #
 
     # todo: move this test from here to another module
     def test_merge_arrays(self):

@@ -344,6 +344,7 @@ mergemask_prep_parser = prep_subparsers.add_parser(
 )
 add_args(mergemask_prep_parser, config_path)
 add_args(mergemask_prep_parser, shipped_configs)
+add_args(mergemask_prep_parser, verbose)
 mergemask_prep_parser.add_argument(
     'masks',
     nargs='+',
@@ -1027,6 +1028,63 @@ def _set_subtype_index(args, ext):
     return args
 
 
+def _masks_exist(args: argparse.Namespace) -> bool:
+    """Test whether all mask files exist"""
+    all_exist = True
+    for mask in args.masks:
+        if not os.path.exists(mask):
+            all_exist = all_exist and False
+            if args.verbose:
+                print_date(f"missing mask: {mask}")
+    return all_exist
+
+
+def _mask_all_correct_files(args: argparse.Namespace) -> bool:
+    """Test that all masks have the right file format"""
+    all_masks = True
+    for mask in args.masks:
+        if not re.search(r"(map|mrc|rec)$", mask, re.IGNORECASE):
+            all_masks = all_masks and False
+            if args.verbose:
+                print_date(f"invalid extension {mask}")
+    return all_masks
+
+
+def _masks_have_same_dimensions(args: argparse.Namespace) -> bool:
+    """Test that a list of paths to masks have the same dimensions"""
+    dimensions = list()
+    from ..readers.mapreader import Map
+    for filename in args.masks:
+        this_map = Map(filename, header_only=True)
+        dimension = (this_map._nc, this_map._nr, this_map._ns)
+        if args.verbose:
+            print_date(f"info: mask {filename} has dimension {dimension} ")
+        dimensions.append(dimension)
+    dimension_comparisons = list(map(lambda d: d == dimensions[0], dimensions))
+    return all(dimension_comparisons)
+
+
+def _masks_have_same_mode(args: argparse.Namespace) -> bool:
+    """Test that a list of paths to masks have the same mode"""
+    modes = list()
+    from ..readers.mapreader import Map
+    for filename in args.masks:
+        this_map = Map(filename, header_only=True)
+        mode = this_map._mode
+        if args.verbose:
+            print_date(f"info: mask {filename} has mode {mode} ")
+        modes.append(mode)
+    modes_comparisons = list(map(lambda d: d == modes[0], modes))
+    return all(modes_comparisons)
+
+
+def _masks_all_binary(args: argparse.Namespace) -> bool:
+    """Validate that all masks are binary masks"""
+    # todo: for small files read all data
+    # todo: for large files only read the first X bytes
+    # todo: give the user the option to read full files for large files
+
+
 # parser function
 def parse_args(_args, use_shlex=False):
     """
@@ -1185,11 +1243,27 @@ def parse_args(_args, use_shlex=False):
         # mergemask
         elif args.prep_subcommand == 'mergemask':
             if len(args.masks) < 2:
-                print_date("mergemask requires two or more masks")
+                print_date("error: mergemask requires two or more masks")
                 return 64, configs
             if len(args.masks) > 255:
-                print_date(f"mergemask can handle at most 255 masks ({len(args.masks)} provided)")
+                print_date(f"error: mergemask can handle at most 255 masks ({len(args.masks)} provided)")
                 return 64, configs
+            if not _masks_exist(args):
+                print_date(f"error: one or more masks missing; please verify that all paths are correct")
+                return 65, configs
+            if not _mask_all_correct_files(args):
+                print_date(f"error: one or more invalid file formats; please retry")
+                return 65, configs
+            if not _masks_have_same_dimensions(args):
+                print_date(
+                    f"error: inhomogenious masks: dimension differs between masks (use --verbose to view details)")
+                return 65, configs
+            if not _masks_have_same_mode(args):
+                print_date(f"error: inhomogeneous masks: mode differs between masks (use --verbose to view details)")
+                return 65, configs
+            if not _masks_all_binary(args):
+                print_date(f"error: non-binary mask detected (use --verbose to view details)")
+                return 65, configs
 
     # view
     elif args.subcommand == 'view':

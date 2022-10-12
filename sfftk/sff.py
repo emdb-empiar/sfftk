@@ -17,6 +17,22 @@ __date__ = '2017-02-15'
 __updated__ = '2018-02-23'
 
 
+def handle_prep_mergemask(args, configs):
+    """Handle `prep mergemask`
+
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
+    :param configs: configurations object
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
+    """
+    if all(map(lambda mask: re.search(r'.*\.(map|mrc|rec)$', mask, re.IGNORECASE), args.masks)):
+        from .core.prep import mergemask
+        return mergemask(args, configs)
+    return 65
+
+
 def handle_prep(args, configs):
     """Handle `prep` subcommand
 
@@ -27,15 +43,22 @@ def handle_prep(args, configs):
     :return exit_status: exit status
     :rtype exit_status: int
     """
-    if re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
-        from .core.prep import bin_map
-        return bin_map(args, configs)
-    elif re.match(r'.*\.(stl)$', args.from_file, re.IGNORECASE):
-        from .core.prep import transform
-        return transform(args, configs)
-    else:
-        print_date("No prep protocol for file type {}".format(args.from_file))
-        return 65
+    if args.prep_subcommand == 'binmap':
+        if re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
+            from .core.prep import bin_map
+            return bin_map(args, configs)
+        else:
+            print_date("No prep protocol for file type {}".format(args.from_file))
+            return 65
+    elif args.prep_subcommand == 'transform':
+        if re.match(r'.*\.(stl)$', args.from_file, re.IGNORECASE):
+            from .core.prep import transform
+            return transform(args, configs)
+        else:
+            print_date("No prep protocol for file type {}".format(args.from_file))
+            return 65
+    elif args.prep_subcommand == 'mergemask':
+        return handle_prep_mergemask(args, configs)
 
 
 def handle_convert(args, configs):  # @UnusedVariable
@@ -117,7 +140,8 @@ def handle_convert(args, configs):  # @UnusedVariable
         if args.image:
             from .readers.mapreader import compute_transform
             transform = compute_transform(args.image)
-        sff_seg = seg.convert(details=args.details, verbose=args.verbose, transform=transform)  # convert according to args
+        sff_seg = seg.convert(details=args.details, verbose=args.verbose,
+                              transform=transform)  # convert according to args
         # export as args.format
         if args.verbose:
             print_date("Exporting to {}".format(args.output))
@@ -585,8 +609,8 @@ def main():
         from .core.parser import parse_args
         args, configs = parse_args(sys.argv[1:])
         # missing args
-        if args == 64:
-            return 64
+        if args != 0 and isinstance(args, int):
+            return args
         elif args == 0:  # e.g. show version has no error but has no handler either
             return 0
         # subcommands

@@ -144,3 +144,16 @@ def transform_stl_mesh(mesh, transform):
     out_mesh.y += transform[1, 3]
     out_mesh.z += transform[2, 3]
     return out_mesh
+
+
+def mergemask(args, configs):
+    """Merge two or more (max 255) masks into one with a distinct label for each mask
+
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
+    :param configs: configurations object
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return: exit status
+    :rtype: int
+    """
+    print(args.masks)
