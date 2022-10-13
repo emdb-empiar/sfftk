@@ -2051,21 +2051,30 @@ class TestCorePrep(Py23FixTestCase):
         args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
         self.assertEqual(65, args)
 
-    def test_mergemask_all_same_mode(self):
-        """Test we check that all maps must have same mode"""
-        # pass
-        mergeable_masks = [
-            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
-        ]
-        args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
-        self.assertIsInstance(args, argparse.Namespace)
+    # def test_mergemask_all_same_mode(self):
+    #     """Test we check that all maps must have same mode"""
+    #     # pass
+    #     mergeable_masks = [
+    #         str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+    #     ]
+    #     args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
+    #     self.assertIsInstance(args, argparse.Namespace)
+    #     # fail
+    #     mergeable_masks = [
+    #                           str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+    #                       ] + [
+    #                           str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(8, 11)
+    #                       ]
+    #     args, _ = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+
+    def test_mergemask_catch_nonzero_mode(self):
+        """Test that we catch non-zero mode"""
         # fail
         mergeable_masks = [
-            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
-        ] + [
             str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(8, 11)
         ]
         args, _ = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        self.assertEqual(65, args)
 
     def test_mergemask_all_binary(self):
         """Test that we check that all maps must be binary"""

@@ -1064,18 +1064,30 @@ def _masks_have_same_dimensions(args: argparse.Namespace) -> bool:
     return all(dimension_comparisons)
 
 
-def _masks_have_same_mode(args: argparse.Namespace) -> bool:
-    """Test that a list of paths to masks have the same mode"""
-    modes = list()
+# def _masks_have_same_mode(args: argparse.Namespace) -> bool:
+#     """Test that a list of paths to masks have the same mode"""
+#     modes = list()
+#     from ..readers.mapreader import Map
+#     for filename in args.masks:
+#         this_map = Map(filename, header_only=True)
+#         mode = this_map._mode
+#         if args.verbose:
+#             print_date(f"info: mask {filename} has mode {mode} ")
+#         modes.append(mode)
+#     modes_comparisons = list(map(lambda d: d == modes[0], modes))
+#     return all(modes_comparisons)
+
+
+def _masks_have_mode_zero(args: argparse.Namespace) -> bool:
+    """Test that mode must be zero to proceed"""
     from ..readers.mapreader import Map
     for filename in args.masks:
         this_map = Map(filename, header_only=True)
-        mode = this_map._mode
-        if args.verbose:
-            print_date(f"info: mask {filename} has mode {mode} ")
-        modes.append(mode)
-    modes_comparisons = list(map(lambda d: d == modes[0], modes))
-    return all(modes_comparisons)
+        if this_map._mode != 0:
+            if args.verbose:
+                print_date(f"error: mask {filename} has mode {this_map._mode}; mode must be 0")
+            return False
+    return True
 
 
 def _masks_all_binary(args: argparse.Namespace) -> bool:
@@ -1258,8 +1270,11 @@ def parse_args(_args, use_shlex=False):
                 print_date(
                     f"error: inhomogenious masks: dimension differs between masks (use --verbose to view details)")
                 return 65, configs
-            if not _masks_have_same_mode(args):
-                print_date(f"error: inhomogeneous masks: mode differs between masks (use --verbose to view details)")
+            # if not _masks_have_same_mode(args):
+            #     print_date(f"error: inhomogeneous masks: mode differs between masks (use --verbose to view details)")
+            #     return 65, configs
+            if not _masks_have_mode_zero(args):
+                print_date(f"error: mode must be zero (0); please run `sff prep binmap` first on all masks")
                 return 65, configs
             if not _masks_all_binary(args):
                 print_date(f"error: non-binary mask detected (use --verbose to view details)")
