@@ -371,7 +371,7 @@ class Map(object):
         the number of voxel values is not greater than `voxel_value_threshold`.
 
         :param float mask_value: the mask value
-        :param int voxel_value_threshold: the maxmimum number of voxel values permitted in fixing the mask
+        :param int voxel_values_threshold: the maxmimum number of voxel values permitted in fixing the mask
         """
         assert voxel_values_threshold > 2  # no need to fix a proper mask (value of 2)
 

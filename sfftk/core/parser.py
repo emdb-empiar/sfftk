@@ -351,6 +351,22 @@ mergemask_prep_parser.add_argument(
     help="a sequence of two masks in a CCP4-like format e.g. .mrc, .map, .rec; "
          "the order of placement determines the order of labels"
 )
+mergemask_prep_parser.add_argument(
+    '-P', '--output-prefix',
+    default="merged_mask",
+    help="the prefix to use for the output; two files are written to the output: merged_mask.mrc and merged_mask.txt "
+         "(metadata showing the mask-label relations)"
+)
+mergemask_prep_parser.add_argument(
+    '--mask-extension',
+    default="mrc",
+    help="the file extension to use [default: 'mrc']"
+)
+mergemask_prep_parser.add_argument(
+    '--overwrite',
+    action='store_true',
+    help="if the output already exists overwrite it [dfault: False]"
+)
 
 # =========================================================================
 # convert subparser
@@ -1090,13 +1106,6 @@ def _masks_have_mode_zero(args: argparse.Namespace) -> bool:
     return True
 
 
-def _masks_all_binary(args: argparse.Namespace) -> bool:
-    """Validate that all masks are binary masks"""
-    # todo: for small files read all data
-    # todo: for large files only read the first X bytes
-    # todo: give the user the option to read full files for large files
-
-
 # parser function
 def parse_args(_args, use_shlex=False):
     """
@@ -1270,14 +1279,8 @@ def parse_args(_args, use_shlex=False):
                 print_date(
                     f"error: inhomogenious masks: dimension differs between masks (use --verbose to view details)")
                 return 65, configs
-            # if not _masks_have_same_mode(args):
-            #     print_date(f"error: inhomogeneous masks: mode differs between masks (use --verbose to view details)")
-            #     return 65, configs
             if not _masks_have_mode_zero(args):
                 print_date(f"error: mode must be zero (0); please run `sff prep binmap` first on all masks")
-                return 65, configs
-            if not _masks_all_binary(args):
-                print_date(f"error: non-binary mask detected (use --verbose to view details)")
                 return 65, configs
 
     # view
@@ -1669,6 +1672,5 @@ external reference IDs for segment {}".format(args.segment_id))
 def cli(cmd: str) -> (argparse.Namespace, configparser.ConfigParser):
     """CLI function"""
     import shlex
-    print(cmd)
     sys.argv = shlex.split(cmd)
     return parse_args(sys.argv)

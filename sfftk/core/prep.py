@@ -4,7 +4,9 @@
 
 This module consists of preparation utilities to condition segmentation files prior to conversion.
 """
+import asyncio
 import re
+import sys
 
 import mrcfile
 import numpy
@@ -146,6 +148,82 @@ def transform_stl_mesh(mesh, transform):
     return out_mesh
 
 
+async def _mask_is_binary(mask, verbose=False):
+    """Corouting to check whether individual masks are binary"""
+    from ..readers.mapreader import Map
+    this_map = Map(mask)
+    if verbose:
+        print_date(f"info: assessing {mask}...")
+    # if a mask is binary but not with non-zero value of 1 fix this
+    if 1 not in this_map._voxel_values:
+        if verbose:
+            print_date(f"info: fixing {mask} with voxel values {this_map._voxel_values}...")
+        this_map.fix_mask(mask_value=1)
+    return this_map.is_mask
+
+
+async def _check_masks_binary(args, configs):
+    """Corourite to run the event loop for all masks"""
+    awaitables = list()
+    for mask in args.masks:
+        awaitables.append(_mask_is_binary(mask, verbose=args.verbose))
+    return await asyncio.gather(*awaitables)
+
+
+def _masks_all_binary(args, configs):
+    """Check whether all masks are binary"""
+    """Validate that all masks are binary masks"""
+    # todo: for small files read all data
+    # todo: for large files only read the first X bytes
+    # todo: give the user the option to read full files for large files
+    if sys.version_info.minor > 6:
+        all_binary = asyncio.run(_check_masks_binary(args, configs))
+    else:
+        loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            loop = asyncio.new_event_loop()
+        all_binary = loop.run_until_complete(_check_masks_binary(args, configs))
+        loop.close()
+    return all(all_binary)
+
+
+def _masks_no_overlap(args, configs):
+    """Checks that all segments do not overlap"""
+    # make all binary
+    # current_data = None
+    from ..readers.mapreader import Map
+    previous_mask = None
+    for mask in args.masks:
+        this_map = Map(mask)
+        if 'current_data' not in locals():
+            current_data = numpy.zeros(this_map.voxels.shape)
+        # if current_data is None:
+        #     current_data = this_map.voxels
+        #     continue
+        # add all volumes
+        current_data += this_map.voxels
+        if numpy.amax(current_data) > 1:
+            print_date(f"warning: segment overlap between mask {mask} and {previous_mask}")
+        previous_mask = mask
+    # the max should be 1
+    max_voxel_value = numpy.amax(current_data)
+    return max_voxel_value == 1
+
+
+def _mergemask(args, configs) -> [numpy.ndarray, dict]:
+    """The mergemask workhorse which does the actual merging"""
+    from ..readers.mapreader import Map
+    import pathlib
+    label_dict = dict()
+    for label, mask in enumerate(args.masks, start=1):
+        this_map = Map(mask)
+        if 'output_mask' not in locals():
+            output_mask = numpy.zeros(this_map.voxels.shape, dtype=numpy.int8)
+        output_mask += this_map.voxels * label
+        label_dict[pathlib.Path(mask).name] = label
+    return output_mask, label_dict
+
+
 def mergemask(args, configs):
     """Merge two or more (max 255) masks into one with a distinct label for each mask
 
@@ -156,4 +234,37 @@ def mergemask(args, configs):
     :return: exit status
     :rtype: int
     """
-    print(args.masks)
+    # some sanity checks
+    # ensure that the files are binary
+    if not _masks_all_binary(args, configs):
+        print_date(f"error: one or more masks are non-binary; use --verbose to view details")
+        return 65
+    # todo: allow cases where one or more files are non-binary
+    # ensure that they don't overlap each other
+    if not _masks_no_overlap(args, configs):
+        print_date(f"error: one or more masks overlap; use --verbose to view details")
+        return 65
+    # now we can merge masks
+    if args.verbose:
+        print_date(f"info: proceeding to merge masks...")
+    merged_mask, label_dict = _mergemask(args, configs)
+    if args.verbose:
+        print_date(f"info: merge complete...")
+    if args.verbose:
+        print_date(f"info: attempting to write output ti {args.output_prefix}.{args.mask_extension}...")
+    try:
+        with mrcfile.new(f"{args.output_prefix}.{args.mask_extension}", overwrite=args.overwrite) as mrc:
+            mrc.set_data(merged_mask)
+    except ValueError:
+        print_date(f"error: the file already exists; use --overwrite to overwrite the existing merged_mask or set a "
+                   f"new output prefix using --output-prefix")
+        return 64
+    else:  # only create the label file if no exception is raised in creating the mask
+        if args.verbose:
+            print_date(f"info: attempting to write label file {args.output_prefix}.txt...")
+        with open(f"{args.output_prefix}.txt", 'w') as label_file:
+            for mask_name, mask_label in label_dict.items():
+                print(mask_name, mask_label, sep="\t", file=label_file)
+    if args.verbose:
+        print_date(f"info: merge complete!")
+    return 0

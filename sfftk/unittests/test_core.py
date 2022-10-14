@@ -9,6 +9,7 @@ import random
 import shlex
 import shutil
 import sys
+import unittest
 from io import StringIO
 
 import numpy
@@ -39,19 +40,19 @@ __date__ = "2017-05-15"
 class TestParser(Py23FixTestCase):
     def test_default(self):
         """Test that default operation is OK"""
-        args, configs = parse_args("--version", use_shlex=True)
+        args, configs = cli("--version")
         self.assertEqual(args, 0)
         self.assertIsNone(configs)
 
     def test_use_shlex(self):
         """Test that we can use shlex i.e. treat command as string"""
-        args, configs = parse_args("--version", use_shlex=True)
+        args, configs = cli("--version")
         self.assertEqual(args, 0)
         self.assertIsNone(configs)
 
     def test_fail_use_shlex(self):
         """Test that we raise an error when use_shlex=True but _args not str"""
-        args, configs = parse_args("--version", use_shlex=True)
+        args, configs = cli("--version")
         self.assertEqual(args, 0)
         self.assertIsNone(configs)
 
@@ -288,7 +289,7 @@ class TestCoreConfigs(Py23FixTestCase):
         set_configs(args, configs)
         # now user configs should exist
         self.assertTrue(os.path.exists(os.path.expanduser("~/.sfftk/sff.conf")))
-        args, configs = parse_args('view file.sff', use_shlex=True)
+        args, configs = cli('view file.sff')
         self.assertEqual(configs['NAME'], 'VALUE')
 
     def test_precedence_config_path(self):
@@ -309,25 +310,25 @@ class TestCoreConfigs(Py23FixTestCase):
         config_file_path = get_config_file_path(args)
         configs = load_configs(config_file_path)
         set_configs(args, configs)
-        args, configs = parse_args('view file.sff --shipped-configs', use_shlex=True)
+        args, configs = cli('view file.sff --shipped-configs')
         self.assertEqual(configs['__TEMP_FILE'], './temp-annotated.json')
         self.assertEqual(configs['__TEMP_FILE_REF'], '@')
         self.assertNotIn('NAME', configs)
 
     def test_get_configs(self):
         """Test that we can get a config by name"""
-        args, configs = parse_args('config get __TEMP_FILE --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, configs = cli('config get __TEMP_FILE --config-path {}'.format(self.config_fn))
         self.assertTrue(get_configs(args, configs) == 0)
 
     def test_get_all_configs(self):
         """Test that we can list all configs"""
-        args, configs = parse_args('config get --all --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, configs = cli('config get --all --config-path {}'.format(self.config_fn))
         self.assertTrue(get_configs(args, configs) == 0)
         self.assertTrue(len(configs) > 0)
 
     def test_get_absent_configs(self):
         """Test that we are notified when a config is not found"""
-        args, configs = parse_args('config get alsdjf;laksjflk --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, configs = cli('config get alsdjf;laksjflk --config-path {}'.format(self.config_fn))
         self.assertTrue(get_configs(args, configs) == 1)
 
     def test_set_configs(self):
@@ -343,7 +344,7 @@ class TestCoreConfigs(Py23FixTestCase):
 
     def test_set_new_configs(self):
         """Test that new configs will by default be written to user configs .i.e. ~/sfftk/sff.conf"""
-        args, configs = parse_args('config set --force NAME VALUE', use_shlex=True)
+        args, configs = cli('config set --force NAME VALUE')
         self.assertTrue(set_configs(args, configs) == 0)
         _, configs = parse_args('config get --all', use_shlex=True)
         D = _dict()
@@ -352,7 +353,7 @@ class TestCoreConfigs(Py23FixTestCase):
 
     def test_set_force_configs(self):
         """Test that forcing works"""
-        args, configs = parse_args('config set --force NAME VALUE', use_shlex=True)
+        args, configs = cli('config set --force NAME VALUE')
         self.assertTrue(set_configs(args, configs) == 0)
         self.assertTrue(configs['NAME'] == 'VALUE')
         args, configs_after = parse_args('config set --force NAME VALUE1', use_shlex=True)
@@ -377,7 +378,7 @@ class TestCoreConfigs(Py23FixTestCase):
 
     def test_del_all_configs(self):
         """Test that we can delete all configs"""
-        args, configs = parse_args('config del --force --all --config-path {}'.format(self.config_fn), use_shlex=True)
+        args, configs = cli('config del --force --all --config-path {}'.format(self.config_fn))
         self.assertTrue(del_configs(args, configs) == 0)
         _, configs = parse_args('config get --all --config-path {}'.format(self.config_fn), use_shlex=True)
         self.assertTrue(len(configs) == 0)
@@ -1918,8 +1919,7 @@ class TestCoreUtils(Py23FixTestCase):
 
     def test_parse_and_split(self):
         """Test the parser utility"""
-        cmd = 'notes list file.sff'
-        args, configs = parse_args(cmd, use_shlex=True)
+        args, configs = cli('notes list file.sff')
         self.assertEqual(args.subcommand, 'notes')
         self.assertEqual(args.notes_subcommand, 'list')
         self.assertEqual(args.sff_file, 'file.sff')
@@ -1948,13 +1948,13 @@ class TestCorePrep(Py23FixTestCase):
         lengths = (2000, 2000, 2000)
         indices = (1000, 1000, 1000)
         origin = (100, 200, 300)
-        args, _ = parse_args(
+        args, _ = cli(
             "prep transform --lengths {lengths} --indices {indices} --origin {origin} --verbose {file}".format(
                 file=test_stl_file,
                 lengths=' '.join(map(str, lengths)),
                 indices=' '.join(map(str, indices)),
                 origin=' '.join(map(str, origin)),
-            ), use_shlex=True)
+            ))
         # manual_transform
         lengths = numpy.array(args.lengths, dtype=numpy.float32)
         indices = numpy.array(args.indices, dtype=numpy.int32)
@@ -2051,22 +2051,6 @@ class TestCorePrep(Py23FixTestCase):
         args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
         self.assertEqual(65, args)
 
-    # def test_mergemask_all_same_mode(self):
-    #     """Test we check that all maps must have same mode"""
-    #     # pass
-    #     mergeable_masks = [
-    #         str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
-    #     ]
-    #     args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
-    #     self.assertIsInstance(args, argparse.Namespace)
-    #     # fail
-    #     mergeable_masks = [
-    #                           str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
-    #                       ] + [
-    #                           str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(8, 11)
-    #                       ]
-    #     args, _ = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
-
     def test_mergemask_catch_nonzero_mode(self):
         """Test that we catch non-zero mode"""
         # fail
@@ -2076,11 +2060,18 @@ class TestCorePrep(Py23FixTestCase):
         args, _ = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
         self.assertEqual(65, args)
 
-    def test_mergemask_all_binary(self):
-        """Test that we check that all maps must be binary"""
-        #
+    def test_mergemask_output_prefix(self):
+        """Test that we set the output prefix"""
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        self.assertEqual("merged_mask", args.output_prefix)
+        self.assertEqual("mrc", args.mask_extension)
+        self.assertFalse(args.overwrite)
 
-    # todo: move this test from here to another module
+
+class TestPrep(unittest.TestCase):
     def test_merge_arrays(self):
         """Test that we can merge mergeable_arrays of similar sizes"""
         total_length = 1000
@@ -2107,3 +2098,107 @@ class TestCorePrep(Py23FixTestCase):
             unmergeable_arrays.append(_array)
         array_sum = unmergeable_arrays[0] + unmergeable_arrays[1] + unmergeable_arrays[2]
         self.assertTrue(numpy.amax(array_sum) > 1)
+
+    def test_masks_all_binary(self):
+        """Test that all masks are binary"""
+        from ..core.prep import _masks_all_binary
+        # positive case
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        self.assertTrue(_masks_all_binary(args, configs))
+        # negative case
+        unmergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, configs = cli(f"prep mergemask --verbose {' '.join(unmergeable_masks)}")
+        self.assertTrue(_masks_all_binary(args, configs))
+
+    def test_masks_overlap(self):
+        """Test that we can detect overlapping masks"""
+        from ..core.prep import _masks_no_overlap
+        # positive case
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        self.assertTrue(_masks_no_overlap(args, configs))
+        # negative case
+        unmergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, configs = cli(f"prep mergemask --verbose {' '.join(unmergeable_masks)}")
+        self.assertFalse(_masks_no_overlap(args, configs))
+
+    def test_mergemask(self):
+        """Test that we can merge masks"""
+        # suppose we have N non-overlapping binary masks in mode 0
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        from ..core.prep import _mergemask
+        merged_mask, label_dict = _mergemask(args, configs)
+        # after the merge we expect the following to be true
+        # max voxel value is equal to the cardinality of the masks
+        self.assertIsInstance(label_dict, dict)
+        self.assertEqual(
+            {
+                'mergeable_1.map': 1,
+                'mergeable_2.map': 2,
+                'mergeable_3.map': 3,
+            },
+            label_dict
+        )
+        self.assertEqual(len(mergeable_masks), numpy.amax(merged_mask))
+        # voxels are still uint8
+        self.assertEqual(numpy.dtype('int8'), merged_mask.dtype)
+        # no change in shape
+        self.assertEqual((10, 10, 10), merged_mask.shape)  # I know this!
+
+    def test_actual_mergemask(self):
+        """Test an actual merge of masks"""
+        # given a set of N non-overlapping binary masks in mode 0
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        from ..core.prep import mergemask
+        args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        exit_status = mergemask(args, configs)
+        self.assertEqual(0, exit_status)
+        # we expect to see merged_mask.mrc
+        self.assertTrue(os.path.exists("merged_mask.mrc"))
+        # we expect to see merged_mask.txt
+        self.assertTrue(os.path.exists("merged_mask.txt"))
+        # if merged_mask.{mrc,txt} exist then halt; only proceed if --overwrite was specified
+        args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
+        exit_status = mergemask(args, configs)
+        self.assertEqual(64, exit_status)
+        # the order of masks in merged_mask.txt is as original
+        with open("merged_mask.txt") as f:
+            mask_order = [row.strip().split("\t")[0] for row in f]
+        self.assertEqual(
+            list(map(lambda m: pathlib.Path(m).name, mergeable_masks)),
+            mask_order,
+        )
+        # if we change the prefix and mask-extension then the file should change
+        args, configs = cli(
+            f"prep mergemask --verbose --overwrite --output-prefix my_masks "
+            f"--mask-extension map {' '.join(mergeable_masks)}"
+        )
+        _ = mergemask(args, configs)
+        self.assertTrue(os.path.exists("my_masks.map"))
+        self.assertTrue(os.path.exists("my_masks.txt"))
+        # delete the custom prefix and mask-extension files
+        try:
+            os.remove("my_masks.map")
+            os.remove("my_masks.txt")
+        except FileNotFoundError:
+            pass
+        # delete the output files
+        try:
+            os.remove("merged_mask.mrc")
+            os.remove("merged_mask.txt")
+        except FileNotFoundError:
+            pass
