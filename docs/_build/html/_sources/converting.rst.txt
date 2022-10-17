@@ -29,6 +29,7 @@ displays all conversion options.
     usage: sff convert [-h] [-D DETAILS] [-R PRIMARY_DESCRIPTOR] [-v] [-x]
                        [--json-indent JSON_INDENT] [--json-sort]
                        [-o OUTPUT | -f FORMAT] [-p CONFIG_PATH] [-b] [-a] [-m]
+                       [--subtype-index SUBTYPE_INDEX] [--image IMAGE]
                        [from_file [from_file ...]]
 
     Perform conversions to EMDB-SFF
@@ -70,6 +71,10 @@ displays all conversion options.
                             segments of a single segmentation; only works for the
                             following filetypes: stl, map, mrc, rec [default:
                             False]
+      --subtype-index SUBTYPE_INDEX
+                            some file extensions are used by multiple file types
+      --image IMAGE         specify the segmented EMDB MAP/MRC file from which to
+                            determine the correct image-to-physical transform
 
 
 Quick Start
@@ -81,6 +86,34 @@ Output to XML (Default)
 .. code:: bash
 
     sff convert file.seg
+
+.. note:: `New in version 0.7.0.`
+
+    Without any other arguments, the above command will print out the following warning:
+
+    .. code:: bash
+
+        Warning: missing --image <file.map> option to accurately determine image-to-physical transform
+
+    ``sfftk`` assumes that the original segmented image is specified as an `MRC`-like file e.g. ``*.map`` (images deposited into EMDB), ``*.mrc`` or compatible formats such as ``*.rec`` used by IMOD, which have metadata to compute this transform.
+
+Specifying the Segmented Image File
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First, ensure that the segmented image is specified in an `MRC`-like format. For images deposited in the EMDB use the deposited image.
+
+Use the ``--image`` argument to specify the segmented image.
+
+.. code:: bash
+
+    sff convert --image file.map file.seg
+
+Some segmentation file formats specify the transform and ``sfftk`` will fall back on this if the image is not specified.
+
+.. note:: **Viewing transforms**
+
+    To view the transform inferred from the image file use ``sff view --transform file.map``. Visit the view documentation pages :ref:`show_image_to_physical_transform` for more information.
+
 
 Specify Output File
 ~~~~~~~~~~~~~~~~~~~

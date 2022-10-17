@@ -8,3 +8,4 @@ h5py
 scipy
 backports.shutil_get_terminal_size
 mrcfile
+sphinx-rtd-theme

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.formats package &mdash; sfftk v0.7.0 documentation</title>
+  <title>sfftk.formats package &mdash; sfftk v0.8.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.7
+                v0.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -53,30 +54,65 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sfftk.formats</span></code> package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.am">AmiraMesh format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-am"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.am</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.am.AmiraMeshAnnotation"><code class="docutils literal notranslate"><span class="pre">AmiraMeshAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.am.AmiraMeshHeader"><code class="docutils literal notranslate"><span class="pre">AmiraMeshHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.am.AmiraMeshMesh"><code class="docutils literal notranslate"><span class="pre">AmiraMeshMesh</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.am.AmiraMeshSegment"><code class="docutils literal notranslate"><span class="pre">AmiraMeshSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.am.AmiraMeshSegmentation"><code class="docutils literal notranslate"><span class="pre">AmiraMeshSegmentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.am.AmiraMeshVolume"><code class="docutils literal notranslate"><span class="pre">AmiraMeshVolume</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.survos">SuRVoS format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-survos"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.survos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.survos.SuRVoSSegment"><code class="docutils literal notranslate"><span class="pre">SuRVoSSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.survos.SuRVoSSegmentation"><code class="docutils literal notranslate"><span class="pre">SuRVoSSegmentation</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.map">CCP4 mask format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-map"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapAnnotation"><code class="docutils literal notranslate"><span class="pre">MapAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapHeader"><code class="docutils literal notranslate"><span class="pre">MapHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapSegment"><code class="docutils literal notranslate"><span class="pre">MapSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapSegmentation"><code class="docutils literal notranslate"><span class="pre">MapSegmentation</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.mod">IMOD format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-mod"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.mod</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODAnnotation"><code class="docutils literal notranslate"><span class="pre">IMODAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODEllipsoid"><code class="docutils literal notranslate"><span class="pre">IMODEllipsoid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODHeader"><code class="docutils literal notranslate"><span class="pre">IMODHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODMesh"><code class="docutils literal notranslate"><span class="pre">IMODMesh</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODMeshes"><code class="docutils literal notranslate"><span class="pre">IMODMeshes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODSegment"><code class="docutils literal notranslate"><span class="pre">IMODSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODSegmentation"><code class="docutils literal notranslate"><span class="pre">IMODSegmentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.mod.IMODShapes"><code class="docutils literal notranslate"><span class="pre">IMODShapes</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.seg">Segger format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-seg"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.seg.SeggerAnnotation"><code class="docutils literal notranslate"><span class="pre">SeggerAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.seg.SeggerHeader"><code class="docutils literal notranslate"><span class="pre">SeggerHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.seg.SeggerSegment"><code class="docutils literal notranslate"><span class="pre">SeggerSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.seg.SeggerSegmentation"><code class="docutils literal notranslate"><span class="pre">SeggerSegmentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.seg.SeggerVolume"><code class="docutils literal notranslate"><span class="pre">SeggerVolume</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.stl">Stereolithography format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-stl"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.stl</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.stl.STLAnnotation"><code class="docutils literal notranslate"><span class="pre">STLAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.stl.STLHeader"><code class="docutils literal notranslate"><span class="pre">STLHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.stl.STLMesh"><code class="docutils literal notranslate"><span class="pre">STLMesh</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.stl.STLSegment"><code class="docutils literal notranslate"><span class="pre">STLSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.stl.STLSegmentation"><code class="docutils literal notranslate"><span class="pre">STLSegmentation</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.surf">Amira HyperSurface format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-surf"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.surf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.surf.AmiraHyperSurfaceAnnotation"><code class="docutils literal notranslate"><span class="pre">AmiraHyperSurfaceAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.surf.AmiraHyperSurfaceHeader"><code class="docutils literal notranslate"><span class="pre">AmiraHyperSurfaceHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.surf.AmiraHyperSurfaceMesh"><code class="docutils literal notranslate"><span class="pre">AmiraHyperSurfaceMesh</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.surf.AmiraHyperSurfaceSegment"><code class="docutils literal notranslate"><span class="pre">AmiraHyperSurfaceSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.surf.AmiraHyperSurfaceSegmentation"><code class="docutils literal notranslate"><span class="pre">AmiraHyperSurfaceSegmentation</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -120,6 +156,7 @@
 <section id="sfftk-formats-am">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.am</span></code><a class="headerlink" href="#sfftk-formats-am" title="Permalink to this heading"></a></h3>
 <p>User-facing reader classes for AmiraMesh files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.am.AmiraMeshAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.am.</span></span><span class="sig-name descname"><span class="pre">AmiraMeshAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/am.html#AmiraMeshAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.am.AmiraMeshAnnotation" title="Permalink to this definition"></a></dt>
@@ -286,11 +323,11 @@
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.formats.survos">
 <span id="survos-format"></span><h2>SuRVoS format<a class="headerlink" href="#module-sfftk.formats.survos" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-survos">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.survos</span></code><a class="headerlink" href="#sfftk-formats-survos" title="Permalink to this heading"></a></h3>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.survos.SuRVoSSegment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.survos.</span></span><span class="sig-name descname"><span class="pre">SuRVoSSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segmentation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/survos.html#SuRVoSSegment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.survos.SuRVoSSegment" title="Permalink to this definition"></a></dt>
@@ -346,12 +383,12 @@
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.formats.map">
 <span id="ccp4-mask-format"></span><h2>CCP4 mask format<a class="headerlink" href="#module-sfftk.formats.map" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-map">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.map</span></code><a class="headerlink" href="#sfftk-formats-map" title="Permalink to this heading"></a></h3>
 <p>User-facing reader classes for CCP4 masks</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.map.MapAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MapAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MapAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MapAnnotation" title="Permalink to this definition"></a></dt>
@@ -451,12 +488,12 @@
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.formats.mod">
 <span id="imod-format"></span><h2>IMOD format<a class="headerlink" href="#module-sfftk.formats.mod" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-mod">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.mod</span></code><a class="headerlink" href="#sfftk-formats-mod" title="Permalink to this heading"></a></h3>
 <p>User-facing reader classes for IMOD files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODAnnotation" title="Permalink to this definition"></a></dt>
@@ -560,8 +597,8 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODMeshes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODMeshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODMeshes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODMeshes" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_UserList</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODMeshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imod_meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">_args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODMeshes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODMeshes" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserList" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></a></p>
 <p>Container class for IMOD meshes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODMeshes.convert">
@@ -653,8 +690,8 @@ Do not convert segmentations that only have contours</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODShapes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODShapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODShapes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODShapes" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_UserList</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODShapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objt</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODShapes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODShapes" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserList" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></a></p>
 <p>Container class for shapes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODShapes.convert">
@@ -665,12 +702,12 @@ Do not convert segmentations that only have contours</p>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.formats.seg">
 <span id="segger-format"></span><h2>Segger format<a class="headerlink" href="#module-sfftk.formats.seg" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-seg">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.seg</span></code><a class="headerlink" href="#sfftk-formats-seg" title="Permalink to this heading"></a></h3>
 <p>User-facing reader classes for Segger files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.seg.SeggerAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.seg.</span></span><span class="sig-name descname"><span class="pre">SeggerAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segmentation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/seg.html#SeggerAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.seg.SeggerAnnotation" title="Permalink to this definition"></a></dt>
@@ -813,12 +850,12 @@ Do not convert segmentations that only have contours</p>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.formats.stl">
 <span id="stereolithography-format"></span><h2>Stereolithography format<a class="headerlink" href="#module-sfftk.formats.stl" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-stl">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.stl</span></code><a class="headerlink" href="#sfftk-formats-stl" title="Permalink to this heading"></a></h3>
 <p>User-facing reader classes for Stereolithography files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.stl.STLAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.stl.</span></span><span class="sig-name descname"><span class="pre">STLAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/stl.html#STLAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.stl.STLAnnotation" title="Permalink to this definition"></a></dt>
@@ -944,12 +981,12 @@ Do not convert segmentations that only have contours</p>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.formats.surf">
 <span id="amira-hypersurface-format"></span><h2>Amira HyperSurface format<a class="headerlink" href="#module-sfftk.formats.surf" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-surf">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.surf</span></code><a class="headerlink" href="#sfftk-formats-surf" title="Permalink to this heading"></a></h3>
 <p>User-facing reader classes for Amira HxSurface files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.surf.AmiraHyperSurfaceAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.surf.</span></span><span class="sig-name descname"><span class="pre">AmiraHyperSurfaceAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/surf.html#AmiraHyperSurfaceAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.surf.AmiraHyperSurfaceAnnotation" title="Permalink to this definition"></a></dt>
@@ -1101,7 +1138,6 @@ Do not convert segmentations that only have contours</p>
 
 </dd></dl>
 
-</section>
 </section>
 </section>
 

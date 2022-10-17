@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.readers package &mdash; sfftk v0.7.0 documentation</title>
+  <title>sfftk.readers package &mdash; sfftk v0.8.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -32,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.7
+                v0.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -55,30 +56,76 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sfftk.readers</span></code> package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.amreader">AmiraMesh reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-amreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.amreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.amreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.survosreader">SuRVoS reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-survosreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.survosreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.survosreader.SuRVoSSegmentation"><code class="docutils literal notranslate"><span class="pre">SuRVoSSegmentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.survosreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.mapreader">CCP4 mask reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-mapreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.mapreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.mapreader.Map"><code class="docutils literal notranslate"><span class="pre">Map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.mapreader.compute_transform"><code class="docutils literal notranslate"><span class="pre">compute_transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.mapreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.modreader">IMOD reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-modreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.modreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.CLIP"><code class="docutils literal notranslate"><span class="pre">CLIP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.CLIP_FLAGS"><code class="docutils literal notranslate"><span class="pre">CLIP_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.CONT"><code class="docutils literal notranslate"><span class="pre">CONT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.CONTOUR_FLAGS"><code class="docutils literal notranslate"><span class="pre">CONTOUR_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.COST"><code class="docutils literal notranslate"><span class="pre">COST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.COST_FLAGS"><code class="docutils literal notranslate"><span class="pre">COST_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.FLAGS"><code class="docutils literal notranslate"><span class="pre">FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.IMAT"><code class="docutils literal notranslate"><span class="pre">IMAT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.IMAT_FLAGS"><code class="docutils literal notranslate"><span class="pre">IMAT_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.IMOD"><code class="docutils literal notranslate"><span class="pre">IMOD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MCLP"><code class="docutils literal notranslate"><span class="pre">MCLP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MCLP_FLAGS"><code class="docutils literal notranslate"><span class="pre">MCLP_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MEPA"><code class="docutils literal notranslate"><span class="pre">MEPA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MEPA_FLAGS"><code class="docutils literal notranslate"><span class="pre">MEPA_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MESH"><code class="docutils literal notranslate"><span class="pre">MESH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MESH_FLAGS"><code class="docutils literal notranslate"><span class="pre">MESH_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MEST"><code class="docutils literal notranslate"><span class="pre">MEST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MINX"><code class="docutils literal notranslate"><span class="pre">MINX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MODEL_FLAGS"><code class="docutils literal notranslate"><span class="pre">MODEL_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.MOST"><code class="docutils literal notranslate"><span class="pre">MOST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.OBJECT_FLAGS"><code class="docutils literal notranslate"><span class="pre">OBJECT_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.OBJECT_SYM_FLAGS"><code class="docutils literal notranslate"><span class="pre">OBJECT_SYM_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.OBJT"><code class="docutils literal notranslate"><span class="pre">OBJT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.OBST"><code class="docutils literal notranslate"><span class="pre">OBST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.SLAN"><code class="docutils literal notranslate"><span class="pre">SLAN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.STORE"><code class="docutils literal notranslate"><span class="pre">STORE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.VIEW"><code class="docutils literal notranslate"><span class="pre">VIEW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.VIEW_FLAGS"><code class="docutils literal notranslate"><span class="pre">VIEW_FLAGS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.angstrom_multiplier"><code class="docutils literal notranslate"><span class="pre">angstrom_multiplier()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.find_chunk_length"><code class="docutils literal notranslate"><span class="pre">find_chunk_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.print_model"><code class="docutils literal notranslate"><span class="pre">print_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.modreader.show_chunks"><code class="docutils literal notranslate"><span class="pre">show_chunks()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.segreader">Segger reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-segreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.segreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.segreader.SeggerSegmentation"><code class="docutils literal notranslate"><span class="pre">SeggerSegmentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.segreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.segreader.get_root"><code class="docutils literal notranslate"><span class="pre">get_root()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.stlreader">Stereolithography</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-stlreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.stlreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.stlreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.surfreader">Amira HyperSurface reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-surfreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.surfreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.surfreader.HxSurfSegment"><code class="docutils literal notranslate"><span class="pre">HxSurfSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.surfreader.extract_segments"><code class="docutils literal notranslate"><span class="pre">extract_segments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.surfreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -128,6 +175,7 @@
 <section id="sfftk-readers-amreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.amreader</span></code><a class="headerlink" href="#sfftk-readers-amreader" title="Permalink to this heading"></a></h3>
 <p>Ad hoc reader for AmiraMesh files</p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="sfftk.readers.amreader.get_data">
 <span class="sig-prename descclassname"><span class="pre">sfftk.readers.amreader.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/amreader.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.amreader.get_data" title="Permalink to this definition"></a></dt>
@@ -152,12 +200,12 @@
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.readers.survosreader">
 <span id="survos-reader"></span><h2>SuRVoS reader<a class="headerlink" href="#module-sfftk.readers.survosreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-survosreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.survosreader</span></code><a class="headerlink" href="#sfftk-readers-survosreader" title="Permalink to this heading"></a></h3>
 <p>Ad hoc reader for SuRVoS segmentation files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.survosreader.SuRVoSSegmentation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.survosreader.</span></span><span class="sig-name descname"><span class="pre">SuRVoSSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/survosreader.html#SuRVoSSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation" title="Permalink to this definition"></a></dt>
@@ -221,7 +269,6 @@ returns the segmentation with annotation value of ‘1’</p></li>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.readers.mapreader">
 <span id="ccp4-mask-reader"></span><h2>CCP4 mask reader<a class="headerlink" href="#module-sfftk.readers.mapreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-mapreader">
@@ -233,6 +280,8 @@ returns the segmentation with annotation value of ‘1’</p></li>
 <ul class="simple">
 <li><p><a class="reference external" href="ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf">ftp://ftp.wwpdb.org/pub/emdb/doc/Map-format/current/EMDB_map_format.pdf</a></p></li>
 </ul>
+</section>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.mapreader.Map">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.mapreader.</span></span><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/mapreader.html#Map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.mapreader.Map" title="Permalink to this definition"></a></dt>
@@ -250,7 +299,7 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mask_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – the mask value</p></li>
-<li><p><strong>voxel_value_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the maxmimum number of voxel values permitted in fixing the mask</p></li>
+<li><p><strong>voxel_values_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the maxmimum number of voxel values permitted in fixing the mask</p></li>
 </ul>
 </dd>
 </dl>
@@ -383,8 +432,6 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 </dd></dl>
 
 </section>
-</section>
-</section>
 <section id="module-sfftk.readers.modreader">
 <span id="imod-reader"></span><h2>IMOD reader<a class="headerlink" href="#module-sfftk.readers.modreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-modreader">
@@ -406,7 +453,9 @@ observed in the design of these classes:</p>
 <li><p>All classes have one public method: read(f), which takes a file handle and returns a file handle at the current
 unread position.</p></li>
 <li><p>Some chunks are nested (despite the serial nature of IFF files). Contained chunks are read with public methods
-defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code> method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store contained objects.</p></li>
+defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code>
+method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
+contained objects.</p></li>
 <li><p>All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method
 implemented to print objects of that class.</p></li>
 </ul>
@@ -418,6 +467,7 @@ several fields within chunks.</p>
 The most important classes are <a class="reference internal" href="#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.IMOD</span></code></a>, <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.OBJT</span></code></a>,
 <a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.CONT</span></code></a> and <a class="reference internal" href="#sfftk.readers.modreader.MESH" title="sfftk.readers.modreader.MESH"><code class="xref py py-class docutils literal notranslate"><span class="pre">modreader.MESH</span></code></a></p>
 </div>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.CLIP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">CLIP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#CLIP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.CLIP" title="Permalink to this definition"></a></dt>
@@ -933,12 +983,12 @@ To convert 3 nm to Å we consider that <span class="math notranslate nohighlight
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.readers.segreader">
 <span id="segger-reader"></span><h2>Segger reader<a class="headerlink" href="#module-sfftk.readers.segreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-segreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.segreader</span></code><a class="headerlink" href="#sfftk-readers-segreader" title="Permalink to this heading"></a></h3>
 <p>Ad hoc reader for Segger files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.segreader.SeggerSegmentation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.segreader.</span></span><span class="sig-name descname"><span class="pre">SeggerSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/segreader.html#SeggerSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation" title="Permalink to this definition"></a></dt>
@@ -1115,7 +1165,6 @@ They correspond to putative functional regions.</p>
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.readers.stlreader">
 <span id="stereolithography"></span><h2>Stereolithography<a class="headerlink" href="#module-sfftk.readers.stlreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-stlreader">
@@ -1125,6 +1174,7 @@ They correspond to putative functional regions.</p>
 <li><p>Depends on the <cite>numpy-stl</cite> package</p></li>
 <li><p>Reads both ASCII and binary files</p></li>
 </ul>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="sfftk.readers.stlreader.get_data">
 <span class="sig-prename descclassname"><span class="pre">sfftk.readers.stlreader.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/stlreader.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.stlreader.get_data" title="Permalink to this definition"></a></dt>
@@ -1144,12 +1194,12 @@ and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</ci
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.readers.surfreader">
 <span id="amira-hypersurface-reader"></span><h2>Amira HyperSurface reader<a class="headerlink" href="#module-sfftk.readers.surfreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-surfreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.surfreader</span></code><a class="headerlink" href="#sfftk-readers-surfreader" title="Permalink to this heading"></a></h3>
 <p>Ad hoc reader for Amira HyperSurface files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.surfreader.HxSurfSegment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.surfreader.</span></span><span class="sig-name descname"><span class="pre">HxSurfSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/surfreader.html#HxSurfSegment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment" title="Permalink to this definition"></a></dt>
@@ -1222,7 +1272,6 @@ and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</ci
 </dl>
 </dd></dl>
 
-</section>
 </section>
 </section>
 

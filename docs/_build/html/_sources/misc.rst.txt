@@ -26,8 +26,8 @@ The full list of options is:
 .. code:: bash
 
     sff view
-    usage: sff view [-h] [--sff-version] [-v] [-p CONFIG_PATH] [-b]
-                    [-C]
+    usage: sff view [-h] [--sff-version] [-v] [-p CONFIG_PATH] [-b] [-C] [-X]
+                    [--print-array | --print-csv | --print-ssv]
                     from_file
 
     View a summary of an SFF file
@@ -42,11 +42,32 @@ The full list of options is:
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and
-                            user configs fail [default: False]
-      -C, --show-chunks     show sequence of chunks in IMOD file; only
-                            works with IMOD model files (.mod)
-                            [default: False]
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
+      -C, --show-chunks     show sequence of chunks in IMOD file; only works with
+                            IMOD model files (.mod) [default: False]
+      -X, --transform       when specified, the file should be the segmented EMDB
+                            MAP/MRC file from which to determine the correct
+                            image-to-physical transform
+      --print-array         display the implied image-to-physical transform as the
+                            raw numpy array
+      --print-csv           display the implied image-to-physical transform as a
+                            comma-separated values form
+      --print-ssv           display the implied image-to-physical transform as a
+                            space-separated value form
+
+
+Show MAP Header
+---------------
+
+Test
+
+.. _show_image_to_physical_transform:
+
+Show Image-to-Physical Transform
+--------------------------------
+
+
 
 Show IMOD Chunks
 ----------------

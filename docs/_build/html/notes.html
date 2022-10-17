@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.notes package &mdash; sfftk v0.7.0 documentation</title>
+  <title>sfftk.notes package &mdash; sfftk v0.8.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.7
+                v0.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -55,14 +56,42 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sfftk.notes</span></code> package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.notes.find">Find notes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-notes-find"><code class="docutils literal notranslate"><span class="pre">sfftk.notes.find</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.ResultsTable"><code class="docutils literal notranslate"><span class="pre">ResultsTable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.SearchResource"><code class="docutils literal notranslate"><span class="pre">SearchResource</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.SearchResults"><code class="docutils literal notranslate"><span class="pre">SearchResults</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.Table"><code class="docutils literal notranslate"><span class="pre">Table</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.TableField"><code class="docutils literal notranslate"><span class="pre">TableField</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.TableRow"><code class="docutils literal notranslate"><span class="pre">TableRow</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.notes.view">View notes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-notes-view"><code class="docutils literal notranslate"><span class="pre">sfftk.notes.view</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.view.HeaderView"><code class="docutils literal notranslate"><span class="pre">HeaderView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.view.NoteView"><code class="docutils literal notranslate"><span class="pre">NoteView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.view.TableHeaderView"><code class="docutils literal notranslate"><span class="pre">TableHeaderView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.view.View"><code class="docutils literal notranslate"><span class="pre">View</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.view.list_notes"><code class="docutils literal notranslate"><span class="pre">list_notes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.view.show_notes"><code class="docutils literal notranslate"><span class="pre">show_notes()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.notes.modify">Modify notes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-notes-modify"><code class="docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.AbstractGlobalNote"><code class="docutils literal notranslate"><span class="pre">AbstractGlobalNote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.AbstractNote"><code class="docutils literal notranslate"><span class="pre">AbstractNote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.ArgsNote"><code class="docutils literal notranslate"><span class="pre">ArgsNote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.BaseNote"><code class="docutils literal notranslate"><span class="pre">BaseNote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.ExternalReference"><code class="docutils literal notranslate"><span class="pre">ExternalReference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.GlobalArgsNote"><code class="docutils literal notranslate"><span class="pre">GlobalArgsNote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.NoteAttr"><code class="docutils literal notranslate"><span class="pre">NoteAttr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.SimpleNote"><code class="docutils literal notranslate"><span class="pre">SimpleNote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.add_note"><code class="docutils literal notranslate"><span class="pre">add_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.clear_notes"><code class="docutils literal notranslate"><span class="pre">clear_notes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.copy_notes"><code class="docutils literal notranslate"><span class="pre">copy_notes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.del_note"><code class="docutils literal notranslate"><span class="pre">del_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.edit_note"><code class="docutils literal notranslate"><span class="pre">edit_note()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.merge"><code class="docutils literal notranslate"><span class="pre">merge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.modify.trash"><code class="docutils literal notranslate"><span class="pre">trash()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -104,6 +133,7 @@
 <section id="sfftk-notes-find">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.notes.find</span></code><a class="headerlink" href="#sfftk-notes-find" title="Permalink to this heading"></a></h3>
 <p>Search for terms and display ontologies</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.find.ResultsTable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">ResultsTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#ResultsTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition"></a></dt>
@@ -201,12 +231,12 @@
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.notes.view">
 <span id="view-notes"></span><h2>View notes<a class="headerlink" href="#module-sfftk.notes.view" title="Permalink to this heading"></a></h2>
 <section id="sfftk-notes-view">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.notes.view</span></code><a class="headerlink" href="#sfftk-notes-view" title="Permalink to this heading"></a></h3>
 <p>Display notes in EMDB-SFF files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.view.HeaderView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.view.</span></span><span class="sig-name descname"><span class="pre">HeaderView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segmentation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/view.html#HeaderView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.view.HeaderView" title="Permalink to this definition"></a></dt>
@@ -272,12 +302,12 @@
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.notes.modify">
 <span id="modify-notes"></span><h2>Modify notes<a class="headerlink" href="#module-sfftk.notes.modify" title="Permalink to this heading"></a></h2>
 <section id="sfftk-notes-modify">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code><a class="headerlink" href="#sfftk-notes-modify" title="Permalink to this heading"></a></h3>
 <p>Add, edit and delete terms in EMDB-SFF files</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.modify.AbstractGlobalNote">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.modify.</span></span><span class="sig-name descname"><span class="pre">AbstractGlobalNote</span></span><a class="reference internal" href="_modules/sfftk/notes/modify.html#AbstractGlobalNote"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.AbstractGlobalNote" title="Permalink to this definition"></a></dt>
@@ -604,7 +634,6 @@
 </dl>
 </dd></dl>
 
-</section>
 </section>
 </section>
 

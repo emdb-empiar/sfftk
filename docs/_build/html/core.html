@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.core package &mdash; sfftk v0.7.0 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.8.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -30,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.7
+                v0.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -55,14 +56,28 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sfftk.core</span></code> package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.configs">Configs</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-configs"><code class="docutils literal notranslate"><span class="pre">sfftk.core.configs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.configs.Configs"><code class="docutils literal notranslate"><span class="pre">Configs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.configs.del_configs"><code class="docutils literal notranslate"><span class="pre">del_configs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.configs.get_config_file_path"><code class="docutils literal notranslate"><span class="pre">get_config_file_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.configs.get_configs"><code class="docutils literal notranslate"><span class="pre">get_configs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.configs.load_configs"><code class="docutils literal notranslate"><span class="pre">load_configs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.configs.set_configs"><code class="docutils literal notranslate"><span class="pre">set_configs()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.parser">Parser</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-parser"><code class="docutils literal notranslate"><span class="pre">sfftk.core.parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.check_multi_file_formats"><code class="docutils literal notranslate"><span class="pre">check_multi_file_formats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.cli"><code class="docutils literal notranslate"><span class="pre">cli()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.prep">Preparation utilities</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-prep"><code class="docutils literal notranslate"><span class="pre">sfftk.core.prep</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.bin_map"><code class="docutils literal notranslate"><span class="pre">bin_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.construct_transformation_matrix"><code class="docutils literal notranslate"><span class="pre">construct_transformation_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.mergemask"><code class="docutils literal notranslate"><span class="pre">mergemask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.transform_stl_mesh"><code class="docutils literal notranslate"><span class="pre">transform_stl_mesh()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -105,6 +120,7 @@
 <p>This module defines classes and functions to correctly process persistent
 configurations. Please see the <a class="reference internal" href="misc.html"><span class="doc">guide to miscellaneous operations</span></a>
 for a complete description of working with configs.</p>
+</section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.core.configs.Configs">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.core.configs.</span></span><span class="sig-name descname"><span class="pre">Configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/configs.html#Configs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition"></a></dt>
@@ -296,7 +312,6 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.core.parser">
 <span id="parser"></span><h2>Parser<a class="headerlink" href="#module-sfftk.core.parser" title="Permalink to this heading"></a></h2>
 <section id="sfftk-core-parser">
@@ -305,6 +320,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 Python’s <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">configs</span></code> dictionary, which consists of all persistent configs.
 This module extends the parser object <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.core.parser.Parser</span></code> as well as includes a
 <a class="reference internal" href="#sfftk.core.parser.parse_args" title="sfftk.core.parser.parse_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.core.parser.parse_args()</span></code></a> function which does sanity checking of all command line arguments.</p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="sfftk.core.parser.check_multi_file_formats">
 <span class="sig-prename descclassname"><span class="pre">sfftk.core.parser.</span></span><span class="sig-name descname"><span class="pre">check_multi_file_formats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/parser.html#check_multi_file_formats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.parser.check_multi_file_formats" title="Permalink to this definition"></a></dt>
@@ -322,6 +338,12 @@ and the set of invalid file formats</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.10)">set</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.10)">set</a>]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.core.parser.cli">
+<span class="sig-prename descclassname"><span class="pre">sfftk.core.parser.</span></span><span class="sig-name descname"><span class="pre">cli</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd:</span> <span class="pre">str)</span> <span class="pre">-&gt;</span> <span class="pre">(&lt;class</span> <span class="pre">'argparse.Namespace'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;class</span> <span class="pre">'configparser.ConfigParser'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/parser.html#cli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.parser.cli" title="Permalink to this definition"></a></dt>
+<dd><p>CLI function</p>
 </dd></dl>
 
 <dl class="py function">
@@ -350,12 +372,12 @@ correct argument values and can concentrate on functionality making the code mor
 </dd></dl>
 
 </section>
-</section>
 <section id="module-sfftk.core.prep">
 <span id="preparation-utilities"></span><h2>Preparation utilities<a class="headerlink" href="#module-sfftk.core.prep" title="Permalink to this heading"></a></h2>
 <section id="sfftk-core-prep">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.core.prep</span></code><a class="headerlink" href="#sfftk-core-prep" title="Permalink to this heading"></a></h3>
 <p>This module consists of preparation utilities to condition segmentation files prior to conversion.</p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="sfftk.core.prep.bin_map">
 <span class="sig-prename descclassname"><span class="pre">sfftk.core.prep.</span></span><span class="sig-name descname"><span class="pre">bin_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#bin_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.bin_map" title="Permalink to this definition"></a></dt>
@@ -389,6 +411,26 @@ correct argument values and can concentrate on functionality making the code mor
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.core.prep.mergemask">
+<span class="sig-prename descclassname"><span class="pre">sfftk.core.prep.</span></span><span class="sig-name descname"><span class="pre">mergemask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#mergemask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.mergemask" title="Permalink to this definition"></a></dt>
+<dd><p>Merge two or more (max 255) masks into one with a distinct label for each mask</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>exit status</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -433,7 +475,6 @@ correct argument values and can concentrate on functionality making the code mor
 </dl>
 </dd></dl>
 
-</section>
 </section>
 </section>
 
