@@ -1,5 +1,12 @@
 #Changes by release
 
+## [0.7.3] (2022-10-17) - Trivial bugfix and documentation update for transforms
+
+* viewing transforms
+* inserting transforms from `.map` files
+* modifying transforms using the `notes` utility
+* fix typo in parser
+
 ## [0.7.2] (2022-10-10) - Bugfixes for CI/CD and docbuild
 
 * fixes for Github workflow

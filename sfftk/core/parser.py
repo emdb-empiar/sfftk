@@ -800,7 +800,7 @@ copy_notes_parser.add_argument(
     '-i', '--segment-id',
     help=(
         "segment ID or a comma-separated sequence of segment IDs of source segment(s); "
-        "run 'sff notes list <file>' for a list of segment IDs",
+        "run 'sff notes list <file>' for a list of segment IDs"
     )
 )
 copy_global_notes_parse = copy_notes_parser.add_mutually_exclusive_group()

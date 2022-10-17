@@ -60,14 +60,85 @@ The full list of options is:
 Show MAP Header
 ---------------
 
-Test
+For `MRC`-like files, ``sfftk`` will pretty-print the header by default.
+
+.. code:: bash
+
+    sff view emd_5625.map
+    Mon Oct 17 09:44:16 2022        emd_5625.map: CCP4 mask of dimensions: cols=56, rows=56, sections=56
+    **************************************************
+    CCP4 Mask Segmentation
+    **************************************************
+    Cols, rows, sections:
+        56, 56, 56
+    Mode: 2
+    Start col, row, sections:
+        -28, -28, -28
+    X, Y, Z:
+        56, 56, 56
+    Lengths X, Y, Z (ångström):
+        236.8800048828125, 236.8800048828125, 236.8800048828125
+    α, β, γ:
+        90.0, 90.0, 90.0
+    Map cols, rows, sections:
+        1, 2, 3
+    Density min, max, mean:
+        -1.4999780654907227, 7.940685272216797, 0.25216203927993774
+    Space group: 1
+    Bytes in symmetry table: 0
+    Skew matrix flag: 0
+    Skew matrix:
+        0.0 0.0 0.0
+        0.0 0.0 0.0
+        0.0 0.0 0.0
+    Skew translation:
+        0.0
+        0.0
+        0.0
+    Extra: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    Map: MAP
+    Mach-stamp: DA
+    RMS: 0.8693210482597351
+    Label count: 1
+        ::::EMDATABANK.org::::EMD-5625::::
+
+    **************************************************
+
 
 .. _show_image_to_physical_transform:
 
 Show Image-to-Physical Transform
 --------------------------------
 
+Passing the ``--transform`` argument to ``sff view`` for _MRC_-like files displays the implied image-to-physical transform.
 
+.. code:: bash
+
+    sff view --transform emd_5625.map
+    Mon Oct 17 09:45:38 2022        Image space to physical space transform CCP4 MAP
+    Mon Oct 17 09:45:38 2022        Print type: numpy arrray (use -h/--help for other formats)
+    [[   4.23000009    0.            0.         -118.44000244]
+     [   0.            4.23000009    0.         -118.44000244]
+     [   0.            0.            4.23000009 -118.44000244]]
+
+By default, a ``numpy.ndarray`` object is printed. You can control the presentation of the transform by specifying either
+``--print-csv`` to view the transform as a comma-separated sequence:
+
+.. code:: bash
+
+    sff view --transform --print-csv emd_5625.map
+    Mon Oct 17 09:49:04 2022        Image space to physical space transform CCP4 MAP
+    Mon Oct 17 09:49:04 2022        Print type: CSV (use -h/--help for other formats)
+    4.230000087193081,0.0,0.0,-118.44000244140626,0.0,4.230000087193081,0.0,-118.44000244140626,0.0,0.0,4.230000087193081,-118.44000244140626
+
+or ``--print-ssv`` to view the transform as a space separated sequence. This last option is helpful if the transform will be used as an input of another ``sfftk`` command.
+
+.. code:: bash
+
+    sff view --transform --print-ssv emd_5625.map
+    Mon Oct 17 09:49:07 2022        Image space to physical space transform CCP4 MAP
+    Mon Oct 17 09:49:07 2022        Print type: SSV (use -h/--help for other formats)
+    4.230000087193081 0.0 0.0 -118.44000244140626 0.0 4.230000087193081 0.0 -118.44000244140626 0.0 0.0 4.230000087193081 -118.44000244140626
 
 Show IMOD Chunks
 ----------------

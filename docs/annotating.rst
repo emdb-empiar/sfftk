@@ -72,7 +72,7 @@ States: FIND, VIEW, MODIFY
 Correspondingly, using the notes subcommand puts the user in one of three states: the FIND state, the VIEW state and
 the MODIFY state. These will be indicated by the colour of the text on the screen.
 
--  **WHITE** indicates the ``VIEW STATE`` i.e. that no modifications have been made to the EMDB-SFF file
+-  **CYAN** indicates the ``VIEW STATE`` i.e. that no modifications have been made to the EMDB-SFF file
 
 -  **YELLOW** indicates the ``FIND STATE`` i.e. search for terms from `OLS <https://www.ebi.ac.uk/ols/index>`_, and
 
@@ -211,7 +211,7 @@ In addition to the OLS users can also search the follow resources for accessions
 
 -   `The Gene Ontology (GO) <http://geneontology.org/>`_;
 
--   `The Electron Microscopy Data Bank (EMDB) <http://www.emdatabank.org/>`_;
+-   `The Electron Microscopy Data Bank (EMDB) <http://www.ebi.ac.uk/emdb/>`_;
 
 -   `The Protein Data Bank (PDB) <https://www.wwpdb.org/>`_;
 
@@ -219,7 +219,7 @@ In addition to the OLS users can also search the follow resources for accessions
 
 -   `Europe PubMed Central (Europe PMC) <https://europepmc.org/>`_
 
--   `The Electron Microscopy Public Image Archive (EMPIAR) <https://empiar.org>`_
+-   `The Electron Microscopy Public Image Archive (EMPIAR) <https://www.ebi.ac.uk/empiar/>`_
 
 The ``-R/--resource`` flag is used to specify the desired resource to search, which takes a string arguments as follows:
 
@@ -373,7 +373,7 @@ Listing all notes is performed by running
       -I, --list-ids        only list the IDs for segments one per line [default: False]
       -v, --verbose         verbose output
 
-The **sff notes list** sub-command only lists a summary table of notes 
+The ``sff notes list`` sub-command only lists a summary table of notes
 available for each segment. 
 
 .. code:: bash
@@ -553,16 +553,19 @@ And here's an example:
     Primary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
             three_d_volume
     --------------------------------------------------------------------------------------------------------------
+    Transforms:
+
+    --------------------------------------------------------------------------------------------------------------
     Bounding box (xmin,xmax,ymin,ymax,zmin,zmax):
             (0.0, None, 0.0, None, 0.0, None)
     --------------------------------------------------------------------------------------------------------------
-    Global external references:
-          # resource         url                                                      accession            L D
-        ------------------------------------------------------------------------------------------------------
-         0: ncit             http://purl.obolibrary.org/obo/NCIT_C14206               NCIT_C14206          Y Y
-         1: dron             http://purl.obolibrary.org/obo/DRON_00018778             DRON_00018778        Y Y
-         2: omit             http://purl.obolibrary.org/obo/OMIT_0006157              OMIT_0006157         Y Y
-         3: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_562             NCBITaxon_562        Y Y
+    Global external references: (L = label present; D = description present)
+              # resource         url                                                      accession            L D
+            ------------------------------------------------------------------------------------------------------
+             0: ncit             http://purl.obolibrary.org/obo/NCIT_C14206               NCIT_C14206          Y Y
+             1: dron             http://purl.obolibrary.org/obo/DRON_00018778             DRON_00018778        Y Y
+             2: omit             http://purl.obolibrary.org/obo/OMIT_0006157              OMIT_0006157         Y Y
+             3: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_562             NCBITaxon_562        Y Y
     --------------------------------------------------------------------------------------------------------------
     Segmentation details:
             -*- NOT DEFINED -*-
@@ -874,20 +877,27 @@ Example:
             Segger Segmentation
     Segmentation software:
             0 segger/2
-            proc/det:
+            proc/det: watershed algorithm applied
+            1 Amira/2019.1
+            proc/det: mesh computed over the surface
+            2 IMOD/v3.8
+            proc/det: mesh reduction and cleaning
 
     --------------------------------------------------------------------------------------------------------------
     Primary descriptor [three_d_volume|mesh_list|shape_primitive_list]:
             three_d_volume
     --------------------------------------------------------------------------------------------------------------
+    Transforms:
+
+    --------------------------------------------------------------------------------------------------------------
     Bounding box (xmin,xmax,ymin,ymax,zmin,zmax):
             (0.0, None, 0.0, None, 0.0, None)
     --------------------------------------------------------------------------------------------------------------
-    Global external references:
-          # resource         url                                                      accession            L D
-        ------------------------------------------------------------------------------------------------------
-         0: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_559292          NCBITaxon_559292     Y Y
-         1: pdb              http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8                 3ja8                 Y Y
+    Global external references: (L = label present; D = description present)
+              # resource         url                                                      accession            L D
+            ------------------------------------------------------------------------------------------------------
+             0: ncbitaxon        http://purl.obolibrary.org/obo/NCBITaxon_559292          NCBITaxon_559292     Y Y
+             1: pdb              http://www.ebi.ac.uk/pdbe/entry/pdb/3ja8                 3ja8                 Y Y
     --------------------------------------------------------------------------------------------------------------
     Segmentation details:
             DNA replication in eukaryotes is strictly regulated by several mechanisms. A central step in this
@@ -909,7 +919,7 @@ Modifying Notes
 Modifying notes is slightly more complicated than the read-only activities 
 of *finding* and *viewing* described above. It involves making changes to the 
 annotation sections (*biological_annotation: name, description, number_of_instances, and
-external_references*) of the segmentation and individual segments of interest.
+external_references*) as well as the transform list of the segmentation and individual segments of interest.
 
 Temporary File
 --------------
@@ -993,8 +1003,8 @@ be modifed as above.
 Modify Sequence
 ---------------
 
-The following diagram illustrates the sequence of steps to be carried out with 
-the names of the sub-subcommand next to arrows showing the modification that occurs.
+The following diagram illustrates the sequence of steps to be carried out during modification.
+The names of the sub-subcommand next to arrows showing the modification that occurs.
 
 .. image:: annotating-01.png
 
@@ -1011,6 +1021,8 @@ At the segmentation level one may add:
     -   *version*
 
     -   *processing_details*
+
+-   a list of transforms;
 
 -   the segmentation's *details* (description)
 
@@ -1045,6 +1057,8 @@ references:
 
 - ``-P/--software-processing-details``: a quoted string outlining the processing details by which the segmentation was obtained;
 
+- ``-X/--transform``: a sequence of 12 floating points values specifying a transform; the first transform is designated the image-to-physical transform and is assumed to be how the segmentation gets projected into physical space during visualisation and analysis;
+
 - ``-D/--details``: a quoted string of additional *details* pertaining to this segmentation;
 
 - ``-E/--external-ref`` for *global* or *segment external references*;
@@ -1059,11 +1073,11 @@ Here's the help output for ``sff notes add``:
 
     sff notes add
     usage: sff notes add [-h] [-p CONFIG_PATH] [-b]
-                         [-E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF]
-                         [-v] [-N NAME] [-S SOFTWARE_NAME]
-                         [-T SOFTWARE_VERSION]
-                         [-P SOFTWARE_PROCESSING_DETAILS] [-D DETAILS]
-                         [-i SEGMENT_ID] [-n SEGMENT_NAME]
+                         [-E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF] [-v]
+                         [-N NAME] [-S SOFTWARE_NAME] [-T SOFTWARE_VERSION]
+                         [-P SOFTWARE_PROCESSING_DETAILS]
+                         [-X TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM]
+                         [-D DETAILS] [-i SEGMENT_ID] [-n SEGMENT_NAME]
                          [-d DESCRIPTION] [-I NUMBER_OF_INSTANCES]
                          sff_file
 
@@ -1077,21 +1091,19 @@ Here's the help output for ``sff notes add``:
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and
-                            user configs fail [default: False]
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
       -E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF, --external-ref EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF
-                            An external reference consists of three
-                            components: the name of the external
-                            reference, a URL to the particular external
-                            reference and the accession. If you use the
-                            sff notes search utility these will
-                            correspond to the resource, url and
-                            accession. The following is a list of valid
-                            external references: ols, go, emdb,
-                            uniprot, pdb, europepmc, empiar. You can
-                            also specify multiple external reference
-                            arguments e.g. sff notes add -i <int> -E
-                            r11 r12 r13 -E r21 r22 r23 file.json
+                            An external reference consists of three components:
+                            the name of the external reference, a URL to the
+                            particular external reference and the accession. If
+                            you use the sff notes search utility these will
+                            correspond to the resource, url and accession. The
+                            following is a list of valid external references: ols,
+                            go, emdb, uniprot, pdb, europepmc, empiar. You can
+                            also specify multiple external reference arguments
+                            e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22
+                            r23 file.json
       -v, --verbose         verbose output
 
     add global notes:
@@ -1105,11 +1117,12 @@ Here's the help output for ``sff notes add``:
                             the version of software used to create the
                             segmentation
       -P SOFTWARE_PROCESSING_DETAILS, --software-processing-details SOFTWARE_PROCESSING_DETAILS
-                            details of how the segmentation was
-                            processed
+                            details of how the segmentation was processed
+      -X TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM, --transform TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM
+                            twelve (12) floats to specify the 3x4 matrix; rows
+                            first
       -D DETAILS, --details DETAILS
-                            populates <details>...</details> in the XML
-                            file
+                            populates <details>...</details> in the XML file
 
     add segment notes:
       add attributes to a single segment in an EMDB-SFF file
@@ -1158,6 +1171,28 @@ Use quotes (single/double) to enter software processing details:
     sff notes add -P "Density map was automatically segmented using the watershed algorithm on a HP Cluster with 200 nodes" file.json
     # MODIFY state
     sff notes add --software-processing-details "Threshold of 1.08" @
+
+Add A Transform
+`````````````````
+To add a transform, use the ``-X/--transform`` argument followed by 12 floats. The 12 floats specify a 3x4 matrix
+with the first 3x3 elements specifying scale and rotation parameters and the last column specifying translation
+parameters. The values are entered from top-left to bottom-right.
+
+.. code::
+
+    # not in MODIFY state
+    # scale the segmentation by 2.0 then translated to (10.0, 20.0, 30.0)
+    sff notes add -X 2.0 0 0 10.0 0 2.0 0 20.0 0 0 2.0 30.0 file.json
+    # in MODIFY state
+    sff notes add -X 2.0 0 0 10.0 0 2.0 0 20.0 0 0 2.0 30.0 @
+
+If the transform is implied by an `MRC`-like file then the output of ``sff view --transform --print-ssv file.map``
+will provide the 12 floats which can be embedded into the ``sff notes add -X `` call as shown below.
+
+.. code:: bash
+
+    # note the backticks
+    sff notes add -X `sff view --transform --print-ssv file.map` file.json
 
 
 Adding Segmentation Details
@@ -1283,15 +1318,15 @@ for all items of metadata except external references. Where the entity to be mod
 .. code-block:: bash
 
     sff notes edit
-    usage: sff notes edit [-h] [-p CONFIG_PATH] [-b]
-                          [-e EXTERNAL_REF_ID]
-                          [-E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF]
-                          [-v] [-N NAME] [-s SOFTWARE_ID]
-                          [-S SOFTWARE_NAME] [-T SOFTWARE_VERSION]
-                          [-P SOFTWARE_PROCESSING_DETAILS] [-D DETAILS]
-                          [-i SEGMENT_ID] [-n SEGMENT_NAME]
-                          [-d DESCRIPTION] [-I NUMBER_OF_INSTANCES]
-                          sff_file
+    usage: sff notes edit [-h] [-p CONFIG_PATH] [-b] [-e EXTERNAL_REF_ID]
+                      [-E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF] [-v]
+                      [-N NAME] [-s SOFTWARE_ID] [-S SOFTWARE_NAME]
+                      [-T SOFTWARE_VERSION] [-P SOFTWARE_PROCESSING_DETAILS]
+                      [-x TRANSFORM_ID]
+                      [-X TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM]
+                      [-D DETAILS] [-i SEGMENT_ID] [-n SEGMENT_NAME]
+                      [-d DESCRIPTION] [-I NUMBER_OF_INSTANCES]
+                      sff_file
 
     Edit an existing annotation to an EMDB-SFF file
 
@@ -1303,24 +1338,22 @@ for all items of metadata except external references. Where the entity to be mod
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and
-                            user configs fail [default: False]
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
       -e EXTERNAL_REF_ID, --external-ref-id EXTERNAL_REF_ID
-                            the external reference ID as shown with the
-                            'list' command
+                            the external reference ID as shown with the 'list'
+                            command
       -E EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF, --external-ref EXTERNAL_REF EXTERNAL_REF EXTERNAL_REF
-                            An external reference consists of three
-                            components: the name of the external
-                            reference, a URL to the particular external
-                            reference and the accession. If you use the
-                            sff notes search utility these will
-                            correspond to the resource, url and
-                            accession. The following is a list of valid
-                            external references: ols, go, emdb,
-                            uniprot, pdb, europepmc, empiar. You can
-                            also specify multiple external reference
-                            arguments e.g. sff notes add -i <int> -E
-                            r11 r12 r13 -E r21 r22 r23 file.json
+                            An external reference consists of three components:
+                            the name of the external reference, a URL to the
+                            particular external reference and the accession. If
+                            you use the sff notes search utility these will
+                            correspond to the resource, url and accession. The
+                            following is a list of valid external references: ols,
+                            go, emdb, uniprot, pdb, europepmc, empiar. You can
+                            also specify multiple external reference arguments
+                            e.g. sff notes add -i <int> -E r11 r12 r13 -E r21 r22
+                            r23 file.json
       -v, --verbose         verbose output
 
     edit global notes:
@@ -1336,11 +1369,14 @@ for all items of metadata except external references. Where the entity to be mod
                             the version of software used to create the
                             segmentation
       -P SOFTWARE_PROCESSING_DETAILS, --software-processing-details SOFTWARE_PROCESSING_DETAILS
-                            details of how the segmentation was
-                            processed
+                            details of how the segmentation was processed
+      -x TRANSFORM_ID, --transform-id TRANSFORM_ID
+                            the transform ID to edit
+      -X TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM, --transform TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM TRANSFORM
+                            twelve (12) floats to specify the 3x4 matrix; rows
+                            first
       -D DETAILS, --details DETAILS
-                            populates <details>...</details> in the XML
-                            file
+                            populates <details>...</details> in the XML file
 
     edit segment notes:
       edit attributes to a single segment in an EMDB-SFF file
@@ -1366,6 +1402,21 @@ reference to be edited (``-e/--external-ref-id``).
 
 Specifying ``sff notes edit -e 0 -E <resource> <url> <accession> file.json`` when there are no external
 references is equivalent to using ``sff notes add -E <resource> <url> <accession> file.json``.
+
+Editing Software and Transforms
+``````````````````````````````````
+Just as with editing external references, when editing software and transforms, we must identify the particular item to
+be edited. This is achieved with an ID for the particular item.
+
+To edit a particular software item, use the ``-s/--software-id``. The ``-x/--transform-id`` will accomplish the same
+result for software.
+
+.. code:: bash
+
+    # edit the name of the software for the first item (item ``0``)
+    sff notes edit -s 0 -S <new-name> file.json
+    # edit the third transform (id: ``2``)
+    sff notes edit -x 2 -X <12 floats> file.json
 
 Editing Segment Notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1420,10 +1471,10 @@ referring to listed metadata** (external references, complexes and macromolecule
 .. code-block:: bash
 
     sff notes del
-    usage: sff notes del [-h] [-p CONFIG_PATH] [-b] [-v]
-                         [-e EXTERNAL_REF_ID] [-s SOFTWARE_ID] [-S]
-                         [-T] [-P] [-D] [-i SEGMENT_ID] [-n] [-d] [-I]
-                         sff_file
+    usage: sff notes del [-h] [-p CONFIG_PATH] [-b] [-v] [-e EXTERNAL_REF_ID]
+                     [-s SOFTWARE_ID] [-S] [-T] [-P] [-D] [-i SEGMENT_ID] [-n]
+                     [-d] [-I] [-x TRANSFORM_ID]
+                     sff_file
 
     Delete an existing annotation to an EMDB-SFF file
 
@@ -1435,31 +1486,32 @@ referring to listed metadata** (external references, complexes and macromolecule
       -p CONFIG_PATH, --config-path CONFIG_PATH
                             path to configs file
       -b, --shipped-configs
-                            use shipped configs only if config path and
-                            user configs fail [default: False]
+                            use shipped configs only if config path and user
+                            configs fail [default: False]
       -v, --verbose         verbose output
       -e EXTERNAL_REF_ID, --external-ref-id EXTERNAL_REF_ID
-                            the external reference ID as shown with the
-                            'list' command
+                            the external reference ID as shown with the 'list'
+                            command
 
     delete global notes:
       delete global attributes to an EMDB-SFF file
 
       -s SOFTWARE_ID, --software-id SOFTWARE_ID
-                            the software(s) to delete; delete depends
-                            on whether -S, -T and -P are specified (see
-                            below); if none are specified then the
-                            whole software is deleted from the list
-      -S, --software-name   delete the software name for the specified
-                            software id(s) [default: False]
+                            the software(s) to delete; delete depends on whether
+                            -S, -T and -P are specified (see below); if none are
+                            specified then the whole software is deleted from the
+                            list
+      -S, --software-name   delete the software name for the specified software
+                            id(s) [default: False]
       -T, --software-version
-                            delete the software version for the
-                            specified software id(s) [default: False]
+                            delete the software version for the specified software
+                            id(s) [default: False]
       -P, --software-processing-details
-                            delete the software processing details for
-                            the specified software id(s) [default:
-                            False]
+                            delete the software processing details for the
+                            specified software id(s) [default: False]
       -D, --details         delete the details [default: False]
+      -x TRANSFORM_ID, --transform-id TRANSFORM_ID
+                            the transforms(s) to delete
 
     delete segment notes:
       delete attributes to a single segment in an EMDB-SFF file
@@ -1469,8 +1521,8 @@ referring to listed metadata** (external references, complexes and macromolecule
       -n, --segment-name    delete the segment name [default: False]
       -d, --description     delete the description [default: False]
       -I, --number-of-instances
-                            delete the number of instances [default:
-                            False]
+                            delete the number of instances [default: False]
+
 
 Deleting Global Notes (Segmentation)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1517,6 +1569,15 @@ Any combination of the above will also work as expected:
 .. code-block:: bash
 
     sff notes del -s <id> -S -T file.json
+
+Deleting Transforms
+``````````````````````
+Similarly, deleting transforms only requires the correct transform id.
+
+.. code:: bash
+
+    # delete the fourth transform (id: ``3``)
+    sff notes del -x 3 file.json
 
 
 Deleting Details
