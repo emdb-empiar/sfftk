@@ -255,6 +255,10 @@ class TableField(object):
             assert key is None or text is None
         except AssertionError:
             raise ValueError('key and text are mutually exclusive; only define one or none of them')
+        try:
+            assert isinstance(key, (list, tuple, set)) and len(key) > 1 and all(map(lambda k: isinstance(k, str), key)) or key is None or isinstance(key, str)
+        except AssertionError:
+            raise ValueError('if key is a sequence (list, tuple, set) then it must have two or more strings')
         # check valid type for width
         try:
             assert isinstance(width, numbers.Integral)
@@ -372,13 +376,28 @@ class TableField(object):
         if self.is_index:
             text = _str(index)
         elif self._key is not None:
-            try:
-                if self._is_iterable:
-                    text = row_data[self._key][self._position_in_iterable]
+            if isinstance(self._key, (list, tuple, set)): # if we have a path
+                try:
+                    item = row_data
+                    for key in self._key: # for each key
+                        item = item[key]
+                except KeyError:
+                    text = '-'
                 else:
-                    text = row_data[self._key]
-            except KeyError:
-                text = '-'
+                    if self._is_iterable:
+                        text = item[self._position_in_iterable]
+                    else:
+                        text = item
+            elif isinstance(self._key, str): # if we have a key
+                try:
+                    item = row_data[self._key]
+                except KeyError:
+                    text = '-'
+                else:
+                    if self._is_iterable:
+                        text = item[self._position_in_iterable]
+                    else:
+                        text = item
         elif self._text is not None:
             text = self._text
         # format
@@ -724,9 +743,9 @@ class SearchResults(object):
                 TableField('index', key='index', pc=5, is_index=True, justify='right'),
                 TableField('label', text=self._resource.search_args.search_term, pc=10, justify='center'),
                 TableField('resource', text='EMDB', pc=5, justify='center'),
-                TableField('url', key='EntryID', _format='https://www.ebi.ac.uk/pdbe/emdb/EMD-{}', pc=30),
-                TableField('accession', key='EntryID', pc=10, _format='EMD-{}', justify='center'),
-                TableField('description', key='Title', pc=40),
+                TableField('url', key='emdb_id', _format='https://www.ebi.ac.uk/emdb/{}', pc=30),
+                TableField('accession', key='emdb_id', pc=10, _format='{}', justify='center'),
+                TableField('description', key=['admin', 'title'], pc=40),
             ]
             table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == "UniProt":
@@ -767,11 +786,18 @@ class SearchResults(object):
                 TableField('index', pc=5, is_index=True, justify='right'),
                 TableField('label', text=self._resource.search_args.search_term, pc=10),
                 TableField('resource', text='EMPIAR', pc=8, justify='center'),
-                TableField('url', key='empiarid_abr', _format='https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/{}',
+                TableField('url', key='empiarid', _format='https://www.ebi.ac.uk/empiar/{}',
                            pc=30),
                 TableField('accession', key='empiarid', pc=10, justify='center'),
                 TableField('description', key='title', pc=33),
             ]
+            # EMPIAR search results are returned as a list of objects with accession->metadata
+            # therefore, we need to embed the accession into the metadata
+            structured_response = list()
+            for empiar_accession in self.structured_response:
+                self.structured_response[empiar_accession]['empiarid'] = empiar_accession
+                structured_response.append(self.structured_response[empiar_accession])
+            self._structured_response = structured_response
             table += _str(ResultsTable(self, fields=fields))
         # close style
         table += Styled("[[ ''|reset ]]")

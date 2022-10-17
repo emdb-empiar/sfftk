@@ -353,6 +353,837 @@ class TestNotesFindTableField(Py23FixTestCase):
         with self.assertRaisesRegex(ValueError,
                                     "key and text are mutually exclusive; only define one or none of them"):
             find.TableField('my-field', key='k', text='t')
+        with self.assertRaisesRegex(ValueError,
+                                    r"if key is a sequence \(list, tuple, set\) then it must have two or more strings"):
+            find.TableField('my-field', key=[])
+
+    def test_key_as_list(self):
+        """Test that we can use a list/tuple of strings as the key"""
+        # field = find.TableField('my-field', key=['first', 'second'])
+        field = find.TableField('my-field', key=['admin', 'title'])
+        row_data = json.loads("""{
+            "_id": "63428043d79f4542945d5036",
+            "admin": {
+                "authors_list": {
+                    "author": [
+                        {
+                            "ORCID": "0000-0001-9452-8954",
+                            "instance_type": "author",
+                            "valueOf_": "Antanasijevic A"
+                        },
+                        {
+                            "ORCID": "0000-0002-2902-7739",
+                            "instance_type": "author",
+                            "valueOf_": "Brouwer PJM"
+                        },
+                        {
+                            "ORCID": "0000-0001-7153-3769",
+                            "instance_type": "author",
+                            "valueOf_": "Ward AB"
+                        }
+                    ]
+                },
+                "current_status": {
+                    "code": {
+                        "valueOf_": "REL"
+                    },
+                    "date": "2022-10-12T00:00:00",
+                    "processing_site": "RCSB"
+                },
+                "grant_support": {
+                    "grant_reference": [
+                        {
+                            "code": "OPP1170236",
+                            "country": "United States",
+                            "funding_body": "Bill & Melinda Gates Foundation",
+                            "instance_type": "grant_reference"
+                        }
+                    ]
+                },
+                "key_dates": {
+                    "deposition": "2021-10-05T00:00:00",
+                    "header_release": "2022-10-12T00:00:00",
+                    "map_release": "2022-10-12T00:00:00",
+                    "update": "2022-10-12T00:00:00"
+                },
+                "sites": {
+                    "deposition": "RCSB",
+                    "last_processing": "RCSB"
+                },
+                "title": "Lassa virus glycoprotein construct(Josiah GPCysR4) recovered from GPC-I53-50 nanoparticle by localized reconstruction"
+            },
+            "crossreferences": {
+                "citation_list": {
+                    "primary_citation": {
+                        "citation_type": {
+                            "author": [
+                                {
+                                    "ORCID": "0000-0002-2902-7739",
+                                    "instance_type": "author",
+                                    "order": 1,
+                                    "valueOf_": "Brouwer PJM"
+                                },
+                                {
+                                    "ORCID": "0000-0001-9452-8954",
+                                    "instance_type": "author",
+                                    "order": 2,
+                                    "valueOf_": "Antanasijevic A"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 3,
+                                    "valueOf_": "Ronk AJ"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 4,
+                                    "valueOf_": "Watanabe Y"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 5,
+                                    "valueOf_": "Claireaux M"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 6,
+                                    "valueOf_": "Bijl TPL"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 7,
+                                    "valueOf_": "Perret HR"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 8,
+                                    "valueOf_": "Steijaert T"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 9,
+                                    "valueOf_": "Burger JA"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 10,
+                                    "valueOf_": "Ravichandran R"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 11,
+                                    "valueOf_": "van Haaren MM"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 12,
+                                    "valueOf_": "Sliepen K"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 13,
+                                    "valueOf_": "van Gils MJ"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 14,
+                                    "valueOf_": "King NP"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 15,
+                                    "valueOf_": "Crispin M"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 16,
+                                    "valueOf_": "Bukreyev A"
+                                },
+                                {
+                                    "ORCID": "0000-0001-7153-3769",
+                                    "instance_type": "author",
+                                    "order": 17,
+                                    "valueOf_": "Ward AB"
+                                },
+                                {
+                                    "instance_type": "author",
+                                    "order": 18,
+                                    "valueOf_": "Sanders RW"
+                                }
+                            ],
+                            "external_references": [
+                                {
+                                    "instance_type": "external_references",
+                                    "type_": "CSD",
+                                    "valueOf_": "0353"
+                                }
+                            ],
+                            "journal": "To Be Published",
+                            "journal_abbreviation": "To Be Published",
+                            "published": false,
+                            "title": "Lassa virus glycoprotein nanoparticles elicit a neutralizing antibody that defines a new site of vulnerability"
+                        }
+                    }
+                },
+                "emdb_list": {
+                    "emdb_reference": [
+                        {
+                            "emdb_id": "EMD-25107",
+                            "instance_type": "emdb_reference",
+                            "relationship": {
+                                "other": "associated EM volume"
+                            }
+                        },
+                        {
+                            "emdb_id": "EMD-25108",
+                            "instance_type": "emdb_reference",
+                            "relationship": {
+                                "other": "other EM volume"
+                            }
+                        },
+                        {
+                            "emdb_id": "EMD-25109",
+                            "instance_type": "emdb_reference",
+                            "relationship": {
+                                "other": "other EM volume"
+                            }
+                        }
+                    ]
+                },
+                "pdb_list": {
+                    "pdb_reference": [
+                        {
+                            "instance_type": "pdb_reference",
+                            "pdb_id": "7sgd",
+                            "relationship": {
+                                "in_frame": "FULLOVERLAP"
+                            }
+                        }
+                    ]
+                }
+            },
+            "emdb_id": "EMD-25107",
+            "interpretation": {
+                "half_map_list": {
+                    "half_map": [
+                        {
+                            "annotation_details": "Lassa virus glycoprotein (GPCysR4) map reconstructed from GPCysR4-I53-50 nanoparticle by localized reconstruction - Half Map 1",
+                            "axis_order": {
+                                "fast": "X",
+                                "medium": "Y",
+                                "slow": "Z"
+                            },
+                            "cell": {
+                                "a": {
+                                    "units": "Å",
+                                    "valueOf_": "226.59999"
+                                },
+                                "alpha": {
+                                    "units": "deg",
+                                    "valueOf_": "90.0"
+                                },
+                                "b": {
+                                    "units": "Å",
+                                    "valueOf_": "226.59999"
+                                },
+                                "beta": {
+                                    "units": "deg",
+                                    "valueOf_": "90.0"
+                                },
+                                "c": {
+                                    "units": "Å",
+                                    "valueOf_": "226.59999"
+                                },
+                                "gamma": {
+                                    "units": "deg",
+                                    "valueOf_": "90.0"
+                                }
+                            },
+                            "contour_list": {
+                                "contour": [
+                                    {
+                                        "instance_type": "contour",
+                                        "primary": true,
+                                        "source": "AUTHOR"
+                                    }
+                                ]
+                            },
+                            "data_type": "IMAGE STORED AS FLOATING POINT NUMBER (4 BYTES)",
+                            "dimensions": {
+                                "col": 220,
+                                "row": 220,
+                                "sec": 220
+                            },
+                            "file": "emd_25107_half_map_1.map.gz",
+                            "format": "CCP4",
+                            "instance_type": "half_map",
+                            "label": "::::EMDATABANK.org::::EMD-25107::::",
+                            "origin": {
+                                "col": 0,
+                                "row": 0,
+                                "sec": 0
+                            },
+                            "pixel_spacing": {
+                                "x": {
+                                    "units": "Å",
+                                    "valueOf_": "1.03"
+                                },
+                                "y": {
+                                    "units": "Å",
+                                    "valueOf_": "1.03"
+                                },
+                                "z": {
+                                    "units": "Å",
+                                    "valueOf_": "1.03"
+                                }
+                            },
+                            "size_kbytes": 42593,
+                            "spacing": {
+                                "x": 220,
+                                "y": 220,
+                                "z": 220
+                            },
+                            "statistics": {
+                                "average": -0.000012110811,
+                                "maximum": 0.047217477,
+                                "minimum": -0.013498235,
+                                "std": 0.0026680955
+                            },
+                            "symmetry": {
+                                "space_group": "1"
+                            }
+                        },
+                        {
+                            "annotation_details": "Lassa virus glycoprotein (GPCysR4) map reconstructed from GPCysR4-I53-50 nanoparticle by localized reconstruction - Half Map 2",
+                            "axis_order": {
+                                "fast": "X",
+                                "medium": "Y",
+                                "slow": "Z"
+                            },
+                            "cell": {
+                                "a": {
+                                    "units": "Å",
+                                    "valueOf_": "226.59999"
+                                },
+                                "alpha": {
+                                    "units": "deg",
+                                    "valueOf_": "90.0"
+                                },
+                                "b": {
+                                    "units": "Å",
+                                    "valueOf_": "226.59999"
+                                },
+                                "beta": {
+                                    "units": "deg",
+                                    "valueOf_": "90.0"
+                                },
+                                "c": {
+                                    "units": "Å",
+                                    "valueOf_": "226.59999"
+                                },
+                                "gamma": {
+                                    "units": "deg",
+                                    "valueOf_": "90.0"
+                                }
+                            },
+                            "contour_list": {
+                                "contour": [
+                                    {
+                                        "instance_type": "contour",
+                                        "primary": true,
+                                        "source": "AUTHOR"
+                                    }
+                                ]
+                            },
+                            "data_type": "IMAGE STORED AS FLOATING POINT NUMBER (4 BYTES)",
+                            "dimensions": {
+                                "col": 220,
+                                "row": 220,
+                                "sec": 220
+                            },
+                            "file": "emd_25107_half_map_2.map.gz",
+                            "format": "CCP4",
+                            "instance_type": "half_map",
+                            "label": "::::EMDATABANK.org::::EMD-25107::::",
+                            "origin": {
+                                "col": 0,
+                                "row": 0,
+                                "sec": 0
+                            },
+                            "pixel_spacing": {
+                                "x": {
+                                    "units": "Å",
+                                    "valueOf_": "1.03"
+                                },
+                                "y": {
+                                    "units": "Å",
+                                    "valueOf_": "1.03"
+                                },
+                                "z": {
+                                    "units": "Å",
+                                    "valueOf_": "1.03"
+                                }
+                            },
+                            "size_kbytes": 42593,
+                            "spacing": {
+                                "x": 220,
+                                "y": 220,
+                                "z": 220
+                            },
+                            "statistics": {
+                                "average": -0.000012292119,
+                                "maximum": 0.0481147,
+                                "minimum": -0.013056981,
+                                "std": 0.002665259
+                            },
+                            "symmetry": {
+                                "space_group": "1"
+                            }
+                        }
+                    ]
+                },
+                "modelling_list": {
+                    "modelling": [
+                        {
+                            "initial_model": [
+                                {
+                                    "access_code": "5VK2",
+                                    "instance_type": "initial_model"
+                                }
+                            ],
+                            "instance_type": "modelling",
+                            "refinement_protocol": "RIGID BODY FIT",
+                            "refinement_space": "REAL"
+                        }
+                    ]
+                },
+                "segmentation_list": {
+                    "segmentation": [
+                        {
+                            "file": "emd_25107_msk_1.map",
+                            "instance_type": "segmentation"
+                        }
+                    ]
+                }
+            },
+            "map": {
+                "annotation_details": "Lassa virus glycoprotein (GPCysR4) map reconstructed from GPCysR4-I53-50 nanoparticle by localized reconstruction - Main Map",
+                "axis_order": {
+                    "fast": "X",
+                    "medium": "Y",
+                    "slow": "Z"
+                },
+                "cell": {
+                    "a": {
+                        "units": "Å",
+                        "valueOf_": "226.59999"
+                    },
+                    "alpha": {
+                        "units": "deg",
+                        "valueOf_": "90.0"
+                    },
+                    "b": {
+                        "units": "Å",
+                        "valueOf_": "226.59999"
+                    },
+                    "beta": {
+                        "units": "deg",
+                        "valueOf_": "90.0"
+                    },
+                    "c": {
+                        "units": "Å",
+                        "valueOf_": "226.59999"
+                    },
+                    "gamma": {
+                        "units": "deg",
+                        "valueOf_": "90.0"
+                    }
+                },
+                "contour_list": {
+                    "contour": [
+                        {
+                            "instance_type": "contour",
+                            "level": 0.02,
+                            "primary": true,
+                            "source": "AUTHOR"
+                        }
+                    ]
+                },
+                "data_type": "IMAGE STORED AS FLOATING POINT NUMBER (4 BYTES)",
+                "dimensions": {
+                    "col": 220,
+                    "row": 220,
+                    "sec": 220
+                },
+                "file": "emd_25107.map.gz",
+                "format": "CCP4",
+                "label": "::::EMDATABANK.org::::EMD-25107::::",
+                "origin": {
+                    "col": 0,
+                    "row": 0,
+                    "sec": 0
+                },
+                "pixel_spacing": {
+                    "x": {
+                        "units": "Å",
+                        "valueOf_": "1.03"
+                    },
+                    "y": {
+                        "units": "Å",
+                        "valueOf_": "1.03"
+                    },
+                    "z": {
+                        "units": "Å",
+                        "valueOf_": "1.03"
+                    }
+                },
+                "size_kbytes": 42593,
+                "spacing": {
+                    "x": 220,
+                    "y": 220,
+                    "z": 220
+                },
+                "statistics": {
+                    "average": -0.000012201465,
+                    "maximum": 0.086114384,
+                    "minimum": -0.031668592,
+                    "std": 0.0033173314
+                },
+                "symmetry": {
+                    "space_group": "1"
+                }
+            },
+            "sample": {
+                "macromolecule_list": {
+                    "macromolecule": [
+                        {
+                            "enantiomer": "LEVO",
+                            "instance_type": "protein_or_peptide",
+                            "macromolecule_id": 1,
+                            "molecular_weight": {
+                                "theoretical": {
+                                    "units": "MDa",
+                                    "valueOf_": "0.07384557"
+                                }
+                            },
+                            "name": {
+                                "valueOf_": "Josiah GPCysR4 I53-50A"
+                            },
+                            "natural_source": {
+                                "database": "NCBI",
+                                "organism": {
+                                    "ncbi": 11620,
+                                    "valueOf_": "Lassa mammarenavirus"
+                                }
+                            },
+                            "number_of_copies": "6",
+                            "recombinant_expression": {
+                                "database": "NCBI",
+                                "recombinant_organism": {
+                                    "ncbi": 9606,
+                                    "valueOf_": "Homo sapiens"
+                                }
+                            },
+                            "sequence": {
+                                "string": "MGQIVTFFQEVPHVIEEVMNIVLIALSVLAVLKGLYNFATCGLVGLVTFLLLCGRSCTTSLYKGVYELQTLELNMETLNM TMPLSCTKNNSHHYIMVGNETGLELTLTNTSIINHKFCNLSDAHKKNLYDHALMSIISTFHLSIPNFNQYEAMSCDFNGG KISVQYNLSHSYAGDAANHCGTVANGVLQTFMRMAWGGSYIALDSGCGNWDCIMTSYQYLIIQNTTWEDHCQFSRPSPIG YLGLLSQRTRDIYISRRRRGTFTWTLSDSEGKDTPGGYCLTRWMLIEAELKCFGNTAVAKCNEKHDEEFCDMLRLFDFNK QAIQRLKAPAQMSIQLINKAVNALINDQLIMKNHLRDIMCIPYCNYSKYWYLNHTTTGRTSLPKCWLVSNGSYLNETHFS DDIEQQADNMITEMLQKEYMERQGGSGGSGGSGGSGGSEKAAKAEEAARKMEELFKKHKIVAVLRANSVEEAIEKAVAVF AGGVHLIEITFTVPDADTVIKALSVLKEKGAIIGAGTVTSVEQCRKAVESGAEFIVSPHLDEEISQFCKEKGVFYMPGVM TPTELVKAMKLGHDILKLFPGEVVGPEFVKAMKGPFPNVKFVPTGGVDLDNVCEWFDAGVLAVGVGDALVEGDPDEVREK AKEFVEKIRGCTEGSLEWSHPQFEK"
+                            }
+                        },
+                        {
+                            "formula": "NAG",
+                            "instance_type": "ligand",
+                            "macromolecule_id": 6,
+                            "molecular_weight": {
+                                "theoretical": {
+                                    "units": "MDa",
+                                    "valueOf_": "0.000221208"
+                                }
+                            },
+                            "name": {
+                                "valueOf_": "2-acetamido-2-deoxy-beta-D-glucopyranose"
+                            },
+                            "number_of_copies": "6"
+                        }
+                    ]
+                },
+                "name": {
+                    "valueOf_": "Lassa virus glycoprotein construct(Josiah GPCysR4) recovered from GPC-I53-50 nanoparticle"
+                },
+                "supramolecule_list": {
+                    "supramolecule": [
+                        {
+                            "details": "Josiah GPCysR4 is a trimeric complex consisting of 3 copies of the head domain and 3 copies of the stem domain.  Nanoparticle was assembled by combining equimolar amounts of GPC-I53-50A and I53-50B.",
+                            "instance_type": "complex_supramolecule",
+                            "macromolecule_list": {
+                                "macromolecule": [
+                                    {
+                                        "instance_type": "macromolecule",
+                                        "macromolecule_id": 1
+                                    }
+                                ]
+                            },
+                            "name": {
+                                "valueOf_": "Lassa virus glycoprotein construct(Josiah GPCysR4) recovered from GPC-I53-50 nanoparticle"
+                            },
+                            "natural_source": [
+                                {
+                                    "database": "NCBI",
+                                    "instance_type": "natural_source",
+                                    "organism": {
+                                        "ncbi": 11620,
+                                        "valueOf_": "Lassa mammarenavirus"
+                                    }
+                                }
+                            ],
+                            "parent": 0,
+                            "recombinant_expression": [
+                                {
+                                    "database": "NCBI",
+                                    "instance_type": "recombinant_expression",
+                                    "recombinant_cell": "HEK293F",
+                                    "recombinant_organism": {
+                                        "ncbi": 9606,
+                                        "valueOf_": "Homo sapiens"
+                                    }
+                                }
+                            ],
+                            "supramolecule_id": 1
+                        }
+                    ]
+                }
+            },
+            "structure_determination_list": {
+                "structure_determination": [
+                    {
+                        "aggregation_state": "particle",
+                        "image_processing": [
+                            {
+                                "ctf_correction": {
+                                    "software_list": {
+                                        "software": [
+                                            {
+                                                "instance_type": "software",
+                                                "name": "Gctf"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "final_angle_assignment": {
+                                    "details": "Regularized likelihood",
+                                    "software_list": {
+                                        "software": [
+                                            {
+                                                "instance_type": "software",
+                                                "name": "RELION",
+                                                "version": "3.0"
+                                            }
+                                        ]
+                                    },
+                                    "type_": "OTHER"
+                                },
+                                "final_reconstruction": {
+                                    "algorithm": "BACK PROJECTION",
+                                    "applied_symmetry": {
+                                        "point_group": "C3"
+                                    },
+                                    "details": "C3 symmetry used for refinement. Solvent mask applied.",
+                                    "number_classes_used": 1,
+                                    "number_images_used": 124891,
+                                    "resolution": {
+                                        "res_type": "BY AUTHOR",
+                                        "units": "Å",
+                                        "valueOf_": "3.97"
+                                    },
+                                    "resolution_method": "FSC 0.143 CUT-OFF",
+                                    "software_list": {
+                                        "software": [
+                                            {
+                                                "instance_type": "software",
+                                                "name": "RELION",
+                                                "version": "3.0"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "final_three_d_classification": {
+                                    "software_list": {
+                                        "software": [
+                                            {
+                                                "instance_type": "software",
+                                                "name": "RELION",
+                                                "version": "3.0"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "image_processing_id": 1,
+                                "image_recording_id": 1,
+                                "initial_angle_assignment": {
+                                    "details": "Regularized likelihood",
+                                    "software_list": {
+                                        "software": [
+                                            {
+                                                "instance_type": "software",
+                                                "name": "RELION",
+                                                "version": "3.0"
+                                            }
+                                        ]
+                                    },
+                                    "type_": "OTHER"
+                                },
+                                "instance_type": "singleparticle_processing",
+                                "particle_selection": [
+                                    {
+                                        "details": "This is the number of GPCysR4 trimer subparticles extracted from the GPC-I53-50 nanoparticle by localized reconstruction: 86,411 nanoparticles X 20 = 1728229.",
+                                        "instance_type": "particle_selection",
+                                        "number_selected": 1728229
+                                    }
+                                ],
+                                "startup_model": [
+                                    {
+                                        "details": "Map reconstructed from negative stain EM",
+                                        "instance_type": "startup_model",
+                                        "type_of_model": "OTHER"
+                                    }
+                                ]
+                            }
+                        ],
+                        "instance_type": "structure_determination",
+                        "method": "singleParticle",
+                        "microscopy_list": {
+                            "microscopy": [
+                                {
+                                    "acceleration_voltage": {
+                                        "units": "kV",
+                                        "valueOf_": "300"
+                                    },
+                                    "alignment_procedure": {
+                                        "coma_free": {}
+                                    },
+                                    "cooling_holder_cryogen": "NITROGEN",
+                                    "electron_source": "FIELD EMISSION GUN",
+                                    "illumination_mode": "FLOOD BEAM",
+                                    "image_recording_list": {
+                                        "image_recording": [
+                                            {
+                                                "average_electron_dose_per_image": {
+                                                    "units": "e/Å^2",
+                                                    "valueOf_": "50.4"
+                                                },
+                                                "average_exposure_time": {
+                                                    "units": "s",
+                                                    "valueOf_": "10.5"
+                                                },
+                                                "detector_mode": "COUNTING",
+                                                "digitization_details": {},
+                                                "film_or_detector_model": {
+                                                    "valueOf_": "GATAN K2 SUMMIT (4k x 4k)"
+                                                },
+                                                "image_recording_id": 1,
+                                                "instance_type": "image_recording",
+                                                "number_grids_imaged": 2
+                                            }
+                                        ]
+                                    },
+                                    "imaging_mode": "BRIGHT FIELD",
+                                    "instance_type": "single_particle_microscopy",
+                                    "microscope": "FEI TITAN KRIOS",
+                                    "microscopy_id": 1,
+                                    "nominal_cs": {
+                                        "units": "mm",
+                                        "valueOf_": "2.7"
+                                    },
+                                    "nominal_defocus_max": {
+                                        "units": "µm",
+                                        "valueOf_": "1.6"
+                                    },
+                                    "nominal_defocus_min": {
+                                        "units": "µm",
+                                        "valueOf_": "0.6"
+                                    },
+                                    "nominal_magnification": 29000,
+                                    "specimen_holder_model": "FEI TITAN KRIOS AUTOGRID HOLDER"
+                                }
+                            ]
+                        },
+                        "specimen_preparation_list": {
+                            "specimen_preparation": [
+                                {
+                                    "buffer": {
+                                        "component": [
+                                            {
+                                                "concentration": {
+                                                    "units": "mM",
+                                                    "valueOf_": "10.0"
+                                                },
+                                                "formula": "Tris-HCl",
+                                                "instance_type": "component",
+                                                "name": "Tris"
+                                            },
+                                            {
+                                                "concentration": {
+                                                    "units": "mM",
+                                                    "valueOf_": "150.0"
+                                                },
+                                                "formula": "NaCl",
+                                                "instance_type": "component",
+                                                "name": "Sodium chloride"
+                                            }
+                                        ],
+                                        "details": "TBS",
+                                        "ph": 7
+                                    },
+                                    "concentration": {
+                                        "units": "mg/mL",
+                                        "valueOf_": "2"
+                                    },
+                                    "details": "Lassa virus glycoprotein construct(Josiah GPCysR4) recovered from GPC-I53-50 nanoparticle by localized reconstruction. Nanoparticle was assembled by combining equimolar amounts of GPC-I53-50A and I53-50B.",
+                                    "grid": {
+                                        "material": "COPPER",
+                                        "mesh": 300,
+                                        "model": "Quantifoil R2/1",
+                                        "pretreatment": {
+                                            "atmosphere": "OTHER",
+                                            "type_": "PLASMA CLEANING"
+                                        },
+                                        "support_film": [
+                                            {
+                                                "film_material": "CARBON",
+                                                "film_topology": "HOLEY",
+                                                "film_type_id": 1,
+                                                "instance_type": "support_film"
+                                            }
+                                        ]
+                                    },
+                                    "instance_type": "single_particle_preparation",
+                                    "preparation_id": 1,
+                                    "vitrification": {
+                                        "chamber_humidity": {
+                                            "units": "percentage",
+                                            "valueOf_": "100"
+                                        },
+                                        "chamber_temperature": {
+                                            "units": "K",
+                                            "valueOf_": "283"
+                                        },
+                                        "cryogen_name": "ETHANE",
+                                        "details": "Blot time 4s, Wait time 10s, Blot force 0. ",
+                                        "instrument": "FEI VITROBOT MARK IV"
+                                    }
+                                }
+                            ]
+                        },
+                        "structure_determination_id": 1
+                    }
+                ]
+            },
+            "version": "3.0.2.8"
+        }""")
+        row = str(find.TableRow(row_data, [field], 10))
+        self.assertRegex(row, r"(?ms)^Lass.*reconstruction.*")
+        # if missing keys then we simply get '-'
+        field = find.TableField('my-field', key=['first', 'second'])
+        row = str(find.TableRow(row_data, [field], 10))
+        self.assertRegex(row, r"(?ms:-.*)")
 
     def test_init_width_type(self):
         """Test check on width type"""

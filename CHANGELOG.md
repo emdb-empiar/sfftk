@@ -1,5 +1,9 @@
 #Changes by release
 
+## [0.7.4] (2022-10-17) - Tentative fix for search EMDB and EMPIAR search
+
+* not all search features remain e.g. `--start` is ignored, search results count unavailable
+
 ## [0.7.3] (2022-10-17) - Trivial bugfix and documentation update for transforms
 
 * viewing transforms

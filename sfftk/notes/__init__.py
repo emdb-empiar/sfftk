@@ -26,10 +26,10 @@ RESOURCE_LIST['go'] = {
 }
 RESOURCE_LIST['emdb'] = {
     'name': 'EMDB',
-    'root_url': 'https://www.ebi.ac.uk/pdbe/emdb/search/',
+    'root_url': 'https://www.ebi.ac.uk/emdb/api/search/',
     'format': 'json',
-    'result_path': ['ResultSet', 'Result'],
-    'result_count': ['ResultSet', 'totalResultsAvailable'],
+    'result_path': None,
+    'result_count': None,
 }
 RESOURCE_LIST['uniprot'] = {
     'name': 'UniProt',
@@ -54,10 +54,10 @@ RESOURCE_LIST['europepmc'] = {
 }
 RESOURCE_LIST['empiar'] = {
     'name': 'EMPIAR',
-    'root_url': 'https://www.ebi.ac.uk/pdbe/emdb/empiar/solr/select',
+    'root_url': 'https://www.ebi.ac.uk/emdb/api/empiar/search/',
     'format': 'json',
-    'result_path': ['response', 'docs'],
-    'result_count': ['response', 'numFound']
+    'result_path': None,
+    'result_count': None,
 }
 RESOURCE_LIST_NAMES = [RESOURCE_LIST[k]['name'] for k in RESOURCE_LIST.keys()]
 # enforce integrity
