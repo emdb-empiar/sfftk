@@ -3,6 +3,7 @@ Unit tests for :py:mod:`sfftk.core` package
 """
 import argparse
 import contextlib
+import json
 import os
 import pathlib
 import random
@@ -2169,36 +2170,49 @@ class TestPrep(unittest.TestCase):
         self.assertEqual(0, exit_status)
         # we expect to see merged_mask.mrc
         self.assertTrue(os.path.exists("merged_mask.mrc"))
-        # we expect to see merged_mask.txt
-        self.assertTrue(os.path.exists("merged_mask.txt"))
+        # we expect to see merged_mask.json
+        self.assertTrue(os.path.exists("merged_mask.json"))
         # if merged_mask.{mrc,txt} exist then halt; only proceed if --overwrite was specified
         args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
         exit_status = mergemask(args, configs)
         self.assertEqual(64, exit_status)
-        # the order of masks in merged_mask.txt is as original
-        with open("merged_mask.txt") as f:
-            mask_order = [row.strip().split("\t")[0] for row in f]
+        # the order of masks in merged_mask.json is as original
+        with open("merged_mask.json") as f:
+            mask_metadata = json.load(f)
         self.assertEqual(
-            list(map(lambda m: pathlib.Path(m).name, mergeable_masks)),
-            mask_order,
+            {
+                "mask_to_label": {
+                    "mergeable_1.map": 1,
+                    "mergeable_2.map": 2,
+                    "mergeable_3.map": 3
+                },
+                # "label_tree": {
+                #     1: 0,
+                #     2: 0,
+                #     3: 0
+                # }
+            },
+            mask_metadata
         )
         # if we change the prefix and mask-extension then the file should change
         args, configs = cli(
             f"prep mergemask --verbose --overwrite --output-prefix my_masks "
             f"--mask-extension map {' '.join(mergeable_masks)}"
+
         )
+
         _ = mergemask(args, configs)
         self.assertTrue(os.path.exists("my_masks.map"))
-        self.assertTrue(os.path.exists("my_masks.txt"))
+        self.assertTrue(os.path.exists("my_masks.json"))
         # delete the custom prefix and mask-extension files
         try:
             os.remove("my_masks.map")
-            os.remove("my_masks.txt")
+            os.remove("my_masks.json")
         except FileNotFoundError:
             pass
         # delete the output files
         try:
             os.remove("merged_mask.mrc")
-            os.remove("merged_mask.txt")
+            os.remove("merged_mask.json")
         except FileNotFoundError:
             pass

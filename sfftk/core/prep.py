@@ -7,6 +7,7 @@ This module consists of preparation utilities to condition segmentation files pr
 import asyncio
 import re
 import sys
+import json
 
 import mrcfile
 import numpy
@@ -262,9 +263,13 @@ def mergemask(args, configs):
     else:  # only create the label file if no exception is raised in creating the mask
         if args.verbose:
             print_date(f"info: attempting to write label file {args.output_prefix}.txt...")
-        with open(f"{args.output_prefix}.txt", 'w') as label_file:
-            for mask_name, mask_label in label_dict.items():
-                print(mask_name, mask_label, sep="\t", file=label_file)
+        # create the mask metadata
+        mask_metdata = dict()
+        mask_metdata['mask_to_label'] = dict()
+        for mask_name, mask_label in label_dict.items():
+            mask_metdata['mask_to_label'][mask_name] = mask_label
+        with open(f"{args.output_prefix}.json", 'w') as label_file:
+            json.dump(mask_metdata, label_file, indent=4)
     if args.verbose:
         print_date(f"info: merge complete!")
     return 0
