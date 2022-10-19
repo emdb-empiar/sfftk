@@ -5,6 +5,7 @@ import json
 import os
 import shutil
 import unittest
+import urllib.parse
 
 import requests
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
@@ -263,12 +264,15 @@ class TestNotesFindSearchResource(Py23FixTestCase):
             config_fn=self.config_fn,
         ), use_shlex=True)
         resource = find.SearchResource(args, configs)
-        url = "{root_url}?q={search_term}&start={start}&rows={rows}".format(
-            root_url=RESOURCE_LIST[resource_name]['root_url'],
-            search_term=args.search_term,
-            start=args.start,
-            rows=args.rows,
+        root_url = RESOURCE_LIST[resource_name]['root_url']
+        search_term = args.search_term
+        search_string = urllib.parse.quote(
+            f"title:{search_term} OR "
+            f"go_name:{search_term} OR "
+            f"sample_name:{search_term}",
+            safe='/:?='
         )
+        url = f"{root_url}{search_string}?rows={args.rows}"
         self.assertEqual(resource.get_url(), url)
 
     def test_get_url_uniprot(self):
@@ -335,15 +339,34 @@ class TestNotesFindSearchResource(Py23FixTestCase):
             use_shlex=True,
         )
         resource = find.SearchResource(args, configs)
-        url = "{root_url}?q={search_term}&wt=json&start={start}&rows={rows}".format(
-            root_url=RESOURCE_LIST[resource_name]['root_url'],
-            search_term=args.search_term,
-            start=args.start,
-            rows=args.rows
+        resource_url = resource.get_url()
+        root_url = RESOURCE_LIST[resource_name]['root_url']
+        search_term = args.search_term
+        search_string = urllib.parse.quote(
+            f"title:{search_term} OR "
+            f"structure_determination_method:{search_term} OR "
+            f"sample_type:{search_term} OR "
+            f"sample_name:{search_term} OR "
+            f"natural_source_organism:{search_term} OR "
+            f"natural_source_strain_organism:{search_term} OR "
+            f"natural_source_organ:{search_term} OR "
+            f"natural_source_tissue:{search_term} OR "
+            f"natural_source_cell:{search_term} OR "
+            f"natural_source_organelle:{search_term} OR "
+            f"natural_source_cellular_location:{search_term} OR "
+            f"virus_serotype_organism:{search_term} OR "
+            f"virus_category:{search_term} OR "
+            f"virus_isolate:{search_term} OR "
+            f"structure_type:{search_term} OR "
+            f"buffer_component_name:{search_term} OR "
+            f"staining_material:{search_term} OR "
+            f"pretreatment_type:{search_term} OR "
+            f"vitrification_cryogen_name:{search_term} OR "
+            f"microscope_name:{search_term} OR "
+            f"image_set_name:{search_term}?rows={args.rows}",
+            safe='/:?='
         )
-        # the url has an additional random (unpredictable) value that will break the comparison
-        # let's remove it before the equality assertion
-        resource_url = '&'.join(resource.get_url().split('&')[:-1])
+        url = f"{root_url}{search_string}"
         self.assertEqual(resource_url, url)
 
 

@@ -1,5 +1,7 @@
 #Changes by release
 
+## [0.7.4.post1] (2022-10-19) - v0.7.4.post1: Refinement of `sff notes search -R [emdb|empiar]` to display meaningful results
+
 ## [0.7.4] (2022-10-17) - Tentative fix for search EMDB and EMPIAR search
 
 * not all search features remain e.g. `--start` is ignored, search results count unavailable

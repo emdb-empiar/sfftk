@@ -6,9 +6,9 @@ Search for terms and display ontologies
 """
 import math
 import numbers
-import random
 import sys
 import textwrap
+import urllib.parse
 
 import requests
 from sfftkrw.core import utils, _str, _xrange
@@ -143,11 +143,14 @@ class SearchResource(object):
                 url += "&obsoletes=on"
         # emdb
         elif self.name == 'EMDB':
-            url = self.root_url + "?q={}&start={}&rows={}".format(
-                self.search_args.search_term,
-                self.search_args.start,
-                self.search_args.rows,
+            search_term = self.search_args.search_term
+            search_string = urllib.parse.quote(
+                f"title:{search_term} OR "
+                f"go_name:{search_term} OR "
+                f"sample_name:{search_term}",
+                safe='/:'
             )
+            url = f"{self.root_url}{search_string}?rows={self.search_args.rows}"
         # uniprot
         elif self.name == "UniProt":
             url = self.root_url + (
@@ -177,12 +180,32 @@ class SearchResource(object):
             )
         # EMPIAR
         elif self.name == "EMPIAR":
-            url = self.root_url + "?q={search_term}&wt=json&start={start}&rows={rows}&random={rvalue}".format(
-                search_term=self.search_args.search_term,
-                start=self.search_args.start,
-                rows=self.search_args.rows,
-                rvalue=int(random.random() * 100000),
+            search_term = self.search_args.search_term
+            search_string = urllib.parse.quote(
+                f"title:{search_term} OR "
+                f"structure_determination_method:{search_term} OR "
+                f"sample_type:{search_term} OR "
+                f"sample_name:{search_term} OR "
+                f"natural_source_organism:{search_term} OR "
+                f"natural_source_strain_organism:{search_term} OR "
+                f"natural_source_organ:{search_term} OR "
+                f"natural_source_tissue:{search_term} OR "
+                f"natural_source_cell:{search_term} OR "
+                f"natural_source_organelle:{search_term} OR "
+                f"natural_source_cellular_location:{search_term} OR "
+                f"virus_serotype_organism:{search_term} OR "
+                f"virus_category:{search_term} OR "
+                f"virus_isolate:{search_term} OR "
+                f"structure_type:{search_term} OR "
+                f"buffer_component_name:{search_term} OR "
+                f"staining_material:{search_term} OR "
+                f"pretreatment_type:{search_term} OR "
+                f"vitrification_cryogen_name:{search_term} OR "
+                f"microscope_name:{search_term} OR "
+                f"image_set_name:{search_term}",
+                safe='/:'
             )
+            url = self.root_url + f"{search_string}?rows={self.search_args.rows}"
         return url
 
     def search(self, *args, **kwargs):
@@ -256,7 +279,8 @@ class TableField(object):
         except AssertionError:
             raise ValueError('key and text are mutually exclusive; only define one or none of them')
         try:
-            assert isinstance(key, (list, tuple, set)) and len(key) > 1 and all(map(lambda k: isinstance(k, str), key)) or key is None or isinstance(key, str)
+            assert isinstance(key, (list, tuple, set)) and len(key) > 1 and all(
+                map(lambda k: isinstance(k, str), key)) or key is None or isinstance(key, str)
         except AssertionError:
             raise ValueError('if key is a sequence (list, tuple, set) then it must have two or more strings')
         # check valid type for width
@@ -376,10 +400,10 @@ class TableField(object):
         if self.is_index:
             text = _str(index)
         elif self._key is not None:
-            if isinstance(self._key, (list, tuple, set)): # if we have a path
+            if isinstance(self._key, (list, tuple, set)):  # if we have a path
                 try:
                     item = row_data
-                    for key in self._key: # for each key
+                    for key in self._key:  # for each key
                         item = item[key]
                 except KeyError:
                     text = '-'
@@ -388,7 +412,7 @@ class TableField(object):
                         text = item[self._position_in_iterable]
                     else:
                         text = item
-            elif isinstance(self._key, str): # if we have a key
+            elif isinstance(self._key, str):  # if we have a key
                 try:
                     item = row_data[self._key]
                 except KeyError:
