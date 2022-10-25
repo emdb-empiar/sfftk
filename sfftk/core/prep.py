@@ -5,15 +5,172 @@
 This module consists of preparation utilities to condition segmentation files prior to conversion.
 """
 import asyncio
+import json
 import re
 import sys
-import json
+from typing import Union, List, TypeVar
 
 import mrcfile
 import numpy
+import numpy.lib.mixins
 from sfftkrw.core import _str
 from sfftkrw.core.print_tools import print_date
 from stl import Mesh
+
+
+def _label_generator():
+    yield from (*range(1, 128), *range(-128, 0))
+
+
+class MergedMask:  # (NDArrayOperatorsMixin):
+    """Objects have a number of important properties germane to working with collation of masks:
+
+    - they know what the next label value is implicitly;
+    - they handle iterative addition of masks to construct the merged mask;
+    - they keep track of the label tree;
+
+    Using a MergedMask object converts the complexity of the above into the following:
+
+    merged_mask = MergedMask()
+    for mask in masks: # masks is a list of n-dimensional binary-valued arrays
+        merged_mask += mask
+
+    and we can now interrogate the merged mask for some attributes:
+
+    merged_mask.next_label
+    merged_mask.label_tree
+
+
+            There are only three ways that an overlap can happen.
+        1. no overlap is the trivial case - no elements are shared;
+        2. complete overlap: one set of elements is completely contained in another set;
+        3. partial overlap: some elements are shared.
+
+        For this functionality to work we need several functions:
+        - a way to add so that the sum is the next sequential number, not the arithmetic sum (q.v.) (MAXADD)
+        - a way to decide the next label to use (NEXTLAB), which is not necessary the current label plus one;
+            we want to exhaust the range of values; e.g. NEXTLAB([1, 2, 4, 5, 6, 7]) = 3; the simplest way to construct
+            a reliable label generator is using a Python generator pre-loaded with valid values
+            e.g. yield from (*range(1, 128), range(-128, 0))
+
+            def generate_valid_labels():
+                yield from (*range(1, 128), *range(-128, 0))
+                # extend the range using
+                yield from (*range(128, 2**16), *range(-2**16, -128))
+            for label in generate_valid_labels():
+                print(f"label = {label}")
+        - a way to capture the relationship between labels
+
+        Suppose we wish to merge the following masks:
+        - [0, 1, 0, 0]
+        - [0, 1, 0, 0]
+        - [0, 0, 1, 0]
+        - [0, 1, 1, 1]
+        - [1, 0, 0, 0]
+        - [1, 0, 1, 0]
+
+        We will build our merged mask by successively adding each mask to the empty mask: [0, 0, 0, 0].
+        At each iteration, will set a new label to be used.
+        Because elements can overlap, we need a way to keep track of labels so that we can record when we have to
+        assign labels that indicate either complete or partial overlap.
+
+        We initialise our label to label=1 and the merged_mask=[0, 0, 0, 0] (the empty mask).
+        We set our current_mask to the first mask [0, 1, 0, 0].
+        For the first iteration we set the merged_mask to the value of the current value MAXADDED to current_mask * label:
+
+        merged_mask = MAXADD(merged_mask, current_mask * label)
+
+        The next value of label is NEXTLAB(merged_mask)
+
+        Then we set our current_mask to the next mask.
+
+        merged_mask = [0, 0, 0, 0]
+        for current_mask in masks:
+            merged_mask = MAXADD(merged_mask, current_mask * label)
+            label = NEXTLAB(merged_mask)
+
+        However, we still do not know
+
+    """
+    label_tree = dict()
+    recycled_int8 = list()
+    label_generator = _label_generator()
+
+    def __init__(self, arg: Union[tuple, numpy.ndarray], dtype=numpy.dtype('int8')):
+        """Initialise"""
+        if isinstance(arg, tuple):
+            self._shape = arg
+            self._dtype = dtype
+            self._data = numpy.zeros(self._shape, dtype=dtype)
+        elif isinstance(arg, numpy.ndarray):
+            self._shape = arg.shape
+            self._dtype = arg.dtype
+            self._data = arg
+        else:
+            raise TypeError(f"need shape tuple or numpy array")
+
+    @staticmethod
+    def generate_label():
+        # while True:
+        yield from (*range(1, 128),)
+
+    def __repr__(self):
+        """Representation"""
+        return f"{self.__class__.__qualname__}(shape={self._shape}, dtype={self._dtype})"
+
+    def __array__(self):
+        """Numpy array interface"""
+        return self._data
+
+    @property
+    def shape(self):
+        return self._data.shape
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def dtype(self):
+        return self._dtype
+
+    def merge(self, masks: List[numpy.ndarray]) -> TypeVar('MergedMask'):
+        """Merge the sequence of masks in the specified order"""
+        for mask in masks:
+            self += mask
+        return self
+
+    def __add__(self, mask):
+        """Custom addition operation"""
+        unique_values = numpy.unique(mask)
+        try:
+            assert len(unique_values) == 2 and 0 in unique_values and 1 in unique_values
+        except AssertionError:
+            raise ValueError(f"non-binary mask with values: {unique_values}")
+        if not isinstance(mask, numpy.ndarray):
+            raise TypeError("mask must be a numpy.ndarray object")
+        # special addition on the underlying data
+        label = next(self.label_generator)
+        print(f"label = {label}")
+        self._data += mask * label
+        return self
+
+    def __radd__(self, mask):
+        """Custom reflected addition operation"""
+        if not isintance(mask, numpy.ndarray):
+            raise TypeError("mask must be a numpy.ndarray object")
+        self._data = other
+        return self.__class__(numpy.add(self.data, other))
+
+    def __iadd__(self, mask):
+        """Custom iterative addition operation"""
+        if not isinstance(mask, numpy.ndarray):
+            raise TypeError("mask must be a numpy.ndarray object")
+        self._data += mask
+        return self
+
+    def __eq__(self, other):
+        return numpy.array_equal(self.data, other.data) and self.shape == other.shape and self.dtype == other.dtype
 
 
 def bin_map(args, configs):
@@ -211,12 +368,12 @@ def _masks_no_overlap(args, configs):
     return max_voxel_value == 1
 
 
-def _mergemask(args, configs) -> [numpy.ndarray, dict]:
+def _mergemask(masks: [numpy.ndarray]) -> [numpy.ndarray, dict]:
     """The mergemask workhorse which does the actual merging"""
     from ..readers.mapreader import Map
     import pathlib
     label_dict = dict()
-    for label, mask in enumerate(args.masks, start=1):
+    for label, mask in enumerate(masks, start=1):
         this_map = Map(mask)
         if 'output_mask' not in locals():
             output_mask = numpy.zeros(this_map.voxels.shape, dtype=numpy.int8)
@@ -248,7 +405,7 @@ def mergemask(args, configs):
     # now we can merge masks
     if args.verbose:
         print_date(f"info: proceeding to merge masks...")
-    merged_mask, label_dict = _mergemask(args, configs)
+    merged_mask, label_dict = _mergemask(args.masks)
     if args.verbose:
         print_date(f"info: merge complete...")
     if args.verbose:

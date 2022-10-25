@@ -2158,6 +2158,27 @@ class TestPrep(unittest.TestCase):
         # no change in shape
         self.assertEqual((10, 10, 10), merged_mask.shape)  # I know this!
 
+    def test_merged_mask_class(self):
+        """Test that if masks overlap we can construct the implied label tree."""
+        from ..core.prep import MergedMask
+        shape = (30, )
+        # from shape
+        merged_mask = MergedMask(shape)
+        self.assertIsInstance(merged_mask.label_tree, dict)
+        self.assertEqual(shape, merged_mask.shape)
+        self.assertEqual(0, numpy.sum(merged_mask)) # zeros
+        random_mask1 = numpy.random.randint(0, 2, shape, dtype=numpy.dtype('int8'))
+        print()
+        print(random_mask1)
+        # ideally
+        merged_mask = merged_mask + random_mask1
+        self.assertEqual(MergedMask(random_mask1), merged_mask) # 1
+        print(merged_mask.data)
+        merged_mask = merged_mask + random_mask1
+        print(merged_mask.data)
+        merged_mask = merged_mask + random_mask1
+        print(merged_mask.data)
+
     def test_actual_mergemask(self):
         """Test an actual merge of masks"""
         # given a set of N non-overlapping binary masks in mode 0
