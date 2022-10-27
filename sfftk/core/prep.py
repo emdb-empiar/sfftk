@@ -6,9 +6,10 @@ This module consists of preparation utilities to condition segmentation files pr
 """
 import asyncio
 import json
+import pathlib
 import re
 import sys
-from typing import Union, List, TypeVar
+from typing import List
 
 import mrcfile
 import numpy
@@ -22,7 +23,7 @@ def _label_generator():
     yield from (*range(1, 128), *range(-128, 0))
 
 
-class MergedMask:  # (NDArrayOperatorsMixin):
+class MergedMask:
     """Objects have a number of important properties germane to working with collation of masks:
 
     - they know what the next label value is implicitly;
@@ -92,31 +93,38 @@ class MergedMask:  # (NDArrayOperatorsMixin):
         However, we still do not know
 
     """
-    label_tree = dict()
-    recycled_int8 = list()
-    label_generator = _label_generator()
 
-    def __init__(self, arg: Union[tuple, numpy.ndarray], dtype=numpy.dtype('int8')):
-        """Initialise"""
-        if isinstance(arg, tuple):
-            self._shape = arg
-            self._dtype = dtype
-            self._data = numpy.zeros(self._shape, dtype=dtype)
-        elif isinstance(arg, numpy.ndarray):
-            self._shape = arg.shape
-            self._dtype = arg.dtype
-            self._data = arg
-        else:
-            raise TypeError(f"need shape tuple or numpy array")
+    def __init__(self, data=None, dtype=numpy.dtype('int16'), mask_name_prefix="mask_", zfill=4):
+        # we could use int8 but the overflow leads to negative numbers which break the flow
+        # using int16 gives us a positive upper ceiling of 32k, much higher than 127 for int8
+        self._label = 1  # initial label value
+        self._label_tree = dict()
+        self._label_set = set()
+        self._dtype = dtype
+        self._data = data
+        self._mask_to_label = dict()
+        self._mask_id = 1
+        self._mask_name_prefix = mask_name_prefix
+        self._zfill = zfill
+        self._mask_name = None
 
-    @staticmethod
-    def generate_label():
-        # while True:
-        yield from (*range(1, 128),)
+    def _init_data(self, mask: numpy.ndarray):
+        """Private method to initialise MergedMask based on a provide mask"""
+        # validate mask
+        unique_values = numpy.unique(mask)
+        try:
+            assert len(unique_values) == 2 and 0 in unique_values and 1 in unique_values
+        except AssertionError:
+            raise ValueError(f"non-binary mask with values: {unique_values}")
+        if not isinstance(mask, numpy.ndarray):
+            raise TypeError("mask must be a numpy.ndarray object")
+        # instantiate self._data as zeros of the right dimension
+        if self._data is None:
+            self._data = numpy.zeros(mask.shape, self._dtype)
 
     def __repr__(self):
         """Representation"""
-        return f"{self.__class__.__qualname__}(shape={self._shape}, dtype={self._dtype})"
+        return f"{self.__class__.__qualname__}(data={self.data}, dtype={self._dtype})"
 
     def __array__(self):
         """Numpy array interface"""
@@ -124,7 +132,9 @@ class MergedMask:  # (NDArrayOperatorsMixin):
 
     @property
     def shape(self):
-        return self._data.shape
+        if self._data is not None:
+            return self._data.shape
+        return
 
     @property
     def data(self):
@@ -134,39 +144,75 @@ class MergedMask:  # (NDArrayOperatorsMixin):
     def dtype(self):
         return self._dtype
 
-    def merge(self, masks: List[numpy.ndarray]) -> TypeVar('MergedMask'):
+    @property
+    def label(self):
+        return self._label
+
+    @property
+    def label_tree(self):
+        return self._label_tree
+
+    @property
+    def label_set(self):
+        return self._label_set
+
+    @property
+    def mask_to_label(self):
+        return self._mask_to_label
+
+    @property
+    def mask_name(self):
+        if self._mask_name is not None:
+            return self._mask_name
+        return f"{self._mask_name_prefix}{self._mask_id:0>{self._zfill}}"
+
+    def merge(self, mask: numpy.ndarray, mask_name=None):
         """Merge the sequence of masks in the specified order"""
-        for mask in masks:
-            self += mask
+        # temporarily set self._mask_name
+        self._mask_name = mask_name
+        self += mask
+        # reset _mask_name
+        self._mask_name = None
+
+    def _update_label(self):
+        """Update the label to the next value to use"""
+        # first, add the current label to the label set and the label tree
+        self._label_set.add(self._label)
+        self._label_tree[str(self._label)] = 0  # this is a direct child of the root (0, repr. background)
+        self._mask_to_label[self.mask_name] = int(self._label)
+        # get the new resulting labels: all those not already in the label set
+        new_labels = set(numpy.unique(self._data)).difference(self._label_set.union([0]))
+        # determine the parentage for each new label
+        for new_label in new_labels:
+            for _label in self._label_set:
+                # since we added the content of the merged mask to the new mask then any new labels are sum of
+                # current label and the label for the current mask i.e. new_label = previous_label + label;
+                # we are only interested in associating the pair to the new label; the new_label now becomes
+                # a leaf with parent nodes being the previous_label and the label for the last mask
+                # we store them sorted
+                if new_label == _label + self._label:
+                    self._label_tree[str(new_label)] = sorted([int(new_label - _label), int(new_label - self._label)])
+        # finally, we should not forget to now include the new labels into the label set
+        self._label_set |= new_labels
+        self._label = numpy.amax(self._data) + 1
+        self._mask_id += 1
+
+    def __add__(self, mask) -> 'MergedMask':
+        self._init_data(mask)
+        self._data += mask * self._label  # merge the current mask to the merged mask and label it uniquely
+        self._update_label()
         return self
 
-    def __add__(self, mask):
-        """Custom addition operation"""
-        unique_values = numpy.unique(mask)
-        try:
-            assert len(unique_values) == 2 and 0 in unique_values and 1 in unique_values
-        except AssertionError:
-            raise ValueError(f"non-binary mask with values: {unique_values}")
-        if not isinstance(mask, numpy.ndarray):
-            raise TypeError("mask must be a numpy.ndarray object")
-        # special addition on the underlying data
-        label = next(self.label_generator)
-        print(f"label = {label}")
-        self._data += mask * label
+    def __radd__(self, mask) -> 'MergedMask':
+        self._init_data(mask)
+        self._data += mask * self._label  # merge the current mask to the merged mask and label it uniquely
+        self._update_label()
         return self
 
-    def __radd__(self, mask):
-        """Custom reflected addition operation"""
-        if not isintance(mask, numpy.ndarray):
-            raise TypeError("mask must be a numpy.ndarray object")
-        self._data = other
-        return self.__class__(numpy.add(self.data, other))
-
-    def __iadd__(self, mask):
-        """Custom iterative addition operation"""
-        if not isinstance(mask, numpy.ndarray):
-            raise TypeError("mask must be a numpy.ndarray object")
-        self._data += mask
+    def __iadd__(self, mask) -> 'MergedMask':
+        self._init_data(mask)
+        self._data += mask * self._label  # merge the current mask to the merged mask and label it uniquely
+        self._update_label()
         return self
 
     def __eq__(self, other):
@@ -368,18 +414,15 @@ def _masks_no_overlap(args, configs):
     return max_voxel_value == 1
 
 
-def _mergemask(masks: [numpy.ndarray]) -> [numpy.ndarray, dict]:
+def _mergemask(masks: List[str]) -> 'MergedMask':
     """The mergemask workhorse which does the actual merging"""
     from ..readers.mapreader import Map
     import pathlib
-    label_dict = dict()
-    for label, mask in enumerate(masks, start=1):
+    merged_mask = MergedMask()  # everything is initialised from the first mask since masks are homogeneous
+    for mask in masks:
         this_map = Map(mask)
-        if 'output_mask' not in locals():
-            output_mask = numpy.zeros(this_map.voxels.shape, dtype=numpy.int8)
-        output_mask += this_map.voxels * label
-        label_dict[pathlib.Path(mask).name] = label
-    return output_mask, label_dict
+        merged_mask.merge(this_map.voxels, mask_name=pathlib.Path(mask).name)
+    return merged_mask  # that's it!
 
 
 def mergemask(args, configs):
@@ -393,40 +436,44 @@ def mergemask(args, configs):
     :rtype: int
     """
     # some sanity checks
+    # fail fast: ensure the output does not exist
+    outfile = pathlib.Path(f"{args.output_prefix}.{args.mask_extension}")
+    if not args.overwrite and outfile.exists():
+        print_date(f"error: the file already exists; use --overwrite to overwrite the existing merged_mask or set a "
+                   f"new output prefix using --output-prefix")
+        return 64
     # ensure that the files are binary
     if not _masks_all_binary(args, configs):
         print_date(f"error: one or more masks are non-binary; use --verbose to view details")
         return 65
     # todo: allow cases where one or more files are non-binary
     # ensure that they don't overlap each other
-    if not _masks_no_overlap(args, configs):
+    if not _masks_no_overlap(args, configs) and not args.allow_overlap:
         print_date(f"error: one or more masks overlap; use --verbose to view details")
+        print_date(f"info: if overlapping segments are expected re-run with the --allow-overlap argument; "
+                   f"see 'sff prep mergemask' for more information")
         return 65
     # now we can merge masks
     if args.verbose:
         print_date(f"info: proceeding to merge masks...")
-    merged_mask, label_dict = _mergemask(args.masks)
+    merged_mask = _mergemask(args.masks)
     if args.verbose:
         print_date(f"info: merge complete...")
     if args.verbose:
-        print_date(f"info: attempting to write output ti {args.output_prefix}.{args.mask_extension}...")
-    try:
-        with mrcfile.new(f"{args.output_prefix}.{args.mask_extension}", overwrite=args.overwrite) as mrc:
-            mrc.set_data(merged_mask)
-    except ValueError:
-        print_date(f"error: the file already exists; use --overwrite to overwrite the existing merged_mask or set a "
-                   f"new output prefix using --output-prefix")
-        return 64
-    else:  # only create the label file if no exception is raised in creating the mask
+        print_date(f"info: attempting to write output to '{args.output_prefix}.{args.mask_extension}'...")
+    with mrcfile.new(f"{args.output_prefix}.{args.mask_extension}", overwrite=args.overwrite) as mrc:
+        mrc.set_data(merged_mask.data)
+    if args.verbose:
+        print_date(f"info: attempting to write mask metadata below to '{args.output_prefix}.json'...")
+    # create the mask metadata
+    mask_metadata = dict()
+    mask_metadata['mask_to_label'] = merged_mask.mask_to_label
+    mask_metadata['label_tree'] = merged_mask.label_tree
+    data = json.dumps(mask_metadata, indent=4)
+    with open(f"{args.output_prefix}.json", 'w') as label_file:
         if args.verbose:
-            print_date(f"info: attempting to write label file {args.output_prefix}.txt...")
-        # create the mask metadata
-        mask_metdata = dict()
-        mask_metdata['mask_to_label'] = dict()
-        for mask_name, mask_label in label_dict.items():
-            mask_metdata['mask_to_label'][mask_name] = mask_label
-        with open(f"{args.output_prefix}.json", 'w') as label_file:
-            json.dump(mask_metdata, label_file, indent=4)
+            print_date(f"info: mask metadata:\n{data}")
+        print(data, file=label_file)
     if args.verbose:
         print_date(f"info: merge complete!")
     return 0

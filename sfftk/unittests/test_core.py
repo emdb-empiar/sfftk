@@ -1994,6 +1994,8 @@ class TestCorePrep(Py23FixTestCase):
         self.assertTrue(numpy.allclose(transformd_vertex_v1, transformd_mesh.v1[v1_index]))
         self.assertTrue(numpy.allclose(transformd_vertex_v2, transformd_mesh.v2[v2_index]))
 
+
+class TestCorePrepMergeMask(Py23FixTestCase):
     def test_mergemask_maps(self):
         """Test correct argument handling for map merge"""
         mergeable_masks = [
@@ -2001,6 +2003,7 @@ class TestCorePrep(Py23FixTestCase):
         ]
         args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
         self.assertEqual(mergeable_masks, args.masks)
+        self.assertFalse(args.allow_overlap)
 
     def test_mergemask_must_be_two_or_more(self):
         """Test that we print an error if only one mask is provided"""
@@ -2140,44 +2143,134 @@ class TestPrep(unittest.TestCase):
         ]
         args, configs = cli(f"prep mergemask --verbose {' '.join(mergeable_masks)}")
         from ..core.prep import _mergemask
-        merged_mask, label_dict = _mergemask(args, configs)
+        merged_mask = _mergemask(args.masks)
         # after the merge we expect the following to be true
         # max voxel value is equal to the cardinality of the masks
-        self.assertIsInstance(label_dict, dict)
         self.assertEqual(
             {
                 'mergeable_1.map': 1,
                 'mergeable_2.map': 2,
                 'mergeable_3.map': 3,
             },
-            label_dict
+            merged_mask.mask_to_label
+        )
+        # for non-overlapping masks we have a simple tree
+        self.assertEqual(
+            {'1': 0, '2': 0, '3': 0},
+            merged_mask.label_tree
         )
         self.assertEqual(len(mergeable_masks), numpy.amax(merged_mask))
         # voxels are still uint8
-        self.assertEqual(numpy.dtype('int8'), merged_mask.dtype)
+        self.assertEqual(numpy.dtype('int16'), merged_mask.dtype)
         # no change in shape
         self.assertEqual((10, 10, 10), merged_mask.shape)  # I know this!
 
     def test_merged_mask_class(self):
         """Test that if masks overlap we can construct the implied label tree."""
         from ..core.prep import MergedMask
-        shape = (30, )
-        # from shape
-        merged_mask = MergedMask(shape)
-        self.assertIsInstance(merged_mask.label_tree, dict)
-        self.assertEqual(shape, merged_mask.shape)
-        self.assertEqual(0, numpy.sum(merged_mask)) # zeros
-        random_mask1 = numpy.random.randint(0, 2, shape, dtype=numpy.dtype('int8'))
-        print()
-        print(random_mask1)
-        # ideally
-        merged_mask = merged_mask + random_mask1
-        self.assertEqual(MergedMask(random_mask1), merged_mask) # 1
-        print(merged_mask.data)
-        merged_mask = merged_mask + random_mask1
-        print(merged_mask.data)
-        merged_mask = merged_mask + random_mask1
-        print(merged_mask.data)
+        merged_mask = MergedMask()
+        self.assertIsInstance(merged_mask, MergedMask)
+        self.assertTrue(hasattr(merged_mask, 'label_tree'))
+        self.assertTrue(hasattr(merged_mask, 'label'))
+        self.assertTrue(hasattr(merged_mask, 'data'))
+        self.assertTrue(hasattr(merged_mask, 'shape'))
+        self.assertTrue(hasattr(merged_mask, 'dtype'))
+        self.assertTrue(hasattr(merged_mask, 'mask_to_label'))
+        self.assertTrue(hasattr(merged_mask, 'label_set'))
+        self.assertEqual(numpy.dtype('int16'), merged_mask.dtype)
+        self.assertEqual(1, merged_mask.label)
+        self.assertIsNone(merged_mask.shape)
+        # now we add a mask; this modifies the attributes
+        # todo: first mask
+        mask1 = numpy.array([0, 0, 0, 1, 1, 0, 0, 0])
+        merged_mask.merge(mask1)
+        self.assertEqual(MergedMask(numpy.array([0, 0, 0, 1, 1, 0, 0, 0])), merged_mask)
+        self.assertEqual(2, merged_mask.label)
+        self.assertEqual({"mask_0001": 1}, merged_mask.mask_to_label)
+        self.assertEqual({1}, merged_mask.label_set)
+        self.assertEqual({'1': 0}, merged_mask.label_tree)
+        # todo: second mask
+        mask2 = numpy.array([0, 0, 1, 0, 1, 1, 0, 0])
+        merged_mask.merge(mask2)
+        # I've worked this one out in my head
+        # we are performing the sum:
+        # numpy.array([0, 0, 0, 1, 1, 0, 0, 0]) +
+        # numpy.array([0, 0, 2, 0, 2, 2, 0, 0]) = numpy.array([0, 0, 1, 0, 1, 1, 0, 0]) * 2 =
+        # numpy.array([0, 0, 2, 1, 3, 2, 0, 0])
+        self.assertEqual(MergedMask(numpy.array([0, 0, 2, 1, 3, 2, 0, 0])), merged_mask)
+        self.assertEqual(4, merged_mask.label)  # we now have an updated label
+        self.assertEqual({"mask_0001": 1, "mask_0002": 2}, merged_mask.mask_to_label)
+        self.assertEqual({1, 2, 3}, merged_mask.label_set)
+        self.assertEqual({'1': 0, '2': 0, '3': [1, 2]}, merged_mask.label_tree)
+        # todo: third mask
+        mask3 = numpy.array([0, 1, 1, 1, 0, 1, 1, 1])
+        merged_mask.merge(mask3, mask_name="my_fancy_mask")
+        # let's work it out...
+        # merged_mask is now
+        # numpy.array([0, 0, 2, 1, 3, 2, 0, 0]) +
+        # numpy.array([0, 4, 4, 4, 0, 4, 4, 4]) = numpy.array([0, 1, 1, 1, 0, 1, 1, 1]) * 4 =
+        # numpy.array([0, 4, 6, 5, 3, 6, 4, 4])
+        self.assertEqual(MergedMask(numpy.array([0, 4, 6, 5, 3, 6, 4, 4])), merged_mask)
+        self.assertEqual(7, merged_mask.label)
+        self.assertEqual({"mask_0001": 1, "mask_0002": 2, "my_fancy_mask": 4}, merged_mask.mask_to_label)
+        self.assertEqual({1, 2, 3, 4, 5, 6}, merged_mask.label_set)
+        self.assertEqual({'1': 0, '2': 0, '3': [1, 2], '4': 0, '5': [1, 4], '6': [2, 4]}, merged_mask.label_tree)
+
+    def _test_merge_with_overlap(self):
+        """Development of the algorithm to merge with overlap"""
+        mask_shape = (200,)
+        _masks = [
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+            numpy.clip(numpy.random.randint(0, 10, mask_shape), 8, 9),
+        ]
+        masks = list()
+        for mask in _masks:
+            mask[numpy.where(mask == 8)] = 0
+            mask[numpy.where(mask == 9)] = 1
+            masks.append(mask)
+
+        # we could use int8 but the overflow leads to negative numbers which break the flow
+        # using int16 gives us a positive upper ceiling of 32k, much higher than 127 for int8
+        merged_mask = numpy.zeros(mask_shape, dtype=numpy.dtype('int16'))
+        print(f"merged_mask:\n\t{merged_mask}")
+        label_set = set()
+        label_tree = dict()
+        mask_to_label = dict()
+        for mask_id, mask in enumerate(masks):
+            label = numpy.amax(merged_mask) + 1
+            mask_to_label[f"mask_{mask_id}"] = label
+            # first, add the current label to the label set and the label tree
+            label_set.add(label)
+            label_tree[label] = 0  # this is a direct child of the root (0, repr. background)
+            print(f"current mask:\n\t{mask * label}")
+            merged_mask += mask * label  # merge the current mask to the merged mask and label it uniquely
+            print(f"merged_mask:\n\t{merged_mask}")
+            # get the new resulting labels: all those not already in the label set
+            new_labels = set(numpy.unique(merged_mask)).difference(label_set.union([0]))
+            # determine the parentage for each new label
+            for new_label in new_labels:
+                for _label in label_set:
+                    # since we added the content of the merged mask to the new mask then any new labels are sum of
+                    # current label and the label for the current mask i.e. new_label = previous_label + label;
+                    # we are only interested in associating the pair to the new label; the new_label now becomes
+                    # a leaf with parent nodes being the previous_label and the label for the last mask
+                    # we store them sorted
+                    if new_label == _label + label:
+                        label_tree[new_label] = sorted([new_label - _label, new_label - label])
+            # finally, we should not forget to now include the new labels into the label set
+            label_set |= new_labels
+            print(f"label_tree:\n\t{label_tree}")
+
+        print(f"merged_mask:\n\t{merged_mask}")
+        print(f"label_tree:\n\t{label_tree}")
+        print(f"mask_to_label:\n\t{mask_to_label}")
 
     def test_actual_mergemask(self):
         """Test an actual merge of masks"""
@@ -2207,11 +2300,11 @@ class TestPrep(unittest.TestCase):
                     "mergeable_2.map": 2,
                     "mergeable_3.map": 3
                 },
-                # "label_tree": {
-                #     1: 0,
-                #     2: 0,
-                #     3: 0
-                # }
+                "label_tree": {
+                    '1': 0,
+                    '2': 0,
+                    '3': 0
+                }
             },
             mask_metadata
         )
@@ -2225,6 +2318,8 @@ class TestPrep(unittest.TestCase):
         _ = mergemask(args, configs)
         self.assertTrue(os.path.exists("my_masks.map"))
         self.assertTrue(os.path.exists("my_masks.json"))
+
+    def tearDown(self) -> None:
         # delete the custom prefix and mask-extension files
         try:
             os.remove("my_masks.map")

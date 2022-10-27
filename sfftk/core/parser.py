@@ -365,7 +365,13 @@ mergemask_prep_parser.add_argument(
 mergemask_prep_parser.add_argument(
     '--overwrite',
     action='store_true',
-    help="if the output already exists overwrite it [dfault: False]"
+    help="if the output already exists overwrite it [default: False]"
+)
+mergemask_prep_parser.add_argument(
+    '--allow-overlap',
+    action='store_true',
+    help="allow masks to have overlapping voxels; this results in a complex hierarchy of labels described in the "
+         "label_tree [default: False]"
 )
 
 # =========================================================================
