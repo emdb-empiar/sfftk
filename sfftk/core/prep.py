@@ -24,74 +24,120 @@ def _label_generator():
 
 
 class MergedMask:
-    """Objects have a number of important properties germane to working with collation of masks:
+    """This class describes a special mask used to perform mask merging. It automatically handles
+    complex cases involving mask overlaps by constucting a label tree showing the relations
+    between masks. The trivial case of non-overlapping overlaps will have all labels children of
+    the root label (0).
+
+    There are only three ways that an overlap can happen.
+    1. no overlap is the trivial case - no elements are shared between masks;
+    2. complete overlap: one set of elements is completely contained in another set;
+    3. partial overlap: some elements are shared.
+
+    For this functionality to work we need several functions:
+    - vectorised addition of masks to the merged mask;
+    - a way to decide the next label to use (NEXTLAB), which is not necessary the current label plus one;
+    - a way to capture the relationship between labels
+
+    Consider the simple exercise of merging the following non-trivial (overlapping) masks:
+
+    .. code:: python
+
+        mask1 = [0, 1, 0, 0]
+        mask2 = [0, 1, 0, 0]
+        mask3 = [0, 0, 1, 0]
+        mask4 = [0, 1, 1, 1]
+        mask5 = [1, 0, 0, 0]
+        mask6 = [1, 0, 1, 0]
+
+    We will build our merged mask by successively adding each mask to the empty mask: [0, 0, 0, 0].
+    We assume that all masks are positive binary with values 0 (background) and 1 (elements of interest).
+    At each iteration, will set a new label to be used. This label will identify the particular mask. Therefore,
+    we multiply the mask by the label.
+    Because elements can overlap, we need a way to keep track of labels so that we can record when we have to
+    assign labels that indicate either complete or partial overlap. We, therefore, examine the resulting labels and
+    from this infer the relationships between labels. To do this, we have a set of admitted labels as well as a set of
+    new labels. By comparing these sets and taking into account the current label, we can determine the label for
+    elements resulting from overlap and which labels they relate to.
+
+    .. code:: python
+
+        merged_mask = [0, 0, 0, 0] # the internal value of MergedMask's array
+        label = 1
+        label_set = {}
+        label_tree = dict()
+        # mask 1
+        merged_mask = merged_mask + [0, 1, 0, 0] * 1 # => [0, 1, 0, 0]
+        label_set = {1}
+        label_tree[1] = 0 # 1 is a child of the root (0) => {1: 0}
+        new_labels = {}
+        label = numpy.amax(merged_mask) + 1 = 2
+        # mask 2
+        merged_mask = [0, 1, 0, 0] + [0, 1, 0, 0] * 2 = [0, 3, 0, 0]
+        label_set = {1, 2}
+        label_tree[2] = 0 # => {1: 0, 2: 0}
+        new_labels = {3}
+        label_tree[3] = [1, 2] # 3 is a child of 1 and 2 (overlap) => {1: 0, 2: 0, 3: [1, 2]}
+        label_set = {1, 2, 3}
+        label = numpy.amax(merged_mask) + 1 = 4
+        # mask 3
+        merged_mask = [0, 3, 0, 0] + [0, 0, 1, 0] * 4 = [0, 3, 4, 0]
+        label_set = {1, 2, 3, 4}
+        label_tree[4] = 0 # => {1: 0, 2: 0, 3: [1, 2], 4: 0}
+        new_labels = {}
+        label = numpy.amax(merge_mask) + 1 = 5
+        # mask 4
+        merged_mask = [0, 3, 4, 0] + [0, 1, 1, 1] * 5 = [0, 8, 9, 5]
+        label_set = {1, 2, 3, 4, 5}
+        label_tree[5] = 0 # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0}
+        new_labels = {8, 9}
+        label_tree[8] = [3, 5]
+        label_tree[9] = [4, 5] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5]}
+        label = numpy.amax(merge_mask) + 1 = 10
+        # mask 5
+        merged_mask = [0, 8, 9, 5] + [0, 1, 1, 1] * 10 = [10, 18, 19, 15]
+        label_set = {1, 2, 3, 4, 5, 10}
+        label_tree[10] = 0 # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0}
+        new_labels = {15, 18, 19}
+        label_tree[15] = [5, 10]
+        label_tree[18] = [8, 10]
+        label_tree[19] = [9, 10] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10]}
+        label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19}
+        label = numpy.amax(merge_mask) + 1 = 20
+        # mask 6
+        merged_mask = [10, 18, 19, 15] + [1, 0, 1, 0] * 20 = [30, 18, 39, 15]
+        label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19, 20}
+        label_tree[20] = 0 # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10], 20: 0}
+        new_labels = {30, 39}
+        label_tree[30] = [10, 20]
+        label_tree[39] = [19, 20] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10], 20: 0, 30: [10, 20], 39: [19, 20]}
+        label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19, 20, 30, 39}
+        label = numpy.amax(merge_mask) + 1 = 40
+
+    Objects have a number of important properties germane to working with collation of masks:
 
     - they know what the next label value is implicitly;
     - they handle iterative addition of masks to construct the merged mask;
     - they keep track of the label tree;
 
+    The internal array instantiation is lazy---it is only created once we know the size of the
+    masks to be merged.
+
     Using a MergedMask object converts the complexity of the above into the following:
 
     merged_mask = MergedMask()
     for mask in masks: # masks is a list of n-dimensional binary-valued arrays
-        merged_mask += mask
+        merged_mask.merge(mask)
 
-    and we can now interrogate the merged mask for some attributes:
+    Internally, merging is a vectorised addition of arrays by overloading the __add__, __radd__
+    and __iadd__ protocols. However, it is safest to use the MergeMask.merge() method because
+    numpy arrays also implement the addition protocols meaning that __radd__ fails.
 
-    merged_mask.next_label
-    merged_mask.label_tree
+    Once the masks have been merged, we can now interrogate the merged mask for some attributes:
 
-
-            There are only three ways that an overlap can happen.
-        1. no overlap is the trivial case - no elements are shared;
-        2. complete overlap: one set of elements is completely contained in another set;
-        3. partial overlap: some elements are shared.
-
-        For this functionality to work we need several functions:
-        - a way to add so that the sum is the next sequential number, not the arithmetic sum (q.v.) (MAXADD)
-        - a way to decide the next label to use (NEXTLAB), which is not necessary the current label plus one;
-            we want to exhaust the range of values; e.g. NEXTLAB([1, 2, 4, 5, 6, 7]) = 3; the simplest way to construct
-            a reliable label generator is using a Python generator pre-loaded with valid values
-            e.g. yield from (*range(1, 128), range(-128, 0))
-
-            def generate_valid_labels():
-                yield from (*range(1, 128), *range(-128, 0))
-                # extend the range using
-                yield from (*range(128, 2**16), *range(-2**16, -128))
-            for label in generate_valid_labels():
-                print(f"label = {label}")
-        - a way to capture the relationship between labels
-
-        Suppose we wish to merge the following masks:
-        - [0, 1, 0, 0]
-        - [0, 1, 0, 0]
-        - [0, 0, 1, 0]
-        - [0, 1, 1, 1]
-        - [1, 0, 0, 0]
-        - [1, 0, 1, 0]
-
-        We will build our merged mask by successively adding each mask to the empty mask: [0, 0, 0, 0].
-        At each iteration, will set a new label to be used.
-        Because elements can overlap, we need a way to keep track of labels so that we can record when we have to
-        assign labels that indicate either complete or partial overlap.
-
-        We initialise our label to label=1 and the merged_mask=[0, 0, 0, 0] (the empty mask).
-        We set our current_mask to the first mask [0, 1, 0, 0].
-        For the first iteration we set the merged_mask to the value of the current value MAXADDED to current_mask * label:
-
-        merged_mask = MAXADD(merged_mask, current_mask * label)
-
-        The next value of label is NEXTLAB(merged_mask)
-
-        Then we set our current_mask to the next mask.
-
-        merged_mask = [0, 0, 0, 0]
-        for current_mask in masks:
-            merged_mask = MAXADD(merged_mask, current_mask * label)
-            label = NEXTLAB(merged_mask)
-
-        However, we still do not know
-
+    merged_mask.label # the next label to be used; autoincremented appropriately
+    merged_mask.label_tree # the hiearchy of labels (complex tree of labels)
+    merged_mask.mask_to_label # the relations between masks and labels
     """
 
     def __init__(self, data=None, dtype=numpy.dtype('int16'), mask_name_prefix="mask_", zfill=4):
