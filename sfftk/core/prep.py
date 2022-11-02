@@ -492,13 +492,6 @@ def mergemask(args, configs):
     if not _masks_all_binary(args, configs):
         print_date(f"error: one or more masks are non-binary; use --verbose to view details")
         return 65
-    # todo: allow cases where one or more files are non-binary
-    # ensure that they don't overlap each other
-    if not _masks_no_overlap(args, configs) and not args.allow_overlap:
-        print_date(f"error: one or more masks overlap; use --verbose to view details")
-        print_date(f"info: if overlapping segments are expected re-run with the --allow-overlap argument; "
-                   f"see 'sff prep mergemask' for more information")
-        return 65
     # now we can merge masks
     if args.verbose:
         print_date(f"info: proceeding to merge masks...")

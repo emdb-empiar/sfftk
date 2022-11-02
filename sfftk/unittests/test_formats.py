@@ -48,10 +48,20 @@ class TestFormats(Py23FixTestCase):
             self.seg_segmentation = seg.SeggerSegmentation(self.seg_file)
 
     def read_map(self):
-        """Read .seg files"""
+        """Read .map/.mrc/.rec files"""
         if not hasattr(self, 'map_file'):
             self.map_file = os.path.join(self.segmentations_path, 'test_data.map')
             self.map_segmentation = map.MapSegmentation([self.map_file])
+
+    def read_merged_mask(self):
+        """Read a merged mask from several masks with the label tree JSON file in tow"""
+        if not hasattr(self, 'merged_mask'):
+            self.merged_mask_file = TEST_DATA_PATH / 'segmentations' / 'merged_mask.mrc'
+            self.merged_mask_labels_file = TEST_DATA_PATH / 'segmentations' / 'merged_mask.json'
+            self.merged_mask_segmentation = map.MapSegmentation(
+                [self.merged_mask_file],
+                label_tree=self.merged_mask_labels_file
+            )
 
     def read_map_multi(self):
         """Read .map multi files"""

@@ -140,11 +140,6 @@ class MapSegment(Segment):
         """Segment annotation"""
         return MapAnnotation(self._map_obj)
 
-    # @property
-    # def volume(self):
-    #     """Three-D volume data in this segment"""
-    #     return MapVolume(self._map_obj)
-
     def convert(self):
         """Convert to a :py:class:`sfftkrw.SFFSegment` object"""
         lattice = schema.SFFLattice(
@@ -243,34 +238,47 @@ class MapSegmentation(Segmentation):
 
         from sfftk.formats.map import MapSegmentation
         map_seg = MapSegmentation('file.map')
+        # or with a label tree file (from running `sff prep mergemask`)
+        map_seg = MapSegmentation('file.map', label_tree='file.json')
     """
 
-    def __init__(self, fns, *args, **kwargs):
+    def __init__(self, fns, label_tree=None, *args, **kwargs):
         """Initialise the MapSegmentation reader"""
         self._fns = fns
+        self._label_tree_fn = label_tree
 
         # set the segmentation attribute
         self._segments = list()
-        cols, rows, sections = 0, 0, 0
-        for fi, fn in enumerate(fns):
-            self._segments.append(MapSegment(mapreader.get_data(fn, *args, **kwargs)))
-            segment_annotation = self._segments[fi].annotation
-            if fi == 0:
-                cols = segment_annotation.cols
-                rows = segment_annotation.rows
-                sections = segment_annotation.sections
-            else:
-                if cols != segment_annotation.cols or rows != segment_annotation.rows or \
-                        sections != segment_annotation.sections:
-                    print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
-                        os.path.basename(fn), segment_annotation.cols, segment_annotation.rows,
-                        segment_annotation.sections)
-                    )
-                    print_date("Error: The provided CCP4 masks have different volume dimensions")
-                    sys.exit(65)
-            print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
-                os.path.basename(fn), cols, rows, sections)
-            )
+        # if we self._label_tree is not None then we have only one mask
+        if self._label_tree_fn:
+            # todo: the segments are defined from the labels
+            import json
+            with open(self._label_tree_fn) as f:
+                label_tree = json.load(f)
+                labels = list(map(int, label_tree.keys()))
+                for label in labels:
+                    self._segments.append(MapSegment)
+        else: # we have multiple masks
+            cols, rows, sections = 0, 0, 0
+            for fi, fn in enumerate(fns):
+                self._segments.append(MapSegment(mapreader.get_data(fn, *args, **kwargs)))
+                segment_annotation = self._segments[fi].annotation
+                if fi == 0:
+                    cols = segment_annotation.cols
+                    rows = segment_annotation.rows
+                    sections = segment_annotation.sections
+                else:
+                    if cols != segment_annotation.cols or rows != segment_annotation.rows or \
+                            sections != segment_annotation.sections:
+                        print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
+                            os.path.basename(fn), segment_annotation.cols, segment_annotation.rows,
+                            segment_annotation.sections)
+                        )
+                        print_date("Error: The provided CCP4 masks have different volume dimensions")
+                        sys.exit(65)
+                print_date("{}: CCP4 mask of dimensions: cols={}, rows={}, sections={}".format(
+                    os.path.basename(fn), cols, rows, sections)
+                )
 
         # self._map_obj = mapreader.get_data(fn)
 
@@ -330,12 +338,6 @@ class MapSegmentation(Segmentation):
             segmentation.transform_list.append(
                 schema.SFFTransformationMatrix.from_array(self.header.ijk_to_xyz_transform)
             )
-        # segmentation.transform_list.append(
-        #     schema.SFFTransformationMatrix.from_array(self.header.skew_matrix)
-        # )
-        # segmentation.transform_list.append(
-        #     schema.SFFTransformationMatrix.from_array(self.header.skew_translation)
-        # )
 
         segment_list = schema.SFFSegmentList()
         lattice_list = schema.SFFLatticeList()

@@ -677,6 +677,8 @@ class TestCoreParserConvert(Py23FixTestCase):
         cls.empty_stls = list((TEST_DATA_PATH / 'segmentations').glob('empty*.stl'))
         cls.empty_segs = list((TEST_DATA_PATH / 'segmentations').glob('empty*.seg'))
         cls.test_seg_file = TEST_DATA_PATH / 'segmentations' / 'emd_1014.seg'
+        cls.test_merged_mask_file = TEST_DATA_PATH / 'segmentations' / 'merged_mask.mrc'
+        cls.test_merged_mask_labels_file = TEST_DATA_PATH / 'segmentations' / 'merged_mask.json'
 
     @classmethod
     def tearDownClass(cls):
@@ -816,32 +818,21 @@ class TestCoreParserConvert(Py23FixTestCase):
         - if the file is any other than an STL then the first transform should be
         - --image only works with .map, .mrc, or .rec files
         """
-        args, _ = parse_args('convert --image file.map {file}'.format(
-            file=self.test_data_file
-        ), use_shlex=True)
+        args, _ = cli(f'convert --image file.map {self.test_data_file}')
         self.assertEqual('file.map', args.image)
-        args, _ = parse_args('convert --image file.mrc {file}'.format(
-            file=self.test_data_file
-        ), use_shlex=True)
+        args, _ = cli(f'convert --image file.mrc {self.test_data_file}')
         self.assertEqual('file.mrc', args.image)
-        args, _ = parse_args('convert --image file.rec {file}'.format(
-            file=self.test_data_file
-        ), use_shlex=True)
+        args, _ = cli(f'convert --image file.rec {self.test_data_file}')
         self.assertEqual('file.rec', args.image)
         self.assertEqual(
             (65, _),
-            parse_args(
-                'convert --image file.stl {file}'.format(file=self.test_data_file),
-                use_shlex=True
-            )
+            cli(f'convert --image file.stl {self.test_data_file}')
         )
 
     def test_convert_without_image_for_transform(self):
         """Test that we warn the user when they don't supply the image"""
         with contextlib.redirect_stderr(StringIO()) as _:
-            args, _ = parse_args('convert {file}'.format(
-                file=self.test_data_file
-            ), use_shlex=True)
+            args, _ = cli(f'convert {self.test_data_file}')
             self.assertRegex(sys.stderr.getvalue(), r"(?i)Warning.*transform")
 
     def test_set_subtype_index(self):
@@ -872,6 +863,20 @@ class TestCoreParserConvert(Py23FixTestCase):
         self.assertEqual(_get_file_extension('file.abc'), 'abc')
         self.assertEqual(_get_file_extension('file.h5'), 'h5')
         self.assertEqual(_get_file_extension('file.1.2.3.4.something'), 'something')
+
+    def test_merged_mask(self):
+        """Test that we can convert a merged mask"""
+        args, configs = cli(f'convert {self.test_merged_mask_file} --label-tree {self.test_merged_mask_labels_file}')
+        self.assertEqual(
+            str(TEST_DATA_PATH / 'segmentations' / 'merged_mask.mrc'),
+            args.from_file
+        )
+        self.assertEqual(
+            str(TEST_DATA_PATH / 'segmentations' / 'merged_mask.json'),
+            args.label_tree
+        )
+        with self.assertRaises(SystemExit):
+            cli(f"convert {self.test_merged_mask_file} -m --label-tree {self.test_merged_mask_labels_file}")
 
 
 class TestCoreParserView(Py23FixTestCase):
@@ -2003,7 +2008,6 @@ class TestCorePrepMergeMask(Py23FixTestCase):
         ]
         args, _ = cli(f"prep mergemask {' '.join(mergeable_masks)}")
         self.assertEqual(mergeable_masks, args.masks)
-        self.assertFalse(args.allow_overlap)
 
     def test_mergemask_must_be_two_or_more(self):
         """Test that we print an error if only one mask is provided"""

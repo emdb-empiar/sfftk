@@ -1,0 +1,28 @@
+{
+    "mask_to_label": {
+        "unmergeable_1.map": 1,
+        "unmergeable_2.map": 2,
+        "unmergeable_3.map": 4
+    },
+    "label_tree": {
+        "1": 0,
+        "2": 0,
+        "3": [
+            1,
+            2
+        ],
+        "4": 0,
+        "5": [
+            1,
+            4
+        ],
+        "6": [
+            2,
+            4
+        ],
+        "7": [
+            3,
+            4
+        ]
+    }
+}

@@ -354,7 +354,7 @@ mergemask_prep_parser.add_argument(
 mergemask_prep_parser.add_argument(
     '-P', '--output-prefix',
     default="merged_mask",
-    help="the prefix to use for the output; two files are written to the output: merged_mask.mrc and merged_mask.txt "
+    help="the prefix to use for the output; two files are written to the output: merged_mask.mrc and merged_mask.json "
          "(metadata showing the mask-label relations)"
 )
 mergemask_prep_parser.add_argument(
@@ -366,12 +366,6 @@ mergemask_prep_parser.add_argument(
     '--overwrite',
     action='store_true',
     help="if the output already exists overwrite it [default: False]"
-)
-mergemask_prep_parser.add_argument(
-    '--allow-overlap',
-    action='store_true',
-    help="allow masks to have overlapping voxels; this results in a complex hierarchy of labels described in the "
-         "label_tree [default: False]"
 )
 
 # =========================================================================
@@ -389,7 +383,9 @@ convert_parser.add_argument(
     help="for segments structured hierarchically (e.g. Segger from UCSF Chimera and Chimera X) "
          "convert all segment leves in the hierarchy [default: False]"
 )
-convert_parser.add_argument(
+multi_or_label_mutex_parser = convert_parser.add_mutually_exclusive_group(required=False)
+# convert_parser.add_argument(
+multi_or_label_mutex_parser.add_argument(
     '-m', '--multi-file',
     action='store_true',
     default=False,
@@ -404,6 +400,12 @@ add_args(convert_parser, subtype_index)
 convert_parser.add_argument(
     '--image',
     help="specify the segmented EMDB MAP/MRC file from which to determine the correct image-to-physical transform"
+)
+multi_or_label_mutex_parser.add_argument(
+    '--label-tree',
+    help="a JSON file produced by running 'sff prep mergemask' which captures: "
+         "1) the mask labels (key: 'mask_to_label') and "
+         "2) the hierarchical relationship between labels (key: 'label_tree')"
 )
 
 # =========================================================================
