@@ -85,8 +85,8 @@ def handle_convert(args, configs):  # @UnusedVariable
     except (ValueError, KeyError):
         if args.multi_file:
             if re.match(r'.*\.(map|mrc|rec)$', args.from_file[0], re.IGNORECASE):
-                from .formats.map import MapSegmentation
-                seg = MapSegmentation(args.from_file)
+                from .formats.map import BinaryMaskSegmentation
+                seg = BinaryMaskSegmentation(args.from_file)
             elif re.match(r'.*\.stl$', args.from_file[0], re.IGNORECASE):
                 from .formats.stl import STLSegmentation
                 seg = STLSegmentation(args.from_file)
@@ -113,8 +113,12 @@ def handle_convert(args, configs):  # @UnusedVariable
                 from .formats.am import AmiraMeshSegmentation
                 seg = AmiraMeshSegmentation(args.from_file)
             elif re.match(r'.*\.(map|mrc|rec)$', args.from_file, re.IGNORECASE):
-                from .formats.map import MapSegmentation
-                seg = MapSegmentation([args.from_file])
+                if args.label_tree is not None:  # merged mask
+                    from .formats.map import MergedMaskSegmentation
+                    seg = MergedMaskSegmentation(args.from_file, label_tree=args.label_tree)
+                else:  # single binary mask
+                    from .formats.map import BinaryMaskSegmentation
+                    seg = BinaryMaskSegmentation([args.from_file])
             elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
                 from .formats.stl import STLSegmentation
                 seg = STLSegmentation([args.from_file])
@@ -478,6 +482,7 @@ def handle_view(args, configs):  # @UnusedVariable
                     print_date("Print type: numpy arrray (use -h/--help for other formats)")
                     print(transform)
             else:  # we're dealing with a mask/segmentation
+                # todo: replace with BinaryMaskSegmentation
                 from .formats.map import MapSegmentation
                 seg = MapSegmentation([args.from_file], header_only=True)
                 print("*" * 50)

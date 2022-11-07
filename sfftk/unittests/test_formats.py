@@ -11,7 +11,7 @@ from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
 # from .. import schema
-from ..core.parser import parse_args
+from ..core.parser import parse_args, cli
 from ..formats import am, seg, map, mod, stl, surf, survos, ilastik
 
 __author__ = "Paul K. Korir, PhD"
@@ -53,13 +53,29 @@ class TestFormats(Py23FixTestCase):
             self.map_file = os.path.join(self.segmentations_path, 'test_data.map')
             self.map_segmentation = map.MapSegmentation([self.map_file])
 
+    def read_single_mask(self):
+        """Read .map/.mrc/.rec file"""
+        if not hasattr(self, 'mask_file'):
+            self.mask_file = os.path.join(self.segmentations_path, 'test_data.map')
+            self.mask_segmentation = map.BinaryMaskSegmentation([self.mask_file])
+
+    def read_multiple_mask(self):
+        """Read .map/.mrc/.rec files"""
+        if not hasattr(self, 'map_multiple_mask'):
+            self.multiple_mask_1 = os.path.join(self.segmentations_path, 'test_data_multi0.map')
+            self.multiple_mask_2 = os.path.join(self.segmentations_path, 'test_data_multi1.map')
+            self.multiple_mask_3 = os.path.join(self.segmentations_path, 'test_data_multi2.map')
+            self.multiple_mask_segmentation = map.BinaryMaskSegmentation(
+                [self.multiple_mask_1, self.multiple_mask_2, self.multiple_mask_3]
+            )
+
     def read_merged_mask(self):
         """Read a merged mask from several masks with the label tree JSON file in tow"""
         if not hasattr(self, 'merged_mask'):
-            self.merged_mask_file = TEST_DATA_PATH / 'segmentations' / 'merged_mask.mrc'
-            self.merged_mask_labels_file = TEST_DATA_PATH / 'segmentations' / 'merged_mask.json'
-            self.merged_mask_segmentation = map.MapSegmentation(
-                [self.merged_mask_file],
+            self.merged_mask_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.mrc')
+            self.merged_mask_labels_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.json')
+            self.merged_mask_segmentation = map.MergedMaskSegmentation(
+                self.merged_mask_file,
                 label_tree=self.merged_mask_labels_file
             )
 
@@ -135,11 +151,36 @@ class TestFormats(Py23FixTestCase):
 
     def test_map_read(self):
         """Read an EMDB Map mask (.map) segmentation"""
-        self.read_map()
+        with self.assertWarns(PendingDeprecationWarning):
+            self.read_map()
         # assertions
         self.assertIsInstance(self.map_segmentation.header, map.MapHeader)
         self.assertIsInstance(self.map_segmentation.segments, list)
         self.assertIsInstance(self.map_segmentation.segments[0], map.MapSegment)
+
+    def test_mask_read(self):
+        """Test that we can read masks (.map/.mrc/.rec) segmentation"""
+        self.read_single_mask()
+        # assertions
+        self.assertIsInstance(self.mask_segmentation.header, map.MaskHeader)
+        self.assertIsInstance(self.mask_segmentation.segments, list)
+        self.assertIsInstance(self.mask_segmentation.segments[0], map.BinaryMaskSegment)
+
+    def test_multiple_mask_read(self):
+        """Test that we can read multiple masks as a segmentation"""
+        self.read_multiple_mask()
+        # assertions
+        self.assertIsInstance(self.multiple_mask_segmentation.header, map.MaskHeader)
+        self.assertIsInstance(self.multiple_mask_segmentation.segments, list)
+        self.assertIsInstance(self.multiple_mask_segmentation.segments[0], map.BinaryMaskSegment)
+
+    def test_merged_mask_read(self):
+        """Test that we can read multiple masks as a segmentation"""
+        self.read_merged_mask()
+        # assertions
+        self.assertIsInstance(self.merged_mask_segmentation.header, map.MaskHeader)
+        self.assertIsInstance(self.merged_mask_segmentation.segments, list)
+        self.assertIsInstance(self.merged_mask_segmentation.segments[0], map.MergedMaskSegment)
 
     def test_mod_read(self):
         """Read an IMOD (.mod) segmentation"""
@@ -204,7 +245,8 @@ class TestFormats(Py23FixTestCase):
     def test_ilastik_convert(self):
         """Convert a segmentation from an AmiraMesh file to an SFFSegmentation object"""
         self.read_ilastik()
-        args, configs = parse_args('convert {} --details ilastik --subtype-index 1'.format(self.ilastik_file), use_shlex=True)
+        args, configs = parse_args('convert {} --details ilastik --subtype-index 1'.format(self.ilastik_file),
+                                   use_shlex=True)
         seg = self.ilastik_segmentation.convert(details=args.details, verbose=True)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
@@ -265,6 +307,82 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual("Unspecified", seg.software_list[0].name)
         self.assertEqual(seg.primary_descriptor, 'three_d_volume')
         self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
+
+    def test_single_mask_convert(self):
+        """Convert a single mask from an CCP4/MRC file to an SFFSegmentation object"""
+        self.read_single_mask()
+        args, configs = parse_args('convert {}'.format(self.mask_file), use_shlex=True)
+        seg = self.mask_segmentation.convert(details=args.details)
+        # assertions
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'CCP4 mask segmentation')  # might have an extra space at the end
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual("Unspecified", seg.software_list[0].name)
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
+
+    def test_multiple_mask_convert(self):
+        """Convert multiple binary masks into an SFFSegmentation object"""
+        self.read_multiple_mask()
+        args, configs = parse_args(
+            'convert -m {}'.format(' '.join([self.multiple_mask_1, self.multiple_mask_2, self.multiple_mask_3])),
+            use_shlex=True)
+        seg = self.multiple_mask_segmentation.convert(details=args.details)
+        # assertions
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'CCP4 mask segmentation')  # might have an extra space at the end
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual("Unspecified", seg.software_list[0].name)
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual(len(seg.segment_list), 3)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertGreaterEqual(len(seg.lattice_list), 1)
+        self.assertGreater(len(seg.lattice_list[0].data), 1)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertIsNotNone(segment.three_d_volume)
+        self.assertIsNotNone(segment.three_d_volume.lattice_id)
+        self.assertGreaterEqual(segment.three_d_volume.value, 1)
+
+    def test_merged_mask_convert(self):
+        """Convert a merged mask into an SFFSegmentation object"""
+        self.read_merged_mask()
+        args, configs = cli(f'convert {self.merged_mask_file} --label-tree {self.merged_mask_labels_file}')
+        seg = self.merged_mask_segmentation.convert(details=args.details)
+        # assertions
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual(seg.name, 'Merged CCP4 mask segmentation')  # might have an extra space at the end
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual("Unspecified", seg.software_list[0].name)
+        self.assertEqual(seg.primary_descriptor, 'three_d_volume')
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual(len(seg.segment_list), 7)
         self.assertGreaterEqual(len(seg.transform_list), 1)
         self.assertGreaterEqual(len(seg.lattice_list), 1)
         self.assertGreater(len(seg.lattice_list[0].data), 1)

@@ -759,13 +759,20 @@ class TestCoreParserConvert(Py23FixTestCase):
         # assertions
         self.assertTrue(args.verbose)
 
-    def test_multifile_map(self):
+    def test_multifile_map_works(self):
         """Test that multi-file works for CCP4 masks"""
-        cmd = 'convert -v -m {}'.format(' '.join(map(str, self.empty_maps)))
-        args, _ = cli(cmd)
+        tiny_maps = list((TEST_DATA_PATH / 'segmentations').glob("tiny*.map"))
+        args, _ = cli('convert -v -m {}'.format(' '.join(map(str, tiny_maps))))
         # assertions
+        self.assertIsInstance(args, argparse.Namespace) #  not None or int
         self.assertTrue(args.multi_file)
-        self.assertCountEqual(args.from_file, map(str, self.empty_maps))
+        self.assertCountEqual(args.from_file, map(str, tiny_maps))
+
+    def test_multifile_map_error(self):
+        """Test that multi-file with inhomogeneous data fails for CCP4 masks"""
+        import struct
+        with self.assertRaises(struct.error):
+            cli('convert -v -m {}'.format(' '.join(map(str, self.empty_maps))))
 
     def test_multifile_stl(self):
         """Test that multi-file works for STLs"""

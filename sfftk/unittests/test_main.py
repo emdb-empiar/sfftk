@@ -15,7 +15,7 @@ from sfftkrw.unittests import Py23FixTestCase
 from . import TEST_DATA_PATH
 from .. import BASE_DIR
 from .. import sff as Main
-from ..core.parser import parse_args
+from ..core.parser import parse_args, cli
 
 __author__ = 'Paul K. Korir, PhD'
 __email__ = 'pkorir@ebi.ac.uk, paul.korir@gmail.com'
@@ -78,6 +78,67 @@ class TestMain_handle_convert(Py23FixTestCase):
             input=os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5'),
             config=self.config_fn,
         ), use_shlex=True)
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
+
+    def test_single_binary_mask(self):
+        """Test that we can convert a single binary mask"""
+        # with geometry
+        input_ = os.path.join(TEST_DATA_PATH, 'segmentations', 'mergeable_1.map')
+        output = os.path.join(TEST_DATA_PATH, 'test_data.sff')
+        args, configs = cli(f'convert -o {output} {input_} --config-path {self.config_fn}')
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(1, len(sff_files))
+        # without geometry
+        output = os.path.join(TEST_DATA_PATH, 'test_data.json')
+        args, configs = cli(f'convert -o {output} {input_} --exclude-geometry --config-path {self.config_fn}')
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
+
+    def test_multiple_binary_mask(self):
+        """Test that we can convert a set of binary masks"""
+        # with geometry
+        input_ = [
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'mergeable_1.map'),
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'mergeable_2.map'),
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'mergeable_3.map'),
+        ]
+        output = os.path.join(TEST_DATA_PATH, 'test_data.sff')
+        args, configs = cli(f"convert -m -o {output} {' '.join(input_)} --config-path {self.config_fn}")
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(1, len(sff_files))
+        # without geometry
+        output = os.path.join(TEST_DATA_PATH, 'test_data.json')
+        args, configs = cli(
+            f'convert -m -o {output} {" ".join(input_)} --exclude-geometry --config-path {self.config_fn}')
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
+
+    def test_merged_mask(self):
+        """Test that we can convert a merged mask"""
+        # with geometry
+        input_ = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.mrc')
+        input_labels = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.json')
+        output = os.path.join(TEST_DATA_PATH, 'test_data.sff')
+        args, configs = cli(f"convert -o {output} {input_} --label-tree {input_labels} --config-path {self.config_fn}")
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.sff'))
+        self.assertEqual(1, len(sff_files))
+        # without geometry
+        output = os.path.join(TEST_DATA_PATH, 'test_data.json')
+        args, configs = cli(
+            f'convert -o {output} {input_} --label-tree {input_labels} --exclude-geometry --config-path {self.config_fn}')
         Main.handle_convert(args, configs)
         sff_files = glob.glob(os.path.join(TEST_DATA_PATH, '*.json'))
         with open(sff_files[0], 'r') as f:

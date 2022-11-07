@@ -1078,7 +1078,13 @@ def _masks_have_same_dimensions(args: argparse.Namespace) -> bool:
     """Test that a list of paths to masks have the same dimensions"""
     dimensions = list()
     from ..readers.mapreader import Map
-    for filename in args.masks:
+    if hasattr(args, 'masks'):
+        masks = args.masks
+    elif hasattr(args, 'from_file'):
+        masks = args.from_file
+    else:
+        raise ValueError('args missing attribute with masks')
+    for filename in masks:
         this_map = Map(filename, header_only=True)
         dimension = (this_map._nc, this_map._nr, this_map._ns)
         if args.verbose:
@@ -1337,12 +1343,17 @@ def parse_args(_args, use_shlex=False):
                     file_missing = False
                     for fn in args.from_file:
                         try:
-                            assert os.path.exists(fn)
+                            assert os.path.exists(fn) # check that all files exist
                         except AssertionError:
                             print_date("File {} was not found".format(fn))
                             file_missing = True
                     if file_missing:
                         return 64, configs
+                    # none of the files are missing and the extensions are OK
+                    # now check for homogeneity of CCP4/MRC masks
+                    if re.search(r"(map|mrc|rec)$", file_format, re.IGNORECASE):
+                        if not _masks_have_same_dimensions(args):
+                            return 65, configs
                 else:
                     print_date("Invalid format(s) for multi-file segmentation: {}; should be only one of: {}".format(
                         ', '.join(invalid_formats),
