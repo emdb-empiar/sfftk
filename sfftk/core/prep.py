@@ -18,6 +18,8 @@ from sfftkrw.core import _str
 from sfftkrw.core.print_tools import print_date
 from stl import Mesh
 
+from sfftk.readers.mapreader import Map
+
 
 def _label_generator():
     yield from (*range(1, 128), *range(-128, 0))
@@ -399,7 +401,7 @@ def transform_stl_mesh(mesh, transform):
 
 
 async def _mask_is_binary(mask, verbose=False):
-    """Corouting to check whether individual masks are binary"""
+    """Coroutine to check whether individual masks are binary"""
     from ..readers.mapreader import Map
     this_map = Map(mask)
     if verbose:
@@ -418,6 +420,25 @@ async def _check_masks_binary(args, configs):
     for mask in args.masks:
         awaitables.append(_mask_is_binary(mask, verbose=args.verbose))
     return await asyncio.gather(*awaitables)
+
+
+def check_mask_is_binary(fn, verbose=False):
+    """Check whether a mask is binary or not
+
+    :param str fn: map filename
+    :param bool verbose: verbosity flag
+    :return: boolean, True if binary mask
+    :rtype: bool
+    """
+    if sys.version_info.minor > 6:
+        is_binary = asyncio.run(_mask_is_binary(fn, verbose=verbose))
+    else:
+        loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            loop = asyncio.new_event_loop()
+        is_binary = loop.run_until_complete(_mask_is_binary(fn, verbose=verbose))
+        loop.close()
+    return is_binary
 
 
 def _masks_all_binary(args, configs):

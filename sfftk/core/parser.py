@@ -19,6 +19,7 @@ from sfftkrw.core import _dict_iter_keys, _decode, _input, _str, _xrange
 from sfftkrw.core.parser import Parser, subparsers, convert_parser, view_parser, tests_parser, tool_list, add_args
 from sfftkrw.core.print_tools import print_date
 
+from ..core.prep import check_mask_is_binary
 from ..notes import RESOURCE_LIST
 
 __author__ = 'Paul K. Korir, PhD'
@@ -1317,8 +1318,7 @@ def parse_args(_args, use_shlex=False):
                 print_date("Invalid file type for --image. Please use .map, .mrc or .rec files only.")
                 return 65, configs  # 65 = DATAERR
         else:
-            print("Warning: missing --image <file.map> option to accurately determine image-to-physical transform",
-                  file=sys.stderr)
+            print_date("Warning: missing --image <file.map> option to accurately determine image-to-physical transform", stream=sys.stderr)
         # convert details to unicode
         if args.details is not None:
             args.details = _decode(args.details, 'utf-8')
@@ -1336,6 +1336,14 @@ def parse_args(_args, use_shlex=False):
             # check if this is an ambiguous extension
             if ext in EXTENSION_SUBTYPE_INDICES.keys():
                 args = _set_subtype_index(args, ext)
+            # now, let's check that this file is strictly binary
+            if re.match(r".*\.(map|mrc|rec)$", args.from_file, re.IGNORECASE):
+                if not check_mask_is_binary(args.from_file, verbose=args.verbose) and args.label_tree is None:
+                    print_date(
+                        "Error: non-binary mask; either use a binary mask or include the label "
+                        "tree with --label-tree flag"
+                    )
+                    return 65, configs
         else:
             if args.multi_file:
                 is_valid_format, file_format, invalid_formats = check_multi_file_formats(args.from_file)
@@ -1343,7 +1351,7 @@ def parse_args(_args, use_shlex=False):
                     file_missing = False
                     for fn in args.from_file:
                         try:
-                            assert os.path.exists(fn) # check that all files exist
+                            assert os.path.exists(fn)  # check that all files exist
                         except AssertionError:
                             print_date("File {} was not found".format(fn))
                             file_missing = True
