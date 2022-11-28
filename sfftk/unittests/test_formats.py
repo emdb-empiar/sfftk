@@ -1,6 +1,7 @@
 """
 sfftk.formats modules unit tests
 """
+import argparse
 import numbers
 import os
 import sys
@@ -9,7 +10,7 @@ from io import StringIO
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw.unittests import Py23FixTestCase
 
-from . import TEST_DATA_PATH
+from . import TEST_DATA_PATH, BASE_DIR
 # from .. import schema
 from ..core.parser import parse_args, cli
 from ..formats import am, seg, map, mod, stl, surf, survos, ilastik
@@ -394,6 +395,23 @@ class TestFormats(Py23FixTestCase):
         self.assertIsNotNone(segment.three_d_volume)
         self.assertIsNotNone(segment.three_d_volume.lattice_id)
         self.assertGreaterEqual(segment.three_d_volume.value, 1)
+
+    def test_mask_nonbinary_fail(self):
+        """Test that we can detect if a non-binary mask is assumed to be binary"""
+        input_ = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.mrc')
+        output = os.path.join(TEST_DATA_PATH, 'test_data.sff')
+        config_path = os.path.join(BASE_DIR, 'sff.conf')
+        args, configs = cli(f"convert -o {output} {input_} --config-path {config_path}")
+        self.assertEqual(65, args)
+
+    def test_mask_nonbinary_ok(self):
+        """Test that we are OK to convert a non-binary if the label tree is present"""
+        input_ = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.mrc')
+        input_label_tree = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.json')
+        output = os.path.join(TEST_DATA_PATH, 'test_data.sff')
+        config_path = os.path.join(BASE_DIR, 'sff.conf')
+        args, configs = cli(f"convert -o {output} {input_} --label-tree {input_label_tree} --config-path {config_path}")
+        self.assertIsInstance(args, argparse.Namespace)
 
     def test_map_multi_convert(self):
         """Convert several EMDB Map mask files to a single SFFSegmentation object"""

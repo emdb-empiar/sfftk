@@ -24,7 +24,7 @@ from .. import BASE_DIR
 from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index, cli
-from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix
+from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix, check_mask_is_binary
 from ..notes import RESOURCE_LIST
 
 rw = RandomWords()
@@ -840,7 +840,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         """Test that we warn the user when they don't supply the image"""
         with contextlib.redirect_stderr(StringIO()) as _:
             args, _ = cli(f'convert {self.test_data_file}')
-            self.assertRegex(sys.stderr.getvalue(), r"(?i)Warning.*transform")
+            self.assertRegex(sys.stderr.getvalue(), r"(?i).*Warning.*transform")
 
     def test_set_subtype_index(self):
         """Test correct functionality of the parser._set_subtype_index function"""
@@ -2084,6 +2084,18 @@ class TestCorePrepMergeMask(Py23FixTestCase):
         self.assertEqual("merged_mask", args.output_prefix)
         self.assertEqual("mrc", args.mask_extension)
         self.assertFalse(args.overwrite)
+
+    def test_get_data_is_binary(self):
+        """Test the main entry point: get_data(...)"""
+        map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'merged_mask.mrc')
+        self.assertFalse(check_mask_is_binary(map_file, verbose=True))
+        # let's try another one which is a binary mask
+        map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'mergeable_1.map')
+        self.assertTrue(check_mask_is_binary(map_file, verbose=True))
+
+    def test_check_binary(self):
+        """Test that check_binary works with the right thresholds"""
+        # conver
 
 
 class TestPrep(unittest.TestCase):
