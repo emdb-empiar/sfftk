@@ -35,7 +35,6 @@ SFFTK_CLASSIFIERS = [
     "Operating System :: OS Independent",
     # python versions
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -70,7 +69,7 @@ setup(
     setup_requires=["numpy"],
     install_requires=SFFTK_PYTHON3_INSTALL_REQUIRES,
     classifiers=SFFTK_CLASSIFIERS,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     entry_points={
         'console_scripts': [
             'sff = sfftk.sff:main',
