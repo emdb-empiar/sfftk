@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; sfftk v0.7.2 documentation</title>
+  <title>Index &mdash; sfftk v0.8.0.dev1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.7
+                v0.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -62,8 +62,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Index</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -132,10 +132,10 @@
 </li>
       <li><a href="formats.html#sfftk.formats.surf.AmiraHyperSurfaceSegment">AmiraHyperSurfaceSegment (class in sfftk.formats.surf)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="formats.html#sfftk.formats.surf.AmiraHyperSurfaceSegmentation">AmiraHyperSurfaceSegmentation (class in sfftk.formats.surf)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshAnnotation">AmiraMeshAnnotation (class in sfftk.formats.am)</a>
 </li>
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshHeader">AmiraMeshHeader (class in sfftk.formats.am)</a>
@@ -153,7 +153,11 @@
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshSegment.annotation">annotation (sfftk.formats.am.AmiraMeshSegment property)</a>
 
       <ul>
+        <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegment.annotation">(sfftk.formats.map.BinaryMaskSegment property)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.map.MapSegment.annotation">(sfftk.formats.map.MapSegment property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MergedMaskSegment.annotation">(sfftk.formats.map.MergedMaskSegment property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.mod.IMODSegment.annotation">(sfftk.formats.mod.IMODSegment property)</a>
 </li>
@@ -172,9 +176,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notes.html#sfftk.notes.modify.BaseNote">BaseNote (class in sfftk.notes.modify)</a>
 </li>
+      <li><a href="core.html#sfftk.core.prep.bin_map">bin_map() (in module sfftk.core.prep)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="core.html#sfftk.core.prep.bin_map">bin_map() (in module sfftk.core.prep)</a>
+      <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegment">BinaryMaskSegment (class in sfftk.formats.map)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegmentation">BinaryMaskSegmentation (class in sfftk.formats.map)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -182,11 +190,15 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="core.html#sfftk.core.prep.check_mask_is_binary">check_mask_is_binary() (in module sfftk.core.prep)</a>
+</li>
       <li><a href="core.html#sfftk.core.parser.check_multi_file_formats">check_multi_file_formats() (in module sfftk.core.parser)</a>
 </li>
       <li><a href="core.html#sfftk.core.configs.Configs.clear">clear() (sfftk.core.configs.Configs method)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.modify.clear_notes">clear_notes() (in module sfftk.notes.modify)</a>
+</li>
+      <li><a href="core.html#sfftk.core.parser.cli">cli() (in module sfftk.core.parser)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.CLIP">CLIP (class in sfftk.readers.modreader)</a>
 </li>
@@ -196,6 +208,8 @@
 
       <ul>
         <li><a href="formats.html#sfftk.formats.map.MapAnnotation.colour">(sfftk.formats.map.MapAnnotation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MaskAnnotation.colour">(sfftk.formats.map.MaskAnnotation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.mod.IMODAnnotation.colour">(sfftk.formats.mod.IMODAnnotation property)</a>
 </li>
@@ -229,11 +243,21 @@
 </li>
         <li><a href="formats.html#sfftk.formats.am.AmiraMeshVolume.convert">(sfftk.formats.am.AmiraMeshVolume method)</a>
 </li>
+        <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegment.convert">(sfftk.formats.map.BinaryMaskSegment method)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegmentation.convert">(sfftk.formats.map.BinaryMaskSegmentation method)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.map.MapAnnotation.convert">(sfftk.formats.map.MapAnnotation method)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.map.MapSegment.convert">(sfftk.formats.map.MapSegment method)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.map.MapSegmentation.convert">(sfftk.formats.map.MapSegmentation method)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MaskAnnotation.convert">(sfftk.formats.map.MaskAnnotation method)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MergedMaskSegment.convert">(sfftk.formats.map.MergedMaskSegment method)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MergedMaskSegmentation.convert">(sfftk.formats.map.MergedMaskSegmentation method)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.mod.IMODAnnotation.convert">(sfftk.formats.mod.IMODAnnotation method)</a>
 </li>
@@ -306,14 +330,16 @@
 </li>
       <li><a href="notes.html#sfftk.notes.modify.AbstractGlobalNote.del_from_segmentation">del_from_segmentation() (sfftk.notes.modify.AbstractGlobalNote method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notes.html#sfftk.notes.modify.del_note">del_note() (in module sfftk.notes.modify)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshAnnotation.description">description (sfftk.formats.am.AmiraMeshAnnotation property)</a>
 
       <ul>
         <li><a href="formats.html#sfftk.formats.map.MapAnnotation.description">(sfftk.formats.map.MapAnnotation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MaskAnnotation.description">(sfftk.formats.map.MaskAnnotation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.mod.IMODAnnotation.description">(sfftk.formats.mod.IMODAnnotation property)</a>
 </li>
@@ -434,11 +460,13 @@
 </li>
       <li><a href="sff.html#sfftk.sff.handle_notes_show">handle_notes_show() (in module sfftk.sff)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sff.html#sfftk.sff.handle_notes_trash">handle_notes_trash() (in module sfftk.sff)</a>
 </li>
       <li><a href="sff.html#sfftk.sff.handle_prep">handle_prep() (in module sfftk.sff)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="sff.html#sfftk.sff.handle_prep_mergemask">handle_prep_mergemask() (in module sfftk.sff)</a>
 </li>
       <li><a href="sff.html#sfftk.sff.handle_tests">handle_tests() (in module sfftk.sff)</a>
 </li>
@@ -449,7 +477,11 @@
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshSegmentation.header">header (sfftk.formats.am.AmiraMeshSegmentation property)</a>
 
       <ul>
+        <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegmentation.header">(sfftk.formats.map.BinaryMaskSegmentation property)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.map.MapSegmentation.header">(sfftk.formats.map.MapSegmentation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MergedMaskSegmentation.header">(sfftk.formats.map.MergedMaskSegmentation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.mod.IMODSegmentation.header">(sfftk.formats.mod.IMODSegmentation property)</a>
 </li>
@@ -574,6 +606,10 @@
 </li>
       <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.mask">mask (sfftk.readers.segreader.SeggerSegmentation property)</a>
 </li>
+      <li><a href="formats.html#sfftk.formats.map.MaskAnnotation">MaskAnnotation (class in sfftk.formats.map)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.map.MaskHeader">MaskHeader (class in sfftk.formats.map)</a>
+</li>
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshSegment.material">material (sfftk.formats.am.AmiraMeshSegment property)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.MCLP">MCLP (class in sfftk.readers.modreader)</a>
@@ -585,6 +621,18 @@
       <li><a href="readers.html#sfftk.readers.modreader.MEPA_FLAGS">MEPA_FLAGS (class in sfftk.readers.modreader)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.modify.merge">merge() (in module sfftk.notes.modify)</a>
+
+      <ul>
+        <li><a href="core.html#sfftk.core.prep.MergedMask.merge">(sfftk.core.prep.MergedMask method)</a>
+</li>
+      </ul></li>
+      <li><a href="core.html#sfftk.core.prep.MergedMask">MergedMask (class in sfftk.core.prep)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.map.MergedMaskSegment">MergedMaskSegment (class in sfftk.formats.map)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.map.MergedMaskSegmentation">MergedMaskSegmentation (class in sfftk.formats.map)</a>
+</li>
+      <li><a href="core.html#sfftk.core.prep.mergemask">mergemask() (in module sfftk.core.prep)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.MESH">MESH (class in sfftk.readers.modreader)</a>
 </li>
@@ -598,12 +646,12 @@
         <li><a href="formats.html#sfftk.formats.surf.AmiraHyperSurfaceSegment.meshes">(sfftk.formats.surf.AmiraHyperSurfaceSegment property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="readers.html#sfftk.readers.modreader.MEST">MEST (class in sfftk.readers.modreader)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.MINX">MINX (class in sfftk.readers.modreader)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="readers.html#sfftk.readers.modreader.MODEL_FLAGS">MODEL_FLAGS (class in sfftk.readers.modreader)</a>
 </li>
       <li>
@@ -667,6 +715,8 @@
 
       <ul>
         <li><a href="formats.html#sfftk.formats.map.MapAnnotation.name">(sfftk.formats.map.MapAnnotation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MaskAnnotation.name">(sfftk.formats.map.MaskAnnotation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.seg.SeggerHeader.name">(sfftk.formats.seg.SeggerHeader property)</a>
 </li>
@@ -836,7 +886,11 @@
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshSegmentation.segments">segments (sfftk.formats.am.AmiraMeshSegmentation property)</a>
 
       <ul>
+        <li><a href="formats.html#sfftk.formats.map.BinaryMaskSegmentation.segments">(sfftk.formats.map.BinaryMaskSegmentation property)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.map.MapSegmentation.segments">(sfftk.formats.map.MapSegmentation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.map.MergedMaskSegmentation.segments">(sfftk.formats.map.MergedMaskSegmentation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.mod.IMODSegmentation.segments">(sfftk.formats.mod.IMODSegmentation property)</a>
 </li>

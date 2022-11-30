@@ -255,7 +255,7 @@ class MapSegmentation(Segmentation):
     .. deprecated:: v0.8.0
 
         For future versions of ``sfftk``, please use the :py:class:`MaskSegmentation` class for one or more binary masks
-        and :py:class:`MergedMaskSegmentation` from merged masks. See also <<documentation for merging masks>>.
+        and :py:class:`MergedMaskSegmentation` from merged masks. See also :ref:`merging_masks`.
 
         A ``PendingDeprecationWarning`` is raised for ``sfftk`` earlier than ``v0.8.0``.
 
@@ -638,8 +638,8 @@ class BinaryMaskSegmentation(Segmentation):
         than the original individual masks combined at the expense of the compute time required to zip and base64-encode
         the volume data.
 
-        Users are strongly encouraged to first merge all binary masks into a single mask using the <<documentation for
-        merging masks>> then using the :py:class:`MergedMaskSegmentation` class instead of this one.
+        Users are strongly encouraged to first merge all binary masks into a single mask using the :ref:`merging_masks`
+        then using the :py:class:`sfftk.formats.map.MergedMaskSegmentation` class instead of this one.
 
     """
 

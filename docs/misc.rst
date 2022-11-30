@@ -459,6 +459,8 @@ Alternatively, the name of the output file may be specified using the
     sff prep transform [params] --output tx_file.stl file.stl
     # will write to tx_file.stl
 
+.. _merging_masks:
+
 Merging Masks
 -------------
 

@@ -459,6 +459,94 @@ Alternatively, the name of the output file may be specified using the
     sff prep transform [params] --output tx_file.stl file.stl
     # will write to tx_file.stl
 
+.. _merging_masks:
+
+Merging Masks
+-------------
+
+Masks are a popular way to represent segmentations but they tend to be redundant. Typically, each mask is a binary mask
+with all image elements representing the object of interest set to `1` and all other image elements set to `0`. When
+multiple such masks are used to represent multiple segments, the volume of data is unnecessarily large leading to the
+need to merge the masks into a single multi-labelled mask.
+
+Merging masks needs to take into account various topologies of masks. Multiple masks introduces the possibility that
+objects may be of one of the following forms:
+
+- *non-overlapping segments*, is the trivial case where the number of labels is equal to the number of objects;
+- *partial overlapping segments*, in which image elements are shared between objects;
+- *completely overlapping segments*, whereby one or more objects are completely contained within one or more objects.
+
+The mask merging solution must account for these reversibly i.e. given a one or more binary masks, it should be possible to create
+a single merged mask with multiple labels from which the original individual binary masks may be derived. This is what
+the ``sff prep mergemask`` utility aims to accomplish (though we have not implemented the unmerge functionality).
+
+The result of running ``sff prep mergemask`` is two artefacts:
+
+1. **merged_mask.mrc** is the single, multi-label volume of the same dimensions as each binary mask.
+2. **merged_mask.json** is the label tree indicating two attributes:
+    a. **mask_to_label** object relates the labels assigned to the original binary masks, and
+    b. **label_tree** object shows the hierarchy of labels used to capture complex topologies.
+
+.. code:: bash
+
+    sff prep mergemask unmergeable_[1-3].map -v --overwrite
+    Mon Nov 28 12:28:58 2022        info: mask unmergeable_1.map has dimension (10, 10, 10)
+    Mon Nov 28 12:28:58 2022        info: mask unmergeable_2.map has dimension (10, 10, 10)
+    Mon Nov 28 12:28:58 2022        info: mask unmergeable_3.map has dimension (10, 10, 10)
+    Mon Nov 28 12:28:58 2022        info: assessing unmergeable_1.map...
+    Mon Nov 28 12:28:58 2022        info: assessing unmergeable_3.map...
+    Mon Nov 28 12:28:58 2022        info: assessing unmergeable_2.map...
+    Mon Nov 28 12:28:58 2022        info: proceeding to merge masks...
+    Mon Nov 28 12:28:58 2022        info: merge complete...
+    Mon Nov 28 12:28:58 2022        info: attempting to write output to 'merged_mask.mrc'...
+    Mon Nov 28 12:28:58 2022        info: attempting to write mask metadata below to 'merged_mask.json'...
+    Mon Nov 28 12:28:58 2022        info: mask metadata:
+    {
+        "mask_to_label": {
+            "unmergeable_1.map": 1,
+            "unmergeable_2.map": 2,
+            "unmergeable_3.map": 4
+        },
+        "label_tree": {
+            "1": 0,
+            "2": 0,
+            "3": [
+                1,
+                2
+            ],
+            "4": 0,
+            "5": [
+                1,
+                4
+            ],
+            "6": [
+                2,
+                4
+            ],
+            "7": [
+                3,
+                4
+            ]
+        }
+    }
+    Mon Nov 28 12:28:58 2022        info: merge complete!
+
+Outputs (1) and (2) may then be passed to ``sff convert`` to create an EMDB-SFF file, which is much smaller than the
+respective files generated using multiple masks simultaneously.
+
+.. warning:: Mode of **merged_mask.mrc**
+
+    The computation of labels quickly exhausts the non-negative range of mode 0 (``signed int8``) masks therefore
+    mode 1 (``signed int16``) masks are used.
+
+.. code-block:: bash
+
+    sff convert merged_mask.mrc --label-tree merged_mask.json -v
+    Mon Nov 28 12:28:03 2022        Warning: missing --image <file.map> option to accurately determine image-to-physical transform
+    Mon Nov 28 12:28:03 2022        info: assessing merged_mask.mrc...
+    Mon Nov 28 12:28:03 2022        Setting output file to merged_mask.sff
+    Mon Nov 28 12:28:03 2022        Exporting to merged_mask.sff
+    Mon Nov 28 12:28:03 2022        Done
 
 Mesh Reduction
 --------------------

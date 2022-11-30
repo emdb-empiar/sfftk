@@ -19,7 +19,7 @@ CCP4 mask format
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.formats.map
-    :members: MapSegmentation, MapHeader, MapSegment, MapAnnotation
+    :members: BinaryMaskSegmentation, MergedMaskSegmentation, MaskHeader, MergedMaskSegment, BinaryMaskSegment, MaskAnnotation, MapSegmentation, MapHeader, MapSegment, MapAnnotation
     :show-inheritance:
 
 IMOD format

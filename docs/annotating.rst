@@ -1187,7 +1187,7 @@ parameters. The values are entered from top-left to bottom-right.
     sff notes add -X 2.0 0 0 10.0 0 2.0 0 20.0 0 0 2.0 30.0 @
 
 If the transform is implied by an `MRC`-like file then the output of ``sff view --transform --print-ssv file.map``
-will provide the 12 floats which can be embedded into the ``sff notes add -X `` call as shown below.
+will provide the 12 floats which can be embedded into the ``sff notes add -X`` call as shown below.
 
 .. code:: bash
 

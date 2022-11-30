@@ -32,13 +32,15 @@ class MergedMask:
     the root label (0).
 
     There are only three ways that an overlap can happen.
+
     1. no overlap is the trivial case - no elements are shared between masks;
     2. complete overlap: one set of elements is completely contained in another set;
     3. partial overlap: some elements are shared.
 
     For this functionality to work we need several functions:
+
     - vectorised addition of masks to the merged mask;
-    - a way to decide the next label to use (NEXTLAB), which is not necessary the current label plus one;
+    - a way to decide the next label to use, which is not necessary the current label plus one;
     - a way to capture the relationship between labels
 
     Consider the simple exercise of merging the following non-trivial (overlapping) masks:
@@ -52,17 +54,20 @@ class MergedMask:
         mask5 = [1, 0, 0, 0]
         mask6 = [1, 0, 1, 0]
 
-    We will build our merged mask by successively adding each mask to the empty mask: [0, 0, 0, 0].
-    We assume that all masks are positive binary with values 0 (background) and 1 (elements of interest).
+    We will build our merged mask by successively adding each mask to the empty mask: ``[0, 0, 0, 0]``.
+
+    We assume that all masks are positive binary with values ``0`` (background) and ``1`` (elements of interest).
+
     At each iteration, will set a new label to be used. This label will identify the particular mask. Therefore,
     we multiply the mask by the label.
+
     Because elements can overlap, we need a way to keep track of labels so that we can record when we have to
     assign labels that indicate either complete or partial overlap. We, therefore, examine the resulting labels and
     from this infer the relationships between labels. To do this, we have a set of admitted labels as well as a set of
     new labels. By comparing these sets and taking into account the current label, we can determine the label for
     elements resulting from overlap and which labels they relate to.
 
-    .. code:: python
+    .. code-block:: python
 
         merged_mask = [0, 0, 0, 0] # the internal value of MergedMask's array
         label = 1
@@ -116,7 +121,7 @@ class MergedMask:
         label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19, 20, 30, 39}
         label = numpy.amax(merge_mask) + 1 = 40
 
-    Objects have a number of important properties germane to working with collation of masks:
+    Objects of this class have a number of important properties germane to working with collation of masks:
 
     - they know what the next label value is implicitly;
     - they handle iterative addition of masks to construct the merged mask;
@@ -125,21 +130,25 @@ class MergedMask:
     The internal array instantiation is lazy---it is only created once we know the size of the
     masks to be merged.
 
-    Using a MergedMask object converts the complexity of the above into the following:
+    Using a ``MergedMask`` object converts the complexity of the above into the following:
 
-    merged_mask = MergedMask()
-    for mask in masks: # masks is a list of n-dimensional binary-valued arrays
-        merged_mask.merge(mask)
+    .. code-block:: python
 
-    Internally, merging is a vectorised addition of arrays by overloading the __add__, __radd__
-    and __iadd__ protocols. However, it is safest to use the MergeMask.merge() method because
-    numpy arrays also implement the addition protocols meaning that __radd__ fails.
+        merged_mask = MergedMask()
+        for mask in masks: # masks is a list of n-dimensional binary-valued arrays
+            merged_mask.merge(mask)
+
+    Internally, merging is a vectorised addition of arrays by overloading the ``__add__``, ``__radd__``
+    and ``__iadd__`` protocols. However, it is safest to use the :py:func:`MergeMask.merge()` method because
+    ``numpy`` arrays also implement the addition protocols meaning that ``__radd__`` fails.
 
     Once the masks have been merged, we can now interrogate the merged mask for some attributes:
 
-    merged_mask.label # the next label to be used; autoincremented appropriately
-    merged_mask.label_tree # the hiearchy of labels (complex tree of labels)
-    merged_mask.mask_to_label # the relations between masks and labels
+    .. code-block:: python
+
+        merged_mask.label # the next label to be used; autoincremented appropriately
+        merged_mask.label_tree # the hiearchy of labels (complex tree of labels)
+        merged_mask.mask_to_label # the relations between masks and labels
     """
 
     def __init__(self, data=None, dtype=numpy.dtype('int16'), mask_name_prefix="mask_", zfill=4):

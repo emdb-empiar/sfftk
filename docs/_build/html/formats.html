@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.formats package &mdash; sfftk v0.7.2 documentation</title>
+  <title>sfftk.formats package &mdash; sfftk v0.8.0.dev1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.7
+                v0.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -70,10 +70,16 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.map">CCP4 mask format</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-formats-map"><code class="docutils literal notranslate"><span class="pre">sfftk.formats.map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.BinaryMaskSegment"><code class="docutils literal notranslate"><span class="pre">BinaryMaskSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.BinaryMaskSegmentation"><code class="docutils literal notranslate"><span class="pre">BinaryMaskSegmentation</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapAnnotation"><code class="docutils literal notranslate"><span class="pre">MapAnnotation</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapHeader"><code class="docutils literal notranslate"><span class="pre">MapHeader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapSegment"><code class="docutils literal notranslate"><span class="pre">MapSegment</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MapSegmentation"><code class="docutils literal notranslate"><span class="pre">MapSegmentation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MaskAnnotation"><code class="docutils literal notranslate"><span class="pre">MaskAnnotation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MaskHeader"><code class="docutils literal notranslate"><span class="pre">MaskHeader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MergedMaskSegment"><code class="docutils literal notranslate"><span class="pre">MergedMaskSegment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.formats.map.MergedMaskSegmentation"><code class="docutils literal notranslate"><span class="pre">MergedMaskSegmentation</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.formats.mod">IMOD format</a><ul>
@@ -137,9 +143,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="sfftk.html"><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> packages</a> &raquo;</li>
-      <li><code class="docutils literal notranslate"><span class="pre">sfftk.formats</span></code> package</li>
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="sfftk.html"><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> packages</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">sfftk.formats</span></code> package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/formats.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -192,7 +198,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.am.AmiraMeshHeader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.am.</span></span><span class="sig-name descname"><span class="pre">AmiraMeshHeader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/am.html#AmiraMeshHeader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.am.AmiraMeshHeader" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class defining the header of an AmiraMesh segmentation file</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.am.AmiraMeshHeader.convert">
@@ -206,7 +212,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.am.AmiraMeshMesh">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.am.</span></span><span class="sig-name descname"><span class="pre">AmiraMeshMesh</span></span><a class="reference internal" href="_modules/sfftk/formats/am.html#AmiraMeshMesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.am.AmiraMeshMesh" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Mesh class</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.am.AmiraMeshMesh.convert">
@@ -275,11 +281,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
@@ -304,12 +310,12 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.am.AmiraMeshVolume">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.am.</span></span><span class="sig-name descname"><span class="pre">AmiraMeshVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/am.html#AmiraMeshVolume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.am.AmiraMeshVolume" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class defining the 3D volume of an AmiraMesh segmentation file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – name of the AmiraMesh segmentation file</p></li>
+<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – name of the AmiraMesh segmentation file</p></li>
 <li><p><strong>header</strong> – <a class="reference internal" href="#sfftk.formats.am.AmiraMeshHeader" title="sfftk.formats.am.AmiraMeshHeader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AmiraMeshHeader</span></code></a> object</p></li>
 </ul>
 </dd>
@@ -363,11 +369,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
@@ -387,8 +393,75 @@
 <span id="ccp4-mask-format"></span><h2>CCP4 mask format<a class="headerlink" href="#module-sfftk.formats.map" title="Permalink to this heading"></a></h2>
 <section id="sfftk-formats-map">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.formats.map</span></code><a class="headerlink" href="#sfftk-formats-map" title="Permalink to this heading"></a></h3>
-<p>User-facing reader classes for CCP4 masks</p>
+<p>User-facing reader classes for CCP4/MRC masks.</p>
+<p>There are three classes (one of which will be deprecated beginning in <code class="docutils literal notranslate"><span class="pre">v0.8.0</span></code>).</p>
+<p>1 - :py:class:</p>
 </section>
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">BinaryMaskSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#BinaryMaskSegment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></p>
+<p>Class representing an individual binary mask segment</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegment.annotation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotation</span></span><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegment.annotation" title="Permalink to this definition"></a></dt>
+<dd><p>Segment annotation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegment.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#BinaryMaskSegment.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegment.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert to a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code> object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegmentation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">BinaryMaskSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fns</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#BinaryMaskSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegmentation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Segmentation</span></code></p>
+<p>A segmentation consisting of one or more binary masks</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Results in large files</p>
+<p>This class works by compiling a set of binary masks into a single file. The resulting file is much smaller
+than the original individual masks combined at the expense of the compute time required to zip and base64-encode
+the volume data.</p>
+<p>Users are strongly encouraged to first merge all binary masks into a single mask using the <a class="reference internal" href="misc.html#merging-masks"><span class="std std-ref">Merging Masks</span></a>
+then using the <a class="reference internal" href="#sfftk.formats.map.MergedMaskSegmentation" title="sfftk.formats.map.MergedMaskSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.formats.map.MergedMaskSegmentation</span></code></a> class instead of this one.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegmentation.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">software_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#BinaryMaskSegmentation.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegmentation.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert to a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code> object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegmentation.header">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">header</span></span><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegmentation.header" title="Permalink to this definition"></a></dt>
+<dd><p>The header is all the data from the CCP4/MRC header</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.BinaryMaskSegmentation.segments">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#sfftk.formats.map.BinaryMaskSegmentation.segments" title="Permalink to this definition"></a></dt>
+<dd><p>An iterable of segments</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.map.MapAnnotation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MapAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MapAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MapAnnotation" title="Permalink to this definition"></a></dt>
@@ -451,8 +524,15 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MapSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fns</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MapSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MapSegmentation" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Segmentation</span></code></p>
 <p>Class representing an CCP4/MAP mask segmentation</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v0.8.0: </span>For future versions of <code class="docutils literal notranslate"><span class="pre">sfftk</span></code>, please use the <code class="xref py py-class docutils literal notranslate"><span class="pre">MaskSegmentation</span></code> class for one or more binary masks
+and <a class="reference internal" href="#sfftk.formats.map.MergedMaskSegmentation" title="sfftk.formats.map.MergedMaskSegmentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">MergedMaskSegmentation</span></code></a> from merged masks. See also <a class="reference internal" href="misc.html#merging-masks"><span class="std std-ref">Merging Masks</span></a>.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">PendingDeprecationWarning</span></code> is raised for <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> earlier than <code class="docutils literal notranslate"><span class="pre">v0.8.0</span></code>.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sfftk.formats.map</span> <span class="kn">import</span> <span class="n">MapSegmentation</span>
 <span class="n">map_seg</span> <span class="o">=</span> <span class="n">MapSegmentation</span><span class="p">(</span><span class="s1">&#39;file.map&#39;</span><span class="p">)</span>
+<span class="c1"># or with a label tree file (from running `sff prep mergemask`)</span>
+<span class="n">map_seg</span> <span class="o">=</span> <span class="n">MapSegmentation</span><span class="p">(</span><span class="s1">&#39;file.map&#39;</span><span class="p">,</span> <span class="n">label_tree</span><span class="o">=</span><span class="s1">&#39;file.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -462,11 +542,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
@@ -483,6 +563,100 @@
 <dt class="sig sig-object py" id="sfftk.formats.map.MapSegmentation.segments">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#sfftk.formats.map.MapSegmentation.segments" title="Permalink to this definition"></a></dt>
 <dd><p>The segments in this segmentation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.formats.map.MaskAnnotation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MaskAnnotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MaskAnnotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MaskAnnotation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Annotation</span></code></p>
+<p>Class representing annotation for individual segments</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.MaskAnnotation.colour">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">colour</span></span><a class="headerlink" href="#sfftk.formats.map.MaskAnnotation.colour" title="Permalink to this definition"></a></dt>
+<dd><p>Segment colour</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.formats.map.MaskAnnotation.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MaskAnnotation.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MaskAnnotation.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert to a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFBiologicalAnnotation</span></code> object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.MaskAnnotation.description">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#sfftk.formats.map.MaskAnnotation.description" title="Permalink to this definition"></a></dt>
+<dd><p>Segment description (concat all labels)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.MaskAnnotation.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#sfftk.formats.map.MaskAnnotation.name" title="Permalink to this definition"></a></dt>
+<dd><p>Segment name (filename since we have a segment per file)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.formats.map.MaskHeader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MaskHeader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">map_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MaskHeader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MaskHeader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Header</span></code></p>
+<p>Class representing mask header</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MergedMaskSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MergedMaskSegment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></p>
+<p>Class representing an individual segment from a merged mask</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegment.annotation">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotation</span></span><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegment.annotation" title="Permalink to this definition"></a></dt>
+<dd><p>Segment annotation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegment.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MergedMaskSegment.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegment.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert to a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code> object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegmentation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.map.</span></span><span class="sig-name descname"><span class="pre">MergedMaskSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'merged_mask.json'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MergedMaskSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegmentation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Segmentation</span></code></p>
+<p>A segmentation constructed from a merged mask derived from multiple binary masks</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegmentation.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">software_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/map.html#MergedMaskSegmentation.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegmentation.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert to a <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code> object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegmentation.header">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">header</span></span><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegmentation.header" title="Permalink to this definition"></a></dt>
+<dd><p>The header is all the data from the CCP4/MRC header</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.formats.map.MergedMaskSegmentation.segments">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">segments</span></span><a class="headerlink" href="#sfftk.formats.map.MergedMaskSegmentation.segments" title="Permalink to this definition"></a></dt>
+<dd><p>An iterable of segments</p>
 </dd></dl>
 
 </dd></dl>
@@ -522,7 +696,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODEllipsoid">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODEllipsoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODEllipsoid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODEllipsoid" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class definition fo an ellipsoid shape primitive</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODEllipsoid.convert">
@@ -561,7 +735,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODMesh">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imod_mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODMesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODMesh" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Mesh class</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODMesh.convert">
@@ -598,7 +772,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODMeshes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODMeshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imod_meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">_args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODMeshes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODMeshes" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserList" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserList" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></a></p>
 <p>Container class for IMOD meshes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODMeshes.convert">
@@ -611,7 +785,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODSegment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODSegment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODSegment" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Segment class</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODSegment.annotation">
@@ -655,11 +829,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
@@ -691,7 +865,7 @@ Do not convert segmentations that only have contours</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODShapes">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.formats.mod.</span></span><span class="sig-name descname"><span class="pre">IMODShapes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objt</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/formats/mod.html#IMODShapes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.formats.mod.IMODShapes" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserList" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.UserList" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserList</span></code></a></p>
 <p>Container class for shapes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.formats.mod.IMODShapes.convert">
@@ -811,11 +985,11 @@ Do not convert segmentations that only have contours</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
@@ -955,11 +1129,11 @@ Do not convert segmentations that only have contours</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
@@ -1051,8 +1225,8 @@ Do not convert segmentations that only have contours</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>triangle_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – a list of 3-tuples of integers</p></li>
-<li><p><strong>lut</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a>) – a dictionary mapping current to new values</p></li>
+<li><p><strong>triangle_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – a list of 3-tuples of integers</p></li>
+<li><p><strong>lut</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – a dictionary mapping current to new values</p></li>
 </ul>
 </dd>
 </dl>
@@ -1113,11 +1287,11 @@ Do not convert segmentations that only have contours</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
-<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
-<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional name of the segmentation used in &lt;name/&gt;</p></li>
+<li><p><strong>software_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional software version for Amira use in &lt;software&gt;&lt;version/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>processing_details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional processings used in Amira used in &lt;software&gt;&lt;processingDetails/&gt;&lt;/software&gt;</p></li>
+<li><p><strong>details</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – optional details associated with this segmentation used in &lt;details/&gt;</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – option to determine whether conversion should be verbose</p></li>
 <li><p><strong>transform</strong> (<cite>numpy.ndarray</cite>) – a 3x4 numpy.ndarray for the image-to-physical space transform</p></li>
 </ul>
 </dd>
