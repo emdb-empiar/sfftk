@@ -263,8 +263,6 @@ class MapSegmentation(Segmentation):
 
         from sfftk.formats.map import MapSegmentation
         map_seg = MapSegmentation('file.map')
-        # or with a label tree file (from running `sff prep mergemask`)
-        map_seg = MapSegmentation('file.map', label_tree='file.json')
     """
 
     def __init__(self, fns, *args, **kwargs):
@@ -641,6 +639,11 @@ class BinaryMaskSegmentation(Segmentation):
         Users are strongly encouraged to first merge all binary masks into a single mask using the :ref:`merging_masks`
         then using the :py:class:`sfftk.formats.map.MergedMaskSegmentation` class instead of this one.
 
+    .. code-block:: python
+
+        from sfftk.formats.map import BinaryMaskSegmentation
+        map_seg = BinaryMaskSegmentation('binary_mask.mrc')
+
     """
 
     def __init__(self, fns, *args, **kwargs):
@@ -722,7 +725,13 @@ class BinaryMaskSegmentation(Segmentation):
 
 
 class MergedMaskSegmentation(Segmentation):
-    """A segmentation constructed from a merged mask derived from multiple binary masks"""
+    """A segmentation constructed from a merged mask derived from multiple binary masks
+
+    .. code-block:: python
+
+        from sfftk.formats.map import MergedMaskSegmentation
+        map_seg = MergedMaskSegmentation('merged_mask.mrc', label_tree='merged_mask.json')
+    """
 
     def __init__(self, fn, label_tree="merged_mask.json"):
         """Initialise a :py:class:`BinaryMaskSegmentation` object"""
