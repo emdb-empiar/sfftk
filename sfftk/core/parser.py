@@ -368,6 +368,11 @@ mergemask_prep_parser.add_argument(
     action='store_true',
     help="if the output already exists overwrite it [default: False]"
 )
+mergemask_prep_parser.add_argument(
+    '--skip-assessment',
+    action='store_true',
+    help="use this option to avoid the lengthy task of assessing the masks to make sure they are binary [default: False]"
+)
 
 # =========================================================================
 # convert subparser

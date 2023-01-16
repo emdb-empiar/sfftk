@@ -13,6 +13,7 @@ import sys
 import unittest
 from io import StringIO
 
+import mrcfile
 import numpy
 from random_words import RandomWords, LoremIpsum
 from sfftkrw.core import print_tools, utils, _dict_iter_items, _str, _dict
@@ -764,7 +765,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         tiny_maps = list((TEST_DATA_PATH / 'segmentations').glob("tiny*.map"))
         args, _ = cli('convert -v -m {}'.format(' '.join(map(str, tiny_maps))))
         # assertions
-        self.assertIsInstance(args, argparse.Namespace) #  not None or int
+        self.assertIsInstance(args, argparse.Namespace)  # not None or int
         self.assertTrue(args.multi_file)
         self.assertCountEqual(args.from_file, map(str, tiny_maps))
 
@@ -2093,6 +2094,14 @@ class TestCorePrepMergeMask(Py23FixTestCase):
         map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'mergeable_1.map')
         self.assertTrue(check_mask_is_binary(map_file, verbose=True))
 
+    def test_skip_assess_masks(self):
+        """Test that we can skip carrying out the assessment on the masks (time-consuming for large masks)"""
+        mergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'mergeable_{_}.map') for _ in range(1, 4)
+        ]
+        args, _ = cli(f"prep mergemask --verbose --skip-assessment {' '.join(mergeable_masks)}")
+        self.assertTrue(args.skip_assessment)
+
     def test_check_binary(self):
         """Test that check_binary works with the right thresholds"""
         # conver
@@ -2341,6 +2350,15 @@ class TestPrep(unittest.TestCase):
         _ = mergemask(args, configs)
         self.assertTrue(os.path.exists("my_masks.map"))
         self.assertTrue(os.path.exists("my_masks.json"))
+        # check that header of my_masks.map is correct
+        with mrcfile.open('my_masks.map') as merged, mrcfile.open(TEST_DATA_PATH / 'segmentations' / 'mergeable_1.map') as mergeable:
+            self.assertEqual(mergeable.voxel_size, merged.voxel_size)
+            self.assertEqual(mergeable.header.mapr, merged.header.mapr)
+            self.assertEqual(mergeable.header.mapc, merged.header.mapc)
+            self.assertEqual(mergeable.header.maps, merged.header.maps)
+            self.assertEqual(mergeable.header.nx, merged.header.nx)
+            self.assertEqual(mergeable.header.ny, merged.header.ny)
+            self.assertEqual(mergeable.header.nz, merged.header.nz)
 
     def tearDown(self) -> None:
         # delete the custom prefix and mask-extension files

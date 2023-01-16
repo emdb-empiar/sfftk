@@ -519,7 +519,9 @@ def mergemask(args, configs):
                    f"new output prefix using --output-prefix")
         return 64
     # ensure that the files are binary
-    if not _masks_all_binary(args, configs):
+    if args.skip_assessment:
+        print_date("info: skipping mask assessment; assuming all masks are binary...")
+    elif not _masks_all_binary(args, configs) and not args.skip:
         print_date(f"error: one or more masks are non-binary; use --verbose to view details")
         return 65
     # now we can merge masks
@@ -531,7 +533,9 @@ def mergemask(args, configs):
     if args.verbose:
         print_date(f"info: attempting to write output to '{args.output_prefix}.{args.mask_extension}'...")
     with mrcfile.new(f"{args.output_prefix}.{args.mask_extension}", overwrite=args.overwrite) as mrc:
-        mrc.set_data(merged_mask.data)
+        with mrcfile.open(args.masks[0]) as one_mask:
+            mrc.set_data(merged_mask.data)
+            mrc.voxel_size = one_mask.voxel_size
     if args.verbose:
         print_date(f"info: attempting to write mask metadata below to '{args.output_prefix}.json'...")
     # create the mask metadata
