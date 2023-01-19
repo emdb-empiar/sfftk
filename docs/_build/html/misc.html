@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.8.0.dev1 documentation</title>
+  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.8.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -71,7 +71,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#id2">Specifying The Output File</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#merging-masks">Merging Masks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merging-masks">Merging Masks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#some-tips-when-merging-masks">Some tips when merging masks</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#mesh-reduction">Mesh Reduction</a></li>
 </ul>
 </li>
@@ -108,8 +111,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Miscellaneous Operations Using sfftk</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Miscellaneous Operations Using sfftk</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/misc.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -120,65 +123,69 @@
            <div itemprop="articleBody">
              
   <section id="miscellaneous-operations-using-sfftk">
-<h1><a class="toc-backref" href="#id4">Miscellaneous Operations Using sfftk</a><a class="headerlink" href="#miscellaneous-operations-using-sfftk" title="Permalink to this heading"></a></h1>
+<h1><a class="toc-backref" href="#id5">Miscellaneous Operations Using sfftk</a><a class="headerlink" href="#miscellaneous-operations-using-sfftk" title="Permalink to this heading"></a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#miscellaneous-operations-using-sfftk" id="id4">Miscellaneous Operations Using sfftk</a></p>
+<li><p><a class="reference internal" href="#miscellaneous-operations-using-sfftk" id="id5">Miscellaneous Operations Using sfftk</a></p>
 <ul>
-<li><p><a class="reference internal" href="#viewing-sfftk-version" id="id5">Viewing <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> Version</a></p></li>
-<li><p><a class="reference internal" href="#viewing-file-metadata" id="id6">Viewing File Metadata</a></p>
+<li><p><a class="reference internal" href="#viewing-sfftk-version" id="id6">Viewing <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> Version</a></p></li>
+<li><p><a class="reference internal" href="#viewing-file-metadata" id="id7">Viewing File Metadata</a></p>
 <ul>
-<li><p><a class="reference internal" href="#show-map-header" id="id7">Show MAP Header</a></p></li>
-<li><p><a class="reference internal" href="#show-image-to-physical-transform" id="id8">Show Image-to-Physical Transform</a></p></li>
-<li><p><a class="reference internal" href="#show-imod-chunks" id="id9">Show IMOD Chunks</a></p></li>
+<li><p><a class="reference internal" href="#show-map-header" id="id8">Show MAP Header</a></p></li>
+<li><p><a class="reference internal" href="#show-image-to-physical-transform" id="id9">Show Image-to-Physical Transform</a></p></li>
+<li><p><a class="reference internal" href="#show-imod-chunks" id="id10">Show IMOD Chunks</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#prepping-segmentation-files" id="id10">Prepping Segmentation Files</a></p>
+<li><p><a class="reference internal" href="#prepping-segmentation-files" id="id11">Prepping Segmentation Files</a></p>
 <ul>
-<li><p><a class="reference internal" href="#binning-map-files" id="id11">Binning Map Files</a></p>
+<li><p><a class="reference internal" href="#binning-map-files" id="id12">Binning Map Files</a></p>
 <ul>
-<li><p><a class="reference internal" href="#default-options" id="id12">Default Options</a></p></li>
-<li><p><a class="reference internal" href="#specify-the-number-of-bytes-per-voxel" id="id13">Specify The Number Of Bytes Per Voxel</a></p></li>
-<li><p><a class="reference internal" href="#specify-the-contour-level" id="id14">Specify The Contour Level</a></p></li>
-<li><p><a class="reference internal" href="#specifying-a-mask-value" id="id15">Specifying A Mask Value</a></p></li>
-<li><p><a class="reference internal" href="#negate-the-mask-file" id="id16">Negate The Mask File</a></p></li>
-<li><p><a class="reference internal" href="#specify-the-output-file-infix" id="id17">Specify The Output File Infix</a></p></li>
-<li><p><a class="reference internal" href="#specifying-the-output-file" id="id18">Specifying The Output File</a></p></li>
-<li><p><a class="reference internal" href="#overwrite-the-original-file" id="id19">Overwrite The Original File</a></p></li>
+<li><p><a class="reference internal" href="#default-options" id="id13">Default Options</a></p></li>
+<li><p><a class="reference internal" href="#specify-the-number-of-bytes-per-voxel" id="id14">Specify The Number Of Bytes Per Voxel</a></p></li>
+<li><p><a class="reference internal" href="#specify-the-contour-level" id="id15">Specify The Contour Level</a></p></li>
+<li><p><a class="reference internal" href="#specifying-a-mask-value" id="id16">Specifying A Mask Value</a></p></li>
+<li><p><a class="reference internal" href="#negate-the-mask-file" id="id17">Negate The Mask File</a></p></li>
+<li><p><a class="reference internal" href="#specify-the-output-file-infix" id="id18">Specify The Output File Infix</a></p></li>
+<li><p><a class="reference internal" href="#specifying-the-output-file" id="id19">Specifying The Output File</a></p></li>
+<li><p><a class="reference internal" href="#overwrite-the-original-file" id="id20">Overwrite The Original File</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#transforming-stl-meshes" id="id20">Transforming STL Meshes</a></p>
+<li><p><a class="reference internal" href="#transforming-stl-meshes" id="id21">Transforming STL Meshes</a></p>
 <ul>
-<li><p><a class="reference internal" href="#specifying-the-infix" id="id21">Specifying The Infix</a></p></li>
-<li><p><a class="reference internal" href="#id2" id="id22">Specifying The Output File</a></p></li>
+<li><p><a class="reference internal" href="#specifying-the-infix" id="id22">Specifying The Infix</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id23">Specifying The Output File</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#merging-masks" id="id23">Merging Masks</a></p></li>
-<li><p><a class="reference internal" href="#mesh-reduction" id="id24">Mesh Reduction</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#setting-configurations" id="id25">Setting Configurations</a></p>
+<li><p><a class="reference internal" href="#merging-masks" id="id24">Merging Masks</a></p>
 <ul>
-<li><p><a class="reference internal" href="#configuration-commands" id="id26">Configuration Commands</a></p>
+<li><p><a class="reference internal" href="#some-tips-when-merging-masks" id="id25">Some tips when merging masks</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mesh-reduction" id="id26">Mesh Reduction</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#setting-configurations" id="id27">Setting Configurations</a></p>
 <ul>
-<li><p><a class="reference internal" href="#getting-a-single-configuration-value" id="id27">Getting a single configuration value</a></p></li>
-<li><p><a class="reference internal" href="#listing-available-configurations" id="id28">Listing available configurations</a></p></li>
-<li><p><a class="reference internal" href="#setting-a-single-configuration-value" id="id29">Setting a single configuration value</a></p></li>
-<li><p><a class="reference internal" href="#deleting-a-single-configuration" id="id30">Deleting a single configuration</a></p></li>
-<li><p><a class="reference internal" href="#clearing-all-configurations" id="id31">Clearing all configurations</a></p></li>
+<li><p><a class="reference internal" href="#configuration-commands" id="id28">Configuration Commands</a></p>
+<ul>
+<li><p><a class="reference internal" href="#getting-a-single-configuration-value" id="id29">Getting a single configuration value</a></p></li>
+<li><p><a class="reference internal" href="#listing-available-configurations" id="id30">Listing available configurations</a></p></li>
+<li><p><a class="reference internal" href="#setting-a-single-configuration-value" id="id31">Setting a single configuration value</a></p></li>
+<li><p><a class="reference internal" href="#deleting-a-single-configuration" id="id32">Deleting a single configuration</a></p></li>
+<li><p><a class="reference internal" href="#clearing-all-configurations" id="id33">Clearing all configurations</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#where-configurations-are-stored" id="id32">Where Configurations Are Stored</a></p></li>
+<li><p><a class="reference internal" href="#where-configurations-are-stored" id="id34">Where Configurations Are Stored</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#running-unit-tests" id="id33">Running Unit Tests</a></p></li>
+<li><p><a class="reference internal" href="#running-unit-tests" id="id35">Running Unit Tests</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <section id="viewing-sfftk-version">
-<h2><a class="toc-backref" href="#id5">Viewing <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> Version</a><a class="headerlink" href="#viewing-sfftk-version" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id6">Viewing <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> Version</a><a class="headerlink" href="#viewing-sfftk-version" title="Permalink to this heading"></a></h2>
 <p>To view the current version of <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff --V
 sff --version
@@ -186,7 +193,7 @@ sff --version
 </div>
 </section>
 <section id="viewing-file-metadata">
-<h2><a class="toc-backref" href="#id6">Viewing File Metadata</a><a class="headerlink" href="#viewing-file-metadata" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7">Viewing File Metadata</a><a class="headerlink" href="#viewing-file-metadata" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff view &lt;file&gt;
 </pre></div>
 </div>
@@ -224,7 +231,7 @@ optional arguments:
 </pre></div>
 </div>
 <section id="show-map-header">
-<h3><a class="toc-backref" href="#id7">Show MAP Header</a><a class="headerlink" href="#show-map-header" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id8">Show MAP Header</a><a class="headerlink" href="#show-map-header" title="Permalink to this heading"></a></h3>
 <p>For <cite>MRC</cite>-like files, <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> will pretty-print the header by default.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff view emd_5625.map
 Mon Oct <span class="m">17</span> <span class="m">09</span>:44:16 <span class="m">2022</span>        emd_5625.map: CCP4 mask of dimensions: <span class="nv">cols</span><span class="o">=</span><span class="m">56</span>, <span class="nv">rows</span><span class="o">=</span><span class="m">56</span>, <span class="nv">sections</span><span class="o">=</span><span class="m">56</span>
@@ -269,7 +276,7 @@ Label count: <span class="m">1</span>
 </div>
 </section>
 <section id="show-image-to-physical-transform">
-<span id="id1"></span><h3><a class="toc-backref" href="#id8">Show Image-to-Physical Transform</a><a class="headerlink" href="#show-image-to-physical-transform" title="Permalink to this heading"></a></h3>
+<span id="id1"></span><h3><a class="toc-backref" href="#id9">Show Image-to-Physical Transform</a><a class="headerlink" href="#show-image-to-physical-transform" title="Permalink to this heading"></a></h3>
 <p>Passing the <code class="docutils literal notranslate"><span class="pre">--transform</span></code> argument to <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">view</span></code> for _MRC_-like files displays the implied image-to-physical transform.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff view --transform emd_5625.map
 Mon Oct <span class="m">17</span> <span class="m">09</span>:45:38 <span class="m">2022</span>        Image space to physical space transform CCP4 MAP
@@ -296,7 +303,7 @@ Mon Oct <span class="m">17</span> <span class="m">09</span>:49:07 <span class="m
 </div>
 </section>
 <section id="show-imod-chunks">
-<h3><a class="toc-backref" href="#id9">Show IMOD Chunks</a><a class="headerlink" href="#show-imod-chunks" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10">Show IMOD Chunks</a><a class="headerlink" href="#show-imod-chunks" title="Permalink to this heading"></a></h3>
 <p>The IMOD file format documentation describes that the files are partitioned into chunks,
 each commencing with four byte identifier. To view the chunks in an IMOD file run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff view -C file.mod
@@ -329,7 +336,7 @@ IEOF
 </section>
 </section>
 <section id="prepping-segmentation-files">
-<h2><a class="toc-backref" href="#id10">Prepping Segmentation Files</a><a class="headerlink" href="#prepping-segmentation-files" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11">Prepping Segmentation Files</a><a class="headerlink" href="#prepping-segmentation-files" title="Permalink to this heading"></a></h2>
 <p>Some files require preparatory steps in order to efficiently convert them into EMDB-SFF.
 At present, preparatory steps are required for CCP4 maps. These filetypes typically store
 segmentations as masks whereby the value of the voxels determine whether or not they are
@@ -359,7 +366,7 @@ Segmentation preparation utility:
 </pre></div>
 </div>
 <section id="binning-map-files">
-<h3><a class="toc-backref" href="#id11">Binning Map Files</a><a class="headerlink" href="#binning-map-files" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id12">Binning Map Files</a><a class="headerlink" href="#binning-map-files" title="Permalink to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">binmap</span></code> utility has the following options:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep binmap
 usage: sff prep binmap <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-m MASK_VALUE<span class="o">]</span>
@@ -401,7 +408,7 @@ optional arguments:
 </pre></div>
 </div>
 <section id="default-options">
-<h4><a class="toc-backref" href="#id12">Default Options</a><a class="headerlink" href="#default-options" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id13">Default Options</a><a class="headerlink" href="#default-options" title="Permalink to this heading"></a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">binmap</span></code> utility can be used with default values:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep binmap --verbose file.mrc
 </pre></div>
@@ -425,7 +432,7 @@ Fri Oct <span class="m">12</span> <span class="m">11</span>:27:38 <span class="m
 </div>
 </section>
 <section id="specify-the-number-of-bytes-per-voxel">
-<h4><a class="toc-backref" href="#id13">Specify The Number Of Bytes Per Voxel</a><a class="headerlink" href="#specify-the-number-of-bytes-per-voxel" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id14">Specify The Number Of Bytes Per Voxel</a><a class="headerlink" href="#specify-the-number-of-bytes-per-voxel" title="Permalink to this heading"></a></h4>
 <p>The most important argument is the number of bytes per voxel to be used in the output file specified using
 <code class="docutils literal notranslate"><span class="pre">-B/--bytes-per-voxel</span></code> followed by an integer. By default, this is set to <code class="docutils literal notranslate"><span class="pre">1</span></code> (one) but can be
 anything from the set <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">8</span></code> or <code class="docutils literal notranslate"><span class="pre">16</span></code>.</p>
@@ -448,7 +455,7 @@ Fri Oct <span class="m">12</span> <span class="m">11</span>:49:55 <span class="m
 </div>
 </section>
 <section id="specify-the-contour-level">
-<h4><a class="toc-backref" href="#id14">Specify The Contour Level</a><a class="headerlink" href="#specify-the-contour-level" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id15">Specify The Contour Level</a><a class="headerlink" href="#specify-the-contour-level" title="Permalink to this heading"></a></h4>
 <p>The contour level about which binarising should be carried is specified using the <code class="docutils literal notranslate"><span class="pre">-c/--contour-level</span></code>
 argument. The default contour level is <code class="docutils literal notranslate"><span class="pre">0.0</span></code> (zero). Note that this is an exlusive value i.e. all voxels
 with values equal to the contour level will be <em>excluded</em>.</p>
@@ -458,7 +465,7 @@ sff prep binmap --contour-level <span class="m">0</span>.5 -v file.mrc
 </div>
 </section>
 <section id="specifying-a-mask-value">
-<h4><a class="toc-backref" href="#id15">Specifying A Mask Value</a><a class="headerlink" href="#specifying-a-mask-value" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id16">Specifying A Mask Value</a><a class="headerlink" href="#specifying-a-mask-value" title="Permalink to this heading"></a></h4>
 <p>The voxel value that designates the segment may be set by setting the <code class="docutils literal notranslate"><span class="pre">-m/--mask-value</span></code> argument.
 The default value is <code class="docutils literal notranslate"><span class="pre">1</span></code> (one).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep binmap -m <span class="m">2</span> -v file.mrc
@@ -467,7 +474,7 @@ sff prep binmap --mask-value -v file.mrc
 </div>
 </section>
 <section id="negate-the-mask-file">
-<h4><a class="toc-backref" href="#id16">Negate The Mask File</a><a class="headerlink" href="#negate-the-mask-file" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id17">Negate The Mask File</a><a class="headerlink" href="#negate-the-mask-file" title="Permalink to this heading"></a></h4>
 <p>By default, all values greater than (<em>not greater than or equal to</em>) the contour level will be treated
 as being <em>in</em> the segment. All other voxels will be <em>outside</em> the segment. This can be reversed using
 the <code class="docutils literal notranslate"><span class="pre">--negate</span></code> argument.</p>
@@ -476,7 +483,7 @@ the <code class="docutils literal notranslate"><span class="pre">--negate</span>
 </div>
 </section>
 <section id="specify-the-output-file-infix">
-<h4><a class="toc-backref" href="#id17">Specify The Output File Infix</a><a class="headerlink" href="#specify-the-output-file-infix" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id18">Specify The Output File Infix</a><a class="headerlink" href="#specify-the-output-file-infix" title="Permalink to this heading"></a></h4>
 <p>To prevent accidentally overwriting the original file, the default output file has a <code class="docutils literal notranslate"><span class="pre">_prep</span></code> infix i.e.
 the file <code class="docutils literal notranslate"><span class="pre">file.mrc</span></code> is converted to <code class="docutils literal notranslate"><span class="pre">file_prep.mrc</span></code>. This infix can be changed using the <code class="docutils literal notranslate"><span class="pre">--infix</span></code>
 argument.</p>
@@ -493,7 +500,7 @@ Fri Oct <span class="m">12</span> <span class="m">11</span>:47:29 <span class="m
 </div>
 </section>
 <section id="specifying-the-output-file">
-<h4><a class="toc-backref" href="#id18">Specifying The Output File</a><a class="headerlink" href="#specifying-the-output-file" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id19">Specifying The Output File</a><a class="headerlink" href="#specifying-the-output-file" title="Permalink to this heading"></a></h4>
 <p>The output file can be specified using the <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> argument. Be default, the name of the output
 file is determined from the name of the source file <em>plus</em> the infix (“prep”). Note that the infix will
 not be used when an output file is specified.</p>
@@ -510,7 +517,7 @@ Fri Oct <span class="m">12</span> <span class="m">12</span>:06:41 <span class="m
 </div>
 </section>
 <section id="overwrite-the-original-file">
-<h4><a class="toc-backref" href="#id19">Overwrite The Original File</a><a class="headerlink" href="#overwrite-the-original-file" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id20">Overwrite The Original File</a><a class="headerlink" href="#overwrite-the-original-file" title="Permalink to this heading"></a></h4>
 <p>If you want to replace the original file (not recommended) you may do so using the <code class="docutils literal notranslate"><span class="pre">--overwrite</span></code> argument.
 Be default, trying to overwrite the original file will fail.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep binmap file.mrc -o file.mrc
@@ -521,7 +528,7 @@ Fri Oct <span class="m">12</span> <span class="m">11</span>:43:16 <span class="m
 </section>
 </section>
 <section id="transforming-stl-meshes">
-<h3><a class="toc-backref" href="#id20">Transforming STL Meshes</a><a class="headerlink" href="#transforming-stl-meshes" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id21">Transforming STL Meshes</a><a class="headerlink" href="#transforming-stl-meshes" title="Permalink to this heading"></a></h3>
 <p>It is often necessary to transform meshes contained in STL files so as to get better
 alignment with images. To do this we need a 4X4 matrix with the parameters.</p>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> uses two kinds of parameters for this:</p>
@@ -547,7 +554,7 @@ is located at <em>(0.0, 0.0, 0.0)</em>.</p>
 </pre></div>
 </div>
 <section id="specifying-the-infix">
-<h4><a class="toc-backref" href="#id21">Specifying The Infix</a><a class="headerlink" href="#specifying-the-infix" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id22">Specifying The Infix</a><a class="headerlink" href="#specifying-the-infix" title="Permalink to this heading"></a></h4>
 <p>By default the output is written to a file with a name composed of the original
 file name with an infix. For example, if the input file name is <code class="docutils literal notranslate"><span class="pre">file.stl</span></code>,
 then the output filename will be <code class="docutils literal notranslate"><span class="pre">file_transformed.stl</span></code>. We can change the
@@ -558,7 +565,7 @@ infix with the <code class="docutils literal notranslate"><span class="pre">--in
 </div>
 </section>
 <section id="id2">
-<h4><a class="toc-backref" href="#id22">Specifying The Output File</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id23">Specifying The Output File</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h4>
 <p>Alternatively, the name of the output file may be specified using the
 <code class="docutils literal notranslate"><span class="pre">-o/--output</span></code> argument.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep transform <span class="o">[</span>params<span class="o">]</span> --output tx_file.stl file.stl
@@ -568,7 +575,7 @@ infix with the <code class="docutils literal notranslate"><span class="pre">--in
 </section>
 </section>
 <section id="merging-masks">
-<span id="id3"></span><h3><a class="toc-backref" href="#id23">Merging Masks</a><a class="headerlink" href="#merging-masks" title="Permalink to this heading"></a></h3>
+<span id="id3"></span><h3><a class="toc-backref" href="#id24">Merging Masks</a><a class="headerlink" href="#merging-masks" title="Permalink to this heading"></a></h3>
 <p>Masks are a popular way to represent segmentations but they tend to be redundant. Typically, each mask is a binary mask
 with all image elements representing the object of interest set to <cite>1</cite> and all other image elements set to <cite>0</cite>. When
 multiple such masks are used to represent multiple segments, the volume of data is unnecessarily large leading to the
@@ -580,9 +587,40 @@ objects may be of one of the following forms:</p>
 <li><p><em>partial overlapping segments</em>, in which image elements are shared between objects;</p></li>
 <li><p><em>completely overlapping segments</em>, whereby one or more objects are completely contained within one or more objects.</p></li>
 </ul>
-<p>The mask merging solution must account for these reversibly i.e. given a one or more binary masks, it should be possible to create
+<p>Any mask merging solution must account for these reversibly i.e. given a one or more binary masks, it should be possible to create
 a single merged mask with multiple labels from which the original individual binary masks may be derived. This is what
-the <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">mergemask</span></code> utility aims to accomplish (though we have not implemented the unmerge functionality).</p>
+the <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">mergemask</span></code> utility aims to accomplish (though we have not implemented the <cite>unmerge</cite> functionality).</p>
+<section id="some-tips-when-merging-masks">
+<h4><a class="toc-backref" href="#id25">Some tips when merging masks</a><a class="headerlink" href="#some-tips-when-merging-masks" title="Permalink to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Try to avoid merging overlapping masks—the resulting merged mask can be less straightfoward to understand. By default, <code class="docutils literal notranslate"><span class="pre">mergemask</span></code> will <em>NOT</em> allow merging overlapping masks; you will need to enable this using the <code class="docutils literal notranslate"><span class="pre">--allow-overlap</span></code> flag.</p></li>
+<li><p>Before carrying out the merge, <code class="docutils literal notranslate"><span class="pre">mergemask</span></code> will assess the files to make sure they are binary masks. Again, this can take forever for large and/or many masks. If you are sure that your masks are binary with voxels of values <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> only, then you can skip assessment using the <code class="docutils literal notranslate"><span class="pre">--skip-assessment</span></code> flag. If you prepped your masks using <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">binmap</span></code> (e.g. from soft masks or binary masks with other voxel values) then it should be OK to use <code class="docutils literal notranslate"><span class="pre">--skip-assessment</span></code>.</p></li>
+<li><p>The current implementation of <code class="docutils literal notranslate"><span class="pre">mergemask</span></code> is memory hungry so it is only recommended for small and/or few masks. Roughly, up to 100 masks under <code class="docutils literal notranslate"><span class="pre">100^3</span></code> should be OK.</p></li>
+<li><p>If you have large masks consider meshing them into STL. You can use a free tool like <a class="reference external" href="https://www.paraview.org/">Paraview</a>, which can read MRC-like files. Use the <cite>ContourFilter</cite> to generate an isosurface (for a binary mask, it will pick the contour level automatically) then <cite>Save As…</cite> STL. You can also save considerable space by first carrying out <a class="reference internal" href="#mesh-reduction"><span class="std std-ref">Mesh Reduction</span></a> before saving.</p>
+<p>The generated mesh will have physical coordinates for all vertices and this will need to be transformed back into image space. You can use the <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">transform</span></code> tool to rescale the STL files. Use the following expression:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep transform --verbose --lengths &lt;newX&gt; &lt;newY&gt; &lt;newZ&gt; --indices &lt;col&gt; &lt;row&gt; &lt;sections&gt; file.stl
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">&lt;col&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;row&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;sections&gt;</span></code> are the number of columns, rows and sections of the mask and <code class="docutils literal notranslate"><span class="pre">&lt;newX&gt;=&lt;col&gt;/&lt;x_voxel_length&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;newY&gt;=&lt;row&gt;/&lt;y_voxel_length&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;newZ&gt;=&lt;sections&gt;/&lt;z_voxel_length&gt;</span></code>. This should output a new file called <code class="docutils literal notranslate"><span class="pre">file_transformed.stl</span></code>.</p>
+<p>Bear in mind that due to the nature of masks and STL files to store one segment per file, conversion will require the <code class="docutils literal notranslate"><span class="pre">--multi-file</span></code> flag. This only applies for non-merged masks, though.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for multiple masks (i.e. not merged)</span>
+sff convert --verbose --multi-file mask1.mrc mask2.mrc mask3.mrc --format hff
+<span class="c1"># for STL files</span>
+sff convert --verbose --multi-file mesh1.stl mesh2.stl mesh3.stl --format hff
+</pre></div>
+</div>
+</li>
+<li><p>For large masks/segmentations prefer converting to HDF5 (<code class="docutils literal notranslate"><span class="pre">file.hff</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># merged mask (see notes below on the output of merging)</span>
+sff convert --verbose merged_mask.mrc --label-tree merged_mask.json --format hff
+<span class="c1"># multiple masks</span>
+sff convert --verbose --multi-file mask1.mrc mask2.mrc mask3.mrc --format hff
+<span class="c1"># STL meshes</span>
+sff convert --verbose --multi-file mesh1.stl mesh2.stl mesh3.stl --format hff
+</pre></div>
+</div>
+</li>
+</ol>
 <p>The result of running <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">mergemask</span></code> is two artefacts:</p>
 <ol class="arabic simple">
 <li><p><strong>merged_mask.mrc</strong> is the single, multi-label volume of the same dimensions as each binary mask.</p></li>
@@ -646,17 +684,19 @@ respective files generated using multiple masks simultaneously.</p>
 <p>The computation of labels quickly exhausts the non-negative range of mode 0 (<code class="docutils literal notranslate"><span class="pre">signed</span> <span class="pre">int8</span></code>) masks therefore
 mode 1 (<code class="docutils literal notranslate"><span class="pre">signed</span> <span class="pre">int16</span></code>) masks are used.</p>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert merged_mask.mrc --label-tree merged_mask.json -v
+<p>Don’t forget to supply the original image (using the <code class="docutils literal notranslate"><span class="pre">--image</span></code> flag) to correctly compute the image-to-physical transform otherwise you will get a <code class="docutils literal notranslate"><span class="pre">warning</span></code> as shown below.2</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff convert merged_mask.mrc --label-tree merged_mask.json -v --format hff
 Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        Warning: missing --image &lt;file.map&gt; option to accurately determine image-to-physical transform
 Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        info: assessing merged_mask.mrc...
-Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        Setting output file to merged_mask.sff
-Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        Exporting to merged_mask.sff
+Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        Setting output file to merged_mask.hff
+Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        Exporting to merged_mask.hff
 Mon Nov <span class="m">28</span> <span class="m">12</span>:28:03 <span class="m">2022</span>        Done
 </pre></div>
 </div>
 </section>
+</section>
 <section id="mesh-reduction">
-<h3><a class="toc-backref" href="#id24">Mesh Reduction</a><a class="headerlink" href="#mesh-reduction" title="Permalink to this heading"></a></h3>
+<span id="id4"></span><h3><a class="toc-backref" href="#id26">Mesh Reduction</a><a class="headerlink" href="#mesh-reduction" title="Permalink to this heading"></a></h3>
 <p>Naive marching cubes typically creates far more surface polygons than required leading to much larger files than
 necessary. Mesh reduction helps to eliminate reduntant polygons and thereby save disk space.</p>
 <p>The simplest way to do this on an STL file is to use Paraview, which is a powerful freely-available 3D graphics
@@ -692,7 +732,7 @@ might need to hit the <em>Apply</em> button to run this filter.</p>
 </section>
 </section>
 <section id="setting-configurations">
-<h2><a class="toc-backref" href="#id25">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id27">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this heading"></a></h2>
 <p>Some of the functionality provided by <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> relies on persistent configurations.
 In the section we outline all you need to know to work with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> configurations.</p>
 <p>Configurations are handled using the <code class="docutils literal notranslate"><span class="pre">config</span></code> utility with several subcommands.</p>
@@ -709,40 +749,40 @@ Fri Jan <span class="m">19</span> <span class="m">14</span>:03:34 <span class="m
 </pre></div>
 </div>
 <section id="configuration-commands">
-<h3><a class="toc-backref" href="#id26">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id28">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this heading"></a></h3>
 <section id="getting-a-single-configuration-value">
-<h4><a class="toc-backref" href="#id27">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id29">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get CONFIG_NAME
 </pre></div>
 </div>
 </section>
 <section id="listing-available-configurations">
-<h4><a class="toc-backref" href="#id28">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id30">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get --all
 </pre></div>
 </div>
 </section>
 <section id="setting-a-single-configuration-value">
-<h4><a class="toc-backref" href="#id29">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id31">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config <span class="nb">set</span> CONFIG_NAME CONFIG_VALUE
 </pre></div>
 </div>
 </section>
 <section id="deleting-a-single-configuration">
-<h4><a class="toc-backref" href="#id30">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id32">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config del CONFIG_NAME
 </pre></div>
 </div>
 </section>
 <section id="clearing-all-configurations">
-<h4><a class="toc-backref" href="#id31">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id33">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config del --all
 </pre></div>
 </div>
 </section>
 </section>
 <section id="where-configurations-are-stored">
-<span id="configs"></span><h3><a class="toc-backref" href="#id32">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this heading"></a></h3>
+<span id="configs"></span><h3><a class="toc-backref" href="#id34">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> ships with a config file called <code class="docutils literal notranslate"><span class="pre">sff.conf</span></code> which is located in the root of the package.
 In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
 Therefore, default read-only configurations will be obtained from this file.
@@ -767,7 +807,7 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
 </section>
 </section>
 <section id="running-unit-tests">
-<h2><a class="toc-backref" href="#id33">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id35">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff tests <span class="o">[</span>tool<span class="o">]</span>
 </pre></div>
 </div>

@@ -1625,8 +1625,9 @@ class TestNotes_modify(Py23FixTestCase):
         num = _random_integer()
         extref1 = ' '.join(rw.random_words(count=3))
         extref2 = ' '.join(rw.random_words(count=3))
+        extref3 = ' '.join(rw.random_words(count=3))
         cmd = (
-            "notes add -i {segment_id} -n '{name}' -d '{descr}' -I {num} -E {extref1} -E {extref2} "
+            "notes add -i {segment_id} -n '{name}' -d '{descr}' -I {num} -E {extref1} -E {extref2} -E {extref3} "
             "{file} --config-path {config}"
         ).format(
             segment_id=self.segment_id,
@@ -1635,6 +1636,7 @@ class TestNotes_modify(Py23FixTestCase):
             num=num,
             extref1=extref1,
             extref2=extref2,
+            extref3=extref3,
             file=self.sff_file,
             config=self.config_fn
         )
@@ -1655,7 +1657,7 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertIsNone(segment.biological_annotation.name)
         self.assertIsNone(segment.biological_annotation.description)
         self.assertEqual(segment.biological_annotation.number_of_instances, 1)
-        self.assertEqual(len(segment.biological_annotation.external_references), 0)
+        self.assertEqual(len(segment.biological_annotation.external_references), 1)
 
     def _test_merge(self):
         """Test that we can merge notes"""

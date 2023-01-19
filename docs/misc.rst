@@ -476,9 +476,48 @@ objects may be of one of the following forms:
 - *partial overlapping segments*, in which image elements are shared between objects;
 - *completely overlapping segments*, whereby one or more objects are completely contained within one or more objects.
 
-The mask merging solution must account for these reversibly i.e. given a one or more binary masks, it should be possible to create
+Any mask merging solution must account for these reversibly i.e. given a one or more binary masks, it should be possible to create
 a single merged mask with multiple labels from which the original individual binary masks may be derived. This is what
-the ``sff prep mergemask`` utility aims to accomplish (though we have not implemented the unmerge functionality).
+the ``sff prep mergemask`` utility aims to accomplish (though we have not implemented the `unmerge` functionality).
+
+
+Some tips when merging masks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1.  Try to avoid merging overlapping masks---the resulting merged mask can be less straightfoward to understand. By default, ``mergemask`` will *NOT* allow merging overlapping masks; you will need to enable this using the ``--allow-overlap`` flag.
+
+2.  Before carrying out the merge, ``mergemask`` will assess the files to make sure they are binary masks. Again, this can take forever for large and/or many masks. If you are sure that your masks are binary with voxels of values ``0`` and ``1`` only, then you can skip assessment using the ``--skip-assessment`` flag. If you prepped your masks using ``sff prep binmap`` (e.g. from soft masks or binary masks with other voxel values) then it should be OK to use ``--skip-assessment``.
+
+3.  The current implementation of ``mergemask`` is memory hungry so it is only recommended for small and/or few masks. Roughly, up to 100 masks under ``100^3`` should be OK.
+
+4.  If you have large masks consider meshing them into STL. You can use a free tool like `Paraview <https://www.paraview.org/>`_, which can read MRC-like files. Use the `ContourFilter` to generate an isosurface (for a binary mask, it will pick the contour level automatically) then `Save As...` STL. You can also save considerable space by first carrying out :ref:`mesh_reduction` before saving.
+
+    The generated mesh will have physical coordinates for all vertices and this will need to be transformed back into image space. You can use the ``sff prep transform`` tool to rescale the STL files. Use the following expression:
+
+    .. code-block:: bash
+
+        sff prep transform --verbose --lengths <newX> <newY> <newZ> --indices <col> <row> <sections> file.stl
+
+    where ``<col>``, ``<row>`` and ``<sections>`` are the number of columns, rows and sections of the mask and ``<newX>=<col>/<x_voxel_length>``, ``<newY>=<row>/<y_voxel_length>`` and ``<newZ>=<sections>/<z_voxel_length>``. This should output a new file called ``file_transformed.stl``.
+
+    Bear in mind that due to the nature of masks and STL files to store one segment per file, conversion will require the ``--multi-file`` flag. This only applies for non-merged masks, though.
+
+    .. code-block:: bash
+
+        # for multiple masks (i.e. not merged)
+        sff convert --verbose --multi-file mask1.mrc mask2.mrc mask3.mrc --format hff
+        # for STL files
+        sff convert --verbose --multi-file mesh1.stl mesh2.stl mesh3.stl --format hff
+
+5.  For large masks/segmentations prefer converting to HDF5 (``file.hff``):
+
+    .. code-block:: bash
+
+        # merged mask (see notes below on the output of merging)
+        sff convert --verbose merged_mask.mrc --label-tree merged_mask.json --format hff
+        # multiple masks
+        sff convert --verbose --multi-file mask1.mrc mask2.mrc mask3.mrc --format hff
+        # STL meshes
+        sff convert --verbose --multi-file mesh1.stl mesh2.stl mesh3.stl --format hff
 
 The result of running ``sff prep mergemask`` is two artefacts:
 
@@ -539,14 +578,18 @@ respective files generated using multiple masks simultaneously.
     The computation of labels quickly exhausts the non-negative range of mode 0 (``signed int8``) masks therefore
     mode 1 (``signed int16``) masks are used.
 
+Don't forget to supply the original image (using the ``--image`` flag) to correctly compute the image-to-physical transform otherwise you will get a ``warning`` as shown below.2
+
 .. code-block:: bash
 
-    sff convert merged_mask.mrc --label-tree merged_mask.json -v
+    sff convert merged_mask.mrc --label-tree merged_mask.json -v --format hff
     Mon Nov 28 12:28:03 2022        Warning: missing --image <file.map> option to accurately determine image-to-physical transform
     Mon Nov 28 12:28:03 2022        info: assessing merged_mask.mrc...
-    Mon Nov 28 12:28:03 2022        Setting output file to merged_mask.sff
-    Mon Nov 28 12:28:03 2022        Exporting to merged_mask.sff
+    Mon Nov 28 12:28:03 2022        Setting output file to merged_mask.hff
+    Mon Nov 28 12:28:03 2022        Exporting to merged_mask.hff
     Mon Nov 28 12:28:03 2022        Done
+
+.. _mesh_reduction:
 
 Mesh Reduction
 --------------------

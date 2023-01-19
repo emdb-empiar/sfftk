@@ -613,17 +613,15 @@ class AbstractNote(BaseNote):
                     # now remove them
                     for t in to_remove:
                         refs.remove(t)
-                    bA.external_references = schema.SFFExternalReferenceList(refs)
+                    reference_list = schema.SFFExternalReferenceList()
+                    if refs:  # if there is anything left
+                        # we have to manually add the remaining refs
+                        for ref in refs:
+                            ref.id = 0  # reset the ids
+                            reference_list.append(ref)
+                    bA.external_references = reference_list
                 else:
                     print_date("No external references to delete from!")
-            # if self.external_reference_id is not None:  # it could be 0, which is valid but False
-            #     if bA.external_references:
-            #         try:
-            #             del bA.external_references[self.external_reference_id]  # external_references is a list
-            #         except IndexError:
-            #             print_date("Failed to delete external reference of ID {}".format(self.external_reference_id))
-            #     else:
-            #         print_date("No external references to delete from.")
             segment.biological_annotation = bA
         return segment
 

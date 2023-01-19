@@ -2197,6 +2197,22 @@ class TestPrep(unittest.TestCase):
         # no change in shape
         self.assertEqual((10, 10, 10), merged_mask.shape)  # I know this!
 
+    def test_mergemask_overlapping_masks(self):
+        """Test merging with overlapping masks"""
+        # we have N overlapping binary masks in mode 0
+        unmergeable_masks = [
+            str(TEST_DATA_PATH / 'segmentations' / f'unmergeable_{_}.map') for _ in range(1, 4)
+        ]
+        # try to merge without allowing overlap
+        args, configs = cli(f"prep mergemask --verbose {' '.join(unmergeable_masks)}")
+        from ..core.prep import mergemask
+        merge_status = mergemask(args, configs)
+        self.assertEqual(65, merge_status)
+        # now we rerun with the --allow-overlap flag
+        args, configs = cli(f"prep mergemask --verbose --allow-overlap  {' '.join(unmergeable_masks)}")
+        merge_status = mergemask(args, configs)
+        self.assertEqual(0, merge_status)
+
     def test_merged_mask_class(self):
         """Test that if masks overlap we can construct the implied label tree."""
         from ..core.prep import MergedMask

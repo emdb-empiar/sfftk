@@ -125,7 +125,7 @@ class NoteView(View):
             return self.NOT_DEFINED
 
     @property
-    def segmentType(self):
+    def segment_type(self):
         segment_type = list()
         if self._segment.mesh_list:
             segment_type.append("mesh_list")
@@ -168,7 +168,7 @@ class NoteView(View):
                     self.LINE3,
                     self.id,
                     self.parent_id,
-                    self.segmentType,
+                    self.segment_type,
                     # ---
                     self.LINE2,
                     self.name,
@@ -225,7 +225,7 @@ class NoteView(View):
                     self.LINE3,
                     self.id,
                     self.parent_id,
-                    self.segmentType,
+                    self.segment_type,
                     # ---
                     self.LINE2,
                     self.name,

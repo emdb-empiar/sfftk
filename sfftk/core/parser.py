@@ -373,6 +373,12 @@ mergemask_prep_parser.add_argument(
     action='store_true',
     help="use this option to avoid the lengthy task of assessing the masks to make sure they are binary [default: False]"
 )
+mergemask_prep_parser.add_argument(
+    '--allow-overlap',
+    action='store_true',
+    help="allow masks to have overlapping voxels; this results in a complex hierarchy of labels described in the "
+         "label_tree [default: False]"
+)
 
 # =========================================================================
 # convert subparser
