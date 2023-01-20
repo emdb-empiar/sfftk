@@ -248,6 +248,23 @@ class TestReaders_mapreader(Py23FixTestCase):
             )
         )
 
+    def test_file_with_full_labels(self):
+        """If there are 10 labels then we should be good to go"""
+        import pathlib
+        map_file = pathlib.Path("/Users/pkorir/Downloads/archive/10087/data/E64_tomo03.mrc")
+        if map_file.exists():
+            transform = mapreader.compute_transform(map_file)
+            self.assertTrue(
+                numpy.array_equal(
+                    numpy.array([
+                        [160., 0, 0, 0],
+                        [0, 160., 0, 0],
+                        [0, 0, 160., 0],
+                    ]),
+                    transform
+                )
+            )
+
 
 class TestReaders_modreader(Py23FixTestCase):
     @classmethod

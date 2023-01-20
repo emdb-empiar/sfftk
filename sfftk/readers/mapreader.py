@@ -154,7 +154,7 @@ class Map(object):
             )
 
         # jump to the beginning of data
-        if f.tell() < 1024:
+        if f.tell() <= 1024:
             f.seek(1024)
         else:
             raise ValueError("Current byte position in file (%s) is past end of header (1024)" % f.tell())
