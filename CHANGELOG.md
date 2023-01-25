@@ -1,5 +1,17 @@
 #Changes by release
 
+## [0.8.2] (2023-01-20) - Bugfix for reading MRC files
+
+## [0.8.1] (2023-01-19) - Stable merging of masks
+
+* new `mergemask` option `--skip-assessment` to go straight to merging and skip checking binary-ness
+* reinstated `--allow-overlap` flag; overlapping masks blocked by default; failure on the first detected overlap
+* fixed a bug which excluded some data from merged mrc headers
+* updated documentation to outline best practices when merging masks (only use merging for relatively small volumes
+  otherwise convert large binary masks into STL meshes)
+* fixed bug when deleting fewer than the total number of external references
+* new tests to check mask merging
+
 ## [0.8.0.dev1] (2022-11-29) - Merge masks
 
 * `sff prep mergemask` to merge multiple binary masks
@@ -36,17 +48,23 @@
 
 ## [0.7.0] (2022-10-04) - Support for working with transforms
 
-* `sff view --transform file.map` now outputs the image-to-physical space transform; `sff view file.map` will still output
-* user may choose how to display the transform using `sff view --transform [--print-array (default) | --print-csv | --print-ssv] file.map`
-* `sff convert` now takes an option `--image` that takes an `.map/.mrc/.rec` file and extracts the transform to set as transform `0` ; excluding `--image <file.map>` produces a warning and possibly wrong transform `0`
-* `sff notes [add|edit|del] [-x/--transform-id <int>] [-X/--transform <12-floats>] file.sff` to add/modify/delete transforms
+* `sff view --transform file.map` now outputs the image-to-physical space transform; `sff view file.map` will still
+  output
+* user may choose how to display the transform
+  using `sff view --transform [--print-array (default) | --print-csv | --print-ssv] file.map`
+* `sff convert` now takes an option `--image` that takes an `.map/.mrc/.rec` file and extracts the transform to set as
+  transform `0` ; excluding `--image <file.map>` produces a warning and possibly wrong transform `0`
+* `sff notes [add|edit|del] [-x/--transform-id <int>] [-X/--transform <12-floats>] file.sff` to add/modify/delete
+  transforms
 * `sff notes show -H file.sff` now displays the table of transforms
 * all formats now honour `--image <file.map>` to set the correct transform
-* `sfftk.readers.mapreader.compute_transform('file.map')` computes transform; when computing the transform from MAP file, only reads the header
+* `sfftk.readers.mapreader.compute_transform('file.map')` computes transform; when computing the transform from MAP
+  file, only reads the header
 * all associated tests
 * correct spelling for ångström
 * minor cleanup and improvements
-* bugfixes for cases not caught by tests e.g. merge annotation does not interact with transform_list - must be done manually
+* bugfixes for cases not caught by tests e.g. merge annotation does not interact with transform_list - must be done
+  manually
 * for map file we will not write skew and translation matrices; assume rectilinear lattices
 * bugfix: `sff notes add` was always adding extra software
 * bugfix: display of transforms when empty
@@ -56,7 +74,7 @@
 
 ## [0.6.1.dev0] - 2022-09-06
 
-* improvements for reading SuRVoS files with additional attributes 
+* improvements for reading SuRVoS files with additional attributes
 
 ## [0.6.0.dev2] - 2022-09-02
 
@@ -86,6 +104,7 @@ Bugfixes
 ## [0.5.5.dev0] - 2020-05-27
 
 Completed (rudimentary) support for ilastik segmentations
+
 * convert ilastik `.h5` simple segmentation to EMDB-SFF
 * disambiguate `.h5` with menu or `--subtype-index <int>` option
 * unit tests for new reader/format
@@ -102,14 +121,18 @@ Bugfixes: correct handling of conversion with exclusion of geometry for JSON
 ## [0.5.3.dev0] - 2020-05-15
 
 Bugfixes: annotation issues
-* tests to handle adding external references when the current list has some with id collisions; fix implemented in `sfftk-rw` v0.6.5.dev0
+
+* tests to handle adding external references when the current list has some with id collisions; fix implemented
+  in `sfftk-rw` v0.6.5.dev0
 * fixed saving of annotations; fix implemented in `sfftk-rw` v0.6.6.dev0
 * updated test data for the above tests
-* Travis-CI configs: was failing with numpy; had fixed by locking numpy to 1.15.4; fix -> replaced `python setup.py develop` with `pip install -e .`
+* Travis-CI configs: was failing with numpy; had fixed by locking numpy to 1.15.4; fix ->
+  replaced `python setup.py develop` with `pip install -e .`
 
 ## [0.5.2.dev3] - 2020-04-14
 
 Updates to dependencies for Py27
+
 * pyparsing<3.0, kiwisolver<1.2.0 (Py27 deprecation)
 * fix for failing `sfftk.unittests.test_core.TestCoreParserTests.test_multi_tool`
 * simplified tool test in `sfftk.core.parser`
@@ -143,7 +166,6 @@ Python3 support
 
 - now depends on ``ahds v0.2.0.dev0`` which is Python3 compatible
 
-
 ## [0.3.1.dev5] - 2018-08-01
 
 Documentation
@@ -165,21 +187,21 @@ Bugfixes
 
 ## [0.3.1.dev3] - 2018-07-23
 
-
 ## [0.3.1.dev0] - 2018-07-18
 
 * ``sff prep <command>`` to prepare your segmentation
-* ``sff prep binmap`` to bin a CCP4 map file 
-
+* ``sff prep binmap`` to bin a CCP4 map file
 
 ## [0.3.0.dev1] - 2018-07-18
 
-* Only works with EMDB-SFF v0.7 files. The main feature of EMDB-SFF v0.7 is that 3D volumes are embedded into the EMDB-SFF file. Previously 3D volumes were only referred to.
+* Only works with EMDB-SFF v0.7 files. The main feature of EMDB-SFF v0.7 is that 3D volumes are embedded into the
+  EMDB-SFF file. Previously 3D volumes were only referred to.
 * Other EMDB-SFF changes:
     * Deprecated filePath attribute
-    * Transforms can only be of type transformation matrix (deprecated canonical euler angles and view vector rotattion transforms)
+    * Transforms can only be of type transformation matrix (deprecated canonical euler angles and view vector rotattion
+      transforms)
     * Segments now have both a name and description
-* Added this change log 
+* Added this change log
 * EMDB-SFF test data is now split by version
 * Update of unit tests
 * Utility function ``parallelise()`` for parallel computations (mainly used for decoding 3D volume data)
