@@ -134,3 +134,4 @@ sfftk/test_data/test_data.hff
 /build_for_pypi.sh
 /codecov
 /test_notes.sh
+/simpleparse/
