@@ -947,6 +947,11 @@ output['kwargs'][
 )
 merge_notes_parser.add_argument(*output['args'], **output['kwargs'])
 merge_notes_parser.add_argument(*verbose['args'], **verbose['kwargs'])
+merge_notes_parser.add_argument(
+    '--include-colour',
+    action='store_true',
+    help="use the segment colours from the sources [default: False]"
+)
 
 # =========================================================================
 # notes: save

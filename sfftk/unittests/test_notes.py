@@ -1707,6 +1707,7 @@ class TestNotes_modify(Py23FixTestCase):
         self.assertEqual(source_segment.biological_annotation.external_references[0].accession, extref[2])
         self.assertEqual(source_segment.biological_annotation.external_references[0].resource,
                          output_segment.biological_annotation.external_references[0].resource)
+        self.assertEqual(source_segment.colour, output_segment.colour)
 
     def _test_clear(self):
         """Test that we can clear notes"""

@@ -1804,6 +1804,7 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.other, 'file.hff')
         self.assertEqual(args.output, 'file.sff')
         self.assertEqual(args.config_path, self.config_fn)
+        self.assertFalse(args.include_colour)
 
     def test_merge_output_implied(self):
         """Test with output implied i.e. no --output arg"""
@@ -1813,6 +1814,14 @@ Please either run 'save' or 'trash' before running tests.".format(self.temp_file
         self.assertEqual(args.other, 'file.hff')
         self.assertEqual(args.output, 'file.hff')
         self.assertEqual(args.config_path, self.config_fn)
+
+    def test_merge_include_colour(self):
+        """Test that we can specify to include colour"""
+        args, _ = parse_args(
+            f"notes merge --source file.json file.hff --include-colour --config-path {self.config_fn}",
+            use_shlex=True
+        )
+        self.assertTrue(args.include_colour)
 
 
 class TestCoreUtils(Py23FixTestCase):

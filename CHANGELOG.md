@@ -1,5 +1,9 @@
 #Changes by release
 
+## [0.8.3] (2023-01-27) - Now merging annotations and optionally include colour 
+
+* use `--include-colour` when merging annotations to include manually edited colours from a source EMDB-SFF file 
+
 ## [0.8.2] (2023-01-20) - Bugfix for reading MRC files
 
 ## [0.8.1] (2023-01-19) - Stable merging of masks

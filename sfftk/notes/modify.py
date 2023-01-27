@@ -937,7 +937,7 @@ def merge(args, configs):
     other = schema.SFFSegmentation.from_file(args.other)
     if args.verbose:
         print_date("Merging annotations...")
-    other.merge_annotation(source)
+    other.merge_annotation(source, include_colour=args.include_colour)
     # include transforms instead of modifying and releasing a new sfftk-rw package
     other.transform_list = source.transform_list
     # export
