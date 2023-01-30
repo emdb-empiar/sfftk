@@ -413,16 +413,16 @@ alignment with images. To do this we need a 4X4 matrix with the parameters.
 - **translation** parameters, which are the top-right 3X1 sub-matrix;
 
 Rotation parameters are specified by providing both the physical and
-image dimensions of the bounding box. This is then used to determine
+image dimensions of the segmented volume's bounding box (not the bounding box containing the particular segment, which will vary between segments). This is then used to determine
 the voxel dimensions. The physical dimensions of the bounding box are
 specified using the ``-L/--lengths`` argument while the image
 dimensions of the bounding box are specified using the ``-I/--indices``.
 Each of these arguments take three values - one for each of *x*, *y* and
 *z*.
 
-Optionally, the ``-O/--origin`` argument specifies the location of origin
+Optionally, the ``-O/--origin`` argument specifies the location of volume's origin
 and similarly take three values for each of *x*, *y* and *z*. The default
-is located at *(0.0, 0.0, 0.0)*.
+is located at *(0.0, 0.0, 0.0)* i.e. it is assumed that the segmented volume has one vertex closest to the origin coincident with the origin.
 
 
 .. code:: bash
@@ -489,15 +489,17 @@ Some tips when merging masks
 
 3.  The current implementation of ``mergemask`` is memory hungry so it is only recommended for small and/or few masks. Roughly, up to 100 masks under ``100^3`` should be OK.
 
-4.  If you have large masks consider meshing them into STL. You can use a free tool like `Paraview <https://www.paraview.org/>`_, which can read MRC-like files. Use the `ContourFilter` to generate an isosurface (for a binary mask, it will pick the contour level automatically) then `Save As...` STL. You can also save considerable space by first carrying out :ref:`mesh_reduction` before saving.
+4.  If you have large masks consider meshing them into STL. You can use a free tool like `Paraview <https://www.paraview.org/>`_, which can read MRC-like files.
 
-    The generated mesh will have physical coordinates for all vertices and this will need to be transformed back into image space. You can use the ``sff prep transform`` tool to rescale the STL files. Use the following expression:
+    .. image:: stl-rescaling.png
 
-    .. code-block:: bash
+    a. In *Paraview*, right-click inside the *Pipeline Browser* and choose *Open...* to open the MRC file. See the image above for the *Paraview* interface sections.
 
-        sff prep transform --verbose --lengths <newX> <newY> <newZ> --indices <col> <row> <sections> file.stl
+    b. Click the file object in the *Pipeline Browser* then click the *Contour* tool to generate an isosurface (for a binary mask, it will automatically pick the right contour level). Modify the value of the contour level in *Tool properties* in the *Isosurfaces* field.
 
-    where ``<col>``, ``<row>`` and ``<sections>`` are the number of columns, rows and sections of the mask and ``<newX>=<col>/<x_voxel_length>``, ``<newY>=<row>/<y_voxel_length>`` and ``<newZ>=<sections>/<z_voxel_length>``. This should output a new file called ``file_transformed.stl``.
+    c. Apply a *Transform* to the generated contour to ensure the mask mesh is in image space. Do this by right-clicking the contour in the *Pipeline Browser*,  select *Add Filter / Alphabetical / Transform*. In the *Tool properties*, adjust the scale parameters (for X, Y and Z) to be the reciprocal of the corresponding sizes of the unit cell i.e. if a unit cell has X or 10 then set the scale to 0.1. The units do not matter. You can open the *Statistics Inspector* (*View / Statistics Inspector*) to verify that the mesh's bounds are within the image's size bounds.
+
+    d. Save the mesh by first selecting *Transform1* in the *Pipeline Browser* then clicking *File / Save Data...* then choose STL from the file type dropdown. You can also save considerable space by first carrying out :ref:`mesh_reduction` before saving.
 
     Bear in mind that due to the nature of masks and STL files to store one segment per file, conversion will require the ``--multi-file`` flag. This only applies for non-merged masks, though.
 
@@ -508,7 +510,7 @@ Some tips when merging masks
         # for STL files
         sff convert --verbose --multi-file mesh1.stl mesh2.stl mesh3.stl --format hff
 
-5.  For large masks/segmentations prefer converting to HDF5 (``file.hff``):
+5.  For large masks/segmentations prefer conversion to HDF5 (``file.hff``):
 
     .. code-block:: bash
 

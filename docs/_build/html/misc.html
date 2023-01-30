@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.8.1 documentation</title>
+  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.8.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -537,15 +537,15 @@ alignment with images. To do this we need a 4X4 matrix with the parameters.</p>
 <li><p><strong>translation</strong> parameters, which are the top-right 3X1 sub-matrix;</p></li>
 </ul>
 <p>Rotation parameters are specified by providing both the physical and
-image dimensions of the bounding box. This is then used to determine
+image dimensions of the segmented volume’s bounding box (not the bounding box containing the particular segment, which will vary between segments). This is then used to determine
 the voxel dimensions. The physical dimensions of the bounding box are
 specified using the <code class="docutils literal notranslate"><span class="pre">-L/--lengths</span></code> argument while the image
 dimensions of the bounding box are specified using the <code class="docutils literal notranslate"><span class="pre">-I/--indices</span></code>.
 Each of these arguments take three values - one for each of <em>x</em>, <em>y</em> and
 <em>z</em>.</p>
-<p>Optionally, the <code class="docutils literal notranslate"><span class="pre">-O/--origin</span></code> argument specifies the location of origin
+<p>Optionally, the <code class="docutils literal notranslate"><span class="pre">-O/--origin</span></code> argument specifies the location of volume’s origin
 and similarly take three values for each of <em>x</em>, <em>y</em> and <em>z</em>. The default
-is located at <em>(0.0, 0.0, 0.0)</em>.</p>
+is located at <em>(0.0, 0.0, 0.0)</em> i.e. it is assumed that the segmented volume has one vertex closest to the origin coincident with the origin.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep transform --lengths &lt;x-length&gt; &lt;y-length&gt; &lt;z-length&gt; --indices &lt;x-size&gt; &lt;y-size&gt; &lt;z-size&gt; file.stl
 </pre></div>
 </div>
@@ -596,12 +596,14 @@ the <code class="docutils literal notranslate"><span class="pre">sff</span> <spa
 <li><p>Try to avoid merging overlapping masks—the resulting merged mask can be less straightfoward to understand. By default, <code class="docutils literal notranslate"><span class="pre">mergemask</span></code> will <em>NOT</em> allow merging overlapping masks; you will need to enable this using the <code class="docutils literal notranslate"><span class="pre">--allow-overlap</span></code> flag.</p></li>
 <li><p>Before carrying out the merge, <code class="docutils literal notranslate"><span class="pre">mergemask</span></code> will assess the files to make sure they are binary masks. Again, this can take forever for large and/or many masks. If you are sure that your masks are binary with voxels of values <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> only, then you can skip assessment using the <code class="docutils literal notranslate"><span class="pre">--skip-assessment</span></code> flag. If you prepped your masks using <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">binmap</span></code> (e.g. from soft masks or binary masks with other voxel values) then it should be OK to use <code class="docutils literal notranslate"><span class="pre">--skip-assessment</span></code>.</p></li>
 <li><p>The current implementation of <code class="docutils literal notranslate"><span class="pre">mergemask</span></code> is memory hungry so it is only recommended for small and/or few masks. Roughly, up to 100 masks under <code class="docutils literal notranslate"><span class="pre">100^3</span></code> should be OK.</p></li>
-<li><p>If you have large masks consider meshing them into STL. You can use a free tool like <a class="reference external" href="https://www.paraview.org/">Paraview</a>, which can read MRC-like files. Use the <cite>ContourFilter</cite> to generate an isosurface (for a binary mask, it will pick the contour level automatically) then <cite>Save As…</cite> STL. You can also save considerable space by first carrying out <a class="reference internal" href="#mesh-reduction"><span class="std std-ref">Mesh Reduction</span></a> before saving.</p>
-<p>The generated mesh will have physical coordinates for all vertices and this will need to be transformed back into image space. You can use the <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">transform</span></code> tool to rescale the STL files. Use the following expression:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep transform --verbose --lengths &lt;newX&gt; &lt;newY&gt; &lt;newZ&gt; --indices &lt;col&gt; &lt;row&gt; &lt;sections&gt; file.stl
-</pre></div>
-</div>
-<p>where <code class="docutils literal notranslate"><span class="pre">&lt;col&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;row&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;sections&gt;</span></code> are the number of columns, rows and sections of the mask and <code class="docutils literal notranslate"><span class="pre">&lt;newX&gt;=&lt;col&gt;/&lt;x_voxel_length&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;newY&gt;=&lt;row&gt;/&lt;y_voxel_length&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;newZ&gt;=&lt;sections&gt;/&lt;z_voxel_length&gt;</span></code>. This should output a new file called <code class="docutils literal notranslate"><span class="pre">file_transformed.stl</span></code>.</p>
+<li><p>If you have large masks consider meshing them into STL. You can use a free tool like <a class="reference external" href="https://www.paraview.org/">Paraview</a>, which can read MRC-like files.</p>
+<img alt="_images/stl-rescaling.png" src="_images/stl-rescaling.png" />
+<ol class="loweralpha simple">
+<li><p>In <em>Paraview</em>, right-click inside the <em>Pipeline Browser</em> and choose <em>Open…</em> to open the MRC file. See the image above for the <em>Paraview</em> interface sections.</p></li>
+<li><p>Click the file object in the <em>Pipeline Browser</em> then click the <em>Contour</em> tool to generate an isosurface (for a binary mask, it will automatically pick the right contour level). Modify the value of the contour level in <em>Tool properties</em> in the <em>Isosurfaces</em> field.</p></li>
+<li><p>Apply a <em>Transform</em> to the generated contour to ensure the mask mesh is in image space. Do this by right-clicking the contour in the <em>Pipeline Browser</em>,  select <em>Add Filter / Alphabetical / Transform</em>. In the <em>Tool properties</em>, adjust the scale parameters (for X, Y and Z) to be the reciprocal of the corresponding sizes of the unit cell i.e. if a unit cell has X or 10 then set the scale to 0.1. The units do not matter. You can open the <em>Statistics Inspector</em> (<em>View / Statistics Inspector</em>) to verify that the mesh’s bounds are within the image’s size bounds.</p></li>
+<li><p>Save the mesh by first selecting <em>Transform1</em> in the <em>Pipeline Browser</em> then clicking <em>File / Save Data…</em> then choose STL from the file type dropdown. You can also save considerable space by first carrying out <a class="reference internal" href="#mesh-reduction"><span class="std std-ref">Mesh Reduction</span></a> before saving.</p></li>
+</ol>
 <p>Bear in mind that due to the nature of masks and STL files to store one segment per file, conversion will require the <code class="docutils literal notranslate"><span class="pre">--multi-file</span></code> flag. This only applies for non-merged masks, though.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for multiple masks (i.e. not merged)</span>
 sff convert --verbose --multi-file mask1.mrc mask2.mrc mask3.mrc --format hff
@@ -610,7 +612,7 @@ sff convert --verbose --multi-file mesh1.stl mesh2.stl mesh3.stl --format hff
 </pre></div>
 </div>
 </li>
-<li><p>For large masks/segmentations prefer converting to HDF5 (<code class="docutils literal notranslate"><span class="pre">file.hff</span></code>):</p>
+<li><p>For large masks/segmentations prefer conversion to HDF5 (<code class="docutils literal notranslate"><span class="pre">file.hff</span></code>):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># merged mask (see notes below on the output of merging)</span>
 sff convert --verbose merged_mask.mrc --label-tree merged_mask.json --format hff
 <span class="c1"># multiple masks</span>
