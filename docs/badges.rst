@@ -25,3 +25,7 @@
 .. note::
 
     Only interested in working directly with EMDB-SFF files? Checkout the *minimal* :py:mod:`sfftkrw` package.
+
+.. note:: **Visualise EMDB-SFF in UCSF ChimeraX**
+
+    EMDB-SFF files (`.hff` and `.sff`) can now be visualised in `UCSF ChimeraX <https://www.cgl.ucsf.edu/chimerax/>`_ thanks to the wonderful efforts of the UCSF ChimeraX team! Get the daily build `here <https://www.cgl.ucsf.edu/chimerax/download.html>`_.
