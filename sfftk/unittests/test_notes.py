@@ -2095,6 +2095,131 @@ class TestNotesClasses(Py23FixTestCase):
         self.assertIsNone(seg_out_del.details)
         self.assertEqual(len(seg_out_del.global_external_references), 0)
 
+    def test_GlobalSimpleNote(self):
+        """Test that we can use GlobalSimpleNote to annotate the segmentation"""
+        name = li.get_sentence()
+        details = li.get_sentences(sentences=10)
+        sw_name = rw.random_word()
+        sw_version = rw.random_word()
+        sw_proc = li.get_sentences(sentences=5)
+        tx = _random_floats(count=12, multiplier=10)
+        ext_refs = [rw.random_words(count=3) for _ in _xrange(3)]
+        gsn = modify.GlobalSimpleNote(
+            name=name,
+            details=details,
+            software_name=sw_name,
+            software_version=sw_version,
+            software_processing_details=sw_proc,
+            transform=tx,
+            external_references=ext_refs,
+        )
+        self.assertEqual(gsn.name, name)
+        self.assertEqual(gsn.details, details)
+        self.assertEqual(gsn.software_name, sw_name)
+        self.assertEqual(gsn.software_version, sw_version)
+        self.assertEqual(gsn.software_processing_details, sw_proc)
+        self.assertEqual(gsn.transform, tx)
+        for idx, ext_ref in enumerate(gsn.external_references):
+            self.assertCountEqual(
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
+                ext_refs[idx],
+            )
+            self.assertIsInstance(ext_ref, modify.ExternalReference)
+        # add to segmentation
+        seg_in = schema.SFFSegmentation()
+        seg_out = gsn.add_to_segmentation(seg_in)
+        self.assertEqual(seg_out.name, name)
+        self.assertEqual(seg_out.details, details)
+        for idx, ext_ref in enumerate(seg_out.global_external_references):
+            self.assertCountEqual(
+                [ext_ref.resource, ext_ref.url, ext_ref.accession],
+                ext_refs[idx]
+            )
+            self.assertIsInstance(ext_ref, schema.SFFExternalReference)
+        software = seg_out.software_list[0]
+        self.assertEqual(software.name, sw_name)
+        self.assertEqual(software.version, sw_version)
+        self.assertEqual(software.processing_details, sw_proc)
+        transform = seg_out.transform_list[0]
+        self.assertEqual(3, transform.rows)
+        self.assertEqual(4, transform.cols)
+        self.assertEqual(' '.join(map(str, tx)), transform.data)
+        self.assertEqual(seg_out.details, details)
+        # edit in segmentation
+        name = li.get_sentence()
+        sw_name = rw.random_word()
+        sw_version = rw.random_word()
+        sw_proc = li.get_sentences(sentences=5)
+        tx = _random_floats(count=12, multiplier=10)
+        details = li.get_sentences(sentences=10)
+        ext_refs = [
+            rw.random_words(count=3),
+            rw.random_words(count=3),
+            rw.random_words(count=3),
+        ]
+        gsn_edit = modify.GlobalSimpleNote(
+            name=name,
+            details=details,
+            software_id=0,
+            software_name=sw_name,
+            software_version=sw_version,
+            software_processing_details=sw_proc,
+            transform_id=0,
+            transform=tx,
+            external_reference_id=2,
+            external_references=ext_refs,
+        )
+        seg_out_edit = gsn_edit.edit_in_segmentation(seg_out)
+        # we have edited the last extref
+        self.assertEqual(seg_out_edit.name, name)
+        software = seg_out_edit.software_list[0]
+        self.assertEqual(software.name, sw_name)
+        self.assertEqual(software.version, sw_version)
+        self.assertEqual(software.processing_details, sw_proc)
+        transform = seg_out_edit.transform_list[0]
+        self.assertEqual(transform.rows, 3)
+        self.assertEqual(transform.cols, 4)
+        self.assertEqual(transform.data, " ".join(map(str, tx)))
+        self.assertEqual(seg_out_edit.details, details)
+        self.assertEqual(
+            [
+                seg_out_edit.global_external_references[2].resource,
+                seg_out_edit.global_external_references[2].url,
+                seg_out_edit.global_external_references[2].accession
+            ],
+            ext_refs[0],
+        )
+        self.assertEqual(
+            [
+                seg_out_edit.global_external_references[3].resource,
+                seg_out_edit.global_external_references[3].url,
+                seg_out_edit.global_external_references[3].accession
+            ],
+            ext_refs[1]
+        )
+        self.assertEqual(
+            [
+                seg_out_edit.global_external_references[4].resource,
+                seg_out_edit.global_external_references[4].url,
+                seg_out_edit.global_external_references[4].accession
+            ],
+            ext_refs[2]
+        )
+        # delete from segmentation
+        gsn_del = modify.GlobalSimpleNote(
+            name=True,
+            software_id=[0],
+            external_reference_id=[0, 1, 2, 3, 4, 5],
+            transform_id=[0],
+            details=True,
+        )
+        seg_out_del = gsn_del.del_from_segmentation(seg_out_edit)
+        self.assertEqual(len(seg_out_del.software_list), 0)
+        self.assertEqual(len(seg_out_del.transform_list), 0)
+        self.assertIsNone(seg_out_del.name)
+        self.assertIsNone(seg_out_del.details)
+        self.assertEqual(len(seg_out_del.global_external_references), 0)
+
     def test_ArgsNote(self):
         """Test ArgsNote (construct local notes from command-line arguments)"""
         segment_id = _random_integers(count=1, start=1)

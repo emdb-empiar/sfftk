@@ -484,6 +484,47 @@ class GlobalArgsNote(AbstractGlobalNote):
                     )
 
 
+class GlobalSimpleNote(AbstractGlobalNote):
+    """Class definition for global segmentation notes"""
+
+    def __init__(self, name=None, software_id=None, software_name=None, software_version=None,
+                 software_processing_details=None, transform_id=None, transform=None, details=None,
+                 external_reference_id=None, external_references=None, *args, **kwargs):
+        """Initialise a :py:class:`GlobalSimpleNote` object
+
+        :param str name: name of the whole segmentation
+        :param int software_id: ID of the software to be edited or deleted
+        :param str software_name: name of the software used
+        :param str software_version: the version name
+        :param str software_processing_details: a brief description of how the segmentation was generated using the corresponding software
+        :param int transform_id: ID of the transform to be edited or deleted
+        :param list transform: a sequence of 12 numbers used for the 3x4 transformation matrix
+        :param str details: a description of this segmentation
+        :param int external_reference_id: ID of the external reference to be edited or deleted
+        :param list external_references: iterable of a tuple with the ``resource``, ``url`` and ``accession``
+        """
+        super().__init__(*args, **kwargs)
+        self.name = name
+        self.software_id = software_id
+        self.software_name = software_name
+        self.software_version = software_version
+        self.software_processing_details = software_processing_details
+        self.transform_id = transform_id
+        self.transform = transform
+        self.details = details
+        self.external_reference_id = external_reference_id
+        # external references
+        if external_references:
+            for resource, url, accession in external_references:
+                self._ext_ref_list.append(
+                    ExternalReference(
+                        resource=resource,
+                        url=url,
+                        accession=accession,
+                    )
+                )
+
+
 class AbstractNote(BaseNote):
     """Note 'abstact' class that defines private attributes and main methods"""
     name = NoteAttr('name')

@@ -28,4 +28,8 @@
 
 .. note:: **Visualise EMDB-SFF in UCSF ChimeraX**
 
-    EMDB-SFF files (`.hff` and `.sff`) can now be visualised in `UCSF ChimeraX <https://www.cgl.ucsf.edu/chimerax/>`_ thanks to the wonderful efforts of the UCSF ChimeraX team! Get the daily build `here <https://www.cgl.ucsf.edu/chimerax/download.html>`_.
+    EMDB-SFF files (``.hff`` and ``.sff``) can now be visualised in `UCSF ChimeraX <https://www.cgl.ucsf.edu/chimerax/>`_ thanks to the wonderful efforts of the UCSF ChimeraX team! Get the daily build `here <https://www.cgl.ucsf.edu/chimerax/download.html>`_. Convert ``.json`` EMDB-SFF files to ``.hff`` or ``.sff`` using:
+
+    .. code-block:: shell
+
+        sff convert file.sff -f json

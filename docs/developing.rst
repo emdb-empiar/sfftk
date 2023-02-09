@@ -31,11 +31,17 @@ Use the :py:mod:`sfftk.notes.modify` module to perform annotations
 
 Note Objects
 ------------
+There are two types of note objects: :py:class:`sfftk.notes.modify.GlobalSimpleNote` for annotating a segmentation and :py:class:`sfftk.notes.modify.SimpleNote` for annotating a segment.
 
 .. code:: python
 
-    >>> from sfftk.notes.modify import SimpleNote, ExternalReference
-    >>>
+    >>> from sfftk.notes.modify import SimpleNote, GlobalSimpleNote, ExternalReference
+    >>> global_note = GlobalSimpleNote()
+    >>> global_note.name = "Segmentation of Mitochondria in Organism"
+    >>> global_note.details = "Lorem ipsum dolor sit amet consetetur..."
+    >>> global_note.software_name = "Paraview"
+    >>> global_note.software_version = "5.2"
+    >>> global_note.software_processing_details = "We used the contour filter to extract the isosurface at a contour level of 3.8"
     >>> note = SimpleNote()
     >>> note.name = 'some name'
     >>> note.description = 'some description'
@@ -69,6 +75,15 @@ Note Objects
 
 Adding Notes
 ------------
+Adding notes to the segmentation:
+
+.. code:: python
+
+    >>> from sfftkrw import SFFSegmentation
+    >>>
+    >>> segmentation = SFFSegmentation()
+    >>>
+    >>> segmentation = global_note.add_to_segmentation(segmentation)
 
 .. code:: python
 
@@ -109,6 +124,29 @@ Then call the edit method
 
     >>> segment = edit_note.edit_in_segment(segment)
 
+The same applies to ``GlobalSimpleNote`` objects only that we can also specify the ``software_id``, ``transform_id`` and ``external_reference_id``:
+
+.. code:: python
+
+    >>> from sfftk.notes.modify import GlobalSimpleNote
+    >>> edit_segmentation_note = GlobalSimpleNote(
+            name="A new segmentation name",
+            details="Many more changes to the details than you can allow",
+            software_id=0, # this is the software we will modify
+            software_name="New software",
+            software_version="v2023.27",
+            software_processing_details="A new description of how this software was used",
+            transform_id=0,
+            transform=[13.0, 0, 0, 0, 0, 13.0, 0, 0, 0, 0, 13.0, 0],
+    )
+    >>> segmentation = edit_segmentation_note.edit_in_segmentation(segmentation)
+    >>>> # you can modify the external references separately or jointly with other fields
+    >>> edit_segmentation_extrefs = GlobalSimpleNote(
+            external_reference_id=0,
+            external_references=[('res0', 'url0', 'acc0'), ('res1', 'url1', 'acc1')]
+    )
+    >>> segmentation = edit_segmentation_extrefs.edit_in_segmentation(segmentation)
+
 Deleting Notes
 --------------
 
@@ -129,6 +167,20 @@ Then call the notes ``delete`` method.
 .. code:: python
 
     >>> segment = del_note.delete_from_segment(segment)
+
+Similarly, for ``GlobalSimpleNote``:
+
+.. code:: python
+
+    >>> from sfftk.notes.modify import GlobalSimpleNote
+    >>> del_global_note = GlobalSimpleNote(
+            name=True, # delete the name
+            details=True,
+            software_id=[0], # use a list to indicate all to be deleted
+            transform_id=[1,2], # delete multiple (if they exist)
+            external_reference_id=[3,4,5] # again, multiple
+    )
+    >>> segmentation = del_global_note.del_from_segmentation(segmentation)
 
 Reading Application-Specific Segmentation Files 
 ================================================

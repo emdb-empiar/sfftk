@@ -1,5 +1,7 @@
 #Changes by release
 
+## [0.8.4] (2023-02-08) - Added `GlobalSimpleNote` to annotate a segmentation
+
 ## [0.8.3] (2023-01-27) - Now merging annotations and optionally include colour 
 
 * use `--include-colour` when merging annotations to include manually edited colours from a source EMDB-SFF file 
