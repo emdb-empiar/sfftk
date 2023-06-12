@@ -1308,7 +1308,7 @@ def parse_args(_args, use_shlex=False):
                 return 65, configs
             if not _masks_have_same_dimensions(args):
                 print_date(
-                    f"error: inhomogenious masks: dimension differs between masks (use --verbose to view details)")
+                    f"error: inhomogeneous masks: dimension differs between masks (use --verbose to view details)")
                 return 65, configs
             if not _masks_have_mode_zero(args):
                 print_date(f"error: mode must be zero (0); please run `sff prep binmap` first on all masks")
