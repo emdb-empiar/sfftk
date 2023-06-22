@@ -58,3 +58,18 @@ def get_data(fn):
         name = "{}#{}".format(os.path.basename(fn), mesh_id)
         meshes.append((name, vertices, polygons))
     return meshes
+
+
+def compute_bounding_box(fn):
+    """Compute the bounding box for an STL file
+
+    Required to check that the transform has correctly aligned the segmentation with the image
+
+    :param str fn: filename
+    :return: a `list` of `tuple`s of the form `((x_min, y_min, z_min), (x_max, y_max, z_max))`
+    :rtype: list
+    """
+    from stl import mesh
+    my_stl = mesh.Mesh.from_file(fn)
+    bounds_min, bound_max = my_stl.min_, my_stl.max_
+    return list(zip(bounds_min, bound_max))

@@ -26,6 +26,7 @@ from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index, cli
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix, check_mask_is_binary
+from ..readers.stlreader import compute_bounding_box
 from ..notes import RESOURCE_LIST
 
 rw = RandomWords()
@@ -946,6 +947,11 @@ class TestCoreParserView(Py23FixTestCase):
         # if we specify --image then we only accept .map/.mrc/.rec
         args, _ = cli("view --transform file.sff")
         self.assertEqual(64, args)
+
+    def test_view_stl_bounds(self):
+        """Test that we can view the bounds of an STL file"""
+        args, _ = cli("view file.stl")
+        self.assertEqual('file.stl', args.from_file)
 
 
 class TestCoreParserNotesReadOnly(Py23FixTestCase):
@@ -2376,7 +2382,8 @@ class TestPrep(unittest.TestCase):
         self.assertTrue(os.path.exists("my_masks.map"))
         self.assertTrue(os.path.exists("my_masks.json"))
         # check that header of my_masks.map is correct
-        with mrcfile.open('my_masks.map') as merged, mrcfile.open(TEST_DATA_PATH / 'segmentations' / 'mergeable_1.map') as mergeable:
+        with mrcfile.open('my_masks.map') as merged, mrcfile.open(
+                TEST_DATA_PATH / 'segmentations' / 'mergeable_1.map') as mergeable:
             self.assertEqual(mergeable.voxel_size, merged.voxel_size)
             self.assertEqual(mergeable.header.mapr, merged.header.mapr)
             self.assertEqual(mergeable.header.mapc, merged.header.mapc)

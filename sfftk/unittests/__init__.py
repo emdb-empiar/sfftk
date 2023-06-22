@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import pathlib
 from unittest import TestCase
 
 from sfftkrw.core import _xrange
@@ -13,7 +14,7 @@ __date__ = '2016-06-15'
 __updated__ = '2018-02-14'
 
 # path to test data
-TEST_DATA_PATH = os.path.join(BASE_DIR, 'test_data')
+TEST_DATA_PATH = pathlib.Path(os.path.join(BASE_DIR, 'test_data'))
 
 
 # helper functions

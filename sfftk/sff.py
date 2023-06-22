@@ -492,8 +492,11 @@ def handle_view(args, configs):  # @UnusedVariable
                 print(str(seg.segments[0].annotation._map_obj))
                 print("*" * 50)
         elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
+            from .readers import stlreader
             print("*" * 50)
             print("STL Segmentation")
+            bounding_box = stlreader.compute_bounding_box(args.from_file)
+            print("Bounding box: X={}; Y={}; Z={}".format(*bounding_box))
             print("*" * 50)
         else:
             print_date("Not implemented view for files of type .{}".format(args.from_file.split('.')[-1]), sys.stderr)

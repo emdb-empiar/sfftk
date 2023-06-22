@@ -494,6 +494,17 @@ class TestReaders_stlreader(Py23FixTestCase):
                 polygon_ids += [a, b, c]
             self.assertCountEqual(set(vertices.keys()), set(polygon_ids))
 
+    def test_compute_bounding_box(self):
+        """Test that we can compute the bounding box of an STL file"""
+        test_stl_file = TEST_DATA_PATH / 'segmentations' / 'test_data.stl'
+        x, y, z = stlreader.compute_bounding_box(test_stl_file)
+        self.assertAlmostEqual(x[0], 89.08, places=3)
+        self.assertAlmostEqual(x[1], 271.337, places=3)
+        self.assertAlmostEqual(y[0], 78.1158, places=3)
+        self.assertAlmostEqual(y[1], 266.757, places=3)
+        self.assertAlmostEqual(z[0], 100.887, places=3)
+        self.assertAlmostEqual(z[1], 240.9, places=3)
+
 
 class TestReaders_surfreader(Py23FixTestCase):
     @classmethod

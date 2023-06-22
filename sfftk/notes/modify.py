@@ -90,14 +90,14 @@ class ExternalReference(object):
                     "Could not find label and description for external reference {}:{}".format(self.resource,
                                                                                                self.accession))
         elif self.resource == 'EMDB':
-            url = "https://www.ebi.ac.uk/pdbe/api/emdb/entry/all/{}".format(self.accession)
+            url = "https://www.ebi.ac.uk/emdb/api/entry/{}".format(self.accession)
             response = requests.get(url)
             if response.status_code == 200:
                 self._result = json.loads(response.text)
                 # label
-                label = list(self._result.keys())[0]
+                label = self._result['emdb_id']
                 # description
-                description = self._result[label][0]['deposition']['title']
+                description = self._result['admin']['title']
             else:
                 print_date(
                     "Could not find label and description for external reference {}:{}".format(self.resource,
@@ -174,7 +174,7 @@ class ExternalReference(object):
                     "Could not find label and description for external reference {}:{}".format(self.resource,
                                                                                                self.accession))
         elif self.resource == 'EMPIAR':
-            url = "https://www.ebi.ac.uk/pdbe/emdb/empiar/api/entry/{}".format(self.accession)
+            url = "https://www.ebi.ac.uk/empiar/api/entry/{}".format(self.accession)
             response = requests.get(url)
             if response.status_code == 200:
                 self._result = json.loads(response.text)

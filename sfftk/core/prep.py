@@ -18,8 +18,6 @@ from sfftkrw.core import _str
 from sfftkrw.core.print_tools import print_date
 from stl import Mesh
 
-from sfftk.readers.mapreader import Map
-
 
 def _label_generator():
     yield from (*range(1, 128), *range(-128, 0))

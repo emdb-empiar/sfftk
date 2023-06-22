@@ -1,5 +1,7 @@
 #Changes by release
 
+## [0.8.5] (2023-06-22) - Now `sff view` on STL files displays the bounding box; fixed failing tests
+
 ## [0.8.4] (2023-02-08) - Added `GlobalSimpleNote` to annotate a segmentation
 
 ## [0.8.3] (2023-01-27) - Now merging annotations and optionally include colour 

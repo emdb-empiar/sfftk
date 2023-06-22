@@ -473,6 +473,20 @@ class TestMain_handle_view(Py23FixTestCase):
         Main.handle_view(args, configs)
         self.assertRegex(sys.stdout.getvalue(), r"(?m)^[[].*?(\d+\.\d*)*.*?[]]$")
 
+    def test_view_bounding_box(self):
+        """Test that we can view the bounding box of an STL file"""
+        args, configs = parse_args('view {} --config-path {}'.format(
+            os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl'),
+            self.config_fn,
+        ), use_shlex=True)
+        sys.stdout = StringIO()
+        Main.handle_view(args, configs)
+        self.assertRegex(
+            sys.stdout.getvalue(),
+            r"(?m).*?STL Segmentation\nBounding box: X=\(\d+\.\d*, \d+\.\d*\); Y=\(\d+\.\d*, \d+\.\d*\); "
+            r"Z=\(\d+\.\d*, \d+\.\d*\).*"
+        )
+
     def test_read_mod(self):
         """Test that we can view .mod"""
         args, configs = parse_args('view {} --config-path {} --show-chunks'.format(

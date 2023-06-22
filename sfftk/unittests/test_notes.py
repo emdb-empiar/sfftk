@@ -59,7 +59,7 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
     def test_emdb(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
         resource = 'EMDB'
-        url = 'https://www.ebi.ac.uk/pdbe/emdb/EMD-8654'
+        url = 'https://www.ebi.ac.uk/emdb/EMD-8654'
         accession = 'EMD-8654'
         # likely to change
         label = 'EMD-8654'
@@ -142,7 +142,7 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
     def test_empiar(self):
         """Test that sfftk.notes.modify.ExternalReference object works correctly"""
         resource = 'EMPIAR'
-        url = 'https://www.ebi.ac.uk/pdbe/emdb/empiar/entry/10087/'
+        url = 'https://www.ebi.ac.uk/empiar/api/entry/10087/'
         accession = 'EMPIAR-10087'
         label = 'Soft X-ray tomography of Plasmodium falciparum infected human erythrocytes stalled in egress by the ' \
                 'inhibitors Compound 2 and E64'
