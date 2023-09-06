@@ -176,6 +176,19 @@ has a single mesh.
     MINX 1
     IEOF
 
+Show STL Bounding Box
+---------------------
+
+To view the bounding box of an STL file run:
+
+.. code:: bash
+
+    sff view file.stl
+    **************************************************
+    STL Segmentation
+    Bounding box: X=(-136.71875, 136.71875); Y=(-98.4375, 98.4375); Z=(-85.15625, 85.15625)
+    **************************************************
+
 Prepping Segmentation Files
 ===========================
 
