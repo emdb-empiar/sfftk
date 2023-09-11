@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Developing with sfftk &mdash; sfftk v0.8.4 documentation</title>
+  <title>Developing with sfftk &mdash; sfftk v0.9.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.8
+                v0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -148,8 +148,14 @@
 <p>Use the <a class="reference internal" href="notes.html#module-sfftk.notes.modify" title="sfftk.notes.modify"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sfftk.notes.modify</span></code></a> module to perform annotations</p>
 <section id="note-objects">
 <h3><a class="toc-backref" href="#id5">Note Objects</a><a class="headerlink" href="#note-objects" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.notes.modify</span> <span class="kn">import</span> <span class="n">SimpleNote</span><span class="p">,</span> <span class="n">ExternalReference</span>
-<span class="go">&gt;&gt;&gt;</span>
+<p>There are two types of note objects: <a class="reference internal" href="notes.html#sfftk.notes.modify.GlobalSimpleNote" title="sfftk.notes.modify.GlobalSimpleNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.GlobalSimpleNote</span></code></a> for annotating a segmentation and <a class="reference internal" href="notes.html#sfftk.notes.modify.SimpleNote" title="sfftk.notes.modify.SimpleNote"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.notes.modify.SimpleNote</span></code></a> for annotating a segment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.notes.modify</span> <span class="kn">import</span> <span class="n">SimpleNote</span><span class="p">,</span> <span class="n">GlobalSimpleNote</span><span class="p">,</span> <span class="n">ExternalReference</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_note</span> <span class="o">=</span> <span class="n">GlobalSimpleNote</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_note</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Segmentation of Mitochondria in Organism&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_note</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="s2">&quot;Lorem ipsum dolor sit amet consetetur...&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_note</span><span class="o">.</span><span class="n">software_name</span> <span class="o">=</span> <span class="s2">&quot;Paraview&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_note</span><span class="o">.</span><span class="n">software_version</span> <span class="o">=</span> <span class="s2">&quot;5.2&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">global_note</span><span class="o">.</span><span class="n">software_processing_details</span> <span class="o">=</span> <span class="s2">&quot;We used the contour filter to extract the isosurface at a contour level of 3.8&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span> <span class="o">=</span> <span class="n">SimpleNote</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;some name&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">note</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;some description&#39;</span>
@@ -184,6 +190,14 @@
 </section>
 <section id="adding-notes">
 <h3><a class="toc-backref" href="#id6">Adding Notes</a><a class="headerlink" href="#adding-notes" title="Permalink to this heading"></a></h3>
+<p>Adding notes to the segmentation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftkrw</span> <span class="kn">import</span> <span class="n">SFFSegmentation</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segmentation</span> <span class="o">=</span> <span class="n">SFFSegmentation</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segmentation</span> <span class="o">=</span> <span class="n">global_note</span><span class="o">.</span><span class="n">add_to_segmentation</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftkrw</span> <span class="kn">import</span> <span class="n">SFFSegment</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">SFFSegment</span><span class="p">()</span>
@@ -215,6 +229,27 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">edit_note</span><span class="o">.</span><span class="n">edit_in_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The same applies to <code class="docutils literal notranslate"><span class="pre">GlobalSimpleNote</span></code> objects only that we can also specify the <code class="docutils literal notranslate"><span class="pre">software_id</span></code>, <code class="docutils literal notranslate"><span class="pre">transform_id</span></code> and <code class="docutils literal notranslate"><span class="pre">external_reference_id</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.notes.modify</span> <span class="kn">import</span> <span class="n">GlobalSimpleNote</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edit_segmentation_note</span> <span class="o">=</span> <span class="n">GlobalSimpleNote</span><span class="p">(</span>
+<span class="go">        name=&quot;A new segmentation name&quot;,</span>
+<span class="go">        details=&quot;Many more changes to the details than you can allow&quot;,</span>
+<span class="go">        software_id=0, # this is the software we will modify</span>
+<span class="go">        software_name=&quot;New software&quot;,</span>
+<span class="go">        software_version=&quot;v2023.27&quot;,</span>
+<span class="go">        software_processing_details=&quot;A new description of how this software was used&quot;,</span>
+<span class="go">        transform_id=0,</span>
+<span class="go">        transform=[13.0, 0, 0, 0, 0, 13.0, 0, 0, 0, 0, 13.0, 0],</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segmentation</span> <span class="o">=</span> <span class="n">edit_segmentation_note</span><span class="o">.</span><span class="n">edit_in_segmentation</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;&gt; # you can modify the external references separately or jointly with other fields</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edit_segmentation_extrefs</span> <span class="o">=</span> <span class="n">GlobalSimpleNote</span><span class="p">(</span>
+<span class="go">        external_reference_id=0,</span>
+<span class="go">        external_references=[(&#39;res0&#39;, &#39;url0&#39;, &#39;acc0&#39;), (&#39;res1&#39;, &#39;url1&#39;, &#39;acc1&#39;)]</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segmentation</span> <span class="o">=</span> <span class="n">edit_segmentation_extrefs</span><span class="o">.</span><span class="n">edit_in_segmentation</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="deleting-notes">
 <h3><a class="toc-backref" href="#id8">Deleting Notes</a><a class="headerlink" href="#deleting-notes" title="Permalink to this heading"></a></h3>
@@ -230,6 +265,18 @@
 </div>
 <p>Then call the notes <code class="docutils literal notranslate"><span class="pre">delete</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">segment</span> <span class="o">=</span> <span class="n">del_note</span><span class="o">.</span><span class="n">delete_from_segment</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Similarly, for <code class="docutils literal notranslate"><span class="pre">GlobalSimpleNote</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sfftk.notes.modify</span> <span class="kn">import</span> <span class="n">GlobalSimpleNote</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">del_global_note</span> <span class="o">=</span> <span class="n">GlobalSimpleNote</span><span class="p">(</span>
+<span class="go">        name=True, # delete the name</span>
+<span class="go">        details=True,</span>
+<span class="go">        software_id=[0], # use a list to indicate all to be deleted</span>
+<span class="go">        transform_id=[1,2], # delete multiple (if they exist)</span>
+<span class="go">        external_reference_id=[3,4,5] # again, multiple</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segmentation</span> <span class="o">=</span> <span class="n">del_global_note</span><span class="o">.</span><span class="n">del_from_segmentation</span><span class="p">(</span><span class="n">segmentation</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

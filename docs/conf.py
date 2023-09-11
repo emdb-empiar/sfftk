@@ -302,7 +302,7 @@ texinfo_documents = [
 # mock imports
 # autodoc_mock_imports = ['sfftkrw', 'lxml', 'ahds', 'bitarray', 'h5py', 'numpy', 'scipy',
 #                         'backports.shutil_get_terminal_size', 'mrcfile']
-autodoc_mock_imports = ['ahds']
+autodoc_mock_imports = ['ahds', 'gemmi']
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None),

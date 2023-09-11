@@ -9,6 +9,7 @@ In practice, the whole STAR file is loaded into memory during the parsing proces
 Generic STAR files can have any number of key-value pairs and tables. For our use case, we are interested in capturing the relationship between a refined particle (subtomogram average) and a source tomogram. Since each such particle is expressed in terms of its orientation within the tomogram, we need to capture the affine transform that maps the particle to the tomogram.
 
 Therefore, this imposes some constraints on the STAR file:
+
 - The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the particle in the tomogram.
 - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)
 
@@ -18,7 +19,7 @@ Anatomy of a STAR file
 ----------------------
 A STAR file is made up of one or more data blocks.
 
-.. code-block: none
+.. code-block::
 
     data_block_1
 
@@ -26,13 +27,13 @@ In the example above, the name of the data block is ``block_1``. The name is opt
 
 Data is stored in the form of key-value pairs and tables. Key-value pairs are simple and are stored in a dictionary.
 
-.. code-block:: none
+.. code-block::
 
     _key value
 
 Tables are designed by the ``loop_`` keyword followed by a sequence of tags/labels each of which is prefixed by an underscore. Each row after the tags/labels is then a row with values for each tag/label.
 
-.. code-block:: none
+.. code-block::
 
     loop_
     _atom_site.group_PDB
@@ -72,13 +73,16 @@ All values are treated as strings.
 RELION STAR files
 -----------------
 These adhere to the following conventions (https://relion.readthedocs.io/en/latest/Reference/Conventions.html#star-format):
+
 - Euler angle convention used is ZYZ
 - The coordinate system is right-handed with positive rotations being anticlockwise/counterclockwise
 - ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ`` are tomogram PIXEL positions
 - ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi`` are angles in DEGREES
+
     - The first rotation is called ``rlnAngleRot`` and is around the Z-axis;
     - The second rotation is called ``rlnAngleTilt`` and is around the new Y-axis;
     - The third rotation is called ``rlnAnglePsi`` and is around the new Z axis;
+
 - If present ``_rlnOriginXAngstrom`` and ``_rlnOriginYAngstrom`` are in ANGSTROMS
 
 API
@@ -111,7 +115,13 @@ The reader will then parse the file and store the data in memory. The user can t
         print(star_reader.keys) # show key-value pairs
         print(star_reader.keys['key']) # get the value for the given key
 
-#. ``star_reader.tables``: returns a dictionary of tables where the key is the name of the table and the value is a ``sfftk.readers.starreader.StarTable`` object. By default, we automatically infer the type of the values in the table. If the user wishes to disable this behaviour, they can pass ``infer_types=False`` to the ``parse`` method.
+#. ``star_reader.tables``: returns a dictionary of tables where the key is the name of the table and the value is a :py:class:`sfftk.readers.starreader.StarTable` object and each row in the table is a :py:class:`sfftk.readers.starreader.StarTableRow` object. By default, we automatically infer the type of the values in the table. If the user wishes to disable this behaviour, they can pass ``infer_types=False`` to the ``parse`` method.
+
+    .. code-block:: python
+
+        star_reader.parse('file.star', infer_types=False) # disable type inference
+
+    We can now access each table by name:
 
     .. code-block:: python
 
@@ -121,7 +131,7 @@ The reader will then parse the file and store the data in memory. The user can t
         print(star_reader.tables['_atom_site'][0]) # print the first row in the table
         print(star_reader.tables['_atom_site'][0][4]) # print the fifth column in the first row
 
-    .. note:: RELION STAR files
+    .. note::
 
         For RELION STAR files, the name of the table is ``_rln``.
 
@@ -152,42 +162,6 @@ FLOAT_RE3 = r"^[+-]?\d*[.]\d+([eE][+-]?\d+)?$"
 INT_RE = r"^[+-]?\d+$"
 
 
-def compute_affine_transform(x, y, z, rot, tilt, psi, axes='ZYZ', degrees=True):
-    """Compute the affine transform matrix for the given parameters"""
-    translation = np.array([x, y, z]).reshape(3, 1)  # 3x1
-    print(translation)
-    # compute the affine transform matrix
-    rotation_matrix = Rotation.from_euler(axes, [rot, tilt, psi], degrees=degrees).as_matrix()
-    affine_matrix = np.append(rotation_matrix, translation, axis=1)
-    return affine_matrix
-
-
-def _get_data(fn, *args, **kwargs):
-    """Get data from file"""
-    doc = cif.read_file(fn)
-    block = doc.sole_block()
-    print(block, f"name: {block.name}")
-    # print(dir(block))
-    # print(block.find_loop("_rlnCoordinateX"))
-    for item in block:
-        print(f"item: {item.loop}")
-        for index in range(item.loop.length()):
-            print(
-                f"x={item.loop.val(index, 2)}; y={item.loop.val(index, 3)}; z={item.loop.val(index, 4)}; rot={item.loop.val(index, 5)}; tilt={item.loop.val(index, 6)}; psi={item.loop.val(index, 7)}")
-            print(type(item.loop.val(index, 2)))
-            print(
-                f"affine matrix:\n{compute_affine_transform(item.loop.val(index, 2), item.loop.val(index, 3), item.loop.val(index, 4), item.loop.val(index, 5), item.loop.val(index, 6), item.loop.val(index, 7))}")
-    return doc
-
-
-def main():
-    # fn = "/Users/pkorir/Downloads/80S_Ribosomes_particlesfrom_tomomanstopgapwarpmrm_bin1.star"
-    fn = "/Users/pkorir/PycharmProjects/sfftk/sfftk/test_data/segmentations/test_data2.star"
-    doc = _get_data(fn)
-    print(doc)
-    return 0
-
-
 class StarTableRow:
     """Each row in a star table"""
 
@@ -211,12 +185,23 @@ class StarTableRow:
         self._row_data = values
         self._axes = axes
         self._degrees = degrees
-        self._fixed_tags = tuple(map(lambda x: x.replace(name, ''), loop.tags))
+        if '.' in loop.tags[0]:  # if there is a period in the names
+            self._prefix = name + '.'
+        else:
+            self._prefix = name
+        self._fixed_tags = tuple(map(lambda x: x.replace(self._prefix, ''), loop.tags))
         self._tagged_values = tuple(zip(self._fixed_tags, values))
         for tag, value in self._tagged_values:
             setattr(self, tag, value)
 
     def to_affine_transform(self, axes='ZYZ', degrees=True):
+        """Return the affine transform matrix for this row
+
+        :param str axes: the axes of rotation
+        :param bool degrees: whether the angles are in degrees or radians
+        :return: the affine transform matrix
+        :rtype: numpy.ndarray
+        """
         axes = axes.upper()
         assert 1 <= len(axes) <= 3, "axes must be a string of length 1, 2 or 3"
         assert set('XYZ').issuperset(axes), "axes must be a string of X, Y and/or Z"
@@ -244,6 +229,9 @@ class StarTableRow:
         affine_matrix = np.append(rotation_matrix, translation, axis=1)
         return affine_matrix
 
+    def __getitem__(self, item):
+        return self._row_data[item]
+
     def __str__(self):
         """Return a representation of the row"""
         return f"<StarTableRow: {self._tagged_values}>"
@@ -259,6 +247,7 @@ class StarTable:
     def __init__(self, loop, name, infer_types=True, *args, **kwargs):
         self._loop = loop
         self.name = name
+        self.prefix = name + '.' if '.' in loop.tags[0] else name
         self._infer_types = infer_types
         self._data = list()
         for index in range(0, loop.length() * loop.width(), loop.width()):
@@ -348,43 +337,6 @@ class StarReader:
         self._keys = dict()
         self._tables = dict()
 
-    def parse(self, fn, infer_types=True):
-        """Parse the file"""
-        self._fn = fn
-        self._doc = cif.read_file(str(fn))
-        block = self._doc.sole_block()
-        for item in block:
-            try:  # assume it's a loop; if not it's a pair
-                obj = item.loop
-                name = self._infer_name(obj)
-                # print(f"{name}: {obj.values}")
-                if name not in self._tables:
-                    self._tables[name] = StarTable(obj, name, infer_types=infer_types)
-                else:
-                    raise ValueError(f"Duplicate table name: {name}")
-                # print(f"item: {obj}; {obj.tags}; {type(item)}")
-            except AttributeError:
-                obj = item.pair
-                if obj is None:
-                    continue
-                name, value = obj
-                # print(f"name: {name}; value: {value}")
-                if not self._keys.get(name):
-                    self._keys[name] = value
-                else:
-                    raise ValueError(f"Duplicate key: {name}")
-                # print(f"item: {obj}; {type(item)}")
-
-    @staticmethod
-    def _infer_name(obj):
-        """Infer the name of the table"""
-        if obj.tags:
-            if obj.tags[0].split('.')[0] == obj.tags[1].split('.')[0]:
-                return obj.tags[0].split('.')[0]
-            elif obj.tags[0].split('.')[0].startswith('_rln'):
-                return '_rln'
-        return 'default'
-
     def keys(self):
         """Return all the keys found in the STAR file"""
         return list(self._keys.keys())
@@ -394,25 +346,72 @@ class StarReader:
         """Return all the tables in the STAR file"""
         return self._tables
 
+    def parse(self, fn, infer_types=True):
+        """Parse the file"""
+        self._gemmi_parse(fn, infer_types=infer_types)
+
     def __str__(self):
         """Return some information about the file"""
-        pass
+        return f"<StarReader: {self._fn}> with {len(self._keys)} keys and {len(self._tables)} tables"
+
+    def _gemmi_parse(self, fn, infer_types=True):
+        """Parse the file using gemmi
+
+        gemmi is a giant library. In the future, we will replace this with a custom parser, hopefully faster.
+        """
+        self._fn = fn
+        self._doc = cif.read_file(str(fn))
+        block = self._doc.sole_block()
+        for item in block:
+            try:  # assume it's a loop; if not it's a pair
+                obj = item.loop
+                name = self._gemmi_infer_name(obj)
+                if name not in self._tables:
+                    self._tables[name] = StarTable(obj, name, infer_types=infer_types)
+                else:
+                    raise ValueError(f"Duplicate table name: {name}")
+            except AttributeError:
+                obj = item.pair
+                if obj is None:
+                    continue
+                name, value = obj
+                if not self._keys.get(name):
+                    self._keys[name] = value
+                else:
+                    raise ValueError(f"Duplicate key: {name}")
+
+    @staticmethod
+    def _gemmi_infer_name(obj):
+        """Infer the name of the table"""
+        if obj.tags:
+            _tag1 = obj.tags[0].split('.')
+            _tag2 = obj.tags[1].split('.')
+            if _tag1[0] == _tag2[0]:
+                return _tag1[0]
+            elif _tag1[0].startswith('_rln'):
+                return '_rln'
+        return 'default'
 
 
-# class RelionStarReader(StarReader):
-#     """Reads a Relion star file and returns a list of affine transform matrices
-#
-#     .. code-block:: python
-#
-#         reader = RelionStarReader()
-#         reader.parse('my_star_file.star')
-#         print(reader) # output some information e.g. number of rows, fields, etc.
-#         # if no warnings are raised then the file was successfully parsed
-#         for row in reader:
-#             # do something with the row
-#             # we drop the leading underscore so as not to imply private variables
-#             print(row.rlnCoordinateX, row.rlnCoordinateY, row.rlnCoordinateZ, row.rlnAngleRot, row.rlnAngleTilt, row.rlnAnglePsi)
-#     """
+class RelionStarReader(StarReader):
+    """:py:class:`StarReader` subclass which applies some constraints to the STAR file. These constraints are:
+
+    - The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the particle in the tomogram.
+    - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)
+
+
+    .. code-block:: python
+
+        reader = RelionStarReader()
+        reader.parse('my_star_file.star')
+        print(reader) # output some information e.g. number of rows, fields, etc.
+        # if no warnings are raised then the file was successfully parsed
+        for row in reader:
+            # we can print the affine transform matrix for each row
+            print(row.to_affine_transform())
+    """
+
+
 #     required_fields = [
 #         ('_rlnCoordinateX', float),
 #         ('_rlnCoordinateY', float),

@@ -42,7 +42,15 @@ Segger reader
     :members:
     :show-inheritance:
 
-Stereolithography
+STAR reader
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: sfftk.readers.starreader
+    :members:
+    :show-inheritance:
+
+
+Stereolithography reader
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.readers.stlreader

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; sfftk v0.8.4 documentation</title>
+  <title>Index &mdash; sfftk v0.9.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.8
+                v0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -86,6 +86,7 @@
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
@@ -219,6 +220,10 @@
 </li>
       </ul></li>
       <li><a href="readers.html#sfftk.readers.survosreader.SuRVoSSegmentation.colours">colours (sfftk.readers.survosreader.SuRVoSSegmentation property)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarTable.columns">columns (sfftk.readers.starreader.StarTable property)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.stlreader.compute_bounding_box">compute_bounding_box() (in module sfftk.readers.stlreader)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.mapreader.compute_transform">compute_transform() (in module sfftk.readers.mapreader)</a>
 </li>
@@ -409,6 +414,8 @@
 </li>
         <li><a href="readers.html#sfftk.readers.segreader.get_data">(in module sfftk.readers.segreader)</a>
 </li>
+        <li><a href="readers.html#sfftk.readers.starreader.get_data">(in module sfftk.readers.starreader)</a>
+</li>
         <li><a href="readers.html#sfftk.readers.stlreader.get_data">(in module sfftk.readers.stlreader)</a>
 </li>
         <li><a href="readers.html#sfftk.readers.surfreader.get_data">(in module sfftk.readers.surfreader)</a>
@@ -561,6 +568,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="readers.html#sfftk.readers.starreader.StarReader.keys">keys() (sfftk.readers.starreader.StarReader method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -696,6 +711,8 @@
 </li>
         <li><a href="readers.html#module-sfftk.readers.segreader">sfftk.readers.segreader</a>
 </li>
+        <li><a href="readers.html#module-sfftk.readers.starreader">sfftk.readers.starreader</a>
+</li>
         <li><a href="readers.html#module-sfftk.readers.stlreader">sfftk.readers.stlreader</a>
 </li>
         <li><a href="readers.html#module-sfftk.readers.surfreader">sfftk.readers.surfreader</a>
@@ -769,12 +786,14 @@
         <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.parent_ids">(sfftk.readers.segreader.SeggerSegmentation property)</a>
 </li>
       </ul></li>
-      <li><a href="core.html#sfftk.core.parser.parse_args">parse_args() (in module sfftk.core.parser)</a>
+      <li><a href="readers.html#sfftk.readers.starreader.StarReader.parse">parse() (sfftk.readers.starreader.StarReader method)</a>
 </li>
-      <li><a href="notes.html#sfftk.notes.find.TableField.pc">pc (sfftk.notes.find.TableField property)</a>
+      <li><a href="core.html#sfftk.core.parser.parse_args">parse_args() (in module sfftk.core.parser)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="notes.html#sfftk.notes.find.TableField.pc">pc (sfftk.notes.find.TableField property)</a>
+</li>
       <li><a href="formats.html#sfftk.formats.mod.IMODMesh.polygons">polygons (sfftk.formats.mod.IMODMesh property)</a>
 
       <ul>
@@ -843,6 +862,8 @@
         <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.region_ids">(sfftk.readers.segreader.SeggerSegmentation property)</a>
 </li>
       </ul></li>
+      <li><a href="readers.html#sfftk.readers.starreader.RelionStarReader">RelionStarReader (class in sfftk.readers.starreader)</a>
+</li>
       <li><a href="notes.html#sfftk.notes.find.TableField.render">render() (sfftk.notes.find.TableField method)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.find.ResultsTable">ResultsTable (class in sfftk.notes.find)</a>
@@ -984,8 +1005,6 @@
         <li><a href="formats.html#module-sfftk.formats.survos">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sfftk.notes.find
 
@@ -993,6 +1012,8 @@
         <li><a href="notes.html#module-sfftk.notes.find">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sfftk.notes.modify
 
@@ -1033,6 +1054,13 @@
 
       <ul>
         <li><a href="readers.html#module-sfftk.readers.segreader">module</a>
+</li>
+      </ul></li>
+      <li>
+    sfftk.readers.starreader
+
+      <ul>
+        <li><a href="readers.html#module-sfftk.readers.starreader">module</a>
 </li>
       </ul></li>
       <li>
@@ -1087,6 +1115,12 @@
 </li>
       <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.smoothing_levels">smoothing_levels (sfftk.readers.segreader.SeggerSegmentation property)</a>
 </li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarReader">StarReader (class in sfftk.readers.starreader)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarTable">StarTable (class in sfftk.readers.starreader)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarTableRow">StarTableRow (class in sfftk.readers.starreader)</a>
+</li>
       <li><a href="formats.html#sfftk.formats.stl.STLAnnotation">STLAnnotation (class in sfftk.formats.stl)</a>
 </li>
       <li><a href="formats.html#sfftk.formats.stl.STLHeader">STLHeader (class in sfftk.formats.stl)</a>
@@ -1120,6 +1154,8 @@
       <li><a href="notes.html#sfftk.notes.view.TableHeaderView">TableHeaderView (class in sfftk.notes.view)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.find.TableRow">TableRow (class in sfftk.notes.find)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarReader.tables">tables (sfftk.readers.starreader.StarReader property)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.find.SearchResults.tabulate">tabulate() (sfftk.notes.find.SearchResults method)</a>
 </li>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.readers package &mdash; sfftk v0.8.4 documentation</title>
+  <title>sfftk.readers package &mdash; sfftk v0.9.0.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.8
+                v0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -116,8 +116,18 @@
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.segreader.get_root"><code class="docutils literal notranslate"><span class="pre">get_root()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.stlreader">Stereolithography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.starreader">STAR reader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-starreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.starreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.RelionStarReader"><code class="docutils literal notranslate"><span class="pre">RelionStarReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.StarReader"><code class="docutils literal notranslate"><span class="pre">StarReader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.StarTable"><code class="docutils literal notranslate"><span class="pre">StarTable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.StarTableRow"><code class="docutils literal notranslate"><span class="pre">StarTableRow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.stlreader">Stereolithography reader</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-readers-stlreader"><code class="docutils literal notranslate"><span class="pre">sfftk.readers.stlreader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.stlreader.compute_bounding_box"><code class="docutils literal notranslate"><span class="pre">compute_bounding_box()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.stlreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
 </ul>
 </li>
@@ -406,7 +416,7 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <dd class="field-even"><p>a 3x4 transformation matrix</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1165,8 +1175,234 @@ They correspond to putative functional regions.</p>
 </dd></dl>
 
 </section>
+<section id="module-sfftk.readers.starreader">
+<span id="star-reader"></span><h2>STAR reader<a class="headerlink" href="#module-sfftk.readers.starreader" title="Permalink to this heading"></a></h2>
+<section id="sfftk-readers-starreader">
+<h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.starreader</span></code><a class="headerlink" href="#sfftk-readers-starreader" title="Permalink to this heading"></a></h3>
+<p>STAR files are generic data modelling files much in the same way as XML files. RELION uses a particular format of STAR file to store particle data. This module provides several classes to read STAR files: a generic reader and two RELION-specific ones.</p>
+<p>In practice, the whole STAR file is loaded into memory during the parsing process. The API we provide enables the user to access the main ways the data is stored in the STAR file: <em>key-value pairs</em> and <em>tables</em>. This reader is designed only to extract the data from the STAR file and does not attempt to understand STAR file conventions.</p>
+<p>Generic STAR files can have any number of key-value pairs and tables. For our use case, we are interested in capturing the relationship between a refined particle (subtomogram average) and a source tomogram. Since each such particle is expressed in terms of its orientation within the tomogram, we need to capture the affine transform that maps the particle to the tomogram.</p>
+<p>Therefore, this imposes some constraints on the STAR file:</p>
+<ul class="simple">
+<li><p>The STAR file must have a table with the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the position and orientation of the particle in the tomogram.</p></li>
+<li><p>The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)</p></li>
+</ul>
+<p>For this reason, we distinguish between ‘composite’ RELION STAR files and ‘simple’ RELION STAR files. Composite RELION STAR files must be partitioned into simple RELION STAR files before they can be converted into EMDB-SFF files.</p>
+<section id="anatomy-of-a-star-file">
+<h4>Anatomy of a STAR file<a class="headerlink" href="#anatomy-of-a-star-file" title="Permalink to this heading"></a></h4>
+<p>A STAR file is made up of one or more data blocks.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_block_1</span>
+</pre></div>
+</div>
+<p>In the example above, the name of the data block is <code class="docutils literal notranslate"><span class="pre">block_1</span></code>. The name is optional.</p>
+<p>Data is stored in the form of key-value pairs and tables. Key-value pairs are simple and are stored in a dictionary.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_key</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p>Tables are designed by the <code class="docutils literal notranslate"><span class="pre">loop_</span></code> keyword followed by a sequence of tags/labels each of which is prefixed by an underscore. Each row after the tags/labels is then a row with values for each tag/label.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loop_
+_atom_site.group_PDB
+_atom_site.id
+_atom_site.type_symbol
+_atom_site.label_atom_id
+_atom_site.label_alt_id
+_atom_site.label_comp_id
+_atom_site.label_asym_id
+_atom_site.label_entity_id
+_atom_site.label_seq_id
+_atom_site.pdbx_PDB_ins_code
+_atom_site.Cartn_x
+_atom_site.Cartn_y
+_atom_site.Cartn_z
+_atom_site.occupancy
+_atom_site.B_iso_or_equiv
+_atom_site.pdbx_formal_charge
+_atom_site.auth_seq_id
+_atom_site.auth_comp_id
+_atom_site.auth_asym_id
+_atom_site.auth_atom_id
+_atom_site.pdbx_PDB_model_num
+ATOM   1    N N   . LYS A 1 7   ? 12.364  -13.639 8.445   1.00 54.67  ? 527 LYS A N   1
+ATOM   2    C CA  . LYS A 1 7   ? 11.119  -12.888 8.550   1.00 49.59  ? 527 LYS A CA  1
+ATOM   3    C C   . LYS A 1 7   ? 9.961   -13.651 7.926   1.00 44.77  ? 527 LYS A C   1
+ATOM   4    O O   . LYS A 1 7   ? 9.055   -14.126 8.617   1.00 49.39  ? 527 LYS A O   1
+ATOM   5    C CB  . LYS A 1 7   ? 11.255  -11.538 7.841   1.00 49.41  ? 527 LYS A CB  1
+ATOM   6    C CG  . LYS A 1 7   ? 10.169  -10.531 8.174   1.00 53.16  ? 527 LYS A CG  1
+ATOM   7    C CD  . LYS A 1 7   ? 10.523  -9.771  9.432   1.00 59.71  ? 527 LYS A CD  1
+ATOM   8    C CE  . LYS A 1 7   ? 11.779  -8.947  9.195   1.00 63.60  ? 527 LYS A CE  1
+ATOM   9    N NZ  . LYS A 1 7   ? 12.353  -8.381  10.443  1.00 64.85  ? 527 LYS A NZ  1
+ATOM   10   N N   . ARG A 1 8   ? 10.011  -13.762 6.603   1.00 40.03  ? 528 ARG A N   1
+</pre></div>
+</div>
+<p>All values are treated as strings.</p>
+</section>
+<section id="relion-star-files">
+<h4>RELION STAR files<a class="headerlink" href="#relion-star-files" title="Permalink to this heading"></a></h4>
+<p>These adhere to the following conventions (<a class="reference external" href="https://relion.readthedocs.io/en/latest/Reference/Conventions.html#star-format">https://relion.readthedocs.io/en/latest/Reference/Conventions.html#star-format</a>):</p>
+<ul>
+<li><p>Euler angle convention used is ZYZ</p></li>
+<li><p>The coordinate system is right-handed with positive rotations being anticlockwise/counterclockwise</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code> are tomogram PIXEL positions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code> are angles in DEGREES</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The first rotation is called <code class="docutils literal notranslate"><span class="pre">rlnAngleRot</span></code> and is around the Z-axis;</p></li>
+<li><p>The second rotation is called <code class="docutils literal notranslate"><span class="pre">rlnAngleTilt</span></code> and is around the new Y-axis;</p></li>
+<li><p>The third rotation is called <code class="docutils literal notranslate"><span class="pre">rlnAnglePsi</span></code> and is around the new Z axis;</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>If present <code class="docutils literal notranslate"><span class="pre">_rlnOriginXAngstrom</span></code> and <code class="docutils literal notranslate"><span class="pre">_rlnOriginYAngstrom</span></code> are in ANGSTROMS</p></li>
+</ul>
+</section>
+<section id="api">
+<h4>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h4>
+<p>There are two main classes to read STAR files.</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarReader</span></code></a>: a generic reader that can parse any STAR file;</p></li>
+<li><p><a class="reference internal" href="#sfftk.readers.starreader.RelionStarReader" title="sfftk.readers.starreader.RelionStarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.RelionStarReader</span></code></a>: a reader that can parse RELION STAR files, which validates the constraints described above.</p></li>
+</ol>
+<p>Both readers provide the same API. The examples below use the generic reader but the same applies to the RELION reader.</p>
+<p>First, users must instantiate the reader:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">star_reader</span> <span class="o">=</span> <span class="n">StarReader</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, users must parse the file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">star_reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;file.star&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The reader will then parse the file and store the data in memory. The user can then access the data in the following ways:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">star_reader.keys()</span></code>: returns a list of key-value pairs;</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span> <span class="c1"># show key-value pairs</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">])</span> <span class="c1"># get the value for the given key</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">star_reader.tables</span></code>: returns a dictionary of tables where the key is the name of the table and the value is a <a class="reference internal" href="#sfftk.readers.starreader.StarTable" title="sfftk.readers.starreader.StarTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarTable</span></code></a> object and each row in the table is a <a class="reference internal" href="#sfftk.readers.starreader.StarTableRow" title="sfftk.readers.starreader.StarTableRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarTableRow</span></code></a> object. By default, we automatically infer the type of the values in the table. If the user wishes to disable this behaviour, they can pass <code class="docutils literal notranslate"><span class="pre">infer_types=False</span></code> to the <code class="docutils literal notranslate"><span class="pre">parse</span></code> method.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">star_reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;file.star&#39;</span><span class="p">,</span> <span class="n">infer_types</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># disable type inference</span>
+</pre></div>
+</div>
+<p>We can now access each table by name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">)</span> <span class="c1"># print the list of tables</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_atom_site&#39;</span><span class="p">]</span> <span class="c1"># the name of a table is name of the label prefix (separated by a period)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_atom_site&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="c1"># print the columns in the table</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_atom_site&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># print the first row in the table</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_atom_site&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">])</span> <span class="c1"># print the fifth column in the first row</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For RELION STAR files, the name of the table is <code class="docutils literal notranslate"><span class="pre">_rln</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_rln&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Additionally, each row can be converted into an affine transform matrix using the <code class="docutils literal notranslate"><span class="pre">to_affine_transform</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_rln&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_affine_transform</span><span class="p">())</span> <span class="c1"># print the affine transform matrix for the first row</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_rln&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_affine_transform</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s2">&quot;ZXZ&quot;</span><span class="p">))</span> <span class="c1"># change the orientation convention</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;_rln&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_affine_transform</span><span class="p">(</span><span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span> <span class="c1"># use radians instead of degrees</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.RelionStarReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">RelionStarReader</span></span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#RelionStarReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.RelionStarReader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">StarReader</span></code></a></p>
+<p><a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">StarReader</span></code></a> subclass which applies some constraints to the STAR file. These constraints are:</p>
+<ul class="simple">
+<li><p>The STAR file must have a table with the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the position and orientation of the particle in the tomogram.</p></li>
+<li><p>The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">RelionStarReader</span><span class="p">()</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;my_star_file.star&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span> <span class="c1"># output some information e.g. number of rows, fields, etc.</span>
+<span class="c1"># if no warnings are raised then the file was successfully parsed</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="c1"># we can print the affine transform matrix for each row</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">to_affine_transform</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarReader</span></span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarReader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A generic star file reader. The user must specify which fields are required/optional and the reader will then
+assess whether a provided file has the specified field.</p>
+<p>Once the file is parsed, the user can then iterate over the object to get the required data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">StarReader</span><span class="p">()</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;my_star_file.star&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span> <span class="c1"># output some information e.g. number of rows, fields, etc.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">tables</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="c1"># if &#39;name&#39; exists</span>
+<span class="c1"># if no warnings are raised then the file was successfully parsed</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span> <span class="c1"># read from the &#39;default&#39; table or the only table present</span>
+    <span class="c1"># do something with the row</span>
+    <span class="c1"># we drop the leading underscore so as not to imply private variables</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">col1</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">col2</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">col3</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">col4</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">col5</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">col6</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarReader.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarReader.keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarReader.keys" title="Permalink to this definition"></a></dt>
+<dd><p>Return all the keys found in the STAR file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarReader.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarReader.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarReader.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parse the file</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarReader.tables">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tables</span></span><a class="headerlink" href="#sfftk.readers.starreader.StarReader.tables" title="Permalink to this definition"></a></dt>
+<dd><p>Return all the tables in the STAR file</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A section of tabular data in a star file</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTable.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><a class="headerlink" href="#sfftk.readers.starreader.StarTable.columns" title="Permalink to this definition"></a></dt>
+<dd><p>Return the columns in this block</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTableRow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarTableRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Each row in a star table</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.get_data">
+<span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Return the object with all the required metadata</p>
+</dd></dl>
+
+</section>
 <section id="module-sfftk.readers.stlreader">
-<span id="stereolithography"></span><h2>Stereolithography<a class="headerlink" href="#module-sfftk.readers.stlreader" title="Permalink to this heading"></a></h2>
+<span id="stereolithography-reader"></span><h2>Stereolithography reader<a class="headerlink" href="#module-sfftk.readers.stlreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-stlreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.stlreader</span></code><a class="headerlink" href="#sfftk-readers-stlreader" title="Permalink to this heading"></a></h3>
 <p>Ad hoc reader for Stereolithography (STL) files</p>
@@ -1175,6 +1411,24 @@ They correspond to putative functional regions.</p>
 <li><p>Reads both ASCII and binary files</p></li>
 </ul>
 </section>
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.readers.stlreader.compute_bounding_box">
+<span class="sig-prename descclassname"><span class="pre">sfftk.readers.stlreader.</span></span><span class="sig-name descname"><span class="pre">compute_bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/stlreader.html#compute_bounding_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.stlreader.compute_bounding_box" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the bounding box for an STL file</p>
+<p>Required to check that the transform has correctly aligned the segmentation with the image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – filename</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a <cite>list</cite> of <cite>tuple`s of the form `((x_min, y_min, z_min), (x_max, y_max, z_max))</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="sfftk.readers.stlreader.get_data">
 <span class="sig-prename descclassname"><span class="pre">sfftk.readers.stlreader.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/stlreader.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.stlreader.get_data" title="Permalink to this definition"></a></dt>

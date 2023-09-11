@@ -465,10 +465,15 @@ class TestReadersStarReader(Py23FixTestCase):
         self.assertIsInstance(star_reader.tables, dict)
         self.assertIsInstance(star_reader.tables['_entity_poly_seq'], starreader.StarTable)
         self.assertIsInstance(star_reader.tables['_entity_poly_seq'].columns, list)
+        self.assertTrue('_entity_poly_seq.entity_id' in star_reader.tables['_entity_poly_seq'].columns)
         self.assertEqual(14, len(star_reader.tables['_entity_poly_seq']))
-        for row in star_reader.tables['_entity_poly_seq']:
+        self.assertTrue(hasattr(star_reader.tables['_entity_poly_seq'], 'prefix'))
+        # for row in star_reader.tables['_entity_poly_seq']:
             # do something with each row
-            print(row)
+            # print(dir(row))
+            # print(row)
+            # print(row.entity_id)
+        self.assertTrue(hasattr(star_reader.tables['_entity_poly_seq'][0], 'entity_id'))
 
     def test_parse(self):
         """Test parsing any star file"""
@@ -487,14 +492,20 @@ class TestReadersStarReader(Py23FixTestCase):
         self.assertIsInstance(star_reader.keys(), list)
         self.assertIsInstance(star_reader.tables, dict)
         self.assertIsInstance(star_reader.tables['_rln'], starreader.StarTable)
-        print(star_reader.tables['_rln'])
+        # print(star_reader.tables['_rln'])
         self.assertEqual(6, len(star_reader.tables['_rln']))
         row = star_reader.tables['_rln'][0]
-        print(f"type(row) = {type(row)}")
-        print(repr(row))
+        # print(f"type(row) = {type(row)}")
+        # print(repr(row))
         self.assertIsInstance(row, starreader.StarTableRow)
-        for row in star_reader.tables['_rln']:
-            print(row)
+        # for row in star_reader.tables['_rln']:
+        #     print(row)
+        #     print(row.Magnification)
+        # check that we can access the attributes
+        for attr in star_reader.tables['_rln'].columns:
+            self.assertTrue(hasattr(star_reader.tables['_rln'][0], attr.replace('_rln', '')))
+        # print(star_reader.tables['_rln'][0][4])
+        self.assertEqual(917.89670, star_reader.tables['_rln'][0][4])
 
     def test_compute_affine_transforms(self):
         """Test StarTableRow"""
@@ -555,11 +566,11 @@ class TestReadersStarReader(Py23FixTestCase):
         nonfloats = ['4-4', '3.4.2', '3.4e', '3.4E', '3.4e+', '3.4E+', '3.4e-', '3.4E-', ]
         # self.assertTrue(re.match(float_re1, str(floats[1])))
         for f in floats:
-            print(f)
+            # print(f)
             self.assertTrue(re.match(float_re1, f))
             self.assertTrue(re.match(float_re2, f) or re.match(float_re3, f))
         for n in nonfloats:
-            print(n)
+            # print(n)
             self.assertFalse(re.match(float_re1, n))
             self.assertFalse(re.match(float_re2, n) and re.match(float_re3, n))
 
@@ -573,10 +584,10 @@ class TestReadersStarReader(Py23FixTestCase):
                    '1.0E-1', '1.0e+1', '4-4', '3.4.2', '3.4e', '3.4E', '3.4e+', '3.4E+', '3.4e-', '3.4E-', 'paul',
                    'None']
         for i in ints:
-            print(i)
+            # print(i)
             self.assertTrue(re.match(int_re, i))
         for n in nonints:
-            print(n)
+            # print(n)
             self.assertFalse(re.match(int_re, n))
 
 
