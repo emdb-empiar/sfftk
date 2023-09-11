@@ -135,3 +135,4 @@ sfftk/test_data/test_data.hff
 /codecov
 /test_notes.sh
 /simpleparse/
+/.github/workflows/python-package-local.yml

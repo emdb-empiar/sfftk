@@ -5,7 +5,9 @@ This testing module should have no side-effects because it only reads.
 """
 import glob
 import os
+import re
 import unittest
+from math import cos, sin, radians
 
 import ahds
 import numpy
@@ -14,7 +16,9 @@ from sfftkrw.core import _dict_iter_values, _str
 from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH
-from ..readers import amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader, ilastikreader
+from ..readers import (
+    amreader, mapreader, modreader, segreader, stlreader, surfreader, survosreader, ilastikreader, starreader
+)
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -25,10 +29,10 @@ rw = random_words.RandomWords()
 
 
 # readers
-class TestReaders_amreader(Py23FixTestCase):
+class TestReadersAmReader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestReaders_amreader, cls).setUpClass()
+        super().setUpClass()
         cls.am_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.am')
         cls.header, cls.segments_by_stream = amreader.get_data(cls.am_file)
 
@@ -66,9 +70,9 @@ class TestReaders_amreader(Py23FixTestCase):
         self.assertIsNone(segments_by_stream)
 
 
-class TestReaders_ilastikreader(Py23FixTestCase):
+class TestReadersIlastikReader(Py23FixTestCase):
     def setUp(self):
-        super(TestReaders_ilastikreader, self).setUp()
+        super().setUp()
         self.ilastik_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_ilastik.h5')
 
     def test_get_data(self):
@@ -88,9 +92,9 @@ class TestReaders_ilastikreader(Py23FixTestCase):
         self.assertTrue(ilastik_obj.segment_count > 0)
 
 
-class TestReaders_mapreader(Py23FixTestCase):
+class TestReadersMapReader(Py23FixTestCase):
     def setUp(self):
-        super(TestReaders_mapreader, self).setUp()
+        super().setUp()
         self.map_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
 
     def test_get_data(self):
@@ -266,10 +270,10 @@ class TestReaders_mapreader(Py23FixTestCase):
             )
 
 
-class TestReaders_modreader(Py23FixTestCase):
+class TestReadersModReader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestReaders_modreader, cls).setUpClass()
+        super().setUpClass()
         cls.mod_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.mod')
         cls.mod = modreader.get_data(cls.mod_file)
 
@@ -431,9 +435,9 @@ class TestReaders_modreader(Py23FixTestCase):
                 self.assertEqual(M.lsize, len(M.list))
 
 
-class TestReaders_segreader(Py23FixTestCase):
+class TestReadersSegReader(Py23FixTestCase):
     def setUp(self):
-        super(TestReaders_segreader, self).setUp()
+        super().setUp()
         self.seg_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.seg')
 
     def test_get_data(self):
@@ -447,9 +451,138 @@ class TestReaders_segreader(Py23FixTestCase):
         self.assertEqual(seg.mask.shape, (30, 27, 26))
 
 
-class TestReaders_stlreader(Py23FixTestCase):
+class TestReadersStarReader(Py23FixTestCase):
+    """Tests for the StarReader class"""
+
+    def test_init(self):
+        """Test initialisation"""
+        star_reader = starreader.StarReader()
+        self.assertIsInstance(star_reader, starreader.StarReader)
+        star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data3.star')
+        self.assertTrue(hasattr(star_reader, 'keys'))
+        self.assertTrue(hasattr(star_reader, 'tables'))
+        self.assertIsInstance(star_reader.keys(), list)
+        self.assertIsInstance(star_reader.tables, dict)
+        self.assertIsInstance(star_reader.tables['_entity_poly_seq'], starreader.StarTable)
+        self.assertIsInstance(star_reader.tables['_entity_poly_seq'].columns, list)
+        self.assertEqual(14, len(star_reader.tables['_entity_poly_seq']))
+        for row in star_reader.tables['_entity_poly_seq']:
+            # do something with each row
+            print(row)
+
+    def test_parse(self):
+        """Test parsing any star file"""
+        star_reader = starreader.StarReader()
+        # star_reader.parse("/Users/pkorir/Downloads/80S_Ribosomes_particlesfrom_tomomanstopgapwarpmrm_bin1.star")
+        star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data2.star')
+        print(star_reader.tables['_rln'])
+
+    def test_parse_relion(self):
+        """Test parsing of a relion star file"""
+        star_reader = starreader.StarReader()
+        self.assertIsInstance(star_reader, starreader.StarReader)
+        star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data2.star')
+        self.assertTrue(hasattr(star_reader, 'keys'))
+        self.assertTrue(hasattr(star_reader, 'tables'))
+        self.assertIsInstance(star_reader.keys(), list)
+        self.assertIsInstance(star_reader.tables, dict)
+        self.assertIsInstance(star_reader.tables['_rln'], starreader.StarTable)
+        print(star_reader.tables['_rln'])
+        self.assertEqual(6, len(star_reader.tables['_rln']))
+        row = star_reader.tables['_rln'][0]
+        print(f"type(row) = {type(row)}")
+        print(repr(row))
+        self.assertIsInstance(row, starreader.StarTableRow)
+        for row in star_reader.tables['_rln']:
+            print(row)
+
+    def test_compute_affine_transforms(self):
+        """Test StarTableRow"""
+        star_reader = starreader.StarReader()
+        star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data4.star')
+        row = star_reader.tables['_rln'][0]
+        transform_zyz = row.to_affine_transform()  # default axes
+        psi = radians(30)
+        theta = radians(30)
+        phi = radians(30)
+        # zyz euler angles
+        affine_matrix_zyz = numpy.array([
+            [cos(psi) * cos(theta) * cos(phi) - sin(psi) * sin(phi),
+             -sin(psi) * cos(theta) * cos(phi) - cos(psi) * sin(phi), sin(theta) * cos(phi)],
+            [cos(psi) * cos(theta) * sin(phi) + sin(psi) * cos(phi),
+             -sin(psi) * cos(theta) * sin(phi) + cos(psi) * cos(phi), sin(theta) * sin(phi)],
+            [-cos(psi) * sin(theta), sin(psi) * sin(theta), cos(theta)]
+        ])
+        # rotation
+        self.assertTrue(
+            numpy.allclose(transform_zyz[:3, :3], affine_matrix_zyz)
+        )
+        # translation
+        self.assertEqual(487.84700, transform_zyz[0, 3])
+        self.assertEqual(2451.94100, transform_zyz[1, 3])
+        self.assertEqual(917.89670, transform_zyz[2, 3])
+        # ZXZ euler angles
+        transform_zxz = row.to_affine_transform(axes='zxz')
+        # zxz euler angles
+        affine_matrix_zxz = numpy.array([
+            [
+                cos(psi) * cos(phi) - cos(theta) * sin(psi) * sin(phi),
+                -cos(psi) * sin(phi) - cos(phi) * cos(theta) * sin(psi),
+                sin(psi) * sin(theta)
+            ],
+            [
+                cos(phi) * sin(psi) + cos(psi) * cos(theta) * sin(phi),
+                cos(psi) * cos(theta) * cos(phi) - sin(psi) * sin(phi),
+                -cos(psi) * sin(theta)],
+            [
+                sin(theta) * sin(phi),
+                cos(phi) * sin(theta),
+                cos(theta)
+            ]
+        ])
+        self.assertTrue(
+            numpy.allclose(transform_zxz[:3, :3], affine_matrix_zxz)
+        )
+
+    def test_regex_float(self):
+        """Test the regex for a floating point number"""
+        float_re1 = starreader.FLOAT_RE1
+        float_re2 = starreader.FLOAT_RE2
+        float_re3 = starreader.FLOAT_RE3
+        floats = ['1.0', '1.', '.1', '1.0e-1', '1.0E-1', '1.0e+1', '1.0E+1', '1.0e1', '1.0E1', '1.0e+01', '1.0E+01',
+                  '1.0e-01', '1.0E-01', '1.0e-1',
+                  '1.0E-1', '1.0e+1', '-1.0', '-1.']
+        nonfloats = ['4-4', '3.4.2', '3.4e', '3.4E', '3.4e+', '3.4E+', '3.4e-', '3.4E-', ]
+        # self.assertTrue(re.match(float_re1, str(floats[1])))
+        for f in floats:
+            print(f)
+            self.assertTrue(re.match(float_re1, f))
+            self.assertTrue(re.match(float_re2, f) or re.match(float_re3, f))
+        for n in nonfloats:
+            print(n)
+            self.assertFalse(re.match(float_re1, n))
+            self.assertFalse(re.match(float_re2, n) and re.match(float_re3, n))
+
+    def test_regex_int(self):
+        """Test the regex for an integer"""
+        int_re = starreader.INT_RE
+        ints = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-1', '-2', '-3', '-4', '-5', '-6', '-7', '-8', '-9',
+                '-0']
+        nonints = ['1.0', '1.', '.1', '1.0e-1', '1.0E-1', '1.0e+1', '1.0E+1', '1.0e1', '1.0E1', '1.0e+01', '1.0E+01',
+                   '1.0e-01', '1.0E-01', '1.0e-1',
+                   '1.0E-1', '1.0e+1', '4-4', '3.4.2', '3.4e', '3.4E', '3.4e+', '3.4E+', '3.4e-', '3.4E-', 'paul',
+                   'None']
+        for i in ints:
+            print(i)
+            self.assertTrue(re.match(int_re, i))
+        for n in nonints:
+            print(n)
+            self.assertFalse(re.match(int_re, n))
+
+
+class TestReadersStlReader(Py23FixTestCase):
     def setUp(self):
-        super(TestReaders_stlreader, self).setUp()
+        super().setUp()
         self.stl_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.stl')
         self.stl_bin_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_binary.stl')
         self.stl_multi_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_multiple.stl')
@@ -506,10 +639,10 @@ class TestReaders_stlreader(Py23FixTestCase):
         self.assertAlmostEqual(z[1], 240.9, places=3)
 
 
-class TestReaders_surfreader(Py23FixTestCase):
+class TestReadersSurfReader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestReaders_surfreader, cls).setUpClass()
+        super().setUpClass()
         cls.surf_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.surf')
         cls.header, cls.segments = surfreader.get_data(cls.surf_file)  # only one mesh here
 
@@ -532,10 +665,10 @@ class TestReaders_surfreader(Py23FixTestCase):
         self.assertEqual(set(vertex_ids), set(vertices.keys()))
 
 
-class TestReaders_survosreader(Py23FixTestCase):
+class TestReadersSurvosReader(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestReaders_survosreader, cls).setUpClass()
+        super().setUpClass()
         cls.survos_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.h5')
         cls.survos_complex_file = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_complex_survos.h5')
 
