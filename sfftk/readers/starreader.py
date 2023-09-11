@@ -150,7 +150,6 @@ The reader will then parse the file and store the data in memory. The user can t
 """
 
 import re
-import sys
 
 import numpy as np
 from gemmi import cif
@@ -250,13 +249,17 @@ class StarTable:
         self.prefix = name + '.' if '.' in loop.tags[0] else name
         self._infer_types = infer_types
         self._data = list()
+        self.tomograms = set()  # the set of tomograms referenced in this table
         for index in range(0, loop.length() * loop.width(), loop.width()):
             values = self._loop.values[index:index + loop.width()]
             if self._infer_types:
                 values = tuple(map(self._infer_float, values))
                 values = tuple(map(self._infer_int, values))
+            row = StarTableRow(name, loop, values, *args, **kwargs)
+            if hasattr(row, 'ImageName'):
+                self.tomograms.add(row.ImageName)
             self._data.append(
-                StarTableRow(name, loop, values, *args, **kwargs)
+                row
             )
 
     @staticmethod
@@ -330,6 +333,9 @@ class StarReader:
             print(row.col1, row.col2, row.col3, row.col4, row.col5, row.col6)
 
     """
+    required_columns = set()
+    maximum_tables = None
+    maximum_tomograms = None
 
     def __init__(self):
         self._fn = None
@@ -362,12 +368,22 @@ class StarReader:
         self._fn = fn
         self._doc = cif.read_file(str(fn))
         block = self._doc.sole_block()
+        table_count = 0
         for item in block:
             try:  # assume it's a loop; if not it's a pair
                 obj = item.loop
                 name = self._gemmi_infer_name(obj)
+                table_count += 1
+                if self.maximum_tables is not None and table_count > self.maximum_tables:
+                    raise ValueError("Maximum number of tables exceeded")
+                self._check_required_columns(obj)
                 if name not in self._tables:
                     self._tables[name] = StarTable(obj, name, infer_types=infer_types)
+                    tomogram_count = len(self._tables[name].tomograms)
+                    if self.maximum_tomograms is not None and self.maximum_tomograms < tomogram_count:
+                        raise ValueError(f"STAR file references more than {self.maximum_tomograms} tomogram. Please "
+                                         f"perform preprocessing to split STAR file to individual files referencing "
+                                         "only one tomogram.")
                 else:
                     raise ValueError(f"Duplicate table name: {name}")
             except AttributeError:
@@ -379,6 +395,15 @@ class StarReader:
                     self._keys[name] = value
                 else:
                     raise ValueError(f"Duplicate key: {name}")
+
+    def _check_required_columns(self, loop):
+        """Ensure that the all required columns exist"""
+        if not self.required_columns:
+            return
+        common_columns = self.required_columns.intersection(loop.tags)
+        if common_columns != self.required_columns:
+            raise ValueError(
+                f"Loop does not contain required column(s): {self.required_columns.difference(common_columns)}")
 
     @staticmethod
     def _gemmi_infer_name(obj):
@@ -396,8 +421,14 @@ class StarReader:
 class RelionStarReader(StarReader):
     """:py:class:`StarReader` subclass which applies some constraints to the STAR file. These constraints are:
 
-    - The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the particle in the tomogram.
-    - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)
+    - The STAR file must have **one and only one** table
+    - The table must have the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``,
+    ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the
+    particle in the tomogram.
+    - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only
+    interested in the relationship between a single particle and a single tomogram. If the STAR file references
+    multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
+    multiple files, each referencing a single tomogram. (more on that to come)
 
 
     .. code-block:: python
@@ -411,21 +442,18 @@ class RelionStarReader(StarReader):
             print(row.to_affine_transform())
     """
 
-
-#     required_fields = [
-#         ('_rlnCoordinateX', float),
-#         ('_rlnCoordinateY', float),
-#         ('_rlnCoordinateZ', float),
-#         ('_rlnAngleRot', float),
-#         ('_rlnAngleTilt', float),
-#         ('_rlnAnglePsi', float),
-#         ('_rlnImageName', str),
-#         ('_rlnPixelSize', float)
-#     ]
-#     optional_fields = [
-#         ('_rlnOriginXAngstrom', float),
-#         ('_rlnOriginYAngstrom', float),
-#     ]
+    required_columns = {
+        '_rlnCoordinateX',
+        '_rlnCoordinateY',
+        '_rlnCoordinateZ',
+        '_rlnAngleRot',
+        '_rlnAngleTilt',
+        '_rlnAnglePsi',
+        '_rlnImageName',
+        '_rlnPixelSize',
+    }
+    maximum_tables = 1
+    maximum_tomograms = 1
 
 
 def get_data(fn, *args, **kwargs):
@@ -439,7 +467,3 @@ def get_data(fn, *args, **kwargs):
     relion_star_reader = RelionStarReader()
     relion_star_reader.parse(fn)
     return relion_star_reader
-
-
-if __name__ == '__main__':
-    sys.exit(main())

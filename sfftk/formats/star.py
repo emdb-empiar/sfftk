@@ -18,6 +18,7 @@ from sfftkrw.schema.adapter_v0_8_0_dev1 import schema
 
 from .base import Segment, Header, Segmentation
 from ..readers import starreader
+import numpy
 
 
 class RelionStarHeader(Header):

@@ -469,10 +469,10 @@ class TestReadersStarReader(Py23FixTestCase):
         self.assertEqual(14, len(star_reader.tables['_entity_poly_seq']))
         self.assertTrue(hasattr(star_reader.tables['_entity_poly_seq'], 'prefix'))
         # for row in star_reader.tables['_entity_poly_seq']:
-            # do something with each row
-            # print(dir(row))
-            # print(row)
-            # print(row.entity_id)
+        # do something with each row
+        # print(dir(row))
+        # print(row)
+        # print(row.entity_id)
         self.assertTrue(hasattr(star_reader.tables['_entity_poly_seq'][0], 'entity_id'))
 
     def test_parse(self):
@@ -506,6 +506,33 @@ class TestReadersStarReader(Py23FixTestCase):
             self.assertTrue(hasattr(star_reader.tables['_rln'][0], attr.replace('_rln', '')))
         # print(star_reader.tables['_rln'][0][4])
         self.assertEqual(917.89670, star_reader.tables['_rln'][0][4])
+
+    def test_relion_reader_column_validation(self):
+        """Test the constraints for a relion star file"""
+        relion_star_reader = starreader.RelionStarReader()
+        # test that all required columns are present
+        with self.assertRaisesRegex(ValueError, r".*Loop does not contain.*"):
+            relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data5.star')
+
+    def test_relion_reader_duplicate_table_validation(self):
+        """Test that only one table is present"""
+        relion_star_reader = starreader.RelionStarReader()
+        with self.assertRaises(RuntimeError):  # if the table is just a repeat
+            relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data6.star')
+
+    def test_relion_reader_table_count_validation(self):
+        """Test that only one table is present"""
+        relion_star_reader = starreader.RelionStarReader()
+        with self.assertRaises(ValueError, msg="Maximum number of tables exceeded"):  # if the table is just a repeat
+            relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data7.star')
+
+    def test_relion_reader_one_tomogram_validation(self):
+        """Test that we have only one tomogram"""
+        relion_star_reader = starreader.RelionStarReader()
+        with self.assertRaises(ValueError, msg="STAR file references more than one tomogram. Please perform "
+                                               "preprocessing to split STAR file to individual files referencing "
+                                               "only one tomogram."):
+            relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data2.star')
 
     def test_compute_affine_transforms(self):
         """Test StarTableRow"""
