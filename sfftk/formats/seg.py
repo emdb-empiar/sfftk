@@ -191,6 +191,11 @@ class SeggerSegmentation(Segmentation):
         self._fn = fn
         self._segmentation = segreader.get_data(self._fn, *args, **kwargs)
         self._top_level = top_level
+        if self._top_level:
+            self._segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.root_parent_ids]
+        else:
+            self._segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.region_ids if
+                        region_id != 0]
 
     @property
     def header(self):
@@ -200,12 +205,7 @@ class SeggerSegmentation(Segmentation):
     @property
     def segments(self):
         """The segments in this segmentation"""
-        if self._top_level:
-            segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.root_parent_ids]
-        else:
-            segments = [SeggerSegment(self._segmentation, region_id) for region_id in self.header.region_ids if
-                        region_id != 0]
-        return segments
+        return self._segments
 
     def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False,
                 transform=None):

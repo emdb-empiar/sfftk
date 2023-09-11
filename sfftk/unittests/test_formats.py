@@ -13,7 +13,7 @@ from sfftkrw.unittests import Py23FixTestCase
 from . import TEST_DATA_PATH, BASE_DIR
 # from .. import schema
 from ..core.parser import parse_args, cli
-from ..formats import am, seg, map, mod, stl, surf, survos, ilastik
+from ..formats import am, seg, map, mod, stl, surf, survos, ilastik, star
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -97,6 +97,13 @@ class TestFormats(Py23FixTestCase):
             # self.mod_file = '/Users/pkorir/data/for_debugging/mod/input_file.mod' # -25 multiple
             # self.mod_file = '/Users/pkorir/data/segmentations/mod/test10.mod' # -23
             self.mod_segmentation = mod.IMODSegmentation(self.mod_file)
+
+    def read_star(self):
+        """Read RELION .star files"""
+        if not hasattr(self, 'star_file'):
+            self.star_file = os.path.join(self.segmentations_path, 'test_data8.star')
+            self.particle_file = os.path.join(self.segmentations_path, 'test_data.map')
+            self.star_segmentation = star.RelionStarSegmentation(self.star_file, self.particle_file)
 
     def read_stl(self):
         """Read .stl files"""
@@ -190,6 +197,18 @@ class TestFormats(Py23FixTestCase):
         self.assertIsInstance(self.mod_segmentation.header, mod.IMODHeader)
         self.assertIsInstance(self.mod_segmentation.segments, list)
         self.assertIsInstance(self.mod_segmentation.segments[0], mod.IMODSegment)
+
+    def test_star_read(self):
+        """Read a RELION (.star) segmentation"""
+        self.read_star()
+        print()
+        print(self.star_segmentation)
+        seg = self.star_segmentation.convert()
+        json_seg = seg.as_json()
+        import json
+        print(json.dumps(json_seg, indent=2))
+        # assertions
+
 
     def test_stl_read(self):
         """Read a Stereo Lithography (.stl) segmentation"""
