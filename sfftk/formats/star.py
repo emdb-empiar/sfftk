@@ -80,6 +80,7 @@ class RelionStarSegmentation(Segmentation):
         segmentation = schema.SFFSegmentation()
         # metadata
         segmentation.name = name if name is not None else "RELION Subtomogram Average"
+        segmentation.primary_descriptor = "three_d_volume"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
