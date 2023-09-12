@@ -201,14 +201,10 @@ class TestFormats(Py23FixTestCase):
     def test_star_read(self):
         """Read a RELION (.star) segmentation"""
         self.read_star()
-        print()
-        print(self.star_segmentation)
-        seg = self.star_segmentation.convert()
-        json_seg = seg.as_json()
-        import json
-        print(json.dumps(json_seg, indent=2))
         # assertions
-
+        self.assertIsInstance(self.star_segmentation.header, star.RelionStarHeader)
+        self.assertIsInstance(self.star_segmentation.segments, list)
+        self.assertIsInstance(self.star_segmentation.segments[0], star.RelionStarSegment)
 
     def test_stl_read(self):
         """Read a Stereo Lithography (.stl) segmentation"""
@@ -486,6 +482,39 @@ class TestFormats(Py23FixTestCase):
         self.assertGreater(len(mesh.triangles.data), 1)
         vertex_ids = set(mesh.triangles.data_array.flatten().tolist())
         self.assertEqual(max(vertex_ids), mesh.vertices.num_vertices - 1)
+
+    def test_star_convert(self):
+        """Convert a segmentation from a RELION .star file to an SFFSegmentation object"""
+        self.read_star()
+        args, configs = parse_args(f"convert {self.star_file} --details 'Something interesting'", use_shlex=True)
+        seg = self.star_segmentation.convert(details=args.details)
+        # assertions
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual("RELION Subtomogram Average", seg.name)
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'RELION')
+        self.assertEqual("three_d_volume", seg.primary_descriptor)
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual('1 0 0 0 0 1 0 0 0 0 1 0', seg.transform_list[0].data)
+        self.assertGreaterEqual(len(seg.transform_list), 1)
+        self.assertEqual("Something interesting", seg.details)
+        segment = seg.segment_list[0]
+        self.assertIsNotNone(segment.biological_annotation)
+        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment.colour)
+        self.assertEqual(0, len(segment.mesh_list))
+        vol = segment.three_d_volume
+        self.assertEqual(0, vol.lattice_id)
+        self.assertEqual(1.0, vol.value)
+        self.assertEqual(1, vol.transform_id)
+        lattice = seg.lattice_list[0]
+        self.assertEqual(0, lattice.id)
+        self.assertEqual('float32', lattice.mode)
+        self.assertEqual('little', lattice.endianness)
+        self.assertIsInstance(lattice.size, schema.SFFVolumeStructure)
+        self.assertIsInstance(lattice.start, schema.SFFVolumeIndex)
+        self.assertIsNotNone(lattice.data)
 
     def test_stl_convert(self):
         """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""
