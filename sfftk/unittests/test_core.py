@@ -26,7 +26,6 @@ from ..core.configs import Configs, get_config_file_path, load_configs, \
     get_configs, set_configs, del_configs
 from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index, cli
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix, check_mask_is_binary
-from ..readers.stlreader import compute_bounding_box
 from ..notes import RESOURCE_LIST
 
 rw = RandomWords()
@@ -784,6 +783,8 @@ class TestCoreParserConvert(Py23FixTestCase):
         self.assertTrue(args.multi_file)
         self.assertCountEqual(args.from_file, map(str, self.empty_stls))
 
+
+
     def test_multifile_map_fail1(self):
         """Test that excluding -m issues a warning for CCP4"""
         args, _ = cli('convert -v {}'.format(' '.join(map(str, self.empty_maps))))
@@ -887,6 +888,15 @@ class TestCoreParserConvert(Py23FixTestCase):
         with self.assertRaises(SystemExit):
             cli(f"convert {self.test_merged_mask_file} -m --label-tree {self.test_merged_mask_labels_file}")
 
+    def test_star(self):
+        """Test convertion of .star file"""
+        args, _ = cli(
+            f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
+            f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'}"
+        )
+        # assertions
+        self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data.map'), args.particle)
+        self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data8.star'), args.from_file)
 
 class TestCoreParserView(Py23FixTestCase):
     @classmethod

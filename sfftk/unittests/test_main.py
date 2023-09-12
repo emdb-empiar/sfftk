@@ -280,6 +280,19 @@ class TestMain_handle_convert(Py23FixTestCase):
             data = json.load(f)
         self.assertIsNone(data['segment_list'][0]['three_d_volume'])
 
+    def test_star(self):
+        """Test convertion of .star file"""
+        args, configs = cli(
+            f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
+            f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"--config-path {self.config_fn}"
+        )
+        Main.handle_convert(args, configs)
+        # assertions
+        # self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data.map'), args.particle)
+        # self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data8.star'), args.from_file)
+
+
     def test_stl(self):
         """Test that we can convert .stl"""
         args, configs = parse_args('convert -o {output} {input} --config-path {config}'.format(

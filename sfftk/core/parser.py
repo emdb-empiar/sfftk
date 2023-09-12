@@ -419,6 +419,10 @@ multi_or_label_mutex_parser.add_argument(
          "1) the mask labels (key: 'mask_to_label') and "
          "2) the hierarchical relationship between labels (key: 'label_tree')"
 )
+multi_or_label_mutex_parser.add_argument(
+    '--particle',
+    help="the result of subtomogram averaging (particle) in CCP4 format (.mrc, .map, .rec)"
+)
 
 # =========================================================================
 # config subparser
