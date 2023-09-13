@@ -17,6 +17,7 @@ import numpy.lib.mixins
 from sfftkrw.core import _str
 from sfftkrw.core.print_tools import print_date
 from stl import Mesh
+from ..readers.starreader import RelionStarReader
 
 
 def _label_generator():
@@ -556,3 +557,33 @@ def mergemask(args, configs):
     if args.verbose:
         print_date(f"info: merge complete!")
     return 0
+
+
+class RelionCompositeStarReader(RelionStarReader):
+    """Relion composite star file reader"""
+    maximum_tomograms = None
+
+
+def starsplit(args, configs):
+    """Split a star file into multiple star files based on the given column
+
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
+    :param configs: configurations object
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return: exit status
+    :rtype: int
+    """
+    composite_star_reader = RelionCompositeStarReader()
+    composite_star_reader.parse(args.star_file)
+    file_handlers = dict()
+    for row in composite_star_reader.tables['_rln']:
+        image_name = row.ImageName
+        if image_name not in file_handlers:
+            file_handlers[image_name] = open(f"{image_name}.star", 'w')
+            # todo: create a `.header` attribute for RelionStarReader
+            file_handlers[image_name].write(composite_star_reader.tables['_rln'].header)
+        # print(row.ImageName)
+        # print(row)
+    return 0
+

@@ -379,6 +379,31 @@ mergemask_prep_parser.add_argument(
     help="allow masks to have overlapping voxels; this results in a complex hierarchy of labels described in the "
          "label_tree [default: False]"
 )
+# =========================================================================
+# prep: starsplit
+# =========================================================================
+starsplit_prep_parser = prep_subparsers.add_parser(
+    'starsplit',
+    description='Split a composite star file into individual star files distinguished by the <rlnImageName> key',
+    help='split a composite star file into individual star files',
+)
+add_args(starsplit_prep_parser, config_path)
+add_args(starsplit_prep_parser, shipped_configs)
+add_args(starsplit_prep_parser, verbose)
+starsplit_prep_parser.add_argument(
+    'star_file',
+    help="the composite star file"
+)
+starsplit_prep_parser.add_argument(
+    '--output-prefix',
+    help="a prefix to use for the output files; the output files are "
+         "named <prefix>_<rlnImageName>.star [default: '<composite-name>_']"
+)
+starsplit_prep_parser.add_argument(
+    '--tomogram-path',
+    default='',
+    help="the correct local path to the tomogram files [default: '']"
+)
 
 # =========================================================================
 # convert subparser
@@ -1317,6 +1342,10 @@ def parse_args(_args, use_shlex=False):
             if not _masks_have_mode_zero(args):
                 print_date(f"error: mode must be zero (0); please run `sff prep binmap` first on all masks")
                 return 65, configs
+        # splitstar
+        elif args.prep_subcommand == 'starsplit':
+            if args.output_prefix is None:
+                args.output_prefix = os.path.splitext(args.star_file)[0] + "_"
 
     # view
     elif args.subcommand == 'view':

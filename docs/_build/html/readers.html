@@ -1318,9 +1318,15 @@ ATOM   10   N N   . ARG A 1 8   ? 10.011  -13.762 6.603   1.00 40.03  ? 528 ARG 
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">StarReader</span></code></a></p>
 <p><a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">StarReader</span></code></a> subclass which applies some constraints to the STAR file. These constraints are:</p>
 <ul class="simple">
-<li><p>The STAR file must have a table with the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the position and orientation of the particle in the tomogram.</p></li>
-<li><p>The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)</p></li>
+<li><p>The STAR file must have <strong>one and only one</strong> table</p></li>
+<li><p>The table must have the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>,</p></li>
 </ul>
+<p><code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the position and orientation of the
+particle in the tomogram.
+- The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only
+interested in the relationship between a single particle and a single tomogram. If the STAR file references
+multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
+multiple files, each referencing a single tomogram. (more on that to come)</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">RelionStarReader</span><span class="p">()</span>
 <span class="n">reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;my_star_file.star&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span> <span class="c1"># output some information e.g. number of rows, fields, etc.</span>
@@ -1392,6 +1398,26 @@ assess whether a provided file has the specified field.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarTableRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Each row in a star table</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTableRow.to_affine_transform">
+<span class="sig-name descname"><span class="pre">to_affine_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow.to_affine_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow.to_affine_transform" title="Permalink to this definition"></a></dt>
+<dd><p>Return the affine transform matrix for this row</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the axes of rotation</p></li>
+<li><p><strong>degrees</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – whether the angles are in degrees or radians</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the affine transform matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">

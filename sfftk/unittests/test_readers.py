@@ -507,6 +507,13 @@ class TestReadersStarReader(Py23FixTestCase):
         # print(star_reader.tables['_rln'][0][4])
         self.assertEqual(917.89670, star_reader.tables['_rln'][0][4])
 
+    def test_relion_header(self):
+        """Test that we have a header attribute to create the field names on a dime"""
+        relion_star_reader = starreader.RelionStarReader()
+        relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data2.star')
+        self.assertTrue(hasattr(relion_star_reader, 'header'))
+        self.assertTrue(False)
+
     def test_relion_reader_column_validation(self):
         """Test the constraints for a relion star file"""
         relion_star_reader = starreader.RelionStarReader()

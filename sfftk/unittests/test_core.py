@@ -665,6 +665,27 @@ class TestCoreParserPrepTransform(Py23FixTestCase):
         self.assertEqual(args.output, 'file_something.stl')
 
 
+class TestCoreParserPrepStarSplit(Py23FixTestCase):
+    def test_default(self):
+        """Test default options for `prep starsplit`"""
+        args, _ = cli('prep starsplit file.star')
+        self.assertEqual(args.prep_subcommand, 'starsplit')
+        self.assertEqual(args.star_file, 'file.star')
+        self.assertEqual('file_', args.output_prefix)
+        self.assertEqual('', args.tomogram_path)
+        self.assertFalse(args.verbose)
+
+    def test_output_prefix(self):
+        """Test setting output prefix"""
+        args, _ = cli('prep starsplit --output-prefix my-silly-prefix file.star')
+        self.assertEqual('my-silly-prefix', args.output_prefix)
+
+    def test_tomogram_path(self):
+        """Test setting of tomogram path"""
+        args, _ = cli('prep starsplit --tomogram-path /path/to/tomograms file.star')
+        self.assertEqual('/path/to/tomograms', args.tomogram_path)
+
+
 class TestCoreParserConvert(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
@@ -783,8 +804,6 @@ class TestCoreParserConvert(Py23FixTestCase):
         self.assertTrue(args.multi_file)
         self.assertCountEqual(args.from_file, map(str, self.empty_stls))
 
-
-
     def test_multifile_map_fail1(self):
         """Test that excluding -m issues a warning for CCP4"""
         args, _ = cli('convert -v {}'.format(' '.join(map(str, self.empty_maps))))
@@ -897,6 +916,7 @@ class TestCoreParserConvert(Py23FixTestCase):
         # assertions
         self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data.map'), args.particle)
         self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data8.star'), args.from_file)
+
 
 class TestCoreParserView(Py23FixTestCase):
     @classmethod
@@ -2132,7 +2152,7 @@ class TestCorePrepMergeMask(Py23FixTestCase):
         # conver
 
 
-class TestPrep(unittest.TestCase):
+class TestPrepMergeMask(unittest.TestCase):
     def test_merge_arrays(self):
         """Test that we can merge mergeable_arrays of similar sizes"""
         total_length = 1000
@@ -2415,3 +2435,15 @@ class TestPrep(unittest.TestCase):
             os.remove("merged_mask.json")
         except FileNotFoundError:
             pass
+
+
+class TestPrepStarSplit(unittest.TestCase):
+    def test_starsplit(self):
+        """Test that we can split a .star file by image name"""
+        args, configs = cli(
+            f"prep starsplit --verbose --output-prefix split "
+            f"{TEST_DATA_PATH / 'segmentations' / 'test_data9.star'}"
+        )
+        print(args)
+        from ..core.prep import starsplit
+        exit_status = starsplit(args, configs)

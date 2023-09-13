@@ -10,8 +10,8 @@ Generic STAR files can have any number of key-value pairs and tables. For our us
 
 Therefore, this imposes some constraints on the STAR file:
 
-- The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the particle in the tomogram.
-- The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)
+-   The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the particle in the tomogram.
+-   The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)
 
 For this reason, we distinguish between 'composite' RELION STAR files and 'simple' RELION STAR files. Composite RELION STAR files must be partitioned into simple RELION STAR files before they can be converted into EMDB-SFF files.
 
