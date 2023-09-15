@@ -10,6 +10,7 @@ This module extends the parser object :py:class:`sfftkrw.core.parser.Parser` as 
 import argparse
 import configparser
 import os
+import pathlib
 import re
 import sys
 from copy import deepcopy
@@ -400,11 +401,53 @@ starsplit_prep_parser.add_argument(
          "named <prefix>_<rlnImageName>.star [default: '<composite-name>_']"
 )
 starsplit_prep_parser.add_argument(
-    '--tomogram-path',
+    '--image-path',
     default='',
     help="the correct local path to the tomogram files [default: '']"
 )
+# tomogram prefix
+starsplit_prep_parser.add_argument(
+    '--image-extension',
+    default='mrc',
+    help="the file extension to use for the tomogram files [default: 'mrc']"
+)
+starsplit_prep_parser.add_argument(
+    '--image-name-prefix',
+    default="",
+    help="in many star files, the <rlnImageName> values will be a local path; the actual image name (a .mrc file) may contain additional characters that makes it difficult to categorise the tomograms e.g. 'path/my_tomogram1_001.mrc', 'path/my_tomogram1_002.mrc', 'path/my_tomogram2_001.mrc'. In this example, we have two tomograms ('my_tomogram1' and 'my_tomogram2') but the additional characters ('_001', '_002') make it difficult to categorise the tomograms. This option allows you to specify a prefix to remove from the <rlnImageName> values. You can also use a REGEX in quotes e.g. 'my_tomogram\d'. [default: '']"
+)
 
+# =========================================================================
+# prep: starcrop
+# =========================================================================
+starcrop_prep_parser = prep_subparsers.add_parser(
+    'starcrop',
+    description='Truncate a composite star file to the specified number of rows (default: 100)',
+    help='split a composite star file into individual star files',
+)
+add_args(starcrop_prep_parser, config_path)
+add_args(starcrop_prep_parser, shipped_configs)
+add_args(starcrop_prep_parser, verbose)
+starcrop_prep_parser.add_argument(
+    'star_file',
+    help="the composite star file"
+)
+starcrop_prep_parser.add_argument(
+    '-o', '--output',
+    default=None,
+    help='output file name [default: <infile>_cropped.star]'
+)
+starcrop_prep_parser.add_argument(
+    '--infix',
+    default='cropped',
+    help="infix to be added to filenames e.g. file.star -> file_<infix>.star [default: 'cropped']",
+)
+starcrop_prep_parser.add_argument(
+    '--rows',
+    default=100,
+    type=int,
+    help="the number of rows to keep [default: 100]"
+)
 # =========================================================================
 # convert subparser
 # =========================================================================
@@ -1346,6 +1389,16 @@ def parse_args(_args, use_shlex=False):
         elif args.prep_subcommand == 'starsplit':
             if args.output_prefix is None:
                 args.output_prefix = os.path.splitext(args.star_file)[0] + "_"
+            else:
+                if args.output_prefix[-1] != '_':
+                    args.output_prefix += '_'
+        # starcrop
+        elif args.prep_subcommand == 'starcrop':
+            if args.output is None:
+                args.output = f"{pathlib.Path(args.star_file).stem}_{args.infix}_{args.rows}.star"
+            if args.rows <= 0:
+                print_date(f"error: rows must be positive")
+                return 65, configs
 
     # view
     elif args.subcommand == 'view':
@@ -1367,7 +1420,8 @@ def parse_args(_args, use_shlex=False):
                 print_date("Invalid file type for --image. Please use .map, .mrc or .rec files only.")
                 return 65, configs  # 65 = DATAERR
         else:
-            print_date("Warning: missing --image <file.map> option to accurately determine image-to-physical transform", stream=sys.stderr)
+            print_date("Warning: missing --image <file.map> option to accurately determine image-to-physical transform",
+                       stream=sys.stderr)
         # convert details to unicode
         if args.details is not None:
             args.details = _decode(args.details, 'utf-8')

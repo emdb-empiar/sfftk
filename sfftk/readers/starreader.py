@@ -150,6 +150,8 @@ The reader will then parse the file and store the data in memory. The user can t
 """
 
 import re
+import sys
+import unicodedata
 
 import numpy as np
 from gemmi import cif
@@ -159,6 +161,31 @@ FLOAT_RE1 = r"^[+-]?\d*[.]\d*([eE][+-]?\d+)?$"
 FLOAT_RE2 = r"^[+-]?\d+[.]\d*([eE][+-]?\d+)?$"
 FLOAT_RE3 = r"^[+-]?\d*[.]\d+([eE][+-]?\d+)?$"
 INT_RE = r"^[+-]?\d+$"
+
+
+def print_progress(iteration, total, prefix='', suffix='', decimals=2, bar_length=100,
+                   fill_char=unicodedata.lookup("FULL BLOCK"),
+                   empty_char=unicodedata.lookup("LIGHT SHADE")
+                   ):
+    """Print a progress bar
+
+    :param int iteration: current iteration
+    :param int total: total iterations
+    :param str prefix: prefix string
+    :param str suffix: suffix string
+    :param int decimals: number of decimals in percent complete
+    :param int bar_length: character length of bar
+    :param str fill_char: bar fill character
+    :param str empty_char: bar empty character
+    """
+    filled_length = int(round(bar_length * iteration / float(total)))
+    percents = round(100.00 * (iteration / float(total)), decimals)
+    bar = fill_char * filled_length + empty_char * (bar_length - filled_length)
+    sys.stdout.write(f"\r{prefix} |{bar}| {percents:.2f}% {suffix}")
+    sys.stdout.flush()
+    if iteration == total:
+        sys.stdout.write('\n')
+        sys.stdout.flush()
 
 
 class StarTableRow:
@@ -189,9 +216,13 @@ class StarTableRow:
         else:
             self._prefix = name
         self._fixed_tags = tuple(map(lambda x: x.replace(self._prefix, ''), loop.tags))
-        self._tagged_values = tuple(zip(self._fixed_tags, values))
-        for tag, value in self._tagged_values:
+        self._tagged_values = dict(zip(self._fixed_tags, self._row_data))
+        for tag, value in self._tagged_values.items():
             setattr(self, tag, value)
+
+    def raw_data(self, sep="\t"):
+        """Return the raw data"""
+        return sep.join(map(str, self._tagged_values.values()))
 
     def to_affine_transform(self, axes='ZYZ', degrees=True):
         """Return the affine transform matrix for this row
@@ -201,6 +232,7 @@ class StarTableRow:
         :return: the affine transform matrix
         :rtype: numpy.ndarray
         """
+        #         self._do_eval()
         axes = axes.upper()
         assert 1 <= len(axes) <= 3, "axes must be a string of length 1, 2 or 3"
         assert set('XYZ').issuperset(axes), "axes must be a string of X, Y and/or Z"
@@ -228,6 +260,13 @@ class StarTableRow:
         affine_matrix = np.append(rotation_matrix, translation, axis=1)
         return affine_matrix
 
+    def setattr(self, key, value):
+        """Update an attribute explicitly"""
+        assert key in self._tagged_values, f"Invalid key: {key}"
+        self._tagged_values[key] = value
+        # also update the row data
+        self._row_data = tuple(self._tagged_values.values())
+
     def __getitem__(self, item):
         return self._row_data[item]
 
@@ -250,12 +289,13 @@ class StarTable:
         self._infer_types = infer_types
         self._data = list()
         self.tomograms = set()  # the set of tomograms referenced in this table
-        for index in range(0, loop.length() * loop.width(), loop.width()):
-            values = self._loop.values[index:index + loop.width()]
+        for index in range(self._loop.length()):
+            print_progress(index + 1, self._loop.length(), prefix=f"Reading '{self.name}' table: ")
+            values = self._loop.values[index * self._loop.width():index * self._loop.width() + self._loop.width()]
             if self._infer_types:
                 values = tuple(map(self._infer_float, values))
                 values = tuple(map(self._infer_int, values))
-            row = StarTableRow(name, loop, values, *args, **kwargs)
+            row = StarTableRow(self.name, self._loop, values)
             if hasattr(row, 'ImageName'):
                 self.tomograms.add(row.ImageName)
             self._data.append(
@@ -283,6 +323,14 @@ class StarTable:
             return value
 
     @property
+    def header(self):
+        """Return the header of the table"""
+        # self._do_eval()
+        string = "loop_\n"
+        string += "\n".join(self._loop.tags)
+        return string
+
+    @property
     def columns(self):
         """Return the columns in this block"""
         return self._loop.tags
@@ -299,7 +347,7 @@ class StarTable:
 
     def __iter__(self):
         """Iterate over the rows"""
-        yield from self._data
+        return iter(self._data)
 
     def __str__(self):
         """Return a representation of the table"""
@@ -354,6 +402,11 @@ class StarReader:
 
     def parse(self, fn, infer_types=True):
         """Parse the file"""
+        # reset the reader
+        self._fn = None
+        self._doc = None
+        self._keys = dict()
+        self._tables = dict()
         self._gemmi_parse(fn, infer_types=infer_types)
 
     def __str__(self):
@@ -368,6 +421,7 @@ class StarReader:
         self._fn = fn
         self._doc = cif.read_file(str(fn))
         block = self._doc.sole_block()
+        self.name = block.name
         table_count = 0
         for item in block:
             try:  # assume it's a loop; if not it's a pair

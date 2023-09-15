@@ -459,6 +459,7 @@ class TestReadersStarReader(Py23FixTestCase):
         star_reader = starreader.StarReader()
         self.assertIsInstance(star_reader, starreader.StarReader)
         star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data3.star')
+        self.assertEqual('7YW1', star_reader.name)
         self.assertTrue(hasattr(star_reader, 'keys'))
         self.assertTrue(hasattr(star_reader, 'tables'))
         self.assertIsInstance(star_reader.keys(), list)
@@ -468,11 +469,6 @@ class TestReadersStarReader(Py23FixTestCase):
         self.assertTrue('_entity_poly_seq.entity_id' in star_reader.tables['_entity_poly_seq'].columns)
         self.assertEqual(14, len(star_reader.tables['_entity_poly_seq']))
         self.assertTrue(hasattr(star_reader.tables['_entity_poly_seq'], 'prefix'))
-        # for row in star_reader.tables['_entity_poly_seq']:
-        # do something with each row
-        # print(dir(row))
-        # print(row)
-        # print(row.entity_id)
         self.assertTrue(hasattr(star_reader.tables['_entity_poly_seq'][0], 'entity_id'))
 
     def test_parse(self):
@@ -481,6 +477,23 @@ class TestReadersStarReader(Py23FixTestCase):
         # star_reader.parse("/Users/pkorir/Downloads/80S_Ribosomes_particlesfrom_tomomanstopgapwarpmrm_bin1.star")
         star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data2.star')
         print(star_reader.tables['_rln'])
+
+    def test_parse_cif(self):
+        """Test that we can parse a cif file"""
+        star_reader = starreader.StarReader()
+        star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data.cif')
+        print(star_reader.tables)
+        self.assertEqual('name', star_reader.name)
+        self.assertTrue(hasattr(star_reader, 'tables'))
+        self.assertTrue(hasattr(star_reader, 'keys'))
+        self.assertIsInstance(star_reader.keys(), list)
+        self.assertIsInstance(star_reader.tables, dict)
+        self.assertIsInstance(star_reader.tables['_atom_site'], starreader.StarTable)
+        self.assertIsInstance(star_reader.tables['_atom_site'].columns, list)
+        self.assertTrue('_atom_site.id' in star_reader.tables['_atom_site'].columns)
+        self.assertEqual(10, len(star_reader.tables['_atom_site']))
+        self.assertTrue(hasattr(star_reader.tables['_atom_site'], 'prefix'))
+        self.assertTrue(hasattr(star_reader.tables['_atom_site'][0], 'id'))
 
     def test_parse_relion(self):
         """Test parsing of a relion star file"""
@@ -510,9 +523,33 @@ class TestReadersStarReader(Py23FixTestCase):
     def test_relion_header(self):
         """Test that we have a header attribute to create the field names on a dime"""
         relion_star_reader = starreader.RelionStarReader()
-        relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data2.star')
-        self.assertTrue(hasattr(relion_star_reader, 'header'))
-        self.assertTrue(False)
+        relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data8.star')
+        self.assertTrue(hasattr(relion_star_reader.tables['_rln'], 'header'))
+        # each table should have a `header` attribute which can recreate the table header
+        # e.g. table.header -> `loop_\n_rlnCoordinateX #1\n_rlnCoordinateY #2\n_rlnCoordinateZ #3\n` etc.
+        # print()
+        # print(relion_star_reader.tables['_rln'].header)
+        # for row in relion_star_reader.tables['_rln']:
+        #     print(row.raw_data())
+        self.assertEqual(
+            relion_star_reader.tables['_rln'].header,
+            """loop_
+_rlnMagnification
+_rlnDetectorPixelSize
+_rlnCoordinateX
+_rlnCoordinateY
+_rlnCoordinateZ
+_rlnAngleRot
+_rlnAngleTilt
+_rlnAnglePsi
+_rlnImageName
+_rlnCtfImage
+_rlnRandomSubset
+_rlnPixelSize
+_rlnVoltage
+_rlnSphericalAberration
+_rlnMicrographName"""
+        )
 
     def test_relion_reader_column_validation(self):
         """Test the constraints for a relion star file"""

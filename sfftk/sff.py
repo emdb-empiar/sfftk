@@ -33,6 +33,37 @@ def handle_prep_mergemask(args, configs):
     return 65
 
 
+def handle_prep_starsplit(args, configs):
+    """Handle `prep starsplit`
+
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
+    :param configs: configurations object
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return exit_status: exit status
+    :rtype exit_status: int
+    """
+    if re.search(r'.*\.(star|cif|mmcif)$', args.star_file, re.IGNORECASE):
+        from .core.prep import starsplit
+        return starsplit(args, configs)
+    return 65
+
+
+def handle_prep_starcrop(args, configs):
+    """Handle `prep starcrop`
+
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
+    :param configs: configurations object
+    :return exit_status: exit status
+    :rtype exit_status: int
+    """
+    if re.search(r'.*\.(star|cif|mmcif)$', args.star_file, re.IGNORECASE):
+        from .core.prep import starcrop
+        return starcrop(args, configs)
+    return 65
+
+
 def handle_prep(args, configs):
     """Handle `prep` subcommand
 
@@ -59,6 +90,10 @@ def handle_prep(args, configs):
             return 65
     elif args.prep_subcommand == 'mergemask':
         return handle_prep_mergemask(args, configs)
+    elif args.prep_subcommand == 'starsplit':
+        return handle_prep_starsplit(args, configs)
+    elif args.prep_subcommand == 'starcrop':
+        return handle_prep_starcrop(args, configs)
 
 
 def handle_convert(args, configs):  # @UnusedVariable

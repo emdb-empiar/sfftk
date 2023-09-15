@@ -17,6 +17,7 @@ import numpy.lib.mixins
 from sfftkrw.core import _str
 from sfftkrw.core.print_tools import print_date
 from stl import Mesh
+
 from ..readers.starreader import RelionStarReader
 
 
@@ -26,7 +27,7 @@ def _label_generator():
 
 class MergedMask:
     """This class describes a special mask used to perform mask merging. It automatically handles
-    complex cases involving mask overlaps by constucting a label tree showing the relations
+    complex cases involving mask overlaps by constructing a label tree showing the relations
     between masks. The trivial case of non-overlapping overlaps will have all labels children of
     the root label (0).
 
@@ -575,15 +576,84 @@ def starsplit(args, configs):
     :rtype: int
     """
     composite_star_reader = RelionCompositeStarReader()
+    if args.verbose:
+        print_date(f"info: parsing {args.star_file}...", newline=False)
     composite_star_reader.parse(args.star_file)
+    if args.verbose:
+        print_date(f"done.", incl_date=False)
     file_handlers = dict()
     for row in composite_star_reader.tables['_rln']:
-        image_name = row.ImageName
+        image_name = pathlib.Path(row.ImageName).stem
+        if args.image_name_prefix:
+            # use a regex to match the prefix
+            image_name_match = re.match(args.image_name_prefix, image_name)
+            if not image_name_match:
+                print_date(f"warning: image name '{image_name}' does not match prefix '{args.image_name_prefix}'")
+                continue
+            image_name = image_name_match.group()
         if image_name not in file_handlers:
-            file_handlers[image_name] = open(f"{image_name}.star", 'w')
-            # todo: create a `.header` attribute for RelionStarReader
+            if args.verbose:
+                print_date(f"info: creating file handler for '{image_name}'...")
+            file_handlers[image_name] = open(f"{args.output_prefix}{image_name}.star", 'w')
+            # write the header
+            if args.verbose:
+                print_date(f"info: writing header for '{args.output_prefix}{image_name}.star'...")
+            file_handlers[image_name].write("data_\n\n")
             file_handlers[image_name].write(composite_star_reader.tables['_rln'].header)
-        # print(row.ImageName)
-        # print(row)
+            file_handlers[image_name].write('\n')
+        # write to the appropriate file
+        # fix the tomogram path
+        # by default we strip the path and only retain the name
+        row.setattr('ImageName', pathlib.Path(args.image_path) / f"{image_name}.{args.image_extension}")
+        file_handlers[image_name].write(str(row.raw_data()))
+        file_handlers[image_name].write('\n')
+    # close all files
+    if args.verbose:
+        print_date(f"info: closing all file handlers...", newline=False)
+    for file in file_handlers.values():
+        file.close()
+    print_date(f"done.", incl_date=False)
     return 0
 
+
+def starcrop(args, configs):
+    """Crop a star file to have at most the given number of rows
+
+    :param args: parsed arguments
+    :type args: :py:class:`argparse.Namespace`
+    :param configs: configurations object
+    :type configs: :py:class:`sfftk.core.configs.Configs`
+    :return: exit status
+    :rtype: int
+    """
+    composite_star_reader = RelionCompositeStarReader()
+    if args.verbose:
+        print_date(f"info: parsing {args.star_file}...", newline=False)
+    composite_star_reader.parse(args.star_file)
+    if args.verbose:
+        print_date(f"done.", incl_date=False)
+    # only print out the required number of lines
+    if args.verbose:
+        print_date(f"info: writing output to {args.output}...")
+    with open(args.output, 'w') as outfile:
+        # write the header
+        if args.verbose:
+            print_date(f"info: writing header for '{args.output}'...")
+        outfile.write("data_\n\n")
+        outfile.write(composite_star_reader.tables['_rln'].header)
+        outfile.write('\n')
+        rows_written = 0
+        # write the data
+        if args.verbose:
+            print_date(f"info: writing {args.rows} of data for '{args.output}'...")
+        row_iterator = iter(composite_star_reader.tables['_rln'])
+        while rows_written < args.rows:
+            row = next(row_iterator)
+            # fix the tomogram path
+            # by default we strip the path and only retain the name
+            outfile.write(str(row.raw_data()))
+            outfile.write('\n')
+            rows_written += 1
+    if args.verbose:
+        print_date(f"info: done.")
+    return 0

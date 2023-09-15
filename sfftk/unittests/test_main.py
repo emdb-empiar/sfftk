@@ -27,17 +27,17 @@ host = 'localhost'
 port = '4064'
 
 
-class TestMain_handle_convert(Py23FixTestCase):
+class TestMainConvert(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestMain_handle_convert, cls).setUpClass()
+        super(TestMainConvert, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
-        super(TestMain_handle_convert, self).setUp()
+        super(TestMainConvert, self).setUp()
 
     def tearDown(self):
-        super(TestMain_handle_convert, self).tearDown()
+        super(TestMainConvert, self).tearDown()
         for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.sff')):
             os.remove(s)
         for s in glob.glob(os.path.join(TEST_DATA_PATH, '*.json')):
@@ -285,13 +285,23 @@ class TestMain_handle_convert(Py23FixTestCase):
         args, configs = cli(
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
             f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
-            f"--config-path {self.config_fn}"
+            f"-o {TEST_DATA_PATH / 'test_data.sff'} --config-path {self.config_fn}"
         )
         Main.handle_convert(args, configs)
         # assertions
-        # self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data.map'), args.particle)
-        # self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data8.star'), args.from_file)
-
+        sff_files = glob.glob(str(TEST_DATA_PATH / 'test_data.sff'))
+        self.assertEqual(len(sff_files), 1)
+        # with --exclude-geometry for JSON
+        args, configs = cli(
+            f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
+            f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"-o {TEST_DATA_PATH / 'test_data.json'} --exclude-geometry --config-path {self.config_fn}"
+        )
+        Main.handle_convert(args, configs)
+        sff_files = glob.glob(str(TEST_DATA_PATH / 'test_data.json'))
+        with open(sff_files[0], 'r') as f:
+            data = json.load(f)
+        self.assertIsNone(data['segment_list'][0]['three_d_volume'])
 
     def test_stl(self):
         """Test that we can convert .stl"""
@@ -432,15 +442,10 @@ class TestMain_handle_convert(Py23FixTestCase):
         self.assertEqual(len(sff_files), 1)
 
 
-"""
-:TODO: view .hff, .json
-"""
-
-
-class TestMain_handle_view(Py23FixTestCase):
+class TestMainView(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestMain_handle_view, cls).setUpClass()
+        super(TestMainView, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_read_am(self):
@@ -533,10 +538,10 @@ class TestMain_handle_view(Py23FixTestCase):
         self.assertEqual(0, Main.handle_view(args, configs))
 
 
-class TestMain_handle_notes(Py23FixTestCase):
+class TestMainNotes(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestMain_handle_notes, cls).setUpClass()
+        super(TestMainNotes, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_list(self):
@@ -570,21 +575,30 @@ class TestMain_handle_notes(Py23FixTestCase):
             self.stderr("Warning: unable to run test on response due to API issue")
 
 
-class TestMain_handle_prep(Py23FixTestCase):
+class TestMainPrep(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestMain_handle_prep, cls).setUpClass()
+        super(TestMainPrep, cls).setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
-        super(TestMain_handle_prep, self).setUp()
+        super(TestMainPrep, self).setUp()
         self.test_data = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
+        self.test_data_star = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2.star')
 
     def tearDown(self):
-        super(TestMain_handle_prep, self).tearDown()
-        os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
+        super(TestMainPrep, self).tearDown()
+        try:
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
+        except FileNotFoundError:
+            pass
 
     def test_ccp4_binmap(self):
         """Test that we can prepare a CCP4 map by binning"""
         args, configs = parse_args('prep binmap -v {}'.format(self.test_data), use_shlex=True)
+        self.assertEqual(0, Main.handle_prep(args, configs))
+
+    def test_starsplit(self):
+        """Test that we can prepare a .star file by splitting"""
+        args, configs = parse_args('prep starsplit -v {}'.format(self.test_data_star), use_shlex=True)
         self.assertEqual(0, Main.handle_prep(args, configs))

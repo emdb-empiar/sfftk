@@ -27,6 +27,7 @@ from ..core.configs import Configs, get_config_file_path, load_configs, \
 from ..core.parser import Parser, parse_args, tool_list, _get_file_extension, _set_subtype_index, cli
 from ..core.prep import bin_map, transform_stl_mesh, construct_transformation_matrix, check_mask_is_binary
 from ..notes import RESOURCE_LIST
+from ..readers import starreader
 
 rw = RandomWords()
 li = LoremIpsum()
@@ -672,18 +673,49 @@ class TestCoreParserPrepStarSplit(Py23FixTestCase):
         self.assertEqual(args.prep_subcommand, 'starsplit')
         self.assertEqual(args.star_file, 'file.star')
         self.assertEqual('file_', args.output_prefix)
-        self.assertEqual('', args.tomogram_path)
+        self.assertEqual('', args.image_path)
         self.assertFalse(args.verbose)
+        self.assertEqual(args.image_name_prefix, '')
 
     def test_output_prefix(self):
         """Test setting output prefix"""
         args, _ = cli('prep starsplit --output-prefix my-silly-prefix file.star')
-        self.assertEqual('my-silly-prefix', args.output_prefix)
+        self.assertEqual('my-silly-prefix_', args.output_prefix)
 
-    def test_tomogram_path(self):
+    def test_image_path(self):
         """Test setting of tomogram path"""
-        args, _ = cli('prep starsplit --tomogram-path /path/to/tomograms file.star')
-        self.assertEqual('/path/to/tomograms', args.tomogram_path)
+        args, _ = cli('prep starsplit --image-path /path/to/tomograms file.star')
+        self.assertEqual('/path/to/tomograms', args.image_path)
+
+    def test_image_name_prefix(self):
+        """Test that we can set the image_name_prefix"""
+        args, _ = cli('prep starsplit --image-name-prefix some_prefix file.star')
+        self.assertEqual('some_prefix', args.image_name_prefix)
+
+
+class TestCoreParserPrepStarCrop(Py23FixTestCase):
+    def test_default(self):
+        """Test default options for `prep starcrop`"""
+        args, _ = cli('prep starcrop file.star')
+        self.assertEqual(args.prep_subcommand, 'starcrop')
+        self.assertEqual(args.star_file, 'file.star')
+        self.assertEqual('file_cropped_100.star', args.output)
+        self.assertEqual(100, args.rows)
+        self.assertEqual('cropped', args.infix)
+
+    def test_rows_validation(self):
+        """Test that we can validate the row option"""
+        rows = _random_integer()
+        args, _ = cli(f"prep starcrop --rows {rows} file.star")
+        self.assertEqual(rows, args.rows)
+        self.assertEqual(65, cli("prep starcrop --rows 0 file.star")[0])
+        self.assertEqual(65, cli("prep starcrop --rows -1 file.star")[0])
+
+    def test_infix(self):
+        """Test a change of infix"""
+        args, _ = cli('prep starcrop --infix something file.star')
+        self.assertEqual('something', args.infix)
+        self.assertEqual('file_something_100.star', args.output)
 
 
 class TestCoreParserConvert(Py23FixTestCase):
@@ -2437,13 +2469,50 @@ class TestPrepMergeMask(unittest.TestCase):
             pass
 
 
-class TestPrepStarSplit(unittest.TestCase):
+class TestPrepStar(unittest.TestCase):
     def test_starsplit(self):
-        """Test that we can split a .star file by image name"""
+        """Test that we can split a .star file by image name
+
+        Splitting a star file by tomogram involves:
+        - making sure that
+
+        """
         args, configs = cli(
-            f"prep starsplit --verbose --output-prefix split "
+            f"prep starsplit --verbose --image-path /path/to/tomograms "
+            f"--image-name-prefix '(?i)\d+_BrnoKrios_arctis_lam\d_pos\d+_chlribo' "
             f"{TEST_DATA_PATH / 'segmentations' / 'test_data9.star'}"
         )
-        print(args)
         from ..core.prep import starsplit
         exit_status = starsplit(args, configs)
+        self.assertEqual(0, exit_status)
+        # check that the files were created
+        self.assertTrue(os.path.exists(
+            TEST_DATA_PATH / "segmentations" / "test_data9_01122021_BrnoKrios_arctis_lam1_pos3_chlribo.star"
+        ))
+        self.assertTrue(os.path.exists(
+            TEST_DATA_PATH / "segmentations" / "test_data9_01122021_BrnoKrios_arctis_lam2_pos22_chlribo.star"
+        ))
+        self.assertTrue(os.path.exists(
+            TEST_DATA_PATH / "segmentations" / "test_data9_01122021_BrnoKrios_arctis_lam3_pos29_chlribo.star"
+        ))
+        # remove the files
+        os.remove(TEST_DATA_PATH / "segmentations" / "test_data9_01122021_BrnoKrios_arctis_lam1_pos3_chlribo.star")
+        os.remove(TEST_DATA_PATH / "segmentations" / "test_data9_01122021_BrnoKrios_arctis_lam2_pos22_chlribo.star")
+        os.remove(TEST_DATA_PATH / "segmentations" / "test_data9_01122021_BrnoKrios_arctis_lam3_pos29_chlribo.star")
+
+    def test_starcrop(self):
+        """Test that we can crop a star file by specifying the number of rows to keep"""
+        args, configs = cli(
+            f"prep starcrop --verbose --rows 10 {TEST_DATA_PATH / 'segmentations' / 'test_data10.star'} --output my.star"
+        )
+        from ..core.prep import starcrop
+        exit_status = starcrop(args, configs)
+        self.assertEqual(0, exit_status)
+        # check that the file was created
+        self.assertTrue(os.path.exists("my.star"))
+        # check that the file has the correct number of rows
+        star_reader = starreader.RelionStarReader()
+        star_reader.parse("my.star")
+        self.assertEqual(10, len(star_reader.tables['_rln']))
+        # remove the file
+        os.remove("my.star")
