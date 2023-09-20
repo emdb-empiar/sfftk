@@ -522,7 +522,7 @@ class TestReadersStarReader(Py23FixTestCase):
 
     def test_relion_header(self):
         """Test that we have a header attribute to create the field names on a dime"""
-        relion_star_reader = starreader.RelionStarReader()
+        relion_star_reader = starreader.RelionStarReader(image_name_field='_rlnTomoName')
         relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data8.star')
         self.assertTrue(hasattr(relion_star_reader.tables['_rln'], 'header'))
         # each table should have a `header` attribute which can recreate the table header
@@ -542,7 +542,7 @@ _rlnCoordinateZ
 _rlnAngleRot
 _rlnAngleTilt
 _rlnAnglePsi
-_rlnImageName
+_rlnTomoName
 _rlnCtfImage
 _rlnRandomSubset
 _rlnPixelSize
@@ -555,7 +555,7 @@ _rlnMicrographName"""
         """Test the constraints for a relion star file"""
         relion_star_reader = starreader.RelionStarReader()
         # test that all required columns are present
-        with self.assertRaisesRegex(ValueError, r".*Loop does not contain.*"):
+        with self.assertRaisesRegex(ValueError, r".*Loop header is missing.*"):
             relion_star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data5.star')
 
     def test_relion_reader_duplicate_table_validation(self):

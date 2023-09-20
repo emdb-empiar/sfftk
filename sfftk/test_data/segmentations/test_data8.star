@@ -10,7 +10,7 @@ _rlnCoordinateZ #5
 _rlnAngleRot #6
 _rlnAngleTilt #7
 _rlnAnglePsi #8
-_rlnImageName #9
+_rlnTomoName #9
 _rlnCtfImage #10
 _rlnRandomSubset #11
 _rlnPixelSize #12

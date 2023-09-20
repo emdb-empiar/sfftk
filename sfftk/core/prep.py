@@ -564,6 +564,9 @@ class RelionCompositeStarReader(RelionStarReader):
     """Relion composite star file reader"""
     maximum_tomograms = None
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
 
 def starsplit(args, configs):
     """Split a star file into multiple star files based on the given column
@@ -575,7 +578,7 @@ def starsplit(args, configs):
     :return: exit status
     :rtype: int
     """
-    composite_star_reader = RelionCompositeStarReader()
+    composite_star_reader = RelionCompositeStarReader(image_name_field=args.image_name_field)
     if args.verbose:
         print_date(f"info: parsing {args.star_file}...", newline=False)
     composite_star_reader.parse(args.star_file)
@@ -626,7 +629,7 @@ def starcrop(args, configs):
     :return: exit status
     :rtype: int
     """
-    composite_star_reader = RelionCompositeStarReader()
+    composite_star_reader = RelionCompositeStarReader(image_name_field=args.image_name_field)
     if args.verbose:
         print_date(f"info: parsing {args.star_file}...", newline=False)
     composite_star_reader.parse(args.star_file)

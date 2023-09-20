@@ -416,6 +416,11 @@ starsplit_prep_parser.add_argument(
     default="",
     help="in many star files, the <rlnImageName> values will be a local path; the actual image name (a .mrc file) may contain additional characters that makes it difficult to categorise the tomograms e.g. 'path/my_tomogram1_001.mrc', 'path/my_tomogram1_002.mrc', 'path/my_tomogram2_001.mrc'. In this example, we have two tomograms ('my_tomogram1' and 'my_tomogram2') but the additional characters ('_001', '_002') make it difficult to categorise the tomograms. This option allows you to specify a prefix to remove from the <rlnImageName> values. You can also use a REGEX in quotes e.g. 'my_tomogram\d'. [default: '']"
 )
+starsplit_prep_parser.add_argument(
+    '--image-name-field',
+    default='_rlnImageName',
+    help="the field in the star file that contains the image name [default: '_rlnImageName']"
+)
 
 # =========================================================================
 # prep: starcrop
@@ -447,6 +452,11 @@ starcrop_prep_parser.add_argument(
     default=100,
     type=int,
     help="the number of rows to keep [default: 100]"
+)
+starcrop_prep_parser.add_argument(
+    '--image-name-field',
+    default='_rlnImageName',
+    help="the field in the star file that contains the image name [default: '_rlnImageName']"
 )
 # =========================================================================
 # convert subparser
@@ -490,6 +500,11 @@ multi_or_label_mutex_parser.add_argument(
 multi_or_label_mutex_parser.add_argument(
     '--particle',
     help="the result of subtomogram averaging (particle) in CCP4 format (.mrc, .map, .rec)"
+)
+convert_parser.add_argument(
+    '--image-name-field',
+    default='_rlnImageName',
+    help="the field in the star file that contains the image name [default: '_rlnImageName']"
 )
 
 # =========================================================================
@@ -1385,7 +1400,7 @@ def parse_args(_args, use_shlex=False):
             if not _masks_have_mode_zero(args):
                 print_date(f"error: mode must be zero (0); please run `sff prep binmap` first on all masks")
                 return 65, configs
-        # splitstar
+        # starsplit
         elif args.prep_subcommand == 'starsplit':
             if args.output_prefix is None:
                 args.output_prefix = os.path.splitext(args.star_file)[0] + "_"

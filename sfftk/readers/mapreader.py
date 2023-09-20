@@ -33,7 +33,7 @@ class Map(object):
         self._fn = fn
         self._inverted = False
         with open(fn, 'rb') as f:
-            status = self.read(f, header_only=header_only, *args, **kwargs)
+            status = self.read(f, header_only=header_only)
         # 0 is good
         assert status == 0
 

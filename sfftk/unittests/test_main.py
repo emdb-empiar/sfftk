@@ -7,6 +7,7 @@ import glob
 import json
 import os
 import sys
+import unittest
 from io import StringIO
 
 from sfftkrw import SFFSegmentation, SFFTransformationMatrix
@@ -27,7 +28,7 @@ host = 'localhost'
 port = '4064'
 
 
-class TestMainConvert(Py23FixTestCase):
+class TestMainConvert(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestMainConvert, cls).setUpClass()
@@ -282,9 +283,11 @@ class TestMainConvert(Py23FixTestCase):
 
     def test_star(self):
         """Test convertion of .star file"""
+        from ..readers import starreader
         args, configs = cli(
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
             f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"--image-name-field _rlnTomoName "
             f"-o {TEST_DATA_PATH / 'test_data.sff'} --config-path {self.config_fn}"
         )
         Main.handle_convert(args, configs)
@@ -295,6 +298,7 @@ class TestMainConvert(Py23FixTestCase):
         args, configs = cli(
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
             f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"--image-name-field _rlnTomoName "
             f"-o {TEST_DATA_PATH / 'test_data.json'} --exclude-geometry --config-path {self.config_fn}"
         )
         Main.handle_convert(args, configs)
@@ -575,30 +579,38 @@ class TestMainNotes(Py23FixTestCase):
             self.stderr("Warning: unable to run test on response due to API issue")
 
 
-class TestMainPrep(Py23FixTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super(TestMainPrep, cls).setUpClass()
-        cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
-
-    def setUp(self):
-        super(TestMainPrep, self).setUp()
-        self.test_data = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data.map')
-        self.test_data_star = os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2.star')
-
-    def tearDown(self):
-        super(TestMainPrep, self).tearDown()
+class TestMainPrep(unittest.TestCase):
+    def test_ccp4_binmap(self):
+        """Test that we can prepare a CCP4 map by binning"""
+        args, configs = parse_args(f"prep binmap -v {TEST_DATA_PATH / 'segmentations' / 'test_data.map'}",
+                                   use_shlex=True)
+        self.assertEqual(0, Main.handle_prep(args, configs))
         try:
             os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data_prep.map'))
         except FileNotFoundError:
             pass
 
-    def test_ccp4_binmap(self):
-        """Test that we can prepare a CCP4 map by binning"""
-        args, configs = parse_args('prep binmap -v {}'.format(self.test_data), use_shlex=True)
-        self.assertEqual(0, Main.handle_prep(args, configs))
-
     def test_starsplit(self):
         """Test that we can prepare a .star file by splitting"""
-        args, configs = parse_args('prep starsplit -v {}'.format(self.test_data_star), use_shlex=True)
+        args, configs = parse_args(f"prep starsplit -v {TEST_DATA_PATH / 'segmentations' / 'test_data2.star'}",
+                                   use_shlex=True)
         self.assertEqual(0, Main.handle_prep(args, configs))
+        try:
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_file0_1.96A.star'))
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_file1_1.96A.star'))
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_file2_1.96A.star'))
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_file3_1.96A.star'))
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_file4_1.96A.star'))
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_file5_1.96A.star'))
+        except FileNotFoundError:
+            pass
+
+    def test_starcrop(self):
+        """Test that we can crop a .star file"""
+        args, configs = parse_args(f"prep starcrop -v {TEST_DATA_PATH / 'segmentations' / 'test_data2.star'} --rows 3 ",
+                                   use_shlex=True)
+        self.assertEqual(0, Main.handle_prep(args, configs))
+        try:
+            os.remove(os.path.join(TEST_DATA_PATH, 'segmentations', 'test_data2_cropped.star'))
+        except FileNotFoundError:
+            pass

@@ -103,7 +103,10 @@ class TestFormats(Py23FixTestCase):
         if not hasattr(self, 'star_file'):
             self.star_file = os.path.join(self.segmentations_path, 'test_data8.star')
             self.particle_file = os.path.join(self.segmentations_path, 'test_data.map')
-            self.star_segmentation = star.RelionStarSegmentation(self.star_file, self.particle_file)
+            self.star_segmentation = star.RelionStarSegmentation(
+                self.star_file, self.particle_file,
+                image_name_field='_rlnTomoName'
+            )
 
     def read_stl(self):
         """Read .stl files"""
@@ -486,7 +489,10 @@ class TestFormats(Py23FixTestCase):
     def test_star_convert(self):
         """Convert a segmentation from a RELION .star file to an SFFSegmentation object"""
         self.read_star()
-        args, configs = parse_args(f"convert {self.star_file} --details 'Something interesting'", use_shlex=True)
+        args, configs = parse_args(
+            f"convert {self.star_file} --image-name-field _rlnTomoName --details 'Something interesting'",
+            use_shlex=True
+        )
         seg = self.star_segmentation.convert(details=args.details)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)

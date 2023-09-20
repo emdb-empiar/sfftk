@@ -352,7 +352,7 @@ class StarTable:
     def __str__(self):
         """Return a representation of the table"""
         string = f"<StarTable: {self.name}> with {len(self)} rows and {len(self.columns)} columns"
-        string += f"\nColumns:\n"
+        string += "\nColumns:\n"
         for column in self.columns:
             string += f"\t* {column}\n"
         return string
@@ -455,9 +455,11 @@ class StarReader:
         if not self.required_columns:
             return
         common_columns = self.required_columns.intersection(loop.tags)
-        if common_columns != self.required_columns:
+        if len(common_columns) < 7:
             raise ValueError(
-                f"Loop does not contain required column(s): {self.required_columns.difference(common_columns)}")
+                f"Loop header is missing required column(s): {self.required_columns} vs. {common_columns}; "
+                f"please use --image-name-field to specify the column containing the image name"
+            )
 
     @staticmethod
     def _gemmi_infer_name(obj):
@@ -503,11 +505,15 @@ class RelionStarReader(StarReader):
         '_rlnAngleRot',
         '_rlnAngleTilt',
         '_rlnAnglePsi',
-        '_rlnImageName',
         '_rlnPixelSize',
     }
     maximum_tables = 1
     maximum_tomograms = 1
+
+    def __init__(self, image_name_field='_rlnImageName', *args, **kwargs):
+        """Initialise the reader"""
+        super().__init__()
+        self.required_columns.add(image_name_field)
 
 
 def get_data(fn, *args, **kwargs):
@@ -518,6 +524,6 @@ def get_data(fn, *args, **kwargs):
     star_reader = star_class()
     star_reader.parse(fn)
     """
-    relion_star_reader = RelionStarReader()
+    relion_star_reader = RelionStarReader(*args, **kwargs)
     relion_star_reader.parse(fn)
     return relion_star_reader

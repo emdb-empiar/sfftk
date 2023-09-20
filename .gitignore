@@ -136,3 +136,4 @@ sfftk/test_data/test_data.hff
 /test_notes.sh
 /simpleparse/
 /.github/workflows/python-package-local.yml
+/experiments/

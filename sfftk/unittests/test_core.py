@@ -675,7 +675,8 @@ class TestCoreParserPrepStarSplit(Py23FixTestCase):
         self.assertEqual('file_', args.output_prefix)
         self.assertEqual('', args.image_path)
         self.assertFalse(args.verbose)
-        self.assertEqual(args.image_name_prefix, '')
+        self.assertEqual('', args.image_name_prefix)
+        self.assertEqual('_rlnImageName', args.image_name_field)
 
     def test_output_prefix(self):
         """Test setting output prefix"""
@@ -702,6 +703,7 @@ class TestCoreParserPrepStarCrop(Py23FixTestCase):
         self.assertEqual('file_cropped_100.star', args.output)
         self.assertEqual(100, args.rows)
         self.assertEqual('cropped', args.infix)
+        self.assertEqual('_rlnImageName', args.image_name_field)
 
     def test_rows_validation(self):
         """Test that we can validate the row option"""
