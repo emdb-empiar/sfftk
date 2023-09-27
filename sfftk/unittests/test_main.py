@@ -286,7 +286,7 @@ class TestMainConvert(unittest.TestCase):
         from ..readers import starreader
         args, configs = cli(
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
-            f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"--subtomogram-average {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
             f"--image-name-field _rlnTomoName "
             f"-o {TEST_DATA_PATH / 'test_data.sff'} --config-path {self.config_fn}"
         )
@@ -297,7 +297,7 @@ class TestMainConvert(unittest.TestCase):
         # with --exclude-geometry for JSON
         args, configs = cli(
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
-            f"--particle {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"--subtomogram-average {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
             f"--image-name-field _rlnTomoName "
             f"-o {TEST_DATA_PATH / 'test_data.json'} --exclude-geometry --config-path {self.config_fn}"
         )

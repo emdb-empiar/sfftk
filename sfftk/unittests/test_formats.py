@@ -11,9 +11,9 @@ import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw.unittests import Py23FixTestCase
 
 from . import TEST_DATA_PATH, BASE_DIR
-# from .. import schema
 from ..core.parser import parse_args, cli
 from ..formats import am, seg, map, mod, stl, surf, survos, ilastik, star
+from ..readers import mapreader
 
 __author__ = "Paul K. Korir, PhD"
 __email__ = "pkorir@ebi.ac.uk, paul.korir@gmail.com"
@@ -103,6 +103,7 @@ class TestFormats(Py23FixTestCase):
         if not hasattr(self, 'star_file'):
             self.star_file = os.path.join(self.segmentations_path, 'test_data8.star')
             self.particle_file = os.path.join(self.segmentations_path, 'test_data.map')
+            self.image_file = os.path.join(self.segmentations_path, 'test_data.map')
             self.star_segmentation = star.RelionStarSegmentation(
                 self.star_file, self.particle_file,
                 image_name_field='_rlnTomoName'
@@ -490,37 +491,47 @@ class TestFormats(Py23FixTestCase):
         """Convert a segmentation from a RELION .star file to an SFFSegmentation object"""
         self.read_star()
         args, configs = parse_args(
-            f"convert {self.star_file} --image-name-field _rlnTomoName --details 'Something interesting'",
+            f"convert {self.star_file} --image {self.image_file} --image-name-field _rlnTomoName "
+            f"--details 'Something interesting' --subtomogram-average {self.particle_file}",
             use_shlex=True
         )
-        seg = self.star_segmentation.convert(details=args.details)
+        transform = mapreader.compute_transform(args.image)
+        seg = self.star_segmentation.convert(details=args.details, transform=transform)
         # assertions
         self.assertIsInstance(seg, schema.SFFSegmentation)
         self.assertEqual("RELION Subtomogram Average", seg.name)
         self.assertEqual(seg.version, self.schema_version)
         self.assertEqual(seg.software_list[0].name, 'RELION')
-        self.assertEqual("three_d_volume", seg.primary_descriptor)
+        self.assertEqual("shape_primitive_list", seg.primary_descriptor)
         self.assertEqual(seg.transform_list[0].id, 0)
-        self.assertEqual('1 0 0 0 0 1 0 0 0 0 1 0', seg.transform_list[0].data)
+        self.assertEqual(
+            '18.20999987022425 0.0 0.0 0.0 0.0 18.209998684928305 0.0 0.0 0.0 0.0 '
+            '18.209998762103872 0.0',
+            seg.transform_list[0].data
+        )
         self.assertGreaterEqual(len(seg.transform_list), 1)
         self.assertEqual("Something interesting", seg.details)
-        segment = seg.segment_list[0]
+        segment = seg.segment_list[0]  # there is only one segment anyway
         self.assertIsNotNone(segment.biological_annotation)
         self.assertIsNotNone(segment.biological_annotation.name)
         self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
         self.assertIsNotNone(segment.colour)
         self.assertEqual(0, len(segment.mesh_list))
-        vol = segment.three_d_volume
-        self.assertEqual(0, vol.lattice_id)
-        self.assertEqual(1.0, vol.value)
-        self.assertEqual(1, vol.transform_id)
+        # lattice
         lattice = seg.lattice_list[0]
+        self.assertIsInstance(lattice, schema.SFFLattice)
         self.assertEqual(0, lattice.id)
         self.assertEqual('float32', lattice.mode)
         self.assertEqual('little', lattice.endianness)
         self.assertIsInstance(lattice.size, schema.SFFVolumeStructure)
         self.assertIsInstance(lattice.start, schema.SFFVolumeIndex)
         self.assertIsNotNone(lattice.data)
+        sta = segment.shape_primitive_list[0]
+        self.assertIsInstance(sta, schema.SFFSubtomogramAverage)
+        self.assertEqual(0, sta.id)
+        self.assertEqual(lattice.id, sta.lattice_id)
+        self.assertEqual(1.0, sta.value)
+        self.assertEqual(1, sta.transform_id)
 
     def test_stl_convert(self):
         """Convert a segmentation from an Stereo Lithography file to an SFFSegmentation object"""

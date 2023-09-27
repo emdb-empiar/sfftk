@@ -29,28 +29,28 @@ class RelionStarHeader(mapformat.MaskHeader):
 class RelionStarSegment(Segment):
     """Class representing a Relion STAR file segment"""
 
-    def __init__(self, particle: starreader.StarTableRow, *args, **kwargs):
-        self._particle = particle
-
-    @property
-    def transformation_matrix(self):
-        """Return the transformation matrix"""
-        return self._particle.to_affine_transform()
+    def __init__(self, particles: starreader.StarTable, *args, **kwargs):
+        self._particles = particles
 
     def convert(self, **kwargs):
         """Convert the segment to an EMDB-SFF segment"""
         segment = schema.SFFSegment()
-        # transform
-        transform = schema.SFFTransformationMatrix.from_array(self.transformation_matrix)
         # metadata
         segment.biological_annotation = schema.SFFBiologicalAnnotation()
-        segment.biological_annotation.name = f"Particle #{segment.id}"
-        segment.three_d_volume = schema.SFFThreeDVolume(
-            lattice_id=0,
-            value=1.0,
-            transform_id=transform.id
-        )
-        return segment, transform
+        segment.biological_annotation.name = "Particle refined using subtomogram averaging"
+        segment.colour = schema.SFFRGBA(random_colour=True)
+        segment.shape_primitive_list = schema.SFFShapePrimitiveList()
+        transforms = schema.SFFTransformList()
+        for id, particle in enumerate(self._particles, start=1):
+            transform = schema.SFFTransformationMatrix.from_array(particle.to_affine_transform(), id=id)
+            shape = schema.SFFSubtomogramAverage(
+                lattice_id=kwargs.get('lattice_id'),
+                value=1.0,  # todo: capture the isosurface value e.g. from the CLI,
+                transform_id=transform.id,
+            )
+            segment.shape_primitive_list.append(shape)
+            transforms.append(transform)
+        return segment, transforms
 
 
 class RelionStarSegmentation(Segmentation):
@@ -62,7 +62,7 @@ class RelionStarSegmentation(Segmentation):
         self._particle_fn = particle_fn
         self._segmentation = starreader.get_data(self._fn, *args, **kwargs)
         self._density = mapreader.get_data(self._particle_fn, *args, **kwargs)
-        self._segments = [RelionStarSegment(particle) for particle in self._segmentation.tables['_rln']]
+        self._segments = [RelionStarSegment(self._segmentation.tables['_rln'])]
 
     @property
     def header(self, ):
@@ -80,7 +80,7 @@ class RelionStarSegmentation(Segmentation):
         segmentation = schema.SFFSegmentation()
         # metadata
         segmentation.name = name if name is not None else "RELION Subtomogram Average"
-        segmentation.primary_descriptor = "three_d_volume"
+        segmentation.primary_descriptor = "shape_primitive_list"
         segmentation.software_list = schema.SFFSoftwareList()
         segmentation.software_list.append(
             schema.SFFSoftware(
@@ -93,44 +93,37 @@ class RelionStarSegmentation(Segmentation):
         # transforms
         segmentation.transform_list = schema.SFFTransformList()
         if transform is not None:
+            _transform = schema.SFFTransformationMatrix.from_array(transform)
             segmentation.transform_list.append(
-                schema.SFFTransformationMatrix.from_array(transform)
+                _transform
             )
         else:
+            _transform = schema.SFFTransformationMatrix.from_array(numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], ]))
             segmentation.transform_list.append(
-                schema.SFFTransformationMatrix.from_array(
-                    numpy.array([
-                        [1, 0, 0, 0],
-                        [0, 1, 0, 0],
-                        [0, 0, 1, 0],
-                    ])
-                )
+                _transform
             )
-        # now load the particles
-        segmentation.segment_list = schema.SFFSegmentList()
-        segment_colour = schema.SFFRGBA(random_colour=True)  # one colour for all segments
-        for segment in self.segments:
-            _segment, _transform = segment.convert()
-            _segment.colour = segment_colour
-            segmentation.transform_list.append(_transform)
-            segmentation.segment_list.append(_segment)
-        # lattice
+        # lattice: we need to know the lattice because we reference it in the segment
         segmentation.lattice_list = schema.SFFLatticeList()
-        segmentation.lattice_list.append(
-            schema.SFFLattice(
-                mode=self.header.mode,
-                endinaness=self.header.endianness,
-                size=schema.SFFVolumeStructure(
-                    cols=self.header.cols,
-                    rows=self.header.rows,
-                    sections=self.header.sections
-                ),
-                start=schema.SFFVolumeIndex(
-                    cols=self.header.start_cols,
-                    rows=self.header.start_rows,
-                    sections=self.header.start_sections
-                ),
-                data=self._density.voxels
-            )
+        lattice = schema.SFFLattice(
+            mode=self.header.mode,
+            endinaness=self.header.endianness,
+            size=schema.SFFVolumeStructure(
+                cols=self.header.cols,
+                rows=self.header.rows,
+                sections=self.header.sections
+            ),
+            start=schema.SFFVolumeIndex(
+                cols=self.header.start_cols,
+                rows=self.header.start_rows,
+                sections=self.header.start_sections
+            ),
+            data=self._density.voxels
         )
+        segmentation.lattice_list.append(lattice)
+        segmentation.segment_list = schema.SFFSegmentList()
+        for segment in self.segments:
+            _segment, _transforms = segment.convert(lattice_id=lattice.id)
+            segmentation.segment_list.append(_segment)
+            segmentation.transform_list.extend(_transforms)
+        segmentation.details = details
         return segmentation

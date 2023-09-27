@@ -498,8 +498,8 @@ multi_or_label_mutex_parser.add_argument(
          "2) the hierarchical relationship between labels (key: 'label_tree')"
 )
 multi_or_label_mutex_parser.add_argument(
-    '--particle',
-    help="the result of subtomogram averaging (particle) in CCP4 format (.mrc, .map, .rec)"
+    '--subtomogram-average',
+    help="the result of subtomogram averaging in CCP4 format (.mrc, .map, .rec)"
 )
 convert_parser.add_argument(
     '--image-name-field',
