@@ -28,12 +28,12 @@
     <segment_list>
         <segment id="15559" parent_id="0">
             <biological_annotation>
-                <name>fire fakes unit</name>
-                <description>Eget consequatduis dictumst auctor venenatis mauris maecenas, enimaliquam est parturient sanctus muspellentesque vitae libero purusvestibulum. Dolores porta dui pulvinarvestibulum feugiat, iaculis condimentum nostra habitasse facilisicurabitur imperdiet natoque ligula fusce voluptua.</description>
+                <name>costs decay systems</name>
+                <description>Euismod sodales nullamauris, condimentum nisised ad kasd nunccurabitur. Illum pellentesque eos diaminteger donec quammaecenas stet, elitnunc libero fermentumfusce nullasuspendisse vitae viverra.</description>
                 <external_references>
-                    <ref id="0" resource="supervision" url="managers" accession="decontamination"/>
+                    <ref id="0" resource="broadcast" url="types" accession="signs"/>
                 </external_references>
-                <number_of_instances>101</number_of_instances>
+                <number_of_instances>935</number_of_instances>
             </biological_annotation>
             <colour>
                 <red>0.921817600727081</red>
