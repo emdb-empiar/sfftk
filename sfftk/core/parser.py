@@ -428,7 +428,7 @@ starsplit_prep_parser.add_argument(
 starcrop_prep_parser = prep_subparsers.add_parser(
     'starcrop',
     description='Truncate a composite star file to the specified number of rows (default: 100)',
-    help='split a composite star file into individual star files',
+    help='truncate a star file to have as many rows as specified (exluding header)',
 )
 add_args(starcrop_prep_parser, config_path)
 add_args(starcrop_prep_parser, shipped_configs)
