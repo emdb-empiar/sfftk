@@ -164,7 +164,7 @@ class TestNotesModifyExternalReference(Py23FixTestCase):
 class TestNotesFindSearchResource(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestNotesFindSearchResource, cls).setUpClass()
+        super().setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_unknown_resource(self):
@@ -1246,14 +1246,14 @@ class TestNotesFindTableField(Py23FixTestCase):
         self.assertIsInstance(find.TableField('my-field', text='t', justify='center'), find.TableField)
 
 
-class TestNotes_view(Py23FixTestCase):
+class TestNotesView(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestNotes_view, cls).setUpClass()
+        super().setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def setUp(self):
-        super(TestNotes_view, self).setUp()
+        super().setUp()
         self.segment_id = 15559
         self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
 
@@ -1315,10 +1315,10 @@ class TestNotes_view(Py23FixTestCase):
         self.assertEqual(status, 0)
 
 
-class TestNotes_modify(Py23FixTestCase):
+class TestNotesModify(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestNotes_modify, cls).setUpClass()
+        super().setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
         cls.sff_file = None
         cls.output = None
@@ -1326,7 +1326,7 @@ class TestNotes_modify(Py23FixTestCase):
 
     # test filetypeA to filetypeB
     def setUp(self):
-        super(TestNotes_modify, self).setUp()
+        super().setUp()
         # remove any temporary files
         args, configs = parse_args("notes trash @ --config-path {config}".format(
             config=self.config_fn), use_shlex=True
@@ -1335,7 +1335,7 @@ class TestNotes_modify(Py23FixTestCase):
         self.segment_id = 15559
 
     def tearDown(self):
-        super(TestNotes_modify, self).tearDown()
+        super().tearDown()
         # remove any temporary files
         args, configs = parse_args("notes trash @ --config-path {config}".format(
             config=self.config_fn), use_shlex=True
@@ -1794,16 +1794,16 @@ class TestNotes_modify(Py23FixTestCase):
         os.remove(annotated_sff_file)
 
 
-class TestNotes_modify_sff(TestNotes_modify):
+class TestNotesModifySFF(TestNotesModify):
     def setUp(self):
-        super(TestNotes_modify_sff, self).setUp()
+        super().setUp()
         self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.sff')
         self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'other_emd_1014.sff')
         self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'output_emd_1181.sff')
         self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'annotated_emd_1014.sff')
 
     def tearDown(self):
-        super(TestNotes_modify_sff, self).tearDown()
+        super().tearDown()
         seg = schema.SFFSegmentation.from_file(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
@@ -1811,43 +1811,43 @@ class TestNotes_modify_sff(TestNotes_modify):
         seg.export(self.sff_file)
 
     def test_add_global(self):
-        super(TestNotes_modify_sff, self)._test_add_global()
+        super()._test_add_global()
 
     def test_add(self):
-        super(TestNotes_modify_sff, self)._test_add()
+        super()._test_add()
 
     def test_edit_global(self):
-        super(TestNotes_modify_sff, self)._test_edit_global()
+        super()._test_edit_global()
 
     def test_edit(self):
-        super(TestNotes_modify_sff, self)._test_edit()
+        super()._test_edit()
 
     def test_del_global(self):
-        super(TestNotes_modify_sff, self)._test_del_global()
+        super()._test_del_global()
 
     def test_del(self):
-        super(TestNotes_modify_sff, self)._test_del()
+        super()._test_del()
 
     def test_merge(self):
-        super(TestNotes_modify_sff, self)._test_merge()
+        super()._test_merge()
 
     def test_clear(self):
-        super(TestNotes_modify_sff, self)._test_clear()
+        super()._test_clear()
 
     def test_copy(self):
-        super(TestNotes_modify_sff, self)._test_copy()
+        super()._test_copy()
 
 
-class TestNotes_modify_hff(TestNotes_modify):
+class TestNotesModifyHFF(TestNotesModify):
     def setUp(self):
-        super(TestNotes_modify_hff, self).setUp()
+        super().setUp()
         self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.hff')
         self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'other_emd_1014.hff')
         self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'output_emd_1014.hff')
         self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'annotated_emd_1014.hff')
 
     def tearDown(self):
-        super(TestNotes_modify_hff, self).tearDown()
+        super().tearDown()
         seg = schema.SFFSegmentation.from_file(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
@@ -1855,40 +1855,40 @@ class TestNotes_modify_hff(TestNotes_modify):
         seg.export(self.sff_file)
 
     def test_add_global(self):
-        super(TestNotes_modify_hff, self)._test_add_global()
+        super()._test_add_global()
 
     def test_add(self):
-        super(TestNotes_modify_hff, self)._test_add()
+        super()._test_add()
 
     def test_edit_global(self):
-        super(TestNotes_modify_hff, self)._test_edit_global()
+        super()._test_edit_global()
 
     def test_edit(self):
-        super(TestNotes_modify_hff, self)._test_edit()
+        super()._test_edit()
 
     def _test_del_global(self):
-        super(TestNotes_modify_hff, self)._test_del_global()
+        super()._test_del_global()
 
     def test_del(self):
-        super(TestNotes_modify_hff, self)._test_del()
+        super()._test_del()
 
     def test_clear(self):
-        super(TestNotes_modify_hff, self)._test_clear()
+        super()._test_clear()
 
     def test_copy(self):
-        super(TestNotes_modify_hff, self)._test_copy()
+        super()._test_copy()
 
 
-class TestNotes_modify_json(TestNotes_modify):
+class TestNotesModifyJSON(TestNotesModify):
     def setUp(self):
-        super(TestNotes_modify_json, self).setUp()
+        super().setUp()
         self.sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'emd_1014.json')
         self.other = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'other_emd_1014.json')
         self.output = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'output_emd_1181.json')
         self.annotated_sff_file = os.path.join(TEST_DATA_PATH, 'sff', 'v0.8', 'annotated_emd_1014.json')
 
     def tearDown(self):
-        super(TestNotes_modify_json, self).tearDown()
+        super().tearDown()
         seg = schema.SFFSegmentation.from_file(self.sff_file)
         # remove all annotations
         for segment in seg.segments:
@@ -1896,37 +1896,37 @@ class TestNotes_modify_json(TestNotes_modify):
         seg.export(self.sff_file)
 
     def test_add_global(self):
-        super(TestNotes_modify_json, self)._test_add_global()
+        super()._test_add_global()
 
     def test_add(self):
-        super(TestNotes_modify_json, self)._test_add()
+        super()._test_add()
 
     def test_edit_global(self):
-        super(TestNotes_modify_json, self)._test_edit_global()
+        super()._test_edit_global()
 
     def test_edit(self):
-        super(TestNotes_modify_json, self)._test_edit()
+        super()._test_edit()
 
     def test_del_global(self):
-        super(TestNotes_modify_json, self)._test_del_global()
+        super()._test_del_global()
 
     def test_del(self):
-        super(TestNotes_modify_json, self)._test_del()
+        super()._test_del()
 
     def test_merge(self):
-        super(TestNotes_modify_json, self)._test_merge()
+        super()._test_merge()
 
     def test_clear(self):
-        super(TestNotes_modify_json, self)._test_clear()
+        super()._test_clear()
 
     def test_copy(self):
-        super(TestNotes_modify_json, self)._test_copy()
+        super()._test_copy()
 
 
 class TestNotesClasses(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestNotesClasses, cls).setUpClass()
+        super().setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_SimpleNote(self):
@@ -2321,10 +2321,10 @@ class TestNotesClasses(Py23FixTestCase):
         self.assertEqual(len(segment_del.biological_annotation.external_references), 0)
 
 
-class TestNotes_find(Py23FixTestCase):
+class TestNotesFind(Py23FixTestCase):
     @classmethod
     def setUpClass(cls):
-        super(TestNotes_find, cls).setUpClass()
+        super().setUpClass()
         cls.config_fn = os.path.join(BASE_DIR, 'sff.conf')
 
     def test_search_default(self):
@@ -2409,6 +2409,72 @@ class TestNotes_find(Py23FixTestCase):
         else:
             self.stderr(
                 "Warning: unable to run test on response due to API issue to {url}".format(url=resource.get_url()))
+
+    def test_display_csv(self):
+        """Test that we can display search results as CSV"""
+        args, configs = parse_args(
+            "notes search 'mitochondria' --as-text --config-path {}".format(self.config_fn),
+            use_shlex=True
+        )
+        resource = find.SearchResource(args, configs)
+        results = str(resource.search(as_text=args.as_text)).split('\n')
+        # header
+        self.assertIsInstance(results[0], str)
+        self.assertEqual(
+            'index\tlabel\tresource\turl\taccession\tdescription',
+            results[0]
+        )
+        # rows
+        self.assertIsInstance(results[1], str)
+        result_row = results[1].split('\t')
+        self.assertEqual('1', result_row[0])  # first column of the first row should be '1'
+        self.assertEqual(11, len(results))  # 11 rows by default including the header
+
+    def test_display_csv_rows_start(self):
+        """Test that the arguments --rows and --start work as expected"""
+        args, configs = parse_args(
+            "notes search 'mitochondria' --as-text --rows 3 --start 27 --config-path {}".format(self.config_fn),
+            use_shlex=True
+        )
+        resource = find.SearchResource(args, configs)
+        results = str(resource.search(as_text=args.as_text)).split('\n')
+        # header
+        self.assertIsInstance(results[0], str)
+        self.assertEqual(
+            'index\tlabel\tresource\turl\taccession\tdescription',
+            results[0]
+        )
+        # rows
+        self.assertIsInstance(results[1], str)
+        result_row = results[1].split('\t')
+        self.assertEqual('27', result_row[0])  # first column of the first row should be '1'
+        self.assertEqual(4, len(results))  # 11 rows by default including the header
+
+    def test_filter_csv_rows(self):
+        """Test that we can filter the results by rows"""
+        args, configs = parse_args(
+            "notes search 'mitochondria' --as-text --filter-rows 3 5 7 9 --no-header --config-path {}".format(
+                self.config_fn),
+            use_shlex=True
+        )
+        resource = find.SearchResource(args, configs)
+        results = str(resource.search(as_text=args.as_text)).split('\n')
+        print(results)
+        # no header
+        self.assertIsInstance(results[0], str)
+        self.assertNotEqual(
+            'index,label,resource,url,accession,description',
+            results[0]
+        )
+        # rows
+        self.assertIsInstance(results[0], str)
+        self.assertEqual('3', results[0].split('\t')[0])  # first column of the first row should be '3'
+        self.assertEqual('5', results[1].split('\t')[0])  # first column of the second row should be '5'
+        self.assertEqual('7', results[2].split('\t')[0])  # first column of the third row should be '7'
+        self.assertEqual('9', results[3].split('\t')[0])  # first column of the fourth row should be '9'
+        self.assertEqual(4, len(results))  # 4 rows only
+        # validation
+        # don't ask for rows that don't exist: refer to --start and --rows
 
 
 if __name__ == "__main__":

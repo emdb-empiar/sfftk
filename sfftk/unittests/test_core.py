@@ -1140,6 +1140,9 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
         self.assertTrue(args.list_ontologies)
         self.assertTrue(args.short_list_ontologies)
         self.assertEqual(args.search_term, "mitochondria")
+        self.assertFalse(args.as_text)
+        self.assertFalse(args.no_header)
+        self.assertIsNone(args.filter_rows)
 
     def test_search_invalid_start(self):
         """Test that we catch an invalid start"""
@@ -1162,6 +1165,32 @@ class TestCoreParserNotesReadOnly(Py23FixTestCase):
             args, _ = parse_args(
                 'notes search "term" --resource {} --config-path {}'.format(R, self.config_fn), use_shlex=True)
             self.assertEqual(args.resource, R)
+
+    def test_validate_filter_rows(self):
+        """Test that we check for valid values of --filter-rows"""
+        args, _ = parse_args("notes search 'mitochondria' --as-text --filter-rows 3 5 7 9 --config-path {}".format(self.config_fn), use_shlex=True)
+        self.assertEqual(['3','5','7','9'], args.filter_rows)
+        # ignore --filter-rows if --as-text is not set
+        args, _ = parse_args("notes search 'mitochondria' --filter-rows 3 5 7 9 --config-path {}".format(self.config_fn), use_shlex=True)
+        self.assertEqual(['3','5','7','9'], args.filter_rows)
+        # failed validations
+        args, _ = parse_args(
+            "notes search 'mitochondria' --as-text --filter-rows 3 5 7 9 --start 20 "
+            "--no-header --config-path {}".format(self.config_fn),
+            use_shlex=True,
+        )
+        self.assertEqual(64, args)
+        args, _ = parse_args(
+                "notes search 'mitochondria' --as-text --filter-rows 3 5 7 9 --rows 2 --no-header --config-path {}".format(self.config_fn),
+                use_shlex=True,
+            )
+        self.assertEqual(64, args)
+        # --filter-rows should be a space-separated sequence of integers
+        args, _ = parse_args(
+                "notes search 'mitochondria' --as-text --filter-rows 3,5,7,9 --no-header --config-path {}".format(self.config_fn),
+                use_shlex=True,
+            )
+        self.assertEqual(64, args)
 
     # =========================================================================
     # view

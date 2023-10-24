@@ -208,9 +208,10 @@ def handle_notes_search(args, configs):
     # query
     resource = find.SearchResource(args, configs)
     # fixme: use print_date
-    print(resource)
+    if not args.as_text:
+        print(resource)
     # search
-    result = resource.search()
+    result = resource.search(as_text=args.as_text)
     if result is not None:
         # fixme: use print_date
         print(result)

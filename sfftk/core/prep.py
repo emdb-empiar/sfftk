@@ -108,16 +108,19 @@ class MergedMask:
         new_labels = {15, 18, 19}
         label_tree[15] = [5, 10]
         label_tree[18] = [8, 10]
-        label_tree[19] = [9, 10] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10]}
+        label_tree[19] = [9, 10] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10],
+        18: [8, 10], 19: [9, 10]}
         label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19}
         label = numpy.amax(merge_mask) + 1 = 20
         # mask 6
         merged_mask = [10, 18, 19, 15] + [1, 0, 1, 0] * 20 = [30, 18, 39, 15]
         label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19, 20}
-        label_tree[20] = 0 # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10], 20: 0}
+        label_tree[20] = 0 # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10],
+        18: [8, 10], 19: [9, 10], 20: 0}
         new_labels = {30, 39}
         label_tree[30] = [10, 20]
-        label_tree[39] = [19, 20] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10], 20: 0, 30: [10, 20], 39: [19, 20]}
+        label_tree[39] = [19, 20] # => {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10],
+        18: [8, 10], 19: [9, 10], 20: 0, 30: [10, 20], 39: [19, 20]}
         label_set = {1, 2, 3, 4, 5, 10, 15, 18, 19, 20, 30, 39}
         label = numpy.amax(merge_mask) + 1 = 40
 
@@ -516,28 +519,28 @@ def mergemask(args, configs):
     # fail fast: ensure the output does not exist
     outfile = pathlib.Path(f"{args.output_prefix}.{args.mask_extension}")
     if not args.overwrite and outfile.exists():
-        print_date(f"error: the file already exists; use --overwrite to overwrite the existing merged_mask or set a "
-                   f"new output prefix using --output-prefix")
+        print_date("error: the file already exists; use --overwrite to overwrite the existing merged_mask or set a "
+                   "new output prefix using --output-prefix")
         return 64
     # ensure that the files are binary
     if args.skip_assessment:
         print_date("info: skipping mask assessment; assuming all masks are binary...")
     elif not _masks_all_binary(args, configs) and not args.skip:
-        print_date(f"error: one or more masks are non-binary; use --verbose to view details")
+        print_date("error: one or more masks are non-binary; use --verbose to view details")
         return 65
     # todo: allow cases where one or more files are non-binary
     # ensure that they don't overlap each other
     if not _masks_no_overlap(args, configs) and not args.allow_overlap:
-        print_date(f"error: one or more masks overlap; use --verbose to view details")
-        print_date(f"info: if overlapping segments are expected re-run with the --allow-overlap argument; "
-                   f"see 'sff prep mergemask' for more information")
+        print_date("error: one or more masks overlap; use --verbose to view details")
+        print_date("info: if overlapping segments are expected re-run with the --allow-overlap argument; "
+                   "see 'sff prep mergemask' for more information")
         return 65
     # now we can merge masks
     if args.verbose:
-        print_date(f"info: proceeding to merge masks...")
+        print_date("info: proceeding to merge masks...")
     merged_mask = _mergemask(args.masks)
     if args.verbose:
-        print_date(f"info: merge complete...")
+        print_date("info: merge complete...")
     if args.verbose:
         print_date(f"info: attempting to write output to '{args.output_prefix}.{args.mask_extension}'...")
     with mrcfile.new(f"{args.output_prefix}.{args.mask_extension}", overwrite=args.overwrite) as mrc:
@@ -556,7 +559,7 @@ def mergemask(args, configs):
             print_date(f"info: mask metadata:\n{data}")
         print(data, file=label_file)
     if args.verbose:
-        print_date(f"info: merge complete!")
+        print_date("info: merge complete!")
     return 0
 
 

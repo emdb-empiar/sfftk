@@ -216,7 +216,7 @@ class SearchResource(object):
             R = requests.get(url)
             if R.status_code == 200:
                 self._response = R.text
-                return SearchResults(self)
+                return SearchResults(self, *args, **kwargs)
             else:
                 print_date("Error: server responded with {}".format(R.text))
                 return None
@@ -397,6 +397,7 @@ class TableField(object):
 
     def render(self, row_data, index):
         """Render this field"""
+        text = ''
         if self.is_index:
             text = _str(index)
         elif self._key is not None:
@@ -490,6 +491,37 @@ class TableRow(Table):
             else:
                 string += self.column_separator.join(row) + self.row_separator
         return string
+
+
+class CSVRow(Table):
+    """Class definition for a single row in the table"""
+    column_separator = "\t"
+
+    def __init__(self, row_data, fields, index, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._row_data = row_data
+        self._fields = fields
+        self._index = index
+        self._rendered = self._render()
+
+    def _render(self):
+        """We undo the wrapping here"""
+        rendered = list()
+        for field in self._fields:
+            rendered_field = field.render(self._row_data, self._index)
+            stripped_rendered_field = list(map(lambda f: f.strip(), rendered_field))
+            # we will strip all leading and trailing whitespace and join all wrapped lines
+            if str(field).strip() in ['description']:  # the description needs spaces
+                rendered.append(' '.join(stripped_rendered_field).strip())
+            else:
+                rendered.append(''.join(stripped_rendered_field))
+        return rendered
+
+    def __bytes__(self):
+        return self.__str__().encode('utf-8')
+
+    def __str__(self):
+        return self.column_separator.join(self._rendered).strip('\n')
 
 
 class ResultsTable(Table):
@@ -641,6 +673,65 @@ class ResultsTable(Table):
         return _str(string)
 
 
+class CSVTable(Table):
+    """Class that formats search results as a CSV"""
+    column_separator = "\t"
+
+    def __init__(self, search_results, fields, width='auto', *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._search_results = search_results
+        self._fields = fields
+
+    @property
+    def header(self):
+        header = ""
+        if self._search_results.search_args.no_header:
+            return header
+        field_names = list(map(lambda f: str(f).strip(), self._fields))
+        header += self.column_separator.join(field_names) + self.row_separator
+        return header
+
+    @property
+    def body(self):
+        index = self._search_results.search_args.start
+        if self._search_results.results is not None:
+            body = ""
+            for row_data in self._search_results.results:
+                # if the user is using --filter-rows then only include rows with the specified indexes
+                if self._search_results.search_args.filter_rows:
+                    if str(index) in self._search_results.search_args.filter_rows:
+                        row_string = str(CSVRow(row_data, self._fields, index)) + self.row_separator
+                        body += row_string
+                        index += 1
+                        continue
+                    index += 1
+                else:
+                    # otherwise display all rows
+                    row_string = str(CSVRow(row_data, self._fields, index)) + self.row_separator
+                    body += row_string
+                    index += 1
+        else:
+            body = '\nNo data found at this time. Please try again in a few minutes.'.center(
+                self._width) + self.row_separator
+            body += self.row_separator
+            body += "-" * self._width + self.row_separator
+        return body.strip('\n')
+
+    @property
+    def footer(self):
+        return ""
+
+    def __bytes__(self):
+        return self.__str__().encode('utf-8')
+
+    def __str__(self):
+        string = ""
+        string += self.header
+        string += self.body
+        string += self.footer
+        return _str(string)
+
+
 class SearchResults(object):
     """SearchResults class"""
     _width = 180  # unreasonable default
@@ -651,7 +742,7 @@ class SearchResults(object):
     DESCRIPTION_WIDTH = 80
     TYPE_WIDTH = 18
 
-    def __init__(self, resource):
+    def __init__(self, resource, as_text=False):
         self._resource = resource  # the resource that was searched
         self._raw_response = resource.response
         self._structured_response = self._structure_response()
@@ -660,6 +751,7 @@ class SearchResults(object):
             self._width = terminal_size.columns
         else:
             self._width = self._width
+        self.as_text = as_text
 
     @property
     def structured_response(self):
@@ -704,9 +796,9 @@ class SearchResults(object):
         return self.__str__().encode('utf-8')
 
     def __str__(self):
-        return self.tabulate()
+        return self.tabulate(as_text=self.as_text)
 
-    def tabulate(self):
+    def tabulate(self, as_text=False):
         """Tabulate the search results"""
         table = Styled("[[ ''|fg-yellow:no-end ]]")  # ""
         if self._resource.name == 'OLS':
@@ -751,7 +843,11 @@ class SearchResults(object):
                     TableField('accession', key='short_form', pc=10, justify='center'),
                     TableField('description', key='description', pc=40, is_iterable=True),
                 ]
-                table += _str(ResultsTable(self, fields=fields))
+                if as_text:
+                    # exclude colour decoration
+                    table = str(CSVTable(self, fields=fields))
+                else:
+                    table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == 'GO':
             fields = [
                 TableField('index', key='index', pc=5, is_index=True, justify='right'),
@@ -761,7 +857,10 @@ class SearchResults(object):
                 TableField('accession', key='short_form', pc=10, justify='center'),
                 TableField('description', key='description', pc=40, is_iterable=True),
             ]
-            table += _str(ResultsTable(self, fields=fields))
+            if as_text:
+                table = str(CSVTable(self, fields=fields))
+            else:
+                table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == 'EMDB':
             fields = [
                 TableField('index', key='index', pc=5, is_index=True, justify='right'),
@@ -771,7 +870,10 @@ class SearchResults(object):
                 TableField('accession', key='emdb_id', pc=10, _format='{}', justify='center'),
                 TableField('description', key=['admin', 'title'], pc=40),
             ]
-            table += _str(ResultsTable(self, fields=fields))
+            if as_text:
+                table = str(CSVTable(self, fields=fields))
+            else:
+                table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == "UniProt":
             fields = [
                 TableField('index', pc=5, is_index=True, justify='right'),
@@ -793,7 +895,10 @@ class SearchResults(object):
                 # TableField('title', key='organism_scientific_name', pc=20, is_iterable=True),
                 TableField('description', key='title', pc=40),
             ]
-            table += _str(ResultsTable(self, fields=fields))
+            if as_text:
+                table = str(CSVTable(self, fields=fields))
+            else:
+                table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == 'Europe PMC':
             fields = [
                 TableField('index', pc=5, is_index=True, justify='right'),
@@ -804,7 +909,10 @@ class SearchResults(object):
                 TableField('description (title)', key='title', pc=25),
                 # TableField('iri (doi)', key='doi', _format='https://doi.org/{}', pc=30)
             ]
-            table += _str(ResultsTable(self, fields=fields))
+            if as_text:
+                table = str(CSVTable(self, fields=fields))
+            else:
+                table += _str(ResultsTable(self, fields=fields))
         elif self._resource.name == 'EMPIAR':
             fields = [
                 TableField('index', pc=5, is_index=True, justify='right'),
@@ -822,8 +930,13 @@ class SearchResults(object):
                 self.structured_response[empiar_accession]['empiarid'] = empiar_accession
                 structured_response.append(self.structured_response[empiar_accession])
             self._structured_response = structured_response
-            table += _str(ResultsTable(self, fields=fields))
+            if as_text:
+                table = str(CSVTable(self, fields=fields))
+            else:
+                table += _str(ResultsTable(self, fields=fields))
         # close style
+        if as_text:
+            return table
         table += Styled("[[ ''|reset ]]")
         return _str(table)
 

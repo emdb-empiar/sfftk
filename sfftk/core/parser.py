@@ -678,6 +678,19 @@ search_notes_parser.add_argument(
 search_notes_parser.add_argument(
     '--rows', type=int, default=10, help="number of rows [default: 10]"
 )
+search_notes_parser.add_argument(
+    '--as-text', action='store_true', help="output as CSV [default: False]"
+)
+search_notes_parser.add_argument(
+    '--filter-rows', nargs='*',
+    help="space-separated list of search result rows to display; "
+         "only works when --as-text flag is selected [default: False]"
+)
+search_notes_parser.add_argument(
+    '--no-header', action='store_true',
+    help="do not show CSV header (useful when concatenating "
+         "search results to an existing file which already has the header) [default: False]"
+)
 ols_parser = search_notes_parser.add_argument_group(
     title='EBI Ontology Lookup Service (OLS)',
     description='The Ontology Lookup Service (OLS) is a repository for biomedical ontologies that aims to provide a '
@@ -1388,17 +1401,17 @@ def parse_args(_args, use_shlex=False):
                 print_date(f"error: mergemask can handle at most 255 masks ({len(args.masks)} provided)")
                 return 64, configs
             if not _masks_exist(args):
-                print_date(f"error: one or more masks missing; please verify that all paths are correct")
+                print_date("error: one or more masks missing; please verify that all paths are correct")
                 return 65, configs
             if not _mask_all_correct_files(args):
-                print_date(f"error: one or more invalid file formats; please retry")
+                print_date("error: one or more invalid file formats; please retry")
                 return 65, configs
             if not _masks_have_same_dimensions(args):
                 print_date(
-                    f"error: inhomogeneous masks: dimension differs between masks (use --verbose to view details)")
+                    "error: inhomogeneous masks: dimension differs between masks (use --verbose to view details)")
                 return 65, configs
             if not _masks_have_mode_zero(args):
-                print_date(f"error: mode must be zero (0); please run `sff prep binmap` first on all masks")
+                print_date("error: mode must be zero (0); please run `sff prep binmap` first on all masks")
                 return 65, configs
         # starsplit
         elif args.prep_subcommand == 'starsplit':
@@ -1412,7 +1425,7 @@ def parse_args(_args, use_shlex=False):
             if args.output is None:
                 args.output = f"{pathlib.Path(args.star_file).stem}_{args.infix}_{args.rows}.star"
             if args.rows <= 0:
-                print_date(f"error: rows must be positive")
+                print_date("error: rows must be positive")
                 return 65, configs
 
     # view
@@ -1629,6 +1642,23 @@ Try invoking an edit ('add', 'edit', 'del') action on a valid EMDB-SFF file.".fo
             ):
                 print_date("Invalid usage: -O, -x, -o, -L, -l can only be used with -R ols")
                 return 64, None
+            if args.as_text:
+                if args.filter_rows:
+                    # make sure all the values are digits
+                    try:
+                        assert all(map(lambda i: i.isdecimal(), args.filter_rows))
+                    except AssertionError:
+                        print_date("Invalid filter rows: {}; should be a comma-separated list of digits".format(
+                            args.filter_rows))
+                        return 64, configs
+                    # now validate the filter rows against --start and --rows
+                    # valid values will ensure that there is a non-empty intersection between the set of --filter-row values and the range {--start,..,(--start+--rows)-1}
+                    filter_row_values = set(list(map(int, args.filter_rows)))
+                    valid_index_values = set(range(args.start, args.start + args.rows))
+                    if len(filter_row_values.intersection(valid_index_values)) == 0:
+                        print_date(
+                            f"Invalid filter rows: {args.filter_rows}; should be in range {args.start}-{args.start + args.rows - 1}")
+                        return 64, configs
         elif args.notes_subcommand == "show":
             if args.segment_id is not None:
                 args.segment_id = list(map(int, args.segment_id.split(',')))
