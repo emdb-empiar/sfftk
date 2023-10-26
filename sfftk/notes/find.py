@@ -511,7 +511,7 @@ class CSVRow(Table):
             rendered_field = field.render(self._row_data, self._index)
             stripped_rendered_field = list(map(lambda f: f.strip(), rendered_field))
             # we will strip all leading and trailing whitespace and join all wrapped lines
-            if str(field).strip() in ['description', 'label']:  # the description needs spaces
+            if str(field).strip() in ['description', 'label', 'description (title)']:  # the description needs spaces
                 rendered.append(' '.join(stripped_rendered_field).strip())
             else:
                 rendered.append(''.join(stripped_rendered_field))
