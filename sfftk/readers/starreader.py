@@ -324,7 +324,8 @@ class StarTable:
 
     @property
     def header(self):
-        """Return the header of the table"""
+        """Return the header of the table
+        """
         # self._do_eval()
         string = "loop_\n"
         string += "\n".join(self._loop.tags)
@@ -332,7 +333,8 @@ class StarTable:
 
     @property
     def columns(self):
-        """Return the columns in this block"""
+        """Return the columns in this block
+        """
         return self._loop.tags
 
     def __getitem__(self, item):
@@ -479,12 +481,12 @@ class RelionStarReader(StarReader):
 
     - The STAR file must have **one and only one** table
     - The table must have the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``,
-    ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the
-    particle in the tomogram.
+        ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the
+        particle in the tomogram.
     - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only
-    interested in the relationship between a single particle and a single tomogram. If the STAR file references
-    multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
-    multiple files, each referencing a single tomogram. (more on that to come)
+        interested in the relationship between a single particle and a single tomogram. If the STAR file references
+        multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
+        multiple files, each referencing a single tomogram. (more on that to come)
 
 
     .. code-block:: python
