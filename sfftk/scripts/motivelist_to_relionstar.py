@@ -41,7 +41,7 @@ def convert_motive_list_to_relion_star(args):
     # for row in reader.tables['default']:
     #     print(row.raw_data(), file=sys.stdout)
 
-π
+
 def main():
     parser = argparse.ArgumentParser(description="Convert a motive list to a relion star file")
     parser.add_argument("motive_list", type=pathlib.Path, help="The name of the motive list file.")
