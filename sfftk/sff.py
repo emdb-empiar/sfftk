@@ -156,7 +156,7 @@ def handle_convert(args, configs):  # @UnusedVariable
                     seg = BinaryMaskSegmentation([args.from_file])
             elif re.match(r'.*\.star$', args.from_file, re.IGNORECASE):
                 from .formats.star import RelionStarSegmentation
-                seg = RelionStarSegmentation(args.from_file, args.subtomogram_average, image_name_field=args.image_name_field)
+                seg = RelionStarSegmentation(args.from_file, args.subtomogram_average, image_name_field=args.image_name_field, verbose=args.verbose)
             elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
                 from .formats.stl import STLSegmentation
                 seg = STLSegmentation([args.from_file])

@@ -73,6 +73,7 @@ setup(
     entry_points={
         'console_scripts': [
             'sff = sfftk.sff:main',
+            'motivelist_to_relion = sfftk.scripts.motivelist_to_relionstar:main',
         ]
     },
     package_data={

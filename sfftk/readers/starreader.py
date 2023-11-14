@@ -282,15 +282,17 @@ class StarTableRow:
 class StarTable:
     """A section of tabular data in a star file"""
 
-    def __init__(self, loop, name, infer_types=True, *args, **kwargs):
+    def __init__(self, loop, name, infer_types=True, verbose=False, *args, **kwargs):
         self._loop = loop
         self.name = name
         self.prefix = name + '.' if '.' in loop.tags[0] else name
+        self.verbose = verbose
         self._infer_types = infer_types
         self._data = list()
         self.tomograms = set()  # the set of tomograms referenced in this table
         for index in range(self._loop.length()):
-            print_progress(index + 1, self._loop.length(), prefix=f"Reading '{self.name}' table: ")
+            if self.verbose:
+                print_progress(index + 1, self._loop.length(), prefix=f"Reading '{self.name}' table: ")
             values = self._loop.values[index * self._loop.width():index * self._loop.width() + self._loop.width()]
             if self._infer_types:
                 values = tuple(map(self._infer_float, values))
@@ -387,11 +389,12 @@ class StarReader:
     maximum_tables = None
     maximum_tomograms = None
 
-    def __init__(self):
+    def __init__(self, verbose=False):
         self._fn = None
         self._doc = None
         self._keys = dict()
         self._tables = dict()
+        self.verbose = verbose
 
     def keys(self):
         """Return all the keys found in the STAR file"""
@@ -434,7 +437,7 @@ class StarReader:
                     raise ValueError("Maximum number of tables exceeded")
                 self._check_required_columns(obj)
                 if name not in self._tables:
-                    self._tables[name] = StarTable(obj, name, infer_types=infer_types)
+                    self._tables[name] = StarTable(obj, name, infer_types=infer_types, verbose=self.verbose)
                     tomogram_count = len(self._tables[name].tomograms)
                     if self.maximum_tomograms is not None and self.maximum_tomograms < tomogram_count:
                         raise ValueError(f"STAR file references more than {self.maximum_tomograms} tomogram. Please "
@@ -514,7 +517,7 @@ class RelionStarReader(StarReader):
 
     def __init__(self, image_name_field='_rlnImageName', *args, **kwargs):
         """Initialise the reader"""
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.required_columns.add(image_name_field)
 
 
