@@ -288,6 +288,7 @@ class TestMainConvert(unittest.TestCase):
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
             f"--subtomogram-average {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
             f"--image-name-field _rlnTomoName "
+            f"--euler-angle-convention zyz --radians --verbose "
             f"-o {TEST_DATA_PATH / 'test_data.sff'} --config-path {self.config_fn}"
         )
         Main.handle_convert(args, configs)

@@ -583,6 +583,7 @@ _rlnMicrographName"""
         star_reader = starreader.StarReader()
         star_reader.parse(TEST_DATA_PATH / 'segmentations' / 'test_data4.star')
         row = star_reader.tables['_rln'][0]
+        print()
         print(row)
         transform_zyz = row.to_affine_transform()  # default axes
         print(transform_zyz)

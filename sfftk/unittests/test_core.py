@@ -945,11 +945,14 @@ class TestCoreParserConvert(Py23FixTestCase):
         """Test convertion of .star file"""
         args, _ = cli(
             f"convert {TEST_DATA_PATH / 'segmentations' / 'test_data8.star'} "
-            f"--subtomogram-average {TEST_DATA_PATH / 'segmentations' / 'test_data.map'}"
+            f"--subtomogram-average {TEST_DATA_PATH / 'segmentations' / 'test_data.map'} "
+            f"--euler-angle-convention zxz --radians"
         )
         # assertions
         self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data.map'), args.subtomogram_average)
         self.assertEqual(str(TEST_DATA_PATH / 'segmentations' / 'test_data8.star'), args.from_file)
+        self.assertEqual('ZXZ', args.euler_angle_convention)
+        self.assertTrue(args.radians)
 
 
 class TestCoreParserView(Py23FixTestCase):

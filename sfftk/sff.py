@@ -156,7 +156,13 @@ def handle_convert(args, configs):  # @UnusedVariable
                     seg = BinaryMaskSegmentation([args.from_file])
             elif re.match(r'.*\.star$', args.from_file, re.IGNORECASE):
                 from .formats.star import RelionStarSegmentation
-                seg = RelionStarSegmentation(args.from_file, args.subtomogram_average, image_name_field=args.image_name_field, verbose=args.verbose)
+                seg = RelionStarSegmentation(
+                    args.from_file, args.subtomogram_average,
+                    euler_angle_convention=args.euler_angle_convention,
+                    degrees=not args.radians,
+                    image_name_field=args.image_name_field,
+                    verbose=args.verbose
+                )
             elif re.match(r'.*\.stl$', args.from_file, re.IGNORECASE):
                 from .formats.stl import STLSegmentation
                 seg = STLSegmentation([args.from_file])
@@ -205,7 +211,10 @@ def handle_notes_search(args, configs):
     :rtype exit_status: int
     """
     from sfftk.notes import find
+    from styled import Styled
     # query
+    warning_string = Styled("[[ 'Warning: the --start option is not working due to a fault in the OLS API; a new version will be released as soon as it is fixed'|fg-dark_orange ]]")
+    print_date(str(warning_string))
     resource = find.SearchResource(args, configs)
     # fixme: use print_date
     if not args.as_text:

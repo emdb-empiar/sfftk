@@ -506,6 +506,22 @@ convert_parser.add_argument(
     default='_rlnImageName',
     help="the field in the star file that contains the image name [default: '_rlnImageName']"
 )
+class UpperAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, _str(values).upper())
+convert_parser.add_argument(
+    '--euler-angle-convention',
+    default='zyz',
+    type=str,
+    choices=['zyz', 'zxz', 'xyx', 'xzx', 'yxy', 'yzy'],
+    action=UpperAction,
+    help="the Euler angle convention used in the subtomogram averaging [default: 'zyz' - case insensitive]"
+)
+convert_parser.add_argument(
+    '--radians',
+    action='store_true',
+    help="use radians instead of degrees for Euler angles [default: False i.e. use degrees]"
+)
 
 # =========================================================================
 # config subparser
