@@ -2,18 +2,31 @@
 ``sfftk.readers.starreader``
 =============================
 
-STAR files are generic data modelling files much in the same way as XML files. RELION uses a particular format of STAR file to store particle data. This module provides several classes to read STAR files: a generic reader and two RELION-specific ones.
+STAR files are generic data modelling files much in the same way as XML files. RELION uses a particular format of
+STAR file to store particle data. This module provides several classes to read STAR files: a generic reader and two
+RELION-specific ones.
 
-In practice, the whole STAR file is loaded into memory during the parsing process. The API we provide enables the user to access the main ways the data is stored in the STAR file: *key-value pairs* and *tables*. This reader is designed only to extract the data from the STAR file and does not attempt to understand STAR file conventions.
+In practice, the whole STAR file is loaded into memory during the parsing process. The API we provide enables the
+user to access the main ways the data is stored in the STAR file: *key-value pairs* and *tables*. This reader is
+designed only to extract the data from the STAR file and does not attempt to understand STAR file conventions.
 
-Generic STAR files can have any number of key-value pairs and tables. For our use case, we are interested in capturing the relationship between a refined particle (subtomogram average) and a source tomogram. Since each such particle is expressed in terms of its orientation within the tomogram, we need to capture the affine transform that maps the particle to the tomogram.
+Generic STAR files can have any number of key-value pairs and tables. For our use case, we are interested in capturing
+the relationship between a refined particle (subtomogram average) and a source tomogram. Since each such particle
+is expressed in terms of its orientation within the tomogram, we need to capture the affine transform that maps
+the particle to the tomogram.
 
 Therefore, this imposes some constraints on the STAR file:
 
--   The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the particle in the tomogram.
--   The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)
+-   The STAR file must have a table with the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``,
+    ``_rlnCoordinateZ``, ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the
+    position and orientation of the particle in the tomogram.
+-   The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only
+    interested in the relationship between a single particle and a single tomogram. If the STAR file references
+    multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
+    multiple files, each referencing a single tomogram. (more on that to come)
 
-For this reason, we distinguish between 'composite' RELION STAR files and 'simple' RELION STAR files. Composite RELION STAR files must be partitioned into simple RELION STAR files before they can be converted into EMDB-SFF files.
+For this reason, we distinguish between 'composite' RELION STAR files and 'simple' RELION STAR files. Composite
+RELION STAR files must be partitioned into simple RELION STAR files before they can be converted into EMDB-SFF files.
 
 Anatomy of a STAR file
 ----------------------
@@ -31,7 +44,8 @@ Data is stored in the form of key-value pairs and tables. Key-value pairs are si
 
     _key value
 
-Tables are designed by the ``loop_`` keyword followed by a sequence of tags/labels each of which is prefixed by an underscore. Each row after the tags/labels is then a row with values for each tag/label.
+Tables are designed by the ``loop_`` keyword followed by a sequence of tags/labels each of which is prefixed by an
+underscore. Each row after the tags/labels is then a row with values for each tag/label.
 
 .. code-block::
 
@@ -115,7 +129,11 @@ The reader will then parse the file and store the data in memory. The user can t
         print(star_reader.keys) # show key-value pairs
         print(star_reader.keys['key']) # get the value for the given key
 
-#. ``star_reader.tables``: returns a dictionary of tables where the key is the name of the table and the value is a :py:class:`sfftk.readers.starreader.StarTable` object and each row in the table is a :py:class:`sfftk.readers.starreader.StarTableRow` object. By default, we automatically infer the type of the values in the table. If the user wishes to disable this behaviour, they can pass ``infer_types=False`` to the ``parse`` method.
+#. ``star_reader.tables``: returns a dictionary of tables where the key is the name of the table and the value is a
+    :py:class:`sfftk.readers.starreader.StarTable` object and each row in the table is a
+    :py:class:`sfftk.readers.starreader.StarTableRow` object. By default, we automatically infer the type of the
+    values in the table. If the user wishes to disable this behaviour, they can pass ``infer_types=False`` to the
+    ``parse`` method.
 
     .. code-block:: python
 

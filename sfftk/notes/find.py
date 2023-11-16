@@ -420,7 +420,10 @@ class TableField(object):
                     text = '-'
                 else:
                     if self._is_iterable:
-                        text = item[self._position_in_iterable]
+                        if item:
+                            text = item[self._position_in_iterable]
+                        else:
+                            text = '-'
                     else:
                         text = item
         elif self._text is not None:

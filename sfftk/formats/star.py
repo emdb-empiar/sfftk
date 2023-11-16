@@ -16,6 +16,7 @@ The presence of the --star flag tells sfftk that what is about to be generated i
 """
 import numpy
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
+from sfftkrw.core.print_tools import print_date
 
 from .base import Segment, Segmentation
 from ..formats import map as mapformat
@@ -29,8 +30,11 @@ class RelionStarHeader(mapformat.MaskHeader):
 class RelionStarSegment(Segment):
     """Class representing a Relion STAR file segment"""
 
-    def __init__(self, particles: starreader.StarTable, *args, **kwargs):
+    def __init__(self, particles: starreader.StarTable, euler_angle_convention='ZYZ', degrees=True, verbose=False):
         self._particles = particles
+        self._euler_angle_convention = euler_angle_convention
+        self._degrees = degrees
+        self._verbose = verbose
 
     def convert(self, **kwargs):
         """Convert the segment to an EMDB-SFF segment"""
@@ -41,8 +45,16 @@ class RelionStarSegment(Segment):
         segment.colour = schema.SFFRGBA(random_colour=True)
         segment.shape_primitive_list = schema.SFFShapePrimitiveList()
         transforms = schema.SFFTransformList()
+        if self._verbose:
+            print_date(f"Using Euler angle convention: {self._euler_angle_convention}")
+            print_date(f"Euler angles in degrees: {not self._degrees}")
         for id, particle in enumerate(self._particles, start=1):
-            transform = schema.SFFTransformationMatrix.from_array(particle.to_affine_transform(), id=id)
+            transform = schema.SFFTransformationMatrix.from_array(
+                particle.to_affine_transform(
+                    axes=self._euler_angle_convention,
+                    degrees=self._degrees
+                ), id=id
+            )
             shape = schema.SFFSubtomogramAverage(
                 lattice_id=kwargs.get('lattice_id'),
                 value=1.0,  # todo: capture the isosurface value e.g. from the CLI,
@@ -56,13 +68,21 @@ class RelionStarSegment(Segment):
 class RelionStarSegmentation(Segmentation):
     """Class that represents a Relion STAR file segmentation"""
 
-    def __init__(self, fn, particle_fn, *args, **kwargs):
+    def __init__(self, fn, particle_fn, euler_angle_convention='ZYZ', degrees=True, *_args, **_kwargs):
         """Initialise the segmentation"""
         self._fn = fn
         self._particle_fn = particle_fn
-        self._segmentation = starreader.get_data(self._fn, *args, **kwargs)
-        self._density = mapreader.get_data(self._particle_fn, *args, **kwargs)
-        self._segments = [RelionStarSegment(self._segmentation.tables['_rln'])]
+        self._euler_angle_convention = euler_angle_convention
+        self._degrees = degrees
+        self._segmentation = starreader.get_data(self._fn, *_args, **_kwargs)
+        self._density = mapreader.get_data(self._particle_fn, *_args, **_kwargs)
+        self._segments = [
+            RelionStarSegment(
+                self._segmentation.tables['_rln'],
+                euler_angle_convention=self._euler_angle_convention,
+                degrees=self._degrees,
+                verbose=_kwargs.get('verbose', False)
+            )]
 
     @property
     def header(self, ):
@@ -98,7 +118,8 @@ class RelionStarSegmentation(Segmentation):
                 _transform
             )
         else:
-            _transform = schema.SFFTransformationMatrix.from_array(numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], ]))
+            _transform = schema.SFFTransformationMatrix.from_array(
+                numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], ]))
             segmentation.transform_list.append(
                 _transform
             )
