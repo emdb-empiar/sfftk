@@ -2227,7 +2227,7 @@ class TestPrepMergeMask(unittest.TestCase):
         mergeable_arrays = list()
         individual_length = total_length // 3
         while len(index_set) > individual_length:
-            indexes = random.sample(index_set, individual_length)
+            indexes = random.sample(sorted(index_set), individual_length)
             index_set = index_set.difference(indexes)
             _array = numpy.zeros(total_length)
             numpy.put(_array, indexes, 1)
