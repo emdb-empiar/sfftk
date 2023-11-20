@@ -213,8 +213,8 @@ def handle_notes_search(args, configs):
     from sfftk.notes import find
     from styled import Styled
     # query
-    warning_string = Styled("[[ 'Warning: the --start option is not working due to a fault in the OLS API; a new version will be released as soon as it is fixed'|fg-dark_orange ]]")
-    print_date(str(warning_string))
+    # warning_string = Styled("[[ 'Warning: the --start option is not working due to a fault in the OLS API; a new version will be released as soon as it is fixed'|fg-dark_orange ]]")
+    # print_date(str(warning_string))
     resource = find.SearchResource(args, configs)
     # fixme: use print_date
     if not args.as_text:
