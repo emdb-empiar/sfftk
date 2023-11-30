@@ -125,6 +125,15 @@ def handle_convert(args, configs):  # @UnusedVariable
             elif re.match(r'.*\.stl$', args.from_file[0], re.IGNORECASE):
                 from .formats.stl import STLSegmentation
                 seg = STLSegmentation(args.from_file)
+            elif re.match(r'.*\.star$', args.from_file[0], re.IGNORECASE):
+                from .formats.star import RelionMultiStarSegmentation
+                seg = RelionMultiStarSegmentation(
+                    args.from_file, args.subtomogram_average,
+                    euler_angle_convention=args.euler_angle_convention,
+                    degrees=not args.radians,
+                    image_name_field=args.image_name_field,
+                    verbose=args.verbose
+                )
             else:
                 raise ValueError("Unknown file type '{}'".format(', '.join(args.from_file)))
         else:

@@ -29,7 +29,7 @@ __date__ = '2016-06-10'
 __updated__ = '2018-02-14'
 
 VERBOSITY_RANGE = _xrange(4)
-MULTI_FILE_FORMATS = ['stl', 'map', 'mrc', 'rec']
+MULTI_FILE_FORMATS = ['stl', 'map', 'mrc', 'rec', 'star']
 PREPABLE_FILE_FORMATS = ['mrc', 'map', 'rec']
 RESCALABLE_FILE_FORMATS = ['stl']
 # some file extensions are used by multiple file types
@@ -497,9 +497,13 @@ multi_or_label_mutex_parser.add_argument(
          "1) the mask labels (key: 'mask_to_label') and "
          "2) the hierarchical relationship between labels (key: 'label_tree')"
 )
-multi_or_label_mutex_parser.add_argument(
+# multi_or_label_mutex_parser.add_argument(
+#     '--subtomogram-average',
+#     help="the result of subtomogram averaging in CCP4 format (.mrc, .map, .rec)"
+# )
+convert_parser.add_argument(
     '--subtomogram-average',
-    help="the result of subtomogram averaging in CCP4 format (.mrc, .map, .rec)"
+    help="the result of subtomogram averaging or a particle mask for visualisation in CCP4 format (.mrc, .map, .rec)"
 )
 convert_parser.add_argument(
     '--image-name-field',

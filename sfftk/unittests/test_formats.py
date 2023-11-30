@@ -109,6 +109,17 @@ class TestFormats(Py23FixTestCase):
                 image_name_field='_rlnTomoName'
             )
 
+    def read_star_multi(self):
+        """Read RELION .star multi files"""
+        if not hasattr(self, 'star_multi_file'):
+            self.star_multi0_file = os.path.join(self.segmentations_path, 'test_data8.star')
+            self.star_multi1_file = os.path.join(self.segmentations_path, 'test_data11.star')
+            self.particle_file = os.path.join(self.segmentations_path, 'test_data.map')
+            self.image_file = os.path.join(self.segmentations_path, 'test_data.map')
+            self.star_multi_segmentation = star.RelionMultiStarSegmentation(
+                [self.star_multi0_file, self.star_multi1_file], self.particle_file,
+            )
+
     def read_stl(self):
         """Read .stl files"""
         if not hasattr(self, 'stl_file'):
@@ -209,6 +220,15 @@ class TestFormats(Py23FixTestCase):
         self.assertIsInstance(self.star_segmentation.header, star.RelionStarHeader)
         self.assertIsInstance(self.star_segmentation.segments, list)
         self.assertIsInstance(self.star_segmentation.segments[0], star.RelionStarSegment)
+
+    def test_multiple_star_read(self):
+        """Read multiple RELION (.star) segmentation"""
+        self.read_star_multi()
+        # assertions
+        self.assertIsInstance(self.star_multi_segmentation.header, star.RelionStarHeader)
+        self.assertIsInstance(self.star_multi_segmentation.segments, list)
+        self.assertEqual(2, len(self.star_multi_segmentation.segments))
+        self.assertIsInstance(self.star_multi_segmentation.segments[0], star.RelionStarSegment)
 
     def test_stl_read(self):
         """Read a Stereo Lithography (.stl) segmentation"""
@@ -513,7 +533,7 @@ class TestFormats(Py23FixTestCase):
         self.assertEqual("Something interesting", seg.details)
         segment = seg.segment_list[0]  # there is only one segment anyway
         self.assertIsNotNone(segment.biological_annotation)
-        self.assertIsNotNone(segment.biological_annotation.name)
+        self.assertEqual("test_data8.star", segment.biological_annotation.name)
         self.assertGreaterEqual(segment.biological_annotation.number_of_instances, 1)
         self.assertIsNotNone(segment.colour)
         self.assertEqual(0, len(segment.mesh_list))
@@ -527,6 +547,58 @@ class TestFormats(Py23FixTestCase):
         self.assertIsInstance(lattice.start, schema.SFFVolumeIndex)
         self.assertIsNotNone(lattice.data)
         sta = segment.shape_primitive_list[0]
+        self.assertIsInstance(sta, schema.SFFSubtomogramAverage)
+        self.assertEqual(0, sta.id)
+        self.assertEqual(lattice.id, sta.lattice_id)
+        self.assertEqual(1.0, sta.value)
+        self.assertEqual(1, sta.transform_id)
+
+    def test_star_multi_convert(self):
+        """Convert a segmentation from multiple RELION .star files to an SFFSegmentation object"""
+        self.read_star_multi()
+        args, configs = parse_args(
+            f"convert {self.star_multi0_file} {self.star_multi1_file} --multi-file --image {self.image_file} "
+            f"--image-name-field _rlnTomoName --details 'Something interesting' "
+            f"--subtomogram-average {self.particle_file}",
+            use_shlex=True
+        )
+        transform = mapreader.compute_transform(args.image)
+        seg = self.star_multi_segmentation.convert(details=args.details, transform=transform)
+        # assertions
+        self.assertIsInstance(seg, schema.SFFSegmentation)
+        self.assertEqual("RELION Subtomogram Average", seg.name)
+        self.assertEqual(seg.version, self.schema_version)
+        self.assertEqual(seg.software_list[0].name, 'RELION')
+        self.assertEqual("shape_primitive_list", seg.primary_descriptor)
+        self.assertEqual(seg.transform_list[0].id, 0)
+        self.assertEqual(
+            '18.20999987022425 0.0 0.0 0.0 0.0 18.209998684928305 0.0 0.0 0.0 0.0 '
+            '18.209998762103872 0.0',
+            seg.transform_list[0].data
+        )
+        self.assertEqual(13, len(seg.transform_list))
+        self.assertEqual(12, seg.transform_list[-1].id)
+        self.assertEqual("Something interesting", seg.details)
+        self.assertEqual(2, len(seg.segment_list))
+        segment1, segment2 = seg.segment_list
+        self.assertIsNotNone(segment1.biological_annotation)
+        self.assertEqual("test_data8.star", segment1.biological_annotation.name)
+        self.assertEqual("test_data11.star", segment2.biological_annotation.name)
+        self.assertGreaterEqual(segment1.biological_annotation.number_of_instances, 1)
+        self.assertIsNotNone(segment1.colour)
+        self.assertEqual(0, len(segment1.mesh_list))
+        self.assertEqual(6, segment1.shape_primitive_list[-1].transform_id)
+        self.assertEqual(12, segment2.shape_primitive_list[-1].transform_id)
+        # lattice
+        lattice = seg.lattice_list[0]
+        self.assertIsInstance(lattice, schema.SFFLattice)
+        self.assertEqual(0, lattice.id)
+        self.assertEqual('float32', lattice.mode)
+        self.assertEqual('little', lattice.endianness)
+        self.assertIsInstance(lattice.size, schema.SFFVolumeStructure)
+        self.assertIsInstance(lattice.start, schema.SFFVolumeIndex)
+        self.assertIsNotNone(lattice.data)
+        sta = segment1.shape_primitive_list[0]
         self.assertIsInstance(sta, schema.SFFSubtomogramAverage)
         self.assertEqual(0, sta.id)
         self.assertEqual(lattice.id, sta.lattice_id)

@@ -15,6 +15,7 @@ The presence of the --star flag tells sfftk that what is about to be generated i
 
 """
 import numpy
+import pathlib
 import sfftkrw.schema.adapter_v0_8_0_dev1 as schema
 from sfftkrw.core.print_tools import print_date
 
@@ -30,30 +31,35 @@ class RelionStarHeader(mapformat.MaskHeader):
 class RelionStarSegment(Segment):
     """Class representing a Relion STAR file segment"""
 
-    def __init__(self, particles: starreader.StarTable, euler_angle_convention='ZYZ', degrees=True, verbose=False):
+    def __init__(self, particles: starreader.StarTable, euler_angle_convention='ZYZ', degrees=True, verbose=False,
+                 name="Particle refined using subtomogram averaging"):
         self._particles = particles
         self._euler_angle_convention = euler_angle_convention
         self._degrees = degrees
         self._verbose = verbose
+        self._name = name
 
     def convert(self, **kwargs):
         """Convert the segment to an EMDB-SFF segment"""
         segment = schema.SFFSegment()
         # metadata
         segment.biological_annotation = schema.SFFBiologicalAnnotation()
-        segment.biological_annotation.name = "Particle refined using subtomogram averaging"
+        segment.biological_annotation.name = self._name
         segment.colour = schema.SFFRGBA(random_colour=True)
         segment.shape_primitive_list = schema.SFFShapePrimitiveList()
-        transforms = schema.SFFTransformList()
+        if 'transforms' in kwargs:
+            transforms = kwargs['transforms']
+        else:
+            transforms = schema.SFFTransformList()
         if self._verbose:
             print_date(f"Using Euler angle convention: {self._euler_angle_convention}")
             print_date(f"Euler angles in degrees: {not self._degrees}")
-        for id, particle in enumerate(self._particles, start=1):
+        for particle in self._particles:
             transform = schema.SFFTransformationMatrix.from_array(
                 particle.to_affine_transform(
                     axes=self._euler_angle_convention,
                     degrees=self._degrees
-                ), id=id
+                )
             )
             shape = schema.SFFSubtomogramAverage(
                 lattice_id=kwargs.get('lattice_id'),
@@ -81,7 +87,8 @@ class RelionStarSegmentation(Segmentation):
                 self._segmentation.tables['_rln'],
                 euler_angle_convention=self._euler_angle_convention,
                 degrees=self._degrees,
-                verbose=_kwargs.get('verbose', False)
+                verbose=_kwargs.get('verbose', False),
+                name=pathlib.Path(self._fn).name
             )]
 
     @property
@@ -143,8 +150,96 @@ class RelionStarSegmentation(Segmentation):
         segmentation.lattice_list.append(lattice)
         segmentation.segment_list = schema.SFFSegmentList()
         for segment in self.segments:
-            _segment, _transforms = segment.convert(lattice_id=lattice.id)
+            _segment, _transforms = segment.convert(lattice_id=lattice.id, transforms=segmentation.transform_list)
             segmentation.segment_list.append(_segment)
-            segmentation.transform_list.extend(_transforms)
+            segmentation.transform_list = _transforms
+        segmentation.details = details
+        return segmentation
+
+
+class RelionMultiStarSegmentation(Segmentation):
+    def __init__(self, fn_list, particle_fn, euler_angle_convention='ZYZ', degrees=True, *_args, **_kwargs):
+        """Initialise the segmentation"""
+        self._fns = fn_list
+        self._particle_fn = particle_fn
+        self._euler_angle_convention = euler_angle_convention
+        self._degrees = degrees
+        self._segmentation = list()
+        for fn in self._fns:
+            self._segmentation.append(starreader.get_data(fn, *_args, **_kwargs))
+        self._density = mapreader.get_data(self._particle_fn, *_args, **_kwargs)
+        self._segments = list()
+        for index, _segmentation in enumerate(self._segmentation):
+            self._segments.append(
+                RelionStarSegment(
+                    _segmentation.tables['_rln'],
+                    euler_angle_convention=self._euler_angle_convention,
+                    degrees=self._degrees,
+                    verbose=_kwargs.get('verbose', False),
+                    name=pathlib.Path(self._fns[index]).name
+                ))
+
+    @property
+    def header(self, ):
+        """Return the header"""
+        return RelionStarHeader(self._density)
+
+    @property
+    def segments(self):
+        """Return the segments"""
+        return self._segments
+
+    def convert(self, name=None, software_version=None, processing_details=None, details=None, verbose=False,
+                transform=None):
+        """Convert the segmentation to an EMDB-SFF segmentation"""
+        segmentation = schema.SFFSegmentation()
+        # metadata
+        segmentation.name = name if name is not None else "RELION Subtomogram Average"
+        segmentation.primary_descriptor = "shape_primitive_list"
+        segmentation.software_list = schema.SFFSoftwareList()
+        segmentation.software_list.append(
+            schema.SFFSoftware(
+                name='RELION',
+                version=software_version if software_version is not None else 'v4.0',
+                processing_details=processing_details
+            )
+        )
+        segmentation.details = details
+        # transforms
+        segmentation.transform_list = schema.SFFTransformList()
+        if transform is not None:
+            _transform = schema.SFFTransformationMatrix.from_array(transform)
+            segmentation.transform_list.append(
+                _transform
+            )
+        else:
+            _transform = schema.SFFTransformationMatrix.from_array(
+                numpy.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], ]))
+            segmentation.transform_list.append(
+                _transform
+            )
+        # lattice: we need to know the lattice because we reference it in the segment
+        segmentation.lattice_list = schema.SFFLatticeList()
+        lattice = schema.SFFLattice(
+            mode=self.header.mode,
+            endinaness=self.header.endianness,
+            size=schema.SFFVolumeStructure(
+                cols=self.header.cols,
+                rows=self.header.rows,
+                sections=self.header.sections
+            ),
+            start=schema.SFFVolumeIndex(
+                cols=self.header.start_cols,
+                rows=self.header.start_rows,
+                sections=self.header.start_sections
+            ),
+            data=self._density.voxels
+        )
+        segmentation.lattice_list.append(lattice)
+        segmentation.segment_list = schema.SFFSegmentList()
+        for segment in self.segments:
+            _segment, _transforms = segment.convert(lattice_id=lattice.id, transforms=segmentation.transform_list)
+            segmentation.segment_list.append(_segment)
+            segmentation.transform_list = _transforms
         segmentation.details = details
         return segmentation
