@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.core package &mdash; sfftk v0.9.0.dev0 documentation</title>
+  <title>sfftk.core package &mdash; sfftk v0.10.3.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.9
+                v0.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -66,6 +66,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.parser">Parser</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-parser"><code class="docutils literal notranslate"><span class="pre">sfftk.core.parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.UpperAction"><code class="docutils literal notranslate"><span class="pre">UpperAction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.check_multi_file_formats"><code class="docutils literal notranslate"><span class="pre">check_multi_file_formats()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.cli"><code class="docutils literal notranslate"><span class="pre">cli()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.parser.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
@@ -74,10 +75,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.core.prep">Preparation utilities</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-core-prep"><code class="docutils literal notranslate"><span class="pre">sfftk.core.prep</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.MergedMask"><code class="docutils literal notranslate"><span class="pre">MergedMask</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.RelionCompositeStarReader"><code class="docutils literal notranslate"><span class="pre">RelionCompositeStarReader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.bin_map"><code class="docutils literal notranslate"><span class="pre">bin_map()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.check_mask_is_binary"><code class="docutils literal notranslate"><span class="pre">check_mask_is_binary()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.construct_transformation_matrix"><code class="docutils literal notranslate"><span class="pre">construct_transformation_matrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.mergemask"><code class="docutils literal notranslate"><span class="pre">mergemask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.starcrop"><code class="docutils literal notranslate"><span class="pre">starcrop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.starsplit"><code class="docutils literal notranslate"><span class="pre">starsplit()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.core.prep.transform_stl_mesh"><code class="docutils literal notranslate"><span class="pre">transform_stl_mesh()</span></code></a></li>
 </ul>
@@ -126,9 +130,9 @@ for a complete description of working with configs.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.core.configs.Configs">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.core.configs.</span></span><span class="sig-name descname"><span class="pre">Configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/configs.html#Configs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.configs.Configs" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
 <p>Class defining configs</p>
-<p>Configurations are stored in a subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code> (normal <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> for Python 3.7+) with
+<p>Configurations are stored in a subclass of <code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code> (normal <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> for Python 3.7+) with
 appended methods for reading (<a class="reference internal" href="#sfftk.core.configs.Configs.read" title="sfftk.core.configs.Configs.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Configs.read()</span></code></a>), writing (<a class="reference internal" href="#sfftk.core.configs.Configs.write" title="sfftk.core.configs.Configs.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Configs.write()</span></code></a>) and
 clearing (<a class="reference internal" href="#sfftk.core.configs.Configs.clear" title="sfftk.core.configs.Configs.clear"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Configs.clear()</span></code></a>) configs.</p>
 <p>Printing an object of this class displays all configs.</p>
@@ -160,8 +164,8 @@ clearing (<a class="reference internal" href="#sfftk.core.configs.Configs.clear"
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – configuration options</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return status</dt>
@@ -261,7 +265,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – configuration options</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return status</dt>
@@ -280,7 +284,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>config_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – a path to a file with configs</p></li>
+<li><p><strong>config_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – a path to a file with configs</p></li>
 <li><p><strong>config_class</strong> (<em>class</em>) – the config class; default: Configs</p></li>
 </ul>
 </dd>
@@ -301,7 +305,7 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> (<cite>argparse.Namespace</cite>) – parsed arguments</p></li>
-<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – configuration options</p></li>
+<li><p><strong>configs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><em>dict</em></a>) – configuration options</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return status</dt>
@@ -319,10 +323,16 @@ sff config get --config-path /path/to/sff.conf --shipped-configs --all
 <section id="sfftk-core-parser">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.core.parser</span></code><a class="headerlink" href="#sfftk-core-parser" title="Permalink to this heading"></a></h3>
 <p>A large number of functions in <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> consume only two arguments: <code class="docutils literal notranslate"><span class="pre">args</span></code>, which is the direct output of
-Python’s <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">configs</span></code> dictionary, which consists of all persistent configs.
+Python’s <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> and a <code class="docutils literal notranslate"><span class="pre">configs</span></code> dictionary, which consists of all persistent configs.
 This module extends the parser object <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.core.parser.Parser</span></code> as well as includes a
 <a class="reference internal" href="#sfftk.core.parser.parse_args" title="sfftk.core.parser.parse_args"><code class="xref py py-func docutils literal notranslate"><span class="pre">sfftk.core.parser.parse_args()</span></code></a> function which does sanity checking of all command line arguments.</p>
 </section>
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.core.parser.UpperAction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.core.parser.</span></span><span class="sig-name descname"><span class="pre">UpperAction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option_strings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">const</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metavar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/parser.html#UpperAction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.parser.UpperAction" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Action" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code></a></p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="sfftk.core.parser.check_multi_file_formats">
 <span class="sig-prename descclassname"><span class="pre">sfftk.core.parser.</span></span><span class="sig-name descname"><span class="pre">check_multi_file_formats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/parser.html#check_multi_file_formats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.parser.check_multi_file_formats" title="Permalink to this definition"></a></dt>
@@ -330,14 +340,14 @@ This module extends the parser object <code class="xref py py-class docutils lit
 <p>When working with multifile segmentations, this function checks that all files are consistent</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – a list of file names</p>
+<dd class="field-odd"><p><strong>file_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a>) – a list of file names</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a tuple consisting of whether or not the set of file formats if valid, the set of file formats observed
 and the set of invalid file formats</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)">set</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.11)">set</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)">set</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.12)">set</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -360,15 +370,15 @@ correct argument values and can concentrate on functionality making the code mor
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – list of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=False</span></code>); string of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=True</span></code>)</p></li>
-<li><p><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</p></li>
+<li><p><strong>_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – list of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=False</span></code>); string of arguments (<code class="docutils literal notranslate"><span class="pre">use_shlex=True</span></code>)</p></li>
+<li><p><strong>use_shlex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – treat <code class="docutils literal notranslate"><span class="pre">_args</span></code> as a string instead for parsing using <code class="docutils literal notranslate"><span class="pre">shlex</span></code> lib</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>parsed arguments</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>]</p>
+<dd class="field-odd"><p>tuple[<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>, <a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,9 +393,9 @@ correct argument values and can concentrate on functionality making the code mor
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.core.prep.MergedMask">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.core.prep.</span></span><span class="sig-name descname"><span class="pre">MergedMask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">dtype('int16')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_name_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mask_'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zfill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#MergedMask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.MergedMask" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>This class describes a special mask used to perform mask merging. It automatically handles
-complex cases involving mask overlaps by constucting a label tree showing the relations
+complex cases involving mask overlaps by constructing a label tree showing the relations
 between masks. The trivial case of non-overlapping overlaps will have all labels children of
 the root label (0).</p>
 <p>There are only three ways that an overlap can happen.</p>
@@ -457,16 +467,19 @@ elements resulting from overlap and which labels they relate to.</p>
 <span class="n">new_labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">}</span>
 <span class="n">label_tree</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
 <span class="n">label_tree</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-<span class="n">label_tree</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span> <span class="c1"># =&gt; {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10]}</span>
+<span class="n">label_tree</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span> <span class="c1"># =&gt; {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10],</span>
+<span class="mi">18</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">19</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]}</span>
 <span class="n">label_set</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">}</span>
 <span class="n">label</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">merge_mask</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="c1"># mask 6</span>
 <span class="n">merged_mask</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
 <span class="n">label_set</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">}</span>
-<span class="n">label_tree</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># =&gt; {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10], 20: 0}</span>
+<span class="n">label_tree</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># =&gt; {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10],</span>
+<span class="mi">18</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">19</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 <span class="n">new_labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">30</span><span class="p">,</span> <span class="mi">39</span><span class="p">}</span>
 <span class="n">label_tree</span><span class="p">[</span><span class="mi">30</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
-<span class="n">label_tree</span><span class="p">[</span><span class="mi">39</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># =&gt; {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10], 18: [8, 10], 19: [9, 10], 20: 0, 30: [10, 20], 39: [19, 20]}</span>
+<span class="n">label_tree</span><span class="p">[</span><span class="mi">39</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="c1"># =&gt; {1: 0, 2: 0, 3: [1, 2], 4: 0, 5: 0, 8: [3, 5], 9: [4, 5], 10: 0, 15: [5, 10],</span>
+<span class="mi">18</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">19</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">20</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="mi">39</span><span class="p">:</span> <span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]}</span>
 <span class="n">label_set</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">39</span><span class="p">}</span>
 <span class="n">label</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">merge_mask</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">=</span> <span class="mi">40</span>
 </pre></div>
@@ -496,9 +509,21 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.core.prep.MergedMask.merge">
-<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#MergedMask.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.MergedMask.merge" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#MergedMask.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.MergedMask.merge" title="Permalink to this definition"></a></dt>
 <dd><p>Merge the sequence of masks in the specified order</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.core.prep.RelionCompositeStarReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.core.prep.</span></span><span class="sig-name descname"><span class="pre">RelionCompositeStarReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#RelionCompositeStarReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.RelionCompositeStarReader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="readers.html#sfftk.readers.starreader.RelionStarReader" title="sfftk.readers.starreader.RelionStarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelionStarReader</span></code></a></p>
+<p>Relion composite star file reader</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="sfftk.core.prep.RelionCompositeStarReader.maximum_tomograms">
+<span class="sig-name descname"><span class="pre">maximum_tomograms</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#sfftk.core.prep.RelionCompositeStarReader.maximum_tomograms" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -509,7 +534,7 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -517,7 +542,7 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dd class="field-even"><p>exit status</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -529,15 +554,15 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – map filename</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – verbosity flag</p></li>
+<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – map filename</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – verbosity flag</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>boolean, True if binary mask</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)">bool</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -548,13 +573,13 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dd><p>Construct the transformation matrix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – parsed arguments</p>
+<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a>) – parsed arguments</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>transform</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -566,7 +591,7 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -574,7 +599,47 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dd class="field-even"><p>exit status</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.core.prep.starcrop">
+<span class="sig-prename descclassname"><span class="pre">sfftk.core.prep.</span></span><span class="sig-name descname"><span class="pre">starcrop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#starcrop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.starcrop" title="Permalink to this definition"></a></dt>
+<dd><p>Crop a star file to have at most the given number of rows</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>exit status</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="sfftk.core.prep.starsplit">
+<span class="sig-prename descclassname"><span class="pre">sfftk.core.prep.</span></span><span class="sig-name descname"><span class="pre">starsplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/core/prep.html#starsplit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.core.prep.starsplit" title="Permalink to this definition"></a></dt>
+<dd><p>Split a star file into multiple star files based on the given column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>exit status</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -586,7 +651,7 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -594,7 +659,7 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dd class="field-even"><p>exit status</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -606,15 +671,15 @@ and <code class="docutils literal notranslate"><span class="pre">__iadd__</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – an STL mesh</p></li>
-<li><p><strong>transform</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – numpy array with <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(4,</span> <span class="pre">4)</span></code></p></li>
+<li><p><strong>mesh</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – an STL mesh</p></li>
+<li><p><strong>transform</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – numpy array with <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(4,</span> <span class="pre">4)</span></code></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>an STL mesh transformed</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>

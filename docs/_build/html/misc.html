@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.9.0.dev0 documentation</title>
+  <title>Miscellaneous Operations Using sfftk &mdash; sfftk v0.10.3.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.9
+                v0.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -76,6 +76,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#mesh-reduction">Mesh Reduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cropping-star-files">Cropping STAR Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#splitting-star-files">Splitting STAR Files</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-configurations">Setting Configurations</a><ul>
@@ -163,23 +165,25 @@
 </ul>
 </li>
 <li><p><a class="reference internal" href="#mesh-reduction" id="id26">Mesh Reduction</a></p></li>
+<li><p><a class="reference internal" href="#cropping-star-files" id="id27">Cropping STAR Files</a></p></li>
+<li><p><a class="reference internal" href="#splitting-star-files" id="id28">Splitting STAR Files</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#setting-configurations" id="id27">Setting Configurations</a></p>
+<li><p><a class="reference internal" href="#setting-configurations" id="id29">Setting Configurations</a></p>
 <ul>
-<li><p><a class="reference internal" href="#configuration-commands" id="id28">Configuration Commands</a></p>
+<li><p><a class="reference internal" href="#configuration-commands" id="id30">Configuration Commands</a></p>
 <ul>
-<li><p><a class="reference internal" href="#getting-a-single-configuration-value" id="id29">Getting a single configuration value</a></p></li>
-<li><p><a class="reference internal" href="#listing-available-configurations" id="id30">Listing available configurations</a></p></li>
-<li><p><a class="reference internal" href="#setting-a-single-configuration-value" id="id31">Setting a single configuration value</a></p></li>
-<li><p><a class="reference internal" href="#deleting-a-single-configuration" id="id32">Deleting a single configuration</a></p></li>
-<li><p><a class="reference internal" href="#clearing-all-configurations" id="id33">Clearing all configurations</a></p></li>
+<li><p><a class="reference internal" href="#getting-a-single-configuration-value" id="id31">Getting a single configuration value</a></p></li>
+<li><p><a class="reference internal" href="#listing-available-configurations" id="id32">Listing available configurations</a></p></li>
+<li><p><a class="reference internal" href="#setting-a-single-configuration-value" id="id33">Setting a single configuration value</a></p></li>
+<li><p><a class="reference internal" href="#deleting-a-single-configuration" id="id34">Deleting a single configuration</a></p></li>
+<li><p><a class="reference internal" href="#clearing-all-configurations" id="id35">Clearing all configurations</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#where-configurations-are-stored" id="id34">Where Configurations Are Stored</a></p></li>
+<li><p><a class="reference internal" href="#where-configurations-are-stored" id="id36">Where Configurations Are Stored</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#running-unit-tests" id="id35">Running Unit Tests</a></p></li>
+<li><p><a class="reference internal" href="#running-unit-tests" id="id37">Running Unit Tests</a></p></li>
 </ul>
 </li>
 </ul>
@@ -732,9 +736,101 @@ might need to hit the <em>Apply</em> button to run this filter.</p>
 <img alt="_images/surface_after.png" src="_images/surface_after.png" />
 <p>You can play with the parameters in the <em>Properties</em> dialogue to modify how the filters work.</p>
 </section>
+<section id="cropping-star-files">
+<h3><a class="toc-backref" href="#id27">Cropping STAR Files</a><a class="headerlink" href="#cropping-star-files" title="Permalink to this heading"></a></h3>
+<p>In certain situations, it may be necessary to crop a STAR file to a smaller subset of particles.
+This is particularly useful when
+running tests on a large dataset and only a small subset is required. The <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">starcrop</span></code> utility is used to
+achieve this.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff prep starcrop
+usage: sff prep starcrop <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-o OUTPUT<span class="o">]</span>
+                                                 <span class="o">[</span>--infix INFIX<span class="o">]</span> <span class="o">[</span>--rows ROWS<span class="o">]</span>
+                                                 <span class="o">[</span>--image-name-field IMAGE_NAME_FIELD<span class="o">]</span>
+                                                 star_file
+
+Truncate a composite star file to the specified number of rows <span class="o">(</span>default: <span class="m">100</span><span class="o">)</span>
+
+positional arguments:
+  star_file             the composite star file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -p CONFIG_PATH, --config-path CONFIG_PATH
+                                                path to configs file
+  -b, --shipped-configs
+                                                use shipped configs only <span class="k">if</span> config path and user
+                                                configs fail <span class="o">[</span>default: False<span class="o">]</span>
+  -v, --verbose         verbose output
+  -o OUTPUT, --output OUTPUT
+                                                output file name <span class="o">[</span>default: &lt;infile&gt;_cropped.star<span class="o">]</span>
+  --infix INFIX         infix to be added to filenames e.g. file.star -&gt;
+                                                file_&lt;infix&gt;.star <span class="o">[</span>default: <span class="s1">&#39;cropped&#39;</span><span class="o">]</span>
+  --rows ROWS           the number of rows to keep <span class="o">[</span>default: <span class="m">100</span><span class="o">]</span>
+  --image-name-field IMAGE_NAME_FIELD
+                                                the field <span class="k">in</span> the star file that contains the image
+                                                name <span class="o">[</span>default: <span class="s1">&#39;_rlnImageName&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="splitting-star-files">
+<h3><a class="toc-backref" href="#id28">Splitting STAR Files</a><a class="headerlink" href="#splitting-star-files" title="Permalink to this heading"></a></h3>
+<p>Typically, STAR files may be combined from multiple sources and it may be necessary to split them into their constituent parts.
+This occurs when multiple tomograms are referenced to create a high resolution subtomogram average. The <code class="docutils literal notranslate"><span class="pre">sff</span> <span class="pre">prep</span> <span class="pre">starsplit</span></code> utility is used to achieve this.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: sff prep starsplit <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-p CONFIG_PATH<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span>
+                                                  <span class="o">[</span>--output-prefix OUTPUT_PREFIX<span class="o">]</span>
+                                                  <span class="o">[</span>--image-path IMAGE_PATH<span class="o">]</span>
+                                                  <span class="o">[</span>--image-extension IMAGE_EXTENSION<span class="o">]</span>
+                                                  <span class="o">[</span>--image-name-prefix IMAGE_NAME_PREFIX<span class="o">]</span>
+                                                  <span class="o">[</span>--image-name-field IMAGE_NAME_FIELD<span class="o">]</span>
+                                                  star_file
+
+Split a composite star file into individual star files distinguished by the
+&lt;rlnImageName&gt; key
+
+positional arguments:
+  star_file             the composite star file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  -p CONFIG_PATH, --config-path CONFIG_PATH
+                                                path to configs file
+  -b, --shipped-configs
+                                                use shipped configs only <span class="k">if</span> config path and user
+                                                configs fail <span class="o">[</span>default: False<span class="o">]</span>
+  -v, --verbose         verbose output
+  --output-prefix OUTPUT_PREFIX
+                                                a prefix to use <span class="k">for</span> the output files<span class="p">;</span> the output files
+                                                are named &lt;prefix&gt;_&lt;rlnImageName&gt;.star <span class="o">[</span>default:
+                                                <span class="s1">&#39;&lt;composite-name&gt;_&#39;</span><span class="o">]</span>
+  --image-path IMAGE_PATH
+                                                the correct <span class="nb">local</span> path to the tomogram files <span class="o">[</span>default:
+                                                <span class="s1">&#39;&#39;</span><span class="o">]</span>
+  --image-extension IMAGE_EXTENSION
+                                                the file extension to use <span class="k">for</span> the tomogram files
+                                                <span class="o">[</span>default: <span class="s1">&#39;mrc&#39;</span><span class="o">]</span>
+  --image-name-prefix IMAGE_NAME_PREFIX
+                                                <span class="k">in</span> many star files, the &lt;rlnImageName&gt; values will be
+                                                a <span class="nb">local</span> path<span class="p">;</span> the actual image name <span class="o">(</span>a .mrc file<span class="o">)</span> may
+                                                contain additional characters that makes it difficult
+                                                to categorise the tomograms e.g.
+                                                <span class="s1">&#39;path/my_tomogram1_001.mrc&#39;</span>,
+                                                <span class="s1">&#39;path/my_tomogram1_002.mrc&#39;</span>,
+                                                <span class="s1">&#39;path/my_tomogram2_001.mrc&#39;</span>. In this example, we have
+                                                two tomograms <span class="o">(</span><span class="s1">&#39;my_tomogram1&#39;</span> and <span class="s1">&#39;my_tomogram2&#39;</span><span class="o">)</span> but
+                                                the additional characters <span class="o">(</span><span class="s1">&#39;_001&#39;</span>, <span class="s1">&#39;_002&#39;</span><span class="o">)</span> make it
+                                                difficult to categorise the tomograms. This option
+                                                allows you to specify a prefix to remove from the
+                                                &lt;rlnImageName&gt; values. You can also use a REGEX <span class="k">in</span>
+                                                quotes e.g. <span class="s1">&#39;my_tomogram\d&#39;</span>. <span class="o">[</span>default: <span class="s1">&#39;&#39;</span><span class="o">]</span>
+  --image-name-field IMAGE_NAME_FIELD
+                                                the field <span class="k">in</span> the star file that contains the image
+                                                name <span class="o">[</span>default: <span class="s1">&#39;_rlnImageName&#39;</span><span class="o">]</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="setting-configurations">
-<h2><a class="toc-backref" href="#id27">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id29">Setting Configurations</a><a class="headerlink" href="#setting-configurations" title="Permalink to this heading"></a></h2>
 <p>Some of the functionality provided by <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> relies on persistent configurations.
 In the section we outline all you need to know to work with <code class="docutils literal notranslate"><span class="pre">sfftk</span></code> configurations.</p>
 <p>Configurations are handled using the <code class="docutils literal notranslate"><span class="pre">config</span></code> utility with several subcommands.</p>
@@ -751,40 +847,40 @@ Fri Jan <span class="m">19</span> <span class="m">14</span>:03:34 <span class="m
 </pre></div>
 </div>
 <section id="configuration-commands">
-<h3><a class="toc-backref" href="#id28">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id30">Configuration Commands</a><a class="headerlink" href="#configuration-commands" title="Permalink to this heading"></a></h3>
 <section id="getting-a-single-configuration-value">
-<h4><a class="toc-backref" href="#id29">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id31">Getting a single configuration value</a><a class="headerlink" href="#getting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get CONFIG_NAME
 </pre></div>
 </div>
 </section>
 <section id="listing-available-configurations">
-<h4><a class="toc-backref" href="#id30">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id32">Listing available configurations</a><a class="headerlink" href="#listing-available-configurations" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config get --all
 </pre></div>
 </div>
 </section>
 <section id="setting-a-single-configuration-value">
-<h4><a class="toc-backref" href="#id31">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id33">Setting a single configuration value</a><a class="headerlink" href="#setting-a-single-configuration-value" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config <span class="nb">set</span> CONFIG_NAME CONFIG_VALUE
 </pre></div>
 </div>
 </section>
 <section id="deleting-a-single-configuration">
-<h4><a class="toc-backref" href="#id32">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id34">Deleting a single configuration</a><a class="headerlink" href="#deleting-a-single-configuration" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config del CONFIG_NAME
 </pre></div>
 </div>
 </section>
 <section id="clearing-all-configurations">
-<h4><a class="toc-backref" href="#id33">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this heading"></a></h4>
+<h4><a class="toc-backref" href="#id35">Clearing all configurations</a><a class="headerlink" href="#clearing-all-configurations" title="Permalink to this heading"></a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff config del --all
 </pre></div>
 </div>
 </section>
 </section>
 <section id="where-configurations-are-stored">
-<span id="configs"></span><h3><a class="toc-backref" href="#id34">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this heading"></a></h3>
+<span id="configs"></span><h3><a class="toc-backref" href="#id36">Where Configurations Are Stored</a><a class="headerlink" href="#where-configurations-are-stored" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">sfftk</span></code> ships with a config file called <code class="docutils literal notranslate"><span class="pre">sff.conf</span></code> which is located in the root of the package.
 In some cases this might be a read-only location e.g. if installed in an unmodified <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/python2.7/site-packages</span></code>.
 Therefore, default read-only configurations will be obtained from this file.
@@ -809,7 +905,7 @@ Correspondingly, custom configs will only be used if the <code class="docutils l
 </section>
 </section>
 <section id="running-unit-tests">
-<h2><a class="toc-backref" href="#id35">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id37">Running Unit Tests</a><a class="headerlink" href="#running-unit-tests" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sff tests <span class="o">[</span>tool<span class="o">]</span>
 </pre></div>
 </div>

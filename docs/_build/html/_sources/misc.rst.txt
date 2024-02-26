@@ -647,6 +647,105 @@ Your surface now has fewer polygons with little volume distortion.
 You can play with the parameters in the *Properties* dialogue to modify how the filters work.
 
 
+Cropping STAR Files
+----------------------------
+
+In certain situations, it may be necessary to crop a STAR file to a smaller subset of particles.
+This is particularly useful when
+running tests on a large dataset and only a small subset is required. The ``sff prep starcrop`` utility is used to
+achieve this.
+
+.. code:: bash
+
+	sff prep starcrop
+	usage: sff prep starcrop [-h] [-p CONFIG_PATH] [-b] [-v] [-o OUTPUT]
+							 [--infix INFIX] [--rows ROWS]
+							 [--image-name-field IMAGE_NAME_FIELD]
+							 star_file
+
+	Truncate a composite star file to the specified number of rows (default: 100)
+
+	positional arguments:
+	  star_file             the composite star file
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -p CONFIG_PATH, --config-path CONFIG_PATH
+							path to configs file
+	  -b, --shipped-configs
+							use shipped configs only if config path and user
+							configs fail [default: False]
+	  -v, --verbose         verbose output
+	  -o OUTPUT, --output OUTPUT
+							output file name [default: <infile>_cropped.star]
+	  --infix INFIX         infix to be added to filenames e.g. file.star ->
+							file_<infix>.star [default: 'cropped']
+	  --rows ROWS           the number of rows to keep [default: 100]
+	  --image-name-field IMAGE_NAME_FIELD
+							the field in the star file that contains the image
+							name [default: '_rlnImageName']
+
+
+Splitting STAR Files
+----------------------------
+
+Typically, STAR files may be combined from multiple sources and it may be necessary to split them into their constituent parts.
+This occurs when multiple tomograms are referenced to create a high resolution subtomogram average. The ``sff prep starsplit`` utility is used to achieve this.
+
+.. code-block:: bash
+
+	usage: sff prep starsplit [-h] [-p CONFIG_PATH] [-b] [-v]
+							  [--output-prefix OUTPUT_PREFIX]
+							  [--image-path IMAGE_PATH]
+							  [--image-extension IMAGE_EXTENSION]
+							  [--image-name-prefix IMAGE_NAME_PREFIX]
+							  [--image-name-field IMAGE_NAME_FIELD]
+							  star_file
+
+	Split a composite star file into individual star files distinguished by the
+	<rlnImageName> key
+
+	positional arguments:
+	  star_file             the composite star file
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -p CONFIG_PATH, --config-path CONFIG_PATH
+							path to configs file
+	  -b, --shipped-configs
+							use shipped configs only if config path and user
+							configs fail [default: False]
+	  -v, --verbose         verbose output
+	  --output-prefix OUTPUT_PREFIX
+							a prefix to use for the output files; the output files
+							are named <prefix>_<rlnImageName>.star [default:
+							'<composite-name>_']
+	  --image-path IMAGE_PATH
+							the correct local path to the tomogram files [default:
+							'']
+	  --image-extension IMAGE_EXTENSION
+							the file extension to use for the tomogram files
+							[default: 'mrc']
+	  --image-name-prefix IMAGE_NAME_PREFIX
+							in many star files, the <rlnImageName> values will be
+							a local path; the actual image name (a .mrc file) may
+							contain additional characters that makes it difficult
+							to categorise the tomograms e.g.
+							'path/my_tomogram1_001.mrc',
+							'path/my_tomogram1_002.mrc',
+							'path/my_tomogram2_001.mrc'. In this example, we have
+							two tomograms ('my_tomogram1' and 'my_tomogram2') but
+							the additional characters ('_001', '_002') make it
+							difficult to categorise the tomograms. This option
+							allows you to specify a prefix to remove from the
+							<rlnImageName> values. You can also use a REGEX in
+							quotes e.g. 'my_tomogram\d'. [default: '']
+	  --image-name-field IMAGE_NAME_FIELD
+							the field in the star file that contains the image
+							name [default: '_rlnImageName']
+
+
+
 Setting Configurations
 =======================
 

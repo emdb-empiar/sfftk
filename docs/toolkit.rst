@@ -56,6 +56,8 @@ extensions):
 
 -  Segger (.seg)
 
+-  STAR (.star) for subtomogram averages produced using RELION
+
 -  Stereolithography (.stl)
 
 -  Amira HyperSurface (.surf)

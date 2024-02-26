@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.notes package &mdash; sfftk v0.9.0.dev0 documentation</title>
+  <title>sfftk.notes package &mdash; sfftk v0.10.3.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.9
+                v0.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,6 +56,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sfftk.notes</span></code> package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.notes.find">Find notes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk-notes-find"><code class="docutils literal notranslate"><span class="pre">sfftk.notes.find</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.CSVRow"><code class="docutils literal notranslate"><span class="pre">CSVRow</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.CSVTable"><code class="docutils literal notranslate"><span class="pre">CSVTable</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.ResultsTable"><code class="docutils literal notranslate"><span class="pre">ResultsTable</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.SearchResource"><code class="docutils literal notranslate"><span class="pre">SearchResource</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.notes.find.SearchResults"><code class="docutils literal notranslate"><span class="pre">SearchResults</span></code></a></li>
@@ -136,6 +138,20 @@
 <p>Search for terms and display ontologies</p>
 </section>
 <dl class="py class">
+<dt class="sig sig-object py" id="sfftk.notes.find.CSVRow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">CSVRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#CSVRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.CSVRow" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
+<p>Class definition for a single row in the table</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="sfftk.notes.find.CSVTable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">CSVTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#CSVTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.CSVTable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
+<p>Class that formats search results as a CSV</p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.find.ResultsTable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">ResultsTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#ResultsTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.ResultsTable" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.notes.find.Table" title="sfftk.notes.find.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
@@ -145,7 +161,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.find.SearchResource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">SearchResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#SearchResource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.SearchResource" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A resource against which to look for accessions or terms</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.notes.find.SearchResource.get_url">
@@ -163,12 +179,12 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.find.SearchResults">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">SearchResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#SearchResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">SearchResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#SearchResults"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.SearchResults" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>SearchResults class</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.notes.find.SearchResults.tabulate">
-<span class="sig-name descname"><span class="pre">tabulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#SearchResults.tabulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.SearchResults.tabulate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">tabulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#SearchResults.tabulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.SearchResults.tabulate" title="Permalink to this definition"></a></dt>
 <dd><p>Tabulate the search results</p>
 </dd></dl>
 
@@ -177,14 +193,14 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.find.Table">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><a class="reference internal" href="_modules/sfftk/notes/find.html#Table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.Table" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Table superclass</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.find.TableField">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.find.</span></span><span class="sig-name descname"><span class="pre">TableField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">justify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position_in_iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/find.html#TableField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.find.TableField" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class definition for a TableField - single column in a table</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="sfftk.notes.find.TableField.is_index">
@@ -198,7 +214,7 @@
 <dd><p>Justify the given text</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the text to justify</p>
+<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the text to justify</p>
 </dd>
 </dl>
 </dd></dl>
@@ -264,7 +280,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.view.View">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.view.</span></span><span class="sig-name descname"><span class="pre">View</span></span><a class="reference internal" href="_modules/sfftk/notes/view.html#View"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.view.View" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>View base class</p>
 </dd></dl>
 
@@ -274,7 +290,7 @@
 <dd><p>List all notes in an EMDB-SFF file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p>
+<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p>
 </dd>
 <dt class="field-even">Return status</dt>
 <dd class="field-even"><p>0 is OK, else failure</p>
@@ -291,7 +307,7 @@
 <dd><p>Show notes in an EMDB-SFF file for the specified segment IDs</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p>
+<dd class="field-odd"><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p>
 </dd>
 <dt class="field-even">Return status</dt>
 <dd class="field-even"><p>0 is OK, else failure</p>
@@ -326,7 +342,7 @@
 <dd><p>Adds this note to the given segmentation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>segmentation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code>) – an EMDB-SFF segmentation object</p>
+<dd class="field-odd"><p><strong>segmentation</strong> (<a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegmentation" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</p>
 </dd>
 <dt class="field-even">Return segmentation</dt>
 <dd class="field-even"><p>the EMDB-SFF segmentation with the annotation added</p>
@@ -340,13 +356,13 @@
 <dd><p>Delete attributes from a segmentation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>segmentation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code>) – an EMDB-SFF segmentation object</p>
+<dd class="field-odd"><p><strong>segmentation</strong> (<a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegmentation" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</p>
 </dd>
 <dt class="field-even">Return segmentation</dt>
 <dd class="field-even"><p>the EMDB-SFF segmentation with annotation deleted</p>
 </dd>
 <dt class="field-odd">Rtype segmentation</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></p>
+<dd class="field-odd"><p><a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegmentation" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,13 +373,13 @@
 <dd><p>Modify the global annotation of the given segmentation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>segmentation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code>) – an EMDB-SFF segmentation object</p>
+<dd class="field-odd"><p><strong>segmentation</strong> (<a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegmentation" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></a>) – an EMDB-SFF segmentation object</p>
 </dd>
 <dt class="field-even">Return segmentation</dt>
 <dd class="field-even"><p>the EMDB-SFF segmentation with annotated edited</p>
 </dd>
 <dt class="field-odd">Rtype segmentation</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></p>
+<dd class="field-odd"><p><a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegmentation" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegmentation</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -378,10 +394,10 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.notes.modify.AbstractNote.add_to_segment">
 <span class="sig-name descname"><span class="pre">add_to_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/modify.html#AbstractNote.add_to_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.add_to_segment" title="Permalink to this definition"></a></dt>
-<dd><p>Add the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code> object</p>
+<dd><p>Add the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegment" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code></a> object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>segment</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code>) – single segment in EMDB-SFF</p>
+<dd class="field-odd"><p><strong>segment</strong> (<a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegment" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code></a>) – single segment in EMDB-SFF</p>
 </dd>
 </dl>
 </dd></dl>
@@ -389,10 +405,10 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.notes.modify.AbstractNote.del_from_segment">
 <span class="sig-name descname"><span class="pre">del_from_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/modify.html#AbstractNote.del_from_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.del_from_segment" title="Permalink to this definition"></a></dt>
-<dd><p>Delete the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code> object</p>
+<dd><p>Delete the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegment" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code></a> object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>segment</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code>) – single segment in EMDB-SFF</p>
+<dd class="field-odd"><p><strong>segment</strong> (<a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegment" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code></a>) – single segment in EMDB-SFF</p>
 </dd>
 </dl>
 </dd></dl>
@@ -400,10 +416,10 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.notes.modify.AbstractNote.edit_in_segment">
 <span class="sig-name descname"><span class="pre">edit_in_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/modify.html#AbstractNote.edit_in_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.AbstractNote.edit_in_segment" title="Permalink to this definition"></a></dt>
-<dd><p>Edit the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code> object</p>
+<dd><p>Edit the annotations found in this <code class="docutils literal notranslate"><span class="pre">Note</span></code> object to the <a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegment" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code></a> object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>segment</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code>) – single segment in EMDB-SFF</p>
+<dd class="field-odd"><p><strong>segment</strong> (<a class="reference external" href="https://sfftk-rw.readthedocs.io/en/latest/sfftkrw.html#sfftkrw.SFFSegment" title="(in sfftk-rw vv0.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftkrw.SFFSegment</span></code></a>) – single segment in EMDB-SFF</p>
 </dd>
 </dl>
 </dd></dl>
@@ -420,14 +436,14 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.modify.BaseNote">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.modify.</span></span><span class="sig-name descname"><span class="pre">BaseNote</span></span><a class="reference internal" href="_modules/sfftk/notes/modify.html#BaseNote"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.BaseNote" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Note base class</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.modify.ExternalReference">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.modify.</span></span><span class="sig-name descname"><span class="pre">ExternalReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accession</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/modify.html#ExternalReference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.ExternalReference" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class definition for a <a class="reference internal" href="#sfftk.notes.modify.ExternalReference" title="sfftk.notes.modify.ExternalReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExternalReference</span></code></a> object</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="sfftk.notes.modify.ExternalReference.iri">
@@ -445,7 +461,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> – an <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a> object</p></li>
+<li><p><strong>args</strong> – an <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a> object</p></li>
 <li><p><strong>configs</strong> – persistent configurations for <code class="docutils literal notranslate"><span class="pre">sfftk</span></code></p></li>
 </ul>
 </dd>
@@ -462,13 +478,13 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.notes.modify.NoteAttr">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.notes.modify.</span></span><span class="sig-name descname"><span class="pre">NoteAttr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'var'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/notes/modify.html#NoteAttr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.notes.modify.NoteAttr" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Descriptor class for note attributes</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>initval</strong> – the initial value of the attribute (default: <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the name of the variable (default: ‘var’)</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the name of the variable (default: ‘var’)</p></li>
 </ul>
 </dd>
 </dl>
@@ -488,7 +504,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -508,7 +524,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -529,7 +545,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -549,7 +565,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -569,7 +585,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -589,7 +605,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -609,7 +625,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>
@@ -629,7 +645,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.Namespace" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parsed arguments</p></li>
 <li><p><strong>configs</strong> (<a class="reference internal" href="core.html#sfftk.core.configs.Configs" title="sfftk.core.configs.Configs"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.core.configs.Configs</span></code></a>) – configurations object</p></li>
 </ul>
 </dd>

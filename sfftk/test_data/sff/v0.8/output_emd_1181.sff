@@ -28,12 +28,12 @@
     <segment_list>
         <segment id="15559" parent_id="0">
             <biological_annotation>
-                <name>barometer variation fake</name>
-                <description>Sea fermentum bibendum faucibusvestibulum no, rhoncusmaecenas feugait in et blandit. Quisque imperdietaliquam velit sapien.</description>
+                <name>straw manpower section</name>
+                <description>Liber sanctus nihil imperdiet mi maurisaenean variuscras duimauris, ametduis rutrum sodales nobis rhoncusmaecenas taciti. Elitduis libero lobortis amet sanctus.</description>
                 <external_references>
-                    <ref id="0" resource="hairpins" url="operand" accession="baud"/>
+                    <ref id="0" resource="launchers" url="grooves" accession="operabilities"/>
                 </external_references>
-                <number_of_instances>800</number_of_instances>
+                <number_of_instances>95</number_of_instances>
             </biological_annotation>
             <colour>
                 <red>0.921817600727081</red>

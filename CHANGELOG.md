@@ -1,5 +1,54 @@
 #Changes by release
 
+## [0.10.3.dev0] (2023-11-30) - Multifile support for `.star`
+
+* convert multiple `.star` files into a single EMDB-SFF file
+* new class `sfftk.formats.star.RelionMultiStarSegmentation`
+* however, only one mask/particle will be accepted for all, which is handy when displaying the particles with different colours on the same viz.
+
+## [0.10.2.dev1] (2023-11-20) - Remove print warning for OLS
+
+## [0.10.2.dev0] (2023-11-16) - Extra arguments for working with RELION `.star` files
+
+* `--euler-angle-convention` is now user-modifiable
+* `--radians` flag to treat angles as radians instead of degrees
+* adapt to changes in OLS
+* print warning for OLS bug which does not honour `--start` for search
+
+## [0.10.1.dev1] (2023-10-26) - Extension of previous bugfix
+
+## [0.10.1.dev0] (2023-10-26) - Improvements to display of search results
+
+* bugfix: when running `sff notes search '<term>' --as-text`, any multi-line `label`s are concatenated without spaces (FIXED)
+
+## [0.10.0.dev0] (2023-10-24) - Improvements to display of search results
+
+* display search results `--as-text`
+* select search results to save to file using the `--filter-rows` option
+* if concatenating search results to text file then option `--no-header` to only include results
+* new classes to `sfftk.notes.find`: `CSVTable` and `CSVRow`
+* associated unit tests with minor cleanup
+
+## [0.9.0.dev2] (2023-10-03) - Minor corrections and cleanup
+
+## [0.9.0.dev1] (2023-09-27) - Using shape_primitive_list for subtomogram averages
+
+* changed convert argument `--particles` to `--subtomogram-average`
+* required sfftk-rw>=0.8.1 to work
+
+## [0.9.0.dev0] (2023-09-20) - Handling RELION STAR files
+
+* basic working API
+* starreader documentation
+* skeleton implementation of star converter
+* test files
+* main entry point for `starsplit` and `starcrop`
+* display progres bar while reading RELION `.star` file
+* `prep starsplit`: split a .star file by image name; options to handle heterogeneity
+* `prep starcrop`: crop a `.star` file to a certain number of rows
+* unit tests for all the above
+* `--image-name-field` to specify field with image/tomogram
+
 ## [0.8.5] (2023-06-22) - Now `sff view` on STL files displays the bounding box; fixed failing tests
 
 ## [0.8.4] (2023-02-08) - Added `GlobalSimpleNote` to annotate a segmentation

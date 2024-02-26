@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; sfftk v0.9.0.dev0 documentation</title>
+  <title>Index &mdash; sfftk v0.10.3.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -29,7 +29,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.9
+                v0.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -95,6 +95,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
@@ -288,6 +289,12 @@
 </li>
         <li><a href="formats.html#sfftk.formats.seg.SeggerVolume.convert">(sfftk.formats.seg.SeggerVolume method)</a>
 </li>
+        <li><a href="formats.html#sfftk.formats.star.RelionMultiStarSegmentation.convert">(sfftk.formats.star.RelionMultiStarSegmentation method)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.star.RelionStarSegment.convert">(sfftk.formats.star.RelionStarSegment method)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.star.RelionStarSegmentation.convert">(sfftk.formats.star.RelionStarSegmentation method)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.stl.STLAnnotation.convert">(sfftk.formats.stl.STLAnnotation method)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.stl.STLHeader.convert">(sfftk.formats.stl.STLHeader method)</a>
@@ -320,6 +327,10 @@
       <li><a href="readers.html#sfftk.readers.modreader.COST">COST (class in sfftk.readers.modreader)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.COST_FLAGS">COST_FLAGS (class in sfftk.readers.modreader)</a>
+</li>
+      <li><a href="notes.html#sfftk.notes.find.CSVRow">CSVRow (class in sfftk.notes.find)</a>
+</li>
+      <li><a href="notes.html#sfftk.notes.find.CSVTable">CSVTable (class in sfftk.notes.find)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -414,8 +425,6 @@
 </li>
         <li><a href="readers.html#sfftk.readers.segreader.get_data">(in module sfftk.readers.segreader)</a>
 </li>
-        <li><a href="readers.html#sfftk.readers.starreader.get_data">(in module sfftk.readers.starreader)</a>
-</li>
         <li><a href="readers.html#sfftk.readers.stlreader.get_data">(in module sfftk.readers.stlreader)</a>
 </li>
         <li><a href="readers.html#sfftk.readers.surfreader.get_data">(in module sfftk.readers.surfreader)</a>
@@ -473,9 +482,13 @@
 </li>
       <li><a href="sff.html#sfftk.sff.handle_prep">handle_prep() (in module sfftk.sff)</a>
 </li>
+      <li><a href="sff.html#sfftk.sff.handle_prep_mergemask">handle_prep_mergemask() (in module sfftk.sff)</a>
+</li>
+      <li><a href="sff.html#sfftk.sff.handle_prep_starcrop">handle_prep_starcrop() (in module sfftk.sff)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sff.html#sfftk.sff.handle_prep_mergemask">handle_prep_mergemask() (in module sfftk.sff)</a>
+      <li><a href="sff.html#sfftk.sff.handle_prep_starsplit">handle_prep_starsplit() (in module sfftk.sff)</a>
 </li>
       <li><a href="sff.html#sfftk.sff.handle_tests">handle_tests() (in module sfftk.sff)</a>
 </li>
@@ -496,11 +509,17 @@
 </li>
         <li><a href="formats.html#sfftk.formats.seg.SeggerSegmentation.header">(sfftk.formats.seg.SeggerSegmentation property)</a>
 </li>
+        <li><a href="formats.html#sfftk.formats.star.RelionMultiStarSegmentation.header">(sfftk.formats.star.RelionMultiStarSegmentation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.star.RelionStarSegmentation.header">(sfftk.formats.star.RelionStarSegmentation property)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.stl.STLSegmentation.header">(sfftk.formats.stl.STLSegmentation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.surf.AmiraHyperSurfaceSegmentation.header">(sfftk.formats.surf.AmiraHyperSurfaceSegmentation property)</a>
 </li>
         <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.header">(sfftk.readers.segreader.SeggerSegmentation property)</a>
+</li>
+        <li><a href="readers.html#sfftk.readers.starreader.StarTable.header">(sfftk.readers.starreader.StarTable property)</a>
 </li>
       </ul></li>
       <li><a href="notes.html#sfftk.notes.view.HeaderView">HeaderView (class in sfftk.notes.view)</a>
@@ -629,6 +648,8 @@
 </li>
       <li><a href="formats.html#sfftk.formats.am.AmiraMeshSegment.material">material (sfftk.formats.am.AmiraMeshSegment property)</a>
 </li>
+      <li><a href="core.html#sfftk.core.prep.RelionCompositeStarReader.maximum_tomograms">maximum_tomograms (sfftk.core.prep.RelionCompositeStarReader attribute)</a>
+</li>
       <li><a href="readers.html#sfftk.readers.modreader.MCLP">MCLP (class in sfftk.readers.modreader)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.modreader.MCLP_FLAGS">MCLP_FLAGS (class in sfftk.readers.modreader)</a>
@@ -690,6 +711,8 @@
         <li><a href="formats.html#module-sfftk.formats.mod">sfftk.formats.mod</a>
 </li>
         <li><a href="formats.html#module-sfftk.formats.seg">sfftk.formats.seg</a>
+</li>
+        <li><a href="formats.html#module-sfftk.formats.star">sfftk.formats.star</a>
 </li>
         <li><a href="formats.html#module-sfftk.formats.stl">sfftk.formats.stl</a>
 </li>
@@ -790,10 +813,10 @@
 </li>
       <li><a href="core.html#sfftk.core.parser.parse_args">parse_args() (in module sfftk.core.parser)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notes.html#sfftk.notes.find.TableField.pc">pc (sfftk.notes.find.TableField property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="formats.html#sfftk.formats.mod.IMODMesh.polygons">polygons (sfftk.formats.mod.IMODMesh property)</a>
 
       <ul>
@@ -804,6 +827,8 @@
       </ul></li>
       <li><a href="readers.html#sfftk.readers.modreader.print_model">print_model() (in module sfftk.readers.modreader)</a>
 </li>
+      <li><a href="readers.html#sfftk.readers.starreader.print_progress">print_progress() (in module sfftk.readers.starreader)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -811,6 +836,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="formats.html#sfftk.formats.mod.IMODEllipsoid.radius">radius (sfftk.formats.mod.IMODEllipsoid property)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarTableRow.raw_data">raw_data() (sfftk.readers.starreader.StarTableRow method)</a>
 </li>
       <li><a href="core.html#sfftk.core.configs.Configs.read">read() (sfftk.core.configs.Configs method)</a>
 
@@ -862,7 +889,17 @@
         <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.region_ids">(sfftk.readers.segreader.SeggerSegmentation property)</a>
 </li>
       </ul></li>
+      <li><a href="core.html#sfftk.core.prep.RelionCompositeStarReader">RelionCompositeStarReader (class in sfftk.core.prep)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.star.RelionMultiStarSegmentation">RelionMultiStarSegmentation (class in sfftk.formats.star)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.star.RelionStarHeader">RelionStarHeader (class in sfftk.formats.star)</a>
+</li>
       <li><a href="readers.html#sfftk.readers.starreader.RelionStarReader">RelionStarReader (class in sfftk.readers.starreader)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.star.RelionStarSegment">RelionStarSegment (class in sfftk.formats.star)</a>
+</li>
+      <li><a href="formats.html#sfftk.formats.star.RelionStarSegmentation">RelionStarSegmentation (class in sfftk.formats.star)</a>
 </li>
       <li><a href="notes.html#sfftk.notes.find.TableField.render">render() (sfftk.notes.find.TableField method)</a>
 </li>
@@ -919,6 +956,10 @@
 </li>
         <li><a href="formats.html#sfftk.formats.seg.SeggerSegmentation.segments">(sfftk.formats.seg.SeggerSegmentation property)</a>
 </li>
+        <li><a href="formats.html#sfftk.formats.star.RelionMultiStarSegmentation.segments">(sfftk.formats.star.RelionMultiStarSegmentation property)</a>
+</li>
+        <li><a href="formats.html#sfftk.formats.star.RelionStarSegmentation.segments">(sfftk.formats.star.RelionStarSegmentation property)</a>
+</li>
         <li><a href="formats.html#sfftk.formats.stl.STLSegmentation.segments">(sfftk.formats.stl.STLSegmentation property)</a>
 </li>
         <li><a href="formats.html#sfftk.formats.surf.AmiraHyperSurfaceSegmentation.segments">(sfftk.formats.surf.AmiraHyperSurfaceSegmentation property)</a>
@@ -927,6 +968,8 @@
 </li>
       </ul></li>
       <li><a href="core.html#sfftk.core.configs.set_configs">set_configs() (in module sfftk.core.configs)</a>
+</li>
+      <li><a href="readers.html#sfftk.readers.starreader.StarTableRow.setattr">setattr() (sfftk.readers.starreader.StarTableRow method)</a>
 </li>
       <li>
     sfftk.__init__
@@ -985,6 +1028,13 @@
 </li>
       </ul></li>
       <li>
+    sfftk.formats.star
+
+      <ul>
+        <li><a href="formats.html#module-sfftk.formats.star">module</a>
+</li>
+      </ul></li>
+      <li>
     sfftk.formats.stl
 
       <ul>
@@ -1005,6 +1055,8 @@
         <li><a href="formats.html#module-sfftk.formats.survos">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sfftk.notes.find
 
@@ -1012,8 +1064,6 @@
         <li><a href="notes.html#module-sfftk.notes.find">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sfftk.notes.modify
 
@@ -1115,7 +1165,11 @@
 </li>
       <li><a href="readers.html#sfftk.readers.segreader.SeggerSegmentation.smoothing_levels">smoothing_levels (sfftk.readers.segreader.SeggerSegmentation property)</a>
 </li>
+      <li><a href="core.html#sfftk.core.prep.starcrop">starcrop() (in module sfftk.core.prep)</a>
+</li>
       <li><a href="readers.html#sfftk.readers.starreader.StarReader">StarReader (class in sfftk.readers.starreader)</a>
+</li>
+      <li><a href="core.html#sfftk.core.prep.starsplit">starsplit() (in module sfftk.core.prep)</a>
 </li>
       <li><a href="readers.html#sfftk.readers.starreader.StarTable">StarTable (class in sfftk.readers.starreader)</a>
 </li>
@@ -1181,6 +1235,14 @@
         <li><a href="readers.html#sfftk.readers.surfreader.HxSurfSegment.triangles">(sfftk.readers.surfreader.HxSurfSegment property)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="core.html#sfftk.core.parser.UpperAction">UpperAction (class in sfftk.core.parser)</a>
+</li>
   </ul></td>
 </tr></table>
 

@@ -46,7 +46,7 @@ STAR reader
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: sfftk.readers.starreader
-    :members:
+    :members: print_progress, StarReader, RelionStarReader, StarTable, StarTableRow
     :show-inheritance:
 
 

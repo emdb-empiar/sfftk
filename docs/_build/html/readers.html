@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sfftk.readers package &mdash; sfftk v0.9.0.dev0 documentation</title>
+  <title>sfftk.readers package &mdash; sfftk v0.10.3.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> sfftk
           </a>
               <div class="version">
-                v0.9
+                v0.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -122,7 +122,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.StarReader"><code class="docutils literal notranslate"><span class="pre">StarReader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.StarTable"><code class="docutils literal notranslate"><span class="pre">StarTable</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.StarTableRow"><code class="docutils literal notranslate"><span class="pre">StarTableRow</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sfftk.readers.starreader.print_progress"><code class="docutils literal notranslate"><span class="pre">print_progress()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-sfftk.readers.stlreader">Stereolithography reader</a><ul>
@@ -192,7 +192,7 @@
 <dd><p>Reads and returns structured data given the file name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – filename</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – filename</p>
 </dd>
 <dt class="field-even">Return header</dt>
 <dd class="field-even"><p>Amira(R) file header</p>
@@ -219,7 +219,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.survosreader.SuRVoSSegmentation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.survosreader.</span></span><span class="sig-name descname"><span class="pre">SuRVoSSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/survosreader.html#SuRVoSSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.survosreader.SuRVoSSegmentation" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A SuRVoS segmentation</p>
 <p>SuRVoS segmentations are based on integer annotations. To the best of my understanding
 no textual information is saved in segmentation.</p>
@@ -295,7 +295,7 @@ returns the segmentation with annotation value of ‘1’</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.mapreader.Map">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.mapreader.</span></span><span class="sig-name descname"><span class="pre">Map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/mapreader.html#Map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.mapreader.Map" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to encapsulate a CCP4 mask</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.readers.mapreader.Map.fix_mask">
@@ -308,8 +308,8 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mask_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – the mask value</p></li>
-<li><p><strong>voxel_values_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the maxmimum number of voxel values permitted in fixing the mask</p></li>
+<li><p><strong>mask_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – the mask value</p></li>
+<li><p><strong>voxel_values_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – the maxmimum number of voxel values permitted in fixing the mask</p></li>
 </ul>
 </dd>
 </dl>
@@ -346,7 +346,7 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>f</strong> (<em>file</em>) – file object</p></li>
-<li><p><strong>header_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – only read the header [default: False]</p></li>
+<li><p><strong>header_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – only read the header [default: False]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return int status</dt>
@@ -408,15 +408,15 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – map filename</p></li>
-<li><p><strong>header_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – only read the header if <cite>True</cite></p></li>
+<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – map filename</p></li>
+<li><p><strong>header_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – only read the header if <cite>True</cite></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a 3x4 transformation matrix</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -428,8 +428,8 @@ the number of voxel values is not greater than <cite>voxel_value_threshold</cite
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – map filename</p></li>
-<li><p><strong>inverted</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – should we invert the histogram or not (default)?</p></li>
+<li><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – map filename</p></li>
+<li><p><strong>inverted</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – should we invert the histogram or not (default)?</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -466,7 +466,7 @@ unread position.</p></li>
 defined as <code class="docutils literal notranslate"><span class="pre">add_&lt;chunk&gt;</span></code> e.g. OBJT objects are containers of CONT objects and therefore have a <code class="docutils literal notranslate"><span class="pre">add_cont()</span></code>
 method which takes a CONT object as argument. Internally, container objects use (ordered) dictionaries to store
 contained objects.</p></li>
-<li><p>All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.11)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method
+<li><p>All chunk classes inherit from <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a> class and have the <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#object.__repr__" title="(in Python v3.12)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">object.__repr__()</span></code></a> method
 implemented to print objects of that class.</p></li>
 </ul>
 <p>In addition, there are several useful dictionary constants and functions and classes (flags) that interpret
@@ -481,7 +481,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.CLIP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">CLIP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#CLIP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.CLIP" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>CLIP chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -506,7 +506,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.CONT">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">CONT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#CONT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.CONT" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>CONT chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -542,7 +542,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.COST">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">COST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#COST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.COST" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>COST chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -567,14 +567,14 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.FLAGS">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">FLAGS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'little'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#FLAGS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.FLAGS" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Base class of bit flags</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.IMAT">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">IMAT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#IMAT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.IMAT" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>IMAT chunk class</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.IMAT.read">
@@ -594,7 +594,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.IMOD">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">IMOD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#IMOD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.IMOD" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class encapsulating the data in an IMOD file</p>
 <p>The top-level of an IMOD file is an IMOD chunk specifying various data members.</p>
 <dl class="py method">
@@ -643,7 +643,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.MCLP">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">MCLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#MCLP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.MCLP" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>MCLP chunk class</p>
 <p>Model clipping plane parameters</p>
 <dl class="field-list simple">
@@ -669,7 +669,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.MEPA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">MEPA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#MEPA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.MEPA" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>MEPA chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -694,7 +694,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.MESH">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">MESH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#MESH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.MESH" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>MESH chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -719,7 +719,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.MEST">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">MEST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#MEST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.MEST" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>MEST chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -737,7 +737,7 @@ The most important classes are <a class="reference internal" href="#sfftk.reader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.MINX">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">MINX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#MINX"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.MINX" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>MINX chunk class</p>
 <p>Model to image transformation
 Documented as 72 bytes but works with 76 bytes</p>
@@ -764,7 +764,7 @@ Documented as 72 bytes but works with 76 bytes</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.MOST">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">MOST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#MOST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.MOST" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>MOST chunk class</p>
 <p>Class encapsulating storage parameters for the top-level <a class="reference internal" href="#sfftk.readers.modreader.IMOD" title="sfftk.readers.modreader.IMOD"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.IMOD</span></code></a> chunk.</p>
 <dl class="field-list simple">
@@ -797,7 +797,7 @@ Documented as 72 bytes but works with 76 bytes</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.OBJT">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">OBJT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#OBJT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.OBJT" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>OBJT chunk class</p>
 <p>An IMOD file has several <a class="reference internal" href="#sfftk.readers.modreader.OBJT" title="sfftk.readers.modreader.OBJT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.OBJT</span></code></a> chunks, each of which contain the data
 either as contours (<a class="reference internal" href="#sfftk.readers.modreader.CONT" title="sfftk.readers.modreader.CONT"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.modreader.CONT</span></code></a>) or meshes
@@ -827,7 +827,7 @@ either as contours (<a class="reference internal" href="#sfftk.readers.modreader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.OBST">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">OBST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#OBST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.OBST" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>OBST chunk class</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.OBST.read">
@@ -840,7 +840,7 @@ either as contours (<a class="reference internal" href="#sfftk.readers.modreader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.SLAN">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">SLAN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#SLAN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.SLAN" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>SLAN chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -858,7 +858,7 @@ either as contours (<a class="reference internal" href="#sfftk.readers.modreader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.STORE">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">STORE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#STORE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.STORE" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Generic storage class for models (MOST), objects (OBST), contours (COST), and meshes (MEST)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -876,7 +876,7 @@ either as contours (<a class="reference internal" href="#sfftk.readers.modreader
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.modreader.VIEW">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.modreader.</span></span><span class="sig-name descname"><span class="pre">VIEW</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/modreader.html#VIEW"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.modreader.VIEW" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>VIEW chunk class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -924,13 +924,13 @@ To convert 3 nm to Å we consider that <span class="math notranslate nohighlight
 \end{align}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the power of ten for the unit e.g. for nm <code class="docutils literal notranslate"><span class="pre">units=-9</span></code></p>
+<dd class="field-odd"><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – the power of ten for the unit e.g. for nm <code class="docutils literal notranslate"><span class="pre">units=-9</span></code></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the correct multiplier to convert the given units to angstrom</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -948,7 +948,7 @@ To convert 3 nm to Å we consider that <span class="math notranslate nohighlight
 <dd class="field-even"><p>the length of the chunk, the next chunk name, the file handle at the next read position</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, file)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, file)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -959,12 +959,12 @@ To convert 3 nm to Å we consider that <span class="math notranslate nohighlight
 <dd><p>Extract chunks from IMOD model file pointed to by the handle f</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – name of IMOD file</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – name of IMOD file</p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – if it doesn’t start with an IMOD chunk</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – if the file lacks an IEOF chunk</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – if it doesn’t start with an IMOD chunk</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><strong>ValueError</strong></a> – if the file lacks an IEOF chunk</p></li>
 </ul>
 </dd>
 </dl>
@@ -987,7 +987,7 @@ To convert 3 nm to Å we consider that <span class="math notranslate nohighlight
 <dd><p>Show the sequence and number of chunks pointed to the by file handle f.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – name of IMOD file</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – name of IMOD file</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1002,7 +1002,7 @@ To convert 3 nm to Å we consider that <span class="math notranslate nohighlight
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.segreader.SeggerSegmentation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.segreader.</span></span><span class="sig-name descname"><span class="pre">SeggerSegmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/segreader.html#SeggerSegmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.segreader.SeggerSegmentation" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Encapsulation of a Segger segmentation</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="sfftk.readers.segreader.SeggerSegmentation.descriptions">
@@ -1128,14 +1128,14 @@ are penultimate roots. This method replaces each <cite>region_id</cite> with its
 It <em>simplifies</em> the volume.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – if <cite>True</cite> then the returned <cite>mask</cite> will have values; <cite>False</cite> will leave the <cite>mask</cite>
+<dd class="field-odd"><p><strong>replace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – if <cite>True</cite> then the returned <cite>mask</cite> will have values; <cite>False</cite> will leave the <cite>mask</cite>
 unchanged (useful for running tests to speed things up)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><cite>simplified_mask</cite>, <cite>segment_colours</cite>, <cite>segment_ids</cite></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1164,8 +1164,8 @@ They correspond to putative functional regions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>region_parent_zip</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – a list of 2-tuples of <cite>region_ids</cite> and <cite>parent_ids</cite></p></li>
-<li><p><strong>region_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – the <cite>region_id</cite> whose root parent_id is sought</p></li>
+<li><p><strong>region_parent_zip</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a>) – a list of 2-tuples of <cite>region_ids</cite> and <cite>parent_ids</cite></p></li>
+<li><p><strong>region_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – the <cite>region_id</cite> whose root parent_id is sought</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return int parent_id</dt>
@@ -1179,15 +1179,28 @@ They correspond to putative functional regions.</p>
 <span id="star-reader"></span><h2>STAR reader<a class="headerlink" href="#module-sfftk.readers.starreader" title="Permalink to this heading"></a></h2>
 <section id="sfftk-readers-starreader">
 <h3><code class="docutils literal notranslate"><span class="pre">sfftk.readers.starreader</span></code><a class="headerlink" href="#sfftk-readers-starreader" title="Permalink to this heading"></a></h3>
-<p>STAR files are generic data modelling files much in the same way as XML files. RELION uses a particular format of STAR file to store particle data. This module provides several classes to read STAR files: a generic reader and two RELION-specific ones.</p>
-<p>In practice, the whole STAR file is loaded into memory during the parsing process. The API we provide enables the user to access the main ways the data is stored in the STAR file: <em>key-value pairs</em> and <em>tables</em>. This reader is designed only to extract the data from the STAR file and does not attempt to understand STAR file conventions.</p>
-<p>Generic STAR files can have any number of key-value pairs and tables. For our use case, we are interested in capturing the relationship between a refined particle (subtomogram average) and a source tomogram. Since each such particle is expressed in terms of its orientation within the tomogram, we need to capture the affine transform that maps the particle to the tomogram.</p>
+<p>STAR files are generic data modelling files much in the same way as XML files. RELION uses a particular format of
+STAR file to store particle data. This module provides several classes to read STAR files: a generic reader and two
+RELION-specific ones.</p>
+<p>In practice, the whole STAR file is loaded into memory during the parsing process. The API we provide enables the
+user to access the main ways the data is stored in the STAR file: <em>key-value pairs</em> and <em>tables</em>. This reader is
+designed only to extract the data from the STAR file and does not attempt to understand STAR file conventions.</p>
+<p>Generic STAR files can have any number of key-value pairs and tables. For our use case, we are interested in capturing
+the relationship between a refined particle (subtomogram average) and a source tomogram. Since each such particle
+is expressed in terms of its orientation within the tomogram, we need to capture the affine transform that maps
+the particle to the tomogram.</p>
 <p>Therefore, this imposes some constraints on the STAR file:</p>
 <ul class="simple">
-<li><p>The STAR file must have a table with the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the position and orientation of the particle in the tomogram.</p></li>
-<li><p>The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only interested in the relationship between a single particle and a single tomogram. If the STAR file references multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into multiple files, each referencing a single tomogram. (more on that to come)</p></li>
+<li><p>The STAR file must have a table with the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>,
+<code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the
+position and orientation of the particle in the tomogram.</p></li>
+<li><p>The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only
+interested in the relationship between a single particle and a single tomogram. If the STAR file references
+multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
+multiple files, each referencing a single tomogram. (more on that to come)</p></li>
 </ul>
-<p>For this reason, we distinguish between ‘composite’ RELION STAR files and ‘simple’ RELION STAR files. Composite RELION STAR files must be partitioned into simple RELION STAR files before they can be converted into EMDB-SFF files.</p>
+<p>For this reason, we distinguish between ‘composite’ RELION STAR files and ‘simple’ RELION STAR files. Composite
+RELION STAR files must be partitioned into simple RELION STAR files before they can be converted into EMDB-SFF files.</p>
 <section id="anatomy-of-a-star-file">
 <h4>Anatomy of a STAR file<a class="headerlink" href="#anatomy-of-a-star-file" title="Permalink to this heading"></a></h4>
 <p>A STAR file is made up of one or more data blocks.</p>
@@ -1199,7 +1212,8 @@ They correspond to putative functional regions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_key</span> <span class="n">value</span>
 </pre></div>
 </div>
-<p>Tables are designed by the <code class="docutils literal notranslate"><span class="pre">loop_</span></code> keyword followed by a sequence of tags/labels each of which is prefixed by an underscore. Each row after the tags/labels is then a row with values for each tag/label.</p>
+<p>Tables are designed by the <code class="docutils literal notranslate"><span class="pre">loop_</span></code> keyword followed by a sequence of tags/labels each of which is prefixed by an
+underscore. Each row after the tags/labels is then a row with values for each tag/label.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>loop_
 _atom_site.group_PDB
 _atom_site.id
@@ -1272,18 +1286,24 @@ ATOM   10   N N   . ARG A 1 8   ? 10.011  -13.762 6.603   1.00 40.03  ? 528 ARG 
 </pre></div>
 </div>
 <p>The reader will then parse the file and store the data in memory. The user can then access the data in the following ways:</p>
-<ol class="arabic">
-<li><p><code class="docutils literal notranslate"><span class="pre">star_reader.keys()</span></code>: returns a list of key-value pairs;</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span> <span class="c1"># show key-value pairs</span>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">star_reader.keys()</span></code>: returns a list of key-value pairs;</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span> <span class="c1"># show key-value pairs</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">star_reader</span><span class="o">.</span><span class="n">keys</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">])</span> <span class="c1"># get the value for the given key</span>
 </pre></div>
 </div>
-</div></blockquote>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">star_reader.tables</span></code>: returns a dictionary of tables where the key is the name of the table and the value is a</dt><dd><p><a class="reference internal" href="#sfftk.readers.starreader.StarTable" title="sfftk.readers.starreader.StarTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarTable</span></code></a> object and each row in the table is a
+<a class="reference internal" href="#sfftk.readers.starreader.StarTableRow" title="sfftk.readers.starreader.StarTableRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarTableRow</span></code></a> object. By default, we automatically infer the type of the
+values in the table. If the user wishes to disable this behaviour, they can pass <code class="docutils literal notranslate"><span class="pre">infer_types=False</span></code> to the
+<code class="docutils literal notranslate"><span class="pre">parse</span></code> method.</p>
+</dd>
+</dl>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">star_reader.tables</span></code>: returns a dictionary of tables where the key is the name of the table and the value is a <a class="reference internal" href="#sfftk.readers.starreader.StarTable" title="sfftk.readers.starreader.StarTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarTable</span></code></a> object and each row in the table is a <a class="reference internal" href="#sfftk.readers.starreader.StarTableRow" title="sfftk.readers.starreader.StarTableRow"><code class="xref py py-class docutils literal notranslate"><span class="pre">sfftk.readers.starreader.StarTableRow</span></code></a> object. By default, we automatically infer the type of the values in the table. If the user wishes to disable this behaviour, they can pass <code class="docutils literal notranslate"><span class="pre">infer_types=False</span></code> to the <code class="docutils literal notranslate"><span class="pre">parse</span></code> method.</p>
-<blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">star_reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;file.star&#39;</span><span class="p">,</span> <span class="n">infer_types</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># disable type inference</span>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">star_reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;file.star&#39;</span><span class="p">,</span> <span class="n">infer_types</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># disable type inference</span>
 </pre></div>
 </div>
 <p>We can now access each table by name:</p>
@@ -1307,26 +1327,23 @@ ATOM   10   N N   . ARG A 1 8   ? 10.011  -13.762 6.603   1.00 40.03  ? 528 ARG 
 </pre></div>
 </div>
 </div>
-</div></blockquote>
-</li>
-</ol>
 </section>
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.starreader.RelionStarReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">RelionStarReader</span></span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#RelionStarReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.RelionStarReader" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">RelionStarReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_name_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_rlnImageName'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#RelionStarReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.RelionStarReader" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">StarReader</span></code></a></p>
 <p><a class="reference internal" href="#sfftk.readers.starreader.StarReader" title="sfftk.readers.starreader.StarReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">StarReader</span></code></a> subclass which applies some constraints to the STAR file. These constraints are:</p>
 <ul class="simple">
 <li><p>The STAR file must have <strong>one and only one</strong> table</p></li>
-<li><p>The table must have the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>,</p></li>
-</ul>
-<p><code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>. These columns represent the position and orientation of the
-particle in the tomogram.
-- The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only
+<li><p>The table must have the following columns: <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateX</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateY</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnCoordinateZ</span></code>,
+<code class="docutils literal notranslate"><span class="pre">_rlnAngleRot</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAngleTilt</span></code>, <code class="docutils literal notranslate"><span class="pre">_rlnAnglePsi</span></code>.
+These columns represent the position and orientation of the particle in the tomogram.</p></li>
+<li><p>The STAR file must reference only one tomogram in the <code class="docutils literal notranslate"><span class="pre">_rlnImageName</span></code> column. This is because we are only
 interested in the relationship between a single particle and a single tomogram. If the STAR file references
 multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
-multiple files, each referencing a single tomogram. (more on that to come)</p>
+multiple files, each referencing a single tomogram. (more on that to come)</p></li>
+</ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">RelionStarReader</span><span class="p">()</span>
 <span class="n">reader</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;my_star_file.star&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span> <span class="c1"># output some information e.g. number of rows, fields, etc.</span>
@@ -1341,7 +1358,7 @@ multiple files, each referencing a single tomogram. (more on that to come)</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.starreader.StarReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarReader</span></span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarReader" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A generic star file reader. The user must specify which fields are required/optional and the reader will then
 assess whether a provided file has the specified field.</p>
 <p>Once the file is parsed, the user can then iterate over the object to get the required data.</p>
@@ -1383,7 +1400,7 @@ assess whether a provided file has the specified field.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.starreader.StarTable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTable" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A section of tabular data in a star file</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="sfftk.readers.starreader.StarTable.columns">
@@ -1391,13 +1408,31 @@ assess whether a provided file has the specified field.</p>
 <dd><p>Return the columns in this block</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTable.header">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">header</span></span><a class="headerlink" href="#sfftk.readers.starreader.StarTable.header" title="Permalink to this definition"></a></dt>
+<dd><p>Return the header of the table</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.starreader.StarTableRow">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">StarTableRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Each row in a star table</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTableRow.raw_data">
+<span class="sig-name descname"><span class="pre">raw_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow.raw_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow.raw_data" title="Permalink to this definition"></a></dt>
+<dd><p>Return the raw data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="sfftk.readers.starreader.StarTableRow.setattr">
+<span class="sig-name descname"><span class="pre">setattr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow.setattr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow.setattr" title="Permalink to this definition"></a></dt>
+<dd><p>Update an attribute explicitly</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="sfftk.readers.starreader.StarTableRow.to_affine_transform">
 <span class="sig-name descname"><span class="pre">to_affine_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ZYZ'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degrees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#StarTableRow.to_affine_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.StarTableRow.to_affine_transform" title="Permalink to this definition"></a></dt>
@@ -1405,15 +1440,15 @@ assess whether a provided file has the specified field.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – the axes of rotation</p></li>
-<li><p><strong>degrees</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – whether the angles are in degrees or radians</p></li>
+<li><p><strong>axes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – the axes of rotation</p></li>
+<li><p><strong>degrees</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – whether the angles are in degrees or radians</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the affine transform matrix</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1421,9 +1456,23 @@ assess whether a provided file has the specified field.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="sfftk.readers.starreader.get_data">
-<span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.get_data" title="Permalink to this definition"></a></dt>
-<dd><p>Return the object with all the required metadata</p>
+<dt class="sig sig-object py" id="sfftk.readers.starreader.print_progress">
+<span class="sig-prename descclassname"><span class="pre">sfftk.readers.starreader.</span></span><span class="sig-name descname"><span class="pre">print_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iteration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'█'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'░'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/starreader.html#print_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.starreader.print_progress" title="Permalink to this definition"></a></dt>
+<dd><p>Print a progress bar</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iteration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – current iteration</p></li>
+<li><p><strong>total</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – total iterations</p></li>
+<li><p><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – prefix string</p></li>
+<li><p><strong>suffix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – suffix string</p></li>
+<li><p><strong>decimals</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – number of decimals in percent complete</p></li>
+<li><p><strong>bar_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – character length of bar</p></li>
+<li><p><strong>fill_char</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – bar fill character</p></li>
+<li><p><strong>empty_char</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – bar empty character</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -1444,13 +1493,13 @@ assess whether a provided file has the specified field.</p>
 <p>Required to check that the transform has correctly aligned the segmentation with the image</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – filename</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – filename</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <cite>list</cite> of <cite>tuple`s of the form `((x_min, y_min, z_min), (x_max, y_max, z_max))</cite></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)">list</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1461,14 +1510,14 @@ assess whether a provided file has the specified field.</p>
 <dd><p>Get data from an StL file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – filename</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – filename</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <cite>generator</cite> of meshes; each mesh is a <cite>tuple</cite> of a name, a <cite>dict</cite> of vertices indexed by <cite>vertex_id</cite>
 and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</cite></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1483,7 +1532,7 @@ and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</ci
 <dl class="py class">
 <dt class="sig sig-object py" id="sfftk.readers.surfreader.HxSurfSegment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">sfftk.readers.surfreader.</span></span><span class="sig-name descname"><span class="pre">HxSurfSegment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/sfftk/readers/surfreader.html#HxSurfSegment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#sfftk.readers.surfreader.HxSurfSegment" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Generic HxSurface segment class</p>
 <p>The <a class="reference external" href="https://ahds.readthedocs.io/en/latest/ahds.html#module-ahds" title="(in ahds v0.2.3)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ahds</span></code></a> package provides a better abstraction of this filetype</p>
 <dl class="py property">
@@ -1538,7 +1587,7 @@ and a <cite>dict</cite> of polygons referring to vertices by <cite>vertex_id</ci
 <dd><p>Get segmentation data from the Amira HxSurface file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – file name</p>
+<dd class="field-odd"><p><strong>fn</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – file name</p>
 </dd>
 <dt class="field-even">Return header</dt>
 <dd class="field-even"><p>AmiraHxSurface header</p>

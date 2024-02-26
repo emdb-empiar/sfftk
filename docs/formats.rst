@@ -49,3 +49,11 @@ Amira HyperSurface format
 .. automodule:: sfftk.formats.surf
     :members: AmiraHyperSurfaceSegmentation, AmiraHyperSurfaceHeader, AmiraHyperSurfaceSegment, AmiraHyperSurfaceAnnotation, AmiraHyperSurfaceMesh
     :show-inheritance:
+
+
+RELION STAR format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: sfftk.formats.star
+    :members: RelionStarHeader, RelionStarSegment, RelionStarSegmentation, RelionMultiStarSegmentation
+    :show-inheritance:

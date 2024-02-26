@@ -25,56 +25,78 @@ displays all conversion options.
 
 .. code:: bash
 
-    sff convert
-    usage: sff convert [-h] [-D DETAILS] [-R PRIMARY_DESCRIPTOR] [-v] [-x]
-                       [--json-indent JSON_INDENT] [--json-sort]
-                       [-o OUTPUT | -f FORMAT] [-p CONFIG_PATH] [-b] [-a] [-m]
-                       [--subtype-index SUBTYPE_INDEX] [--image IMAGE]
-                       [from_file [from_file ...]]
+	sff convert
+	usage: sff convert [-h] [-D DETAILS] [-R PRIMARY_DESCRIPTOR] [-v] [-x]
+					   [--json-indent JSON_INDENT] [--json-sort]
+					   [-o OUTPUT | -f FORMAT] [-p CONFIG_PATH] [-b] [-a] [-m]
+					   [--subtype-index SUBTYPE_INDEX] [--image IMAGE]
+					   [--label-tree LABEL_TREE]
+					   [--subtomogram-average SUBTOMOGRAM_AVERAGE]
+					   [--image-name-field IMAGE_NAME_FIELD]
+					   [--euler-angle-convention {zyz,zxz,xyx,xzx,yxy,yzy}]
+					   [--radians]
+					   [from_file [from_file ...]]
 
-    Perform conversions to EMDB-SFF
+	Perform conversions to EMDB-SFF
 
-    positional arguments:
-      from_file             file to convert from
+	positional arguments:
+	  from_file             file to convert from
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      -D DETAILS, --details DETAILS
-                            populates <details>...</details> in the XML file
-      -R PRIMARY_DESCRIPTOR, --primary-descriptor PRIMARY_DESCRIPTOR
-                            populates the
-                            <primary_descriptor>...</primary_descriptor> to this
-                            value [valid values: three_d_volume, mesh_list,
-                            shape_primitive_list]
-      -v, --verbose         verbose output
-      -x, --exclude-geometry
-                            do not include the geometry in the conversion;
-                            geometry is included by default [default: False]
-      --json-indent JSON_INDENT
-                            size in spaces of the JSON indent [default: 2]
-      --json-sort           output JSON sorted lexicographically [default: False]
-      -o OUTPUT, --output OUTPUT
-                            file to convert to; the extension (.sff, .hff, .json)
-                            determines the output format [default: None]
-      -f FORMAT, --format FORMAT
-                            output file format; valid options are: sff (XML), hff
-                            (HDF5), json (JSON) [default: sff]
-      -p CONFIG_PATH, --config-path CONFIG_PATH
-                            path to configs file
-      -b, --shipped-configs
-                            use shipped configs only if config path and user
-                            configs fail [default: False]
-      -a, --all-levels      for segments structured hierarchically (e.g. Segger
-                            from UCSF Chimera and Chimera X) convert all segment
-                            leves in the hierarchy [default: False]
-      -m, --multi-file      enables convert to treat multiple files as individual
-                            segments of a single segmentation; only works for the
-                            following filetypes: stl, map, mrc, rec [default:
-                            False]
-      --subtype-index SUBTYPE_INDEX
-                            some file extensions are used by multiple file types
-      --image IMAGE         specify the segmented EMDB MAP/MRC file from which to
-                            determine the correct image-to-physical transform
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -D DETAILS, --details DETAILS
+							populates <details>...</details> in the XML file
+	  -R PRIMARY_DESCRIPTOR, --primary-descriptor PRIMARY_DESCRIPTOR
+							populates the
+							<primary_descriptor>...</primary_descriptor> to this
+							value [valid values: three_d_volume, mesh_list,
+							shape_primitive_list]
+	  -v, --verbose         verbose output
+	  -x, --exclude-geometry
+							do not include the geometry in the conversion;
+							geometry is included by default [default: False]
+	  --json-indent JSON_INDENT
+							size in spaces of the JSON indent [default: 2]
+	  --json-sort           output JSON sorted lexicographically [default: False]
+	  -o OUTPUT, --output OUTPUT
+							file to convert to; the extension (.sff, .hff, .json)
+							determines the output format [default: None]
+	  -f FORMAT, --format FORMAT
+							output file format; valid options are: sff (XML), hff
+							(HDF5), json (JSON) [default: sff]
+	  -p CONFIG_PATH, --config-path CONFIG_PATH
+							path to configs file
+	  -b, --shipped-configs
+							use shipped configs only if config path and user
+							configs fail [default: False]
+	  -a, --all-levels      for segments structured hierarchically (e.g. Segger
+							from UCSF Chimera and Chimera X) convert all segment
+							leves in the hierarchy [default: False]
+	  -m, --multi-file      enables convert to treat multiple files as individual
+							segments of a single segmentation; only works for the
+							following filetypes: stl, map, mrc, rec, star
+							[default: False]
+	  --subtype-index SUBTYPE_INDEX
+							some file extensions are used by multiple file types
+	  --image IMAGE         specify the segmented EMDB MAP/MRC file from which to
+							determine the correct image-to-physical transform
+	  --label-tree LABEL_TREE
+							a JSON file produced by running 'sff prep mergemask'
+							which captures: 1) the mask labels (key:
+							'mask_to_label') and 2) the hierarchical relationship
+							between labels (key: 'label_tree')
+	  --subtomogram-average SUBTOMOGRAM_AVERAGE
+							the result of subtomogram averaging or a particle mask
+							for visualisation in CCP4 format (.mrc, .map, .rec)
+	  --image-name-field IMAGE_NAME_FIELD
+							the field in the star file that contains the image
+							name [default: '_rlnImageName']
+	  --euler-angle-convention {zyz,zxz,xyx,xzx,yxy,yzy}
+							the Euler angle convention used in the subtomogram
+							averaging [default: 'zyz' - case insensitive]
+	  --radians             use radians instead of degrees for Euler angles
+							[default: False i.e. use degrees]
+
 
 
 Quick Start
@@ -423,6 +445,50 @@ the user should specify the output file
 .. code:: bash
 
     sff convert -m file1.map file2.map file3.map --output file.sff
+
+Converting Subtomogram Averages
+====================================
+
+Subtomogram averages are the result of subtomogram averaging and are typically stored in CCP4 format
+(``.mrc``, ``.map``, ``.rec``). ``sfftk`` currently only works with RELION subtomogram averages in ``.star`` format.
+Conversion of subtomogram averages is similar to that of other file formats in that
+the user specifies the file to convert and the output file. Optionally, the user may provide the image file from which
+the subtomogram average was derived using the ``--image`` option to accurately determine the image-to-physical transform.
+
+.. code-block:: bash
+
+	sff convert --image file.map file.star
+
+Specifying the Particle File
+----------------------------
+
+It is also possible to specify the particle file from which the subtomogram average was derived using the ``--subtomogram-average`` option. This is useful when the subtomogram average is a particle mask for visualisation. However, given that the particle will be of higher resolution that the original tonmogram, the user may need to downsample the particle for visualisation purposes.
+
+.. code-block:: bash
+
+	sff convert --subtomogram-average particle.mrc --image image.mrc file.star
+
+A tool that can be used to prepare artificial particles is available from https://github.com/emdb-empiar/masks.git.
+
+Multiple Subtomogram Averages
+-----------------------------
+
+As with multifile segmentations, it is possible to convert multiple subtomogram averages into a single EMDB-SFF file. The user should use the ``-m/--multi-file`` option to specify the subtomogram averages. However, only one ``--subtomogram-average`` option should be used to specify the particle file.
+
+.. code-block:: bash
+
+	sff convert -m file1.star file2.star file3.star --output file.sff
+
+Specifying Euler Angle Convention
+---------------------------------
+
+The Euler angle convention used in the subtomogram averaging can be specified using the ``--euler-angle-convention`` option. The default is ``zyz``. The case is not important (``zyz``=``ZYZ``).
+
+
+Specifying Angle Type
+---------------------
+
+The user can specify whether the Euler angles are in degrees or radians using the ``--radians`` option. The default is degrees.
 
 Specifying Configurations To Use
 =================================

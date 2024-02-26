@@ -2,15 +2,16 @@
 Working with STAR files
 
 STAR files are CIF files.
-To use STAR files with sfftk, the user needs to provide at least:
+To use STAR files with ``sfftk``, the user needs to provide at least:
+
 - a STAR file
 - a map file (MRC, REC, MAP, CCP4, etc.)
 
 .. code-block:: bash
 
-    sff convert --relion-star <starfile> <mrcfile> -o <outputfile> [other options]
+    sff convert <starfile> [--subtomogram-average <mrcfile>] -o <outputfile> [other options]
 
-The presence of the --star flag tells sfftk that what is about to be generated is a refinement model plus transforms.
+The presence of the ``--star`` flag tells ``sfftk`` that what is about to be generated is a refinement model plus transforms.
 
 
 """
@@ -25,7 +26,7 @@ from ..readers import starreader, mapreader
 
 
 class RelionStarHeader(mapformat.MaskHeader):
-    """Class repreenting a Relion STAR file header"""
+    """Class representing a Relion STAR file header"""
 
 
 class RelionStarSegment(Segment):

@@ -104,6 +104,7 @@ API
 There are two main classes to read STAR files.
 
 #. :py:class:`sfftk.readers.starreader.StarReader`: a generic reader that can parse any STAR file;
+
 #. :py:class:`sfftk.readers.starreader.RelionStarReader`: a reader that can parse RELION STAR files, which validates the constraints described above.
 
 Both readers provide the same API. The examples below use the generic reader but the same applies to the RELION reader.
@@ -124,10 +125,10 @@ The reader will then parse the file and store the data in memory. The user can t
 
 #. ``star_reader.keys()``: returns a list of key-value pairs;
 
-    .. code-block:: python
+.. code-block:: python
 
-        print(star_reader.keys) # show key-value pairs
-        print(star_reader.keys['key']) # get the value for the given key
+    print(star_reader.keys) # show key-value pairs
+    print(star_reader.keys['key']) # get the value for the given key
 
 #. ``star_reader.tables``: returns a dictionary of tables where the key is the name of the table and the value is a
     :py:class:`sfftk.readers.starreader.StarTable` object and each row in the table is a
@@ -135,35 +136,35 @@ The reader will then parse the file and store the data in memory. The user can t
     values in the table. If the user wishes to disable this behaviour, they can pass ``infer_types=False`` to the
     ``parse`` method.
 
+.. code-block:: python
+
+    star_reader.parse('file.star', infer_types=False) # disable type inference
+
+We can now access each table by name:
+
+.. code-block:: python
+
+    print(star_reader.tables) # print the list of tables
+    print(star_reader.tables['_atom_site'] # the name of a table is name of the label prefix (separated by a period)
+    print(star_reader.tables['_atom_site'].columns) # print the columns in the table
+    print(star_reader.tables['_atom_site'][0]) # print the first row in the table
+    print(star_reader.tables['_atom_site'][0][4]) # print the fifth column in the first row
+
+.. note::
+
+    For RELION STAR files, the name of the table is ``_rln``.
+
     .. code-block:: python
 
-        star_reader.parse('file.star', infer_types=False) # disable type inference
+        print(star_reader.tables['_rln'])
 
-    We can now access each table by name:
+    Additionally, each row can be converted into an affine transform matrix using the ``to_affine_transform`` method:
 
     .. code-block:: python
 
-        print(star_reader.tables) # print the list of tables
-        print(star_reader.tables['_atom_site'] # the name of a table is name of the label prefix (separated by a period)
-        print(star_reader.tables['_atom_site'].columns) # print the columns in the table
-        print(star_reader.tables['_atom_site'][0]) # print the first row in the table
-        print(star_reader.tables['_atom_site'][0][4]) # print the fifth column in the first row
-
-    .. note::
-
-        For RELION STAR files, the name of the table is ``_rln``.
-
-        .. code-block:: python
-
-            print(star_reader.tables['_rln'])
-
-        Additionally, each row can be converted into an affine transform matrix using the ``to_affine_transform`` method:
-
-        .. code-block:: python
-
-            print(star_reader.tables['_rln'][0].to_affine_transform()) # print the affine transform matrix for the first row
-            print(star_reader.tables['_rln'][0].to_affine_transform(axes="ZXZ")) # change the orientation convention
-            print(star_reader.tables['_rln'][0].to_affine_transform(degrees=False)) # use radians instead of degrees
+        print(star_reader.tables['_rln'][0].to_affine_transform()) # print the affine transform matrix for the first row
+        print(star_reader.tables['_rln'][0].to_affine_transform(axes="ZXZ")) # change the orientation convention
+        print(star_reader.tables['_rln'][0].to_affine_transform(degrees=False)) # use radians instead of degrees
 
 """
 
@@ -342,8 +343,7 @@ class StarTable:
 
     @property
     def header(self):
-        """Return the header of the table
-        """
+        """Return the header of the table"""
         # self._do_eval()
         string = "loop_\n"
         string += "\n".join(self._loop.tags)
@@ -351,8 +351,7 @@ class StarTable:
 
     @property
     def columns(self):
-        """Return the columns in this block
-        """
+        """Return the columns in this block"""
         return self._loop.tags
 
     def __getitem__(self, item):
@@ -498,14 +497,15 @@ class RelionStarReader(StarReader):
     """:py:class:`StarReader` subclass which applies some constraints to the STAR file. These constraints are:
 
     - The STAR file must have **one and only one** table
-    - The table must have the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``,
-        ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``. These columns represent the position and orientation of the
-        particle in the tomogram.
-    - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only
-        interested in the relationship between a single particle and a single tomogram. If the STAR file references
-        multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
-        multiple files, each referencing a single tomogram. (more on that to come)
 
+    - The table must have the following columns: ``_rlnCoordinateX``, ``_rlnCoordinateY``, ``_rlnCoordinateZ``,
+      ``_rlnAngleRot``, ``_rlnAngleTilt``, ``_rlnAnglePsi``.
+      These columns represent the position and orientation of the particle in the tomogram.
+
+    - The STAR file must reference only one tomogram in the ``_rlnImageName`` column. This is because we are only
+      interested in the relationship between a single particle and a single tomogram. If the STAR file references
+      multiple tomograms, then a prior preparation step will need to be performed to partition the STAR file into
+      multiple files, each referencing a single tomogram. (more on that to come)
 
     .. code-block:: python
 
